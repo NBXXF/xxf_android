@@ -1,6 +1,5 @@
 package com.xxf.arch.activity;
 
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.ViewModelProviders;
@@ -17,6 +16,7 @@ import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.lifecycle.IRxLifecycleObserver;
 import com.xxf.arch.lifecycle.LifecycleFunction;
+import com.xxf.arch.viewmodel.XXFViewModel;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -32,7 +32,7 @@ public class XXFActivity extends AppCompatActivity implements IRxLifecycleObserv
     private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
     protected ViewDataBinding binding;
-    protected AndroidViewModel vm;
+    protected XXFViewModel vm;
 
 
     @Override
@@ -80,17 +80,23 @@ public class XXFActivity extends AppCompatActivity implements IRxLifecycleObserv
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getLifecycle().removeObserver(this);
+        getLifecycle().addObserver(this);
         binding = DataBindingUtil.setContentView(this, getClass().getAnnotation(BindView.class).value());
         vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
+        getLifecycle().removeObserver(vm);
+        getLifecycle().addObserver(vm);
     }
 
 
     @CallSuper
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (binding != null) {
             binding.unbind();
         }
-        super.onDestroy();
+        getLifecycle().addObserver(vm);
+        getLifecycle().removeObserver(this);
     }
 }

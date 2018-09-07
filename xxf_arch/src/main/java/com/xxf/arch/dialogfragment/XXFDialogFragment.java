@@ -1,6 +1,5 @@
 package com.xxf.arch.dialogfragment;
 
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.ViewModelProviders;
@@ -21,6 +20,7 @@ import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.lifecycle.IRxLifecycleObserver;
 import com.xxf.arch.lifecycle.LifecycleFunction;
+import com.xxf.arch.viewmodel.XXFViewModel;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -36,7 +36,7 @@ public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObs
     private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
     protected ViewDataBinding binding;
-    protected AndroidViewModel vm;
+    protected XXFViewModel vm;
 
 
     @Override
@@ -60,6 +60,10 @@ public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObs
         super.onCreate(savedInstanceState);
         getLifecycle().removeObserver(this);
         getLifecycle().addObserver(this);
+        binding = DataBindingUtil.inflate(getLayoutInflater(), getClass().getAnnotation(BindView.class).value(), null, false);
+        vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
+        getLifecycle().removeObserver(vm);
+        getLifecycle().addObserver(vm);
     }
 
     @Override
@@ -92,15 +96,10 @@ public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObs
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (binding == null) {
-            binding = DataBindingUtil.inflate(inflater, getClass().getAnnotation(BindView.class).value(), container, false);
-            vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
-        } else {
-            if (binding.getRoot() != null) {
-                ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
-                if (parent != null) {
-                    parent.removeView(binding.getRoot());
-                }
+        if (binding.getRoot() != null) {
+            ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
+            if (parent != null) {
+                parent.removeView(binding.getRoot());
             }
         }
         return binding.getRoot();
@@ -108,17 +107,12 @@ public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObs
 
     @CallSuper
     @Override
-    public void onDestroyView() {
+    public void onDestroy() {
+        super.onDestroy();
         if (binding != null) {
             binding.unbind();
         }
-        super.onDestroyView();
-    }
-
-    @CallSuper
-    @Override
-    public void onDestroy() {
+        getLifecycle().removeObserver(vm);
         getLifecycle().removeObserver(this);
-        super.onDestroy();
     }
 }
