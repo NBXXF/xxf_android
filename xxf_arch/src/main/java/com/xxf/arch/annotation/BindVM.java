@@ -1,6 +1,6 @@
 package com.xxf.arch.annotation;
 
-import android.arch.lifecycle.AndroidViewModel;
+import com.xxf.arch.viewmodel.XXFViewModel;
 
 import java.lang.annotation.ElementType;
 
@@ -20,5 +20,5 @@ public @interface BindVM {
      *
      * @return
      */
-    Class<? extends AndroidViewModel> value();
+    Class<? extends XXFViewModel> value();
 }
