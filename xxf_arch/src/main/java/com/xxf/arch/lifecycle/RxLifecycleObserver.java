@@ -1,38 +1,24 @@
-package com.xxf.arch.activity;
+package com.xxf.arch.lifecycle;
 
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
-import com.xxf.arch.annotation.BindVM;
-import com.xxf.arch.annotation.BindView;
-import com.xxf.arch.lifecycle.IRxLifecycleObserver;
-import com.xxf.arch.lifecycle.LifecycleFunction;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
- * @author xuanyouwu@163.com
+ * @author youxuan  E-mail:youxuan@icourt.cc
  * @version 2.3.1
- * @Description
+ * @Description 绑定RxJava
+ * @Company Beijing icourt
  * @date createTime：2018/9/7
  */
-public class XXFActivity extends AppCompatActivity implements IRxLifecycleObserver {
+public class RxLifecycleObserver implements IRxLifecycleObserver {
     private static final LifecycleFunction LIFECYCLEFUNCTION = new LifecycleFunction();
     private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
-
-    protected ViewDataBinding binding;
-    protected AndroidViewModel vm;
 
 
     @Override
@@ -51,7 +37,7 @@ public class XXFActivity extends AppCompatActivity implements IRxLifecycleObserv
     }
 
     @Override
-    public final void onBindRxLifecycle(LifecycleOwner owner, Lifecycle.Event event) {
+    public void onBindRxLifecycle(LifecycleOwner owner, Lifecycle.Event event) {
         switch (event) {
             case ON_CREATE:
                 lifecycleSubject.onNext(Lifecycle.Event.ON_CREATE);
@@ -74,23 +60,5 @@ public class XXFActivity extends AppCompatActivity implements IRxLifecycleObserv
             default:
                 break;
         }
-    }
-
-    @CallSuper
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, getClass().getAnnotation(BindView.class).value());
-        vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
-    }
-
-
-    @CallSuper
-    @Override
-    protected void onDestroy() {
-        if (binding != null) {
-            binding.unbind();
-        }
-        super.onDestroy();
     }
 }

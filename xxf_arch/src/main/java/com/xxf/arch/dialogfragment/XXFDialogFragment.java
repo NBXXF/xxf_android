@@ -1,13 +1,13 @@
 package com.xxf.arch.dialogfragment;
 
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -15,13 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
+import com.xxf.arch.lifecycle.IRxLifecycleObserver;
+import com.xxf.arch.lifecycle.LifecycleFunction;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -32,45 +31,61 @@ import io.reactivex.subjects.BehaviorSubject;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends DialogFragment implements LifecycleProvider<FragmentEvent> {
+public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObserver {
+    private static final LifecycleFunction LIFECYCLEFUNCTION = new LifecycleFunction();
+    private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
-    private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
     protected ViewDataBinding binding;
     protected AndroidViewModel vm;
 
+
     @Override
-    @NonNull
-    @CheckResult
-    public final Observable<FragmentEvent> lifecycle() {
+    public Observable<Lifecycle.Event> lifecycle() {
         return lifecycleSubject.hide();
     }
 
     @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event) {
+    public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
     @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindFragment(lifecycleSubject);
-    }
-
-    @CallSuper
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        lifecycleSubject.onNext(FragmentEvent.ATTACH);
+    public <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycle.bind(lifecycleSubject, LIFECYCLEFUNCTION);
     }
 
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(FragmentEvent.CREATE);
+        getLifecycle().removeObserver(this);
+        getLifecycle().addObserver(this);
+    }
+
+    @Override
+    public final void onBindRxLifecycle(LifecycleOwner owner, Lifecycle.Event event) {
+        switch (event) {
+            case ON_CREATE:
+                lifecycleSubject.onNext(Lifecycle.Event.ON_CREATE);
+                break;
+            case ON_START:
+                lifecycleSubject.onNext(Lifecycle.Event.ON_START);
+                break;
+            case ON_RESUME:
+                lifecycleSubject.onNext(Lifecycle.Event.ON_RESUME);
+                break;
+            case ON_PAUSE:
+                lifecycleSubject.onNext(Lifecycle.Event.ON_PAUSE);
+                break;
+            case ON_STOP:
+                lifecycleSubject.onNext(Lifecycle.Event.ON_STOP);
+                break;
+            case ON_DESTROY:
+                lifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
+                break;
+            default:
+                break;
+        }
     }
 
     @CallSuper
@@ -93,57 +108,17 @@ public class XXFDialogFragment extends DialogFragment implements LifecycleProvid
 
     @CallSuper
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
-    }
-
-    @CallSuper
-    @Override
-    public void onStart() {
-        super.onStart();
-        lifecycleSubject.onNext(FragmentEvent.START);
-    }
-
-    @CallSuper
-    @Override
-    public void onResume() {
-        super.onResume();
-        lifecycleSubject.onNext(FragmentEvent.RESUME);
-    }
-
-    @CallSuper
-    @Override
-    public void onPause() {
-        lifecycleSubject.onNext(FragmentEvent.PAUSE);
-        super.onPause();
-    }
-
-    @CallSuper
-    @Override
-    public void onStop() {
-        lifecycleSubject.onNext(FragmentEvent.STOP);
-        super.onStop();
-    }
-
-    @CallSuper
-    @Override
     public void onDestroyView() {
-        lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
+        if (binding != null) {
+            binding.unbind();
+        }
         super.onDestroyView();
     }
 
     @CallSuper
     @Override
     public void onDestroy() {
-        lifecycleSubject.onNext(FragmentEvent.DESTROY);
+        getLifecycle().removeObserver(this);
         super.onDestroy();
-    }
-
-    @CallSuper
-    @Override
-    public void onDetach() {
-        lifecycleSubject.onNext(FragmentEvent.DETACH);
-        super.onDetach();
     }
 }

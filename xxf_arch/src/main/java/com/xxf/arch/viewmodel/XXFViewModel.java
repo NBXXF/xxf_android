@@ -1,24 +1,13 @@
-package com.xxf.arch.fragment;
+package com.xxf.arch.viewmodel;
 
+import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
-import com.xxf.arch.annotation.BindVM;
-import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.lifecycle.IRxLifecycleObserver;
 import com.xxf.arch.lifecycle.LifecycleFunction;
 
@@ -26,18 +15,20 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
- * @author xuanyouwu@163.com
+ * @author youxuan  E-mail:youxuan@icourt.cc
  * @version 2.3.1
- * @Description
+ * @Description 具有RxJava生命周期管理
+ * @Company Beijing icourt
  * @date createTime：2018/9/7
  */
-
-public class XXFFragment extends Fragment implements IRxLifecycleObserver {
+public class XXFViewModel extends AndroidViewModel
+        implements IRxLifecycleObserver {
     private static final LifecycleFunction LIFECYCLEFUNCTION = new LifecycleFunction();
     private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
-    protected ViewDataBinding binding;
-    protected AndroidViewModel vm;
+    public XXFViewModel(@NonNull Application application) {
+        super(application);
+    }
 
 
     @Override
@@ -53,14 +44,6 @@ public class XXFFragment extends Fragment implements IRxLifecycleObserver {
     @Override
     public <T> LifecycleTransformer<T> bindToLifecycle() {
         return RxLifecycle.bind(lifecycleSubject, LIFECYCLEFUNCTION);
-    }
-
-    @CallSuper
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getLifecycle().removeObserver(this);
-        getLifecycle().addObserver(this);
     }
 
     @Override
@@ -87,39 +70,5 @@ public class XXFFragment extends Fragment implements IRxLifecycleObserver {
             default:
                 break;
         }
-    }
-
-    @CallSuper
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (binding == null) {
-            binding = DataBindingUtil.inflate(inflater, getClass().getAnnotation(BindView.class).value(), container, false);
-            vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
-        } else {
-            if (binding.getRoot() != null) {
-                ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
-                if (parent != null) {
-                    parent.removeView(binding.getRoot());
-                }
-            }
-        }
-        return binding.getRoot();
-    }
-
-    @CallSuper
-    @Override
-    public void onDestroyView() {
-        if (binding != null) {
-            binding.unbind();
-        }
-        super.onDestroyView();
-    }
-
-    @CallSuper
-    @Override
-    public void onDestroy() {
-        getLifecycle().removeObserver(this);
-        super.onDestroy();
     }
 }
