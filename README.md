@@ -6,3 +6,4 @@
     implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
 
 1. 去除RxAndroid,用Android自带的lifecycle来管理RxJava的生命周期
+2. viewmodel中也可以使用rxjava bind生命周期,跟activity一样
