@@ -1,1 +1,1 @@
-include ':app', ':xxf_security'
+include ':app', ':xxf_security',':xxf_arch'
