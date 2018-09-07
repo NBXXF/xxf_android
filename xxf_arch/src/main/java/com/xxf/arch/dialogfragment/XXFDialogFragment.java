@@ -46,6 +46,9 @@ public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObs
 
     @Override
     public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
+        if (event == Lifecycle.Event.ON_ANY) {
+            throw new IllegalArgumentException("event can not Lifecycle.Event.ON_ANY");
+        }
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 

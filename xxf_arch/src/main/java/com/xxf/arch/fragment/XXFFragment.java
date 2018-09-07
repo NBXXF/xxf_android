@@ -47,6 +47,9 @@ public class XXFFragment extends Fragment implements IRxLifecycleObserver {
 
     @Override
     public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
+        if (event == Lifecycle.Event.ON_ANY) {
+            throw new IllegalArgumentException("event can not Lifecycle.Event.ON_ANY");
+        }
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
@@ -105,7 +108,7 @@ public class XXFFragment extends Fragment implements IRxLifecycleObserver {
         }
         return binding.getRoot();
     }
-    
+
     @CallSuper
     @Override
     public void onDestroy() {
