@@ -12,6 +12,10 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
     implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
 
 ##### Activity
+需要继承XXFactivity
+绑定布局 用@BindView
+绑定vm  用@BindVM
+
     @BindView(R.layout.other_activity_devloper_helper_setting)
     @BindVM(DeveloperHelperSettingVM.class)
     public class DeveloperHelperSettingActivity
@@ -25,10 +29,10 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
     }
 
 ##### Fragment
-与Activity类似,继承RXFragment即可;
+与Activity类似,继承XXFFragment即可;
 
 ##### DialogFaragment
-与Activity类似,继承RXDialogFragment即可;
+与Activity类似,继承XXFDialogFragment即可;
 
 ##### 与RxJava结合
 在Activity,Fragment,DialogFragment与ViewModel中都可以使用RxJava管理生命周期,语法保持一致,如下:
