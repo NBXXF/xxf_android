@@ -29,3 +29,16 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 
 ##### DialogFaragment
 与Activity类似,继承RXDialogFragment即可;
+
+##### 与RxJava结合
+在Activity,Fragment,DialogFragment与ViewModel中都可以使用RxJava管理生命周期,语法保持一致,如下:
+
+
+      io.reactivex.Observable.interval(1, TimeUnit.SECONDS)
+                    .compose(this.<Long>bindUntilEvent(Lifecycle.Event.ON_PAUSE))
+                    .subscribe(new Consumer<Long>() {
+                        @Override
+                        public void accept(Long aLong) throws Exception {
+                            LogUtils.AndroidD("--------->ex:" + aLong);
+                        }
+                    });
