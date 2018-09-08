@@ -28,6 +28,9 @@ public class RxLifecycleObserver implements IRxLifecycleObserver {
 
     @Override
     public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
+        if (event == Lifecycle.Event.ON_ANY) {
+            throw new IllegalArgumentException("event can not Lifecycle.Event.ON_ANY");
+        }
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 

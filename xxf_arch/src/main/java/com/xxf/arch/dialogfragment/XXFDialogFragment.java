@@ -1,7 +1,6 @@
 package com.xxf.arch.dialogfragment;
 
 import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -14,16 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.RxLifecycle;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.lifecycle.IRxLifecycleObserver;
-import com.xxf.arch.lifecycle.LifecycleFunction;
+import com.xxf.arch.lifecycle.RxLifecycleObserver;
+import com.xxf.arch.lifecycle.RxLifecycleObserverProvider;
 import com.xxf.arch.viewmodel.XXFViewModel;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * @author xuanyouwu@163.com
@@ -31,68 +30,54 @@ import io.reactivex.subjects.BehaviorSubject;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObserver {
-    private static final LifecycleFunction LIFECYCLEFUNCTION = new LifecycleFunction();
-    private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
+public class XXFDialogFragment extends DialogFragment implements
+        LifecycleProvider<Lifecycle.Event>,
+        RxLifecycleObserverProvider {
+    private final IRxLifecycleObserver innerRxLifecycleObserver = new RxLifecycleObserver();
+    private ViewDataBinding binding;
+    private XXFViewModel vm;
 
-    protected ViewDataBinding binding;
-    protected XXFViewModel vm;
+    public <B extends ViewDataBinding> B getBinding() {
+        return (B) binding;
+    }
 
+    public <V extends XXFViewModel> V getVm() {
+        return (V) vm;
+    }
+
+    @Override
+    public IRxLifecycleObserver getRxLifecycleObserver() {
+        return innerRxLifecycleObserver;
+    }
 
     @Override
     public Observable<Lifecycle.Event> lifecycle() {
-        return lifecycleSubject.hide();
+        return getRxLifecycleObserver().lifecycle();
     }
 
     @Override
     public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
-        if (event == Lifecycle.Event.ON_ANY) {
-            throw new IllegalArgumentException("event can not Lifecycle.Event.ON_ANY");
-        }
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+        return getRxLifecycleObserver().bindUntilEvent(event);
     }
 
     @Override
     public <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycle.bind(lifecycleSubject, LIFECYCLEFUNCTION);
+        return getRxLifecycleObserver().bindToLifecycle();
     }
 
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLifecycle().removeObserver(this);
-        getLifecycle().addObserver(this);
+        getLifecycle().removeObserver(getRxLifecycleObserver());
+        getLifecycle().addObserver(getRxLifecycleObserver());
+
         binding = DataBindingUtil.inflate(getLayoutInflater(), getClass().getAnnotation(BindView.class).value(), null, false);
         vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
-        getLifecycle().removeObserver(vm);
-        getLifecycle().addObserver(vm);
-    }
 
-    @Override
-    public final void onBindRxLifecycle(LifecycleOwner owner, Lifecycle.Event event) {
-        switch (event) {
-            case ON_CREATE:
-                lifecycleSubject.onNext(Lifecycle.Event.ON_CREATE);
-                break;
-            case ON_START:
-                lifecycleSubject.onNext(Lifecycle.Event.ON_START);
-                break;
-            case ON_RESUME:
-                lifecycleSubject.onNext(Lifecycle.Event.ON_RESUME);
-                break;
-            case ON_PAUSE:
-                lifecycleSubject.onNext(Lifecycle.Event.ON_PAUSE);
-                break;
-            case ON_STOP:
-                lifecycleSubject.onNext(Lifecycle.Event.ON_STOP);
-                break;
-            case ON_DESTROY:
-                lifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
-                break;
-            default:
-                break;
-        }
+        IRxLifecycleObserver vmRxLifecycleObserver = vm.getRxLifecycleObserver();
+        getLifecycle().removeObserver(vmRxLifecycleObserver);
+        getLifecycle().addObserver(vmRxLifecycleObserver);
     }
 
     @CallSuper
@@ -115,7 +100,12 @@ public class XXFDialogFragment extends DialogFragment implements IRxLifecycleObs
         if (binding != null) {
             binding.unbind();
         }
-        getLifecycle().removeObserver(vm);
-        getLifecycle().removeObserver(this);
+        if (vm != null) {
+            IRxLifecycleObserver vmRxLifecycleObserver = vm.getRxLifecycleObserver();
+            getLifecycle().removeObserver(vmRxLifecycleObserver);
+        }
+        getLifecycle().removeObserver(getRxLifecycleObserver());
     }
+
+
 }
