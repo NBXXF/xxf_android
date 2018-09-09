@@ -46,3 +46,27 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
                             LogUtils.AndroidD("--------->ex:" + aLong);
                         }
                     });
+
+#### Activity和Fragment生命周期日志
+
+    public class BaseApplication extends Application {
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            //注册activity和fragment生命周期
+            XXFAppLifecycleLogger.register(
+                    this,
+                    new XXFAppLifecycleLogger.XXFAppLifecycleLoggerBuilder()
+                            .setLogCreatedActivity(true)//在activity创建的时候打印Log
+                            .setLogActivityIntent(true)//打印Intent参数
+                            .setToastCreatedActivity(true)//在activity创建的时候Toast
+                            .setLogCreatedFragment(true)//在fragment创建的时候打印Log
+                            .setLogFragmentAragments(true)//打印fragment参数
+                            .setToastCreatedFragment(true)//在fragment创建的时候Toast
+                            .build());
+
+        }
+    }
+
+
+

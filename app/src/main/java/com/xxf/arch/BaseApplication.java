@@ -18,12 +18,12 @@ public class BaseApplication extends Application {
         XXFAppLifecycleLogger.register(
                 this,
                 new XXFAppLifecycleLogger.XXFAppLifecycleLoggerBuilder()
-                        .setLogCreatedActivity(true)
-                        .setLogActivityIntent(true)
-                        .setToastCreatedActivity(true)
-                        .setLogCreatedFragment(true)
-                        .setLogFragmentAragments(true)
-                        .setToastCreatedFragment(true)
+                        .setLogCreatedActivity(true)//在activity创建的时候打印Log
+                        .setLogActivityIntent(true)//打印Intent参数
+                        .setToastCreatedActivity(true)//在activity创建的时候Toast
+                        .setLogCreatedFragment(true)//在fragment创建的时候打印Log
+                        .setLogFragmentAragments(true)//打印fragment参数
+                        .setToastCreatedFragment(true)//在fragment创建的时候Toast
                         .build());
 
     }
