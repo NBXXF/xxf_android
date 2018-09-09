@@ -2,6 +2,7 @@
 xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 1. 去除RxAndroid,用Android自带的lifecycle来管理RxJava的生命周期
 2. viewmodel中也可以使用rxjava bind生命周期,跟activity一样
+3. 权限可以用RxJava链式调用
 
 #### 用法
 ##### 引入项目
@@ -47,7 +48,7 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
                         }
                     });
 
-#### Activity和Fragment生命周期日志
+##### Activity和Fragment生命周期日志
 
     public class BaseApplication extends Application {
         @Override
@@ -68,5 +69,15 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
         }
     }
 
+##### 权限使用Rx链式调用
 
+     Disposable subscribe = new XXFPermissions(this)
+                    .request(Manifest.permission.CAMERA)
+                    .compose(new CameraPermissionTransformer(this,false))
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean aBoolean) throws Exception {
+                            ToastUtils.showToast(TestActivity.this, "permission:" + aBoolean);
+                        }
+                    });
 
