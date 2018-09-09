@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/xxf_arch" />
             <option value="$PROJECT_DIR$/xxf_security" />
+            <option value="$PROJECT_DIR$/xxf_view" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
