@@ -1,5 +1,6 @@
 package com.xxf.arch.dialogfragment;
 
+import android.app.Dialog;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,6 +23,7 @@ import com.xxf.arch.lifecycle.IRxLifecycleObserver;
 import com.xxf.arch.lifecycle.RxLifecycleObserver;
 import com.xxf.arch.lifecycle.RxLifecycleObserverProvider;
 import com.xxf.arch.viewmodel.XXFViewModel;
+import com.xxf.arch.widget.TouchListenDialog;
 
 import io.reactivex.Observable;
 
@@ -78,6 +81,23 @@ public class XXFDialogFragment extends DialogFragment implements
         IRxLifecycleObserver vmRxLifecycleObserver = vm.getRxLifecycleObserver();
         getLifecycle().removeObserver(vmRxLifecycleObserver);
         getLifecycle().addObserver(vmRxLifecycleObserver);
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new TouchListenDialog(getContext(), getTheme()) {
+            @Override
+            protected void onDialogTouchOutside(MotionEvent event) {
+                XXFDialogFragment.this.onDialogTouchOutside(event);
+            }
+        };
+    }
+
+    /**
+     * 外部点击
+     */
+    protected void onDialogTouchOutside(MotionEvent event) {
     }
 
     @CallSuper
