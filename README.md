@@ -1,12 +1,13 @@
 # xxf架构
 xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 1. 去除RxAndroid,用Android自带的lifecycle来管理RxJava的生命周期
-2. viewmodel中也可以使用rxjava bind生命周期,跟activity一样
-3. 权限可以用RxJava链式调用
+2. viewmodel中也可以使用rxjava bind生命周期,跟activity一样,可以处理rxjava的生命周期
+3. 权限可以用RxJava链式调用,不用写复杂的回调
+4. dialogFragment增加onDialogTouchOutside()监听外部点击事件
 
 #### 用法
 ##### 引入项目
-    implementation 'com.github.axuan2015:xxf:1.0.5'//主要lib
+    implementation 'com.github.axuan2015:xxf:1.0.6'//主要lib
 
     implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
