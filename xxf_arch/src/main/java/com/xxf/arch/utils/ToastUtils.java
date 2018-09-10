@@ -35,7 +35,7 @@ public class ToastUtils {
     private static Field sField_TN;
     private static Field sField_TN_Handler;
 
-    private ToastUtils() {
+    public ToastUtils() {
     }
 
     /**
