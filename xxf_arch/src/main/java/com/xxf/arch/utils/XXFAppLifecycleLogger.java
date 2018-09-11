@@ -137,7 +137,7 @@ public class XXFAppLifecycleLogger extends SimpleActivityLifecycleCallbacks {
         @Override
         public void onActivityCreated(XXFAppLifecycleLoggerBuilder builder, Activity activity, @Nullable Intent intent) {
             if (builder.toastCreatedActivity) {
-                Toast.makeText(activity, activity.getClass().getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity.getApplicationContext(), activity.getClass().getName(), Toast.LENGTH_SHORT).show();
             }
             StringBuilder logBuilder = new StringBuilder("=========onActivityCreated:" + activity.getClass().getName());
             if (builder.logActivityIntent && intent != null) {
@@ -154,7 +154,7 @@ public class XXFAppLifecycleLogger extends SimpleActivityLifecycleCallbacks {
         @Override
         public void onFragmentCreated(XXFAppLifecycleLoggerBuilder builder, Fragment fragment, Bundle argments) {
             if (builder.toastCreatedFragment) {
-                Toast.makeText(fragment.getContext(), fragment.getClass().getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragment.getContext().getApplicationContext(), fragment.getClass().getName(), Toast.LENGTH_SHORT).show();
             }
             StringBuilder logBuilder = new StringBuilder("=========onFragmentCreated:" + fragment.getClass().getName());
             if (builder.logFragmentAragments) {
