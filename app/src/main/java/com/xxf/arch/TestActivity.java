@@ -1,16 +1,15 @@
 package com.xxf.arch;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 
-import com.xxf.arch.permission.CameraPermissionTransformer;
-import com.xxf.arch.permission.XXFPermissions;
-import com.xxf.arch.utils.ToastUtils;
+import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.annotation.BindVM;
+import com.xxf.arch.annotation.BindView;
+import com.xxf.arch.databinding.ActivityTestBinding;
+import com.xxf.arch.viewmodel.XXFViewModel;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
+import java.util.Arrays;
 
 /**
  * @author youxuan  E-mail:youxuan@icourt.cc
@@ -19,19 +18,18 @@ import io.reactivex.functions.Consumer;
  * @Company Beijing icourt
  * @date createTime：2018/9/9
  */
-public class TestActivity extends FragmentActivity {
+@BindView(R.layout.activity_test)
+@BindVM(XXFViewModel.class)
+public class TestActivity extends XXFActivity {
+    BaseFragmentAdapter baseFragmentAdapter;
+    ActivityTestBinding binding;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Disposable subscribe = new XXFPermissions(this)
-                .request(Manifest.permission.CAMERA)
-                .compose(new CameraPermissionTransformer(this,false))
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        ToastUtils.showToast(TestActivity.this, "permission:" + aBoolean);
-                    }
-                });
+        binding = getBinding();
+        baseFragmentAdapter = new BaseFragmentAdapter(getSupportFragmentManager());
+        binding.pager.setAdapter(baseFragmentAdapter);
+        baseFragmentAdapter.bindData(true, Arrays.asList(new TestFragment(), new TestFragment(), new TestFragment()));
     }
 }
