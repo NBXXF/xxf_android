@@ -83,10 +83,17 @@ public class XXFFragment
         getLifecycle().addObserver(vmRxLifecycleObserver);
     }
 
-    @CallSuper
+
+    /***
+     * 禁止复写
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (binding.getRoot() != null) {
             ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
             if (parent != null) {
@@ -94,6 +101,17 @@ public class XXFFragment
             }
         }
         return binding.getRoot();
+    }
+
+    /**
+     * 会重复调用 禁止复写
+     *
+     * @param view
+     * @param savedInstanceState
+     */
+    @Override
+    public final void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @CallSuper
