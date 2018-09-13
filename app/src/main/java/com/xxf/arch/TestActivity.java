@@ -1,9 +1,7 @@
 package com.xxf.arch;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.annotation.BindVM;
@@ -33,15 +31,5 @@ public class TestActivity extends XXFActivity {
         baseFragmentAdapter = new BaseFragmentAdapter(getSupportFragmentManager());
         binding.pager.setAdapter(baseFragmentAdapter);
         baseFragmentAdapter.bindData(true, Arrays.asList(new TestFragment(), new TestFragment(), new TestFragment()));
-
-     View view = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-
-                }
-            });
-        }
     }
 }
