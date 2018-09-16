@@ -114,6 +114,14 @@ public class XXFFragment
         super.onViewCreated(view, savedInstanceState);
     }
 
+    /**
+     * 会重复调用 禁止复写
+     */
+    @Override
+    public final void onDestroyView() {
+        super.onDestroyView();
+    }
+
     @CallSuper
     @Override
     public void onDestroy() {
