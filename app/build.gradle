@@ -35,4 +35,10 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
     implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+
+
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
 }
