@@ -1,5 +1,7 @@
 package com.xxf.arch.http;
 
+import java.io.IOException;
+
 /**
  * Description
  * Company Beijing icourt
@@ -7,12 +9,13 @@ package com.xxf.arch.http;
  * date createTime：2017/4/5
  * version 1.0.0
  */
-public class ResponseException extends RuntimeException {
+public class ResponseException extends IOException {
     public final int code;
     public final String message;
 
 
     public ResponseException(int code, String message) {
+        super(message);
         this.code = code;
         this.message = message;
     }

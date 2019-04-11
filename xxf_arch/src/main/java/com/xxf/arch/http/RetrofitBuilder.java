@@ -2,6 +2,7 @@ package com.xxf.arch.http;
 
 import android.support.annotation.Nullable;
 
+import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.json.GsonFactory;
 
 import java.util.List;
@@ -13,7 +14,6 @@ import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
