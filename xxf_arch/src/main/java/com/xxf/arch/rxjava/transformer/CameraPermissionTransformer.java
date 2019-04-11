@@ -1,7 +1,9 @@
-package com.xxf.arch.permission;
+package com.xxf.arch.rxjava.transformer;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+
+import com.xxf.arch.permission.XXFPermissionTransformer;
 
 /**
  * @author youxuan  E-mail:youxuan@icourt.cc
