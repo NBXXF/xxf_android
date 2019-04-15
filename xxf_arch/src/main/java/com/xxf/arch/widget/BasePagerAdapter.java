@@ -8,9 +8,9 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.icourt.ui.common.utils.CollectionsUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -63,6 +63,10 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter implements View.O
     private final List<T> datas = new ArrayList<>();
     private SparseArray<View> viewSparseArray = new SparseArray<>();
 
+    private static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
+
     @Nullable
     @CheckResult
     public View getItemView(int pos) {
@@ -73,7 +77,7 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter implements View.O
         if (isRefresh) {
             datas.clear();
         }
-        if (!CollectionsUtils.isEmpty(data)) {
+        if (!isEmpty(data)) {
             datas.addAll(data);
         }
         notifyDataSetChanged();
