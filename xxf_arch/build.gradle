@@ -19,4 +19,6 @@ dependencies {
     compileOnly 'com.squareup.retrofit2:retrofit:2.5.0'
     compileOnly 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     compileOnly 'com.google.code.gson:gson:2.8.2'
+    compileOnly 'com.github.bumptech.glide:glide:4.9.0'
+    compileOnly 'com.caverock:androidsvg-aar:1.3'
 }
