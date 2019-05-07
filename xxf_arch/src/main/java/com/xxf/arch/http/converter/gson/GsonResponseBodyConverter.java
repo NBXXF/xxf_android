@@ -20,7 +20,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
-import com.xxf.arch.http.model.IResponseBodyDTO;
 
 import java.io.IOException;
 
