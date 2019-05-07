@@ -2,6 +2,7 @@ package com.xxf.arch.http;
 
 import android.support.annotation.Nullable;
 
+import com.xxf.arch.http.converter.gson.GsonConvertInterceptor;
 import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.json.GsonFactory;
 
@@ -36,10 +37,14 @@ public class RetrofitBuilder {
      * 2.rxjava
      * 3.默认的okhttp
      */
-    protected Retrofit.Builder builder = new Retrofit.Builder()
-            .client(new OkHttpClientBuilder().build())
-            .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson()))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync());
+    protected Retrofit.Builder builder;
+
+    public RetrofitBuilder(GsonConvertInterceptor interceptor) {
+        builder = new Retrofit.Builder()
+                .client(new OkHttpClientBuilder().build())
+                .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson(), interceptor))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync());
+    }
 
 
     public RetrofitBuilder client(OkHttpClient client) {

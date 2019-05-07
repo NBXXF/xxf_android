@@ -20,7 +20,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
-import com.xxf.arch.http.ResponseException;
 import com.xxf.arch.http.model.IResponseBodyDTO;
 
 import java.io.IOException;
@@ -31,10 +30,12 @@ import retrofit2.Converter;
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final Gson gson;
     private final TypeAdapter<T> adapter;
+    private GsonConvertInterceptor interceptor;
 
-    GsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter) {
+    GsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter, GsonConvertInterceptor interceptor) {
         this.gson = gson;
         this.adapter = adapter;
+        this.interceptor = interceptor;
     }
 
     @Override
@@ -45,14 +46,9 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
             if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
                 throw new JsonIOException("JSON document was not fully consumed.");
             }
-            //校验res基础模型
-            if (result != null && result instanceof IResponseBodyDTO) {
-                IResponseBodyDTO resDto = (IResponseBodyDTO) result;
-                //抛出响应body异常
-                IOException responseBodyException = resDto.getResponseBodyException();
-                if (responseBodyException != null) {
-                    throw responseBodyException;
-                }
+            //转换后 做拦截
+            if (interceptor != null) {
+                return interceptor.onResponseBodyIntercept(gson, adapter, value, result);
             }
             return result;
         } finally {

@@ -3,6 +3,8 @@ package com.xxf.arch.http;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.xxf.arch.http.converter.gson.GsonConvertInterceptor;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,14 +39,17 @@ public class XXFHttp {
      * @param interceptors
      * @param <T>
      */
-    public static <T> void registerApiService(@NonNull Class<T> c, @NonNull String baseUrl, @Nullable List<Interceptor> interceptors) {
+    public static <T> void registerApiService(@NonNull Class<T> c,
+                                              @NonNull String baseUrl,
+                                              @Nullable List<Interceptor> interceptors,
+                                              GsonConvertInterceptor gsonConvertInterceptor) {
         OkHttpClientBuilder ohcb = new OkHttpClientBuilder();
         if (interceptors != null) {
             for (Interceptor interceptor : interceptors) {
                 ohcb.addInterceptor(interceptor);
             }
         }
-        T apiService = new RetrofitBuilder()
+        T apiService = new RetrofitBuilder(gsonConvertInterceptor)
                 .client(ohcb.build())
                 .baseUrl(baseUrl)
                 .build()

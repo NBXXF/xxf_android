@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra("desc","124");
 //        startActivity(intent);
 
-        XXFHttp.registerApiService(LoginApiService.class, "http://api.map.baidu.com/telematics/", null);
+        XXFHttp.registerApiService(LoginApiService.class, "http://api.map.baidu.com/telematics/", null,null);
 
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
