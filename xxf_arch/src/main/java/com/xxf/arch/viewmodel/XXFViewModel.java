@@ -2,16 +2,16 @@ package com.xxf.arch.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.Lifecycle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
-import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.xxf.arch.lifecycle.IRxLifecycleObserver;
-import com.xxf.arch.lifecycle.RxLifecycleObserver;
-import com.xxf.arch.lifecycle.RxLifecycleObserverProvider;
+import com.trello.rxlifecycle2.OutsideLifecycleException;
+import com.trello.rxlifecycle2.RxLifecycle;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * @author youxuan  E-mail:youxuan@icourt.cc
@@ -20,33 +20,56 @@ import io.reactivex.Observable;
  * @Company Beijing icourt
  * @date createTime：2018/9/7
  */
-public class XXFViewModel extends AndroidViewModel
-        implements
-        RxLifecycleObserverProvider,
-        LifecycleProvider<Lifecycle.Event> {
-    private final IRxLifecycleObserver innerRxLifecycleObserver = new RxLifecycleObserver();
+enum Event {
+    /**
+     * Constant for onCreate  ViewModel.
+     */
+    ON_CREATE,
+    /**
+     * Constant for clear viewModel.
+     */
+    ON_CLEARED,
+}
+
+public class XXFViewModel extends AndroidViewModel {
+    private static final Function LIFECYCLEFUNCTION = new Function<Event, Event>() {
+        @Override
+        public Event apply(Event event) throws Exception {
+            switch (event) {
+                case ON_CREATE:
+                    return Event.ON_CLEARED;
+                case ON_CLEARED:
+                    throw new OutsideLifecycleException("Cannot bind to lifecycle lifecycle when outside of it.");
+                default:
+                    throw new UnsupportedOperationException("Binding to " + event + " not yet implemented");
+            }
+        }
+    };
+    private final BehaviorSubject<Event> lifecycleSubject = BehaviorSubject.create();
 
     public XXFViewModel(@NonNull Application application) {
         super(application);
+        lifecycleSubject.onNext(Event.ON_CREATE);
     }
 
-    @Override
-    public IRxLifecycleObserver getRxLifecycleObserver() {
-        return innerRxLifecycleObserver;
+    public Observable<Event> lifecycle() {
+        return lifecycleSubject.hide();
     }
 
-    @Override
-    public Observable<Lifecycle.Event> lifecycle() {
-        return getRxLifecycleObserver().lifecycle();
-    }
-
-    @Override
-    public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
-        return getRxLifecycleObserver().bindUntilEvent(event);
-    }
-
-    @Override
+    /**
+     * 绑定生命周期
+     *
+     * @param <T>
+     * @return
+     */
     public <T> LifecycleTransformer<T> bindToLifecycle() {
-        return getRxLifecycleObserver().bindToLifecycle();
+        return RxLifecycle.bind(lifecycleSubject, LIFECYCLEFUNCTION);
+    }
+
+    @CallSuper
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        lifecycleSubject.onNext(Event.ON_CLEARED);
     }
 }

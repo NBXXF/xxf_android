@@ -77,10 +77,6 @@ public class XXFDialogFragment extends DialogFragment implements
 
         binding = DataBindingUtil.inflate(getLayoutInflater(), getClass().getAnnotation(BindView.class).value(), null, false);
         vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
-
-        IRxLifecycleObserver vmRxLifecycleObserver = vm.getRxLifecycleObserver();
-        getLifecycle().removeObserver(vmRxLifecycleObserver);
-        getLifecycle().addObserver(vmRxLifecycleObserver);
     }
 
     @NonNull
@@ -144,10 +140,6 @@ public class XXFDialogFragment extends DialogFragment implements
         super.onDestroy();
         if (binding != null) {
             binding.unbind();
-        }
-        if (vm != null) {
-            IRxLifecycleObserver vmRxLifecycleObserver = vm.getRxLifecycleObserver();
-            getLifecycle().removeObserver(vmRxLifecycleObserver);
         }
         getLifecycle().removeObserver(getRxLifecycleObserver());
     }
