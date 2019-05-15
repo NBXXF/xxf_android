@@ -70,8 +70,15 @@ public class XXFActivity extends AppCompatActivity
         getLifecycle().removeObserver(getRxLifecycleObserver());
         getLifecycle().addObserver(getRxLifecycleObserver());
 
-        binding = DataBindingUtil.setContentView(this, getClass().getAnnotation(BindView.class).value());
-        vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
+        BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
+        if (bindViewAnnotation != null) {
+            binding = DataBindingUtil.setContentView(this, bindViewAnnotation.value());
+        }
+
+        BindVM bindVMAnnotation = getClass().getAnnotation(BindVM.class);
+        if (bindVMAnnotation != null) {
+            vm = ViewModelProviders.of(this).get(bindVMAnnotation.value());
+        }
     }
 
 

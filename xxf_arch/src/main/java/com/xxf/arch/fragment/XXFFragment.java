@@ -75,8 +75,15 @@ public class XXFFragment
         getLifecycle().removeObserver(getRxLifecycleObserver());
         getLifecycle().addObserver(getRxLifecycleObserver());
 
-        binding = DataBindingUtil.inflate(getLayoutInflater(), getClass().getAnnotation(BindView.class).value(), null, false);
-        vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
+        BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
+        if (bindViewAnnotation != null) {
+            binding = DataBindingUtil.inflate(getLayoutInflater(), bindViewAnnotation.value(), null, false);
+        }
+
+        BindVM bindVMAnnotation = getClass().getAnnotation(BindVM.class);
+        if (bindVMAnnotation != null) {
+            vm = ViewModelProviders.of(this).get(bindVMAnnotation.value());
+        }
     }
 
 

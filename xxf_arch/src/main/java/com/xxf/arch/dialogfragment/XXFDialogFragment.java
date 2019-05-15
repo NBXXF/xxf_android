@@ -74,9 +74,15 @@ public class XXFDialogFragment extends DialogFragment implements
         super.onCreate(savedInstanceState);
         getLifecycle().removeObserver(getRxLifecycleObserver());
         getLifecycle().addObserver(getRxLifecycleObserver());
+        BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
+        if (bindViewAnnotation != null) {
+            binding = DataBindingUtil.inflate(getLayoutInflater(), bindViewAnnotation.value(), null, false);
+        }
 
-        binding = DataBindingUtil.inflate(getLayoutInflater(), getClass().getAnnotation(BindView.class).value(), null, false);
-        vm = ViewModelProviders.of(this).get(getClass().getAnnotation(BindVM.class).value());
+        BindVM bindVMAnnotation = getClass().getAnnotation(BindVM.class);
+        if (bindVMAnnotation != null) {
+            vm = ViewModelProviders.of(this).get(bindVMAnnotation.value());
+        }
     }
 
     @NonNull
@@ -97,7 +103,8 @@ public class XXFDialogFragment extends DialogFragment implements
     }
 
     /**
-     *  会重复调用 禁止复写
+     * 会重复调用 禁止复写
+     *
      * @param inflater
      * @param container
      * @param savedInstanceState
