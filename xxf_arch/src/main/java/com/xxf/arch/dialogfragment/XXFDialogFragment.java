@@ -15,13 +15,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle2.LifecycleProvider;
-import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle3.LifecycleProvider;
+import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
-import com.xxf.arch.lifecycle.IRxLifecycleObserver;
-import com.xxf.arch.lifecycle.RxLifecycleObserver;
-import com.xxf.arch.lifecycle.RxLifecycleObserverProvider;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.arch.widget.TouchListenDialog;
 
@@ -33,10 +30,7 @@ import io.reactivex.Observable;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends DialogFragment implements
-        LifecycleProvider<Lifecycle.Event>,
-        RxLifecycleObserverProvider {
-    private final IRxLifecycleObserver innerRxLifecycleObserver = new RxLifecycleObserver();
+public class XXFDialogFragment extends DialogFragment {
     private ViewDataBinding binding;
     private XXFViewModel vm;
 
@@ -48,32 +42,12 @@ public class XXFDialogFragment extends DialogFragment implements
         return (V) vm;
     }
 
-    @Override
-    public IRxLifecycleObserver getRxLifecycleObserver() {
-        return innerRxLifecycleObserver;
-    }
 
-    @Override
-    public Observable<Lifecycle.Event> lifecycle() {
-        return getRxLifecycleObserver().lifecycle();
-    }
-
-    @Override
-    public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
-        return getRxLifecycleObserver().bindUntilEvent(event);
-    }
-
-    @Override
-    public <T> LifecycleTransformer<T> bindToLifecycle() {
-        return getRxLifecycleObserver().bindToLifecycle();
-    }
 
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLifecycle().removeObserver(getRxLifecycleObserver());
-        getLifecycle().addObserver(getRxLifecycleObserver());
         BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
         if (bindViewAnnotation != null) {
             binding = DataBindingUtil.inflate(getLayoutInflater(), bindViewAnnotation.value(), null, false);
@@ -148,7 +122,6 @@ public class XXFDialogFragment extends DialogFragment implements
         if (binding != null) {
             binding.unbind();
         }
-        getLifecycle().removeObserver(getRxLifecycleObserver());
     }
 
 

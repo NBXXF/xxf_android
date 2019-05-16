@@ -13,13 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle2.LifecycleProvider;
-import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
-import com.xxf.arch.lifecycle.IRxLifecycleObserver;
-import com.xxf.arch.lifecycle.RxLifecycleObserver;
-import com.xxf.arch.lifecycle.RxLifecycleObserverProvider;
 import com.xxf.arch.viewmodel.XXFViewModel;
 
 import io.reactivex.Observable;
@@ -32,11 +27,7 @@ import io.reactivex.Observable;
  */
 
 public class XXFFragment
-        extends Fragment
-        implements
-        LifecycleProvider<Lifecycle.Event>,
-        RxLifecycleObserverProvider {
-    private final IRxLifecycleObserver innerRxLifecycleObserver = new RxLifecycleObserver();
+        extends Fragment {
     private ViewDataBinding binding;
     private XXFViewModel vm;
 
@@ -48,32 +39,11 @@ public class XXFFragment
         return (V) vm;
     }
 
-    @Override
-    public IRxLifecycleObserver getRxLifecycleObserver() {
-        return innerRxLifecycleObserver;
-    }
-
-    @Override
-    public Observable<Lifecycle.Event> lifecycle() {
-        return getRxLifecycleObserver().lifecycle();
-    }
-
-    @Override
-    public <T> LifecycleTransformer<T> bindUntilEvent(Lifecycle.Event event) {
-        return getRxLifecycleObserver().bindUntilEvent(event);
-    }
-
-    @Override
-    public <T> LifecycleTransformer<T> bindToLifecycle() {
-        return getRxLifecycleObserver().bindToLifecycle();
-    }
 
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLifecycle().removeObserver(getRxLifecycleObserver());
-        getLifecycle().addObserver(getRxLifecycleObserver());
 
         BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
         if (bindViewAnnotation != null) {
@@ -132,7 +102,6 @@ public class XXFFragment
         if (binding != null) {
             binding.unbind();
         }
-        getLifecycle().removeObserver(getRxLifecycleObserver());
     }
 
 

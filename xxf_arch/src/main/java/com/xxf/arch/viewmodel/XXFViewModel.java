@@ -5,9 +5,10 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.OutsideLifecycleException;
-import com.trello.rxlifecycle2.RxLifecycle;
+
+import com.trello.rxlifecycle3.LifecycleTransformer;
+import com.trello.rxlifecycle3.OutsideLifecycleException;
+import com.trello.rxlifecycle3.RxLifecycle;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;

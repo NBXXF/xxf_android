@@ -12,6 +12,11 @@ import java.util.Stack;
  * @email xuanyouwu@163.com
  * @time 2015-04-20 18:38
  */
+
+/**
+ * use new {@link com.xxf.arch.XXF}
+ */
+@Deprecated
 public class AppManager {
     private final SimpleActivityLifecycleCallbacks activityLifecycleCallbacks = new SimpleActivityLifecycleCallbacks() {
         @Override
