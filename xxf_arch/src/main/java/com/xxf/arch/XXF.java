@@ -24,15 +24,15 @@ public class XXF {
 
     }
 
-    private static Application context;
+    private static Application _context;
     private static final ActivityStackCallbacks ACTIVITY_STACK_INSTANCE = new ActivityStackCallbacks();
 
 
-    public static void init(Application context) {
-        if (context == null) {
+    public static void init(Application application) {
+        if (_context == null) {
             synchronized (XXF.class) {
-                if (context == null) {
-                    XXF.context = context;
+                if (_context == null) {
+                    _context = application;
                     initActStack();
                 }
             }
@@ -41,8 +41,8 @@ public class XXF {
 
     private static void initActStack() {
         synchronized (XXF.class) {
-            context.unregisterActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
-            context.registerActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
+            _context.unregisterActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
+            _context.registerActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
         }
     }
 
