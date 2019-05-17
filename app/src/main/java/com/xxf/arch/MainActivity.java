@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        XXFHttp.registerApiService(LoginApiService.class, "http://api.map.baidu.com/telematics/", null,null);
-
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
