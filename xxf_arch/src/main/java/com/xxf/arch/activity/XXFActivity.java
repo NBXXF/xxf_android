@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.viewmodel.XXFViewModel;
+import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 
 /**
@@ -19,7 +21,8 @@ import com.xxf.arch.viewmodel.XXFViewModel;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFActivity extends AppCompatActivity {
+public class XXFActivity extends AppCompatActivity
+        implements ProgressHUDProvider {
 
     private ViewDataBinding binding;
     private XXFViewModel vm;
@@ -31,7 +34,6 @@ public class XXFActivity extends AppCompatActivity {
     public <V extends XXFViewModel> V getVm() {
         return (V) vm;
     }
-
 
 
     @CallSuper
@@ -61,4 +63,8 @@ public class XXFActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public ProgressHUD progressHUD() {
+        return null;
+    }
 }

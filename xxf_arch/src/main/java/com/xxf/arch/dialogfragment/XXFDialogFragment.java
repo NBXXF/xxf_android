@@ -19,6 +19,8 @@ import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.arch.widget.TouchListenDialog;
+import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.Observable;
 
@@ -28,7 +30,7 @@ import io.reactivex.Observable;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends DialogFragment {
+public class XXFDialogFragment extends DialogFragment implements ProgressHUDProvider {
     private ViewDataBinding binding;
     private XXFViewModel vm;
 
@@ -123,4 +125,8 @@ public class XXFDialogFragment extends DialogFragment {
     }
 
 
+    @Override
+    public ProgressHUD progressHUD() {
+        return null;
+    }
 }

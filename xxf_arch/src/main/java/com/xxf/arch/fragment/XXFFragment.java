@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.viewmodel.XXFViewModel;
+import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.Observable;
 
@@ -27,7 +29,7 @@ import io.reactivex.Observable;
  */
 
 public class XXFFragment
-        extends Fragment {
+        extends Fragment implements ProgressHUDProvider {
     private ViewDataBinding binding;
     private XXFViewModel vm;
 
@@ -105,4 +107,8 @@ public class XXFFragment
     }
 
 
+    @Override
+    public ProgressHUD progressHUD() {
+        return null;
+    }
 }
