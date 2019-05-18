@@ -7,12 +7,15 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.trello.rxlifecycle3.LifecycleTransformer;
-import com.xxf.arch.lifecycle.LifecycleProviderFactory;
+import com.xxf.arch.rxjava.lifecycle.LifecycleProviderAndroidImpl;
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.utils.SimpleActivityLifecycleCallbacks;
 
 import java.util.EmptyStackException;
+import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -25,7 +28,8 @@ public class XXF {
     }
 
     private static Application _context;
-    private static final ActivityStackCallbacks ACTIVITY_STACK_INSTANCE = new ActivityStackCallbacks();
+    private static final AndroidActivityStack ACTIVITY_STACK_INSTANCE = new AndroidActivityStack();
+    private static final AndroidLifecycleProvider LIFECYCLE_PROVIDER_INSTANCE = new AndroidLifecycleProvider();
 
 
     public static void init(Application application) {
@@ -34,6 +38,7 @@ public class XXF {
                 if (_context == null) {
                     _context = application;
                     initActStack();
+                    initLifecycleProvider();
                 }
             }
         }
@@ -43,6 +48,13 @@ public class XXF {
         synchronized (XXF.class) {
             _context.unregisterActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
             _context.registerActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
+        }
+    }
+
+    private static void initLifecycleProvider() {
+        synchronized (XXF.class) {
+            _context.unregisterActivityLifecycleCallbacks(LIFECYCLE_PROVIDER_INSTANCE);
+            _context.registerActivityLifecycleCallbacks(LIFECYCLE_PROVIDER_INSTANCE);
         }
     }
 
@@ -74,7 +86,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
-        return LifecycleProviderFactory.lifecycle(lifecycleOwner).bindUntilEvent(event);
+        return LIFECYCLE_PROVIDER_INSTANCE.rxLifecycleProviderMap.get(lifecycleOwner).bindUntilEvent(event);
     }
 
     /**
@@ -85,14 +97,14 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
-        return LifecycleProviderFactory.lifecycle(lifecycleOwner).bindToLifecycle();
+        return LIFECYCLE_PROVIDER_INSTANCE.rxLifecycleProviderMap.get(lifecycleOwner).bindToLifecycle();
     }
 
 
     /**
      * act stack
      */
-    private static class ActivityStackCallbacks extends SimpleActivityLifecycleCallbacks {
+    private static class AndroidActivityStack extends SimpleActivityLifecycleCallbacks {
         public final Stack<Activity> activityStack = new Stack<>();
 
         @Override
@@ -105,6 +117,29 @@ public class XXF {
         public void onActivityDestroyed(Activity activity) {
             super.onActivityDestroyed(activity);
             activityStack.remove(activity);
+        }
+    }
+
+    /**
+     * act stack
+     */
+    private static class AndroidLifecycleProvider extends SimpleActivityLifecycleCallbacks {
+        public Map<LifecycleOwner, LifecycleProvider<Lifecycle.Event>> rxLifecycleProviderMap = new ConcurrentHashMap<>();
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            super.onActivityCreated(activity, savedInstanceState);
+            if (activity instanceof LifecycleOwner) {
+                rxLifecycleProviderMap.put((LifecycleOwner) activity, LifecycleProviderAndroidImpl.createLifecycleProvider((LifecycleOwner) activity));
+            }
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+            super.onActivityDestroyed(activity);
+            if (activity instanceof LifecycleOwner) {
+                rxLifecycleProviderMap.remove((LifecycleOwner) activity);
+            }
         }
     }
 

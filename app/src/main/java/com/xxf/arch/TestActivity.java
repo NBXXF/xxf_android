@@ -35,7 +35,9 @@ public class TestActivity extends XXFActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("==========>act1:",""+this);
         super.onCreate(savedInstanceState);
+        Log.d("==========>act2:",""+this);
         binding = getBinding();
         baseFragmentAdapter = new BaseFragmentAdapter(getSupportFragmentManager());
         binding.pager.setAdapter(baseFragmentAdapter);

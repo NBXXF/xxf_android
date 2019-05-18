@@ -6,9 +6,9 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 
-import com.trello.rxlifecycle3.LifecycleTransformer;
-import com.trello.rxlifecycle3.OutsideLifecycleException;
-import com.trello.rxlifecycle3.RxLifecycle;
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
+import com.xxf.arch.rxjava.lifecycle.internal.OutsideLifecycleException;
+import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycle;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;

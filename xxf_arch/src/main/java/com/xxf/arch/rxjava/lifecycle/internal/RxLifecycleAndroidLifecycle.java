@@ -1,15 +1,12 @@
-package com.xxf.arch.lifecycle;
+package com.xxf.arch.rxjava.lifecycle.internal;
 
 import android.arch.lifecycle.Lifecycle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 
-import com.trello.rxlifecycle3.LifecycleTransformer;
-import com.trello.rxlifecycle3.OutsideLifecycleException;
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
 
-import static com.trello.rxlifecycle3.RxLifecycle.bind;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -24,7 +21,7 @@ public final class RxLifecycleAndroidLifecycle {
     @NonNull
     @CheckResult
     public static <T> LifecycleTransformer<T> bindLifecycle(@NonNull Observable<Lifecycle.Event> lifecycle) {
-        return bind(lifecycle, LIFECYCLE);
+        return RxLifecycle.bind(lifecycle, LIFECYCLE);
     }
 
     private static final Function<Lifecycle.Event, Lifecycle.Event> LIFECYCLE = new Function<Lifecycle.Event, Lifecycle.Event>() {

@@ -28,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("==========>act1:",""+this);
         super.onCreate(savedInstanceState);
+        Log.d("==========>act2:",""+this);
         setContentView(R.layout.activity_main);
 
 

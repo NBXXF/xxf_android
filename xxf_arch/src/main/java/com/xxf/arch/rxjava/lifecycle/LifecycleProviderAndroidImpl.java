@@ -1,18 +1,19 @@
-package com.xxf.arch.lifecycle;
+package com.xxf.arch.rxjava.lifecycle;
 
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
 
-import com.trello.rxlifecycle3.LifecycleProvider;
-import com.trello.rxlifecycle3.LifecycleTransformer;
-import com.trello.rxlifecycle3.RxLifecycle;
 
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
+import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycle;
+import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycleAndroidLifecycle;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.subjects.BehaviorSubject;
 
 
@@ -20,15 +21,15 @@ import io.reactivex.subjects.BehaviorSubject;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public final class AndroidLifecycle implements LifecycleProvider<Lifecycle.Event>, LifecycleObserver {
+public final class LifecycleProviderAndroidImpl implements LifecycleProvider<Lifecycle.Event>, LifecycleObserver {
 
     public static LifecycleProvider<Lifecycle.Event> createLifecycleProvider(LifecycleOwner owner) {
-        return new AndroidLifecycle(owner);
+        return new LifecycleProviderAndroidImpl(owner);
     }
 
     private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
-    private AndroidLifecycle(LifecycleOwner owner) {
+    private LifecycleProviderAndroidImpl(LifecycleOwner owner) {
         owner.getLifecycle().addObserver(this);
     }
 

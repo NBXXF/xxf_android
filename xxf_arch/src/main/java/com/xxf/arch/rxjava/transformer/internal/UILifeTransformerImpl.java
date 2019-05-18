@@ -1,8 +1,11 @@
-package com.xxf.arch.rxjava.transformer;
+package com.xxf.arch.rxjava.transformer.internal;
 
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
+import io.reactivex.CompletableTransformer;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.Maybe;
@@ -28,35 +31,14 @@ import io.reactivex.functions.Consumer;
  * @date createTime：2017/12/24
  * </p>
  */
-public abstract class SubscribeLifeTransformer<T>
+public abstract class UILifeTransformerImpl<T>
         implements
+        UILifeTransformer,
         ObservableTransformer<T, T>,
         FlowableTransformer<T, T>,
-        MaybeTransformer<T, T> {
+        MaybeTransformer<T, T>,
+        CompletableTransformer {
 
-    /**
-     * 开始执行
-     */
-    protected abstract void onSubscribe();
-
-    /**
-     * 执行结束
-     */
-    protected abstract void onComplete();
-
-    /**
-     * 执行失败
-     *
-     * @param throwable
-     */
-    protected abstract void onError(Throwable throwable);
-
-    /**
-     * 执行取消
-     */
-    protected void onCancel() {
-
-    }
 
     @Override
     public Publisher<T> apply(Flowable<T> upstream) {
@@ -132,6 +114,35 @@ public abstract class SubscribeLifeTransformer<T>
                         onComplete();
                     }
                 }).doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        onCancel();
+                    }
+                });
+    }
+
+    @Override
+    public CompletableSource apply(Completable upstream) {
+        return upstream.observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        onSubscribe();
+                    }
+                })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        onError(throwable);
+                    }
+                })
+                .doOnComplete(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        onComplete();
+                    }
+                })
+                .doOnDispose(new Action() {
                     @Override
                     public void run() throws Exception {
                         onCancel();

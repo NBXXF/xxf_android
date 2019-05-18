@@ -15,11 +15,10 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly 'com.android.support:appcompat-v7:26.1.0'
+
     compileOnly 'android.arch.lifecycle:extensions:1.1.1'
-
-    compileOnly 'com.trello.rxlifecycle3:rxlifecycle:3.0.0'
-
-    compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    compileOnly 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compileOnly 'io.reactivex.rxjava2:rxjava:2.2.8'
 
 
     compileOnly 'com.squareup.retrofit2:retrofit:2.5.0'

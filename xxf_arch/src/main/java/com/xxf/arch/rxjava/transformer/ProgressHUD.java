@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
  * version
  */
 
-public interface IProgressHUD {
+public interface ProgressHUD {
 
     /**
      * 展示加载对话框

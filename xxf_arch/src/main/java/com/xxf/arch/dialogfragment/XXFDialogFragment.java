@@ -15,8 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle3.LifecycleProvider;
-import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.viewmodel.XXFViewModel;
