@@ -5,6 +5,11 @@ import android.app.Application;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 import com.xxf.arch.rxjava.lifecycle.LifecycleProviderAndroidImpl;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
@@ -35,9 +40,18 @@ public class AndroidLifecycleProvider extends SimpleActivityLifecycleCallbacks i
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         super.onActivityCreated(activity, savedInstanceState);
-        if (activity instanceof LifecycleOwner) {
+        if (activity instanceof FragmentActivity) {
             rxLifecycleProviderMap.put((LifecycleOwner) activity, LifecycleProviderAndroidImpl.createLifecycleProvider((LifecycleOwner) activity));
+            //fragment
+            ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+                @Override
+                public void onFragmentCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @Nullable Bundle savedInstanceState) {
+                    super.onFragmentCreated(fm, f, savedInstanceState);
+                    rxLifecycleProviderMap.put(f, LifecycleProviderAndroidImpl.createLifecycleProvider(f));
+                }
+            }, true);
         }
+
     }
 
     @Override
