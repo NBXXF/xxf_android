@@ -11,7 +11,6 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 
     implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
 
 ##### Activity
 需要继承XXFactivity
@@ -49,26 +48,6 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
                         }
                     });
 
-##### Activity和Fragment生命周期日志
-
-    public class BaseApplication extends Application {
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            //注册activity和fragment生命周期
-            XXFAppLifecycleLogger.register(
-                    this,
-                    new XXFAppLifecycleLogger.XXFAppLifecycleLoggerBuilder()
-                            .setLogCreatedActivity(true)//在activity创建的时候打印Log
-                            .setLogActivityIntent(true)//打印Intent参数
-                            .setToastCreatedActivity(true)//在activity创建的时候Toast
-                            .setLogCreatedFragment(true)//在fragment创建的时候打印Log
-                            .setLogFragmentAragments(true)//打印fragment参数
-                            .setToastCreatedFragment(true)//在fragment创建的时候Toast
-                            .build());
-
-        }
-    }
 
 ##### 权限使用Rx链式调用
 

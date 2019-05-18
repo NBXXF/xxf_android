@@ -47,6 +47,13 @@ public class XXF {
         }
     }
 
+    /**
+     * 获取application
+     * @return
+     */
+    public static Application getApplication() {
+        return application;
+    }
 
     /**
      * activity堆栈
