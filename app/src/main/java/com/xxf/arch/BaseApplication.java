@@ -8,6 +8,7 @@ import android.util.Log;
 import com.xxf.arch.core.Logger;
 
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * @author xuanyouwu@163.com
@@ -49,6 +50,12 @@ public class BaseApplication extends Application {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         Log.d("=============>", "t:" + throwable);
+                    }
+                },
+                new Function<Throwable, String>() {
+                    @Override
+                    public String apply(Throwable throwable) throws Exception {
+                        return null;
                     }
                 });
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {

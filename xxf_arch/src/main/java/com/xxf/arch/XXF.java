@@ -8,11 +8,13 @@ import android.support.annotation.NonNull;
 import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.AndroidLifecycleProvider;
 import com.xxf.arch.core.Logger;
+import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
 
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 
 /**
@@ -31,15 +33,20 @@ public class XXF {
     private static AndroidActivityStackProvider activityStackProvider;
     private static AndroidLifecycleProvider LifecycleProvider;
     private static Consumer<Throwable> errorNoticeConsumer;
+    private static Function<Throwable, String> errorConvertFunction;
 
 
-    public static void init(Application application, Logger logger, Consumer<Throwable> consumer) {
+    public static void init(Application application,
+                            Logger logger,
+                            Consumer<Throwable> consumer,
+                            Function<Throwable, String> errorConvertFunction) {
         if (XXF.application == null) {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
                     XXF.application = application;
                     XXF.logger = logger;
                     XXF.errorNoticeConsumer = consumer;
+                    XXF.errorConvertFunction = errorConvertFunction;
                     activityStackProvider = new AndroidActivityStackProvider(application);
                     LifecycleProvider = new AndroidLifecycleProvider(application);
                 }
@@ -49,6 +56,7 @@ public class XXF {
 
     /**
      * 获取application
+     *
      * @return
      */
     public static Application getApplication() {
@@ -73,6 +81,27 @@ public class XXF {
         return logger;
     }
 
+
+    /**
+     * 获取异常转换器
+     *
+     * @return
+     */
+    public static Function<Throwable, String> getErrorConvertFunction() {
+        return errorConvertFunction;
+    }
+
+
+    /**
+     * get api
+     *
+     * @param apiClazz
+     * @param <T>
+     * @return
+     */
+    public static <T> T getApiService(Class<T> apiClazz) {
+        return XXFHttp.getApiService(apiClazz);
+    }
 
     /**
      * 绑定生命周期

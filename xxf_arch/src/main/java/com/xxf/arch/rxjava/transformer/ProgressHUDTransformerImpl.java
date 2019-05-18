@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
@@ -102,7 +103,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
     public void onError(Throwable throwable) {
         if (progressHUD != null) {
             if (TextUtils.isEmpty(errorNotice)) {
-                progressHUD.dismissLoadingDialogWithFail(throwable.getMessage());
+                String parseErrorNotice = "";
+                try {
+                    parseErrorNotice = XXF.getErrorConvertFunction().apply(throwable);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                progressHUD.dismissLoadingDialogWithFail(parseErrorNotice);
             } else {
                 progressHUD.dismissLoadingDialogWithFail(errorNotice);
             }
