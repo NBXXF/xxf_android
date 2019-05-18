@@ -32,20 +32,20 @@ public class XXF {
     private static Logger logger;
     private static AndroidActivityStackProvider activityStackProvider;
     private static AndroidLifecycleProvider LifecycleProvider;
-    private static Consumer<Throwable> errorNoticeConsumer;
+    private static Consumer<Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
 
 
     public static void init(Application application,
                             Logger logger,
-                            Consumer<Throwable> consumer,
+                            Consumer<Throwable> errorHandler,
                             Function<Throwable, String> errorConvertFunction) {
         if (XXF.application == null) {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
                     XXF.application = application;
                     XXF.logger = logger;
-                    XXF.errorNoticeConsumer = consumer;
+                    XXF.errorHandler = errorHandler;
                     XXF.errorConvertFunction = errorConvertFunction;
                     activityStackProvider = new AndroidActivityStackProvider(application);
                     LifecycleProvider = new AndroidLifecycleProvider(application);
@@ -145,6 +145,6 @@ public class XXF {
      * @return
      */
     public static <T> UIErrorTransformer<T> bindToErrorNotice() {
-        return new UIErrorTransformer<T>(XXF.errorNoticeConsumer);
+        return new UIErrorTransformer<T>(XXF.errorHandler);
     }
 }

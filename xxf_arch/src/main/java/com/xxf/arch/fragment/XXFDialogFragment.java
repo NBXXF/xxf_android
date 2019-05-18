@@ -1,7 +1,6 @@
-package com.xxf.arch.dialogfragment;
+package com.xxf.arch.fragment;
 
 import android.app.Dialog;
-import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -9,7 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,15 +21,13 @@ import com.xxf.arch.widget.TouchListenDialog;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
-import io.reactivex.Observable;
-
 /**
  * @author xuanyouwu@163.com
  * @version 2.3.1
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends DialogFragment implements ProgressHUDProvider {
+public class XXFDialogFragment extends AppCompatDialogFragment implements ProgressHUDProvider {
     private ViewDataBinding binding;
     private XXFViewModel vm;
 
