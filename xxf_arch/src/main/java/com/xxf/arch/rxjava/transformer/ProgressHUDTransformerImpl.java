@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
+import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import org.reactivestreams.Publisher;
 
@@ -32,6 +34,10 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
         String loadingNotice;
         String errorNotice;
         String successNotice;
+
+        public Builder(@NonNull ProgressHUDProvider progressHUDProvider) {
+            this.progressHUD = progressHUDProvider.progressHUD();
+        }
 
         public Builder(@NonNull ProgressHUD progressHUD) {
             this.progressHUD = progressHUD;

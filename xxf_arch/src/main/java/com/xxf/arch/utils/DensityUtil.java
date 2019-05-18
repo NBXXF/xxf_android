@@ -8,7 +8,7 @@ import android.content.Context;
  * date createTime：16/6/23
  * version
  */
-public class XXFDensityUtil {
+public class DensityUtil {
 
     public static final float getHeightInPx(Context context) {
         final float height = context.getResources().getDisplayMetrics().heightPixels;

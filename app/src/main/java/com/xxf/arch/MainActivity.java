@@ -14,6 +14,7 @@ import com.xxf.arch.http.XXFHttp;
 
 import org.reactivestreams.Subscriber;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -28,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("==========>act1:",""+this);
+        Log.d("==========>act1:", "" + this);
         super.onCreate(savedInstanceState);
-        Log.d("==========>act2:",""+this);
+        Log.d("==========>act2:", "" + this);
         setContentView(R.layout.activity_main);
 
 
@@ -45,6 +46,15 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Observable
+                                .fromCallable(new Callable<Object>() {
+                                    @Override
+                                    public Object call() throws Exception {
+                                        return null;
+                                    }
+                                })
+                                .compose(XXF.bindToErrorNotice())
+                                .subscribe();
                         Intent intent = new Intent(view.getContext(), TestActivity.class);
                         intent.putExtra("name", "xxx");
                         intent.putExtra("age", "12");
@@ -52,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-
 
 
     }

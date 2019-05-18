@@ -1,21 +1,18 @@
 package com.xxf.arch;
 
-import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.xxf.arch.rxjava.lifecycle.LifecycleProviderAndroidImpl;
-import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
+import com.xxf.arch.core.AndroidActivityStackProvider;
+import com.xxf.arch.core.AndroidLifecycleProvider;
+import com.xxf.arch.core.Logger;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
-import com.xxf.arch.utils.SimpleActivityLifecycleCallbacks;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
 
-import java.util.EmptyStackException;
-import java.util.Map;
-import java.util.Stack;
-import java.util.concurrent.ConcurrentHashMap;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -27,55 +24,48 @@ public class XXF {
 
     }
 
-    private static Application _context;
-    private static final AndroidActivityStack ACTIVITY_STACK_INSTANCE = new AndroidActivityStack();
-    private static final AndroidLifecycleProvider LIFECYCLE_PROVIDER_INSTANCE = new AndroidLifecycleProvider();
+    private static Application application;
 
 
-    public static void init(Application application) {
-        if (_context == null) {
+    private static Logger logger;
+    private static AndroidActivityStackProvider activityStackProvider;
+    private static AndroidLifecycleProvider LifecycleProvider;
+    private static Consumer<Throwable> errorNoticeConsumer;
+
+
+    public static void init(Application application, Logger logger, Consumer<Throwable> consumer) {
+        if (XXF.application == null) {
             synchronized (XXF.class) {
-                if (_context == null) {
-                    _context = application;
-                    initActStack();
-                    initLifecycleProvider();
+                if (XXF.application == null) {
+                    XXF.application = application;
+                    XXF.logger = logger;
+                    XXF.errorNoticeConsumer = consumer;
+                    activityStackProvider = new AndroidActivityStackProvider(application);
+                    LifecycleProvider = new AndroidLifecycleProvider(application);
                 }
             }
         }
     }
 
-    private static void initActStack() {
-        synchronized (XXF.class) {
-            _context.unregisterActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
-            _context.registerActivityLifecycleCallbacks(ACTIVITY_STACK_INSTANCE);
-        }
-    }
-
-    private static void initLifecycleProvider() {
-        synchronized (XXF.class) {
-            _context.unregisterActivityLifecycleCallbacks(LIFECYCLE_PROVIDER_INSTANCE);
-            _context.registerActivityLifecycleCallbacks(LIFECYCLE_PROVIDER_INSTANCE);
-        }
-    }
 
     /**
-     * 获取act stack
+     * activity堆栈
      *
      * @return
      */
-    public static Stack<Activity> getActivityStack() {
-        return ACTIVITY_STACK_INSTANCE.activityStack;
+    public static AndroidActivityStackProvider getActivityStackProvider() {
+        return activityStackProvider;
     }
 
     /**
-     * 获取堆顶act
+     * 日志打印器
      *
      * @return
-     * @throws EmptyStackException
      */
-    public static Activity getTopActivity() throws EmptyStackException {
-        return ACTIVITY_STACK_INSTANCE.activityStack.peek();
+    public static Logger getLogger() {
+        return logger;
     }
+
 
     /**
      * 绑定生命周期
@@ -86,7 +76,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
-        return LIFECYCLE_PROVIDER_INSTANCE.rxLifecycleProviderMap.get(lifecycleOwner).bindUntilEvent(event);
+        return LifecycleProvider.getLifecycleProvider(lifecycleOwner).bindUntilEvent(event);
     }
 
     /**
@@ -97,50 +87,28 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
-        return LIFECYCLE_PROVIDER_INSTANCE.rxLifecycleProviderMap.get(lifecycleOwner).bindToLifecycle();
+        return LifecycleProvider.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
+    }
+
+    /**
+     * 绑定loading
+     *
+     * @param builder
+     * @param <T>
+     * @return
+     */
+    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(ProgressHUDTransformerImpl.Builder builder) {
+        return builder.build();
     }
 
 
     /**
-     * act stack
+     * 绑定错误提示
+     *
+     * @param <T>
+     * @return
      */
-    private static class AndroidActivityStack extends SimpleActivityLifecycleCallbacks {
-        public final Stack<Activity> activityStack = new Stack<>();
-
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            super.onActivityCreated(activity, savedInstanceState);
-            activityStack.push(activity);
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            super.onActivityDestroyed(activity);
-            activityStack.remove(activity);
-        }
+    public static <T> UIErrorTransformer<T> bindToErrorNotice() {
+        return new UIErrorTransformer<T>(XXF.errorNoticeConsumer);
     }
-
-    /**
-     * act stack
-     */
-    private static class AndroidLifecycleProvider extends SimpleActivityLifecycleCallbacks {
-        public Map<LifecycleOwner, LifecycleProvider<Lifecycle.Event>> rxLifecycleProviderMap = new ConcurrentHashMap<>();
-
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            super.onActivityCreated(activity, savedInstanceState);
-            if (activity instanceof LifecycleOwner) {
-                rxLifecycleProviderMap.put((LifecycleOwner) activity, LifecycleProviderAndroidImpl.createLifecycleProvider((LifecycleOwner) activity));
-            }
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            super.onActivityDestroyed(activity);
-            if (activity instanceof LifecycleOwner) {
-                rxLifecycleProviderMap.remove((LifecycleOwner) activity);
-            }
-        }
-    }
-
 }

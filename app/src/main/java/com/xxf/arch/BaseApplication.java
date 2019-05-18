@@ -5,6 +5,10 @@ import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.xxf.arch.core.Logger;
+
+import io.reactivex.functions.Consumer;
+
 /**
  * @author xuanyouwu@163.com
  * @version 2.3.1
@@ -15,11 +19,42 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        XXF.init(this);
+        XXF.init(this,
+                new Logger() {
+                    @Override
+                    public boolean isLoggable() {
+                        return false;
+                    }
+
+                    @Override
+                    public void d(String msg) {
+
+                    }
+
+                    @Override
+                    public void d(String msg, Throwable tr) {
+                    }
+
+                    @Override
+                    public void e(String msg) {
+
+                    }
+
+                    @Override
+                    public void e(String msg, Throwable tr) {
+
+                    }
+                },
+                new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d("=============>", "t:" + throwable);
+                    }
+                });
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
-                Log.d("==========>act:",""+activity);
+                Log.d("==========>act:", "" + activity);
             }
 
             @Override

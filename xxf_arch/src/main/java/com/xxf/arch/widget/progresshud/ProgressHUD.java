@@ -1,4 +1,4 @@
-package com.xxf.arch.rxjava.transformer;
+package com.xxf.arch.widget.progresshud;
 
 import android.support.annotation.Nullable;
 

@@ -1,4 +1,4 @@
-package com.xxf.arch.utils;
+package com.xxf.arch.core;
 
 import android.app.Activity;
 import android.app.Application;
@@ -10,7 +10,13 @@ import android.os.Bundle;
  * @Description 为Activity, fragment查找提供帮助
  * @date createTime：2018/9/7
  */
-public class SimpleActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks{
+public class SimpleActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
+
+    public SimpleActivityLifecycleCallbacks(Application application) {
+        application.unregisterActivityLifecycleCallbacks(this);
+        application.registerActivityLifecycleCallbacks(this);
+    }
+
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
