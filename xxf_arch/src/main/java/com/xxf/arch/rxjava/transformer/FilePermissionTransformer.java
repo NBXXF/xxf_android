@@ -3,7 +3,7 @@ package com.xxf.arch.rxjava.transformer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.xxf.arch.permission.XXFPermissionTransformer;
+import com.xxf.arch.core.permission.RxPermissionTransformer;
 
 /**
  * @author youxuan  E-mail:youxuan@icourt.cc
@@ -11,7 +11,7 @@ import com.xxf.arch.permission.XXFPermissionTransformer;
  * @Description 文件读写权限
  * @date createTime：2018/9/3
  */
-public class FilePermissionTransformer extends XXFPermissionTransformer {
+public class FilePermissionTransformer extends RxPermissionTransformer {
 
     private FilePermissionTransformer(@NonNull Context context, @NonNull String rejectNotice) {
         super(context, rejectNotice);

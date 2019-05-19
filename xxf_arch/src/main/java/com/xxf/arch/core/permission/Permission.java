@@ -1,4 +1,4 @@
-package com.xxf.arch.permission;
+package com.xxf.arch.core.permission;
 
 
 import java.util.List;

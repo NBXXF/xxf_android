@@ -3,16 +3,28 @@ package com.xxf.arch;
 import android.app.Application;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.AndroidLifecycleProvider;
 import com.xxf.arch.core.Logger;
+import com.xxf.arch.core.activityresult.ActivityResult;
+import com.xxf.arch.core.activityresult.RxActivityResultCompact;
+import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
 
+import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
@@ -146,5 +158,79 @@ public class XXF {
      */
     public static <T> UIErrorTransformer<T> bindToErrorNotice() {
         return new UIErrorTransformer<T>(XXF.errorHandler);
+    }
+
+
+    /**
+     * 替代 startActivityForResult
+     *
+     * @param activity
+     * @param intent
+     * @param requestCode
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public static Observable<ActivityResult> startActivityForResult(
+            @NonNull AppCompatActivity activity, @NonNull Intent intent, int requestCode) {
+        return RxActivityResultCompact.startActivityForResult(activity, intent, requestCode);
+    }
+
+    /**
+     * 替代 startActivityForResult
+     *
+     * @param fragment
+     * @param intent
+     * @param requestCode
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    public static Observable<ActivityResult> startActivityForResult(
+            @NonNull Fragment fragment, @NonNull Intent intent, int requestCode) {
+        return RxActivityResultCompact.startActivityForResult(fragment, intent, requestCode);
+    }
+
+
+    /**
+     * 请求权限
+     *
+     * @param activity
+     * @param permission
+     * @return
+     */
+    public static Observable<Boolean> requestPermission(@NonNull final FragmentActivity activity, @NonNull final String permission) {
+        return new RxPermissions(activity).request(permission);
+    }
+
+    /**
+     * 请求权限
+     *
+     * @param fragment
+     * @param permission
+     * @return
+     */
+    public static Observable<Boolean> requestPermission(@NonNull final Fragment fragment, @NonNull final String permission) {
+        return new RxPermissions(fragment).request(permission);
+    }
+
+    /**
+     * 是否开启该权限
+     *
+     * @param fragment
+     * @param permission
+     * @return
+     */
+    public static boolean isGrantedPermission(@NonNull final Fragment fragment, @NonNull String permission) {
+        return new RxPermissions(fragment).isGranted(permission);
+    }
+
+    /**
+     * 是否开启该权限
+     *
+     * @param activity
+     * @param permission
+     * @return
+     */
+    public static boolean isGrantedPermission(@NonNull final FragmentActivity activity, @NonNull String permission) {
+        return new RxPermissions(activity).isGranted(permission);
     }
 }

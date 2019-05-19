@@ -3,6 +3,7 @@
     package="com.xxf.arch">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"

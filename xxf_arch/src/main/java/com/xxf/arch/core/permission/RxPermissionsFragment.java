@@ -1,4 +1,4 @@
-package com.xxf.arch.permission;
+package com.xxf.arch.core.permission;
 
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 import io.reactivex.subjects.PublishSubject;
 
-public final class XXFPermissionsFragment extends Fragment {
+public final class RxPermissionsFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_CODE = 42;
 
@@ -23,7 +23,7 @@ public final class XXFPermissionsFragment extends Fragment {
     private Map<String, PublishSubject<Permission>> mSubjects = new HashMap<>();
     private boolean mLogging;
 
-    public XXFPermissionsFragment() {
+    public RxPermissionsFragment() {
     }
 
     @Override
@@ -62,7 +62,7 @@ public final class XXFPermissionsFragment extends Fragment {
             PublishSubject<Permission> subject = mSubjects.get(permissions[i]);
             if (subject == null) {
                 // No subject found
-                Log.e(XXFPermissions.TAG, "XXFPermissions.onRequestPermissionsResult invoked but didn't find the corresponding permission request.");
+                Log.e(RxPermissions.TAG, "RxPermissions.onRequestPermissionsResult invoked but didn't find the corresponding permission request.");
                 return;
             }
             mSubjects.remove(permissions[i]);
@@ -108,7 +108,7 @@ public final class XXFPermissionsFragment extends Fragment {
 
     void log(String message) {
         if (mLogging) {
-            Log.d(XXFPermissions.TAG, message);
+            Log.d(RxPermissions.TAG, message);
         }
     }
 

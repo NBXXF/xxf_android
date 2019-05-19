@@ -1,4 +1,4 @@
-package com.xxf.arch.permission;
+package com.xxf.arch.core.permission;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -30,7 +30,7 @@ import io.reactivex.subjects.PublishSubject;
  * @date createTime：2018/9/3
  * <p>
  * 用法如下:
- * Disposable subscribe = new XXFPermissions(this)
+ * Disposable subscribe = new RxPermissions(this)
  * .request(Manifest.permission.CAMERA)
  * .compose(new FilePermissionTransformer(this))
  * .subscribe(new Consumer<Boolean>() {
@@ -40,7 +40,7 @@ import io.reactivex.subjects.PublishSubject;
  * });
  * <p>
  * 用法如下:
- * Disposable subscribe = new XXFPermissions(this)
+ * Disposable subscribe = new RxPermissions(this)
  * .request(Manifest.permission.CAMERA)
  * .compose(new FilePermissionTransformer(this))
  * .subscribe(new Consumer<Boolean>() {
@@ -52,7 +52,7 @@ import io.reactivex.subjects.PublishSubject;
 
 /**
  * 用法如下:
- * Disposable subscribe = new XXFPermissions(this)
+ * Disposable subscribe = new RxPermissions(this)
  * .request(Manifest.permission.CAMERA)
  * .compose(new FilePermissionTransformer(this))
  * .subscribe(new Consumer<Boolean>() {
@@ -64,59 +64,59 @@ import io.reactivex.subjects.PublishSubject;
  */
 
 /**
- * 用新的 {@link XXFPermissions}
- * 权限提示转换器 {@link XXFPermissionTransformer}
+ * 用新的 {@link RxPermissions}
+ * 权限提示转换器 {@link RxPermissionTransformer}
  * 相机 {@link CameraPermissionTransformer}
  * 文件 {@link FilePermissionTransformer}
  */
-public final class XXFPermissions {
+public final class RxPermissions {
 
-    static final String TAG = XXFPermissions.class.getSimpleName();
+    static final String TAG = RxPermissions.class.getSimpleName();
     static final Object TRIGGER = new Object();
 
     @VisibleForTesting
-    Lazy<XXFPermissionsFragment> mRxPermissionsFragment;
+    Lazy<RxPermissionsFragment> mRxPermissionsFragment;
 
-    public XXFPermissions(@NonNull final FragmentActivity activity) {
+    public RxPermissions(@NonNull final FragmentActivity activity) {
         mRxPermissionsFragment = getLazySingleton(activity.getSupportFragmentManager());
     }
 
-    public XXFPermissions(@NonNull final Fragment fragment) {
+    public RxPermissions(@NonNull final Fragment fragment) {
         mRxPermissionsFragment = getLazySingleton(fragment.getChildFragmentManager());
     }
 
     @NonNull
-    private Lazy<XXFPermissionsFragment> getLazySingleton(@NonNull final FragmentManager fragmentManager) {
-        return new Lazy<XXFPermissionsFragment>() {
+    private Lazy<RxPermissionsFragment> getLazySingleton(@NonNull final FragmentManager fragmentManager) {
+        return new Lazy<RxPermissionsFragment>() {
 
-            private XXFPermissionsFragment XXFPermissionsFragment;
+            private RxPermissionsFragment RxPermissionsFragment;
 
             @Override
-            public synchronized XXFPermissionsFragment get() {
-                if (XXFPermissionsFragment == null) {
-                    XXFPermissionsFragment = getRxPermissionsFragment(fragmentManager);
+            public synchronized RxPermissionsFragment get() {
+                if (RxPermissionsFragment == null) {
+                    RxPermissionsFragment = getRxPermissionsFragment(fragmentManager);
                 }
-                return XXFPermissionsFragment;
+                return RxPermissionsFragment;
             }
 
         };
     }
 
-    private XXFPermissionsFragment getRxPermissionsFragment(@NonNull final FragmentManager fragmentManager) {
-        XXFPermissionsFragment XXFPermissionsFragment = findRxPermissionsFragment(fragmentManager);
-        boolean isNewInstance = XXFPermissionsFragment == null;
+    private RxPermissionsFragment getRxPermissionsFragment(@NonNull final FragmentManager fragmentManager) {
+        RxPermissionsFragment RxPermissionsFragment = findRxPermissionsFragment(fragmentManager);
+        boolean isNewInstance = RxPermissionsFragment == null;
         if (isNewInstance) {
-            XXFPermissionsFragment = new XXFPermissionsFragment();
+            RxPermissionsFragment = new RxPermissionsFragment();
             fragmentManager
                     .beginTransaction()
-                    .add(XXFPermissionsFragment, TAG)
+                    .add(RxPermissionsFragment, TAG)
                     .commitNow();
         }
-        return XXFPermissionsFragment;
+        return RxPermissionsFragment;
     }
 
-    private XXFPermissionsFragment findRxPermissionsFragment(@NonNull final FragmentManager fragmentManager) {
-        return (XXFPermissionsFragment) fragmentManager.findFragmentByTag(TAG);
+    private RxPermissionsFragment findRxPermissionsFragment(@NonNull final FragmentManager fragmentManager) {
+        return (RxPermissionsFragment) fragmentManager.findFragmentByTag(TAG);
     }
 
     public void setLogging(boolean logging) {
@@ -231,7 +231,7 @@ public final class XXFPermissions {
 
     private Observable<Permission> request(final Observable<?> trigger, final String... permissions) {
         if (permissions == null || permissions.length == 0) {
-            throw new IllegalArgumentException("XXFPermissions.request/requestEach requires at least one input permission");
+            throw new IllegalArgumentException("RxPermissions.request/requestEach requires at least one input permission");
         }
         return oneOf(trigger, pending(permissions))
                 .flatMap(new Function<Object, Observable<Permission>>() {

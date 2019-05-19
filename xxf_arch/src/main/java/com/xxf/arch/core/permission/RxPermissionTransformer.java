@@ -1,4 +1,4 @@
-package com.xxf.arch.permission;
+package com.xxf.arch.core.permission;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,7 @@ import io.reactivex.functions.Consumer;
  * @Company Beijing icourt
  * @date createTime：2018/9/3
  */
-public class XXFPermissionTransformer implements ObservableTransformer<Boolean, Boolean> {
+public class RxPermissionTransformer implements ObservableTransformer<Boolean, Boolean> {
     String rejectNotice;
     Context context;
     boolean rejecctJumpPermissionSetting = true;//默认跳转到设置页面
@@ -31,13 +31,13 @@ public class XXFPermissionTransformer implements ObservableTransformer<Boolean, 
      * @param rejectNotice                 拒绝后的提示文案
      * @param rejecctJumpPermissionSetting 权限拒绝是否跳转到系统权限设置页面
      */
-    public XXFPermissionTransformer(@NonNull Context context, @NonNull String rejectNotice, boolean rejecctJumpPermissionSetting) {
+    public RxPermissionTransformer(@NonNull Context context, @NonNull String rejectNotice, boolean rejecctJumpPermissionSetting) {
         this.context = context;
         this.rejectNotice = rejectNotice;
         this.rejecctJumpPermissionSetting = rejecctJumpPermissionSetting;
     }
 
-    public XXFPermissionTransformer(@NonNull Context context, @NonNull String rejectNotice) {
+    public RxPermissionTransformer(@NonNull Context context, @NonNull String rejectNotice) {
         this(context, rejectNotice, true);
     }
 

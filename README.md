@@ -84,13 +84,27 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 
 ##### 权限使用Rx链式调用
 
-     Disposable subscribe = new XXFPermissions(this)
-                    .request(Manifest.permission.CAMERA)
-                    .compose(new CameraPermissionTransformer(this,false))
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(Boolean aBoolean) throws Exception {
-                            ToastUtils.showToast(TestActivity.this, "permission:" + aBoolean);
-                        }
-                    });
+      //请求授权
+      XXF.requestPermission(MainActivity.this, Manifest.permission.CAMERA)
+                                .subscribe(new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + aBoolean);
+                                    }
+                                });
+                                
+      //获取是否授权                          
+      ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
+            
+
+##### startActivityForResult Rx链式调用
+
+     XXF.startActivityForResult(MainActivity.this, new Intent(MainActivity.this, TestActivity.class), 1001)
+                                .subscribe(new Consumer<ActivityResult>() {
+                                    @Override
+                                    public void accept(ActivityResult activityResult) throws Exception {
+                                        ToastUtils.showToast(v.getContext(), "activityResult:reqcode:" + activityResult.getRequestCode() + ";resCode" + activityResult.getResultCode() + ";data:" + activityResult.getData().getStringExtra("data"));
+
+                                    }
+                                });                                     
 

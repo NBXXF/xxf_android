@@ -1,9 +1,12 @@
 package com.xxf.arch;
 
+import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.JsonObject;
 import com.xxf.arch.activity.XXFActivity;
@@ -35,22 +38,34 @@ public class TestActivity extends XXFActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("==========>act1:",""+this);
+        Log.d("==========>act1:", "" + this);
         super.onCreate(savedInstanceState);
-        Log.d("==========>act2:",""+this);
+        Log.d("==========>act2:", "" + this);
         binding = getBinding();
         baseFragmentAdapter = new BaseFragmentAdapter(getSupportFragmentManager());
         binding.pager.setAdapter(baseFragmentAdapter);
         baseFragmentAdapter.bindData(true, Arrays.asList(new TestFragment(), new TestFragment(), new TestFragment()));
 
-        Observable.interval(1, TimeUnit.MILLISECONDS)
-                .compose(XXF.<Long>bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
-                .subscribe(new Consumer<Long>() {
+
+        findViewById(R.id.bt_setResult)
+                .setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void accept(Long aLong) throws Exception {
-                        Log.d("========>data:", "" + aLong);
+                    public void onClick(View v) {
+                        Intent intent = getIntent();
+                        intent.putExtra("data", "hello 2019");
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
                     }
                 });
+//        Observable.interval(1, TimeUnit.MILLISECONDS)
+//                .compose(XXF.<Long>bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
+//                .subscribe(new Consumer<Long>() {
+//                    @Override
+//                    public void accept(Long aLong) throws Exception {
+//                        Log.d("========>data:", "" + aLong);
+//                    }
+//                });
+
     }
 
     @Override
