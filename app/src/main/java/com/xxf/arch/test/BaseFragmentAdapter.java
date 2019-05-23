@@ -1,4 +1,4 @@
-package com.xxf.arch;
+package com.xxf.arch.test;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

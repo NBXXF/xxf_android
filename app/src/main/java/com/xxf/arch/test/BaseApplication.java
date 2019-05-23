@@ -1,10 +1,11 @@
-package com.xxf.arch;
+package com.xxf.arch.test;
 
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.xxf.arch.XXF;
 import com.xxf.arch.core.Logger;
 
 import io.reactivex.functions.Consumer;

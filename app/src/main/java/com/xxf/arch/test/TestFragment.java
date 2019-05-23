@@ -1,5 +1,6 @@
-package com.xxf.arch;
+package com.xxf.arch.test;
 
+import com.xxf.arch.test.R;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.fragment.XXFFragment;

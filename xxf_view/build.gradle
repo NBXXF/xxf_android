@@ -1,7 +1,10 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
+    defaultConfig {
+        minSdkVersion 14
+    }
     dataBinding {
         enabled = true
     }
@@ -10,5 +13,4 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly 'com.android.support:appcompat-v7:26.1.0'
 }

@@ -17,7 +17,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.4.0'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -40,8 +40,12 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
     }
+    configurations.all {
+        resolutionStrategy.force 'com.android.support:appcompat-v7:27.1.1'
+        resolutionStrategy.force 'com.android.support:support-v4:27.1.1'
+        resolutionStrategy.force 'com.android.support:support-fragment:27.1.1'
+    }
 }
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

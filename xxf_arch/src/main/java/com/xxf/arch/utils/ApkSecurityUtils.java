@@ -1,4 +1,4 @@
-package com.xxf.security;
+package com.xxf.arch.utils;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;

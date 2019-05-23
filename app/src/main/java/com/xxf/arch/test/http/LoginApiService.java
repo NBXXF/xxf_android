@@ -1,9 +1,7 @@
-package com.xxf.arch.http;
+package com.xxf.arch.test.http;
 
 import com.google.gson.JsonObject;
 import com.xxf.arch.annotation.BaseUrl;
-
-import org.json.JSONObject;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

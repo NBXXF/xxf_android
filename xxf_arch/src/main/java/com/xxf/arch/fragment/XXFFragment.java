@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -41,6 +42,7 @@ public class XXFFragment
         return (V) vm;
     }
 
+    private View contentView;
 
     @CallSuper
     @Override
@@ -50,6 +52,7 @@ public class XXFFragment
         BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
         if (bindViewAnnotation != null) {
             binding = DataBindingUtil.inflate(getLayoutInflater(), bindViewAnnotation.value(), null, false);
+            setContentView(binding.getRoot());
         }
 
         BindVM bindVMAnnotation = getClass().getAnnotation(BindVM.class);
@@ -58,6 +61,13 @@ public class XXFFragment
         }
     }
 
+    public void setContentView(@LayoutRes int layoutResID) {
+        this.contentView = getLayoutInflater().inflate(layoutResID, null);
+    }
+
+    public void setContentView(View view) {
+        this.contentView = view;
+    }
 
     /***
      * 禁止复写
@@ -69,13 +79,13 @@ public class XXFFragment
     @Nullable
     @Override
     public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (binding.getRoot() != null) {
-            ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
+        if (this.contentView != null) {
+            ViewGroup parent = (ViewGroup) this.contentView.getParent();
             if (parent != null) {
-                parent.removeView(binding.getRoot());
+                parent.removeView(this.contentView);
             }
         }
-        return binding.getRoot();
+        return this.contentView;
     }
 
     /**

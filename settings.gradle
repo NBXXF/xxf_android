@@ -1,4 +1,4 @@
 include ':app',
-        ':xxf_security',
+        ':xxf_apt',
         ':xxf_arch',
         ':xxf_view'

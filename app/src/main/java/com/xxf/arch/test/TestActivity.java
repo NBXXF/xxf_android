@@ -1,27 +1,21 @@
-package com.xxf.arch;
+package com.xxf.arch.test;
 
 import android.app.Activity;
-import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
-import com.google.gson.JsonObject;
+import com.xxf.annotation.Router;
+import com.xxf.arch.test.R;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
-import com.xxf.arch.databinding.ActivityTestBinding;
-import com.xxf.arch.http.LoginApiService;
-import com.xxf.arch.http.XXFHttp;
+import com.xxf.arch.test.databinding.ActivityTestBinding;
 import com.xxf.arch.viewmodel.XXFViewModel;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 /**
  * @author youxuan  E-mail:youxuan@icourt.cc
@@ -30,6 +24,7 @@ import io.reactivex.functions.Consumer;
  * @Company Beijing icourt
  * @date createTime：2018/9/9
  */
+@Router(path = "/user/test")
 @BindView(R.layout.activity_test)
 @BindVM(XXFViewModel.class)
 public class TestActivity extends XXFActivity {

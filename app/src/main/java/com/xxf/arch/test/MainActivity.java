@@ -1,33 +1,26 @@
-package com.xxf.arch;
+package com.xxf.arch.test;
 
 import android.Manifest;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.gson.JsonObject;
+import com.xxf.annotation.Router;
+import com.xxf.arch.test.R;
+import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.arch.http.LoginApiService;
-import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.utils.ToastUtils;
 
-import org.reactivestreams.Subscriber;
-
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
+
+@Router(path = "/user/main")
 public class MainActivity extends AppCompatActivity {
 
     @Override
