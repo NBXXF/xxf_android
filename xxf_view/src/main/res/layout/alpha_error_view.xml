@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10" />
+
+        <ImageView
+            android:id="@id/alpha_error_view_iv"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:clickable="true"
+            android:src="@mipmap/alpha_default_load_error" />
+
+        <TextView
+            android:id="@id/alpha_error_view_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:gravity="center"
+            android:clickable="true"
+            android:text="@string/alpha_default_load_error"
+            android:textColor="#8c8f92"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@id/alpha_error_view_retry_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/alpha_bg_round_gray"
+            android:gravity="center"
+            android:paddingBottom="7dp"
+            android:paddingLeft="27dp"
+            android:paddingRight="27dp"
+            android:paddingTop="7dp"
+            android:text="重试"
+            android:clickable="true"
+            android:textColor="#9b9b9b"
+            android:textSize="13sp" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="23" />
+    </LinearLayout>
+</FrameLayout>

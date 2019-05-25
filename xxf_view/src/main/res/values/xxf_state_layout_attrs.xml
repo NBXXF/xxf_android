@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AlphaStateView">
+        <attr name="asv_loadingView" format="reference" />
+        <attr name="asv_emptyView" format="reference" />
+        <attr name="asv_errorView" format="reference" />
+        <attr name="asv_viewState" format="enum">
+            <enum name="content" value="0" />
+            <enum name="error" value="1" />
+            <enum name="empty" value="2" />
+            <enum name="loading" value="3" />
+        </attr>
+        <attr name="asv_animateViewChanges" format="boolean" />
+        <attr name="asv_contentLoadingCoexist" format="boolean" />  <!-- 内容布局与loading布局是否能共存 -->
+        <attr name="asv_contentEmptyCoexist" format="boolean" />     <!-- 内容布局与empty布局是否能共存 -->
+    </declare-styleable>
+
+</resources>
