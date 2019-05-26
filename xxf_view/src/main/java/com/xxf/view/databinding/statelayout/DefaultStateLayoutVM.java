@@ -13,10 +13,10 @@ import io.reactivex.functions.Action;
  * @Description 默认多状态布局 控制vm
  */
 public class DefaultStateLayoutVM implements IStateLayoutVM {
-    final ObservableField<ViewState> viewState = new ObservableField<>();
+    final ObservableField<ViewState> viewState = new ObservableField<>(ViewState.VIEW_STATE_CONTENT);
     final ObservableInt emptyIcon = new ObservableInt(R.mipmap.alpha_default_empty_data);
     final ObservableInt emptyDesc = new ObservableInt(R.string.alpha_default_no_data);
-    final ObservableField<String> errorDesc = new ObservableField<>();
+    final ObservableField<String> errorDesc = new ObservableField<>("加载失败");
     final ObservableInt errorIcon = new ObservableInt(R.mipmap.alpha_default_load_error);
     final ObservableField<Action> retryAction = new ObservableField<Action>();
 

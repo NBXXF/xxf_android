@@ -3,7 +3,6 @@ package com.xxf.view.databinding.statelayout;
 import android.databinding.BindingAdapter;
 import android.view.View;
 
-import com.xxf.view.databinding.statelayout.IStateLayoutVM;
 import com.xxf.view.loading.AlphaStateLayout;
 
 /**
@@ -14,6 +13,9 @@ public class StateLayoutBindingAdapter {
 
     @BindingAdapter(value = {"android:stateLayoutVM"}, requireAll = false)
     public static void setStateVM(AlphaStateLayout stateLayout, final IStateLayoutVM stateLayoutVM) {
+        if (stateLayoutVM == null) {
+            return;
+        }
         stateLayout.setViewState(stateLayoutVM.getLayoutState().get());
         stateLayout.setEmptyImage(stateLayoutVM.getEmptyIcon().get());
         stateLayout.setEmptyText(stateLayoutVM.getEmptyDesc().get());
