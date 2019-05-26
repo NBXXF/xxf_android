@@ -1,4 +1,4 @@
-package com.xxf.view.recyclerviewadapter;
+package com.xxf.view.recyclerview.adapter;
 
 /**
  * Description  带选中属性的item实体

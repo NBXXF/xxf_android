@@ -1,4 +1,4 @@
-package com.xxf.view.recyclerviewadapter;
+package com.xxf.view.recyclerview.adapter;
 
 import android.databinding.ViewDataBinding;
 import android.support.annotation.IdRes;

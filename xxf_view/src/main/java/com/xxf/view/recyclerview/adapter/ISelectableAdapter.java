@@ -1,4 +1,4 @@
-package com.xxf.view.recyclerviewadapter;
+package com.xxf.view.recyclerview.adapter;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
