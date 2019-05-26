@@ -22,11 +22,11 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
     private ViewDataBinding binding;
 
     @Nullable
-    public ViewDataBinding getBinding() {
-        return binding;
+    public <T extends ViewDataBinding> T getBinding() {
+        return (T) binding;
     }
 
-    public void setBinding(ViewDataBinding binding) {
+    public <T extends ViewDataBinding> void setBinding(T binding) {
         this.binding = binding;
     }
 
