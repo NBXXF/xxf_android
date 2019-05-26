@@ -15,4 +15,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+    compileOnly 'io.reactivex.rxjava2:rxjava:2.2.8'
 }
