@@ -45,8 +45,8 @@ public class AndroidLifecycleProvider extends SimpleActivityLifecycleCallbacks i
             //fragment
             ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
                 @Override
-                public void onFragmentCreated(@NonNull FragmentManager fm, @NonNull Fragment f, @Nullable Bundle savedInstanceState) {
-                    super.onFragmentCreated(fm, f, savedInstanceState);
+                public void onFragmentPreCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {
+                    super.onFragmentPreCreated(fm, f, savedInstanceState);
                     rxLifecycleProviderMap.put(f, LifecycleProviderAndroidImpl.createLifecycleProvider(f));
                 }
             }, true);
