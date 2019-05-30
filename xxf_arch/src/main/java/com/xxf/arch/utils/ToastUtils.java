@@ -9,10 +9,13 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import com.xxf.arch.XXF;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -86,19 +89,23 @@ public class ToastUtils {
     }
 
 
+    private static Context getContext() {
+        return XXF.getApplication();
+    }
+
     /**
      * toast是否可用
      *
-     * @param context
      * @return
      */
-    public static boolean isToastAvailable(@NonNull Context context) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static boolean isToastAvailable() {
         try {
             final String CHECK_OP_NO_THROW = "checkOpNoThrow";
             final String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
-            AppOpsManager mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            ApplicationInfo appInfo = context.getApplicationInfo();
-            String pkg = context.getApplicationContext().getPackageName();
+            AppOpsManager mAppOps = (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
+            ApplicationInfo appInfo = getContext().getApplicationInfo();
+            String pkg = getContext().getApplicationContext().getPackageName();
             int uid = appInfo.uid;
             Class appOpsClass = null;
             try {
@@ -121,17 +128,16 @@ public class ToastUtils {
      * 校验线程
      * 否则:Can't create handler inside thread that has not called Looper.prepare()
      *
-     * @param context
      * @param notice
      * @return
      */
     @UiThread
     @Nullable
-    public static Toast showToast(@NonNull Context context, @NonNull CharSequence notice) {
-        if (!isMainThread() || TextUtils.isEmpty(notice) || context == null) {
+    public static Toast showToast(@NonNull CharSequence notice) {
+        if (!isMainThread() || TextUtils.isEmpty(notice)) {
             return null;
         }
-        Toast toast = Toast.makeText(context, notice, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getContext(), notice, Toast.LENGTH_SHORT);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);
@@ -144,17 +150,16 @@ public class ToastUtils {
      * 校验线程
      * 否则:Can't create handler inside thread that has not called Looper.prepare()
      *
-     * @param context
      * @param notice
      * @return
      */
     @UiThread
     @Nullable
-    public static Toast showToast(@NonNull Context context, @StringRes int notice) {
-        if (!isMainThread() || context == null) {
+    public static Toast showToast(@StringRes int notice) {
+        if (!isMainThread()) {
             return null;
         }
-        Toast toast = Toast.makeText(context, notice, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getContext(), notice, Toast.LENGTH_SHORT);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);

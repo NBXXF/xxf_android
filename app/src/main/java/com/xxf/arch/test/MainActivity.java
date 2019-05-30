@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
                                     public void accept(Boolean aBoolean) throws Exception {
-                                        ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + aBoolean);
+                                        ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean);
                                     }
                                 });
                     }
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
+                        ToastUtils.showToast( "Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
                     }
                 });
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                                 .subscribe(new Consumer<ActivityResult>() {
                                     @Override
                                     public void accept(ActivityResult activityResult) throws Exception {
-                                        ToastUtils.showToast(v.getContext(), "activityResult:reqcode:" + activityResult.getRequestCode() + ";resCode" + activityResult.getResultCode() + ";data:" + activityResult.getData().getStringExtra("data"));
+                                        ToastUtils.showToast("activityResult:reqcode:" + activityResult.getRequestCode() + ";resCode" + activityResult.getResultCode() + ";data:" + activityResult.getData().getStringExtra("data"));
 
                                     }
                                 });
