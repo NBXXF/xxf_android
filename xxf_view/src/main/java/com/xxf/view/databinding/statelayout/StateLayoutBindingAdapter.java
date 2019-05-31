@@ -23,24 +23,54 @@ public class StateLayoutBindingAdapter {
     private static final String ATTR_LOADING_VIEW_ERROR_ICON = "errorIcon";
     private static final String ATTR_LOADING_VIEW_RETRY = "retryListener";
 
+    //拆分方法 高效一些
     @BindingAdapter(value = {
             ATTR_LOADING_VIEW_STATE,
-            ATTR_LOADING_VIEW_EMPTY_DESC,
-            ATTR_LOADING_VIEW_EMPTY_ICON,
-            ATTR_LOADING_VIEW_ERROR_DESC,
-            ATTR_LOADING_VIEW_ERROR_ICON,
-            ATTR_LOADING_VIEW_RETRY
-    }, requireAll = false)
+    })
     public static void setStateVM(final AlphaStateLayout stateLayout,
-                                  ViewState viewState,
-                                  CharSequence emptyDesc, Drawable emptyIcon,
-                                  CharSequence errorDesc, Drawable errorIcon,
-                                  final Action retryListener) {
+                                  ViewState viewState) {
         stateLayout.setViewState(viewState);
-        stateLayout.setEmptyImage(emptyIcon);
+    }
+
+    @BindingAdapter(value = {
+            ATTR_LOADING_VIEW_EMPTY_DESC,
+    }, requireAll = false)
+    public static void setViewState(final AlphaStateLayout stateLayout,
+                                    CharSequence emptyDesc) {
         stateLayout.setEmptyText(emptyDesc);
-        stateLayout.setErrorImage(errorIcon);
+    }
+
+
+    @BindingAdapter(value = {
+            ATTR_LOADING_VIEW_EMPTY_ICON
+    })
+    public static void setEmptyIcon(final AlphaStateLayout stateLayout,
+                                    Drawable emptyIcon) {
+        stateLayout.setEmptyImage(emptyIcon);
+    }
+
+
+    @BindingAdapter(value = {
+            ATTR_LOADING_VIEW_ERROR_DESC
+    })
+    public static void setErrorDesc(final AlphaStateLayout stateLayout,
+                                    CharSequence errorDesc) {
         stateLayout.setErrorText(errorDesc);
+    }
+
+    @BindingAdapter(value = {
+            ATTR_LOADING_VIEW_ERROR_ICON
+    }, requireAll = false)
+    public static void setErrorIcon(final AlphaStateLayout stateLayout,
+                                    Drawable errorIcon) {
+        stateLayout.setErrorImage(errorIcon);
+    }
+
+    @BindingAdapter(value = {
+            ATTR_LOADING_VIEW_RETRY
+    })
+    public static void setRetryListener(final AlphaStateLayout stateLayout,
+                                        final Action retryListener) {
         stateLayout.setErrorRetryListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
