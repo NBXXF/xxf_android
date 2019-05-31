@@ -16,7 +16,7 @@ import io.reactivex.functions.Action;
  * 多状态布局 控制绑定
  */
 public class StateLayoutBindingAdapter {
-    private static final String ATTR_LOADING_VIEW_STATE = "viewState";
+    private static final String ATTR_LOADING_VIEW_STATE = "layoutState";
     private static final String ATTR_LOADING_VIEW_EMPTY_DESC = "emptyDesc";
     private static final String ATTR_LOADING_VIEW_EMPTY_ICON = "emptyIcon";
     private static final String ATTR_LOADING_VIEW_ERROR_DESC = "errorDesc";
@@ -29,7 +29,9 @@ public class StateLayoutBindingAdapter {
     })
     public static void setStateVM(final AlphaStateLayout stateLayout,
                                   ViewState viewState) {
-        stateLayout.setViewState(viewState);
+        if (viewState != null) {
+            stateLayout.setViewState(viewState);
+        }
     }
 
     @BindingAdapter(value = {

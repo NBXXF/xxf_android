@@ -3,18 +3,9 @@
 buildscript {
 
     repositories {
-        maven {
-            url 'https://maven.aliyun.com/repository/jcenter'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/central'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/google'
-        }
-        google()
         jcenter()
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.0'
@@ -27,20 +18,12 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url 'https://maven.aliyun.com/repository/jcenter'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/central'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/google'
-        }
-        google()
         jcenter()
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
+        google()
     }
     configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'// maven禁止缓存
         resolutionStrategy.force 'com.android.support:appcompat-v7:27.1.1'
         resolutionStrategy.force 'com.android.support:support-v4:27.1.1'
         resolutionStrategy.force 'com.android.support:support-fragment:27.1.1'
