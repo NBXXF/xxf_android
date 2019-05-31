@@ -38,12 +38,10 @@ public class StateLayoutVM
     @Override
     public IStateLayoutVM setLayoutState(ViewState viewState) {
         this.layoutStateOb.set(viewState);
-        this.notifyPropertyChanged(BR.layoutState);
         return this;
     }
 
     @Override
-    @Bindable
     public ObservableField<ViewState> getLayoutState() {
         return this.layoutStateOb;
     }
@@ -56,12 +54,10 @@ public class StateLayoutVM
     @Override
     public IStateLayoutVM setEmptyIcon(Drawable emptyIcon) {
         this.emptyIconOb.set(emptyIcon);
-        this.notifyPropertyChanged(BR.emptyIcon);
         return this;
     }
 
     @Override
-    @Bindable
     public ObservableField<Drawable> getEmptyIcon() {
         return this.emptyIconOb;
     }
@@ -74,12 +70,10 @@ public class StateLayoutVM
     @Override
     public IStateLayoutVM setEmptyDesc(CharSequence emptyDesc) {
         this.emptyDescOb.set(emptyDesc);
-        this.notifyPropertyChanged(BR.emptyDesc);
         return this;
     }
 
     @Override
-    @Bindable
     public ObservableField<CharSequence> getEmptyDesc() {
         return this.emptyDescOb;
     }
@@ -92,12 +86,10 @@ public class StateLayoutVM
     @Override
     public IStateLayoutVM setErrorIcon(Drawable errorIcon) {
         this.errorIconOb.set(errorIcon);
-        this.notifyPropertyChanged(BR.errorIcon);
         return this;
     }
 
     @Override
-    @Bindable
     public ObservableField<Drawable> getErrorIcon() {
         return this.errorIconOb;
     }
@@ -110,13 +102,11 @@ public class StateLayoutVM
     @Override
     public IStateLayoutVM setErrorDesc(CharSequence errorDesc) {
         this.errorDescOb.set(errorDesc);
-        this.notifyPropertyChanged(BR.errorDesc);
         return this;
     }
 
 
     @Override
-    @Bindable
     public ObservableField<CharSequence> getErrorDesc() {
         return this.errorDescOb;
     }
@@ -124,12 +114,10 @@ public class StateLayoutVM
     @Override
     public IStateLayoutVM setRetryAction(Action retryAction) {
         this.retryActionOb.set(retryAction);
-        this.notifyPropertyChanged(BR.retryAction);
         return this;
     }
 
     @Override
-    @Bindable
     public ObservableField<Action> getRetryAction() {
         return this.retryActionOb;
     }
