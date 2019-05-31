@@ -1,6 +1,7 @@
 package com.xxf.view.databinding.titlebar;
 
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.graphics.drawable.Drawable;
 
 import com.xxf.view.utils.ResourcesUtil;
@@ -14,7 +15,7 @@ import io.reactivex.functions.Action;
 public class TitleBar implements ITitleBar {
 
     final ObservableField<Drawable> titleBarBackground = new ObservableField<Drawable>();
-    final ObservableField<Integer> titleBarHeight = new ObservableField<>();
+    final ObservableInt titleBarHeight = new ObservableInt();
 
 
     final ObservableField<Drawable> titleBarLeftIcon = new ObservableField<>();
@@ -50,7 +51,7 @@ public class TitleBar implements ITitleBar {
     }
 
     @Override
-    public ObservableField<Integer> getTitleBarHeight() {
+    public ObservableInt getTitleBarHeight() {
         return this.titleBarHeight;
     }
 

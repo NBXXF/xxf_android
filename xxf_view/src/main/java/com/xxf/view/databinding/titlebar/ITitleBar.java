@@ -1,6 +1,7 @@
 package com.xxf.view.databinding.titlebar;
 
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
@@ -43,7 +44,7 @@ public interface ITitleBar {
      *
      * @return
      */
-    ObservableField<Integer> getTitleBarHeight();
+    ObservableInt getTitleBarHeight();
 
     //---------------左边icon---------------//
 
