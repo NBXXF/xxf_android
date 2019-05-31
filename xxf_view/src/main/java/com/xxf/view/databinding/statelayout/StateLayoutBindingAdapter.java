@@ -12,7 +12,7 @@ import com.xxf.view.loading.AlphaStateLayout;
 public class StateLayoutBindingAdapter {
 
     @BindingAdapter(value = {"android:stateLayoutVM"}, requireAll = false)
-    public static void setStateVM(AlphaStateLayout stateLayout, final IStateLayoutVM stateLayoutVM) {
+    public static void setStateVM(final AlphaStateLayout stateLayout, final IStateLayoutVM stateLayoutVM) {
         if (stateLayoutVM == null) {
             return;
         }
@@ -21,19 +21,17 @@ public class StateLayoutBindingAdapter {
         stateLayout.setEmptyText(stateLayoutVM.getEmptyDesc().get());
         stateLayout.setErrorImage(stateLayoutVM.getErrorIcon().get());
         stateLayout.setErrorText(stateLayoutVM.getErrorDesc().get());
-        if (stateLayoutVM.getRetryAction().get() == null) {
-            stateLayout.setErrorRetryListener(null);
-        } else {
-            stateLayout.setErrorRetryListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        stateLayout.setErrorRetryListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (stateLayoutVM.getRetryAction().get() != null) {
                     try {
                         stateLayoutVM.getRetryAction().get().run();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            });
-        }
+            }
+        });
     }
 }

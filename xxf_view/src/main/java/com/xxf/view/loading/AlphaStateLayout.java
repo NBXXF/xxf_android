@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.CheckResult;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
@@ -255,6 +256,22 @@ public class AlphaStateLayout extends FrameLayout {
     /**
      * R.id.alpha_empty_view_tv
      *
+     * @param emptyText
+     * @return
+     */
+    public AlphaStateLayout setEmptyText(CharSequence emptyText) {
+        if (mEmptyView != null) {
+            TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
+            if (viewById != null) {
+                viewById.setText(emptyText);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * R.id.alpha_empty_view_tv
+     *
      * @param id
      * @return
      */
@@ -279,6 +296,23 @@ public class AlphaStateLayout extends FrameLayout {
             ImageView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_iv);
             if (viewById != null) {
                 viewById.setImageResource(id);
+            }
+        }
+        return this;
+    }
+
+
+    /**
+     * R.id.alpha_empty_view_iv
+     *
+     * @param drawable
+     * @return
+     */
+    public AlphaStateLayout setEmptyImage(Drawable drawable) {
+        if (mEmptyView != null) {
+            ImageView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_iv);
+            if (viewById != null) {
+                viewById.setImageDrawable(drawable);
             }
         }
         return this;
@@ -311,6 +345,23 @@ public class AlphaStateLayout extends FrameLayout {
             ImageView viewById = mErrorView.findViewById(R.id.alpha_error_view_iv);
             if (viewById != null) {
                 viewById.setImageResource(id);
+            }
+        }
+        return this;
+    }
+
+
+    /**
+     * R.id.alpha_error_view_iv
+     *
+     * @param errorImage
+     * @return
+     */
+    public AlphaStateLayout setErrorImage(Drawable errorImage) {
+        if (mErrorView != null) {
+            ImageView viewById = mErrorView.findViewById(R.id.alpha_error_view_iv);
+            if (viewById != null) {
+                viewById.setImageDrawable(errorImage);
             }
         }
         return this;
