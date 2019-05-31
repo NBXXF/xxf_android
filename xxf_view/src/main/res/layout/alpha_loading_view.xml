@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="10" />
 
-        <com.icourt.loading.AlphaLoadingView
+        <com.xxf.view.loading.AlphaLoadingView
             android:id="@id/alpha_loading_view_iv"
             android:layout_width="88dp"
             android:layout_height="88dp"
