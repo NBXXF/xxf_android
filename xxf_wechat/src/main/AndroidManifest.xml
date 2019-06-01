@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.xxf.wechat">
+
+    <application>
+        <!--微信sdk 要求必须在app的主工程下面建立 .wxapi.WXEntryActivity  这里采用别名的方式-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent"></activity>
+
+        <activity-alias
+            android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:targetActivity="com.xxf.wechat.wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            tools:node="replace"
+            tools:replace="android:targetActivity" />
+
+        <activity-alias
+            android:name="${applicationId}.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:targetActivity="com.xxf.wechat.wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            tools:node="replace"
+            tools:replace="android:targetActivity" />
+
+    </application>
+</manifest>

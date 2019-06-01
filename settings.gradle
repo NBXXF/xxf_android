@@ -1,4 +1,5 @@
 include ':app',
         ':xxf_apt',
         ':xxf_arch',
-        ':xxf_view'
+        ':xxf_view',
+        ':xxf_wechat'
