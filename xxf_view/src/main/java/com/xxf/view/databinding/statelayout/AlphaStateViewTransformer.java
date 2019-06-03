@@ -31,10 +31,17 @@ public class AlphaStateViewTransformer<T> extends UILifeTransformerImpl<T> {
     }
 
     @Override
-    public void onComplete() {
+    public void onNext(T t) {
         if (alphaStateViewVM != null) {
             alphaStateViewVM.setLayoutState(ViewState.VIEW_STATE_CONTENT);
         }
+    }
+
+    @Override
+    public void onComplete() {
+       /* if (alphaStateViewVM != null) {
+            alphaStateViewVM.setLayoutState(ViewState.VIEW_STATE_CONTENT);
+        }*/
     }
 
     @Override

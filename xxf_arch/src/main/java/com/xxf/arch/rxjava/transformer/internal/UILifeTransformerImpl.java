@@ -33,7 +33,7 @@ import io.reactivex.functions.Consumer;
  */
 public abstract class UILifeTransformerImpl<T>
         implements
-        UILifeTransformer,
+        UILifeTransformer<T>,
         ObservableTransformer<T, T>,
         FlowableTransformer<T, T>,
         MaybeTransformer<T, T>,
@@ -48,6 +48,11 @@ public abstract class UILifeTransformerImpl<T>
                     @Override
                     public void accept(Subscription subscription) throws Exception {
                         onSubscribe();
+                    }
+                }).doOnNext(new Consumer<T>() {
+                    @Override
+                    public void accept(T t) throws Exception {
+                        onNext(t);
                     }
                 }).doOnError(new Consumer<Throwable>() {
                     @Override
@@ -76,6 +81,11 @@ public abstract class UILifeTransformerImpl<T>
                     public void accept(Disposable disposable) throws Exception {
                         onSubscribe();
                     }
+                }).doOnSuccess(new Consumer<T>() {
+                    @Override
+                    public void accept(T t) throws Exception {
+                        onNext(t);
+                    }
                 }).doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
@@ -102,6 +112,11 @@ public abstract class UILifeTransformerImpl<T>
                     @Override
                     public void accept(Disposable disposable) throws Exception {
                         onSubscribe();
+                    }
+                }).doOnNext(new Consumer<T>() {
+                    @Override
+                    public void accept(T t) throws Exception {
+                        onNext(t);
                     }
                 }).doOnError(new Consumer<Throwable>() {
                     @Override

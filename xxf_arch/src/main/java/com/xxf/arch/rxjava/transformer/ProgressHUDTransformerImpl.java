@@ -93,8 +93,15 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
     }
 
     @Override
-    public void onComplete() {
+    public void onNext(T t) {
         if (progressHUD != null) {
+            progressHUD.dismissLoadingDialogWithSuccess(successNotice);
+        }
+    }
+
+    @Override
+    public void onComplete() {
+        if (progressHUD != null && progressHUD.isShowLoading()) {
             progressHUD.dismissLoadingDialogWithSuccess(successNotice);
         }
     }
