@@ -1,20 +1,19 @@
 package com.xxf.arch.http;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.widget.LinearLayout;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
+import com.xxf.arch.XXF;
 import com.xxf.arch.annotation.BaseUrl;
-import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.http.converter.gson.GsonConvertInterceptor;
 
-import java.io.IOException;
-import java.util.List;
+import java.io.File;
 import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Interceptor;
-import okhttp3.Response;
+
+import com.xxf.arch.http.cache.RxCache;
 
 /**
  * @author xuanyouwu@163.com
@@ -53,6 +52,7 @@ public class XXFHttp {
      * @param <T>
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static <T> T createApiService(Class<T> apiClazz)
             throws IllegalAccessException, InstantiationException, IllegalArgumentException {
         OkHttpClientBuilder ohcb = new OkHttpClientBuilder();
@@ -79,8 +79,11 @@ public class XXFHttp {
         if (gsonInterceptorAnnotation != null) {
             gsonConvertInterceptor = gsonInterceptorAnnotation.value().newInstance();
         }
+        //缓存文件夹
+        File cacheDirectory = new File(XXF.getApplication().getExternalCacheDir().toString(), "rxCache");
 
-        T apiService = new RetrofitBuilder(gsonConvertInterceptor)
+        //创建缓存对象
+        T apiService = new RetrofitBuilder(gsonConvertInterceptor, new RxCache(cacheDirectory))
                 .client(ohcb.build())
                 .baseUrl(baseUrlAnnotation.value())
                 .build()

@@ -1,8 +1,5 @@
 package com.xxf.arch.annotation;
 
-import android.support.annotation.LayoutRes;
-
-import com.xxf.arch.viewmodel.XXFViewModel;
 
 import java.lang.annotation.ElementType;
 

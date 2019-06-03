@@ -2,6 +2,7 @@ package com.xxf.arch.http;
 
 import android.support.annotation.Nullable;
 
+import com.xxf.arch.http.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.xxf.arch.http.converter.gson.GsonConvertInterceptor;
 import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.json.GsonFactory;
@@ -11,11 +12,17 @@ import java.util.concurrent.Executor;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
+import com.xxf.arch.http.cache.RxCache;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
+/**
+ * 默认实例
+ * 1.解析层
+ * 2.rxjava
+ * 3.默认的okhttp
+ * 4.rxjava 支持缓存
+ */
 
 /**
  * @author xuanyouwu@163.com
@@ -36,14 +43,15 @@ public class RetrofitBuilder {
      * 1.解析层
      * 2.rxjava
      * 3.默认的okhttp
+     * 4.rxjava 支持缓存
      */
     protected Retrofit.Builder builder;
 
-    public RetrofitBuilder(GsonConvertInterceptor interceptor) {
+    public RetrofitBuilder(GsonConvertInterceptor interceptor, RxCache rxCache) {
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson(), interceptor))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync());
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync(rxCache));
     }
 
 

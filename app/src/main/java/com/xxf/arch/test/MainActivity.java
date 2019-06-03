@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.JsonObject;
 import com.xxf.annotation.Router;
 import com.xxf.arch.test.R;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
+import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 
 import java.util.concurrent.Callable;
@@ -42,20 +44,29 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Observable
-                                .fromCallable(new Callable<Object>() {
+//                        Observable
+//                                .fromCallable(new Callable<Object>() {
+//                                    @Override
+//                                    public Object call() throws Exception {
+//                                        return null;
+//                                    }
+//                                })
+//                                .compose(XXF.bindToErrorNotice())
+//                                .subscribe();
+//                        Intent intent = new Intent(view.getContext(), TestActivity.class);
+//                        intent.putExtra("name", "xxx");
+//                        intent.putExtra("age", "12");
+//                        intent.putExtra("desc", "124");
+//                        startActivity(intent);
+
+                        XXF.getApiService(LoginApiService.class)
+                                .getCity()
+                                .subscribe(new Consumer<JsonObject>() {
                                     @Override
-                                    public Object call() throws Exception {
-                                        return null;
+                                    public void accept(JsonObject jsonObject) throws Exception {
+                                        Log.d("============>", "json:" + jsonObject.toString());
                                     }
-                                })
-                                .compose(XXF.bindToErrorNotice())
-                                .subscribe();
-                        Intent intent = new Intent(view.getContext(), TestActivity.class);
-                        intent.putExtra("name", "xxx");
-                        intent.putExtra("age", "12");
-                        intent.putExtra("desc", "124");
-                        startActivity(intent);
+                                });
                     }
                 });
 
@@ -77,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        ToastUtils.showToast( "Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
+                        ToastUtils.showToast("Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
                     }
                 });
 
