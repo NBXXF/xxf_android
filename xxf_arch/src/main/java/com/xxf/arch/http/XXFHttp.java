@@ -1,6 +1,7 @@
 package com.xxf.arch.http;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
 import com.xxf.arch.XXF;
@@ -9,9 +10,11 @@ import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.http.converter.gson.GsonConvertInterceptor;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Interceptor;
+import okhttp3.Request;
 
 import com.xxf.arch.http.cache.RxCache;
 
@@ -21,9 +24,28 @@ import com.xxf.arch.http.cache.RxCache;
  * @Description
  * @date createTime：2018/9/7
  */
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class XXFHttp {
 
     private static final ConcurrentHashMap<Class, Object> API_MAP = new ConcurrentHashMap<>();
+
+    private static RxCache.RxCachePrimaryKeyProvider rxCachePrimaryKeyProvider = new RxCache.RxCachePrimaryKeyProvider() {
+        @NonNull
+        @Override
+        public String getPrimaryKey(Request request) {
+            return request.url().toString();
+        }
+    };
+
+    /**
+     * 设置缓存唯一标示
+     *
+     * @param rxCachePrimaryKeyProvider
+     */
+    public static void setRxCachePrimaryKeyProvider(@NonNull RxCache.RxCachePrimaryKeyProvider rxCachePrimaryKeyProvider) {
+        Objects.requireNonNull(rxCachePrimaryKeyProvider, "rxCacheTagProvider cannot be null");
+        XXFHttp.rxCachePrimaryKeyProvider = rxCachePrimaryKeyProvider;
+    }
 
     /**
      * get api
@@ -52,7 +74,6 @@ public class XXFHttp {
      * @param <T>
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static <T> T createApiService(Class<T> apiClazz)
             throws IllegalAccessException, InstantiationException, IllegalArgumentException {
         OkHttpClientBuilder ohcb = new OkHttpClientBuilder();
@@ -83,7 +104,7 @@ public class XXFHttp {
         File cacheDirectory = new File(XXF.getApplication().getExternalCacheDir().toString(), "rxCache");
 
         //创建缓存对象
-        T apiService = new RetrofitBuilder(gsonConvertInterceptor, new RxCache(cacheDirectory))
+        T apiService = new RetrofitBuilder(gsonConvertInterceptor, new RxCache(cacheDirectory, XXFHttp.rxCachePrimaryKeyProvider))
                 .client(ohcb.build())
                 .baseUrl(baseUrlAnnotation.value())
                 .build()

@@ -3,6 +3,7 @@ package com.xxf.arch.http.cache;
 
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
 import com.google.gson.Gson;
@@ -31,18 +32,30 @@ import retrofit2.Response;
  */
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class RxCache {
-    private File directory;
+    public interface RxCachePrimaryKeyProvider {
+        /**
+         * 唯一标签,最好设置uid 或者token
+         *
+         * @return
+         */
+        @NonNull
+        String getPrimaryKey(Request request);
+    }
 
-    public RxCache(File directory) {
+    private File directory;
+    private RxCachePrimaryKeyProvider rxCachePrimaryKeyProvider;
+
+    public RxCache(File directory, RxCachePrimaryKeyProvider rxCacheTagProvider) {
         this.directory = directory;
+        this.rxCachePrimaryKeyProvider = rxCacheTagProvider;
     }
 
     public static String key(HttpUrl url) {
         return ByteString.encodeUtf8(url.toString()).md5().hex();
     }
 
-    public static String key(Headers headers) {
-        return ByteString.encodeUtf8(headers.toString()).md5().hex();
+    public static String key(String string) {
+        return ByteString.encodeUtf8(string).md5().hex();
     }
 
     private File getDirectory() {
@@ -56,7 +69,7 @@ public class RxCache {
     public <T> Response<T> get(Request request, Converter<ResponseBody, T> responseConverter) throws IOException {
         String requestMethod = request.method();
         if (requestMethod.equals("GET")) {
-            String key = key(request.url()) + key(request.headers());
+            String key = key(rxCachePrimaryKeyProvider.getPrimaryKey(request));
             File file = new File(getDirectory(), key);
             String s = readFile(file);
             final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");
@@ -87,7 +100,7 @@ public class RxCache {
         String requestMethod = response.raw().request().method();
         if (requestMethod.equals("GET") && response.headers().get("Content-Type").toLowerCase().startsWith("application/json")) {
             Request request = response.raw().request();
-            String key = key(request.url()) + key(request.headers());
+            String key = key(rxCachePrimaryKeyProvider.getPrimaryKey(request));
             File file = new File(getDirectory(), key);
             writeFile(file, new Gson().toJson(response.body()));
         }
