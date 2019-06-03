@@ -6,15 +6,20 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.CheckResult;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
+import com.xxf.arch.R;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.viewmodel.XXFViewModel;
@@ -137,4 +142,75 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Progre
     public ProgressHUD progressHUD() {
         return null;
     }
+
+
+    /**
+     * 获取dialog的窗体
+     *
+     * @return
+     */
+    @CheckResult
+    @Nullable
+    public Window getDialogWidow() {
+        return getDialog() != null ? getDialog().getWindow() : null;
+    }
+
+    /**
+     * 获取dialog的DecorView
+     *
+     * @return
+     */
+    @CheckResult
+    @Nullable
+    public View getDialogDecorView() {
+        Window dialogWidow = getDialogWidow();
+        return dialogWidow != null ? dialogWidow.getDecorView() : null;
+    }
+
+    /**
+     * 设置边距
+     *
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setDialogPadding(int left, int top, int right, int bottom) {
+        View dialogDecorView = getDialogDecorView();
+        if (dialogDecorView != null) {
+            dialogDecorView.setPadding(left, top, right, bottom);
+        }
+    }
+
+    /**
+     * 设置对话框的位置
+     *
+     * @param gravity
+     */
+    public void setDialogGravity(int gravity) {
+        Window dialogWidow = getDialogWidow();
+        if (dialogWidow != null) {
+            dialogWidow.setGravity(gravity);
+        }
+    }
+
+    /**
+     * 设置动画
+     *
+     * @param resId
+     */
+    public void setDialogAnimations(@StyleRes int resId) {
+        Window dialogWidow = getDialogWidow();
+        if (dialogWidow != null) {
+            dialogWidow.setWindowAnimations(resId);
+        }
+    }
+
+    /**
+     * dialog全屏
+     */
+    protected final void requestFullScreen() {
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogFullScreen);
+    }
+
 }
