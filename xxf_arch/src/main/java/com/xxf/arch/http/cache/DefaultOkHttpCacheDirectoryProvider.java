@@ -17,7 +17,7 @@ public class DefaultOkHttpCacheDirectoryProvider implements HttpCacheDirectoryPr
     public String getDirectory() {
         File file = new File(XXF.getApplication().getCacheDir(), "rxHttpCache");
         if (!file.exists()) {
-            file.mkdir();
+            file.mkdirs();
         }
         return file.getAbsolutePath();
     }
