@@ -24,7 +24,6 @@ import io.reactivex.plugins.RxJavaPlugins;
 
 @Router(path = "/user/main")
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("==========>act1:", "" + this);

@@ -12,13 +12,17 @@ import java.lang.annotation.ElementType;
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @java.lang.annotation.Documented
 @java.lang.annotation.Inherited
-public @interface RxCache {
+public @interface RxHttpCache {
 
-    public enum CacheType {
+    enum CacheType {
         /**
          * 先从本地缓存拿取,然后从服务器拿取,会onNext两次
          */
         firstCache,
+        /**
+         * 先从服务器获取,没有网络 读取本地缓存
+         */
+        firstRemote,
         /**
          * 只从服务器拿取
          */

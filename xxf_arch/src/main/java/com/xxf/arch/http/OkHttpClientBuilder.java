@@ -13,6 +13,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import io.reactivex.annotations.Nullable;
+import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -37,12 +39,19 @@ public class OkHttpClientBuilder {
 
     public OkHttpClientBuilder addInterceptor(Interceptor interceptor) {
         builder.addInterceptor(interceptor);
+
+        return this;
+    }
+
+    public OkHttpClientBuilder cache(@Nullable Cache cache) {
+        builder.cache(cache);
         return this;
     }
 
     public OkHttpClient build() {
         return builder.build();
     }
+
 
     /**
      * 默认信任所有的证书

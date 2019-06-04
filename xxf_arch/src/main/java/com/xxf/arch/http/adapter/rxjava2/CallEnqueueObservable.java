@@ -10,7 +10,9 @@ import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
 
-import com.xxf.arch.http.cache.RxCache;
+import com.xxf.arch.http.cache.RxHttpCache;
+
+import java.net.ConnectException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,12 +26,12 @@ import retrofit2.Response;
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 final class CallEnqueueObservable<T> extends Observable<Response<T>> {
     private final Call<T> originalCall;
-    private RxCache rxCache;
-    private com.xxf.arch.annotation.RxCache.CacheType rxCacheType;
+    private RxHttpCache rxHttpCache;
+    private com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType;
 
-    CallEnqueueObservable(Call<T> originalCall, RxCache rxCache, com.xxf.arch.annotation.RxCache.CacheType rxCacheType) {
+    CallEnqueueObservable(Call<T> originalCall, RxHttpCache rxHttpCache, com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType) {
         this.originalCall = originalCall;
-        this.rxCache = rxCache;
+        this.rxHttpCache = rxHttpCache;
         this.rxCacheType = rxCacheType;
     }
 
@@ -37,13 +39,13 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
     protected void subscribeActual(Observer<? super Response<T>> observer) {
         // Since Call is a one-shot type, clone it for each new observer.
         Call<T> call = originalCall.clone();
-        CallCallback<T> callback = new CallCallback<>(call, observer, this.rxCache);
+        CallCallback<T> callback = new CallCallback<>(call, observer, this.rxHttpCache, this.rxCacheType == com.xxf.arch.annotation.RxHttpCache.CacheType.firstRemote);
         observer.onSubscribe(callback);
         switch (this.rxCacheType) {
             case firstCache: {
                 //先拿缓存 onNext一次
                 try {
-                    Response<T> response = (Response<T>) this.rxCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
+                    Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
                     if (response != null) {
                         observer.onNext(response);
                     }
@@ -53,15 +55,21 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
                 enqueueCall(call, callback);
             }
             break;
+            case firstRemote: {
+                enqueueCall(call, callback);
+            }
+            break;
             case onlyCache: {
                 try {
-                    Response<T> response = (Response<T>) this.rxCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
+                    Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
                     if (response != null) {
                         observer.onNext(response);
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
                     observer.onError(e);
+                } finally {
+                    observer.onComplete();
                 }
             }
             break;
@@ -89,22 +97,42 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
         private final Observer<? super Response<T>> observer;
         private volatile boolean disposed;
         boolean terminated = false;
-        RxCache rxCache;
+        RxHttpCache rxHttpCache;
+        boolean readCache;
 
-        CallCallback(Call<?> call, Observer<? super Response<T>> observer, RxCache rxCache) {
+        CallCallback(Call<?> call, Observer<? super Response<T>> observer, RxHttpCache rxHttpCache, boolean readCache) {
             this.call = call;
             this.observer = observer;
-            this.rxCache = rxCache;
+            this.rxHttpCache = rxHttpCache;
+            this.readCache = readCache;
+        }
+
+        /**
+         * 缓存
+         *
+         * @param response
+         */
+        private void cacheRxSafe(Response<T> response) {
+            try {
+                rxHttpCache.put(response);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onResponse(Call<T> call, Response<T> response) {
             if (disposed) return;
-            try {
-                rxCache.put(response);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+            cacheRxSafe(response);
+            dispatchResponse(response);
+        }
+
+        /**
+         * 分发
+         *
+         * @param response
+         */
+        private void dispatchResponse(Response<T> response) {
             try {
                 observer.onNext(response);
 
@@ -130,7 +158,20 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
         @Override
         public void onFailure(Call<T> call, Throwable t) {
             if (call.isCanceled()) return;
-
+            //读取缓存
+            if (t instanceof ConnectException && readCache) {
+                Response<T> response = null;
+                try {
+                    response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
+                } catch (Throwable tx) {
+                    tx.printStackTrace();
+                }
+                //有缓存使用缓存
+                if (response != null) {
+                    dispatchResponse(response);
+                    return;
+                }
+            }
             try {
                 observer.onError(t);
             } catch (Throwable inner) {

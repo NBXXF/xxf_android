@@ -12,7 +12,7 @@ import java.util.concurrent.Executor;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import com.xxf.arch.http.cache.RxCache;
+import com.xxf.arch.http.cache.RxHttpCache;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -47,11 +47,11 @@ public class RetrofitBuilder {
      */
     protected Retrofit.Builder builder;
 
-    public RetrofitBuilder(GsonConvertInterceptor interceptor, RxCache rxCache) {
+    public RetrofitBuilder(GsonConvertInterceptor interceptor, RxHttpCache rxHttpCache) {
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson(), interceptor))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync(rxCache));
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync(rxHttpCache));
     }
 
 

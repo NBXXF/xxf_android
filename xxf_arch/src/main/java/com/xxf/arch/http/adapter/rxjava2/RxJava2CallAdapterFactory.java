@@ -12,7 +12,7 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.annotations.Nullable;
-import com.xxf.arch.http.cache.RxCache;
+import com.xxf.arch.http.cache.RxHttpCache;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -26,16 +26,16 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
      * Returns an instance which creates synchronous observables that do not operate on any scheduler
      * by default.
      */
-    public static RxJava2CallAdapterFactory create(RxCache rxCache) {
-        return new RxJava2CallAdapterFactory(null, false, rxCache);
+    public static RxJava2CallAdapterFactory create(RxHttpCache rxHttpCache) {
+        return new RxJava2CallAdapterFactory(null, false, rxHttpCache);
     }
 
     /**
      * Returns an instance which creates asynchronous observables. Applying
      * {@link Observable#subscribeOn} has no effect on stream types created by this factory.
      */
-    public static RxJava2CallAdapterFactory createAsync(RxCache rxCache) {
-        return new RxJava2CallAdapterFactory(null, true, rxCache);
+    public static RxJava2CallAdapterFactory createAsync(RxHttpCache rxHttpCache) {
+        return new RxJava2CallAdapterFactory(null, true, rxHttpCache);
     }
 
     /**
@@ -51,27 +51,27 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
     private final @Nullable
     Scheduler scheduler;
     private final boolean isAsync;
-    private RxCache rxCache;
+    private RxHttpCache rxHttpCache;
 
-    private RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, RxCache rxCache) {
+    private RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, RxHttpCache rxHttpCache) {
         this.scheduler = scheduler;
         this.isAsync = isAsync;
-        this.rxCache = rxCache;
+        this.rxHttpCache = rxHttpCache;
     }
 
     @Override
     public @Nullable
     CallAdapter<?, ?> get(
             Type returnType, Annotation[] annotations, Retrofit retrofit) {
-        com.xxf.arch.annotation.RxCache.CacheType rxCacheType = com.xxf.arch.annotation.RxCache.CacheType.onlyRemote;
+        com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType = com.xxf.arch.annotation.RxHttpCache.CacheType.onlyRemote;
         if (annotations != null) {
             for (Annotation annotation : annotations) {
                 if (annotation == null) {
                     continue;
                 }
                 //找到第一个注解的RxCache
-                if (annotation.annotationType() == com.xxf.arch.annotation.RxCache.class) {
-                    rxCacheType = ((com.xxf.arch.annotation.RxCache) annotation).value();
+                if (annotation.annotationType() == com.xxf.arch.annotation.RxHttpCache.class) {
+                    rxCacheType = ((com.xxf.arch.annotation.RxHttpCache) annotation).value();
                     break;
                 }
             }
@@ -83,7 +83,7 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
         if (rawType == Completable.class) {
             // Completable is not parameterized (which is what the rest of this method deals with) so it
             // can only be created with a single configuration.
-            return new RxJava2CallAdapter(Void.class, scheduler, isAsync, this.rxCache, rxCacheType, false, true, false, false,
+            return new RxJava2CallAdapter(Void.class, scheduler, isAsync, this.rxHttpCache, rxCacheType, false, true, false, false,
                     false, true);
         }
 
@@ -125,7 +125,7 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
             isBody = true;
         }
 
-        return new RxJava2CallAdapter(responseType, scheduler, isAsync, this.rxCache, rxCacheType, isResult, isBody, isFlowable,
+        return new RxJava2CallAdapter(responseType, scheduler, isAsync, this.rxHttpCache, rxCacheType, isResult, isBody, isFlowable,
                 isSingle, isMaybe, false);
     }
 }

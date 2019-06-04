@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.plugins.RxJavaPlugins;
-import com.xxf.arch.http.cache.RxCache;
+import com.xxf.arch.http.cache.RxHttpCache;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
@@ -18,8 +18,8 @@ final class RxJava2CallAdapter<R> implements CallAdapter<R, Object> {
     private final @Nullable
     Scheduler scheduler;
     private final boolean isAsync;
-    private RxCache rxCache;
-    private com.xxf.arch.annotation.RxCache.CacheType rxCacheType;
+    private RxHttpCache rxHttpCache;
+    private com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType;
     private final boolean isResult;
     private final boolean isBody;
     private final boolean isFlowable;
@@ -28,14 +28,14 @@ final class RxJava2CallAdapter<R> implements CallAdapter<R, Object> {
     private final boolean isCompletable;
 
     RxJava2CallAdapter(Type responseType, @Nullable Scheduler scheduler, boolean isAsync,
-                       RxCache rxCache,
-                       com.xxf.arch.annotation.RxCache.CacheType rxCacheType,
+                       RxHttpCache rxHttpCache,
+                       com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType,
                        boolean isResult, boolean isBody, boolean isFlowable, boolean isSingle, boolean isMaybe,
                        boolean isCompletable) {
         this.responseType = responseType;
         this.scheduler = scheduler;
         this.isAsync = isAsync;
-        this.rxCache = rxCache;
+        this.rxHttpCache = rxHttpCache;
         this.rxCacheType = rxCacheType;
         this.isResult = isResult;
         this.isBody = isBody;
@@ -53,8 +53,8 @@ final class RxJava2CallAdapter<R> implements CallAdapter<R, Object> {
     @Override
     public Object adapt(Call<R> call) {
         Observable<Response<R>> responseObservable = isAsync
-                ? new CallEnqueueObservable<>(call, this.rxCache, this.rxCacheType)
-                : new CallExecuteObservable<>(call, this.rxCache, this.rxCacheType);
+                ? new CallEnqueueObservable<>(call, this.rxHttpCache, this.rxCacheType)
+                : new CallExecuteObservable<>(call, this.rxHttpCache, this.rxCacheType);
 
         Observable<?> observable;
         if (isResult) {
