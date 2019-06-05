@@ -1,5 +1,6 @@
 package com.xxf.view.recyclerview;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -129,6 +130,7 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
      * @param viewHolder
      * @param actionState
      */
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {

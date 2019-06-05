@@ -1,5 +1,6 @@
 package com.xxf.view.recyclerview.adapter;
 
+import android.databinding.ObservableArrayList;
 import android.support.annotation.CheckResult;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -37,7 +38,7 @@ public abstract class SelectableBaseAdapter<T extends SelectableEntity> extends 
         this.selectType = selectType;
     }
 
-    public SelectableBaseAdapter(@SelectType int selectType, @NonNull List<T> data) {
+    public SelectableBaseAdapter(@SelectType int selectType, @NonNull ObservableArrayList<T> data) {
         super(data);
         this.selectType = selectType;
     }

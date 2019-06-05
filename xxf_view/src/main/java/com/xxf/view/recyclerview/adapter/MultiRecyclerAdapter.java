@@ -1,5 +1,6 @@
 package com.xxf.view.recyclerview.adapter;
 
+import android.databinding.ObservableArrayList;
 import android.support.annotation.NonNull;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public abstract class MultiRecyclerAdapter<T extends MultiViewEntity> extends Ba
     public MultiRecyclerAdapter() {
     }
 
-    public MultiRecyclerAdapter(@NonNull List<T> data) {
+    public MultiRecyclerAdapter(@NonNull ObservableArrayList<T> data) {
         super(data);
     }
 

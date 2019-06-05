@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xxf.view.recyclerview.DragItemTouchHelper;
 import com.xxf.view.recyclerview.SafeObservableArrayList;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.List;
  * date createTime：2015/9/10 10:05
  * version
  */
-public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
+public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> implements DragItemTouchHelper.AdapterSourceProvider {
     public static final View inflaterView(@LayoutRes int id, RecyclerView recyclerView) {
         return LayoutInflater.from(recyclerView.getContext())
                 .inflate(id, recyclerView, false);
@@ -81,6 +82,11 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     protected RecyclerView attachedRecyclerView;
 
     public ObservableArrayList<T> getData() {
+        return dataList;
+    }
+
+    @Override
+    public List<T> getAdapterSource() {
         return dataList;
     }
 
