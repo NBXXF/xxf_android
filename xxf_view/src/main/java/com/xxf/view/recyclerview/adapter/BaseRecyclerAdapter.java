@@ -1,6 +1,8 @@
 package com.xxf.view.recyclerview.adapter;
 
 import android.content.Context;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.support.annotation.CheckResult;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
@@ -11,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xxf.view.recyclerview.SafeObservableArrayList;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,14 +33,54 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
                 .inflate(id, recyclerView, false);
     }
 
+    /**
+     * 【数据】发生改变的监听 不包括header/footer
+     */
+    private final ObservableList.OnListChangedCallback<ObservableList<T>> dataChangeCallback = new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+        @Override
+        public void onChanged(ObservableList<T> sender) {
+            int start = getHeaderCount();
+            notifyItemRangeChanged(start, getDataSize());
+        }
+
+        @Override
+        public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
+            int start = getHeaderCount() + positionStart;
+            notifyItemRangeChanged(start, itemCount);
+        }
+
+        @Override
+        public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
+            int start = getHeaderCount() + positionStart;
+            notifyItemRangeInserted(start, itemCount);
+        }
+
+        @Override
+        public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
+            int start = getHeaderCount() + fromPosition;
+            int to = getHeaderCount() + toPosition;
+            if (itemCount == 1) {//刷新单个item
+                notifyItemMoved(start, to);
+            } else {// 全部数据刷新
+                notifyItemRangeChanged(start, getDataSize());
+            }
+        }
+
+        @Override
+        public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
+            int start = getHeaderCount() + positionStart;
+            notifyItemRangeRemoved(start, itemCount);
+        }
+    };
+
     private static final int HEADER_VIEW_TYPE = -10000;
     private static final int FOOTER_VIEW_TYPE = -20000;
     private final List<View> mHeaders = new ArrayList<View>();
     private final List<View> mFooters = new ArrayList<View>();
-    private List<T> dataList = new ArrayList<T>();
+    private ObservableArrayList<T> dataList = new SafeObservableArrayList<T>();
     protected RecyclerView attachedRecyclerView;
 
-    public List<T> getData() {
+    public ObservableArrayList<T> getData() {
         return dataList;
     }
 
@@ -56,12 +101,14 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
         return mFooters.size();
     }
 
-    public BaseRecyclerAdapter(@NonNull List<T> data) {
-        this.dataList = data == null ? new ArrayList<T>() : data;
+    public BaseRecyclerAdapter(@NonNull ObservableArrayList<T> data) {
+        this.dataList = (data == null ? new ObservableArrayList<T>() : data);
+        this.dataList.removeOnListChangedCallback(dataChangeCallback);
+        this.dataList.addOnListChangedCallback(dataChangeCallback);
     }
 
     public BaseRecyclerAdapter() {
-        this(new ArrayList<T>());
+        this(new SafeObservableArrayList<T>());
     }
 
     @Nullable
@@ -156,14 +203,12 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
             if (checkList(datas)) {
                 getData().addAll(datas);
             }
-            notifyDataSetChanged();
             return true;
         } else {
             //上拉加载 不能为空,并且不包含
             if (checkList(datas)
                     && !getData().containsAll(datas)) {
                 getData().addAll(datas);
-                notifyDataSetChanged();
                 return true;
             }
         }
@@ -171,8 +216,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     }
 
     public void clearData() {
-        getData().clear();
-        notifyDataSetChanged();
+        if (!isDataEmpty()) {
+            getData().clear();
+        }
     }
 
     /**
@@ -201,7 +247,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
      * @param datas
      * @return true 不空
      */
-    private boolean checkList(List<? extends T> datas) {
+    private boolean checkList(Collection<? extends T> datas) {
         return datas != null && !datas.isEmpty();
     }
 
@@ -245,8 +291,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
                 && checkItem(t)
                 && !getData().contains(t)) {
             getData().add(index, t);
-            int internalPosition = index + getHeaderCount();
-            notifyItemInserted(internalPosition);
             return true;
         }
         return false;
@@ -257,20 +301,16 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
                 && checkAddIndex(index)
                 && !getData().containsAll(datas)) {
             if (getData().addAll(index, datas)) {
-                int internalPosition = index + getHeaderCount();
-                notifyItemRangeInserted(internalPosition, datas.size());
                 return true;
             }
         }
         return false;
     }
 
-    public final boolean addItems(@NonNull List<? extends T> datas) {
+    public final boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)
                 && !getData().containsAll(datas)) {
-            int internalPosition = getData().size() + getHeaderCount();
             if (getData().addAll(datas)) {
-                notifyItemRangeInserted(internalPosition, datas.size());
                 return true;
             }
         }
@@ -280,9 +320,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     public final boolean addItem(@NonNull T t) {
         if (checkItem(t)
                 && !getData().contains(t)) {
-            int internalPosition = getData().size() + getHeaderCount();
             if (getData().add(t)) {
-                notifyItemInserted(internalPosition);
+                return true;
             }
         }
         return false;
@@ -299,8 +338,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
             int index = getIndex(t);
             if (index >= 0) {
                 getData().set(index, t);
-                int internalPosition = index + getHeaderCount();
-                notifyItemChanged(internalPosition);
                 return true;
             }
         }
@@ -314,8 +351,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     public final boolean removeItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
             getData().remove(index);
-            int internalPosition = index + getHeaderCount();
-            notifyItemRemoved(internalPosition);
             return true;
         }
         return false;
