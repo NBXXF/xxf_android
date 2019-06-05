@@ -135,7 +135,6 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         Log.w("=======ItemTouchHelper", "{onSelectedChanged}actionState=" + actionState);
-        holderBackgroundCache.put(viewHolder, viewHolder.itemView.getBackground());
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
             try {
                 //获取系统震动服务
@@ -147,6 +146,7 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
             }
             viewHolder.itemView.setPressed(true);
             //演示拖拽的时候item背景颜色加深（实际情况中去掉）
+            holderBackgroundCache.put(viewHolder, viewHolder.itemView.getBackground());
             viewHolder.itemView.setBackground(new ColorDrawable(dragBackgroundColor));
         }
         super.onSelectedChanged(viewHolder, actionState);
