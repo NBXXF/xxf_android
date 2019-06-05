@@ -1,11 +1,13 @@
 package com.xxf.arch.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xxf.arch.annotation.BindVM;
@@ -35,6 +37,24 @@ public class XXFActivity extends AppCompatActivity
         return (V) vm;
     }
 
+
+    /**
+     * 增加 类似fragment 获取上下文
+     *
+     * @return
+     */
+    public Context getContext() {
+        return this;
+    }
+
+    /**
+     * 增加 类似fragment 获取上下文
+     *
+     * @return
+     */
+    public FragmentActivity getActivity() {
+        return this;
+    }
 
     @CallSuper
     @Override
