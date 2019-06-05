@@ -5,20 +5,19 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 3. 权限请求可以用RxJava链式调用,不用写复杂的回调
 4. startActivityForResult可以用RxJava链式调用,不用写复杂的回调
 5. 简单配置http,轻松完成网络请求
+6. http双缓存,多种策略保证数据及时交互
 
 #### 用法
 ##### 引入项目
     //必选
-    implementation 'com.github.NBXXF:xxf_android:1.5.8'//主要lib
+    implementation 'com.github.NBXXF:xxf_android:1.6.4'//主要lib
     implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     
     //可选
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.google.code.gson:gson:2.8.2'
 
 ##### Activity / Fragment / DialogFaragment
