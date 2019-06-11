@@ -94,6 +94,13 @@ public class FragmentUtils {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         // 先判断是否被add过
         if (!fragment.isAdded()) {
+            //hide all
+            List<Fragment> fragments = fragmentManager.getFragments();
+            for (Fragment f : fragments) {
+                if (!f.isHidden()) {
+                    transaction.hide(f);
+                }
+            }
             transaction
                     .add(containerViewId, fragment)
                     .commitAllowingStateLoss();
