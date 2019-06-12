@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -21,14 +21,14 @@ public class RxActivityResultCompact {
     private static final String FRAGMENT_TAG = "_RESULT_HANDLE_FRAGMENT_";
 
     public static Observable<ActivityResult> startActivityForResult(
-            @NonNull AppCompatActivity activity, @NonNull Intent intent, int requestCode) {
+            @NonNull FragmentActivity activity, @NonNull Intent intent, int requestCode) {
 
         return startActivityForResult(activity.getSupportFragmentManager(), intent, requestCode, null);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public static Observable<ActivityResult> startActivityForResult(
-            @NonNull AppCompatActivity activity, @NonNull Intent intent, int requestCode, @Nullable Bundle options) {
+            @NonNull FragmentActivity activity, @NonNull Intent intent, int requestCode, @Nullable Bundle options) {
 
         return startActivityForResult(activity.getSupportFragmentManager(), intent, requestCode, options);
     }

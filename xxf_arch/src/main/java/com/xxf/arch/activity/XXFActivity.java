@@ -25,6 +25,10 @@ import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
  */
 public class XXFActivity extends AppCompatActivity
         implements ProgressHUDProvider {
+    /**
+     * 统一返回结果(一般情况只有一个返回值)
+     */
+    protected final String KEY_ACTIVITY_RESULT = "ActivityResult";
 
     private ViewDataBinding binding;
     private XXFViewModel vm;

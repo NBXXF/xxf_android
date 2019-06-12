@@ -171,7 +171,7 @@ public class XXF {
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public static Observable<ActivityResult> startActivityForResult(
-            @NonNull AppCompatActivity activity, @NonNull Intent intent, int requestCode) {
+            @NonNull FragmentActivity activity, @NonNull Intent intent, int requestCode) {
         return RxActivityResultCompact.startActivityForResult(activity, intent, requestCode);
     }
 
