@@ -10,23 +10,21 @@ import java.io.Serializable;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 带处理结果的dialog
  */
-public interface IResultDialog<R extends Serializable> {
+public interface IResultDialog<R extends Serializable> extends DialogInterface {
 
     /**
      * 取消
      *
      * @param cancelResult 取消参数
-     * @return true 代表自己处理关闭逻辑,false:自动关闭
      */
-    boolean dispatchCancel(R cancelResult);
+    void cancel(R cancelResult);
 
     /**
      * 确定 完成
      *
      * @param confirmResult 成功参数
-     * @return true 代表自己处理关闭逻辑,false:自动关闭
      */
-    boolean dispatchConfirm(R confirmResult);
+    void confirm(R confirmResult);
 
     /**
      * 比{@link DialogInterface.OnClickListener }多一个结果处理 和拦截
@@ -53,4 +51,12 @@ public interface IResultDialog<R extends Serializable> {
          */
         boolean onConfirm(@NonNull DialogInterface dialog, @Nullable R confirmResult);
     }
+
+    @Deprecated
+    @Override
+    void dismiss();
+
+    @Deprecated
+    @Override
+    void cancel();
 }

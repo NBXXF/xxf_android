@@ -34,7 +34,6 @@ public abstract class XXFAlertDialog<R extends Serializable>
         this.onDialogClickListener = onDialogClickListener;
     }
 
-
     /**
      * 分发确认结果
      *
@@ -42,11 +41,14 @@ public abstract class XXFAlertDialog<R extends Serializable>
      * @return
      */
     @Override
-    public final boolean dispatchConfirm(R confirmResult) {
+    public final void confirm(R confirmResult) {
         if (onDialogClickListener != null) {
-            return onDialogClickListener.onConfirm(this, confirmResult);
+            if (!onDialogClickListener.onConfirm(this, confirmResult)) {
+                dismiss();
+            }
+        } else {
+            dismiss();
         }
-        return false;
     }
 
     /**
@@ -56,11 +58,14 @@ public abstract class XXFAlertDialog<R extends Serializable>
      * @return
      */
     @Override
-    public final boolean dispatchCancel(R cancelResult) {
+    public final void cancel(R cancelResult) {
         if (onDialogClickListener != null) {
-            return onDialogClickListener.onCancel(this, cancelResult);
+            if (!onDialogClickListener.onCancel(this, cancelResult)) {
+                cancel();
+            }
+        } else {
+            cancel();
         }
-        return false;
     }
 
 
