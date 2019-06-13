@@ -34,6 +34,18 @@ public abstract class XXFAlertDialog<R extends Serializable>
         this.onDialogClickListener = onDialogClickListener;
     }
 
+    @Deprecated
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
+
+    @Deprecated
+    @Override
+    public void cancel() {
+        super.cancel();
+    }
+
     /**
      * 分发确认结果
      *

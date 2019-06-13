@@ -51,12 +51,4 @@ public interface IResultDialog<R extends Serializable> extends DialogInterface {
          */
         boolean onConfirm(@NonNull DialogInterface dialog, @Nullable R confirmResult);
     }
-
-    @Deprecated
-    @Override
-    void dismiss();
-
-    @Deprecated
-    @Override
-    void cancel();
 }
