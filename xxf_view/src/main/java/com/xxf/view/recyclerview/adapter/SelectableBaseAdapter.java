@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Description  可选择的适配器
- * Company Beijing icourt
+ *
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/10/5
  * version 2.1.0

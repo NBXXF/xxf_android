@@ -29,7 +29,7 @@ import java.lang.reflect.Method;
  * 1:检查 SystemUtils.isEnableNotification(BaseApplication.getApplication());
  * 2:替代方案 SnackbarUtils.showSnack(topActivity, noticeStr);
  * <p>
- * Company Beijing icourt
+ *
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/4/27
  * version 1.0.0

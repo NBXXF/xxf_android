@@ -9,7 +9,7 @@ import java.io.IOException;
 
 /**
  * Description  将null的字符串转换为""
- * Company Beijing icourt
+ *
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/7/19
  * version 2.0.0
