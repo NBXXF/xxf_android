@@ -11,7 +11,7 @@ import retrofit2.Callback;
 
 /**
  * Description
- *
+ * <p>
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/4/10
  * version 1.0.0
@@ -41,32 +41,6 @@ public class RequestUtils {
             return RequestBody.create(MediaType.parse("image/*"), file);
         }
         return null;
-    }
-
-    /**
-     * 构建媒体流请求体
-     *
-     * @param file
-     * @return
-     */
-    public static RequestBody createStreamBody(File file) {
-        if (file != null && file.exists()) {
-            return RequestBody.create(MediaType.parse("application/octet-stream"), file);
-        }
-        return null;
-    }
-
-    /**
-     * 构建媒体流请求体
-     *
-     * @param bytes
-     * @return
-     */
-    public static RequestBody createStreamBody(byte[] bytes) {
-        if (bytes == null) {
-            bytes = new byte[0];
-        }
-        return RequestBody.create(MediaType.parse("application/octet-stream"), bytes);
     }
 
     /**
@@ -135,42 +109,11 @@ public class RequestUtils {
      * @param json
      * @return
      */
+    @Deprecated
     public static RequestBody createJsonBody(String json) {
         return RequestBody
                 .create(MediaType.parse("application/json; charset=utf-8"),
                         TextUtils.isEmpty(json) ? "" : json);
     }
 
-    /**
-     * 执行call请求
-     *
-     * @param call
-     * @param callback
-     * @param <T>
-     * @return
-     */
-    public static <T> Call<T> callEnqueue(Call<T> call, Callback<T> callback) {
-        if (call != null && !call.isExecuted()) {
-            call.enqueue(callback);
-        }
-        return call;
-    }
-
-    /**
-     * 执行call请求
-     *
-     * @param call
-     * @param <T>
-     * @return
-     */
-    public static <T> Call<T> cancelCall(Call<T> call) {
-        if (call != null) {
-            try {
-                call.cancel();
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-        return call;
-    }
 }
