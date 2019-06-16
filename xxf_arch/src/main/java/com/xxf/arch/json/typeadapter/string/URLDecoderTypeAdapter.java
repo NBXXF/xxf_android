@@ -1,4 +1,4 @@
-package com.xxf.arch.json.typeadapter;
+package com.xxf.arch.json.typeadapter.string;
 
 import android.text.TextUtils;
 

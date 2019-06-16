@@ -1,4 +1,4 @@
-package com.xxf.arch.json.typeadapter;
+package com.xxf.arch.json.typeadapter.bool;
 
 import android.text.TextUtils;
 
@@ -10,14 +10,16 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
+import io.reactivex.functions.Function;
+
 /**
  * Description
- *
+ * <p>
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/4/8
  * version 1.0.0
  */
-public class BooleanTypeAdapter extends TypeAdapter<Boolean> implements IStringConverter<Boolean> {
+public class BooleanTypeAdapter extends TypeAdapter<Boolean> implements Function<String, Boolean> {
     @Override
     public void write(JsonWriter out, Boolean value) throws IOException {
         if (value == null) {
@@ -39,7 +41,11 @@ public class BooleanTypeAdapter extends TypeAdapter<Boolean> implements IStringC
             case NUMBER:
                 return in.nextInt() != 0;
             case STRING:
-                return conver2Object(in.nextString());
+                try {
+                    return apply(in.nextString());
+                } catch (Exception e) {
+                    throw new IOException(e);
+                }
             default:
                 throw new JsonParseException("Expected BOOLEAN or NUMBER but was " + peek);
         }
@@ -47,7 +53,7 @@ public class BooleanTypeAdapter extends TypeAdapter<Boolean> implements IStringC
 
 
     @Override
-    public Boolean conver2Object(String value) {
+    public Boolean apply(String value) throws Exception {
         return (!TextUtils.isEmpty(value))
                 &&
                 (value.equalsIgnoreCase("true") || !value.equals("0"));

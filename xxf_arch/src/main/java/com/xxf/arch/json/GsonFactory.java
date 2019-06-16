@@ -2,9 +2,8 @@ package com.xxf.arch.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.xxf.arch.json.typeadapter.BooleanTypeAdapter;
-import com.xxf.arch.json.typeadapter.LongTypeAdapter;
-import com.xxf.arch.json.typeadapter.StringNullAdapter;
+import com.xxf.arch.json.typeadapter.bool.BooleanTypeAdapter;
+import com.xxf.arch.json.typeadapter.number.LongTypeAdapter;
 
 public class GsonFactory {
     /**

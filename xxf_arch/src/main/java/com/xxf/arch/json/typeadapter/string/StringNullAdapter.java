@@ -1,4 +1,4 @@
-package com.xxf.arch.json.typeadapter;
+package com.xxf.arch.json.typeadapter.string;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
