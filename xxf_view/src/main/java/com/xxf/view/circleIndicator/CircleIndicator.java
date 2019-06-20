@@ -1,0 +1,115 @@
+package com.xxf.view.circleIndicator;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.database.DataSetObserver;
+import android.os.Build;
+import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+
+
+/**
+ * CircleIndicator work with ViewPager
+ */
+public class CircleIndicator extends BaseCircleIndicator {
+
+    private ViewPager mViewpager;
+
+    public CircleIndicator(Context context) {
+        super(context);
+    }
+
+    public CircleIndicator(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public CircleIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public CircleIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    public void setViewPager(@Nullable ViewPager viewPager) {
+        mViewpager = viewPager;
+        if (mViewpager != null && mViewpager.getAdapter() != null) {
+            mLastPosition = -1;
+            createIndicators();
+            mViewpager.removeOnPageChangeListener(mInternalPageChangeListener);
+            mViewpager.addOnPageChangeListener(mInternalPageChangeListener);
+            mInternalPageChangeListener.onPageSelected(mViewpager.getCurrentItem());
+        }
+    }
+
+    private void createIndicators() {
+        removeAllViews();
+        PagerAdapter adapter = mViewpager.getAdapter();
+        int count;
+        if (adapter == null || (count = adapter.getCount()) <= 0) {
+            return;
+        }
+        createIndicators(count, mViewpager.getCurrentItem());
+    }
+
+    private final ViewPager.OnPageChangeListener mInternalPageChangeListener =
+            new ViewPager.OnPageChangeListener() {
+
+                @Override public void onPageScrolled(int position, float positionOffset,
+                        int positionOffsetPixels) {
+                }
+
+                @Override public void onPageSelected(int position) {
+
+                    if (mViewpager.getAdapter() == null
+                            || mViewpager.getAdapter().getCount() <= 0) {
+                        return;
+                    }
+                    internalPageSelected(position);
+                    mLastPosition = position;
+                }
+
+                @Override public void onPageScrollStateChanged(int state) {
+                }
+            };
+
+    public DataSetObserver getDataSetObserver() {
+        return mInternalDataSetObserver;
+    }
+
+    private final DataSetObserver mInternalDataSetObserver = new DataSetObserver() {
+        @Override public void onChanged() {
+            super.onChanged();
+            if (mViewpager == null) {
+                return;
+            }
+            PagerAdapter adapter = mViewpager.getAdapter();
+            int newCount = adapter != null ? adapter.getCount() : 0;
+            int currentCount = getChildCount();
+            if (newCount == currentCount) {
+                // No change
+                return;
+            } else if (mLastPosition < newCount) {
+                mLastPosition = mViewpager.getCurrentItem();
+            } else {
+                mLastPosition = -1;
+            }
+            createIndicators();
+        }
+    };
+
+    /**
+     * @deprecated User ViewPager addOnPageChangeListener
+     */
+    @Deprecated public void setOnPageChangeListener(
+            ViewPager.OnPageChangeListener onPageChangeListener) {
+        if (mViewpager == null) {
+            throw new NullPointerException("can not find Viewpager , setViewPager first");
+        }
+        mViewpager.removeOnPageChangeListener(onPageChangeListener);
+        mViewpager.addOnPageChangeListener(onPageChangeListener);
+    }
+}
