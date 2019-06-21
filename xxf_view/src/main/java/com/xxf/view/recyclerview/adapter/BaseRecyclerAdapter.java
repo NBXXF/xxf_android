@@ -205,11 +205,14 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
      */
     public boolean bindData(boolean isRefresh, @NonNull List<T> datas) {
         if (isRefresh) {//下拉刷新
+            /**
+             * 避免动画闪屏
+             */
+            getData().removeOnListChangedCallback(dataChangeCallback);
             getData().clear();
-            if (checkList(datas)) {
-                getData().addAll(datas);
-            }
-            return true;
+            notifyDataSetChanged();
+            getData().addOnListChangedCallback(dataChangeCallback);
+            return getData().addAll(datas);
         } else {
             //上拉加载 不能为空,并且不包含
             if (checkList(datas)

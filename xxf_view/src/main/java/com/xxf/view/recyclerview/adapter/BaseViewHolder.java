@@ -54,6 +54,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
      * @return
      */
     @Nullable
+    @Deprecated
     public <T extends View> T obtainView(@IdRes int id) {
         if (null == holder) holder = new SparseArray<>();
         View view = holder.get(id);
@@ -65,6 +66,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
     }
 
     @Nullable
+    @Deprecated
     public <T> T obtainView(@IdRes int id, Class<T> viewClazz) {
         View view = obtainView(id);
         if (null == view) return null;
