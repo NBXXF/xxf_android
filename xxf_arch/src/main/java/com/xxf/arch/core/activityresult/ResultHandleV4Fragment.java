@@ -27,20 +27,10 @@ public class ResultHandleV4Fragment extends Fragment {
         return isAttachedBehavior;
     }
 
-    @TargetApi(23)
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachToContext(context);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (Build.VERSION.SDK_INT < 23) {
-            onAttachToContext(activity);
-        }
     }
 
     private void onAttachToContext(Context context) {
