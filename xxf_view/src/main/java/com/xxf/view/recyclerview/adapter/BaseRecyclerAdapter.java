@@ -354,6 +354,22 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     }
 
     /**
+     * 更新item
+     *
+     * @param t
+     * @return
+     */
+    public final boolean updateItem(int index, @NonNull T t) {
+        if (checkItem(t)) {
+            if (index >= 0) {
+                getData().set(index, t);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param index 相对于List的位置
      * @return
      */
