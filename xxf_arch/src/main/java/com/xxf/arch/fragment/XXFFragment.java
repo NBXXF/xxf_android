@@ -89,13 +89,13 @@ public class XXFFragment
     }
 
     /**
-     * 会重复调用 禁止复写
+     * 会重复调用
      *
      * @param view
      * @param savedInstanceState
      */
     @Override
-    public final void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
