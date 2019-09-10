@@ -65,12 +65,15 @@ final class CallExecuteObservable<T> extends Observable<Response<T>> {
             case onlyCache: {
                 try {
                     Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
-                    if (response != null) {
-                        observer.onNext(response);
-                    }
+                    observer.onNext(response);
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    observer.onError(e);
+                    try {
+                        observer.onError(e);
+                    } catch (Exception inner) {
+                        Exceptions.throwIfFatal(inner);
+                        RxJavaPlugins.onError(new CompositeException(e, inner));
+                    }
                 } finally {
                     observer.onComplete();
                 }
