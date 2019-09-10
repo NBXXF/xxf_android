@@ -83,32 +83,24 @@ public class XXFHttp {
             gsonConvertInterceptor = gsonInterceptorAnnotation.value().newInstance();
         }
 
-        HttpCacheDirectoryProvider rxHttpCacheDirectoryProvider = null;
+        //rxJava 缓存
+        RxHttpCache rxHttpCache = null;
         RxHttpCacheProvider rxHttpCacheAnnotation = apiClazz.getAnnotation(RxHttpCacheProvider.class);
         if (rxHttpCacheAnnotation != null) {
-            try {
-                rxHttpCacheDirectoryProvider = rxHttpCacheAnnotation.value().newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        HttpCacheDirectoryProvider okHttpCacheDirectoryProvider = null;
-        OkHttpCacheProvider okHttpCacheAnnotation = apiClazz.getAnnotation(OkHttpCacheProvider.class);
-        if (okHttpCacheAnnotation != null) {
-            try {
-                okHttpCacheDirectoryProvider = okHttpCacheAnnotation.value().newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            HttpCacheDirectoryProvider rxHttpCacheDirectoryProvider = rxHttpCacheAnnotation.value().newInstance();
+            rxHttpCache = new RxHttpCache(new File(rxHttpCacheDirectoryProvider.getDirectory()), rxHttpCacheDirectoryProvider.maxSize());
         }
 
         //okhttp缓存
-        if (okHttpCacheDirectoryProvider != null) {
-            ohcb.cache(new Cache(new File(okHttpCacheDirectoryProvider.getDirectory()), okHttpCacheDirectoryProvider.maxSize()));
+        OkHttpCacheProvider okHttpCacheAnnotation = apiClazz.getAnnotation(OkHttpCacheProvider.class);
+        if (okHttpCacheAnnotation != null) {
+            HttpCacheDirectoryProvider okHttpCacheDirectoryProvider = okHttpCacheAnnotation.value().newInstance();
+            Cache okhttpCache = new Cache(new File(okHttpCacheDirectoryProvider.getDirectory()), okHttpCacheDirectoryProvider.maxSize());
+            ohcb.cache(okhttpCache);
         }
+
         //创建缓存对象
-        T apiService = new RetrofitBuilder(gsonConvertInterceptor, new RxHttpCache(new File(rxHttpCacheDirectoryProvider.getDirectory()), rxHttpCacheDirectoryProvider.maxSize()))
+        T apiService = new RetrofitBuilder(gsonConvertInterceptor, rxHttpCache)
                 .client(ohcb.build())
                 .baseUrl(baseUrlAnnotation.value())
                 .build()
