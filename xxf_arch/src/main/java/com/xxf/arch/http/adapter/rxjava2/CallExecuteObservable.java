@@ -53,9 +53,10 @@ final class CallExecuteObservable<T> extends Observable<Response<T>> {
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
+                } finally {
+                    //执行网络请求
+                    executeCall(observer, call, disposable, false);
                 }
-                //执行网络请求
-                executeCall(observer, call, disposable, false);
             }
             break;
             case firstRemote: {
@@ -67,6 +68,26 @@ final class CallExecuteObservable<T> extends Observable<Response<T>> {
                     Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
                     observer.onNext(response);
                     observer.onComplete();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                    try {
+                        observer.onError(e);
+                    } catch (Exception inner) {
+                        Exceptions.throwIfFatal(inner);
+                        RxJavaPlugins.onError(new CompositeException(e, inner));
+                    }
+                }
+            }
+            break;
+            case ifCache: {
+                try {
+                    Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
+                    if (response != null) {
+                        observer.onNext(response);
+                        observer.onComplete();
+                    } else {
+                        executeCall(observer, call, disposable, false);
+                    }
                 } catch (Throwable e) {
                     e.printStackTrace();
                     try {

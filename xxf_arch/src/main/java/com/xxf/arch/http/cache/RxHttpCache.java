@@ -48,14 +48,19 @@ public class RxHttpCache {
     }
 
     @Nullable
-    public <T> Response<T> get(Request request, Converter<ResponseBody, T> responseConverter) throws IOException {
+    public <T> Response<T> get(Request request, Converter<ResponseBody, T> responseConverter) {
         if (cache == null) {
             return null;
         }
         String requestMethod = request.method();
         if (requestMethod.equals("GET")) {
             String key = key(request.url());
-            SimpleDiskLruCache.StringEntry stringEntry = cache.getString(key);
+            SimpleDiskLruCache.StringEntry stringEntry = null;
+            try {
+                stringEntry = cache.getString(key);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (stringEntry == null) {
                 return null;
             }
@@ -64,21 +69,32 @@ public class RxHttpCache {
                 return null;
             }
             final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");
-            return Response.success(responseConverter.convert(ResponseBody.create(MEDIA_TYPE, jsonCache)));
+            try {
+                return Response.success(responseConverter.convert(ResponseBody.create(MEDIA_TYPE, jsonCache)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
     @Nullable
-    public <T> void put(Response<T> response) throws IOException {
+    public <T> void put(Response<T> response) {
         if (cache == null) {
             return;
         }
         String requestMethod = response.raw().request().method();
-        if (requestMethod.equals("GET") && response.headers().get("Content-Type").toLowerCase().startsWith("application/json")) {
+        String contentType = response.headers().get("Content-Type");
+        if (requestMethod.equals("GET")
+                && contentType != null
+                && contentType.toLowerCase().startsWith("application/json")) {
             Request request = response.raw().request();
             String key = key(request.url());
-            cache.put(key, JsonUtils.toJsonString(response.body()));
+            try {
+                cache.put(key, JsonUtils.toJsonString(response.body()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

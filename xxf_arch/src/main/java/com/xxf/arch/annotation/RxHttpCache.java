@@ -28,9 +28,14 @@ public @interface RxHttpCache {
          */
         onlyRemote,
         /**
-         * 只从本地缓存中拿取
+         * 只从本地缓存中拿取,没有缓存 会抛 {@link NullPointerException}
          */
         onlyCache,
+
+        /**
+         * 如果本地存在就返回本地的,否则返回网络的数据
+         */
+        ifCache,
     }
 
     CacheType value() default CacheType.onlyRemote;
