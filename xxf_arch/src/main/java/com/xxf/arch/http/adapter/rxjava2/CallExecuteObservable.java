@@ -66,6 +66,7 @@ final class CallExecuteObservable<T> extends Observable<Response<T>> {
                 try {
                     Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
                     observer.onNext(response);
+                    observer.onComplete();
                 } catch (Throwable e) {
                     e.printStackTrace();
                     try {
@@ -74,8 +75,6 @@ final class CallExecuteObservable<T> extends Observable<Response<T>> {
                         Exceptions.throwIfFatal(inner);
                         RxJavaPlugins.onError(new CompositeException(e, inner));
                     }
-                } finally {
-                    observer.onComplete();
                 }
             }
             break;
