@@ -108,7 +108,7 @@ public class XXFHttp {
             ohcb.cache(new Cache(new File(okHttpCacheDirectoryProvider.getDirectory()), okHttpCacheDirectoryProvider.maxSize()));
         }
         //创建缓存对象
-        T apiService = new RetrofitBuilder(gsonConvertInterceptor, new RxHttpCache(rxHttpCacheDirectoryProvider))
+        T apiService = new RetrofitBuilder(gsonConvertInterceptor, new RxHttpCache(new File(rxHttpCacheDirectoryProvider.getDirectory()), rxHttpCacheDirectoryProvider.maxSize()))
                 .client(ohcb.build())
                 .baseUrl(baseUrlAnnotation.value())
                 .build()

@@ -4,8 +4,11 @@ package com.xxf.arch.http.cache;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.xxf.arch.http.cache.disklrucache.SimpleDiskLruCache;
+import com.xxf.arch.json.JsonUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,16 +28,19 @@ import retrofit2.Response;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description rewrite by xxf  no final
  * <p>
- * 可以继承 和公开 get方法 需要结合@{@link com.xxf.arch.annotation.RxHttpCacheProvider}
  * 目前只支持json
  */
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class RxHttpCache {
+    private static final int VERSION = 201105;
+    private SimpleDiskLruCache cache;
 
-    private HttpCacheDirectoryProvider httpCacheDirectoryProvider;
-
-    public RxHttpCache(HttpCacheDirectoryProvider rxCacheProvider) {
-        this.httpCacheDirectoryProvider = rxCacheProvider;
+    public RxHttpCache(File directory, long maxSize) {
+        try {
+            cache = SimpleDiskLruCache.open(directory, VERSION, maxSize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String key(HttpUrl url) {
@@ -43,48 +49,36 @@ public class RxHttpCache {
 
     @Nullable
     public <T> Response<T> get(Request request, Converter<ResponseBody, T> responseConverter) throws IOException {
-        if (httpCacheDirectoryProvider == null) {
+        if (cache == null) {
             return null;
         }
         String requestMethod = request.method();
         if (requestMethod.equals("GET")) {
             String key = key(request.url());
-            File file = new File(httpCacheDirectoryProvider.getDirectory(), key);
-            String s = readFile(file);
+            SimpleDiskLruCache.StringEntry stringEntry = cache.getString(key);
+            if (stringEntry == null) {
+                return null;
+            }
+            String jsonCache = stringEntry.getString();
+            if (TextUtils.isEmpty(jsonCache)) {
+                return null;
+            }
             final MediaType MEDIA_TYPE = MediaType.get("application/json; charset=UTF-8");
-            return Response.success(responseConverter.convert(ResponseBody.create(MEDIA_TYPE, s)));
+            return Response.success(responseConverter.convert(ResponseBody.create(MEDIA_TYPE, jsonCache)));
         }
         return null;
     }
 
-    private String readFile(File file) throws IOException {
-        try (FileInputStream in = new FileInputStream(file)) {
-            // size 为字串的长度 ，这里一次性读完
-            int size = in.available();
-            byte[] buffer = new byte[size];
-            in.read(buffer);
-            return new String(buffer);
-        }
-    }
-
-    private void writeFile(File file, String content) throws IOException {
-        try (FileOutputStream outStream = new FileOutputStream(file)) {
-            outStream.write(content.getBytes());
-        }
-    }
-
-
     @Nullable
     public <T> void put(Response<T> response) throws IOException {
-        if (httpCacheDirectoryProvider == null) {
+        if (cache == null) {
             return;
         }
         String requestMethod = response.raw().request().method();
         if (requestMethod.equals("GET") && response.headers().get("Content-Type").toLowerCase().startsWith("application/json")) {
             Request request = response.raw().request();
             String key = key(request.url());
-            File file = new File(httpCacheDirectoryProvider.getDirectory(), key);
-            writeFile(file, new Gson().toJson(response.body()));
+            cache.put(key, JsonUtils.toJsonString(response.body()));
         }
     }
 
