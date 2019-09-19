@@ -18,9 +18,16 @@ import io.reactivex.functions.Function;
  * @date createTime：2018/9/7
  */
 public class BaseApplication extends Application {
+    public static BaseApplication INSTANCE;
+
+    public static BaseApplication getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        INSTANCE = this;
         XXF.init(this,
                 new Logger() {
                     @Override

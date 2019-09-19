@@ -1,21 +1,22 @@
-package com.xxf.arch.http.cache;
+package com.xxf.arch.test.http;
 
 import android.support.annotation.NonNull;
 
-import com.xxf.arch.XXF;
+import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
+import com.xxf.arch.test.BaseApplication;
 
 import java.io.File;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description okhttp 默认缓存
+ * @Description rxjava htpp默认缓存
  */
-public class DefaultOkHttpCacheDirectoryProvider implements HttpCacheDirectoryProvider {
+public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheDirectoryProvider {
 
     @NonNull
     @Override
     public String getDirectory() {
-        File file = new File(XXF.getApplication().getCacheDir(), "rxHttpCache");
+        File file = new File(BaseApplication.getInstance().getCacheDir(), "okHttpCache");
         if (!file.exists()) {
             file.mkdirs();
         }
