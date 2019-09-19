@@ -11,7 +11,7 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 ##### 引入项目
  ```
     //必选
-    implementation 'com.github.NBXXF:xxf_android:2.4.0'//主要lib
+    implementation 'com.github.NBXXF:xxf_android:2.4.1'//主要lib
     implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
     
     //可选 网络请求框架
