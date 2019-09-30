@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.xxf.arch.test"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
