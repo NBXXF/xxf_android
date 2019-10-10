@@ -206,11 +206,4 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Progre
         }
     }
 
-    /**
-     * dialog全屏
-     */
-    protected final void requestFullScreen() {
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogFullScreen);
-    }
-
 }

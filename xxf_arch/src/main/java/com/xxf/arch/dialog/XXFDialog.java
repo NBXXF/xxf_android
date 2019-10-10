@@ -1,10 +1,10 @@
 package com.xxf.arch.dialog;
 
+import android.app.Dialog;
 import android.content.Context;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @Description
  */
 public abstract class XXFDialog<R extends Serializable>
-        extends AlertDialog
+        extends Dialog
         implements ProgressHUDProvider, IResultDialog<R> {
 
     private OnDialogClickListener<R> onDialogClickListener;
