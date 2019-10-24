@@ -14,6 +14,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.actiondialog.BottomPicSelectDialog;
 
 import java.util.concurrent.Callable;
 
@@ -123,7 +124,13 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        ToastUtils.showToast("Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
+                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                ToastUtils.showToast("yes:" + s);
+                            }
+                        }).show();
+                        //ToastUtils.showToast("Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
                     }
                 });
 

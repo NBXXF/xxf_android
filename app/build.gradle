@@ -38,11 +38,9 @@ dependencies {
 
     implementation project(':xxf_arch')
     implementation project(':xxf_apt')
+    implementation project(':xxf_view')
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     annotationProcessor project(':xxf_apt')
-
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
 
     //implementation 'com.github.axuan2015:xxf:1.4.0'
 }
