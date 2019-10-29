@@ -11,14 +11,10 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 ##### 引入项目
  ```
     //必选
-    implementation 'com.github.NBXXF:xxf_android:2.4.1'//主要lib
+    implementation 'com.github.NBXXF:xxf_android:2.5.0'//主要lib
     implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
     
-    //可选 网络请求框架
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.google.code.gson:gson:2.8.2'
-    
+   
     //可选 svg 图片加载框架
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.caverock:androidsvg-aar:1.3'
