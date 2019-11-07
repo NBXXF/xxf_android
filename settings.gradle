@@ -1,4 +1,5 @@
 include ':app',
+        ':xxf_http',
         ':xxf_apt',
         ':xxf_arch',
         ':xxf_view',
