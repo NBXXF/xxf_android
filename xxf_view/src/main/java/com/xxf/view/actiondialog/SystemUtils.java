@@ -1,10 +1,8 @@
 package com.xxf.view.actiondialog;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentValues;
@@ -19,9 +17,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresPermission;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -31,7 +27,6 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.CameraPermissionTransformer;
 import com.xxf.arch.rxjava.transformer.FilePermissionTransformer;
-import com.xxf.arch.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,7 +40,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -108,25 +102,24 @@ public class SystemUtils {
     }
 
     public static Disposable doTakePhoto(final FragmentActivity context, final File imageFile, Consumer<String> consumer) {
-        return Observable.zip(
-                XXF.requestPermission(context, Manifest.permission.CAMERA)
-                        .compose(new CameraPermissionTransformer(context))
-                        .take(1),
-                XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .compose(new FilePermissionTransformer(context))
-                        .take(1),
-                new BiFunction<Boolean, Boolean, Boolean>() {
+        return XXF.requestPermission(context, Manifest.permission.CAMERA)
+                .compose(new CameraPermissionTransformer(context))
+                .flatMap(new Function<Boolean, ObservableSource<Boolean>>() {
                     @Override
-                    public Boolean apply(Boolean aBoolean, Boolean aBoolean2) throws Exception {
-                        if (!(aBoolean && aBoolean2)) {
-                            throw new RuntimeException("permission dennied");
+                    public ObservableSource<Boolean> apply(Boolean cameraPermissionAllow) throws Exception {
+                        if (!cameraPermissionAllow) {
+                            throw new RuntimeException("camera permission dennied");
                         }
-                        return aBoolean && aBoolean2;
+                        return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                .compose(new FilePermissionTransformer(context));
                     }
                 })
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @Override
-                    public ObservableSource<String> apply(Boolean aBoolean) throws Exception {
+                    public ObservableSource<String> apply(Boolean storageCameraPermissionAllow) throws Exception {
+                        if (!storageCameraPermissionAllow) {
+                            throw new RuntimeException("storage permission dennied");
+                        }
                         return XXF.startActivityForResult(context, getTakePhotoIntent(imageFile), REQUEST_CODE_CAMERA)
                                 .take(1)
                                 .filter(new Predicate<ActivityResult>() {
@@ -151,7 +144,6 @@ public class SystemUtils {
                 .compose(XXF.<String>bindToErrorNotice())
                 .subscribe(consumer);
     }
-
 
 
     /**
@@ -255,8 +247,6 @@ public class SystemUtils {
     }
 
 
-
-
     private static Intent getDocumentIntent() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         String[] supportedMimeTypes = {
@@ -295,6 +285,7 @@ public class SystemUtils {
                 .compose(XXF.<String>bindToErrorNotice())
                 .subscribe(consumer);
     }
+
     /**
      * 隐藏软键盘
      *

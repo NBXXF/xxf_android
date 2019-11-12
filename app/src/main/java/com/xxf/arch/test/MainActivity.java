@@ -2,25 +2,17 @@ package com.xxf.arch.test;
 
 import android.Manifest;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.google.gson.JsonObject;
 import com.xxf.annotation.Router;
-import com.xxf.arch.test.R;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.BottomPicSelectDialog;
 
-import java.util.concurrent.Callable;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -46,63 +38,12 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        Observable
-//                                .fromCallable(new Callable<Object>() {
-//                                    @Override
-//                                    public Object call() throws Exception {
-//                                        return null;
-//                                    }
-//                                })
-//                                .compose(XXF.bindToErrorNotice())
-//                                .subscribe();
-//                        Intent intent = new Intent(view.getContext(), TestActivity.class);
-//                        intent.putExtra("name", "xxx");
-//                        intent.putExtra("age", "12");
-//                        intent.putExtra("desc", "124");
-//                        startActivity(intent);
-/*
-                        XXF.getApiService(LoginApiService.class)
-                                .getCity()
-                                .subscribe(new Consumer<JsonObject>() {
-                                    @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
-                                        Log.d("============>", "json:" + jsonObject.toString());
-                                    }
-                                });*/
-                        XXF.getApiService(LoginApiService.class)
-                                .getCityOnlyCache()
-                                .onErrorResumeNext(
-                                        XXF.getApiService(LoginApiService.class)
-                                                .getCity())
-                                .doOnNext(new Consumer<JsonObject>() {
-                                    @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
-                                        XXF.getApiService(LoginApiService.class)
-                                                .getCity()
-                                                .subscribe();
-                                    }
-                                })
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<JsonObject>() {
-                                    @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
-                                        ToastUtils.showToast("json:" + jsonObject.toString());
-                                        Log.d("============>", "json:" + jsonObject.toString());
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        throwable.printStackTrace();
-                                        ToastUtils.showToast("error:" + throwable);
-                                        Log.d("============>", "error:" + throwable);
-                                    }
-                                }, new Action() {
-                                    @Override
-                                    public void run() throws Exception {
-                                        ToastUtils.showToast("complete:");
-                                        Log.d("============>", "complete:");
-                                    }
-                                });
+                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                ToastUtils.showToast("url:" + s);
+                            }
+                        }).show();
                     }
                 });
 

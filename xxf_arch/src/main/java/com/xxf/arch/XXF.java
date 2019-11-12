@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import com.xxf.arch.http.XXFHttp;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -17,6 +16,7 @@ import com.xxf.arch.core.Logger;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
+import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
@@ -191,22 +191,22 @@ public class XXF {
      * 请求权限
      *
      * @param activity
-     * @param permission
+     * @param permissions
      * @return
      */
-    public static Observable<Boolean> requestPermission(@NonNull final FragmentActivity activity, @NonNull final String permission) {
-        return new RxPermissions(activity).request(permission);
+    public static Observable<Boolean> requestPermission(@NonNull final FragmentActivity activity, @NonNull final String... permissions) {
+        return new RxPermissions(activity).request(permissions);
     }
 
     /**
      * 请求权限
      *
      * @param fragment
-     * @param permission
+     * @param permissions
      * @return
      */
-    public static Observable<Boolean> requestPermission(@NonNull final Fragment fragment, @NonNull final String permission) {
-        return new RxPermissions(fragment).request(permission);
+    public static Observable<Boolean> requestPermission(@NonNull final Fragment fragment, @NonNull final String... permissions) {
+        return new RxPermissions(fragment).request(permissions);
     }
 
     /**
