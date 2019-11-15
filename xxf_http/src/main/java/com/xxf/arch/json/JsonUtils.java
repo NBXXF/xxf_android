@@ -66,7 +66,7 @@ public class JsonUtils {
         return gson.fromJson(json, typeOfT);
     }
 
-    public static <T> T toBean(JsonElement json, Type typeOfT) throws JsonParseException {
+    public static <T> T toType(JsonElement json, Type typeOfT) throws JsonParseException {
         return gson.fromJson(json, typeOfT);
     }
 
@@ -78,7 +78,7 @@ public class JsonUtils {
         return gson.fromJson(json, tClass);
     }
 
-    public static <T> List<T> toBeanList(String json, TypeToken<List<T>> typeToken) throws JsonParseException {
+    public static <T> List<T> toBeanList(String json, ListTypeToken<T> typeToken) throws JsonParseException {
         return gson.fromJson(json, typeToken.getType());
     }
 
