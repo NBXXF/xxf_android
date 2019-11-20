@@ -6,10 +6,7 @@ import java.util.List;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 数组
+ * @Description 数组 不能增加构造函数
  */
 public class ListTypeToken<T> extends TypeToken<List<T>> {
-    public ListTypeToken() {
-        super();
-    }
 }
