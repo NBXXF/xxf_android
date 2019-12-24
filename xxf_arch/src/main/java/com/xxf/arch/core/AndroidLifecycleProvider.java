@@ -47,6 +47,13 @@ public class AndroidLifecycleProvider extends SimpleActivityLifecycleCallbacks i
                     super.onFragmentPreCreated(fm, f, savedInstanceState);
                     rxLifecycleProviderMap.put(f, LifecycleProviderAndroidImpl.createLifecycleProvider(f));
                 }
+
+
+                @Override
+                public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
+                    super.onFragmentDestroyed(fm, f);
+                    rxLifecycleProviderMap.remove(f);
+                }
             }, true);
         }
 
