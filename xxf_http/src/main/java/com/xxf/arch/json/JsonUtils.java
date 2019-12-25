@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +85,9 @@ public class JsonUtils {
 
     public static <T> List<T> toBeanList(String json, Class<T> classz) throws JsonParseException {
         T[] arr = gson.fromJson(json, TypeToken.getArray(classz).getType());
+        if (arr == null) {
+            return Collections.emptyList();
+        }
         return Arrays.asList(arr);
       /*  List<T> lst = new ArrayList<T>();
         JsonArray array = new JsonParser().parse(json).getAsJsonArray();
@@ -93,7 +97,7 @@ public class JsonUtils {
         return lst;*/
     }
 
-    public static <T> Map<String, T> toMap(String json, TypeToken<Map<String, T>> typeToken) throws JsonParseException {
+    public static <K, V> Map<K, V> toMap(String json, MapTypeToken<K, V> typeToken) throws JsonParseException {
         return gson.fromJson(json, typeToken.getType());
     }
 

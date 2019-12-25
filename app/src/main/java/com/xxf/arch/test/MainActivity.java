@@ -10,8 +10,16 @@ import android.view.View;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
+import com.xxf.arch.json.JsonUtils;
+import com.xxf.arch.json.ListTypeToken;
+import com.xxf.arch.json.MapTypeToken;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.BottomPicSelectDialog;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -38,12 +46,24 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
+                        List<String> strs = Arrays.asList("1", "2");
+                        String s = JsonUtils.toJsonString(strs);
+                        List<String> strings = JsonUtils.toBeanList(s, new ListTypeToken<String>());
+                        Log.d("==========>res:", "" + Arrays.toString(strings.toArray()));
+
+
+                        Map<String, String> map = new HashMap<>();
+                        map.put("1", "bbb");
+                        map.put("2", "aaa");
+                        String mapStr = JsonUtils.toJsonString(map);
+                        Map<String, String> mapres = JsonUtils.toMap(mapStr, new MapTypeToken<String, String>());
+                        Log.d("==========>res2:", "" + mapres);
+                    /*    new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
                                 ToastUtils.showToast("url:" + s);
                             }
-                        }).show();
+                        }).show();*/
                     }
                 });
 
