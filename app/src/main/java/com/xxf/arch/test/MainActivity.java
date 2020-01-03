@@ -20,7 +20,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -46,24 +48,15 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        List<String> strs = Arrays.asList("1", "2");
-                        String s = JsonUtils.toJsonString(strs);
-                        List<String> strings = JsonUtils.toBeanList(s, new ListTypeToken<String>());
-                        Log.d("==========>res:", "" + Arrays.toString(strings.toArray()));
 
+                        Observable.timer(10, TimeUnit.SECONDS)
+                                .compose(XXF.bindToProgressHud())
+                                .subscribe(new Consumer<Long>() {
+                                    @Override
+                                    public void accept(Long aLong) throws Exception {
 
-                        Map<String, String> map = new HashMap<>();
-                        map.put("1", "bbb");
-                        map.put("2", "aaa");
-                        String mapStr = JsonUtils.toJsonString(map);
-                        Map<String, String> mapres = JsonUtils.toMap(mapStr, new MapTypeToken<String, String>());
-                        Log.d("==========>res2:", "" + mapres);
-                    /*    new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
-                            @Override
-                            public void accept(String s) throws Exception {
-                                ToastUtils.showToast("url:" + s);
-                            }
-                        }).show();*/
+                                    }
+                                });
                     }
                 });
 

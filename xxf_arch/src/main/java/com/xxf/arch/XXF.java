@@ -1,8 +1,10 @@
 package com.xxf.arch;
 
+import android.app.Activity;
 import android.app.Application;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -20,6 +22,8 @@ import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
+import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -61,6 +65,15 @@ public class XXF {
                 }
             }
         }
+    }
+
+    /**
+     * 设置默认的progress loading
+     *
+     * @param progressHUDProvider
+     */
+    public static void setProgressHUDProvider(ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
+        ProgressHUDFactory.setProgressHUDProvider(progressHUDProvider);
     }
 
     /**
@@ -146,6 +159,17 @@ public class XXF {
         return builder.build();
     }
 
+    /**
+     * 绑定loading
+     *
+     * @param <T>
+     * @return
+     */
+    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud() {
+        Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
+        ProgressHUD progressHUD = ProgressHUDFactory.getProgressHUD(topActivity);
+        return new ProgressHUDTransformerImpl.Builder(progressHUD).build();
+    }
 
     /**
      * 绑定错误提示

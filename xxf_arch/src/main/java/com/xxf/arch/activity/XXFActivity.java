@@ -14,6 +14,7 @@ import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 
@@ -89,6 +90,6 @@ public class XXFActivity extends AppCompatActivity
 
     @Override
     public ProgressHUD progressHUD() {
-        return null;
+        return ProgressHUDFactory.getProgressHUD(this);
     }
 }

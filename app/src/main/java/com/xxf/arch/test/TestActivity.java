@@ -8,14 +8,20 @@ import android.util.Log;
 import android.view.View;
 
 import com.xxf.annotation.Router;
+import com.xxf.arch.XXF;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.test.R;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.test.databinding.ActivityTestBinding;
 import com.xxf.arch.viewmodel.XXFViewModel;
+import com.xxf.arch.widget.progresshud.ProgressHUD;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
 
 /**
  * @author youxuan  E-mail:youxuan@icourt.cc
@@ -61,6 +67,19 @@ public class TestActivity extends XXFActivity {
 //                    }
 //                });
 
+
+    }
+
+    private void test() {
+        Observable.timer(10, TimeUnit.SECONDS)
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .subscribe();
+
+    }
+
+    @Override
+    public ProgressHUD progressHUD() {
+        return super.progressHUD();
     }
 
     @Override

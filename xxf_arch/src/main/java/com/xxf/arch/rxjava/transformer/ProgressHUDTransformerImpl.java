@@ -85,6 +85,18 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
         this.successNotice = successNotice;
     }
 
+    public void setLoadingNotice(String loadingNotice) {
+        this.loadingNotice = loadingNotice;
+    }
+
+    public void setErrorNotice(String errorNotice) {
+        this.errorNotice = errorNotice;
+    }
+
+    public void setSuccessNotice(String successNotice) {
+        this.successNotice = successNotice;
+    }
+
     @Override
     public void onSubscribe() {
         if (progressHUD != null) {

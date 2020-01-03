@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.Logger;
+import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -66,6 +68,14 @@ public class BaseApplication extends Application {
                         return null;
                     }
                 });
+        //设置默认的loading
+        XXF.setProgressHUDProvider(new ProgressHUDFactory.ProgressHUDProvider() {
+            @Override
+            public ProgressHUD onCreateProgressHUD(Activity context) {
+                return new DefaultProgressHUDImpl(context);
+            }
+        });
+
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {

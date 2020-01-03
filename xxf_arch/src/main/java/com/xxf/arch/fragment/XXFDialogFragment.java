@@ -25,6 +25,7 @@ import com.xxf.arch.annotation.BindView;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.arch.widget.TouchListenDialog;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 /**
@@ -140,7 +141,7 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Progre
 
     @Override
     public ProgressHUD progressHUD() {
-        return null;
+        return ProgressHUDFactory.getProgressHUD(getActivity());
     }
 
 

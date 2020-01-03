@@ -42,5 +42,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     annotationProcessor project(':xxf_apt')
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+    // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
+    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
+
     //implementation 'com.github.axuan2015:xxf:1.4.0'
 }
