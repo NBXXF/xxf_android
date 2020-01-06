@@ -167,7 +167,18 @@ public class XXF {
      */
     public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud() {
         Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
-        ProgressHUD progressHUD = ProgressHUDFactory.getProgressHUD(topActivity);
+        return bindToProgressHud(topActivity);
+    }
+
+    /**
+     * 绑定loading
+     *
+     * @param context
+     * @param <T>
+     * @return
+     */
+    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(Activity context) {
+        ProgressHUD progressHUD = ProgressHUDFactory.getProgressHUD(context);
         return new ProgressHUDTransformerImpl.Builder(progressHUD).build();
     }
 

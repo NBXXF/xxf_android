@@ -65,7 +65,7 @@ public class ProgressHUDFactory {
     public static ProgressHUDProvider progressHUDProvider;
 
     public static void setProgressHUDProvider(ProgressHUDProvider progressHUDProvider) {
-        Application application = Objects.requireNonNull(XXF.getApplication(), "must init XXF");
+        Application application = Objects.requireNonNull(XXF.getApplication(), "must call function XXF.setProgressHUDProvider()");
         ProgressHUDFactory.progressHUDProvider = Objects.requireNonNull(progressHUDProvider);
         application.unregisterActivityLifecycleCallbacks(l);
         application.registerActivityLifecycleCallbacks(l);

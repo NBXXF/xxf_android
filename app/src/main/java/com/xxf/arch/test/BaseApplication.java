@@ -9,6 +9,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.Logger;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
+import com.xxf.view.loading.DefaultProgressHUDImpl;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
