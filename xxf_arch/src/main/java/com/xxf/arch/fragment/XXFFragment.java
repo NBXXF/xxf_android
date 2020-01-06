@@ -120,6 +120,6 @@ public class XXFFragment
 
     @Override
     public ProgressHUD progressHUD() {
-        return ProgressHUDFactory.getProgressHUD(getActivity());
+        return ProgressHUDFactory.getInstance().getProgressHUD(this);
     }
 }

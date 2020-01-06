@@ -141,7 +141,7 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Progre
 
     @Override
     public ProgressHUD progressHUD() {
-        return ProgressHUDFactory.getProgressHUD(getActivity());
+        return ProgressHUDFactory.getInstance().getProgressHUD(this);
     }
 
 

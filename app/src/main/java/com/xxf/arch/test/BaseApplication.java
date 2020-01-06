@@ -2,7 +2,11 @@ package com.xxf.arch.test;
 
 import android.app.Activity;
 import android.app.Application;
+import android.arch.lifecycle.LifecycleOwner;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.xxf.arch.XXF;
@@ -72,8 +76,13 @@ public class BaseApplication extends Application {
         //设置默认的loading
         XXF.setProgressHUDProvider(new ProgressHUDFactory.ProgressHUDProvider() {
             @Override
-            public ProgressHUD onCreateProgressHUD(Activity context) {
-                return new DefaultProgressHUDImpl(context);
+            public ProgressHUD onCreateProgressHUD(LifecycleOwner lifecycleOwner) {
+                if (lifecycleOwner instanceof FragmentActivity) {
+                    return new DefaultProgressHUDImpl((FragmentActivity) lifecycleOwner);
+                } else if (lifecycleOwner instanceof Fragment) {
+                    return new DefaultProgressHUDImpl(((Fragment) lifecycleOwner).getContext());
+                }
+                return null;
             }
         });
 

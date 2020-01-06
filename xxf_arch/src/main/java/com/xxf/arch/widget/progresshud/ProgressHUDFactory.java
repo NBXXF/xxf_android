@@ -1,88 +1,91 @@
 package com.xxf.arch.widget.progresshud;
 
-import android.app.Activity;
-import android.app.Application;
-import android.os.Bundle;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
-import com.xxf.arch.XXF;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description
+ * @Description progress loading 工厂
  */
-public class ProgressHUDFactory {
-    private static final ConcurrentHashMap<Activity, ProgressHUD> ProgressHUD_MAP = new ConcurrentHashMap<>();
-    private static final Application.ActivityLifecycleCallbacks l = new Application.ActivityLifecycleCallbacks() {
+public class ProgressHUDFactory implements LifecycleObserver {
+    private static final ConcurrentHashMap<LifecycleOwner, ProgressHUD> ProgressHUD_MAP = new ConcurrentHashMap<>();
+    private static volatile ProgressHUDFactory INSTANCE;
+    private static volatile FragmentManager.FragmentLifecycleCallbacks fragmentLifecycleCallbacks = new FragmentManager.FragmentLifecycleCallbacks() {
         @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            //移除
-            ProgressHUD progressHUD = ProgressHUD_MAP.get(activity);
-            if (progressHUD != null && progressHUD.isShowLoading()) {
-                progressHUD.dismissLoadingDialog();
-            }
-            ProgressHUD_MAP.remove(activity);
+        public void onFragmentDestroyed(FragmentManager fm, Fragment f) {
+            super.onFragmentDestroyed(fm, f);
+            removeProgressHud(f);
         }
     };
 
+    public static ProgressHUDFactory getInstance() {
+        if (INSTANCE == null) {
+            synchronized (ProgressHUDFactory.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ProgressHUDFactory();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
+    void onEvent(LifecycleOwner owner, Lifecycle.Event event) {
+        if (event == Lifecycle.Event.ON_DESTROY) {
+            removeProgressHud(owner);
+            owner.getLifecycle().removeObserver(this);
+        }
+    }
+
+
+    /**
+     * 移除
+     *
+     * @param key
+     */
+    private static void removeProgressHud(LifecycleOwner key) {
+        ProgressHUD progressHUD = ProgressHUD_MAP.get(key);
+        if (progressHUD != null && progressHUD.isShowLoading()) {
+            progressHUD.dismissLoadingDialog();
+        }
+        ProgressHUD_MAP.remove(key);
+    }
+
 
     public interface ProgressHUDProvider {
-        ProgressHUD onCreateProgressHUD(Activity context);
+        ProgressHUD onCreateProgressHUD(LifecycleOwner lifecycleOwner);
     }
 
     public static ProgressHUDProvider progressHUDProvider;
 
     public static void setProgressHUDProvider(ProgressHUDProvider progressHUDProvider) {
-        Application application = Objects.requireNonNull(XXF.getApplication(), "must call function XXF.setProgressHUDProvider()");
         ProgressHUDFactory.progressHUDProvider = Objects.requireNonNull(progressHUDProvider);
-        application.unregisterActivityLifecycleCallbacks(l);
-        application.registerActivityLifecycleCallbacks(l);
     }
 
     /**
      * 获取 hud
      *
-     * @param activity
+     * @param lifecycleOwner
      * @return
      */
-    public static ProgressHUD getProgressHUD(Activity activity) {
-        ProgressHUD progressHUD = ProgressHUD_MAP.get(activity);
+    public ProgressHUD getProgressHUD(LifecycleOwner lifecycleOwner) {
+        ProgressHUD progressHUD = ProgressHUD_MAP.get(Objects.requireNonNull(lifecycleOwner, "lifecycleOwner is null"));
         if (progressHUD == null) {
-            progressHUD = progressHUDProvider.onCreateProgressHUD(activity);
-            ProgressHUD_MAP.put(activity, progressHUD);
+            //add Observer
+            lifecycleOwner.getLifecycle().removeObserver(this);
+            lifecycleOwner.getLifecycle().addObserver(this);
+            progressHUD = progressHUDProvider.onCreateProgressHUD(lifecycleOwner);
+            ProgressHUD_MAP.put(lifecycleOwner, progressHUD);
         }
         return progressHUD;
     }
+
 }

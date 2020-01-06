@@ -167,18 +167,22 @@ public class XXF {
      */
     public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud() {
         Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
-        return bindToProgressHud(topActivity);
+        if (topActivity instanceof LifecycleOwner) {
+            return bindToProgressHud((LifecycleOwner) topActivity);
+        } else {
+            throw new RuntimeException("topActivity is not FragmentActivity or LifecycleOwner");
+        }
     }
 
     /**
      * 绑定loading
      *
-     * @param context
+     * @param lifecycleOwner
      * @param <T>
      * @return
      */
-    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(Activity context) {
-        ProgressHUD progressHUD = ProgressHUDFactory.getProgressHUD(context);
+    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(LifecycleOwner lifecycleOwner) {
+        ProgressHUD progressHUD = ProgressHUDFactory.getInstance().getProgressHUD(lifecycleOwner);
         return new ProgressHUDTransformerImpl.Builder(progressHUD).build();
     }
 

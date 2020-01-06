@@ -90,6 +90,6 @@ public class XXFActivity extends AppCompatActivity
 
     @Override
     public ProgressHUD progressHUD() {
-        return ProgressHUDFactory.getProgressHUD(this);
+        return ProgressHUDFactory.getInstance().getProgressHUD(this);
     }
 }
