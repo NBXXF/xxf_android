@@ -44,7 +44,7 @@ public class StatusBarUtils {
      */
     @Deprecated
     public static void compatStatusBarForM(Activity activity, boolean fullscreen, int statusBarColor) {
-        setColor(activity, statusBarColor);
+        setColorNoTranslucent(activity, statusBarColor);
     }
 
     /**
