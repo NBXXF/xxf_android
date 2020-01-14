@@ -31,9 +31,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("==========>act1:", "" + this);
         super.onCreate(savedInstanceState);
-        Log.d("==========>act2:", "" + this);
         setContentView(R.layout.activity_main);
 
 
@@ -49,14 +47,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        Observable.timer(4, TimeUnit.SECONDS)
-                                .compose(XXF.bindToProgressHud())
-                                .subscribe(new Consumer<Long>() {
-                                    @Override
-                                    public void accept(Long aLong) throws Exception {
-
-                                    }
-                                });
+                        Intent intent = new Intent(MainActivity.this, TestActivity.class);
+                        startActivityForResult(intent, 1001);
                     }
                 });
 
@@ -105,4 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("======>onActResult:", "" + this + "_" + data.getStringExtra("data"));
+    }
 }

@@ -20,6 +20,7 @@ import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
+import com.xxf.arch.rxjava.transformer.EmptyUILifeTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
@@ -166,7 +167,14 @@ public class XXF {
      * @return
      */
     public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud() {
+        if (XXF.getActivityStackProvider().empty()) {
+            return ProgressHUDTransformerImpl.EMPTY;
+        }
+        //避免onActivityResult中执行 造成内存泄露
         Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
+        if (topActivity.isFinishing() || topActivity.isDestroyed()) {
+            return ProgressHUDTransformerImpl.EMPTY;
+        }
         if (topActivity instanceof LifecycleOwner) {
             return bindToProgressHud((LifecycleOwner) topActivity);
         } else {

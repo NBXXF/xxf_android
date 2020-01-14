@@ -39,9 +39,7 @@ public class TestActivity extends XXFActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("==========>act1:", "" + this);
         super.onCreate(savedInstanceState);
-        Log.d("==========>act2:", "" + this);
         binding = getBinding();
         baseFragmentAdapter = new BaseFragmentAdapter(getSupportFragmentManager());
         binding.pager.setAdapter(baseFragmentAdapter);
@@ -55,7 +53,11 @@ public class TestActivity extends XXFActivity {
                         Intent intent = getIntent();
                         intent.putExtra("data", "hello 2019");
                         setResult(Activity.RESULT_OK, intent);
-                        finish();
+                        Log.d("======>finish:", "" + this);
+                        //finish();
+
+                        Log.d("======>isFinishing:", "" + isFinishing());
+                        Log.d("======>isDestroyed:", "" + isDestroyed());
                     }
                 });
 //        Observable.interval(1, TimeUnit.MILLISECONDS)
@@ -82,24 +84,4 @@ public class TestActivity extends XXFActivity {
         return super.progressHUD();
     }
 
-    @Override
-    protected void onStop() {
-        Log.d("=========>", "onStop1");
-        super.onStop();
-        Log.d("=========>", "onStop2");
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d("=========>", "onPause1");
-        super.onPause();
-        Log.d("=========>", "onPause2");
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d("=========>", "onDestroy1");
-        super.onDestroy();
-        Log.d("=========>", "onDestroy2");
-    }
 }

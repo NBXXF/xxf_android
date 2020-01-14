@@ -1,5 +1,7 @@
 package com.xxf.arch.rxjava.transformer;
 
+import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
+
 import org.reactivestreams.Publisher;
 
 import io.reactivex.Completable;
@@ -20,11 +22,7 @@ import io.reactivex.functions.Consumer;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class UIErrorTransformer<T> implements
-        ObservableTransformer<T, T>,
-        FlowableTransformer<T, T>,
-        MaybeTransformer<T, T>,
-        CompletableTransformer {
+public class UIErrorTransformer<T> extends UILifeTransformerImpl<T> {
 
     Consumer<? super Throwable> consumer;
 
@@ -32,27 +30,35 @@ public class UIErrorTransformer<T> implements
         this.consumer = consumer;
     }
 
+
     @Override
-    public CompletableSource apply(Completable upstream) {
-        return upstream.observeOn(AndroidSchedulers.mainThread())
-                .doOnError(this.consumer);
+    public final void onSubscribe() {
+
     }
 
     @Override
-    public Publisher<T> apply(Flowable<T> upstream) {
-        return upstream.observeOn(AndroidSchedulers.mainThread())
-                .doOnError(this.consumer);
+    public final void onNext(T t) {
+
     }
 
     @Override
-    public MaybeSource<T> apply(Maybe<T> upstream) {
-        return upstream.observeOn(AndroidSchedulers.mainThread())
-                .doOnError(this.consumer);
+    public final void onComplete() {
+
     }
 
     @Override
-    public ObservableSource<T> apply(Observable<T> upstream) {
-        return upstream.observeOn(AndroidSchedulers.mainThread())
-                .doOnError(this.consumer);
+    public final void onError(Throwable throwable) {
+        if (consumer != null) {
+            try {
+                consumer.accept(throwable);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public final void onCancel() {
+
     }
 }

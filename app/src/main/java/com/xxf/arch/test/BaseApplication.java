@@ -89,37 +89,37 @@ public class BaseApplication extends Application {
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
-                Log.d("==========>act:", "" + activity);
+                Log.d("======>created:", "" + activity);
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
-
+                Log.d("======>started:", "" + activity);
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
-
+                Log.d("======>resumed:", "" + activity);
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
-
+                Log.d("======>paused:", "" + activity);
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
-
+                Log.d("======>stop:", "" + activity);
             }
 
             @Override
             public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-
+                Log.d("======>save:", "" + activity);
             }
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-
+                Log.d("======>destroyed:", "" + activity);
             }
         });
     }

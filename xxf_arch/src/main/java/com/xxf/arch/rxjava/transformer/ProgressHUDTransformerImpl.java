@@ -26,6 +26,7 @@ import io.reactivex.ObservableSource;
  * @date createTime：2018/1/4
  */
 public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
+    public static volatile ProgressHUDTransformerImpl EMPTY = new ProgressHUDTransformerImpl(null, null, null, null);
 
     /**
      * builder模式
