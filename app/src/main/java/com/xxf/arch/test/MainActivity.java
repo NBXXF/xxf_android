@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.reflect.TypeToken;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
@@ -29,6 +30,21 @@ import io.reactivex.plugins.RxJavaPlugins;
 
 @Router(path = "/user/main")
 public class MainActivity extends AppCompatActivity {
+    public static class User<T> {
+        private T t;
+
+        public User(T t) {
+            this.t = t;
+        }
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "t=" + t +
+                    '}';
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        User<String> user = new User<>("xxx");
+                        String s = JsonUtils.toJsonString(user);
+                        User<String> userDes = JsonUtils.toBean(s, User.class, String.class);
+                        Log.d("=========>d:", "" + userDes);
 
                         Intent intent = new Intent(MainActivity.this, TestActivity.class);
                         startActivityForResult(intent, 1001);
