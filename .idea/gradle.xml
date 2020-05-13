@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT" />
-        </compositeConfiguration>
+        <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/xxf_annotation" />
+            <option value="$PROJECT_DIR$/xxf_apt" />
             <option value="$PROJECT_DIR$/xxf_arch" />
-            <option value="$PROJECT_DIR$/xxf_security" />
+            <option value="$PROJECT_DIR$/xxf_http" />
             <option value="$PROJECT_DIR$/xxf_view" />
+            <option value="$PROJECT_DIR$/xxf_wechat" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

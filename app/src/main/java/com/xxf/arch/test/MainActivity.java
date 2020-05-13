@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
@@ -14,6 +15,7 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.ListTypeToken;
 import com.xxf.arch.json.MapTypeToken;
+import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.BottomPicSelectDialog;
 
@@ -50,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        XXF.getApiService(LoginApiService.class)
+                .getCity()
+                .subscribe(new Consumer<JsonObject>() {
+                    @Override
+                    public void accept(JsonObject jsonObject) throws Exception {
+                        Log.d("============>","d:"+jsonObject);
+                    }
+                });
 
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override

@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.xxf.arch.annotation.BaseUrl;
+import com.xxf.arch.annotation.BaseUrlProvider;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
@@ -47,6 +48,21 @@ public class XXFHttp {
         return (T) api;
     }
 
+    /**
+     * remove api service
+     * @param apiClazz
+     */
+    public static void clearApiService(Class apiClazz) {
+        API_MAP.remove(apiClazz);
+    }
+
+    /**
+     * remove all api service
+     */
+    public static void clearAllApiService() {
+        API_MAP.clear();
+    }
+
 
     /**
      * @param apiClazz
@@ -58,8 +74,15 @@ public class XXFHttp {
         OkHttpClientBuilder ohcb = new OkHttpClientBuilder();
 
         BaseUrl baseUrlAnnotation = apiClazz.getAnnotation(BaseUrl.class);
-        if (baseUrlAnnotation == null) {
-            throw new IllegalArgumentException("please use  BaseUrl Annotation to" + apiClazz);
+        BaseUrlProvider baseUrlProviderAnnotation = apiClazz.getAnnotation(BaseUrlProvider.class);
+        if (baseUrlAnnotation == null&&baseUrlProviderAnnotation==null) {
+            throw new IllegalArgumentException("please use  BaseUrl or BaseUrlProvider Annotation to" + apiClazz);
+        }
+        String baseUrl;
+        if(baseUrlProviderAnnotation!=null) {
+            baseUrl= baseUrlProviderAnnotation.value().newInstance().getBaseUrl(apiClazz);
+        }else {
+            baseUrl=baseUrlAnnotation.value();
         }
         //拦截器可选
         com.xxf.arch.annotation.Interceptor interceptorAnnotation = apiClazz.getAnnotation(com.xxf.arch.annotation.Interceptor.class);
@@ -91,7 +114,7 @@ public class XXFHttp {
         //创建缓存对象
         T apiService = new RetrofitBuilder(gsonConvertInterceptor, rxHttpCache)
                 .client(ohcb.build())
-                .baseUrl(baseUrlAnnotation.value())
+                .baseUrl(baseUrl)
                 .build()
                 .create(apiClazz);
         return apiService;
