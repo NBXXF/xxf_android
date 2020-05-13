@@ -1,6 +1,6 @@
 package com.xxf.arch.test.http;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.test.BaseApplication;

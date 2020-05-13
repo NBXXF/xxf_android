@@ -1,7 +1,7 @@
 package com.xxf.view.databinding.titlebar;
 
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
+import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 import android.graphics.drawable.Drawable;
 
 import com.xxf.view.utils.ResourcesUtil;

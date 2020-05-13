@@ -1,6 +1,6 @@
 package com.xxf.arch.http;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.xxf.arch.http.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.xxf.arch.http.cache.RxHttpCache;

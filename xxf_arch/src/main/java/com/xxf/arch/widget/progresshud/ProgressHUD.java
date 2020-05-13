@@ -1,6 +1,6 @@
 package com.xxf.arch.widget.progresshud;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Description  加载对话框定义

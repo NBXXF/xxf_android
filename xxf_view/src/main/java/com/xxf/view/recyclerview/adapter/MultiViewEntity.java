@@ -1,6 +1,6 @@
 package com.xxf.view.recyclerview.adapter;
 
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
 
 /**
  * Description  多布局适配模型

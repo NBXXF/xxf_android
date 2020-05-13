@@ -1,6 +1,6 @@
 package com.xxf.view.databinding.statelayout;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 
 import com.xxf.arch.XXF;

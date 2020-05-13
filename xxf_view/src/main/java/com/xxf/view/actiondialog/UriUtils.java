@@ -10,9 +10,9 @@ import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.AnyRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.AnyRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;

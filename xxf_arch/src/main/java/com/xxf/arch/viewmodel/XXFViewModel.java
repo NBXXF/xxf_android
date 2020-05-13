@@ -1,9 +1,9 @@
 package com.xxf.arch.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;

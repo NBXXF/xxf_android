@@ -2,11 +2,11 @@ package com.xxf.arch.test;
 
 import android.app.Activity;
 import android.app.Application;
-import android.arch.lifecycle.LifecycleOwner;
-import android.content.Context;
+import androidx.lifecycle.LifecycleOwner;
+
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 
 import com.xxf.arch.XXF;

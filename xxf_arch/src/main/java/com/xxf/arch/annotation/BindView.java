@@ -1,6 +1,6 @@
 package com.xxf.arch.annotation;
 
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 
 import java.lang.annotation.ElementType;
 

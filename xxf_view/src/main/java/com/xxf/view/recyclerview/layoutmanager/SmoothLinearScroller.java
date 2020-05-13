@@ -1,13 +1,13 @@
 package com.xxf.view.recyclerview.layoutmanager;
 
 import android.content.Context;
-import android.support.v7.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 平滑滚动
  */
-public class SmoothLinearScroller extends android.support.v7.widget.LinearSmoothScroller {
+public class SmoothLinearScroller extends LinearSmoothScroller {
 
     public enum SNAP {
         /**

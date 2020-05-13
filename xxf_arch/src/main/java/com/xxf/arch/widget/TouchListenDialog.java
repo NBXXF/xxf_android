@@ -1,7 +1,7 @@
 package com.xxf.arch.widget;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatDialog;
+import androidx.appcompat.app.AppCompatDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;

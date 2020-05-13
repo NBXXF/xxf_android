@@ -1,12 +1,11 @@
 package com.xxf.view.loading;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
 
 import com.xxf.arch.widget.progresshud.ProgressHUD;
-import com.xxf.view.loading.AlphaLoading;
 
 import java.util.concurrent.TimeUnit;
 

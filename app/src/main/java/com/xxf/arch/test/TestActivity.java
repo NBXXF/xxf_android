@@ -3,14 +3,13 @@ package com.xxf.arch.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-import com.xxf.arch.test.R;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;

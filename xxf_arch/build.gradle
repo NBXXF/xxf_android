@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 21
     }
@@ -15,7 +15,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(path: ':xxf_http')
-    api 'com.android.support:appcompat-v7:27.1.1'
-    api 'android.arch.lifecycle:extensions:1.1.1'
+    api 'androidx.appcompat:appcompat:1.0.0'
+    api 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     //api project(path: ':xxf_apt')
 }

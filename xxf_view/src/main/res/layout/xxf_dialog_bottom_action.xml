@@ -18,7 +18,7 @@
             android:textSize="17sp"
             tools:text="title" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dialog_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

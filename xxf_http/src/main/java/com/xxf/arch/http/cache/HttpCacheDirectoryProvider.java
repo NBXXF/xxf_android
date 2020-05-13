@@ -1,6 +1,6 @@
 package com.xxf.arch.http.cache;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com

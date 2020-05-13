@@ -3,16 +3,13 @@ package com.xxf.arch.http.cache;
 
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
 import com.xxf.arch.http.cache.disklrucache.SimpleDiskLruCache;
 import com.xxf.arch.json.JsonUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import io.reactivex.annotations.Nullable;

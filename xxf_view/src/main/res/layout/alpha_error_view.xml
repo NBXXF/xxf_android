@@ -9,7 +9,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <android.support.v4.widget.Space
+        <androidx.legacy.widget.Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="10" />
@@ -53,7 +53,7 @@
             android:textColor="#9b9b9b"
             android:textSize="13sp" />
 
-        <android.support.v4.widget.Space
+        <androidx.legacy.widget.Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="23" />

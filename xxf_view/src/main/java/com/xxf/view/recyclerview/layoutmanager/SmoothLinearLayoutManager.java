@@ -1,9 +1,8 @@
 package com.xxf.view.recyclerview.layoutmanager;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com

@@ -1,7 +1,7 @@
 package com.xxf.arch.http.adapter.rxjava2;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.http.cache.RxHttpCache;
 

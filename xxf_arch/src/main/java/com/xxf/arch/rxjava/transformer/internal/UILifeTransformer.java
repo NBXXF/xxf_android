@@ -1,6 +1,6 @@
 package com.xxf.arch.rxjava.transformer.internal;
 
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com

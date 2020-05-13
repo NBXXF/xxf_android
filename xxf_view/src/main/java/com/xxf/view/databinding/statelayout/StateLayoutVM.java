@@ -1,7 +1,7 @@
 package com.xxf.view.databinding.statelayout;
 
-import android.databinding.BaseObservable;
-import android.databinding.ObservableField;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.ObservableField;
 import android.graphics.drawable.Drawable;
 
 import com.xxf.view.R;

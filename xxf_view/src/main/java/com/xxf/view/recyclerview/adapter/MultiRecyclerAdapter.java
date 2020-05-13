@@ -1,9 +1,7 @@
 package com.xxf.view.recyclerview.adapter;
 
-import android.databinding.ObservableArrayList;
-import android.support.annotation.NonNull;
-
-import java.util.List;
+import androidx.databinding.ObservableArrayList;
+import androidx.annotation.NonNull;
 
 /**
  * Description 多布局的适配器

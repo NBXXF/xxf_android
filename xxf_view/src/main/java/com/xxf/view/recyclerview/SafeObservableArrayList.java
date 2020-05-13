@@ -1,9 +1,9 @@
 package com.xxf.view.recyclerview;
 
-import android.databinding.ObservableArrayList;
-import android.support.annotation.CheckResult;
-import android.support.annotation.IntRange;
-import android.support.annotation.Nullable;
+import androidx.databinding.ObservableArrayList;
+import androidx.annotation.CheckResult;
+import androidx.annotation.IntRange;
+import androidx.annotation.Nullable;
 
 import java.util.Collection;
 

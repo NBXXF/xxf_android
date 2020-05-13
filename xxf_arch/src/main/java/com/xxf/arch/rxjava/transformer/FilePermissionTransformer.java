@@ -1,7 +1,7 @@
 package com.xxf.arch.rxjava.transformer;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.xxf.arch.core.permission.RxPermissionTransformer;
 
