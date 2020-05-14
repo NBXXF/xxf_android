@@ -1,5 +1,6 @@
 package com.xxf.arch.http;
 
+
 import androidx.annotation.Nullable;
 
 import com.xxf.arch.http.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -51,7 +52,7 @@ public class RetrofitBuilder {
     public RetrofitBuilder(GsonConvertInterceptor interceptor, RxHttpCache rxHttpCache) {
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
-                .addConverterFactory(GsonConverterFactory.create(interceptor))
+                .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson(), interceptor))
                 .addConverterFactory(JsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync(rxHttpCache));
     }

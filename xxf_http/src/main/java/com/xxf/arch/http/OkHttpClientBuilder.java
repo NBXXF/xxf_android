@@ -32,8 +32,8 @@ public class OkHttpClientBuilder {
     private static final ConnectionPool CONNECTION_POOL = new ConnectionPool();
 
     protected OkHttpClient.Builder builder = new OkHttpClient.Builder()
-            //.sslSocketFactory(createSSLSocketFactory(), new TrustAllManager())
-            //.hostnameVerifier(new TrustAllHostnameVerifier())
+            .sslSocketFactory(createSSLSocketFactory(), new TrustAllManager())
+            .hostnameVerifier(new TrustAllHostnameVerifier())
             .retryOnConnectionFailure(true)
             .connectionPool(CONNECTION_POOL);
 
