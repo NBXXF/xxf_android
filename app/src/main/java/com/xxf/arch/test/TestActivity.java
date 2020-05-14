@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
@@ -49,14 +50,26 @@ public class TestActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = getIntent();
-                        intent.putExtra("data", "hello 2019");
-                        setResult(Activity.RESULT_OK, intent);
-                        Log.d("======>finish:", "" + this);
-                        //finish();
 
-                        Log.d("======>isFinishing:", "" + isFinishing());
-                        Log.d("======>isDestroyed:", "" + isDestroyed());
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(TestActivity.this,"xxxx2019999",Toast.LENGTH_LONG).show();
+                            }
+                        }).start();
+//                        Intent intent = getIntent();
+//                        intent.putExtra("data", "hello 2019");
+//                        setResult(Activity.RESULT_OK, intent);
+//                        Log.d("======>finish:", "" + this);
+//                        //finish();
+//
+//                        Log.d("======>isFinishing:", "" + isFinishing());
+//                        Log.d("======>isDestroyed:", "" + isDestroyed());
                     }
                 });
 //        Observable.interval(1, TimeUnit.MILLISECONDS)

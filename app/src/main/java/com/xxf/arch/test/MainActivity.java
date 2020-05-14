@@ -4,8 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.xxf.annotation.Router;
@@ -90,12 +93,21 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
-                            @Override
-                            public void accept(String s) throws Exception {
-                                ToastUtils.showToast("yes:" + s);
-                            }
-                        }).show();
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this,"xxxx2019",Toast.LENGTH_LONG).show();
+                                    }
+                                },1000);
+                        finish();
+//                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
+//                            @Override
+//                            public void accept(String s) throws Exception {
+//                                ToastUtils.showToast("yes:" + s);
+//                            }
+//                        }).show();
                         //ToastUtils.showToast("Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
                     }
                 });
@@ -115,6 +127,19 @@ public class MainActivity extends AppCompatActivity {
                                 });
                     }
                 });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+//        findViewById(R.id.bt_startActivityForResult).postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                    }
+//                },1000);
     }
 
     @Override
