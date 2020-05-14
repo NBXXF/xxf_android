@@ -51,7 +51,8 @@ public class RetrofitBuilder {
     public RetrofitBuilder(GsonConvertInterceptor interceptor, RxHttpCache rxHttpCache) {
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
-                .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson(), interceptor))
+                .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
+               // .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson(), interceptor))
                 .addConverterFactory(JsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync(rxHttpCache));
     }
