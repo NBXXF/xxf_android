@@ -40,6 +40,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     @Override
     public T convert(ResponseBody value) throws IOException {
         JsonReader jsonReader = gson.newJsonReader(value.charStream());
+        //宽容解析
+        jsonReader.setLenient(true);
         try {
             T result = adapter.read(jsonReader);
             if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
