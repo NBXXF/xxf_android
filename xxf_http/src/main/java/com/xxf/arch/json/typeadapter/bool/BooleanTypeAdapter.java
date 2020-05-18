@@ -36,8 +36,12 @@ public class BooleanTypeAdapter extends TypeAdapter<Boolean> implements Function
             case BOOLEAN:
                 return in.nextBoolean();
             case NULL:
-                in.nextNull();
-                return null;
+                try {
+                    in.nextNull();
+                }catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                return false;
             case NUMBER:
                 return in.nextInt() != 0;
             case STRING:
