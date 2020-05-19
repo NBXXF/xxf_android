@@ -16,6 +16,4 @@ public interface ItemMenu<T> {
 
     boolean isItemDisable();
 
-    void doAction();
-
 }

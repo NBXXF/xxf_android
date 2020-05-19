@@ -8,6 +8,7 @@
         android:background="@android:color/white"
         android:orientation="vertical">
 
+
         <TextView
             android:id="@+id/dialog_title"
             android:layout_width="match_parent"
@@ -25,11 +26,11 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="#F5F5F5" />
+            android:layout_height="8dp"
+            android:background="#F2F2F2" />
 
         <TextView
-            android:id="@+id/tv_item_cancel"
+            android:id="@+id/dialog_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"

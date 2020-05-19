@@ -1,18 +1,18 @@
 package com.xxf.arch.fragment;
 
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.xxf.arch.annotation.BindVM;
 import com.xxf.arch.annotation.BindView;

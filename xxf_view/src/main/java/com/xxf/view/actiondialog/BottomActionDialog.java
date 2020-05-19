@@ -1,16 +1,13 @@
 package com.xxf.view.actiondialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -18,13 +15,22 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.xxf.arch.dialog.XXFDialog;
 import com.xxf.view.R;
+import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
 import com.xxf.view.databinding.XxfDialogBottomActionBinding;
+import com.xxf.view.recyclerview.adapter.BaseBindableAdapter;
 import com.xxf.view.recyclerview.adapter.BaseRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.BaseViewHolder;
 import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 
 import java.util.List;
+
+import io.reactivex.functions.BiConsumer;
 
 /**
  * @author xuanyouwu
@@ -33,26 +39,18 @@ import java.util.List;
  * 模仿ios 下部菜单
  */
 
-public class BottomActionDialog extends AppCompatDialog {
-
-    private BottomActionDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
-    }
-
-    private BottomActionDialog(Context context, int themeResId) {
-        super(context, themeResId);
-    }
+public class BottomActionDialog extends XXFDialog<ItemMenu> {
 
 
     public BottomActionDialog(@NonNull Context context,
                               String title,
-                              @NonNull List<? extends ItemMenu> actionItems) {
-        super(context, R.style.xxf_AnimBottomDialog);
+                              @NonNull List<? extends ItemMenu> actionItems, BiConsumer<DialogInterface, ItemMenu> dialogConsumer) {
+        super(context, R.style.xxf_AnimBottomDialog, dialogConsumer);
         this.actionItems = actionItems;
         this.title = title;
     }
 
-    XxfDialogBottomActionBinding binding;
+    protected XxfDialogBottomActionBinding binding;
     ActionItemAdapter actionItemAdapter;
     List<? extends ItemMenu> actionItems;
     String title;
@@ -85,13 +83,12 @@ public class BottomActionDialog extends AppCompatDialog {
         actionItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseRecyclerAdapter adapter, BaseViewHolder holder, View view, int position) {
-                dismiss();
                 ItemMenu itemMenu = (ItemMenu) actionItemAdapter.getItem(position);
-                itemMenu.doAction();
+                setResult(itemMenu);
             }
         });
 
-        binding.tvItemCancel.setOnClickListener(new View.OnClickListener() {
+        binding.dialogCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
@@ -102,7 +99,6 @@ public class BottomActionDialog extends AppCompatDialog {
     @Override
     public void show() {
         closeKeyboard();
-
         super.show();
     }
 
@@ -118,20 +114,25 @@ public class BottomActionDialog extends AppCompatDialog {
         }
     }
 
+    public void onBindHolder(BaseViewHolder holder,
+                             XxfAdapterItemBottomActionBinding binding,
+                             @Nullable ItemMenu t, int index) {
+        TextView tvActionBottomDialog = binding.tvItemTitle;
+        tvActionBottomDialog.setText(t.getItemTitle());
+        tvActionBottomDialog.setTextColor(t.getItemColor());
+        tvActionBottomDialog.setEnabled(!t.isItemDisable());
+    }
 
-    private class ActionItemAdapter<T extends ItemMenu> extends BaseRecyclerAdapter<T> {
+    private class ActionItemAdapter<T extends ItemMenu> extends BaseBindableAdapter<XxfAdapterItemBottomActionBinding,T> {
 
         @Override
-        public int bindView(int viewtype) {
-            return R.layout.xxf_adapter_item_bottom_action;
+        protected XxfAdapterItemBottomActionBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
+            return XxfAdapterItemBottomActionBinding.inflate(inflater,viewGroup,false);
         }
 
         @Override
-        public void onBindHolder(BaseViewHolder holder, @Nullable T t, int index) {
-            TextView tvActionBottomDialog = holder.obtainView(R.id.tv_item_title);
-            tvActionBottomDialog.setText(t.getItemTitle());
-            tvActionBottomDialog.setTextColor(t.getItemColor());
-            tvActionBottomDialog.setEnabled(!t.isItemDisable());
+        public void onBindHolder(BaseViewHolder holder, XxfAdapterItemBottomActionBinding binding, @Nullable T t, int index) {
+            BottomActionDialog.this.onBindHolder(holder,holder.getBinding(),t,index);
         }
     }
 }

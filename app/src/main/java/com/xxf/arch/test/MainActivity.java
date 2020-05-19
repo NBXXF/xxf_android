@@ -1,27 +1,31 @@
 package com.xxf.arch.test;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.JsonObject;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.json.GsonFactory;
-import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.actiondialog.BottomPicSelectDialog;
+import com.xxf.view.actiondialog.BottomActionDialog;
+import com.xxf.view.actiondialog.ItemMenu;
+import com.xxf.view.actiondialog.ItemMenuImpl;
 
+import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -43,12 +47,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class TestModel
-    {
+    class TestModel {
         String account;
         Long time;
     }
-    class TE{
+
+    class TE {
         List<TestModel> lockVOS;
     }
 
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Consumer<JsonObject>() {
                     @Override
                     public void accept(JsonObject jsonObject) throws Exception {
-                        Log.d("============>","d:"+jsonObject);
+                        Log.d("============>", "d:" + jsonObject);
                     }
                 });
 
@@ -78,7 +82,16 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ToastUtils.showToast("YES");
+                        List<ItemMenuImpl> itemMenus = Arrays.asList(new ItemMenuImpl("x", "x"),
+                                new ItemMenuImpl("y", "y"));
+                        new BottomActionDialog(MainActivity.this,
+                                "title",
+                                itemMenus, new BiConsumer<DialogInterface, ItemMenu>() {
+                            @Override
+                            public void accept(DialogInterface dialogInterface, ItemMenu itemMenu) throws Exception {
+
+                            }
+                        }).show();
                         try {
                             TE testModel = GsonFactory.createGson().fromJson("{\n" +
                                     "    \"rank\": null,\n" +
@@ -268,18 +281,16 @@ public class MainActivity extends AppCompatActivity {
                                     "    ]\n" +
                                     "  }", TE.class);
 
-                            Log.d("=================>","yes:::"+testModel.lockVOS.size());
+                            Log.d("=================>", "yes:::" + testModel.lockVOS.size());
                             List<TestModel> lockVOS = testModel.lockVOS;
-                            int i=0;
-                            for(TestModel model:lockVOS)
-                            {
-                                Log.d("=================>","item:"+(i++)+"   " +model.account+" "+model.time+"  ");
+                            int i = 0;
+                            for (TestModel model : lockVOS) {
+                                Log.d("=================>", "item:" + (i++) + "   " + model.account + " " + model.time + "  ");
                             }
 
-                        }catch (Throwable e)
-                        {
+                        } catch (Throwable e) {
                             e.printStackTrace();
-                            Log.d("==========>error:","",e);
+                            Log.d("==========>error:", "", e);
                         }
 
 
@@ -316,9 +327,9 @@ public class MainActivity extends AppCompatActivity {
                                 .postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(MainActivity.this,"xxxx2019",Toast.LENGTH_LONG).show();
+                                        Toast.makeText(MainActivity.this, "xxxx2019", Toast.LENGTH_LONG).show();
                                     }
-                                },1000);
+                                }, 1000);
                         finish();
 //                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
 //                            @Override

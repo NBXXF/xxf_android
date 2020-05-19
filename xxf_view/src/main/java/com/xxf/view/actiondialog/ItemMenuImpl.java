@@ -41,9 +41,4 @@ public class ItemMenuImpl<T> implements ItemMenu<T> {
     public boolean isItemDisable() {
         return itemDisable;
     }
-
-    @Override
-    public void doAction() {
-
-    }
 }
