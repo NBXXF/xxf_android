@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ToastUtils.showToast("YES");
                         try {
                             TE testModel = GsonFactory.createGson().fromJson("{\n" +
                                     "    \"rank\": null,\n" +

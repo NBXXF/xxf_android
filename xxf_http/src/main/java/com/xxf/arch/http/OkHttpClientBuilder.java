@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -35,6 +36,7 @@ public class OkHttpClientBuilder {
             .sslSocketFactory(createSSLSocketFactory(), new TrustAllManager())
             .hostnameVerifier(new TrustAllHostnameVerifier())
             .retryOnConnectionFailure(true)
+            .readTimeout(30, TimeUnit.SECONDS)
             .connectionPool(CONNECTION_POOL);
 
     public OkHttpClientBuilder addInterceptor(Interceptor interceptor) {
