@@ -43,7 +43,7 @@ public class BottomActionDialog extends XXFDialog<ItemMenu> {
 
 
     public BottomActionDialog(@NonNull Context context,
-                              String title,
+                              CharSequence title,
                               @NonNull List<? extends ItemMenu> actionItems, BiConsumer<DialogInterface, ItemMenu> dialogConsumer) {
         super(context, R.style.xxf_AnimBottomDialog, dialogConsumer);
         this.actionItems = actionItems;
@@ -51,9 +51,9 @@ public class BottomActionDialog extends XXFDialog<ItemMenu> {
     }
 
     protected XxfDialogBottomActionBinding binding;
-    ActionItemAdapter actionItemAdapter;
-    List<? extends ItemMenu> actionItems;
-    String title;
+    protected ActionItemAdapter actionItemAdapter;
+    protected List<? extends ItemMenu> actionItems;
+    CharSequence title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,16 +123,16 @@ public class BottomActionDialog extends XXFDialog<ItemMenu> {
         tvActionBottomDialog.setEnabled(!t.isItemDisable());
     }
 
-    private class ActionItemAdapter<T extends ItemMenu> extends BaseBindableAdapter<XxfAdapterItemBottomActionBinding,T> {
+    private class ActionItemAdapter<T extends ItemMenu> extends BaseBindableAdapter<XxfAdapterItemBottomActionBinding, T> {
 
         @Override
         protected XxfAdapterItemBottomActionBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
-            return XxfAdapterItemBottomActionBinding.inflate(inflater,viewGroup,false);
+            return XxfAdapterItemBottomActionBinding.inflate(inflater, viewGroup, false);
         }
 
         @Override
         public void onBindHolder(BaseViewHolder holder, XxfAdapterItemBottomActionBinding binding, @Nullable T t, int index) {
-            BottomActionDialog.this.onBindHolder(holder,holder.getBinding(),t,index);
+            BottomActionDialog.this.onBindHolder(holder, holder.getBinding(), t, index);
         }
     }
 }
