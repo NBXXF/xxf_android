@@ -124,14 +124,17 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
     public void onBindHolder(BaseViewHolder holder,
                              XxfAdapterItemBottomActionBinding binding,
                              @Nullable ItemMenu t, int index) {
-        binding.getRoot().setBackgroundColor(adapterStyle.getItemBackgroundColor());
+
         TextView menuTV = binding.tvItemTitle;
         menuTV.setTextSize(adapterStyle.getItemTitleTextSize());
         if (t.isItemDisable()) {
+            binding.getRoot().setBackgroundColor(adapterStyle.getItemDisableBgColor());
             menuTV.setTextColor(adapterStyle.getItemTitleDisableColor());
         } else if (t.isItemSelected()) {
+            binding.getRoot().setBackgroundColor(adapterStyle.getItemSelectedBgColor());
             menuTV.setTextColor(adapterStyle.getItemTitleSelectedColor());
         } else {
+            binding.getRoot().setBackgroundColor(adapterStyle.getItemBackgroundColor());
             menuTV.setTextColor(adapterStyle.getItemTitleColor());
         }
         menuTV.setEnabled(!t.isItemDisable());

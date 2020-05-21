@@ -12,14 +12,30 @@ public class AdapterStyle {
     int itemTitleTextSize;
     int itemDividerColor;
     int itemBackgroundColor;
+    int itemSelectedBgColor;
+    int itemDisableBgColor;
 
-    protected AdapterStyle(int itemTitleColor, int itemTitleSelectedColor, int itemTitleDisableColor, int itemTitleTextSize, int itemDividerColor, int itemBackgroundColor) {
+
+    protected AdapterStyle(int itemTitleColor, int itemTitleSelectedColor, int itemTitleDisableColor, int itemTitleTextSize, int itemDividerColor, int itemBackgroundColor, int itemSelectedBgColor, int itemDisableBgColor) {
         this.itemTitleColor = itemTitleColor;
         this.itemTitleSelectedColor = itemTitleSelectedColor;
         this.itemTitleDisableColor = itemTitleDisableColor;
         this.itemTitleTextSize = itemTitleTextSize;
         this.itemDividerColor = itemDividerColor;
         this.itemBackgroundColor = itemBackgroundColor;
+        this.itemSelectedBgColor = itemSelectedBgColor;
+        this.itemDisableBgColor = itemDisableBgColor;
+    }
+
+    protected AdapterStyle(Builder builder) {
+        this.itemTitleColor = builder.getItemTitleColor();
+        this.itemTitleSelectedColor = builder.getItemTitleSelectedColor();
+        this.itemTitleDisableColor = builder.getItemTitleDisableColor();
+        this.itemTitleTextSize = builder.getItemTitleTextSize();
+        this.itemDividerColor = builder.getItemDividerColor();
+        this.itemBackgroundColor = builder.getItemBackgroundColor();
+        this.itemSelectedBgColor = builder.getItemSelectedBgColor();
+        this.itemDisableBgColor = builder.getItemDisableBgColor();
     }
 
     public int getItemTitleColor() {
@@ -46,6 +62,14 @@ public class AdapterStyle {
         return itemBackgroundColor;
     }
 
+    public int getItemSelectedBgColor() {
+        return itemSelectedBgColor;
+    }
+
+    public int getItemDisableBgColor() {
+        return itemDisableBgColor;
+    }
+
     /**
      * 建造者设计
      */
@@ -56,6 +80,8 @@ public class AdapterStyle {
         int itemTitleTextSize = 16;//sp
         int itemDividerColor = 0xFFF2F2F2;
         int itemBackgroundColor = 0XFFFFFFFF;
+        int itemSelectedBgColor = 0XFFFFFFFF;
+        int itemDisableBgColor = 0xFFBBBBBB;
 
         public Builder setItemTitleColor(int itemTitleColor) {
             this.itemTitleColor = itemTitleColor;
@@ -88,13 +114,50 @@ public class AdapterStyle {
             return this;
         }
 
+        public Builder setItemSelectedBgColor(int itemSelectedBgColor) {
+            this.itemSelectedBgColor = itemSelectedBgColor;
+            return this;
+        }
+
+        public Builder setItemDisableBgColor(int itemDisableBgColor) {
+            this.itemDisableBgColor = itemDisableBgColor;
+            return this;
+        }
+
+        public int getItemTitleColor() {
+            return itemTitleColor;
+        }
+
+        public int getItemTitleSelectedColor() {
+            return itemTitleSelectedColor;
+        }
+
+        public int getItemTitleDisableColor() {
+            return itemTitleDisableColor;
+        }
+
+        public int getItemTitleTextSize() {
+            return itemTitleTextSize;
+        }
+
+        public int getItemDividerColor() {
+            return itemDividerColor;
+        }
+
+        public int getItemBackgroundColor() {
+            return itemBackgroundColor;
+        }
+
+        public int getItemSelectedBgColor() {
+            return itemSelectedBgColor;
+        }
+
+        public int getItemDisableBgColor() {
+            return itemDisableBgColor;
+        }
+
         public AdapterStyle build() {
-            return new AdapterStyle(itemTitleColor,
-                    itemTitleSelectedColor,
-                    itemTitleDisableColor,
-                    itemTitleTextSize,
-                    itemDividerColor,
-                    itemBackgroundColor);
+            return new AdapterStyle(this);
         }
     }
 }
