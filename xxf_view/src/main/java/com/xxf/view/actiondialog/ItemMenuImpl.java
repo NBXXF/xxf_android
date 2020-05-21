@@ -1,12 +1,13 @@
 package com.xxf.view.actiondialog;
 
+import com.xxf.view.model.ItemMenu;
+
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
 public class ItemMenuImpl<T> implements ItemMenu<T> {
     public T item;
-    public int itemColor = 0xFF333333;//默认#333333
     public CharSequence itemTitle;
     public boolean itemDisable;
     public boolean isItemSelected;
@@ -16,16 +17,14 @@ public class ItemMenuImpl<T> implements ItemMenu<T> {
         this.itemTitle = itemTitle;
     }
 
-    public ItemMenuImpl(T item, int itemColor, CharSequence itemTitle, boolean itemDisable) {
+    public ItemMenuImpl(T item, CharSequence itemTitle, boolean itemDisable) {
         this.item = item;
-        this.itemColor = itemColor;
         this.itemTitle = itemTitle;
         this.itemDisable = itemDisable;
     }
 
-    public ItemMenuImpl(T item, int itemColor, CharSequence itemTitle, boolean itemDisable, boolean isItemSelected) {
+    public ItemMenuImpl(T item, CharSequence itemTitle, boolean itemDisable, boolean isItemSelected) {
         this.item = item;
-        this.itemColor = itemColor;
         this.itemTitle = itemTitle;
         this.itemDisable = itemDisable;
         this.isItemSelected = isItemSelected;
@@ -36,10 +35,6 @@ public class ItemMenuImpl<T> implements ItemMenu<T> {
         return item;
     }
 
-    @Override
-    public int getItemColor() {
-        return itemColor;
-    }
 
     @Override
     public CharSequence getItemTitle() {

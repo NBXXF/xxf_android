@@ -21,14 +21,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.xxf.arch.dialog.XXFDialog;
 import com.xxf.view.R;
+import com.xxf.view.config.AdapterStyle;
 import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
 import com.xxf.view.databinding.XxfDialogBottomActionBinding;
+import com.xxf.view.model.ItemMenu;
 import com.xxf.view.recyclerview.adapter.BaseBindableAdapter;
 import com.xxf.view.recyclerview.adapter.BaseRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.BaseViewHolder;
 import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.functions.BiConsumer;
 
@@ -39,21 +42,25 @@ import io.reactivex.functions.BiConsumer;
  * 模仿ios 下部菜单
  */
 
-public class BottomActionDialog extends XXFDialog<ItemMenu> {
+public class ActionSheetDialog extends XXFDialog<ItemMenu> {
 
 
-    public BottomActionDialog(@NonNull Context context,
-                              CharSequence title,
-                              @NonNull List<? extends ItemMenu> actionItems, BiConsumer<DialogInterface, ItemMenu> dialogConsumer) {
+    public ActionSheetDialog(@NonNull Context context,
+                             @Nullable CharSequence title,
+                             @NonNull AdapterStyle adapterStyle,
+                             @NonNull List<? extends ItemMenu> actionItems,
+                             BiConsumer<DialogInterface, ItemMenu> dialogConsumer) {
         super(context, R.style.xxf_AnimBottomDialog, dialogConsumer);
-        this.actionItems = actionItems;
+        this.adapterStyle = Objects.requireNonNull(adapterStyle);
+        this.actionItems = Objects.requireNonNull(actionItems);
         this.title = title;
     }
 
     protected XxfDialogBottomActionBinding binding;
     protected ActionItemAdapter actionItemAdapter;
+    protected AdapterStyle adapterStyle;
     protected List<? extends ItemMenu> actionItems;
-    CharSequence title;
+    protected CharSequence title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +124,19 @@ public class BottomActionDialog extends XXFDialog<ItemMenu> {
     public void onBindHolder(BaseViewHolder holder,
                              XxfAdapterItemBottomActionBinding binding,
                              @Nullable ItemMenu t, int index) {
-        TextView tvActionBottomDialog = binding.tvItemTitle;
-        tvActionBottomDialog.setText(t.getItemTitle());
-        tvActionBottomDialog.setTextColor(t.getItemColor());
-        tvActionBottomDialog.setEnabled(!t.isItemDisable());
+        binding.getRoot().setBackgroundColor(adapterStyle.getItemBackgroundColor());
+        TextView menuTV = binding.tvItemTitle;
+        menuTV.setTextSize(adapterStyle.getItemTitleTextSize());
+        if (t.isItemDisable()) {
+            menuTV.setTextColor(adapterStyle.getItemTitleDisableColor());
+        } else if (t.isItemSelected()) {
+            menuTV.setTextColor(adapterStyle.getItemTitleSelectedColor());
+        } else {
+            menuTV.setTextColor(adapterStyle.getItemTitleColor());
+        }
+        menuTV.setEnabled(!t.isItemDisable());
+        menuTV.setText(t.getItemTitle());
+        binding.itemDivider.setBackgroundColor(adapterStyle.getItemDividerColor());
     }
 
     private class ActionItemAdapter<T extends ItemMenu> extends BaseBindableAdapter<XxfAdapterItemBottomActionBinding, T> {
@@ -132,7 +148,7 @@ public class BottomActionDialog extends XXFDialog<ItemMenu> {
 
         @Override
         public void onBindHolder(BaseViewHolder holder, XxfAdapterItemBottomActionBinding binding, @Nullable T t, int index) {
-            BottomActionDialog.this.onBindHolder(holder, holder.getBinding(), t, index);
+            ActionSheetDialog.this.onBindHolder(holder, holder.getBinding(), t, index);
         }
     }
 }

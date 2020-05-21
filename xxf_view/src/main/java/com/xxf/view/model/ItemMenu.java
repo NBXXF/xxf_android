@@ -1,6 +1,4 @@
-package com.xxf.view.actiondialog;
-
-import com.xxf.view.recyclerview.adapter.SelectableEntity;
+package com.xxf.view.model;
 
 /**
  * @author xuanyouwu
@@ -11,8 +9,6 @@ import com.xxf.view.recyclerview.adapter.SelectableEntity;
 public interface ItemMenu<T> extends SelectableEntity {
 
     T getItem();
-
-    int getItemColor();
 
     CharSequence getItemTitle();
 

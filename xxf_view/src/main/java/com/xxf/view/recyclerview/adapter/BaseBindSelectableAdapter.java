@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 
+import com.xxf.view.model.SelectableEntity;
+
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description databinding的adapter

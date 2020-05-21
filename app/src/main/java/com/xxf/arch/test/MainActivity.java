@@ -18,9 +18,10 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.json.GsonFactory;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.actiondialog.BottomActionDialog;
-import com.xxf.view.actiondialog.ItemMenu;
+import com.xxf.view.actiondialog.ActionSheetDialog;
 import com.xxf.view.actiondialog.ItemMenuImpl;
+import com.xxf.view.config.AdapterStyle;
+import com.xxf.view.model.ItemMenu;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,9 +84,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         List<ItemMenuImpl> itemMenus = Arrays.asList(new ItemMenuImpl("x", "x"),
+                                new ItemMenuImpl("y", "y"),
+                                new ItemMenuImpl("y", "y"),
+                                new ItemMenuImpl("y", "y"),
                                 new ItemMenuImpl("y", "y"));
-                        new BottomActionDialog(MainActivity.this,
+                        new ActionSheetDialog(MainActivity.this,
                                 "title",
+                                new AdapterStyle.Builder().build(),
                                 itemMenus, new BiConsumer<DialogInterface, ItemMenu>() {
                             @Override
                             public void accept(DialogInterface dialogInterface, ItemMenu itemMenu) throws Exception {
