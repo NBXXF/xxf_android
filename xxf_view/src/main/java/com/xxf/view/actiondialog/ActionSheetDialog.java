@@ -103,6 +103,7 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
         binding.dialogTitle.setText(title);
         binding.dialogTitle.setVisibility(!TextUtils.isEmpty(title) ? View.VISIBLE : View.GONE);
         binding.dialogRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.dialogRecyclerView.setMaxHeight(maxHeightForAdapter);
         binding.dialogRecyclerView.setAdapter(actionItemAdapter = new ActionItemAdapter());
         actionItemAdapter.bindData(true, actionItems);
 
