@@ -19,10 +19,11 @@
             android:textSize="17sp"
             tools:text="title" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.xxf.view.recyclerview.MaxHeightRecyclerView
             android:id="@+id/dialog_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:minHeight="100dp" />
 
         <View
             android:id="@+id/dialog_divider"

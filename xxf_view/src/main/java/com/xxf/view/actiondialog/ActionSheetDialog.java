@@ -50,9 +50,27 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
                              @NonNull AdapterStyle adapterStyle,
                              @NonNull List<? extends ItemMenu> actionItems,
                              BiConsumer<DialogInterface, ItemMenu> dialogConsumer) {
+        this(context, title, adapterStyle, actionItems, 0, dialogConsumer);
+    }
+
+    /**
+     * @param context
+     * @param title
+     * @param adapterStyle
+     * @param actionItems
+     * @param maxHeightForAdapter PX 适配器高度,默认不限制高度 或者0不限制高度
+     * @param dialogConsumer
+     */
+    public ActionSheetDialog(@NonNull Context context,
+                             @Nullable CharSequence title,
+                             @NonNull AdapterStyle adapterStyle,
+                             @NonNull List<? extends ItemMenu> actionItems,
+                             int maxHeightForAdapter,
+                             BiConsumer<DialogInterface, ItemMenu> dialogConsumer) {
         super(context, R.style.xxf_AnimBottomDialog, dialogConsumer);
         this.adapterStyle = Objects.requireNonNull(adapterStyle);
         this.actionItems = Objects.requireNonNull(actionItems);
+        this.maxHeightForAdapter = maxHeightForAdapter;
         this.title = title;
     }
 
@@ -61,6 +79,7 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
     protected AdapterStyle adapterStyle;
     protected List<? extends ItemMenu> actionItems;
     protected CharSequence title;
+    protected int maxHeightForAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
