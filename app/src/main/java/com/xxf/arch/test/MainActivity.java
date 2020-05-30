@@ -1,8 +1,10 @@
 package com.xxf.arch.test;
 
 import android.Manifest;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.ListTypeToken;
 import com.xxf.arch.json.MapTypeToken;
+import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.BottomPicSelectDialog;
@@ -47,17 +50,43 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    class Presenter extends XXFLifecyclePresenter<Object> {
+
+        public Presenter(@NonNull LifecycleOwner lifecycleOwner, Object view) {
+            super(lifecycleOwner, view);
+        }
+
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            Log.d("================>p", "onCreate");
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            Log.d("================>p", "onPause");
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            Log.d("================>p", "onDestroy");
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new Presenter(this, this);
 
         XXF.getApiService(LoginApiService.class)
                 .getCity()
                 .subscribe(new Consumer<JsonObject>() {
                     @Override
                     public void accept(JsonObject jsonObject) throws Exception {
-                        Log.d("============>","d:"+jsonObject);
+                        Log.d("============>", "d:" + jsonObject);
                     }
                 });
 
