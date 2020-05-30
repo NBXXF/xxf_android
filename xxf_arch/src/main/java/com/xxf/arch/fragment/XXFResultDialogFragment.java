@@ -1,5 +1,6 @@
 package com.xxf.arch.fragment;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import io.reactivex.functions.BiConsumer;
@@ -13,10 +14,10 @@ import io.reactivex.functions.BiConsumer;
 
 public class XXFResultDialogFragment<R> extends XXFDialogFragment implements IResultDialogFragment<R> {
 
-    private BiConsumer<DialogFragment, R> dialogConsumer;
+    private BiConsumer<DialogFragment, R> dialogFragmentConsumer;
 
-    public XXFResultDialogFragment(BiConsumer<DialogFragment, R> dialogConsumer) {
-        this.dialogConsumer = dialogConsumer;
+    public XXFResultDialogFragment(@Nullable BiConsumer<DialogFragment, R> dialogFragmentConsumer) {
+        this.dialogFragmentConsumer = dialogFragmentConsumer;
     }
 
     /**
@@ -26,10 +27,15 @@ public class XXFResultDialogFragment<R> extends XXFDialogFragment implements IRe
     }
 
     @Override
+    public final void setDialogFragmentConsumer(@Nullable BiConsumer<DialogFragment, R> consumer) {
+        this.dialogFragmentConsumer = consumer;
+    }
+
+    @Override
     public final void setResult(R r) {
-        if (dialogConsumer != null) {
+        if (dialogFragmentConsumer != null) {
             try {
-                dialogConsumer.accept(this, r);
+                dialogFragmentConsumer.accept(this, r);
             } catch (Exception e) {
                 e.printStackTrace();
             }
