@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCreate() {
             super.onCreate();
+            Observable.just(1)
+                    .compose(XXF.bindToLifecycle(getLifecycleOwner()));
             Log.d("================>p", "onCreate");
         }
 
