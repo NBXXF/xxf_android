@@ -1,32 +1,34 @@
 package com.xxf.arch.test;
 
 import android.Manifest;
-import android.content.DialogInterface;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.arch.json.GsonFactory;
+import com.xxf.arch.json.JsonUtils;
+import com.xxf.arch.json.ListTypeToken;
+import com.xxf.arch.json.MapTypeToken;
+import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.actiondialog.ActionSheetDialog;
-import com.xxf.view.actiondialog.ItemMenuImpl;
-import com.xxf.view.config.AdapterStyle;
-import com.xxf.view.model.ItemMenu;
+import com.xxf.view.actiondialog.BottomPicSelectDialog;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.BiConsumer;
+import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -48,20 +50,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class TestModel {
-        String account;
-        Long time;
-    }
+    class Presenter extends XXFLifecyclePresenter<Object> {
 
-    class TE {
-        List<TestModel> lockVOS;
+        public Presenter(@NonNull LifecycleOwner lifecycleOwner, Object view) {
+            super(lifecycleOwner, view);
+        }
+
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            Log.d("================>p", "onCreate");
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            Log.d("================>p", "onPause");
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            Log.d("================>p", "onDestroy");
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        new Presenter(this, this);
 
         XXF.getApiService(LoginApiService.class)
                 .getCity()
@@ -83,229 +101,13 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        List<ItemMenuImpl> itemMenus = Arrays.asList(new ItemMenuImpl("x", "x"),
-                                new ItemMenuImpl("y", "y"),
-                                new ItemMenuImpl("y", "y"),
-                                new ItemMenuImpl("y", "y"),
-                                new ItemMenuImpl("y", "y"));
-                        new ActionSheetDialog(MainActivity.this,
-                                "title",
-                                new AdapterStyle.Builder().build(),
-                                itemMenus, new BiConsumer<DialogInterface, ItemMenu>() {
-                            @Override
-                            public void accept(DialogInterface dialogInterface, ItemMenu itemMenu) throws Exception {
+                        User<String> user = new User<>("xxx");
+                        String s = JsonUtils.toJsonString(user);
+                        User<String> userDes = JsonUtils.toBean(s, User.class, String.class);
+                        Log.d("=========>d:", "" + userDes);
 
-                            }
-                        }).show();
-                        try {
-                            TE testModel = GsonFactory.createGson().fromJson("{\n" +
-                                    "    \"rank\": null,\n" +
-                                    "    \"balance\": 0E-8,\n" +
-                                    "    \"interest\": null,\n" +
-                                    "    \"lockVOS\": [\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"w*****1@163.com\",\n" +
-                                    "        \"amount\": 7121283.43,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"177****45\",\n" +
-                                    "        \"amount\": 4381276.47,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": 1000\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"z*****l@126.com\",\n" +
-                                    "        \"amount\": 3837386.7364,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"g****u@163.com\",\n" +
-                                    "        \"amount\": 3574783.241,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"134****43\",\n" +
-                                    "        \"amount\": 2394127.534,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": 2000\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"4****5@qq.com\",\n" +
-                                    "        \"amount\": 1733347.2142,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"158******73\",\n" +
-                                    "        \"amount\": 1512989.05003628000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"133****16\",\n" +
-                                    "        \"amount\": 1472523.41,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"u****t@163.com\",\n" +
-                                    "        \"amount\": 1235529.34,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"y*****q@gmail.com\",\n" +
-                                    "        \"amount\": 1221684.5854,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"108******73\",\n" +
-                                    "        \"amount\": 973535.52650000000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"s****1@naver.com\",\n" +
-                                    "        \"amount\": 973367.50840000000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"158****88\",\n" +
-                                    "        \"amount\": 953432.3456,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"186******71\",\n" +
-                                    "        \"amount\": 662425.67510000000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"166******01\",\n" +
-                                    "        \"amount\": 611907.48380242403000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"d****1@naver.com\",\n" +
-                                    "        \"amount\": 451620.97500000000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"s****6@gmail.com\",\n" +
-                                    "        \"amount\": 441506.22894100000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"150******09\",\n" +
-                                    "        \"amount\": 380309.22681041000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"153******01\",\n" +
-                                    "        \"amount\": 371551.03088928000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"177******70\",\n" +
-                                    "        \"amount\": 352306.51399064000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"138******80\",\n" +
-                                    "        \"amount\": 342466.56003870000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"180******34\",\n" +
-                                    "        \"amount\": 323751.03134120000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"131******54\",\n" +
-                                    "        \"amount\": 316598.18557532000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"g****1@163.com\",\n" +
-                                    "        \"amount\": 311511.59331026000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"a****1@gmail.com\",\n" +
-                                    "        \"amount\": 308728.68106233000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"185******67\",\n" +
-                                    "        \"amount\": 303251.38580698000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"181******32\",\n" +
-                                    "        \"amount\": 291914.02753400000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"186******88\",\n" +
-                                    "        \"amount\": 258056.19374332000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"155******43\",\n" +
-                                    "        \"amount\": 256633.93006900000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      },\n" +
-                                    "      {\n" +
-                                    "        \"account\": \"139******88\",\n" +
-                                    "        \"amount\": 245985.19003420000000000000,\n" +
-                                    "        \"coinType\": null,\n" +
-                                    "        \"time\": null\n" +
-                                    "      }\n" +
-                                    "    ]\n" +
-                                    "  }", TE.class);
-
-                            Log.d("=================>", "yes:::" + testModel.lockVOS.size());
-                            List<TestModel> lockVOS = testModel.lockVOS;
-                            int i = 0;
-                            for (TestModel model : lockVOS) {
-                                Log.d("=================>", "item:" + (i++) + "   " + model.account + " " + model.time + "  ");
-                            }
-
-                        } catch (Throwable e) {
-                            e.printStackTrace();
-                            Log.d("==========>error:", "", e);
-                        }
-
-
-//                        User<String> user = new User<>("xxx");
-//                        String s = JsonUtils.toJsonString(user);
-//                        User<String> userDes = JsonUtils.toBean(s, User.class, String.class);
-//                        Log.d("=========>d:", "" + userDes);
-//
-//                        Intent intent = new Intent(MainActivity.this, TestActivity.class);
-//                        startActivityForResult(intent, 1001);
+                        Intent intent = new Intent(MainActivity.this, TestActivity.class);
+                        startActivityForResult(intent, 1001);
                     }
                 });
 
@@ -327,21 +129,12 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-
-                        new Handler()
-                                .postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(MainActivity.this, "xxxx2019", Toast.LENGTH_LONG).show();
-                                    }
-                                }, 1000);
-                        finish();
-//                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
-//                            @Override
-//                            public void accept(String s) throws Exception {
-//                                ToastUtils.showToast("yes:" + s);
-//                            }
-//                        }).show();
+                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                ToastUtils.showToast("yes:" + s);
+                            }
+                        }).show();
                         //ToastUtils.showToast("Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
                     }
                 });
@@ -361,19 +154,6 @@ public class MainActivity extends AppCompatActivity {
                                 });
                     }
                 });
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-//        findViewById(R.id.bt_startActivityForResult).postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                    }
-//                },1000);
     }
 
     @Override
