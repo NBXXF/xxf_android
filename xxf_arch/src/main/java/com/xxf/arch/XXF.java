@@ -2,12 +2,6 @@ package com.xxf.arch;
 
 import android.app.Activity;
 import android.app.Application;
-
-import androidx.core.app.ComponentActivity;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-
 import android.content.Intent;
 import android.os.Build;
 
@@ -15,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -331,7 +327,7 @@ public class XXF {
      * @param <V>
      * @return
      */
-    public static <V> XXFActivityPresenter<V> createActivityPresenter(ComponentActivity activity, V view) {
+    public static <V> XXFActivityPresenter<V> createActivityPresenter(FragmentActivity activity, V view) {
         return new XXFActivityPresenter<>(activity, view);
     }
 

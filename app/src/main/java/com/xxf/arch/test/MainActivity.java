@@ -11,23 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
-import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.json.JsonUtils;
-import com.xxf.arch.json.ListTypeToken;
-import com.xxf.arch.json.MapTypeToken;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.actiondialog.ActionSheetDialog;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -109,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
                         User<String> userDes = JsonUtils.toBean(s, User.class, String.class);
                         Log.d("=========>d:", "" + userDes);
 
-                        Intent intent = new Intent(MainActivity.this, TestActivity.class);
-                        startActivityForResult(intent, 1001);
                     }
                 });
 
@@ -147,14 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        XXF.startActivityForResult(MainActivity.this, new Intent(MainActivity.this, TestActivity.class), 1001)
-                                .subscribe(new Consumer<ActivityResult>() {
-                                    @Override
-                                    public void accept(ActivityResult activityResult) throws Exception {
-                                        ToastUtils.showToast("activityResult:reqcode:" + activityResult.getRequestCode() + ";resCode" + activityResult.getResultCode() + ";data:" + activityResult.getData().getStringExtra("data"));
-
-                                    }
-                                });
                     }
                 });
     }

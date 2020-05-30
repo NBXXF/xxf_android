@@ -1,21 +1,11 @@
 package com.xxf.arch.activity;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.xxf.arch.annotation.BindVM;
-import com.xxf.arch.annotation.BindView;
-import com.xxf.arch.viewmodel.XXFViewModel;
-import com.xxf.arch.widget.progresshud.ProgressHUD;
-import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 
 /**
@@ -24,24 +14,24 @@ import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFActivity extends AppCompatActivity
-        implements ProgressHUDProvider {
+public class XXFActivity extends AppCompatActivity {
     /**
      * 统一返回结果(一般情况只有一个返回值)
      */
     public static final String KEY_ACTIVITY_RESULT = "ActivityResult";
 
-    private ViewDataBinding binding;
-    private XXFViewModel vm;
 
-    public <B extends ViewDataBinding> B getBinding() {
-        return (B) binding;
+    @CallSuper
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
-    public <V extends XXFViewModel> V getVm() {
-        return (V) vm;
+    @CallSuper
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
-
 
     /**
      * 增加 类似fragment 获取上下文
@@ -57,39 +47,9 @@ public class XXFActivity extends AppCompatActivity
      *
      * @return
      */
-    public FragmentActivity getActivity() {
+    public AppCompatActivity getActivity() {
         return this;
     }
 
-    @CallSuper
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
-        if (bindViewAnnotation != null) {
-            binding = DataBindingUtil.setContentView(this, bindViewAnnotation.value());
-        }
-
-        BindVM bindVMAnnotation = getClass().getAnnotation(BindVM.class);
-        if (bindVMAnnotation != null) {
-            vm = ViewModelProviders.of(this).get(bindVMAnnotation.value());
-        }
-    }
-
-
-    @CallSuper
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (binding != null) {
-            binding.unbind();
-        }
-    }
-
-
-    @Override
-    public ProgressHUD progressHUD() {
-        return ProgressHUDFactory.getInstance().getProgressHUD(this);
-    }
 }

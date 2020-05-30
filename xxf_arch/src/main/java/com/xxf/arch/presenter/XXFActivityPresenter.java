@@ -1,8 +1,7 @@
 package com.xxf.arch.presenter;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ComponentActivity;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * @author xuanyouwu@163.com
@@ -11,14 +10,14 @@ import androidx.fragment.app.Fragment;
  * @date createTime：2018/9/7
  */
 public class XXFActivityPresenter<V> extends XXFLifecyclePresenter<V> {
-    private ComponentActivity activity;
+    private FragmentActivity activity;
 
-    public XXFActivityPresenter(@NonNull ComponentActivity activity,V view) {
+    public XXFActivityPresenter(@NonNull FragmentActivity activity, V view) {
         super(activity, view);
         this.activity = activity;
     }
 
-    public final ComponentActivity getActivity() {
+    public final FragmentActivity getActivity() {
         return activity;
     }
 }

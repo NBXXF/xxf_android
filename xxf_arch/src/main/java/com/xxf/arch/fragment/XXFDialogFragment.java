@@ -1,10 +1,13 @@
 package com.xxf.arch.fragment;
 
 import android.app.Dialog;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
 import androidx.annotation.LayoutRes;
@@ -12,19 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 
-import com.xxf.arch.annotation.BindVM;
-import com.xxf.arch.annotation.BindView;
-import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.arch.widget.TouchListenDialog;
-import com.xxf.arch.widget.progresshud.ProgressHUD;
-import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 /**
  * @author xuanyouwu@163.com
@@ -32,42 +24,21 @@ import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends AppCompatDialogFragment implements ProgressHUDProvider {
-    private ViewDataBinding binding;
-    private XXFViewModel vm;
-
-    public <B extends ViewDataBinding> B getBinding() {
-        return (B) binding;
-    }
-
-    public <V extends XXFViewModel> V getVm() {
-        return (V) vm;
-    }
+public class XXFDialogFragment extends AppCompatDialogFragment {
 
     private View contentView;
-
 
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BindView bindViewAnnotation = getClass().getAnnotation(BindView.class);
-        if (bindViewAnnotation != null) {
-            binding = DataBindingUtil.inflate(getLayoutInflater(), bindViewAnnotation.value(), null, false);
-            setContentView(binding.getRoot());
-        }
-
-        BindVM bindVMAnnotation = getClass().getAnnotation(BindVM.class);
-        if (bindVMAnnotation != null) {
-            vm = ViewModelProviders.of(this).get(bindVMAnnotation.value());
-        }
     }
 
-    public void setContentView(@LayoutRes int layoutResID) {
+    public final void setContentView(@LayoutRes int layoutResID) {
         this.contentView = getLayoutInflater().inflate(layoutResID, null);
     }
 
-    public void setContentView(View view) {
+    public final void setContentView(View view) {
         this.contentView = view;
     }
 
@@ -131,15 +102,6 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Progre
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (binding != null) {
-            binding.unbind();
-        }
-    }
-
-
-    @Override
-    public ProgressHUD progressHUD() {
-        return ProgressHUDFactory.getInstance().getProgressHUD(this);
     }
 
 
