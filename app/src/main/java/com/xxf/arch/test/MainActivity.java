@@ -1,13 +1,14 @@
 package com.xxf.arch.test;
 
 import android.Manifest;
-import android.arch.lifecycle.LifecycleOwner;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -20,7 +21,7 @@ import com.xxf.arch.json.MapTypeToken;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.actiondialog.BottomPicSelectDialog;
+import com.xxf.view.actiondialog.ActionSheetDialog;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -129,12 +130,12 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        new BottomPicSelectDialog(MainActivity.this, new Consumer<String>() {
-                            @Override
-                            public void accept(String s) throws Exception {
-                                ToastUtils.showToast("yes:" + s);
-                            }
-                        }).show();
+//                        new ActionSheetDialog(MainActivity.this, new Consumer<String>() {
+//                            @Override
+//                            public void accept(String s) throws Exception {
+//                                ToastUtils.showToast("yes:" + s);
+//                            }
+//                        }).show();
                         //ToastUtils.showToast("Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
                     }
                 });

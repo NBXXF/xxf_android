@@ -1,6 +1,5 @@
 package com.xxf.arch.lifecycle;
 
-import android.arch.lifecycle.LifecycleOwner;
 /**
  * @author xuanyouwu@163.com
  * @version 2.3.1

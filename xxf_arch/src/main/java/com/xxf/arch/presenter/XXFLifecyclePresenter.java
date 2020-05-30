@@ -1,7 +1,7 @@
 package com.xxf.arch.presenter;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.lifecycle.XXFFullLifecycleObserverAdapter;
 
