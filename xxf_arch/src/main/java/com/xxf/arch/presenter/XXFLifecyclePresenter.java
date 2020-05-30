@@ -29,7 +29,7 @@ public class XXFLifecyclePresenter<V> implements LifecyclePresenter<V> {
      *
      * @return
      */
-    public LifecycleOwner getLifecycleOwner() {
+    public final LifecycleOwner getLifecycleOwner() {
         return lifecycleOwner;
     }
 
