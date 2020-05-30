@@ -36,7 +36,9 @@ public class OkHttpClientBuilder {
             .sslSocketFactory(createSSLSocketFactory(), new TrustAllManager())
             .hostnameVerifier(new TrustAllHostnameVerifier())
             .retryOnConnectionFailure(true)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(1, TimeUnit.MINUTES)
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(2, TimeUnit.MINUTES)
             .connectionPool(CONNECTION_POOL);
 
     public OkHttpClientBuilder addInterceptor(Interceptor interceptor) {
