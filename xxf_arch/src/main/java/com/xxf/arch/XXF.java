@@ -2,15 +2,21 @@ package com.xxf.arch;
 
 import android.app.Activity;
 import android.app.Application;
+
+import androidx.core.app.ComponentActivity;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.content.Intent;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.AndroidLifecycleProvider;
@@ -19,6 +25,9 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
+import com.xxf.arch.presenter.XXFActivityPresenter;
+import com.xxf.arch.presenter.XXFFragmentPresenter;
+import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
@@ -275,5 +284,66 @@ public class XXF {
      */
     public static boolean isGrantedPermission(@NonNull final FragmentActivity activity, @NonNull String permission) {
         return new RxPermissions(activity).isGranted(permission);
+    }
+
+    /**
+     * 获取ViewModel
+     *
+     * @param fragment
+     * @param modelClass
+     * @param <T>
+     * @return
+     */
+    public static <T extends ViewModel> T getViewModel(@NonNull Fragment fragment, Class<T> modelClass) {
+        return ViewModelProviders.of(fragment).get(modelClass);
+    }
+
+    /**
+     * 获取ViewModel
+     *
+     * @param activity
+     * @param modelClass
+     * @param <T>
+     * @return
+     */
+    public static <T extends ViewModel> T getViewModel(@NonNull FragmentActivity activity, Class<T> modelClass) {
+        return ViewModelProviders.of(activity).get(modelClass);
+    }
+
+
+    /**
+     * 创建 Presenter
+     *
+     * @param lifecycleOwner
+     * @param view
+     * @param <V>
+     * @return
+     */
+    public static <V> XXFLifecyclePresenter<V> createPresenter(LifecycleOwner lifecycleOwner, V view) {
+        return new XXFLifecyclePresenter<V>(lifecycleOwner, view);
+    }
+
+    /**
+     * 创建 Presenter
+     *
+     * @param activity
+     * @param view
+     * @param <V>
+     * @return
+     */
+    public static <V> XXFActivityPresenter<V> createActivityPresenter(ComponentActivity activity, V view) {
+        return new XXFActivityPresenter<>(activity, view);
+    }
+
+    /**
+     * 创建 Presenter
+     *
+     * @param fragment
+     * @param view
+     * @param <V>
+     * @return
+     */
+    public static <V> XXFFragmentPresenter<V> createFragmentPresenter(Fragment fragment, V view) {
+        return new XXFFragmentPresenter<>(fragment, view);
     }
 }
