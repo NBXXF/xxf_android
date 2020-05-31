@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.xxf.arch.activity.ActivityForResultKeyProvider;
 import com.xxf.arch.widget.TouchListenDialog;
 
 /**
@@ -24,7 +25,7 @@ import com.xxf.arch.widget.TouchListenDialog;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends AppCompatDialogFragment {
+public class XXFDialogFragment extends AppCompatDialogFragment implements ActivityForResultKeyProvider {
 
     private View contentView;
 

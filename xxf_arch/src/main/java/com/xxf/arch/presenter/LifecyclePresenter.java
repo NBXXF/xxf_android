@@ -1,5 +1,10 @@
 package com.xxf.arch.presenter;
 
+import android.app.Application;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+
 import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
 
 
@@ -10,6 +15,11 @@ import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
  * @date createTime：2018/9/7
  */
 public interface LifecyclePresenter<V> extends XXFFullLifecycleObserver {
+    @NonNull
+    <T extends Application> T getApplication();
+
+
+    <T extends Context> T getContext();
 
     /**
      * 获取视图层

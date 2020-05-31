@@ -21,9 +21,6 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
-import com.xxf.arch.presenter.XXFActivityPresenter;
-import com.xxf.arch.presenter.XXFFragmentPresenter;
-import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
@@ -87,6 +84,9 @@ public class XXF {
      * @return
      */
     public static Application getApplication() {
+        if (application == null) {
+            throw new NullPointerException("you need call XXF.init function");
+        }
         return application;
     }
 
@@ -306,40 +306,4 @@ public class XXF {
         return ViewModelProviders.of(activity).get(modelClass);
     }
 
-
-    /**
-     * 创建 Presenter
-     *
-     * @param lifecycleOwner
-     * @param view
-     * @param <V>
-     * @return
-     */
-    public static <V> XXFLifecyclePresenter<V> createPresenter(LifecycleOwner lifecycleOwner, V view) {
-        return new XXFLifecyclePresenter<V>(lifecycleOwner, view);
-    }
-
-    /**
-     * 创建 Presenter
-     *
-     * @param activity
-     * @param view
-     * @param <V>
-     * @return
-     */
-    public static <V> XXFActivityPresenter<V> createActivityPresenter(FragmentActivity activity, V view) {
-        return new XXFActivityPresenter<>(activity, view);
-    }
-
-    /**
-     * 创建 Presenter
-     *
-     * @param fragment
-     * @param view
-     * @param <V>
-     * @return
-     */
-    public static <V> XXFFragmentPresenter<V> createFragmentPresenter(Fragment fragment, V view) {
-        return new XXFFragmentPresenter<>(fragment, view);
-    }
 }

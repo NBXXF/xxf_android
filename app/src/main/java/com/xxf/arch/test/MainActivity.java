@@ -13,7 +13,6 @@ import androidx.lifecycle.LifecycleOwner;
 import com.google.gson.JsonObject;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
-import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
@@ -72,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         new Presenter(this, this);
+        new XXFLifecyclePresenter<Object>(MainActivity.this, null);
 
         XXF.getApiService(LoginApiService.class)
                 .getCity()
@@ -93,10 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        User<String> user = new User<>("xxx");
-                        String s = JsonUtils.toJsonString(user);
-                        User<String> userDes = JsonUtils.toBean(s, User.class, String.class);
-                        Log.d("=========>d:", "" + userDes);
+                     startActivity(new Intent(view.getContext(),TestActivity.class));
 
                     }
                 });
@@ -136,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(final View v) {
                     }
                 });
+        //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
     }
 
     @Override

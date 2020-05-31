@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.xxf.arch.activity.ActivityForResultKeyProvider;
+
 /**
  * @author xuanyouwu@163.com
  * @version 2.3.1
@@ -19,7 +21,7 @@ import androidx.fragment.app.Fragment;
  */
 
 public class XXFFragment
-        extends Fragment {
+        extends Fragment implements ActivityForResultKeyProvider {
 
     private View contentView;
 
