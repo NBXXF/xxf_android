@@ -418,8 +418,8 @@ open class CardView : FrameLayout {
                 defaultPadding)
         mContentPadding.bottom = a.getDimensionPixelSize(R.styleable.CardView_contentPaddingBottom,
                 defaultPadding)
-        if (elevation > maxElevation) {
-            maxElevation = elevation
+        if (mElevation > maxElevation) {
+            maxElevation = mElevation
         }
         mUserSetMinWidth = a.getDimensionPixelSize(R.styleable.CardView_android_minWidth, 0)
         mUserSetMinHeight = a.getDimensionPixelSize(R.styleable.CardView_android_minHeight, 0)
@@ -440,10 +440,10 @@ open class CardView : FrameLayout {
 
             }
             IMPL.initialize(mCardViewDelegate, context, backgroundColor, radius,
-                    elevation, maxElevation, mStartColor, mEndColor, mTopDelta)
+                    mElevation, maxElevation, mStartColor, mEndColor, mTopDelta)
         } else {
             IMPL.initialize(mCardViewDelegate, context, backgroundColor, radius,
-                    elevation, maxElevation, mTopDelta)
+                    mElevation, maxElevation, mTopDelta)
         }
 
 
