@@ -42,12 +42,11 @@
             android:layout_height="wrap_content" />
 
         <com.xxf.view.cardview.CardView
+            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
             app:cardElevation="10dp"
-            app:endColor="#1AFDFDFD"
-            app:startColor="#1A999999"
             app:topDelta="0">
 
             <TextView

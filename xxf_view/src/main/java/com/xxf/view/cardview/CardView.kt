@@ -80,7 +80,7 @@ import com.xxf.view.cardview.CardViewDelegate
  * @attr ref android.support.v7.cardview.R.styleable#CardView_contentPaddingRight
  * @attr ref android.support.v7.cardview.R.styleable#CardView_contentPaddingBottom
  */
-open  class CardView : FrameLayout {
+open class CardView : FrameLayout {
 
     private var mCompatPadding: Boolean = false
 
@@ -103,6 +103,7 @@ open  class CardView : FrameLayout {
     private var mEndColor: Int = 0
 
     private var mStartColor: Int = 0
+    private var mElevation: Float = 0.0f;
 
     /**
      * Returns whether CardView will add inner padding on platforms Lollipop and after.
@@ -379,7 +380,7 @@ open  class CardView : FrameLayout {
         }
     }
 
-    private var mTopDelta: Float=1f
+    private var mTopDelta: Float = 1f
 
     private fun initialize(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr,
@@ -404,7 +405,7 @@ open  class CardView : FrameLayout {
                 resources.getColor(R.color.cardview_dark_background))
         }
         val radius = a.getDimension(R.styleable.CardView_cardCornerRadius, 0f)
-        val elevation = a.getDimension(R.styleable.CardView_cardElevation, 0f)
+        mElevation = a.getDimension(R.styleable.CardView_cardElevation, 0f)
         var maxElevation = a.getDimension(R.styleable.CardView_cardMaxElevation, 0f)
         mCompatPadding = a.getBoolean(R.styleable.CardView_cardUseCompatPadding, false)
         mPreventCornerOverlap = a.getBoolean(R.styleable.CardView_cardPreventCornerOverlap, true)
@@ -426,8 +427,8 @@ open  class CardView : FrameLayout {
 
         val a2 = context.obtainStyledAttributes(attrs, R.styleable.CardViewShadow)
         val n = a2.indexCount
-        if(a2.hasValue(R.styleable.CardViewShadow_topDelta)){
-            mTopDelta=a2.getFloat(R.styleable.CardViewShadow_topDelta,0f)
+        if (a2.hasValue(R.styleable.CardViewShadow_topDelta)) {
+            mTopDelta = a2.getFloat(R.styleable.CardViewShadow_topDelta, 0f)
         }
         if (a2.hasValue(R.styleable.CardViewShadow_endColor) && a2.hasValue(R.styleable.CardViewShadow_startColor)) {
             for (i in 0 until n) {
@@ -439,14 +440,28 @@ open  class CardView : FrameLayout {
 
             }
             IMPL.initialize(mCardViewDelegate, context, backgroundColor, radius,
-                    elevation, maxElevation, mStartColor, mEndColor,mTopDelta)
+                    elevation, maxElevation, mStartColor, mEndColor, mTopDelta)
         } else {
             IMPL.initialize(mCardViewDelegate, context, backgroundColor, radius,
-                    elevation, maxElevation,mTopDelta)
+                    elevation, maxElevation, mTopDelta)
         }
 
 
     }
+
+    /**
+     * 改变阴影颜色
+     */
+    fun setShadowColor(
+            backgroundColor: ColorStateList,
+            startColor: Int,
+            endColor: Int) {
+        this.mStartColor = startColor;
+        this.mEndColor = endColor;
+        IMPL.initialize(mCardViewDelegate, context, backgroundColor, radius,
+                mElevation, maxCardElevation, startColor, endColor, mTopDelta)
+    }
+
 
     override fun setMinimumWidth(minWidth: Int) {
         mUserSetMinWidth = minWidth

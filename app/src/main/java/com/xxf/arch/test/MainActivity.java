@@ -2,6 +2,8 @@ package com.xxf.arch.test;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.cardview.CardView;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -70,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CardView cardView = findViewById(R.id.card);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardView.setShadowColor(ColorStateList.valueOf(Color.BLUE), Color.RED, Color.YELLOW);
+            }
+        });
         new Presenter(this, this);
         new XXFLifecyclePresenter<Object>(MainActivity.this, null);
 
@@ -93,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                     startActivity(new Intent(view.getContext(),TestActivity.class));
+                        startActivity(new Intent(view.getContext(), TestActivity.class));
 
                     }
                 });
