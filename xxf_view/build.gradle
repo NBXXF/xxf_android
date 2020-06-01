@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin:'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -19,6 +23,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
     compileOnly 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
     implementation project(path: ':xxf_arch')
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -40,5 +40,34 @@
             android:id="@+id/contentPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <com.xxf.view.cardview.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="10dp"
+            app:endColor="#1AFDFDFD"
+            app:startColor="#1A999999"
+            app:topDelta="0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="startA\n\n\n\nctivityForResult" />
+        </com.xxf.view.cardview.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="startA\n\n\n\nctivityForResult" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </layout>
