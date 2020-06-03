@@ -67,13 +67,26 @@ public class StatusBarUtils {
      */
 
     public static void setColor(Activity activity, @ColorInt int color, @IntRange(from = 0, to = 255) int statusBarAlpha) {
+        setColor(activity.getWindow(), color, statusBarAlpha);
+    }
+
+
+    /**
+     * 设置状态栏颜色
+     *
+     * @param window         需要设置的window
+     * @param color          状态栏颜色值
+     * @param statusBarAlpha 状态栏透明度
+     */
+
+    public static void setColor(Window window, @ColorInt int color, @IntRange(from = 0, to = 255) int statusBarAlpha) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            activity.getWindow().setStatusBarColor(calculateStatusColor(color, statusBarAlpha));
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(calculateStatusColor(color, statusBarAlpha));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            ViewGroup decorView = (ViewGroup) window.getDecorView();
             View fakeStatusBarView = decorView.findViewById(FAKE_STATUS_BAR_VIEW_ID);
             if (fakeStatusBarView != null) {
                 if (fakeStatusBarView.getVisibility() == View.GONE) {
@@ -81,11 +94,12 @@ public class StatusBarUtils {
                 }
                 fakeStatusBarView.setBackgroundColor(calculateStatusColor(color, statusBarAlpha));
             } else {
-                decorView.addView(createStatusBarView(activity, color, statusBarAlpha));
+                decorView.addView(createStatusBarView(window, color, statusBarAlpha));
             }
-            setRootView(activity);
+            setRootView(window);
         }
     }
+
 
     /**
      * 为滑动返回界面设置状态栏颜色
@@ -545,7 +559,7 @@ public class StatusBarUtils {
         setMIUIStatusBarDarkIcon(activity, false);
         setMeizuStatusBarDarkIcon(activity, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-           // activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            // activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
     }
@@ -630,22 +644,22 @@ public class StatusBarUtils {
      * @return 状态栏矩形条
      */
     private static View createStatusBarView(Activity activity, @ColorInt int color) {
-        return createStatusBarView(activity, color, 0);
+        return createStatusBarView(activity.getWindow(), color, 0);
     }
 
     /**
      * 生成一个和状态栏大小相同的半透明矩形条
      *
-     * @param activity 需要设置的activity
-     * @param color    状态栏颜色值
-     * @param alpha    透明值
+     * @param window 需要设置的window
+     * @param color  状态栏颜色值
+     * @param alpha  透明值
      * @return 状态栏矩形条
      */
-    private static View createStatusBarView(Activity activity, @ColorInt int color, int alpha) {
+    private static View createStatusBarView(Window window, @ColorInt int color, int alpha) {
         // 绘制一个和状态栏一样高的矩形
-        View statusBarView = new View(activity);
+        View statusBarView = new View(window.getContext());
         LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(activity));
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight(window.getContext()));
         statusBarView.setLayoutParams(params);
         statusBarView.setBackgroundColor(calculateStatusColor(color, alpha));
         statusBarView.setId(FAKE_STATUS_BAR_VIEW_ID);
@@ -657,6 +671,20 @@ public class StatusBarUtils {
      */
     private static void setRootView(Activity activity) {
         ViewGroup parent = (ViewGroup) activity.findViewById(android.R.id.content);
+        for (int i = 0, count = parent.getChildCount(); i < count; i++) {
+            View childView = parent.getChildAt(i);
+            if (childView instanceof ViewGroup) {
+                childView.setFitsSystemWindows(true);
+                ((ViewGroup) childView).setClipToPadding(true);
+            }
+        }
+    }
+
+    /**
+     * 设置根布局参数
+     */
+    private static void setRootView(Window window) {
+        ViewGroup parent = (ViewGroup) window.findViewById(android.R.id.content);
         for (int i = 0, count = parent.getChildCount(); i < count; i++) {
             View childView = parent.getChildAt(i);
             if (childView instanceof ViewGroup) {

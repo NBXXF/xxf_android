@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(view.getContext(), TestActivity.class));
+                        startActivity(new Intent(view.getContext(), StateActivity.class));
 
                     }
                 });

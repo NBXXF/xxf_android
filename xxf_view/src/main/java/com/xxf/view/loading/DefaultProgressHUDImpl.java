@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class DefaultProgressHUDImpl implements ProgressHUD {
 
-    private AlphaLoading progressHUD;
+    private XXFLoading progressHUD;
     public Context actionContext;
 
     @Nullable
@@ -51,15 +51,15 @@ public class DefaultProgressHUDImpl implements ProgressHUD {
      * @return
      */
     @NonNull
-    protected final AlphaLoading getICourtProgressHUD() {
+    protected final XXFLoading getICourtProgressHUD() {
         if (progressHUD == null) {
             progressHUD = createProgressHUD(actionContext);
         }
         return progressHUD;
     }
 
-    public static AlphaLoading createProgressHUD(Context actionContext) {
-        return new AlphaLoading.Builder(actionContext)
+    public static XXFLoading createProgressHUD(Context actionContext) {
+        return new XXFLoading.Builder(actionContext)
                 .cancelable(false)                           // 是否可以手动取消(点击空白区域或返回键)
                 .resultDuration(TimeUnit.SECONDS.toMillis(1))  // ok/fail持续时间(milliseconds)
                 .create();
@@ -72,7 +72,7 @@ public class DefaultProgressHUDImpl implements ProgressHUD {
     @UiThread
     @Override
     public void showLoadingDialog(@Nullable String notice) {
-        AlphaLoading currSVProgressHUD = getICourtProgressHUD();
+        XXFLoading currSVProgressHUD = getICourtProgressHUD();
         currSVProgressHUD.setMessage(notice);
         if (!currSVProgressHUD.isShowing()) {
             currSVProgressHUD.show();

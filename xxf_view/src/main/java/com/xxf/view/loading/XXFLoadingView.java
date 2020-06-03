@@ -6,11 +6,12 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.xxf.view.R;
 
@@ -18,19 +19,19 @@ import com.xxf.view.R;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description loading..
  */
-public class AlphaLoadingView extends ImageView {
+public class XXFLoadingView extends ImageView {
 
     private Animatable animatable;
 
-    public AlphaLoadingView(Context context) {
+    public XXFLoadingView(Context context) {
         this(context, null);
     }
 
-    public AlphaLoadingView(Context context, AttributeSet attrs) {
+    public XXFLoadingView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AlphaLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public XXFLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setImageResource(R.drawable.alpha_loading);
     }

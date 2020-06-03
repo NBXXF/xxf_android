@@ -11,10 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +18,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.xxf.view.R;
 
@@ -32,7 +33,7 @@ import java.lang.annotation.RetentionPolicy;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description loading..
  */
-public class AlphaLoading {
+public class XXFLoading {
 
     private static final String TAG = "AlphaLoading";
 
@@ -92,14 +93,14 @@ public class AlphaLoading {
         }
     }
 
-    private AlphaLoading(Builder b) {
+    private XXFLoading(Builder b) {
         mState = STATE_FREE;
 
         mOkDrawableRes = b.okIcon;
         mFailDrawableRes = b.failIcon;
 
-        Dialog dialog = new Dialog(b.context, R.style.style_alpha_loading);
-        dialog.setContentView(R.layout.alpha_dialog_loading);
+        Dialog dialog = new Dialog(b.context, R.style.style_xxf_loading);
+        dialog.setContentView(R.layout.xxf_dialog_loading);
 
         ImageView iconView = (ImageView) dialog.findViewById(R.id.alpha_iv_icon);
         TextView msgView = (TextView) dialog.findViewById(R.id.alpha_tv_message);
@@ -420,8 +421,8 @@ public class AlphaLoading {
             return this;
         }
 
-        public AlphaLoading create() {
-            return new AlphaLoading(this);
+        public XXFLoading create() {
+            return new XXFLoading(this);
         }
     }
 

@@ -6,11 +6,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.CheckResult;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +14,25 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+
 import com.xxf.view.R;
 
-import static com.xxf.view.loading.ViewState.*;
+import static com.xxf.view.loading.ViewState.VIEW_STATE_CONTENT;
+import static com.xxf.view.loading.ViewState.VIEW_STATE_EMPTY;
+import static com.xxf.view.loading.ViewState.VIEW_STATE_ERROR;
+import static com.xxf.view.loading.ViewState.VIEW_STATE_LOADING;
+import static com.xxf.view.loading.ViewState.VIEW_STATE_UNKNOWN;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 多状态布局
  */
-public class AlphaStateLayout extends FrameLayout {
+public class XXFStateLayout extends FrameLayout {
 
 
     private LayoutInflater mInflater;
@@ -51,16 +56,16 @@ public class AlphaStateLayout extends FrameLayout {
     int errorViewResId;
     boolean contentLoadingCoexist, contentEmptyCoexist;
 
-    public AlphaStateLayout(Context context) {
+    public XXFStateLayout(Context context) {
         this(context, null);
     }
 
-    public AlphaStateLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+    public XXFStateLayout(Context context, AttributeSet attrs) {
+        this(context, attrs, R.style.style_xxf_state);
     }
 
 
-    public AlphaStateLayout(Context context, AttributeSet attrs, int defStyle) {
+    public XXFStateLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs);
     }
@@ -243,7 +248,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param id
      * @return
      */
-    public AlphaStateLayout setEmptyText(@StringRes int id) {
+    public XXFStateLayout setEmptyText(@StringRes int id) {
         if (mEmptyView != null) {
             TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
             if (viewById != null) {
@@ -259,7 +264,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param emptyText
      * @return
      */
-    public AlphaStateLayout setEmptyText(CharSequence emptyText) {
+    public XXFStateLayout setEmptyText(CharSequence emptyText) {
         if (mEmptyView != null) {
             TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
             if (viewById != null) {
@@ -275,7 +280,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param id
      * @return
      */
-    public AlphaStateLayout setEmptyText(@StringRes int id, Object... formatArgs) {
+    public XXFStateLayout setEmptyText(@StringRes int id, Object... formatArgs) {
         if (mEmptyView != null) {
             TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
             if (viewById != null) {
@@ -291,7 +296,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param id
      * @return
      */
-    public AlphaStateLayout setEmptyImage(@DrawableRes int id) {
+    public XXFStateLayout setEmptyImage(@DrawableRes int id) {
         if (mEmptyView != null) {
             ImageView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_iv);
             if (viewById != null) {
@@ -308,7 +313,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param drawable
      * @return
      */
-    public AlphaStateLayout setEmptyImage(Drawable drawable) {
+    public XXFStateLayout setEmptyImage(Drawable drawable) {
         if (mEmptyView != null) {
             ImageView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_iv);
             if (viewById != null) {
@@ -324,7 +329,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param charSequence
      * @return
      */
-    public AlphaStateLayout setErrorText(CharSequence charSequence) {
+    public XXFStateLayout setErrorText(CharSequence charSequence) {
         if (mErrorView != null) {
             TextView viewById = mErrorView.findViewById(R.id.alpha_error_view_tv);
             if (viewById != null) {
@@ -340,7 +345,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param id
      * @return
      */
-    public AlphaStateLayout setErrorImage(@DrawableRes int id) {
+    public XXFStateLayout setErrorImage(@DrawableRes int id) {
         if (mErrorView != null) {
             ImageView viewById = mErrorView.findViewById(R.id.alpha_error_view_iv);
             if (viewById != null) {
@@ -357,7 +362,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param errorImage
      * @return
      */
-    public AlphaStateLayout setErrorImage(Drawable errorImage) {
+    public XXFStateLayout setErrorImage(Drawable errorImage) {
         if (mErrorView != null) {
             ImageView viewById = mErrorView.findViewById(R.id.alpha_error_view_iv);
             if (viewById != null) {
@@ -373,7 +378,7 @@ public class AlphaStateLayout extends FrameLayout {
      * @param l
      * @return
      */
-    public AlphaStateLayout setErrorRetryListener(@Nullable OnClickListener l) {
+    public XXFStateLayout setErrorRetryListener(@Nullable OnClickListener l) {
         if (mErrorView != null) {
             TextView viewById = mErrorView.findViewById(R.id.alpha_error_view_retry_tv);
             if (viewById != null) {

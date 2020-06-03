@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TestActivity"/>
+        <activity android:name=".StateActivity"/>
     </application>
 
 </manifest>

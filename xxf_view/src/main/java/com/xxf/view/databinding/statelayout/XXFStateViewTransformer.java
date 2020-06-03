@@ -11,7 +11,7 @@ import com.xxf.view.loading.ViewState;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 多状态布局rx 变换器
  */
-public class AlphaStateViewTransformer<T> extends UILifeTransformerImpl<T> {
+public class XXFStateViewTransformer<T> extends UILifeTransformerImpl<T> {
 
     private IStateLayoutVM alphaStateViewVM;
 
@@ -19,7 +19,7 @@ public class AlphaStateViewTransformer<T> extends UILifeTransformerImpl<T> {
         return alphaStateViewVM;
     }
 
-    public AlphaStateViewTransformer(@NonNull IStateLayoutVM stateViewVM) {
+    public XXFStateViewTransformer(@NonNull IStateLayoutVM stateViewVM) {
         this.alphaStateViewVM = stateViewVM;
     }
 
