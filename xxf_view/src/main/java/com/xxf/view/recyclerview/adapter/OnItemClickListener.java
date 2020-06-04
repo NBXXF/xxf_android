@@ -2,6 +2,8 @@ package com.xxf.view.recyclerview.adapter;
 
 import android.view.View;
 
+import androidx.databinding.ViewDataBinding;
+
 /**
  * Description
  *
@@ -9,7 +11,7 @@ import android.view.View;
  * date createTime：2017/10/3
  * version 2.1.0
  */
-public interface OnItemClickListener {
+public interface OnItemClickListener<V extends ViewDataBinding,T> {
 
     /**
      * @param adapter
@@ -17,5 +19,5 @@ public interface OnItemClickListener {
      * @param itemView
      * @param index    相对于List容器的位置
      */
-    void onItemClick(BaseRecyclerAdapter adapter, BaseViewHolder holder, View itemView, int index);
+    void onItemClick(XXFRecyclerAdapter<V,T> adapter, XXFViewHolder<V,T> holder, View itemView, int index);
 }

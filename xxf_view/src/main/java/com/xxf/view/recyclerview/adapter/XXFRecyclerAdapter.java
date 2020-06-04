@@ -1,17 +1,19 @@
 package com.xxf.view.recyclerview.adapter;
 
 import android.content.Context;
-import androidx.databinding.ObservableArrayList;
-import androidx.databinding.ObservableList;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.CheckResult;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.xxf.view.recyclerview.DragItemTouchHelper;
 import com.xxf.view.recyclerview.SafeObservableArrayList;
@@ -28,7 +30,9 @@ import java.util.List;
  * date createTime：2015/9/10 10:05
  * version
  */
-public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> implements DragItemTouchHelper.AdapterSourceProvider {
+public abstract class XXFRecyclerAdapter<V extends ViewDataBinding, T>
+        extends RecyclerView.Adapter<XXFViewHolder<V, T>>
+        implements DragItemTouchHelper.AdapterSourceProvider {
     public static final View inflaterView(@LayoutRes int id, RecyclerView recyclerView) {
         return LayoutInflater.from(recyclerView.getContext())
                 .inflate(id, recyclerView, false);
@@ -107,13 +111,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
         return mFooters.size();
     }
 
-    public BaseRecyclerAdapter(@NonNull ObservableArrayList<T> data) {
+    public XXFRecyclerAdapter(@NonNull ObservableArrayList<T> data) {
         this.dataList = (data == null ? new ObservableArrayList<T>() : data);
         this.dataList.removeOnListChangedCallback(dataChangeCallback);
         this.dataList.addOnListChangedCallback(dataChangeCallback);
     }
 
-    public BaseRecyclerAdapter() {
+    public XXFRecyclerAdapter() {
         this(new SafeObservableArrayList<T>());
     }
 
@@ -392,15 +396,16 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
         return removeItem(getIndex(t));
     }
 
-
     /**
-     * 初始化布局
+     * 创建vdb
      *
+     * @param viewGroup
      * @param viewType
+     * @param inflater
      * @return
      */
-    @LayoutRes
-    public abstract int bindView(int viewType);
+    protected abstract V onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType);
+
 
     /**
      * 初始化item
@@ -409,33 +414,32 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
      * @param t
      * @param index  相对于List的位置
      */
-    public abstract void onBindHolder(BaseViewHolder holder, @Nullable T t, int index);
+    public abstract void onBindHolder(XXFViewHolder<V, T> holder, @Nullable T t, int index);
 
     @Override
-    public final BaseViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public final XXFViewHolder<V, T> onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (isHeader(viewType)) {
             int whichHeader = Math.abs(viewType - HEADER_VIEW_TYPE);
             View headerView = mHeaders.get(whichHeader);
-            return new BaseViewHolder(this, headerView, false);
+            return new XXFViewHolder(this, headerView, false);
         } else if (isFooter(viewType)) {
             int whichFooter = Math.abs(viewType - FOOTER_VIEW_TYPE);
             View footerView = mFooters.get(whichFooter);
-            return new BaseViewHolder(this, footerView, false);
+            return new XXFViewHolder(this, footerView, false);
         } else {
-            return onCreateHolder(viewGroup, viewType);
+            V v = onCreateBinding(LayoutInflater.from(viewGroup.getContext()), viewGroup, viewType);
+            return onCreateItemHolder(v);
         }
     }
 
     /**
      * 创建viewHolder
      *
-     * @param viewGroup
-     * @param viewType
      * @return
      */
-    public BaseViewHolder onCreateHolder(ViewGroup viewGroup, int viewType) {
-        BaseViewHolder viewHolder = new BaseViewHolder(this, LayoutInflater.from(viewGroup.getContext())
-                .inflate(bindView(viewType), viewGroup, false), true);
+    protected XXFViewHolder<V, T> onCreateItemHolder(V v) {
+        XXFViewHolder<V, T> viewHolder = new XXFViewHolder(this, v.getRoot(), true);
+        viewHolder.setBinding(v);
         return viewHolder;
     }
 
@@ -467,7 +471,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     }
 
     @Override
-    public final void onBindViewHolder(BaseViewHolder holder, int position) {
+    public final void onBindViewHolder(XXFViewHolder<V, T> holder, int position) {
         if (position >= getHeaderCount() && position < getHeaderCount() + getData().size()) {
             int index = position - getHeaderCount();
             onBindHolder(holder, getItem(index), index);
@@ -475,24 +479,24 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     }
 
 
-    protected OnItemClickListener onItemClickListener;
-    protected OnItemLongClickListener onItemLongClickListener;
-    protected OnItemChildClickListener onItemChildClickListener;
-    protected OnItemChildLongClickListener onItemChildLongClickListener;
+    protected OnItemClickListener<V,T> onItemClickListener;
+    protected OnItemLongClickListener<V,T> onItemLongClickListener;
+    protected OnItemChildClickListener<V,T> onItemChildClickListener;
+    protected OnItemChildLongClickListener<V,T> onItemChildLongClickListener;
 
-    public void setOnItemClickListener(OnItemClickListener l) {
+    public void setOnItemClickListener(OnItemClickListener<V, T> l) {
         this.onItemClickListener = l;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener l) {
+    public void setOnItemLongClickListener(OnItemLongClickListener<V, T> l) {
         this.onItemLongClickListener = l;
     }
 
-    public void setOnItemChildLongClickListener(OnItemChildLongClickListener l) {
+    public void setOnItemChildLongClickListener(OnItemChildLongClickListener<V, T> l) {
         this.onItemChildLongClickListener = l;
     }
 
-    public void setOnItemChildClickListener(OnItemChildClickListener l) {
+    public void setOnItemChildClickListener(OnItemChildClickListener<V, T> l) {
         this.onItemChildClickListener = l;
     }
 

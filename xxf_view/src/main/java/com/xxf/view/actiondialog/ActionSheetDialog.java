@@ -25,9 +25,8 @@ import com.xxf.view.config.AdapterStyle;
 import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
 import com.xxf.view.databinding.XxfDialogBottomActionBinding;
 import com.xxf.view.model.ItemMenu;
-import com.xxf.view.recyclerview.adapter.BaseBindableAdapter;
-import com.xxf.view.recyclerview.adapter.BaseRecyclerAdapter;
-import com.xxf.view.recyclerview.adapter.BaseViewHolder;
+import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
+import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 
 import java.util.List;
@@ -109,7 +108,7 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
 
         actionItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(BaseRecyclerAdapter adapter, BaseViewHolder holder, View view, int position) {
+            public void onItemClick(XXFRecyclerAdapter adapter, XXFViewHolder holder, View view, int position) {
                 ItemMenu itemMenu = (ItemMenu) actionItemAdapter.getItem(position);
                 setResult(itemMenu);
             }
@@ -141,7 +140,7 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
         }
     }
 
-    public void onBindHolder(BaseViewHolder holder,
+    public void onBindHolder(XXFViewHolder holder,
                              XxfAdapterItemBottomActionBinding binding,
                              @Nullable ItemMenu t, int index) {
 
@@ -162,7 +161,7 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
         binding.itemDivider.setBackgroundColor(adapterStyle.getItemDividerColor());
     }
 
-    private class ActionItemAdapter<T extends ItemMenu> extends BaseBindableAdapter<XxfAdapterItemBottomActionBinding, T> {
+    private class ActionItemAdapter<T extends ItemMenu> extends XXFRecyclerAdapter<XxfAdapterItemBottomActionBinding, T> {
 
         @Override
         protected XxfAdapterItemBottomActionBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
@@ -170,7 +169,7 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
         }
 
         @Override
-        public void onBindHolder(BaseViewHolder holder, XxfAdapterItemBottomActionBinding binding, @Nullable T t, int index) {
+        public void onBindHolder(XXFViewHolder<XxfAdapterItemBottomActionBinding, T> holder, @Nullable T t, int index) {
             ActionSheetDialog.this.onBindHolder(holder, holder.getBinding(), t, index);
         }
     }

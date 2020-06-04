@@ -1,13 +1,14 @@
 package com.xxf.view.recyclerview.adapter;
 
-import androidx.databinding.ViewDataBinding;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Description
@@ -15,22 +16,22 @@ import android.widget.TextView;
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public class BaseViewHolder extends RecyclerView.ViewHolder
+public class XXFViewHolder<V extends ViewDataBinding,T> extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
-    private BaseRecyclerAdapter baseRecyclerAdapter;
+    private XXFRecyclerAdapter<V,T> baseRecyclerAdapter;
     private SparseArray<View> holder = null;
     private ViewDataBinding binding;
 
     @Nullable
-    public <T extends ViewDataBinding> T getBinding() {
-        return (T) binding;
+    public V getBinding() {
+        return (V) binding;
     }
 
-    public <T extends ViewDataBinding> void setBinding(T binding) {
+    public  void setBinding(V binding) {
         this.binding = binding;
     }
 
-    public BaseViewHolder(BaseRecyclerAdapter baseRecyclerAdapter, View itemView, boolean bindItemClick) {
+    public XXFViewHolder(XXFRecyclerAdapter<V,T> baseRecyclerAdapter, View itemView, boolean bindItemClick) {
         super(itemView);
         this.baseRecyclerAdapter = baseRecyclerAdapter;
         if (bindItemClick) {
@@ -74,7 +75,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
     }
 
 
-    public BaseViewHolder bindChildClick(@IdRes int id) {
+    public XXFViewHolder bindChildClick(@IdRes int id) {
         View view = obtainView(id);
         return bindChildClick(view);
     }
@@ -85,7 +86,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
      * @param v
      * @return
      */
-    public BaseViewHolder bindChildClick(@NonNull View v) {
+    public XXFViewHolder bindChildClick(@NonNull View v) {
         if (v == null) return this;
         if (v == itemView) {
             throw new IllegalArgumentException("bindChildClick 不能传递item根布局!");
@@ -95,12 +96,12 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
     }
 
 
-    public BaseViewHolder bindChildLongClick(@IdRes int id) {
+    public XXFViewHolder bindChildLongClick(@IdRes int id) {
         View view = obtainView(id);
         return bindChildLongClick(view);
     }
 
-    public BaseViewHolder bindChildLongClick(@NonNull View v) {
+    public XXFViewHolder bindChildLongClick(@NonNull View v) {
         if (v == null) return this;
         if (v == itemView) {
             throw new IllegalArgumentException("bindChildLongClick 不能传递item根布局");
@@ -115,7 +116,7 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
      * @param id
      * @param text
      */
-    public BaseViewHolder setText(@IdRes int id, CharSequence text) {
+    public XXFViewHolder setText(@IdRes int id, CharSequence text) {
         View view = obtainView(id);
         if (view instanceof TextView) {
             ((TextView) view).setText(text);

@@ -2,7 +2,9 @@ package com.xxf.view.recyclerview.adapter;
 
 import android.view.View;
 
-public interface OnItemChildLongClickListener {
+import androidx.databinding.ViewDataBinding;
+
+public interface OnItemChildLongClickListener<V extends ViewDataBinding,T> {
     /**
      *
      * @param adapter
@@ -11,5 +13,5 @@ public interface OnItemChildLongClickListener {
      * @param index  相对于List容器的位置
      * @return
      */
-    boolean onItemChildLongClick(BaseRecyclerAdapter adapter, BaseViewHolder holder, View childView, int index);
+    boolean onItemChildLongClick(XXFRecyclerAdapter<V,T> adapter, XXFViewHolder<V,T> holder, View childView, int index);
 }

@@ -2,7 +2,9 @@ package com.xxf.view.recyclerview.adapter;
 
 import android.view.View;
 
-public interface OnItemChildClickListener {
+import androidx.databinding.ViewDataBinding;
+
+public interface OnItemChildClickListener<V extends ViewDataBinding,T> {
 
     /**
      *
@@ -11,5 +13,5 @@ public interface OnItemChildClickListener {
      * @param childView
      * @param index 相对于List容器的位置
      */
-    void onItemChildClick(BaseRecyclerAdapter adapter, BaseViewHolder holder, View childView, int index);
+    void onItemChildClick(XXFRecyclerAdapter<V,T> adapter, XXFViewHolder<V,T> holder, View childView, int index);
 }

@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
-import com.xxf.view.recyclerview.adapter.BaseBindableAdapter;
-import com.xxf.view.recyclerview.adapter.BaseViewHolder;
+import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
+import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +71,7 @@ public class StateActivity extends Activity {
                 });
     }
 
-    class TestAdaper extends BaseBindableAdapter<ItemTestBinding, String> {
+    class TestAdaper extends XXFRecyclerAdapter<ItemTestBinding, String> {
 
         @Override
         protected ItemTestBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
@@ -79,7 +79,7 @@ public class StateActivity extends Activity {
         }
 
         @Override
-        public void onBindHolder(BaseViewHolder holder, ItemTestBinding binding, @Nullable String s, int index) {
+        public void onBindHolder(XXFViewHolder<ItemTestBinding, String> holder, @Nullable String s, int index) {
 
         }
     }

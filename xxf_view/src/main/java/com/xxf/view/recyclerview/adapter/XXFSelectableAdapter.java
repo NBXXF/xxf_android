@@ -5,6 +5,7 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ViewDataBinding;
 
 import com.xxf.view.model.SelectableEntity;
 
@@ -15,12 +16,12 @@ import java.util.List;
 
 /**
  * Description  可选择的适配器
- *
+ * <p>
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public abstract class SelectableBaseAdapter<T extends SelectableEntity> extends BaseRecyclerAdapter<T> implements ISelectableAdapter {
+public abstract class XXFSelectableAdapter<V extends ViewDataBinding, T extends SelectableEntity> extends XXFRecyclerAdapter<V, T> implements ISelectableAdapter {
 
     public static final int SELECT_TYPE_UNSELECTABLE = 200;
     public static final int SELECT_TYPE_SINGLE = 201;
@@ -36,11 +37,11 @@ public abstract class SelectableBaseAdapter<T extends SelectableEntity> extends 
     @SelectType
     private int selectType = SELECT_TYPE_SINGLE;//默认单选
 
-    public SelectableBaseAdapter(@SelectType int selectType) {
+    public XXFSelectableAdapter(@SelectType int selectType) {
         this.selectType = selectType;
     }
 
-    public SelectableBaseAdapter(@SelectType int selectType, @NonNull ObservableArrayList<T> data) {
+    public XXFSelectableAdapter(@SelectType int selectType, @NonNull ObservableArrayList<T> data) {
         super(data);
         this.selectType = selectType;
     }
