@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public class XXFViewHolder<V extends ViewDataBinding,T> extends RecyclerView.ViewHolder
+public class XXFViewHolder<V extends ViewDataBinding, T> extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
-    private XXFRecyclerAdapter<V,T> baseRecyclerAdapter;
+    private XXFRecyclerAdapter<V, T> baseRecyclerAdapter;
     private SparseArray<View> holder = null;
     private ViewDataBinding binding;
 
@@ -27,11 +27,11 @@ public class XXFViewHolder<V extends ViewDataBinding,T> extends RecyclerView.Vie
         return (V) binding;
     }
 
-    public  void setBinding(V binding) {
+    public void setBinding(V binding) {
         this.binding = binding;
     }
 
-    public XXFViewHolder(XXFRecyclerAdapter<V,T> baseRecyclerAdapter, View itemView, boolean bindItemClick) {
+    public XXFViewHolder(XXFRecyclerAdapter<V, T> baseRecyclerAdapter, View itemView, boolean bindItemClick) {
         super(itemView);
         this.baseRecyclerAdapter = baseRecyclerAdapter;
         if (bindItemClick) {
@@ -120,9 +120,9 @@ public class XXFViewHolder<V extends ViewDataBinding,T> extends RecyclerView.Vie
     @Override
     public boolean onLongClick(View v) {
         if (baseRecyclerAdapter.onItemLongClickListener != null && v.getId() == this.itemView.getId()) {
-            return baseRecyclerAdapter.onItemLongClickListener.onItemLongClick(baseRecyclerAdapter, this, v, getIndex());
+            return baseRecyclerAdapter.onItemLongClickListener.onItemLongClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
         } else if (baseRecyclerAdapter.onItemChildLongClickListener != null && v.getId() != this.itemView.getId()) {
-            return baseRecyclerAdapter.onItemChildLongClickListener.onItemChildLongClick(baseRecyclerAdapter, this, v, getIndex());
+            return baseRecyclerAdapter.onItemChildLongClickListener.onItemChildLongClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
         }
         return false;
     }
@@ -130,9 +130,9 @@ public class XXFViewHolder<V extends ViewDataBinding,T> extends RecyclerView.Vie
     @Override
     public void onClick(View v) {
         if (baseRecyclerAdapter.onItemClickListener != null && v.getId() == this.itemView.getId()) {
-            baseRecyclerAdapter.onItemClickListener.onItemClick(baseRecyclerAdapter, this, v, getIndex());
+            baseRecyclerAdapter.onItemClickListener.onItemClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
         } else if (baseRecyclerAdapter.onItemChildClickListener != null && v.getId() != this.itemView.getId()) {
-            baseRecyclerAdapter.onItemChildClickListener.onItemChildClick(baseRecyclerAdapter, this, v, getIndex());
+            baseRecyclerAdapter.onItemChildClickListener.onItemChildClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
         }
     }
 

@@ -108,8 +108,8 @@ public class ActionSheetDialog extends XXFDialog<ItemMenu> {
 
         actionItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(XXFRecyclerAdapter adapter, XXFViewHolder holder, View view, int position) {
-                ItemMenu itemMenu = (ItemMenu) actionItemAdapter.getItem(position);
+            public void onItemClick(XXFRecyclerAdapter adapter, XXFViewHolder holder, View itemView, int index, Object o) {
+                ItemMenu itemMenu = (ItemMenu) o;
                 setResult(itemMenu);
             }
         });

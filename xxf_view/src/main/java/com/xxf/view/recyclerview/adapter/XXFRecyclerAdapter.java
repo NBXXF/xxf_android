@@ -479,23 +479,43 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding, T>
     }
 
 
-    protected OnItemClickListener<V,T> onItemClickListener;
-    protected OnItemLongClickListener<V,T> onItemLongClickListener;
-    protected OnItemChildClickListener<V,T> onItemChildClickListener;
-    protected OnItemChildLongClickListener<V,T> onItemChildLongClickListener;
+    protected OnItemClickListener<V, T> onItemClickListener;
+    protected OnItemLongClickListener<V, T> onItemLongClickListener;
+    protected OnItemChildClickListener<V, T> onItemChildClickListener;
+    protected OnItemChildLongClickListener<V, T> onItemChildLongClickListener;
 
+    /**
+     * 设置Item点击,you must call holder.bindXXclick()
+     *
+     * @param l
+     */
     public void setOnItemClickListener(OnItemClickListener<V, T> l) {
         this.onItemClickListener = l;
     }
 
+    /**
+     * 设置Item长按,you must call holder.bindXXclick()
+     *
+     * @param l
+     */
     public void setOnItemLongClickListener(OnItemLongClickListener<V, T> l) {
         this.onItemLongClickListener = l;
     }
 
+    /**
+     * 设置Item child长按,you must call holder.bindXXclick()
+     *
+     * @param l
+     */
     public void setOnItemChildLongClickListener(OnItemChildLongClickListener<V, T> l) {
         this.onItemChildLongClickListener = l;
     }
 
+    /**
+     * 设置Item child点击,you must call holder.bindXXclick()
+     *
+     * @param l
+     */
     public void setOnItemChildClickListener(OnItemChildClickListener<V, T> l) {
         this.onItemChildClickListener = l;
     }
