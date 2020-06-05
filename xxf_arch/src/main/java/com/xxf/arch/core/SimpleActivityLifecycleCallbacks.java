@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import java.util.Objects;
+
 /**
  * @author xuanyouwu@163.com
  * @version 2.3.1
@@ -12,7 +14,11 @@ import android.os.Bundle;
  */
 public class SimpleActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 
-    public SimpleActivityLifecycleCallbacks(Application application) {
+    public SimpleActivityLifecycleCallbacks() {
+    }
+
+    public void register(Application application) {
+        Objects.requireNonNull(application);
         application.unregisterActivityLifecycleCallbacks(this);
         application.registerActivityLifecycleCallbacks(this);
     }

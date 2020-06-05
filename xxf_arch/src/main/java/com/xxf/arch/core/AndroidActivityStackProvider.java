@@ -3,6 +3,7 @@ package com.xxf.arch.core;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,7 @@ public class AndroidActivityStackProvider extends SimpleActivityLifecycleCallbac
     final Stack<Activity> activityStack = new Stack<>();
 
     public AndroidActivityStackProvider(Application application) {
-        super(application);
+        this.register(application);
     }
 
 

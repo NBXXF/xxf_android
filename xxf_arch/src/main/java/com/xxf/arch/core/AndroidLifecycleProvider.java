@@ -2,12 +2,13 @@ package com.xxf.arch.core;
 
 import android.app.Activity;
 import android.app.Application;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.rxjava.lifecycle.LifecycleProviderAndroidImpl;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
@@ -31,7 +32,7 @@ public class AndroidLifecycleProvider extends SimpleActivityLifecycleCallbacks i
     final Map<LifecycleOwner, LifecycleProvider<Lifecycle.Event>> rxLifecycleProviderMap = new ConcurrentHashMap<>();
 
     public AndroidLifecycleProvider(Application application) {
-        super(application);
+        this.register(application);
     }
 
 
