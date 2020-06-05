@@ -66,14 +66,6 @@ public class XXFViewHolder<V extends ViewDataBinding,T> extends RecyclerView.Vie
         return (T) view;
     }
 
-    @Nullable
-    @Deprecated
-    public <T> T obtainView(@IdRes int id, Class<T> viewClazz) {
-        View view = obtainView(id);
-        if (null == view) return null;
-        return (T) view;
-    }
-
 
     public XXFViewHolder bindChildClick(@IdRes int id) {
         View view = obtainView(id);
