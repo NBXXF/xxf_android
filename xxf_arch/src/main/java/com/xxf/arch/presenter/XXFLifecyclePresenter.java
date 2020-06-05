@@ -44,16 +44,6 @@ public class XXFLifecyclePresenter<V> implements LifecyclePresenter<V> {
     }
 
     /**
-     * @param context
-     * @param view    可以为空
-     * @param <T>     也就是说必须FragmentActivity
-     *                警告：Fragment初始化 不要用这个(Fragmnent.getActivity()),Fragment生命周期远远短于Activity
-     */
-    public <T extends Context & LifecycleOwner> XXFLifecyclePresenter(@NonNull T context, @Nullable V view) {
-        this((LifecycleOwner) context, view);
-    }
-
-    /**
      * 管理生命周期
      *
      * @param lifecycleOwner

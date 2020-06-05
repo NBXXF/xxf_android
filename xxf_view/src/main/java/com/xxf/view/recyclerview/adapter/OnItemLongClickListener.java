@@ -18,8 +18,8 @@ public interface OnItemLongClickListener<V extends ViewDataBinding, T> {
      * @param holder
      * @param itemView item根布局
      * @param index    相对于List容器的位置
-     * @param t        对应的数据项
+     * @param item        对应的数据项
      * @return
      */
-    boolean onItemLongClick(XXFRecyclerAdapter<V, T> adapter, XXFViewHolder<V, T> holder, View itemView, int index, T t);
+    boolean onItemLongClick(XXFRecyclerAdapter<V, T> adapter, XXFViewHolder<V, T> holder, View itemView, int index, T item);
 }
