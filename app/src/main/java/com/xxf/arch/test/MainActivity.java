@@ -9,12 +9,13 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.gson.JsonObject;
 import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
+import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
@@ -26,7 +27,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 
 
 @Router(path = "/user/main")
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends XXFActivity {
     public static class User<T> {
         private T t;
 
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        XXF.requestPermission(MainActivity.this, Manifest.permission.CAMERA)
+                        XXF.requestPermission(Manifest.permission.CAMERA)
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
                                     public void accept(Boolean aBoolean) throws Exception {
@@ -125,13 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-//                        new ActionSheetDialog(MainActivity.this, new Consumer<String>() {
-//                            @Override
-//                            public void accept(String s) throws Exception {
-//                                ToastUtils.showToast("yes:" + s);
-//                            }
-//                        }).show();
-                        //ToastUtils.showToast("Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
+                        ToastUtils.showToast("yes?" + XXF.isGrantedPermission(Manifest.permission.CAMERA));
                     }
                 });
 
@@ -140,6 +135,26 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString(ACTIVITY_PARAM, "one");
+                     /*   XXF.startActivityForResult(TestActivity.class, bundle, 1000)
+                                .compose(XXF.bindToErrorNotice())
+                                .subscribe(new Consumer<ActivityResult>() {
+                                    @Override
+                                    public void accept(ActivityResult activityResult) throws Exception {
+                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT));
+                                    }
+                                });*/
+
+                       // ARouter.getInstance().build("/activity/test").navigation();
+                        XXF.startActivityForResult("/activity/test", bundle, 1000)
+                                .compose(XXF.bindToErrorNotice())
+                                .subscribe(new Consumer<ActivityResult>() {
+                                    @Override
+                                    public void accept(ActivityResult activityResult) throws Exception {
+                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT));
+                                    }
+                                });
                     }
                 });
         //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
@@ -148,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("======>onActResult:", "" + this + "_" + data.getStringExtra("data"));
+        Log.d("======>onActResult:", "" + this + "_");
     }
 
     @Override

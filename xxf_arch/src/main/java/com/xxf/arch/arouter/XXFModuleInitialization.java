@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.facade.template.IInterceptor;
  * @Description 模块初始化
  * <p>
  * 使用方法:继承此类 并添加 @Interceptor(priority = 8, name = "测试用拦截器")注解
- * priority 不能相同
+ * priority 不能相同,priority 值越低,越先执行
  */
 public abstract class XXFModuleInitialization implements IInterceptor {
 

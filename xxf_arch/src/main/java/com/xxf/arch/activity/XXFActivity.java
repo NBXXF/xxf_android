@@ -9,5 +9,5 @@ import androidx.appcompat.app.AppCompatActivity;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFActivity extends AppCompatActivity implements ActivityForResultKeyProvider{
+public class XXFActivity extends AppCompatActivity implements ActivityForKeyProvider {
 }

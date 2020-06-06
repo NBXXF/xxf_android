@@ -14,6 +14,7 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath = true
+                arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
             }
         }
     }
@@ -34,8 +35,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-
    // implementation 'com.github.NBXXF:xxf_android:2.6.9'
     implementation project(':xxf_arch')
     implementation project(':xxf_apt')
@@ -47,5 +46,7 @@ dependencies {
     // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
     debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
 
+
+    annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
     //implementation 'com.github.axuan2015:xxf:1.4.0'
 }

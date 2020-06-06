@@ -17,8 +17,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.alibaba.android.arouter.core.ArouterTab;
-import com.alibaba.android.arouter.facade.model.RouteMeta;
+import com.alibaba.android.arouter.core.LogisticsCenter;
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxf.arch.arouter.ArouterAppInject;
 import com.xxf.arch.core.AndroidActivityStackProvider;
@@ -34,6 +35,7 @@ import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -61,17 +63,17 @@ public class XXF {
     private static Function<Throwable, String> errorConvertFunction;
 
 
-    public static void init(Application application,
-                            Logger logger,
-                            Consumer<Throwable> errorHandler,
-                            Function<Throwable, String> errorConvertFunction) {
+    public static void init(@NonNull Application application,
+                            @NonNull Logger logger,
+                            @NonNull Consumer<Throwable> errorHandler,
+                            @NonNull Function<Throwable, String> errorConvertFunction) {
         if (XXF.application == null) {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
-                    XXF.application = application;
-                    XXF.logger = logger;
-                    XXF.errorHandler = errorHandler;
-                    XXF.errorConvertFunction = errorConvertFunction;
+                    XXF.application = Objects.requireNonNull(application);
+                    XXF.logger = Objects.requireNonNull(logger);
+                    XXF.errorHandler = Objects.requireNonNull(errorHandler);
+                    XXF.errorConvertFunction = Objects.requireNonNull(errorConvertFunction);
                     activityStackProvider = new AndroidActivityStackProvider(application);
                     LifecycleProvider = new AndroidLifecycleProvider(application);
                     initRouter();
@@ -233,10 +235,11 @@ public class XXF {
     }
 
     /**
-     *   替代 startActivityForResult
-     *   activity栈中必须包含一个FragmentActivity,如果栈中没有,否则会报错
-     *    注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
-     * @param targetActivityRouterPath 路由
+     * 替代 startActivityForResult
+     * activity栈顶Activity必须是 FragmentActivity,否则会报错
+     * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
+     *
+     * @param targetActivityRouterPath 目标Activity路由
      * @param params
      * @param requestCode
      * @return
@@ -244,92 +247,111 @@ public class XXF {
     public static Observable<ActivityResult> startActivityForResult(@NonNull final String targetActivityRouterPath,
                                                                     @NonNull final Bundle params,
                                                                     final int requestCode) {
-       return  ___getOneFragmentActivityFormStack()
-                .flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
-                    @Override
-                    public ObservableSource<ActivityResult> apply(FragmentActivity fragmentActivity) throws Exception {
-                        return startActivityForResult(fragmentActivity,targetActivityRouterPath,params,requestCode);
-                    }
-                });
-
-    }
-
-    public static Observable<ActivityResult> startActivityForResult(@NonNull final FragmentActivity fragmentActivity,
-                                                                    @NonNull final String targetActivityRouterPath,
-                                                                    @NonNull final Bundle params,
-                                                                    final int requestCode) {
-        return getActivity(targetActivityRouterPath)
+        return getActivityClassByRouter(targetActivityRouterPath)
                 .flatMap(new Function<Class<Activity>, ObservableSource<ActivityResult>>() {
                     @Override
                     public ObservableSource<ActivityResult> apply(Class<Activity> activityClass) throws Exception {
-                        return startActivityForResult(fragmentActivity, new Intent(fragmentActivity, activityClass)
-                                .putExtras(params), requestCode);
+                        return startActivityForResult(activityClass, params, requestCode);
                     }
                 });
-
     }
 
     /**
      * 替代 startActivityForResult
-     * activity栈中必须包含一个FragmentActivity,如果栈中没有,否则会报错
+     * activity栈顶Activity必须是 FragmentActivity,否则会报错
      * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
      *
-     * @param intent
+     * @param targetActivityClazz 目标Activity
+     * @param params
      * @param requestCode
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public static Observable<ActivityResult> startActivityForResult(@NonNull final Intent intent, final int requestCode) {
-        return ___getOneFragmentActivityFormStack()
-                .flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
+    public static Observable<ActivityResult> startActivityForResult(
+            @NonNull final Class<? extends Activity> targetActivityClazz,
+            @NonNull final Bundle params,
+            final int requestCode) {
+        return Observable
+                .fromCallable(new Callable<FragmentActivity>() {
+                    @Override
+                    public FragmentActivity call() throws Exception {
+                        Activity topActivity = getActivityStackProvider().getTopActivity();
+                        if (topActivity instanceof FragmentActivity) {
+                            return (FragmentActivity) topActivity;
+                        }
+                        throw new RuntimeException("stack top activity must FragmentActivity!");
+                    }
+                }).flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
                     @Override
                     public ObservableSource<ActivityResult> apply(FragmentActivity fragmentActivity) throws Exception {
-                        return startActivityForResult(fragmentActivity, intent, requestCode);
+                        return startActivityForResult(fragmentActivity,
+                                new Intent(fragmentActivity, targetActivityClazz)
+                                        .putExtras(params),
+                                requestCode);
                     }
                 });
     }
 
 
     /**
-     * 通过路由获取Activity
+     * 通过路由获取Activity class对象
      *
      * @param activityRouterPath
      * @return
      */
-    public static Observable<Class<Activity>> getActivity(final String activityRouterPath) {
-        return Observable.fromCallable(new Callable<Class<Activity>>() {
+    public static Observable<Class<Activity>> getActivityClassByRouter(@NonNull final String activityRouterPath) {
+        return Observable.defer(new Callable<ObservableSource<? extends Class<Activity>>>() {
             @Override
-            public Class<Activity> call() throws Exception {
-                RouteMeta routes = ArouterTab.getRoutes(activityRouterPath);
-                Class<?> destination = routes.getDestination();
-                if (!Activity.class.isAssignableFrom(destination)) {
-                    throw new RuntimeException(String.format("% is not activity", activityRouterPath));
-                }
-                return (Class<Activity>) destination;
+            public ObservableSource<? extends Class<Activity>> call() throws Exception {
+                Objects.requireNonNull(activityRouterPath);
+                return getPostcardByRouter(activityRouterPath)
+                        .map(new Function<Postcard, Class<Activity>>() {
+                            @Override
+                            public Class<Activity> apply(Postcard build) throws Exception {
+                                if (build.getType() != RouteType.ACTIVITY) {
+                                    throw new IllegalArgumentException(String.format("% is not activity", activityRouterPath));
+                                }
+                                return (Class<Activity>) build.getDestination();
+                            }
+                        });
             }
         });
     }
 
     /**
-     * 从栈中获取一个FragmentActivity
+     * 通过路由获取导航 对象
      *
+     * @param routerPath
      * @return
      */
-    private static Observable<FragmentActivity> ___getOneFragmentActivityFormStack() {
-        return Observable.fromCallable(new Callable<FragmentActivity>() {
+    public static Observable<Postcard> getPostcardByRouter(@NonNull final String routerPath) {
+        return Observable.fromCallable(new Callable<Postcard>() {
             @Override
-            public FragmentActivity call() throws Exception {
-                Activity[] allActivity = getActivityStackProvider().getAllActivity();
-                for (Activity activity : allActivity) {
-                    if (activity instanceof FragmentActivity
-                            && !activity.isDestroyed()
-                            && !activity.isFinishing()) {
-                        return (FragmentActivity) activity;
-                    }
+            public Postcard call() throws Exception {
+                Objects.requireNonNull(routerPath);
+                Postcard build = ARouter.getInstance().build(routerPath);
+                LogisticsCenter.completion(build);
+                if (build == null) {
+                    throw new NullPointerException(String.format("% not found", routerPath));
                 }
-                throw new RuntimeException("stack is not contain one FragmentActivity");
+                return build;
             }
         });
+    }
+
+    /**
+     * 通过路由获取CLASS 对象
+     *
+     * @param routerPath
+     * @return
+     */
+    public static Observable<Class<?>> getClassByRouter(@NonNull final String routerPath) {
+        return getPostcardByRouter(routerPath)
+                .map(new Function<Postcard, Class<?>>() {
+                    @Override
+                    public Class<?> apply(Postcard postcard) throws Exception {
+                        return postcard.getDestination();
+                    }
+                });
     }
 
     /**
@@ -363,14 +385,24 @@ public class XXF {
 
     /**
      * 请求权限
-     * activity栈中必须包含一个FragmentActivity,如果栈中没有,否则会报错
+     * activity栈顶Activity必须是 FragmentActivity,否则会报错
      * 注意:activity  onRequestPermissionsResult方法 必须调用   super.onRequestPermissionsResult(requestCode, permissions, grantResults);
      *
-     * @param permissions
+     * @param permissions {@link android.Manifest}
      * @return
      */
     public static Observable<Boolean> requestPermission(@NonNull final String... permissions) {
-        return ___getOneFragmentActivityFormStack()
+        return Observable
+                .fromCallable(new Callable<FragmentActivity>() {
+                    @Override
+                    public FragmentActivity call() throws Exception {
+                        Activity topActivity = getActivityStackProvider().getTopActivity();
+                        if (topActivity instanceof FragmentActivity) {
+                            return (FragmentActivity) topActivity;
+                        }
+                        throw new RuntimeException("stack top activity must FragmentActivity!");
+                    }
+                })
                 .flatMap(new Function<FragmentActivity, ObservableSource<Boolean>>() {
                     @Override
                     public ObservableSource<Boolean> apply(FragmentActivity fragmentActivity) throws Exception {
@@ -383,7 +415,7 @@ public class XXF {
      * 请求权限
      *
      * @param activity
-     * @param permissions
+     * @param permissions {@link android.Manifest}
      * @return
      */
     public static Observable<Boolean> requestPermission(@NonNull final FragmentActivity activity, @NonNull final String... permissions) {
@@ -394,7 +426,7 @@ public class XXF {
      * 请求权限
      *
      * @param fragment
-     * @param permissions
+     * @param permissions {@link android.Manifest}
      * @return
      */
     public static Observable<Boolean> requestPermission(@NonNull final Fragment fragment, @NonNull final String... permissions) {

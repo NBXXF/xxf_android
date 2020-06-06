@@ -1,22 +1,22 @@
 package com.xxf.arch.test;
 
-import android.app.Activity;
 import android.app.Application;
-import androidx.lifecycle.LifecycleOwner;
+import android.util.Log;
 
-import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import android.util.Log;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.Logger;
+import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.view.loading.DefaultProgressHUDImpl;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.plugins.RxJavaPlugins;
 
 /**
  * @author xuanyouwu@163.com
@@ -35,48 +35,63 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
-        XXF.init(this,
-                new Logger() {
-                    @Override
-                    public boolean isLoggable() {
-                        return false;
-                    }
-
-                    @Override
-                    public void d(String msg) {
-
-                    }
-
-                    @Override
-                    public void d(String msg, Throwable tr) {
-                    }
-
-                    @Override
-                    public void e(String msg) {
-
-                    }
-
-                    @Override
-                    public void e(String msg, Throwable tr) {
-
-                    }
-                },
-                new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.d("=============>", "t:" + throwable);
-                    }
-                },
-                new Function<Throwable, String>() {
-                    @Override
-                    public String apply(Throwable throwable) throws Exception {
-                        return null;
-                    }
-                });
-        //设置默认的loading
-        XXF.setProgressHUDProvider(new ProgressHUDFactory.ProgressHUDProvider() {
+        RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
-            public ProgressHUD onCreateProgressHUD(LifecycleOwner lifecycleOwner) {
+            public void accept(Throwable throwable) throws Exception {
+                Log.e("=============>", "", throwable);
+            }});
+        XXF.init(this,
+                new
+
+            Logger() {
+                @Override
+                public boolean isLoggable () {
+                    return true;
+                }
+
+                @Override
+                public void d (String msg){
+                    Log.d("=============>", msg);
+                }
+
+                @Override
+                public void d (String msg, Throwable tr){
+                    Log.d("=============>", msg, tr);
+                }
+
+                @Override
+                public void e (String msg){
+                    Log.e("=============>", msg);
+                }
+
+                @Override
+                public void e (String msg, Throwable tr){
+                    Log.e("=============>", msg, tr);
+                }
+            },
+                    new Consumer<Throwable>()
+
+            {
+                @Override
+                public void accept (Throwable throwable) throws Exception {
+                ToastUtils.showToast("throwable:" + throwable);
+                Log.d("=============>", "t:" + throwable);
+            }
+            },
+                    new Function<Throwable, String>()
+
+            {
+                @Override
+                public String apply (Throwable throwable) throws Exception {
+                return throwable.getMessage();
+            }
+            });
+            //设置默认的loading
+        XXF.setProgressHUDProvider(new ProgressHUDFactory.ProgressHUDProvider()
+
+            {
+                @Override
+                public ProgressHUD onCreateProgressHUD (LifecycleOwner lifecycleOwner){
                 if (lifecycleOwner instanceof FragmentActivity) {
                     return new DefaultProgressHUDImpl((FragmentActivity) lifecycleOwner);
                 } else if (lifecycleOwner instanceof Fragment) {
@@ -84,43 +99,6 @@ public class BaseApplication extends Application {
                 }
                 return null;
             }
-        });
-
-        this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle bundle) {
-                Log.d("======>created:", "" + activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-                Log.d("======>started:", "" + activity);
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-                Log.d("======>resumed:", "" + activity);
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-                Log.d("======>paused:", "" + activity);
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-                Log.d("======>stop:", "" + activity);
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-                Log.d("======>save:", "" + activity);
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                Log.d("======>destroyed:", "" + activity);
-            }
-        });
+            });
+        }
     }
-}

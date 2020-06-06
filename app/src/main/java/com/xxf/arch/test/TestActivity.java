@@ -1,54 +1,38 @@
 package com.xxf.arch.test;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.arch.XXF;
-import com.xxf.arch.presenter.XXFLifecyclePresenter;
-import com.xxf.arch.utils.FragmentUtils;
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.test.databinding.ActivityTestBinding;
+import com.xxf.arch.utils.ToastUtils;
 
-import io.reactivex.Observable;
+@Route(path = "/activity/test")
+public class TestActivity extends XXFActivity {
 
-public class TestActivity extends AppCompatActivity {
+    private ActivityTestBinding binding;
 
-
-    class Presenter extends XXFLifecyclePresenter<Object> {
-
-        public Presenter(@NonNull LifecycleOwner lifecycleOwner, Object view) {
-            super(lifecycleOwner, view);
-        }
-
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            Observable.just(1)
-                    .compose(XXF.bindToLifecycle(getLifecycleOwner()));
-            Log.d("================>p4", "onCreate");
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            Log.d("================>p4", "onPause");
-        }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            Log.d("================>p4", "onDestroy");
-        }
-    }
+    @Autowired(name = ACTIVITY_PARAM)
+    String param;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        new Presenter(this,null);
-        FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
+        binding = ActivityTestBinding.inflate(getLayoutInflater(), null, false);
+        setContentView(binding.getRoot());
+        ToastUtils.showToast("param:" + param);
+        binding.btSetResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(Activity.RESULT_OK, new Intent().putExtra(ACTIVITY_RESULT, "XXX"));
+                finish();
+            }
+        });
     }
 }
