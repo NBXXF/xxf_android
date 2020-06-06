@@ -22,6 +22,7 @@ import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -104,7 +105,20 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(view.getContext(), StateActivity.class));
+                        // startActivity(new Intent(view.getContext(), StateActivity.class));
+
+                        Disposable subscribe = XXF.getApiService(LoginApiService.class)
+                                .getCity()
+                                .compose(XXF.bindToProgressHud())
+                                .subscribe(new Consumer<JsonObject>() {
+                                    @Override
+                                    public void accept(JsonObject jsonObject) throws Exception {
+                                        Log.d("============>", "d:" + jsonObject);
+                                    }
+                                });
+                        if (!subscribe.isDisposed()) {
+                            subscribe.dispose();
+                        }
                     }
                 });
 
@@ -146,7 +160,7 @@ public class MainActivity extends XXFActivity {
                                     }
                                 });*/
 
-                       // ARouter.getInstance().build("/activity/test").navigation();
+                        // ARouter.getInstance().build("/activity/test").navigation();
                         XXF.startActivityForResult("/activity/test", bundle, 1000)
                                 .compose(XXF.bindToErrorNotice())
                                 .subscribe(new Consumer<ActivityResult>() {

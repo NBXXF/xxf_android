@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -235,64 +236,6 @@ public class XXF {
     }
 
     /**
-     * 替代 startActivityForResult
-     * activity栈顶Activity必须是 FragmentActivity,否则会报错
-     * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
-     *
-     * @param targetActivityRouterPath 目标Activity路由
-     * @param params
-     * @param requestCode
-     * @return
-     */
-    public static Observable<ActivityResult> startActivityForResult(@NonNull final String targetActivityRouterPath,
-                                                                    @NonNull final Bundle params,
-                                                                    final int requestCode) {
-        return getActivityClassByRouter(targetActivityRouterPath)
-                .flatMap(new Function<Class<Activity>, ObservableSource<ActivityResult>>() {
-                    @Override
-                    public ObservableSource<ActivityResult> apply(Class<Activity> activityClass) throws Exception {
-                        return startActivityForResult(activityClass, params, requestCode);
-                    }
-                });
-    }
-
-    /**
-     * 替代 startActivityForResult
-     * activity栈顶Activity必须是 FragmentActivity,否则会报错
-     * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
-     *
-     * @param targetActivityClazz 目标Activity
-     * @param params
-     * @param requestCode
-     * @return
-     */
-    public static Observable<ActivityResult> startActivityForResult(
-            @NonNull final Class<? extends Activity> targetActivityClazz,
-            @NonNull final Bundle params,
-            final int requestCode) {
-        return Observable
-                .fromCallable(new Callable<FragmentActivity>() {
-                    @Override
-                    public FragmentActivity call() throws Exception {
-                        Activity topActivity = getActivityStackProvider().getTopActivity();
-                        if (topActivity instanceof FragmentActivity) {
-                            return (FragmentActivity) topActivity;
-                        }
-                        throw new RuntimeException("stack top activity must FragmentActivity!");
-                    }
-                }).flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
-                    @Override
-                    public ObservableSource<ActivityResult> apply(FragmentActivity fragmentActivity) throws Exception {
-                        return startActivityForResult(fragmentActivity,
-                                new Intent(fragmentActivity, targetActivityClazz)
-                                        .putExtras(params),
-                                requestCode);
-                    }
-                });
-    }
-
-
-    /**
      * 通过路由获取Activity class对象
      *
      * @param activityRouterPath
@@ -356,6 +299,66 @@ public class XXF {
 
     /**
      * 替代 startActivityForResult
+     * activity栈顶Activity必须是 FragmentActivity,否则会报错
+     * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
+     *
+     * @param targetActivityRouterPath 目标Activity路由
+     * @param params
+     * @param requestCode
+     * @return
+     */
+    @MainThread
+    public static Observable<ActivityResult> startActivityForResult(@NonNull final String targetActivityRouterPath,
+                                                                    @NonNull final Bundle params,
+                                                                    final int requestCode) {
+        return getActivityClassByRouter(targetActivityRouterPath)
+                .flatMap(new Function<Class<Activity>, ObservableSource<ActivityResult>>() {
+                    @Override
+                    public ObservableSource<ActivityResult> apply(Class<Activity> activityClass) throws Exception {
+                        return startActivityForResult(activityClass, params, requestCode);
+                    }
+                });
+    }
+
+    /**
+     * 替代 startActivityForResult
+     * activity栈顶Activity必须是 FragmentActivity,否则会报错
+     * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
+     *
+     * @param targetActivityClazz 目标Activity
+     * @param params
+     * @param requestCode
+     * @return
+     */
+    @MainThread
+    public static Observable<ActivityResult> startActivityForResult(
+            @NonNull final Class<? extends Activity> targetActivityClazz,
+            @NonNull final Bundle params,
+            final int requestCode) {
+        return Observable
+                .fromCallable(new Callable<FragmentActivity>() {
+                    @Override
+                    public FragmentActivity call() throws Exception {
+                        Activity topActivity = getActivityStackProvider().getTopActivity();
+                        if (topActivity instanceof FragmentActivity) {
+                            return (FragmentActivity) topActivity;
+                        }
+                        throw new RuntimeException("stack top activity must FragmentActivity!");
+                    }
+                }).flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
+                    @Override
+                    public ObservableSource<ActivityResult> apply(FragmentActivity fragmentActivity) throws Exception {
+                        return startActivityForResult(fragmentActivity,
+                                new Intent(fragmentActivity, targetActivityClazz)
+                                        .putExtras(params),
+                                requestCode);
+                    }
+                });
+    }
+
+
+    /**
+     * 替代 startActivityForResult
      *
      * @param activity
      * @param intent
@@ -363,6 +366,7 @@ public class XXF {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @MainThread
     public static Observable<ActivityResult> startActivityForResult(
             @NonNull FragmentActivity activity, @NonNull Intent intent, int requestCode) {
         return RxActivityResultCompact.startActivityForResult(activity, intent, requestCode);
@@ -378,6 +382,7 @@ public class XXF {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+    @MainThread
     public static Observable<ActivityResult> startActivityForResult(
             @NonNull Fragment fragment, @NonNull Intent intent, int requestCode) {
         return RxActivityResultCompact.startActivityForResult(fragment, intent, requestCode);
@@ -391,6 +396,7 @@ public class XXF {
      * @param permissions {@link android.Manifest}
      * @return
      */
+    @MainThread
     public static Observable<Boolean> requestPermission(@NonNull final String... permissions) {
         return Observable
                 .fromCallable(new Callable<FragmentActivity>() {
@@ -418,6 +424,7 @@ public class XXF {
      * @param permissions {@link android.Manifest}
      * @return
      */
+    @MainThread
     public static Observable<Boolean> requestPermission(@NonNull final FragmentActivity activity, @NonNull final String... permissions) {
         return new RxPermissions(activity).request(permissions);
     }

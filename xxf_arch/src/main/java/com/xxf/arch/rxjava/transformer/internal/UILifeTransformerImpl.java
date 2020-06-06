@@ -44,6 +44,7 @@ public abstract class UILifeTransformerImpl<T>
     public Publisher<T> apply(Flowable<T> upstream) {
         return upstream
                 .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
@@ -76,6 +77,7 @@ public abstract class UILifeTransformerImpl<T>
     public MaybeSource<T> apply(Maybe<T> upstream) {
         return upstream
                 .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
@@ -108,6 +110,7 @@ public abstract class UILifeTransformerImpl<T>
     public ObservableSource<T> apply(Observable<T> upstream) {
         return upstream
                 .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
@@ -139,6 +142,7 @@ public abstract class UILifeTransformerImpl<T>
     @Override
     public CompletableSource apply(Completable upstream) {
         return upstream.observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
