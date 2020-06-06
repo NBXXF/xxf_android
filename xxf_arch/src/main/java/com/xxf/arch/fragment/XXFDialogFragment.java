@@ -1,6 +1,7 @@
 package com.xxf.arch.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -89,6 +90,32 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Activi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    /**
+     * 需要调用父类的方法,否则影响XXF.startActivityForResult
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @CallSuper
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 需要调用父类的方法,否则影响XXF.requestPermission
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @CallSuper
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**

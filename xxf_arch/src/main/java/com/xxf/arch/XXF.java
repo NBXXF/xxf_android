@@ -392,7 +392,7 @@ public class XXF {
      * 请求权限
      * activity栈顶Activity必须是 FragmentActivity,否则会报错
      * 注意:activity  onRequestPermissionsResult方法 必须调用   super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-     *
+     * 不可并行
      * @param permissions {@link android.Manifest}
      * @return
      */
@@ -419,7 +419,7 @@ public class XXF {
 
     /**
      * 请求权限
-     *
+     * 不可并行
      * @param activity
      * @param permissions {@link android.Manifest}
      * @return
@@ -431,7 +431,7 @@ public class XXF {
 
     /**
      * 请求权限
-     *
+     * 不可并行
      * @param fragment
      * @param permissions {@link android.Manifest}
      * @return
