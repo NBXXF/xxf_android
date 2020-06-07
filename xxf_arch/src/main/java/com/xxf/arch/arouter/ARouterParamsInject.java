@@ -16,7 +16,7 @@ import com.xxf.arch.core.SimpleActivityLifecycleCallbacks;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class ArouterAppInject extends SimpleActivityLifecycleCallbacks {
+public class ARouterParamsInject extends SimpleActivityLifecycleCallbacks {
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {

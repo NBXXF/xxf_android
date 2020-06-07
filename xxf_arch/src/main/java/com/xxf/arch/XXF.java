@@ -18,11 +18,12 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alibaba.android.arouter.core.ARouterTab;
 import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.xxf.arch.arouter.ArouterAppInject;
+import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.AndroidLifecycleProvider;
 import com.xxf.arch.core.Logger;
@@ -92,8 +93,10 @@ public class XXF {
             ARouter.openDebug();
         }
         ARouter.init(application);
-        //router注册
-        new ArouterAppInject().register(application);
+        //一次性加载到表中
+        ARouterTab.____initLoad();
+        //router 解析参数注册
+        new ARouterParamsInject().register(application);
     }
 
     /**
@@ -393,6 +396,7 @@ public class XXF {
      * activity栈顶Activity必须是 FragmentActivity,否则会报错
      * 注意:activity  onRequestPermissionsResult方法 必须调用   super.onRequestPermissionsResult(requestCode, permissions, grantResults);
      * 不可并行
+     *
      * @param permissions {@link android.Manifest}
      * @return
      */
@@ -420,6 +424,7 @@ public class XXF {
     /**
      * 请求权限
      * 不可并行
+     *
      * @param activity
      * @param permissions {@link android.Manifest}
      * @return
@@ -432,6 +437,7 @@ public class XXF {
     /**
      * 请求权限
      * 不可并行
+     *
      * @param fragment
      * @param permissions {@link android.Manifest}
      * @return
