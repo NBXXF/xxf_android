@@ -3,6 +3,9 @@ package com.xxf.view.utils;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * @author xuanyouwu
  * @email xuanyouwu@163.com
@@ -11,12 +14,15 @@ import android.view.View;
  */
 
 public class RAUtils {
+    /**
+     * 记录一个路由上次跳转的时间
+     */
+    private static final Map<String, Long> routerJumpRecordLastTimes = new ConcurrentHashMap<>();
 
     private RAUtils() {
     }
 
     public static final long DURATION_DEFAULT = 350;
-    private static long lastClickTime;
 
     public static boolean isLegalDefault() {
         return RAUtils.isLegal(RAUtils.DURATION_DEFAULT);
@@ -29,17 +35,23 @@ public class RAUtils {
      * @return
      */
     public static boolean isLegal(long duration) {
-        long current;
-        current = System.currentTimeMillis();
-        if (0 == lastClickTime) {
-            lastClickTime = current;
+        return isLegal(RAUtils.class.getName(), duration);
+    }
+
+    public static boolean isLegal(String path, long duration) {
+        Long lastRecord = routerJumpRecordLastTimes.get(path);
+        if (lastRecord == null) {
+            lastRecord = 0L;
+        }
+        if (System.currentTimeMillis() - lastRecord >= duration) {
+            lastRecord = System.currentTimeMillis();
+            routerJumpRecordLastTimes.put(path, lastRecord);
             return true;
         } else {
-            long distance = current - lastClickTime;
-            lastClickTime = current;
-            return duration < distance;
+            return false;
         }
     }
+
 
     public static boolean inRangeOfView(View view, MotionEvent ev) {
         int[] location = new int[2];
