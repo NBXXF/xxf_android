@@ -20,6 +20,7 @@ import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
@@ -149,6 +150,11 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
+                        boolean legal = RAUtils.isLegal(v.getClass().getName(), 500);
+                        Log.d("=========>", "click:" + legal);
+                        if (!legal) {
+                            return;
+                        }
                         Bundle bundle = new Bundle();
                         bundle.putString(ACTIVITY_PARAM, "one");
                      /*   XXF.startActivityForResult(TestActivity.class, bundle, 1000)

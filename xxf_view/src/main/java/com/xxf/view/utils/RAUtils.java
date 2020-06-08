@@ -22,7 +22,7 @@ public class RAUtils {
     private RAUtils() {
     }
 
-    public static final long DURATION_DEFAULT = 350;
+    public static final long DURATION_DEFAULT = 500;
 
     public static boolean isLegalDefault() {
         return RAUtils.isLegal(RAUtils.DURATION_DEFAULT);
@@ -40,16 +40,9 @@ public class RAUtils {
 
     public static boolean isLegal(String path, long duration) {
         Long lastRecord = routerJumpRecordLastTimes.get(path);
-        if (lastRecord == null) {
-            lastRecord = 0L;
-        }
-        if (System.currentTimeMillis() - lastRecord >= duration) {
-            lastRecord = System.currentTimeMillis();
-            routerJumpRecordLastTimes.put(path, lastRecord);
-            return true;
-        } else {
-            return false;
-        }
+        long current = System.currentTimeMillis();
+        routerJumpRecordLastTimes.put(path, current);
+        return lastRecord == null || System.currentTimeMillis() - lastRecord >= duration;
     }
 
 
