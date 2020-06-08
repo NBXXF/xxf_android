@@ -42,7 +42,7 @@ public class RAUtils {
         Long lastRecord = routerJumpRecordLastTimes.get(path);
         long current = System.currentTimeMillis();
         routerJumpRecordLastTimes.put(path, current);
-        return lastRecord == null || System.currentTimeMillis() - lastRecord >= duration;
+        return lastRecord == null || current - lastRecord >= duration;
     }
 
 
