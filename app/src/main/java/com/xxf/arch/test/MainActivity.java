@@ -21,10 +21,12 @@ import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
 import com.xxf.view.utils.RAUtils;
 
+import java.util.concurrent.Callable;
+
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainActivity extends XXFActivity {
@@ -70,6 +72,15 @@ public class MainActivity extends XXFActivity {
         }
     }
 
+    private Observable<Object> getXXData() {
+        return Observable.fromCallable(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                return "resppnse";
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,20 +115,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // startActivity(new Intent(view.getContext(), StateActivity.class));
-
-                        Disposable subscribe = XXF.getApiService(LoginApiService.class)
-                                .getCity()
-                                .compose(XXF.bindToProgressHud())
-                                .subscribe(new Consumer<JsonObject>() {
-                                    @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
-                                        Log.d("============>", "d:" + jsonObject);
-                                    }
-                                });
-                        if (!subscribe.isDisposed()) {
-                            subscribe.dispose();
-                        }
+                         startActivity(new Intent(view.getContext(), StateActivity.class));
                     }
                 });
 
@@ -170,7 +168,7 @@ public class MainActivity extends XXFActivity {
                                 .subscribe(new Consumer<ActivityResult>() {
                                     @Override
                                     public void accept(ActivityResult activityResult) throws Exception {
-                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT),ToastUtils.ToastType.ERROR);
+                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT), ToastUtils.ToastType.ERROR);
                                     }
                                 });
                     }
