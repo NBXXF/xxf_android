@@ -48,7 +48,7 @@ public class RxPermissionTransformer implements ObservableTransformer<Boolean, B
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
                         if (!aBoolean) {
-                            ToastUtils.showToast(rejectNotice);
+                            ToastUtils.showToast(rejectNotice, ToastUtils.ToastType.ERROR);
                         }
                         if (!aBoolean && rejecctJumpPermissionSetting) {
                             try {

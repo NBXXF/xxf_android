@@ -74,7 +74,7 @@ public class BaseApplication extends Application {
             {
                 @Override
                 public void accept (Throwable throwable) throws Exception {
-                ToastUtils.showToast("throwable:" + throwable);
+                ToastUtils.showToast("throwable:" + throwable,ToastUtils.ToastType.ERROR);
                 Log.d("=============>", "t:" + throwable);
             }
             },

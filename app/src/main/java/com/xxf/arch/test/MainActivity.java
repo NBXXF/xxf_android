@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.gson.JsonObject;
-import com.xxf.annotation.Router;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
@@ -28,7 +27,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 
 
-@Router(path = "/user/main")
 public class MainActivity extends XXFActivity {
     public static class User<T> {
         private T t;
@@ -131,7 +129,7 @@ public class MainActivity extends XXFActivity {
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
                                     public void accept(Boolean aBoolean) throws Exception {
-                                        ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean);
+                                        ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean, ToastUtils.ToastType.ERROR);
                                     }
                                 });
                     }
@@ -141,7 +139,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        ToastUtils.showToast("yes?" + XXF.isGrantedPermission(Manifest.permission.CAMERA));
+                        ToastUtils.showToast("yes?" + XXF.isGrantedPermission(Manifest.permission.CAMERA), ToastUtils.ToastType.ERROR);
                     }
                 });
 
@@ -172,7 +170,7 @@ public class MainActivity extends XXFActivity {
                                 .subscribe(new Consumer<ActivityResult>() {
                                     @Override
                                     public void accept(ActivityResult activityResult) throws Exception {
-                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT));
+                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT),ToastUtils.ToastType.ERROR);
                                     }
                                 });
                     }

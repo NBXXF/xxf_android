@@ -3,18 +3,25 @@ package com.xxf.arch.utils;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
-import android.text.TextUtils;
-import android.widget.Toast;
 
+import com.xxf.arch.R;
 import com.xxf.arch.XXF;
 
 import java.lang.reflect.Field;
@@ -29,12 +36,18 @@ import java.lang.reflect.Method;
  * 1:检查 SystemUtils.isEnableNotification(BaseApplication.getApplication());
  * 2:替代方案 SnackbarUtils.showSnack(topActivity, noticeStr);
  * <p>
- *
+ * <p>
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/4/27
  * version 1.0.0
  */
 public class ToastUtils {
+    public enum ToastType {
+        NORMAL,
+        ERROR,
+        SUCCESS;
+    }
+
     private static Field sField_TN;
     private static Field sField_TN_Handler;
 
@@ -133,17 +146,8 @@ public class ToastUtils {
      */
     @UiThread
     @Nullable
-    public static Toast showToast(@NonNull CharSequence notice) {
-        if (!isMainThread() || TextUtils.isEmpty(notice)) {
-            return null;
-        }
-        Toast toast = Toast.makeText(getContext(), notice, Toast.LENGTH_SHORT);
-        //fix bug #65709 BadTokenException from BugTags
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
-            hook(toast);
-        }
-        toast.show();
-        return toast;
+    public static Toast showToast(@StringRes int notice, @NonNull ToastType type) {
+        return showToast(XXF.getApplication().getString(notice), type);
     }
 
     /**
@@ -155,11 +159,11 @@ public class ToastUtils {
      */
     @UiThread
     @Nullable
-    public static Toast showToast(@StringRes int notice) {
-        if (!isMainThread()) {
+    public static Toast showToast(@NonNull CharSequence notice, @NonNull ToastType type) {
+        if (!isMainThread() || TextUtils.isEmpty(notice)) {
             return null;
         }
-        Toast toast = Toast.makeText(getContext(), notice, Toast.LENGTH_SHORT);
+        Toast toast = createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);
@@ -167,6 +171,36 @@ public class ToastUtils {
         toast.show();
         return toast;
     }
+
+    public static Toast createToast(CharSequence msg, ToastType type) {
+        LayoutInflater inflater = LayoutInflater.from(XXF.getApplication());
+        View view = inflater.inflate(R.layout.xxf_toast_layout, null);
+
+        TextView text = view.findViewById(android.R.id.message);
+        int dp19 = DensityUtil.dip2px(19);
+        switch (type) {
+            case ERROR:
+                Drawable errorDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_error);
+                errorDrawable.setBounds(0, 0, dp19, dp19);
+                text.setCompoundDrawables(errorDrawable, null, null, null);
+                break;
+            case NORMAL:
+                text.setCompoundDrawables(null, null, null, null);
+                break;
+            case SUCCESS:
+                Drawable successDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_success);
+                successDrawable.setBounds(0, 0, dp19, dp19);
+                text.setCompoundDrawables(successDrawable, null, null, null);
+                break;
+        }
+        text.setText(msg);
+        Toast toast = new Toast(XXF.getApplication());
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(view);
+        return toast;
+    }
+
 
     /**
      * 检查是否在主线程showToast
