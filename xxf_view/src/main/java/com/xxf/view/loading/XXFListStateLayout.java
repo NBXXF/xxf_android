@@ -6,10 +6,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
+import android.widget.ListAdapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.view.recyclerview.adapter.XXFUIAdapterObserver;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 子组件包括RecyclerView,自动处理空状态,其他状态业务控制
@@ -30,7 +34,8 @@ public class XXFListStateLayout extends XXFStateLayout {
 
     RecyclerView childRecyclerView;
     AbsListView childAbsListView;
-    private final RecyclerView.AdapterDataObserver adapterDataObserver = new XXFUIAdapterObserver() {
+    private Map<Object, Object> cacheObservers = new HashMap<>();
+    private final RecyclerView.AdapterDataObserver recyclerViewDataObserver = new XXFUIAdapterObserver() {
         @Override
         protected void updateUI() {
             if (childRecyclerView != null
@@ -40,7 +45,7 @@ public class XXFListStateLayout extends XXFStateLayout {
         }
     };
 
-    private final DataSetObserver dataSetObserver = new DataSetObserver() {
+    private final DataSetObserver listViewDataObserver = new DataSetObserver() {
         @Override
         public void onChanged() {
             super.onChanged();
@@ -74,20 +79,23 @@ public class XXFListStateLayout extends XXFStateLayout {
                     public void onGlobalLayout() {
                         if (childAt1 instanceof RecyclerView) {
                             childRecyclerView = (RecyclerView) childAt1;
-                            if (childRecyclerView.getAdapter() != null) {
-                                try {
-                                    childRecyclerView.getAdapter().unregisterAdapterDataObserver(adapterDataObserver);
-                                } catch (Exception e) {
+                            RecyclerView.Adapter adapter = childRecyclerView.getAdapter();
+                            if (adapter != null) {
+                                //保证第一次添加到队列的前面,移除再添加会丢掉优先级,也避免用户设置不同的adapter问题
+                                if (cacheObservers.get(adapter) == null) {
+                                    adapter.registerAdapterDataObserver(recyclerViewDataObserver);
+                                    cacheObservers.put(adapter, recyclerViewDataObserver);
                                 }
-                                childRecyclerView.getAdapter().registerAdapterDataObserver(adapterDataObserver);
                             }
                         } else if (childAt1 instanceof AbsListView) {
                             childAbsListView = (AbsListView) childAt1;
-                            try {
-                                childAbsListView.getAdapter().unregisterDataSetObserver(dataSetObserver);
-                            } catch (Exception e) {
+                            ListAdapter adapter = childAbsListView.getAdapter();
+                            if (adapter != null) {
+                                if (cacheObservers.get(adapter) == null) {
+                                    adapter.registerDataSetObserver(listViewDataObserver);
+                                    cacheObservers.put(adapter, listViewDataObserver);
+                                }
                             }
-                            childAbsListView.getAdapter().registerDataSetObserver(dataSetObserver);
                         }
                     }
                 });
