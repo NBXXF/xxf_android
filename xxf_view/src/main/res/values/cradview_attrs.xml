@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="startColor" format="reference|color"/>
-    <attr name="topDelta" format="float"/>
+    <attr name="shadow_startColor" format="reference|color"/>
+    <attr name="shadow_topDelta" format="float"/>
     <!-- Selected Paint Color (color). -->
-    <attr name="endColor" format="reference|color"/>
+    <attr name="shadow_endColor" format="reference|color"/>
     <declare-styleable name="CardViewShadow">
         <!-- Default Paint Color (color). -->
-        <attr name="startColor" />
+        <attr name="shadow_startColor" />
         <!-- Selected Paint Color (color). -->
-        <attr name="endColor" />
-        <attr name="topDelta" />
+        <attr name="shadow_endColor" />
+        <attr name="shadow_topDelta" />
     </declare-styleable>
 
 

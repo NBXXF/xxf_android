@@ -28,8 +28,6 @@ import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 
 import com.xxf.view.R
-import com.xxf.view.cardview.CardViewBaseImpl
-import com.xxf.view.cardview.CardViewDelegate
 
 /**
  * A FrameLayout with a rounded corner background and shadow.
@@ -427,15 +425,15 @@ open class CardView : FrameLayout {
 
         val a2 = context.obtainStyledAttributes(attrs, R.styleable.CardViewShadow)
         val n = a2.indexCount
-        if (a2.hasValue(R.styleable.CardViewShadow_topDelta)) {
-            mTopDelta = a2.getFloat(R.styleable.CardViewShadow_topDelta, 0f)
+        if (a2.hasValue(R.styleable.CardViewShadow_shadow_topDelta)) {
+            mTopDelta = a2.getFloat(R.styleable.CardViewShadow_shadow_topDelta, 0f)
         }
-        if (a2.hasValue(R.styleable.CardViewShadow_endColor) && a2.hasValue(R.styleable.CardViewShadow_startColor)) {
+        if (a2.hasValue(R.styleable.CardViewShadow_shadow_endColor) && a2.hasValue(R.styleable.CardViewShadow_shadow_startColor)) {
             for (i in 0 until n) {
                 val attr = a.getIndex(i)
                 when (attr) {
-                    R.styleable.CardViewShadow_endColor -> mEndColor = a.getColor(attr, resources.getColor(R.color.cardview_shadow_end_color))
-                    R.styleable.CardViewShadow_startColor -> mStartColor = a.getColor(attr, resources.getColor(R.color.cardview_shadow_start_color))
+                    R.styleable.CardViewShadow_shadow_endColor -> mEndColor = a.getColor(attr, resources.getColor(R.color.cardview_shadow_end_color))
+                    R.styleable.CardViewShadow_shadow_startColor -> mStartColor = a.getColor(attr, resources.getColor(R.color.cardview_shadow_start_color))
                 }
 
             }

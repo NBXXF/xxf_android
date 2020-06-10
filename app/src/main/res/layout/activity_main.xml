@@ -49,9 +49,9 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="10dp"
             android:layout_margin="10dp"
-            app:endColor="#1AFDFDFD"
-            app:startColor="#F7F7F7"
-            app:topDelta="0">
+            app:shadow_endColor="#1AFDFDFD"
+            app:shadow_startColor="#F7F7F7"
+            app:shadow_topDelta="0">
 
             <TextView
                 android:layout_width="wrap_content"
