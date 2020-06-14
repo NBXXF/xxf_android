@@ -111,11 +111,24 @@ public class MainActivity extends XXFActivity {
             }
         });
 
+        XXF.getFileService()
+                .putPrivateFile("test.txt", "173256abs", false)
+                .compose(XXF.bindToErrorNotice())
+                .subscribe();
         findViewById(R.id.bt_test)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                         startActivity(new Intent(view.getContext(), StateActivity.class));
+                        startActivity(new Intent(view.getContext(), StateActivity.class));
+                        XXF.getFileService()
+                                .getPrivateFile("test.txt")
+                                .compose(XXF.bindToErrorNotice())
+                                .subscribe(new Consumer<String>() {
+                                    @Override
+                                    public void accept(String s) throws Exception {
+                                        ToastUtils.showToast("file:" + s, ToastUtils.ToastType.SUCCESS);
+                                    }
+                                });
                     }
                 });
 

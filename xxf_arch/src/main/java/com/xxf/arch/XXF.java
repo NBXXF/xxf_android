@@ -2,13 +2,17 @@ package com.xxf.arch;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -24,6 +28,7 @@ import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxf.arch.arouter.ARouterParamsInject;
+import com.xxf.arch.arouter.XXFUserInfoProvider;
 import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.AndroidLifecycleProvider;
 import com.xxf.arch.core.Logger;
@@ -34,6 +39,8 @@ import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
+import com.xxf.arch.service.XXFFileService;
+import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 
@@ -51,8 +58,91 @@ import io.reactivex.functions.Function;
  * @Description 框架初始化
  */
 public class XXF {
-    private XXF() {
+    public static class Builder {
+        @NonNull
+        Logger logger = new Logger() {
+            @Override
+            public boolean isLoggable() {
+                return true;
+            }
 
+            @Override
+            public void d(String msg) {
+                Log.d("=============>", msg);
+            }
+
+            @Override
+            public void d(String msg, Throwable tr) {
+                Log.d("=============>", msg, tr);
+            }
+
+            @Override
+            public void e(String msg) {
+                Log.e("=============>", msg);
+            }
+
+            @Override
+            public void e(String msg, Throwable tr) {
+                Log.e("=============>", msg, tr);
+            }
+        };
+        @NonNull
+        Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ToastUtils.showToast(throwable.getMessage(), ToastUtils.ToastType.ERROR);
+            }
+        };
+        @NonNull
+        Function<Throwable, String> errorConvertFunction = new Function<Throwable, String>() {
+            @Override
+            public String apply(Throwable throwable) throws Exception {
+                return throwable.getMessage();
+            }
+        };
+        XXFUserInfoProvider userInfoProvider = new XXFUserInfoProvider() {
+            @Override
+            public String getUserId() {
+                return "";
+            }
+
+            @Override
+            public void init(Context context) {
+
+            }
+        };
+        Application application;
+        @NonNull
+        ProgressHUDFactory.ProgressHUDProvider progressHUDProvider;
+
+        public Builder(@NonNull Application application,
+                       @NonNull ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
+            this.application = Objects.requireNonNull(application);
+            this.progressHUDProvider = Objects.requireNonNull(progressHUDProvider);
+        }
+
+        public Builder setLogger(@NonNull Logger logger) {
+            this.logger = logger;
+            return this;
+        }
+
+        public Builder setErrorHandler(@NonNull Consumer<Throwable> errorHandler) {
+            this.errorHandler = Objects.requireNonNull(errorHandler);
+            return this;
+        }
+
+        public Builder setErrorConvertFunction(@NonNull Function<Throwable, String> errorConvertFunction) {
+            this.errorConvertFunction = Objects.requireNonNull(errorConvertFunction);
+            return this;
+        }
+
+        public Builder setUserInfoProvider(@NonNull XXFUserInfoProvider userInfoProvider) {
+            this.userInfoProvider = Objects.requireNonNull(userInfoProvider);
+            return this;
+        }
+    }
+
+    private XXF() {
     }
 
     private static Application application;
@@ -63,21 +153,21 @@ public class XXF {
     private static AndroidLifecycleProvider LifecycleProvider;
     private static Consumer<Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
+    private static XXFUserInfoProvider userInfoProvider;
 
 
-    public static void init(@NonNull Application application,
-                            @NonNull Logger logger,
-                            @NonNull Consumer<Throwable> errorHandler,
-                            @NonNull Function<Throwable, String> errorConvertFunction) {
+    public static void init(Builder builder) {
         if (XXF.application == null) {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
-                    XXF.application = Objects.requireNonNull(application);
-                    XXF.logger = Objects.requireNonNull(logger);
-                    XXF.errorHandler = Objects.requireNonNull(errorHandler);
-                    XXF.errorConvertFunction = Objects.requireNonNull(errorConvertFunction);
+                    XXF.application = builder.application;
+                    XXF.logger = builder.logger;
+                    XXF.errorHandler = builder.errorHandler;
+                    XXF.errorConvertFunction = builder.errorConvertFunction;
+                    XXF.userInfoProvider = builder.userInfoProvider;
                     activityStackProvider = new AndroidActivityStackProvider(application);
                     LifecycleProvider = new AndroidLifecycleProvider(application);
+                    ProgressHUDFactory.setProgressHUDProvider(builder.progressHUDProvider);
                     initRouter();
                 }
             }
@@ -99,14 +189,6 @@ public class XXF {
         new ARouterParamsInject().register(application);
     }
 
-    /**
-     * 设置默认的progress loading
-     *
-     * @param progressHUDProvider
-     */
-    public static void setProgressHUDProvider(ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
-        ProgressHUDFactory.setProgressHUDProvider(progressHUDProvider);
-    }
 
     /**
      * 获取application
@@ -127,6 +209,27 @@ public class XXF {
      */
     public static AndroidActivityStackProvider getActivityStackProvider() {
         return activityStackProvider;
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static XXFUserInfoProvider getUserInfoProvider() {
+        return userInfoProvider;
+    }
+
+    /**
+     * 获取文件服务
+     *
+     * @return
+     */
+    @NonNull
+    public static XXFFileService getFileService() {
+        return XXFFileService.getDefault();
     }
 
     /**
