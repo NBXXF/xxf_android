@@ -72,7 +72,7 @@ public class XXFStateLayout extends FrameLayout {
 
     private void init(AttributeSet attrs) {
         mInflater = LayoutInflater.from(getContext());
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.AlphaStateView);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.AlphaStateView,0,R.style.style_xxf_state);
         loadingViewResId = a.getResourceId(R.styleable.AlphaStateView_asv_loadingView, -1);
         emptyViewResId = a.getResourceId(R.styleable.AlphaStateView_asv_emptyView, -1);
         errorViewResId = a.getResourceId(R.styleable.AlphaStateView_asv_errorView, -1);

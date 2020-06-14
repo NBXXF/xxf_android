@@ -15,7 +15,6 @@
 
         <com.xxf.view.loading.XXFListStateLayout
             android:id="@+id/state_layout"
-            style="@style/style_xxf_state"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

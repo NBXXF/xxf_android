@@ -48,6 +48,8 @@ public class StateActivity extends Activity {
                 loadData();
             }
         });
+        Log.d("====","11111");
+        testAdaper.bindData(true, new ArrayList<>());
         Log.d("====","5555");
     }
 
