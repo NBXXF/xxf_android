@@ -42,9 +42,12 @@ public class OkHttpClientBuilder {
             .connectionPool(CONNECTION_POOL);
 
     public OkHttpClientBuilder addInterceptor(Interceptor interceptor) {
-        //builder.addInterceptor(interceptor);
-        builder.addNetworkInterceptor(interceptor);
+        builder.addInterceptor(interceptor);
+        return this;
+    }
 
+    public OkHttpClientBuilder addNetworkInterceptor(Interceptor interceptor) {
+        builder.addNetworkInterceptor(interceptor);
         return this;
     }
 

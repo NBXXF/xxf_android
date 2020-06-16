@@ -1,6 +1,7 @@
 package com.xxf.arch.http;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.annotation.BaseUrl;
@@ -39,10 +40,8 @@ public class XXFHttp {
         if (api == null) {
             try {
                 API_MAP.put(apiClazz, api = createApiService(apiClazz));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+               throw  new RuntimeException("创建api异常!",e);
             }
         }
         return (T) api;
@@ -50,6 +49,7 @@ public class XXFHttp {
 
     /**
      * remove api service
+     *
      * @param apiClazz
      */
     public static void clearApiService(Class apiClazz) {
@@ -75,14 +75,14 @@ public class XXFHttp {
 
         BaseUrl baseUrlAnnotation = apiClazz.getAnnotation(BaseUrl.class);
         BaseUrlProvider baseUrlProviderAnnotation = apiClazz.getAnnotation(BaseUrlProvider.class);
-        if (baseUrlAnnotation == null&&baseUrlProviderAnnotation==null) {
+        if (baseUrlAnnotation == null && baseUrlProviderAnnotation == null) {
             throw new IllegalArgumentException("please use  BaseUrl or BaseUrlProvider Annotation to" + apiClazz);
         }
         String baseUrl;
-        if(baseUrlProviderAnnotation!=null) {
-            baseUrl= baseUrlProviderAnnotation.value().newInstance().getBaseUrl(apiClazz);
-        }else {
-            baseUrl=baseUrlAnnotation.value();
+        if (baseUrlProviderAnnotation != null) {
+            baseUrl = baseUrlProviderAnnotation.value().newInstance().getBaseUrl(apiClazz);
+        } else {
+            baseUrl = baseUrlAnnotation.value();
         }
         //拦截器可选
         com.xxf.arch.annotation.Interceptor interceptorAnnotation = apiClazz.getAnnotation(com.xxf.arch.annotation.Interceptor.class);
@@ -95,6 +95,19 @@ public class XXFHttp {
                 }
             }
         }
+
+        //网络拦截器
+        com.xxf.arch.annotation.NetworkInterceptor networkInterceptorAnnotation = apiClazz.getAnnotation(com.xxf.arch.annotation.NetworkInterceptor.class);
+        if (networkInterceptorAnnotation != null) {
+            Class<? extends Interceptor>[] value = networkInterceptorAnnotation.value();
+            if (value != null) {
+                for (Class<? extends Interceptor> in : value) {
+                    Interceptor interceptor = in.newInstance();
+                    ohcb.addNetworkInterceptor(interceptor);
+                }
+            }
+        }
+
 
         //解析器拦截可选
         GsonInterceptor gsonInterceptorAnnotation = apiClazz.getAnnotation(GsonInterceptor.class);
