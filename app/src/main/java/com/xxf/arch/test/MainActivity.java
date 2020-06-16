@@ -95,14 +95,7 @@ public class MainActivity extends XXFActivity {
         new Presenter(this, this);
         new XXFLifecyclePresenter<Object>(MainActivity.this, null);
 
-        XXF.getApiService(LoginApiService.class)
-                .getCity()
-                .subscribe(new Consumer<JsonObject>() {
-                    @Override
-                    public void accept(JsonObject jsonObject) throws Exception {
-                        Log.d("============>", "d:" + jsonObject);
-                    }
-                });
+
 
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
@@ -110,6 +103,7 @@ public class MainActivity extends XXFActivity {
                 Log.d("========>error:", Log.getStackTraceString(throwable));
             }
         });
+
 
         XXF.getFileService()
                 .putPrivateFile("test.txt", "173256abs", false)
@@ -119,14 +113,22 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(view.getContext(), StateActivity.class));
-                        XXF.getFileService()
-                                .getPrivateFile("test.txt")
-                                .compose(XXF.bindToErrorNotice())
-                                .subscribe(new Consumer<String>() {
+//                        startActivity(new Intent(view.getContext(), StateActivity.class));
+//                        XXF.getFileService()
+//                                .getPrivateFile("test.txt")
+//                                .compose(XXF.bindToErrorNotice())
+//                                .subscribe(new Consumer<String>() {
+//                                    @Override
+//                                    public void accept(String s) throws Exception {
+//                                        ToastUtils.showToast("file:" + s, ToastUtils.ToastType.SUCCESS);
+//                                    }
+//                                });
+                        XXF.getApiService(LoginApiService.class)
+                                .getCity()
+                                .subscribe(new Consumer<JsonObject>() {
                                     @Override
-                                    public void accept(String s) throws Exception {
-                                        ToastUtils.showToast("file:" + s, ToastUtils.ToastType.SUCCESS);
+                                    public void accept(JsonObject jsonObject) throws Exception {
+                                        Log.d("============>", "d:" + jsonObject);
                                     }
                                 });
                     }

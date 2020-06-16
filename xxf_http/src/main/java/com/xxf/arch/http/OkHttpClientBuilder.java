@@ -42,7 +42,8 @@ public class OkHttpClientBuilder {
             .connectionPool(CONNECTION_POOL);
 
     public OkHttpClientBuilder addInterceptor(Interceptor interceptor) {
-        builder.addInterceptor(interceptor);
+        //builder.addInterceptor(interceptor);
+        builder.addNetworkInterceptor(interceptor);
 
         return this;
     }

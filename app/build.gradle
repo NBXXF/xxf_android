@@ -39,6 +39,7 @@ dependencies {
     implementation project(':xxf_arch')
     implementation project(':xxf_view')
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
     // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
