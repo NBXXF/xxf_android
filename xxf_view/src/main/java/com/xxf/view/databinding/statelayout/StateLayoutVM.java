@@ -18,10 +18,10 @@ public class StateLayoutVM
         extends BaseObservable
         implements IStateLayoutVM {
     final ObservableField<ViewState> layoutStateOb = new ObservableField<>(ViewState.VIEW_STATE_CONTENT);
-    final ObservableField<Drawable> emptyIconOb = new ObservableField<Drawable>(ResourcesUtil.getDrawable(R.mipmap.alpha_default_empty_data));
+    final ObservableField<Drawable> emptyIconOb = new ObservableField<Drawable>(ResourcesUtil.getDrawable(R.mipmap.xxf_default_empty_data));
     final ObservableField<CharSequence> emptyDescOb = new ObservableField<CharSequence>(ResourcesUtil.getString(R.string.alpha_default_no_data));
     final ObservableField<CharSequence> errorDescOb = new ObservableField<CharSequence>("加载失败");
-    final ObservableField<Drawable> errorIconOb = new ObservableField<Drawable>(ResourcesUtil.getDrawable(R.mipmap.alpha_default_load_error));
+    final ObservableField<Drawable> errorIconOb = new ObservableField<Drawable>(ResourcesUtil.getDrawable(R.mipmap.xxf_default_load_error));
     final ObservableField<Action> retryActionOb = new ObservableField<Action>(new Action() {
         @Override
         public void run() throws Exception {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="style_xxf_loading">
+    <style name="xxf_loading_dialog_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -12,7 +12,7 @@
     </style>
 
     <!-- alpha空布局样式 -->
-    <style name="style_xxf_state">
+    <style name="xxf_state_layout_style">
         <item name="asv_errorView">@layout/xxf_error_view</item>
         <item name="asv_emptyView">@layout/xxf_empty_view</item>
         <item name="asv_loadingView">@layout/xxf_loading_view</item>
@@ -21,7 +21,7 @@
     </style>
 
     <!-- alpha空布局简单样式 -->
-    <style name="style_xxf_state_simple" parent="style_xxf_state">
+    <style name="xxf_state_simple_layout_style" parent="xxf_state_layout_style">
         <item name="asv_emptyView">@layout/xxf_empty_simple_view</item>
     </style>
 </resources>

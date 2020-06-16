@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.CheckResult;
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -61,7 +62,7 @@ public class XXFStateLayout extends FrameLayout {
     }
 
     public XXFStateLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.style.style_xxf_state);
+        this(context, attrs, R.style.xxf_state_layout_style);
     }
 
 
@@ -72,7 +73,7 @@ public class XXFStateLayout extends FrameLayout {
 
     private void init(AttributeSet attrs) {
         mInflater = LayoutInflater.from(getContext());
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.AlphaStateView,0,R.style.style_xxf_state);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.AlphaStateView, 0, R.style.xxf_state_layout_style);
         loadingViewResId = a.getResourceId(R.styleable.AlphaStateView_asv_loadingView, -1);
         emptyViewResId = a.getResourceId(R.styleable.AlphaStateView_asv_emptyView, -1);
         errorViewResId = a.getResourceId(R.styleable.AlphaStateView_asv_errorView, -1);
@@ -269,6 +270,38 @@ public class XXFStateLayout extends FrameLayout {
             TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
             if (viewById != null) {
                 viewById.setText(emptyText);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 设置空状态文案提示颜色
+     *
+     * @param color
+     * @return
+     */
+    public XXFStateLayout setEmptyTextColor(@ColorInt int color) {
+        if (mEmptyView != null) {
+            TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
+            if (viewById != null) {
+                viewById.setTextColor(color);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 设置空文案点击事件
+     *
+     * @param listener
+     * @return
+     */
+    public XXFStateLayout setEmptyTextClickListener(View.OnClickListener listener) {
+        if (mEmptyView != null) {
+            TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
+            if (viewById != null) {
+                viewById.setOnClickListener(listener);
             }
         }
         return this;

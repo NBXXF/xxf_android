@@ -6,23 +6,24 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <androidx.legacy.widget.Space
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="10" />
 
         <com.xxf.view.loading.XXFLoadingView
             android:id="@id/alpha_loading_view_iv"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_gravity="center_horizontal"
             android:clickable="true" />
 
-        <androidx.legacy.widget.Space
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="23" />
+            android:layout_weight="33" />
     </LinearLayout>
 </FrameLayout>

@@ -99,7 +99,7 @@ public class XXFLoading {
         mOkDrawableRes = b.okIcon;
         mFailDrawableRes = b.failIcon;
 
-        Dialog dialog = new Dialog(b.context, R.style.style_xxf_loading);
+        Dialog dialog = new Dialog(b.context, R.style.xxf_loading_dialog_style);
         dialog.setContentView(R.layout.xxf_dialog_loading);
 
         ImageView iconView = (ImageView) dialog.findViewById(R.id.alpha_iv_icon);

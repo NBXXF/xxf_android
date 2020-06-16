@@ -7,40 +7,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:padding="16dp"
         android:orientation="vertical">
 
-        <androidx.legacy.widget.Space
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="10" />
 
         <ImageView
             android:id="@id/alpha_empty_view_iv"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:clickable="true"
-            android:src="@mipmap/alpha_default_empty_data" />
+            android:src="@mipmap/xxf_default_empty_data" />
 
         <TextView
             android:id="@id/alpha_empty_view_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:clickable="true"
             android:ellipsize="end"
             android:maxLines="2"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:gravity="center"
             android:text="@string/alpha_default_no_data"
-            android:textColor="#8c8f92"
-            android:textSize="16sp" />
+            android:textStyle="bold"
+            android:textColor="#BBBBBB"
+            android:textSize="13sp" />
 
-        <androidx.legacy.widget.Space
+        <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="23" />
+            android:layout_weight="33" />
     </LinearLayout>
 </FrameLayout>
