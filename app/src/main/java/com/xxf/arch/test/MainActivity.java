@@ -27,6 +27,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.CacheType;
 
 
 public class MainActivity extends XXFActivity {
@@ -124,7 +125,7 @@ public class MainActivity extends XXFActivity {
 //                                    }
 //                                });
                         XXF.getApiService(LoginApiService.class)
-                                .getCity()
+                                .getCity(CacheType.onlyRemote)
                                 .subscribe(new Consumer<JsonObject>() {
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {

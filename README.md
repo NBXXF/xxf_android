@@ -35,6 +35,7 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
       ``` 1. http接口interface声明（与retrofit十分类似)
       @BaseUrl(com.tokentm.businesscard.config.BuildConfig.API_URL) //必选;baseurl 为retrofit的基础路由,比如:http://www.baidu.com/
       @Interceptor({TokenInterceptor.class})  //可选;拦截器 继承自okhttp3.Interceptor
+      @NetworkInterceptor({MyLoggerInterceptor.class})
       @GsonInterceptor(GlobalGsonConvertInterceptor.class) //可选; json或者gson转换拦截器 继承自com.xxf.arch.http.converter.gson.GsonConvertInterceptor
       public interface BackupApiService {
       
@@ -45,6 +46,14 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
        
        }
        
+       //缓存模式 在参数中加注解,@Cache 优先级高于 @RxHttpCache
+         @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+         Observable<JsonObject> getCity(@Cache CacheType cacheType);
+         
+        //缓存模式 在方法上加注解 
+        @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+        @RxHttpCache(CacheType.onlyCache)
+        Observable<JsonObject> getCityOnlyCache();
    ```
    
    

@@ -1,6 +1,7 @@
 package com.xxf.arch.http.adapter.rxjava2;
 
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.http.cache.RxHttpCache;
@@ -14,6 +15,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
+import retrofit2.CacheType;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.OkHttpCallConvertor;
@@ -27,13 +29,13 @@ import retrofit2.Response;
 final class CallEnqueueObservable<T> extends Observable<Response<T>> {
     private final Call<T> originalCall;
     private RxHttpCache rxHttpCache;
-    private com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType;
+    private CacheType rxCacheType;
     boolean readCache;
-    CallEnqueueObservable(Call<T> originalCall, RxHttpCache rxHttpCache, com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType) {
+    CallEnqueueObservable(Call<T> originalCall, RxHttpCache rxHttpCache, CacheType rxCacheType) {
         this.originalCall = originalCall;
         this.rxHttpCache = rxHttpCache;
         this.rxCacheType = rxCacheType;
-        this.readCache = this.rxCacheType != com.xxf.arch.annotation.RxHttpCache.CacheType.onlyRemote;
+        this.readCache = this.rxCacheType != CacheType.onlyRemote;
     }
 
     @Override

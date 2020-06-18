@@ -7,6 +7,8 @@ import com.xxf.arch.annotation.RxHttpCache;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
 
 import io.reactivex.Observable;
+import retrofit2.CacheType;
+import retrofit2.http.Cache;
 import retrofit2.http.GET;
 
 @BaseUrl("http://api.map.baidu.com/")
@@ -15,11 +17,11 @@ import retrofit2.http.GET;
 public interface LoginApiService {
 
     @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
-    Observable<JsonObject> getCity();
+    Observable<JsonObject> getCity(@Cache CacheType cacheType);
 
 
     @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
-    @RxHttpCache(RxHttpCache.CacheType.onlyCache)
+    @RxHttpCache(CacheType.onlyCache)
     Observable<JsonObject> getCityOnlyCache();
 
 }

@@ -1,6 +1,8 @@
 
 package com.xxf.arch.http.adapter.rxjava2;
 
+import com.xxf.arch.http.cache.RxHttpCache;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -12,7 +14,7 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.annotations.Nullable;
-import com.xxf.arch.http.cache.RxHttpCache;
+import retrofit2.CacheType;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -63,7 +65,7 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
     public @Nullable
     CallAdapter<?, ?> get(
             Type returnType, Annotation[] annotations, Retrofit retrofit) {
-        com.xxf.arch.annotation.RxHttpCache.CacheType rxCacheType = com.xxf.arch.annotation.RxHttpCache.CacheType.onlyRemote;
+        CacheType rxCacheType = CacheType.onlyRemote;
         if (annotations != null) {
             for (Annotation annotation : annotations) {
                 if (annotation == null) {
