@@ -3,6 +3,7 @@ package com.xxf.arch.core.activityresult;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -83,6 +84,6 @@ public class RxActivityResultCompact {
                     public boolean test(@io.reactivex.annotations.NonNull ActivityResult result) throws Exception {
                         return result.getRequestCode() == requestCode;
                     }
-                });
+                }).take(1);
     }
 }

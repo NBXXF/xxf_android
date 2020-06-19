@@ -19,7 +19,6 @@ import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
-import com.xxf.view.utils.RAUtils;
 
 import java.util.concurrent.Callable;
 
@@ -97,7 +96,6 @@ public class MainActivity extends XXFActivity {
         new XXFLifecyclePresenter<Object>(MainActivity.this, null);
 
 
-
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
@@ -140,9 +138,11 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(final View v) {
                         XXF.requestPermission(Manifest.permission.CAMERA)
+
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
                                     public void accept(Boolean aBoolean) throws Exception {
+                                        Log.d("==========>","requestPermission:"+aBoolean);
                                         ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean, ToastUtils.ToastType.ERROR);
                                     }
                                 });
@@ -162,11 +162,6 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        boolean legal = RAUtils.isLegal(v.getClass().getName(), 500);
-                        Log.d("=========>", "click:" + legal);
-                        if (!legal) {
-                            return;
-                        }
                         Bundle bundle = new Bundle();
                         bundle.putString(ACTIVITY_PARAM, "one");
                      /*   XXF.startActivityForResult(TestActivity.class, bundle, 1000)
@@ -181,10 +176,11 @@ public class MainActivity extends XXFActivity {
                         // ARouter.getInstance().build("/activity/test").navigation();
                         XXF.startActivityForResult("/activity/test", bundle, 1000)
                                 .compose(XXF.bindToErrorNotice())
+                                .take(1)
                                 .subscribe(new Consumer<ActivityResult>() {
                                     @Override
                                     public void accept(ActivityResult activityResult) throws Exception {
-                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT), ToastUtils.ToastType.ERROR);
+                                        Log.d("=======>result:", activityResult.getData().getStringExtra(ACTIVITY_RESULT));
                                     }
                                 });
                     }

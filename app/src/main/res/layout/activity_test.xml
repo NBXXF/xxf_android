@@ -7,6 +7,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:text="1"
+            android:padding="10dp"
+            android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/bt_setResult"
             android:layout_width="match_parent"

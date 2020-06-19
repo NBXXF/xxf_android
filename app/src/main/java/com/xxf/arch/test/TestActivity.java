@@ -31,7 +31,7 @@ public class TestActivity extends XXFActivity {
         binding.btSetResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(Activity.RESULT_OK, new Intent().putExtra(ACTIVITY_RESULT, "XXX"));
+                setResult(Activity.RESULT_OK, new Intent().putExtra(ACTIVITY_RESULT, binding.etInput.getText().toString()));
                 finish();
             }
         });
