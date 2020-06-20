@@ -109,25 +109,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        startActivity(new Intent(view.getContext(), StateActivity.class));
-//                        XXF.getFileService()
-//                                .getPrivateFile("test.txt")
-//                                .compose(XXF.bindToErrorNotice())
-//                                .subscribe(new Consumer<String>() {
-//                                    @Override
-//                                    public void accept(String s) throws Exception {
-//                                        ToastUtils.showToast("file:" + s, ToastUtils.ToastType.SUCCESS);
-//                                    }
-//                                });
-//                        XXF.getApiService(LoginApiService.class)
-//                                .getCity(CacheType.onlyRemote)
-//                                .subscribe(new Consumer<JsonObject>() {
-//                                    @Override
-//                                    public void accept(JsonObject jsonObject) throws Exception {
-//                                        Log.d("============>", "d:" + jsonObject);
-//                                    }
-//                                });
-                        finish();
+                        startActivity(new Intent(view.getContext(), StateActivity.class));
                     }
                 });
 
@@ -189,7 +171,7 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onStop() {
         super.onStop();
-       // Toast.makeText(this,"abcd",Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this,"abcd",Toast.LENGTH_SHORT).show();
         ToastUtils.showToast("xxxxx", ToastUtils.ToastType.ERROR);
     }
 

@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.CheckResult;
-import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -32,6 +32,9 @@ import static com.xxf.view.loading.ViewState.VIEW_STATE_UNKNOWN;
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 多状态布局
+ * 注意:emptyText默认可见
+ * emptyActionText默认不可见
+ * 动态控制参考{@link #setEmptyText(CharSequence)} {@link #setEmptyActionText(CharSequence, OnClickListener)}
  */
 public class XXFStateLayout extends FrameLayout {
 
@@ -261,47 +264,44 @@ public class XXFStateLayout extends FrameLayout {
 
     /**
      * R.id.alpha_empty_view_tv
-     *
-     * @param emptyText
+     * 空文案
+     * 默认是可见的
+     * 注意:emptyText默认可见
+     * emptyActionText默认不可见
+     * 动态控制参考{@link #setEmptyText(CharSequence)} {@link #setEmptyActionText(CharSequence, OnClickListener)}
+     * @param emptyText 为空""/null 自动隐藏该控件
      * @return
      */
-    public XXFStateLayout setEmptyText(CharSequence emptyText) {
+    public XXFStateLayout setEmptyText(@Nullable CharSequence emptyText) {
         if (mEmptyView != null) {
             TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
             if (viewById != null) {
                 viewById.setText(emptyText);
+                viewById.setVisibility(TextUtils.isEmpty(emptyText) ? View.GONE : View.VISIBLE);
             }
         }
         return this;
     }
 
-    /**
-     * 设置空状态文案提示颜色
-     *
-     * @param color
-     * @return
-     */
-    public XXFStateLayout setEmptyTextColor(@ColorInt int color) {
-        if (mEmptyView != null) {
-            TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
-            if (viewById != null) {
-                viewById.setTextColor(color);
-            }
-        }
-        return this;
-    }
 
     /**
-     * 设置空文案点击事件
-     *
-     * @param listener
+     * 默认是隐藏的
+     * 设置  空 action 文案与点击事件
+     * R.id.alpha_empty_action_tv
+     * * 注意:emptyText默认可见
+     *  * emptyActionText默认不可见
+     *  * 动态控制参考{@link #setEmptyText(CharSequence)} {@link #setEmptyActionText(CharSequence, OnClickListener)}
+     * @param emptyActionText 为空""/null 自动隐藏该控件
+     * @param listener        可空
      * @return
      */
-    public XXFStateLayout setEmptyTextClickListener(View.OnClickListener listener) {
+    public XXFStateLayout setEmptyActionText(@Nullable CharSequence emptyActionText, @Nullable View.OnClickListener listener) {
         if (mEmptyView != null) {
-            TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_tv);
+            TextView viewById = mEmptyView.findViewById(R.id.alpha_empty_action_tv);
             if (viewById != null) {
+                viewById.setText(emptyActionText);
                 viewById.setOnClickListener(listener);
+                viewById.setVisibility(TextUtils.isEmpty(emptyActionText) ? View.GONE : View.VISIBLE);
             }
         }
         return this;
@@ -346,7 +346,7 @@ public class XXFStateLayout extends FrameLayout {
      * @param drawable
      * @return
      */
-    public XXFStateLayout setEmptyImage(Drawable drawable) {
+    public XXFStateLayout setEmptyImage(@Nullable Drawable drawable) {
         if (mEmptyView != null) {
             ImageView viewById = mEmptyView.findViewById(R.id.alpha_empty_view_iv);
             if (viewById != null) {
@@ -362,7 +362,7 @@ public class XXFStateLayout extends FrameLayout {
      * @param charSequence
      * @return
      */
-    public XXFStateLayout setErrorText(CharSequence charSequence) {
+    public XXFStateLayout setErrorText(@Nullable CharSequence charSequence) {
         if (mErrorView != null) {
             TextView viewById = mErrorView.findViewById(R.id.alpha_error_view_tv);
             if (viewById != null) {
@@ -395,7 +395,7 @@ public class XXFStateLayout extends FrameLayout {
      * @param errorImage
      * @return
      */
-    public XXFStateLayout setErrorImage(Drawable errorImage) {
+    public XXFStateLayout setErrorImage(@Nullable Drawable errorImage) {
         if (mErrorView != null) {
             ImageView viewById = mErrorView.findViewById(R.id.alpha_error_view_iv);
             if (viewById != null) {

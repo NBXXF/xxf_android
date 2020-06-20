@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="alpha_empty_view_tv" type="id" />
+    <item name="alpha_empty_action_tv" type="id" />
     <item name="alpha_empty_view_iv" type="id" />
 
     <item name="alpha_error_view_tv" type="id" />

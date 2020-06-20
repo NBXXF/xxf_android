@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <Space
             android:layout_width="wrap_content"
@@ -22,22 +23,49 @@
             android:clickable="true"
             android:src="@mipmap/xxf_default_empty_data" />
 
-        <TextView
-            android:id="@id/alpha_empty_view_tv"
-            android:layout_width="wrap_content"
+        <!-- 设置最小高度 ，避免其两个子组件 一个隐藏一个显示 页面晃动-->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center"
-            android:text="@string/alpha_default_no_data"
-            android:textStyle="bold"
-            android:textColor="#BBBBBB"
-            android:textSize="13sp" />
+            android:minHeight="100dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@id/alpha_empty_view_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/alpha_default_no_data"
+                android:textColor="#BBBBBB"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@id/alpha_empty_action_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:padding="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/alpha_default_action_data"
+                android:textColor="#EC6D56"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
 
         <Space
             android:layout_width="wrap_content"

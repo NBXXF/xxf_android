@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
+import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 
@@ -48,9 +49,16 @@ public class StateActivity extends Activity {
                 loadData();
             }
         });
-        Log.d("====","11111");
+        stateBinding.stateLayout.setEmptyActionText("点击", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showToast("点击了!", ToastUtils.ToastType.ERROR);
+                stateBinding.stateLayout.setEmptyText(null);
+            }
+        });
+        Log.d("====", "11111");
         testAdaper.bindData(true, new ArrayList<>());
-        Log.d("====","5555");
+        Log.d("====", "5555");
     }
 
     private void loadData() {
@@ -67,7 +75,7 @@ public class StateActivity extends Activity {
                 .subscribe(new Consumer<List<String>>() {
                     @Override
                     public void accept(List<String> strings) throws Exception {
-                       Log.d("=========",""+strings);
+                        Log.d("=========", "" + strings);
                         testAdaper.bindData(true, strings);
                     }
                 });
