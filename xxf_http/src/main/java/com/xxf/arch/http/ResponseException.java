@@ -34,6 +34,7 @@ public class ResponseException extends IOException {
         return "ResponseException{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
+                ", body=" + body +
                 '}';
     }
 }

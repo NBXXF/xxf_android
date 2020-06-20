@@ -11,12 +11,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
-import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
 
@@ -26,7 +24,6 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.CacheType;
 
 
 public class MainActivity extends XXFActivity {
@@ -122,14 +119,15 @@ public class MainActivity extends XXFActivity {
 //                                        ToastUtils.showToast("file:" + s, ToastUtils.ToastType.SUCCESS);
 //                                    }
 //                                });
-                        XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.onlyRemote)
-                                .subscribe(new Consumer<JsonObject>() {
-                                    @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
-                                        Log.d("============>", "d:" + jsonObject);
-                                    }
-                                });
+//                        XXF.getApiService(LoginApiService.class)
+//                                .getCity(CacheType.onlyRemote)
+//                                .subscribe(new Consumer<JsonObject>() {
+//                                    @Override
+//                                    public void accept(JsonObject jsonObject) throws Exception {
+//                                        Log.d("============>", "d:" + jsonObject);
+//                                    }
+//                                });
+                        finish();
                     }
                 });
 
@@ -142,7 +140,7 @@ public class MainActivity extends XXFActivity {
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
                                     public void accept(Boolean aBoolean) throws Exception {
-                                        Log.d("==========>","requestPermission:"+aBoolean);
+                                        Log.d("==========>", "requestPermission:" + aBoolean);
                                         ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean, ToastUtils.ToastType.ERROR);
                                     }
                                 });
@@ -186,6 +184,13 @@ public class MainActivity extends XXFActivity {
                     }
                 });
         //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+       // Toast.makeText(this,"abcd",Toast.LENGTH_SHORT).show();
+        ToastUtils.showToast("xxxxx", ToastUtils.ToastType.ERROR);
     }
 
     @Override

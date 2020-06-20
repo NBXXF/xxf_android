@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
+import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.view.loading.DefaultProgressHUDImpl;
@@ -47,6 +48,11 @@ public class BaseApplication extends Application {
                     return new DefaultProgressHUDImpl(((Fragment) lifecycleOwner).getContext());
                 }
                 return null;
+            }
+        }).setErrorHandler(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR);
             }
         }));
     }
