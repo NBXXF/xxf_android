@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/header_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/header_animation_view"
+            android:layout_width="65dp"
+            android:layout_height="20dp" />
+    </LinearLayout>
+</layout>

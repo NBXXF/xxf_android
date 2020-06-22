@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.loading.ViewState;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 
@@ -62,9 +63,16 @@ public class StateActivity extends Activity {
     }
 
     private void loadData() {
+        stateBinding.stateLayout.setViewState(ViewState.VIEW_STATE_LOADING);
         Observable.fromCallable(new Callable<List<String>>() {
             @Override
             public List<String> call() throws Exception {
+                try {
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+
+                }
+
                 if (System.currentTimeMillis() % 3 == 0) {
                     return Arrays.asList("1", "2", "3");
                 }

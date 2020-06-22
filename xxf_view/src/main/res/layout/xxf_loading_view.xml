@@ -16,8 +16,8 @@
 
         <com.xxf.view.loading.XXFLoadingView
             android:id="@id/alpha_loading_view_iv"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="65dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_horizontal"
             android:clickable="true" />
 
