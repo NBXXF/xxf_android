@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -261,6 +263,67 @@ public class XXF {
      */
     public static <T> T getApiService(Class<T> apiClazz) {
         return XXFHttp.getApiService(apiClazz);
+    }
+
+
+    /**
+     * 注册网络监听
+     * you need add
+     * <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+     * <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+     * <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+     * <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+     * XXF.registerNetworkCallback(new ConnectivityManager.NetworkCallback() {
+     *
+     * @param networkCallback
+     * @Override public void onAvailable(Network network) {
+     * super.onAvailable(network);
+     * XXF.getLogger().d("===========>yes:");
+     * }
+     * @Override public void onLost(Network network) {
+     * super.onLost(network);
+     * XXF.getLogger().d("===========>no:");
+     * }
+     * });
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static void registerNetworkCallback(ConnectivityManager.NetworkCallback networkCallback) {
+        NetworkRequest request = new NetworkRequest.Builder().build();
+        ConnectivityManager cmgr = (ConnectivityManager) application
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cmgr != null) {
+            cmgr.registerNetworkCallback(request, networkCallback);
+        }
+    }
+
+    /**
+     * 注册网络监听
+     * you need addd
+     * <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+     * <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+     * <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+     * <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+     * XXF.registerNetworkCallback(new ConnectivityManager.NetworkCallback() {
+     *
+     * @param networkCallback
+     * @Override public void onAvailable(Network network) {
+     * super.onAvailable(network);
+     * XXF.getLogger().d("===========>yes:");
+     * }
+     * @Override public void onLost(Network network) {
+     * super.onLost(network);
+     * XXF.getLogger().d("===========>no:");
+     * }
+     * });
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static void unregisterNetworkCallback(ConnectivityManager.NetworkCallback networkCallback) {
+        NetworkRequest request = new NetworkRequest.Builder().build();
+        ConnectivityManager cmgr = (ConnectivityManager) application
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cmgr != null) {
+            cmgr.unregisterNetworkCallback(networkCallback);
+        }
     }
 
     /**

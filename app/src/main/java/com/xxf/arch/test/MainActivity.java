@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -81,6 +83,19 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        XXF.registerNetworkCallback(new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+                super.onAvailable(network);
+                XXF.getLogger().d("===========>yes:");
+            }
+
+            @Override
+            public void onLost(Network network) {
+                super.onLost(network);
+                XXF.getLogger().d("===========>no:");
+            }
+        });
         setContentView(R.layout.activity_main);
         CardView cardView = findViewById(R.id.card);
         cardView.setOnClickListener(new View.OnClickListener() {
