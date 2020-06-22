@@ -14,4 +14,5 @@ dependencies {
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     api 'com.github.NBXXF:retrofit2:1.0.4'
     api 'com.google.code.gson:gson:2.8.6'
+    api 'com.squareup.okhttp3:okhttp:4.7.2'
 }
