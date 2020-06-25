@@ -54,7 +54,7 @@ public class MainActivity extends XXFActivity {
         public void onCreate() {
             super.onCreate();
             Observable.just(1)
-                    .compose(XXF.bindToLifecycle(getLifecycleOwner()));
+                    .compose(XXF.bindToLifecycle(this));
             Log.d("================>p", "onCreate");
         }
 

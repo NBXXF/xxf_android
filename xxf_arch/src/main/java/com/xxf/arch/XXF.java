@@ -38,6 +38,7 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
+import com.xxf.arch.lifecycle.LifecycleOwnerProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
@@ -341,6 +342,17 @@ public class XXF {
     /**
      * 绑定生命周期
      *
+     * @param lifecycleOwnerProvider
+     * @param event
+     * @param <T>
+     * @return
+     */
+    public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider, @NonNull Lifecycle.Event event) {
+        return LifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindUntilEvent(event);
+    }
+    /**
+     * 绑定生命周期
+     *
      * @param lifecycleOwner
      * @param <T>
      * @return
@@ -349,6 +361,16 @@ public class XXF {
         return LifecycleProvider.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
     }
 
+    /**
+     * 绑定生命周期
+     *
+     * @param lifecycleOwnerProvider
+     * @param <T>
+     * @return
+     */
+    public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider) {
+        return LifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindToLifecycle();
+    }
     /**
      * 绑定loading
      *
