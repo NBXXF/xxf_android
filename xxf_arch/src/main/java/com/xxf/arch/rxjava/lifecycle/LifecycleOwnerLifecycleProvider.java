@@ -1,0 +1,102 @@
+package com.xxf.arch.rxjava.lifecycle;
+
+import androidx.annotation.CallSuper;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.annotation.CheckResult;
+
+
+import com.xxf.arch.lifecycle.LifecycleOwnerProvider;
+import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
+import com.xxf.arch.lifecycle.XXFFullLifecycleObserverAdapter;
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
+import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycle;
+import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycleAndroidLifecycle;
+
+import java.util.Objects;
+
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.subjects.BehaviorSubject;
+
+
+/**
+ * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Description
+ */
+class LifecycleOwnerLifecycleProvider implements LifecycleOwnerProvider, LifecycleProvider<Lifecycle.Event>, XXFFullLifecycleObserver {
+
+    final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
+    LifecycleOwner owner;
+
+    LifecycleOwnerLifecycleProvider(@NonNull LifecycleOwner owner) {
+        Objects.requireNonNull(owner);
+        this.owner = owner;
+        owner.getLifecycle().addObserver(new XXFFullLifecycleObserverAdapter(this));
+    }
+
+    @NonNull
+    @Override
+    @CheckResult
+    public Observable<Lifecycle.Event> lifecycle() {
+        return lifecycleSubject.hide();
+    }
+
+    @NonNull
+    @Override
+    @CheckResult
+    public <T> LifecycleTransformer<T> bindUntilEvent(@NonNull Lifecycle.Event event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+    }
+
+    @NonNull
+    @Override
+    @CheckResult
+    public <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycleAndroidLifecycle.bindLifecycle(lifecycleSubject);
+    }
+
+    @CallSuper
+    @Override
+    public void onCreate() {
+        lifecycleSubject.onNext(Lifecycle.Event.ON_CREATE);
+    }
+
+    @CallSuper
+    @Override
+    public void onStart() {
+        lifecycleSubject.onNext(Lifecycle.Event.ON_START);
+    }
+
+    @CallSuper
+    @Override
+    public void onResume() {
+        lifecycleSubject.onNext(Lifecycle.Event.ON_RESUME);
+    }
+
+    @CallSuper
+    @Override
+    public void onPause() {
+        lifecycleSubject.onNext(Lifecycle.Event.ON_PAUSE);
+    }
+
+    @CallSuper
+    @Override
+    public void onStop() {
+        lifecycleSubject.onNext(Lifecycle.Event.ON_STOP);
+    }
+
+    @CallSuper
+    @Override
+    public void onDestroy() {
+        lifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
+    }
+
+    @Override
+    public LifecycleOwner getLifecycleOwner() {
+        return this.owner;
+    }
+}

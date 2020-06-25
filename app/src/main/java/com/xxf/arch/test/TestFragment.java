@@ -17,7 +17,7 @@ import io.reactivex.Observable;
 
 public class TestFragment extends Fragment {
     public TestFragment() {
-        new Presenter(this,null);
+        new Presenter(this, null);
     }
 
     class Presenter extends XXFLifecyclePresenter<Object> {
@@ -30,7 +30,8 @@ public class TestFragment extends Fragment {
         public void onCreate() {
             super.onCreate();
             Observable.just(1)
-                    .compose(XXF.bindToLifecycle(getLifecycleOwner()));
+                    .compose(XXF.bindToLifecycle(this))
+                    .subscribe();
             Log.d("================>p2", "onCreate");
         }
 
@@ -46,6 +47,7 @@ public class TestFragment extends Fragment {
             Log.d("================>p2", "onDestroy");
         }
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,36 +1,32 @@
 package com.xxf.arch.rxjava.lifecycle;
 
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.annotation.CheckResult;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 
-
+import com.xxf.arch.lifecycle.XXFFullLifecycleObserverAdapter;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycle;
 import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycleAndroidLifecycle;
 
+import java.util.Objects;
+
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.subjects.BehaviorSubject;
 
-
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description
+ * @Description: 已经销毁
+ * @Author: XGod
+ * @CreateDate: 2020/6/25 23:50
  */
-public final class LifecycleProviderAndroidImpl implements LifecycleProvider<Lifecycle.Event>, LifecycleObserver {
+class DestoryLifecycleProvider implements LifecycleProvider<Lifecycle.Event> {
+    static volatile DestoryLifecycleProvider INSTANCE = new DestoryLifecycleProvider();
+    final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
 
-    public static LifecycleProvider<Lifecycle.Event> createLifecycleProvider(LifecycleOwner owner) {
-        return new LifecycleProviderAndroidImpl(owner);
-    }
-
-    private final BehaviorSubject<Lifecycle.Event> lifecycleSubject = BehaviorSubject.create();
-
-    private LifecycleProviderAndroidImpl(LifecycleOwner owner) {
-        owner.getLifecycle().addObserver(this);
+    private DestoryLifecycleProvider() {
+        lifecycleSubject.onNext(Lifecycle.Event.ON_DESTROY);
     }
 
     @NonNull
@@ -54,11 +50,5 @@ public final class LifecycleProviderAndroidImpl implements LifecycleProvider<Lif
         return RxLifecycleAndroidLifecycle.bindLifecycle(lifecycleSubject);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
-    void onEvent(LifecycleOwner owner, Lifecycle.Event event) {
-        lifecycleSubject.onNext(event);
-        if (event == Lifecycle.Event.ON_DESTROY) {
-            owner.getLifecycle().removeObserver(this);
-        }
-    }
 }
+

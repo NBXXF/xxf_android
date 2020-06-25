@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
+import com.xxf.arch.lifecycle.XXFFullLifecycleObserverAdapter;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
@@ -30,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 
 import java.util.concurrent.TimeUnit;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -40,6 +44,7 @@ public class StateActivity extends XXFActivity {
 
     ActivityStateBinding stateBinding;
     TestAdaper testAdaper;
+
     public static class TestViewModel extends XXFViewModel {
 
         public TestViewModel(@NonNull Application application) {
@@ -61,12 +66,13 @@ public class StateActivity extends XXFActivity {
             XXF.getLogger().d("=======>xxx:onclear");
         }
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stateBinding = ActivityStateBinding.inflate(getLayoutInflater(), null, false);
         setContentView(stateBinding.getRoot());
-        TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
+        // TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
 
         stateBinding.recyclerView.setAdapter(testAdaper = new TestAdaper());
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +94,41 @@ public class StateActivity extends XXFActivity {
                 stateBinding.stateLayout.setEmptyText(null);
             }
         });
-        Log.d("====", "11111");
         testAdaper.bindData(true, new ArrayList<>());
-        Log.d("====", "5555");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Observable.interval(50, TimeUnit.MILLISECONDS)
+                .compose(XXF.bindToLifecycle(this))
+                .compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        XXF.getLogger().d("============>rl:" + aLong);
+                    }
+                });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        XXF.getLogger().d("============>rl:pause");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Observable.interval(50, TimeUnit.MILLISECONDS)
+                .compose(XXF.bindToLifecycle(this))
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        XXF.getLogger().d("============>dl:" + aLong);
+                    }
+                });
     }
 
     private void loadData() {
@@ -110,6 +148,7 @@ public class StateActivity extends XXFActivity {
                 return new ArrayList<>();
             }
         }).subscribeOn(Schedulers.io())
+                .compose(XXF.bindToLifecycle(this))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<String>>() {
                     @Override

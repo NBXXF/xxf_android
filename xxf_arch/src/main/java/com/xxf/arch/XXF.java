@@ -33,7 +33,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.arouter.XXFUserInfoProvider;
 import com.xxf.arch.core.AndroidActivityStackProvider;
-import com.xxf.arch.core.AndroidLifecycleProvider;
+import com.xxf.arch.rxjava.lifecycle.LifecycleProviderFactory;
 import com.xxf.arch.core.Logger;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
@@ -155,7 +155,6 @@ public class XXF {
 
     private static Logger logger;
     private static AndroidActivityStackProvider activityStackProvider;
-    private static AndroidLifecycleProvider lifecycleProvider;
     private static Consumer<Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
@@ -171,7 +170,6 @@ public class XXF {
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
                     activityStackProvider = new AndroidActivityStackProvider(application);
-                    lifecycleProvider = new AndroidLifecycleProvider(application);
                     ProgressHUDFactory.setProgressHUDProvider(builder.progressHUDProvider);
                     initRouter();
                 }
@@ -338,7 +336,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
-        return lifecycleProvider.getLifecycleProvider(lifecycleOwner).bindUntilEvent(event);
+        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwner).bindUntilEvent(event);
     }
 
     /**
@@ -350,7 +348,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider, @NonNull Lifecycle.Event event) {
-        return lifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindUntilEvent(event);
+        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwnerProvider == null ? null : lifecycleOwnerProvider.getLifecycleOwner()).bindUntilEvent(event);
     }
 
     /**
@@ -361,7 +359,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
-        return lifecycleProvider.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
+        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
     }
 
     /**
@@ -372,7 +370,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider) {
-        return lifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindToLifecycle();
+        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwnerProvider == null ? null : lifecycleOwnerProvider.getLifecycleOwner()).bindToLifecycle();
     }
 
     /**
