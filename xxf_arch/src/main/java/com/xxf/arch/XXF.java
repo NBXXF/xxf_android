@@ -22,7 +22,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.alibaba.android.arouter.core.ARouterTab;
 import com.alibaba.android.arouter.core.LogisticsCenter;
@@ -39,6 +40,7 @@ import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.lifecycle.LifecycleOwnerProvider;
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
@@ -153,7 +155,7 @@ public class XXF {
 
     private static Logger logger;
     private static AndroidActivityStackProvider activityStackProvider;
-    private static AndroidLifecycleProvider LifecycleProvider;
+    private static AndroidLifecycleProvider lifecycleProvider;
     private static Consumer<Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
@@ -169,7 +171,7 @@ public class XXF {
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
                     activityStackProvider = new AndroidActivityStackProvider(application);
-                    LifecycleProvider = new AndroidLifecycleProvider(application);
+                    lifecycleProvider = new AndroidLifecycleProvider(application);
                     ProgressHUDFactory.setProgressHUDProvider(builder.progressHUDProvider);
                     initRouter();
                 }
@@ -336,7 +338,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
-        return LifecycleProvider.getLifecycleProvider(lifecycleOwner).bindUntilEvent(event);
+        return lifecycleProvider.getLifecycleProvider(lifecycleOwner).bindUntilEvent(event);
     }
 
     /**
@@ -348,8 +350,9 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider, @NonNull Lifecycle.Event event) {
-        return LifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindUntilEvent(event);
+        return lifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindUntilEvent(event);
     }
+
     /**
      * 绑定生命周期
      *
@@ -358,7 +361,7 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
-        return LifecycleProvider.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
+        return lifecycleProvider.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
     }
 
     /**
@@ -369,8 +372,20 @@ public class XXF {
      * @return
      */
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider) {
-        return LifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindToLifecycle();
+        return lifecycleProvider.getLifecycleProvider(lifecycleOwnerProvider.getLifecycleOwner()).bindToLifecycle();
     }
+
+    /**
+     * 绑定生命周期
+     *
+     * @param lifecycleProvider
+     * @param <T>
+     * @return
+     */
+    public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleProvider lifecycleProvider) {
+        return lifecycleProvider.bindToLifecycle();
+    }
+
     /**
      * 绑定loading
      *
@@ -649,25 +664,26 @@ public class XXF {
     /**
      * 获取ViewModel
      *
-     * @param fragment
+     * @param viewModelStoreOwner
      * @param modelClass
      * @param <T>
      * @return
      */
-    public static <T extends ViewModel> T getViewModel(@NonNull Fragment fragment, Class<T> modelClass) {
-        return ViewModelProviders.of(fragment).get(modelClass);
+    public static <T extends ViewModel> T getViewModel(@NonNull ViewModelStoreOwner viewModelStoreOwner, @NonNull Class<T> modelClass) {
+        return new ViewModelProvider(viewModelStoreOwner).get(modelClass);
     }
 
     /**
      * 获取ViewModel
      *
-     * @param activity
+     * @param viewModelStoreOwner
+     * @param key
      * @param modelClass
      * @param <T>
      * @return
      */
-    public static <T extends ViewModel> T getViewModel(@NonNull FragmentActivity activity, Class<T> modelClass) {
-        return ViewModelProviders.of(activity).get(modelClass);
+    public static <T extends ViewModel> T getViewModel(@NonNull ViewModelStoreOwner viewModelStoreOwner, @NonNull String key, @NonNull Class<T> modelClass) {
+        return new ViewModelProvider(viewModelStoreOwner).get(key, modelClass);
     }
 
 }

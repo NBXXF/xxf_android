@@ -1,6 +1,7 @@
 package com.xxf.arch.test;
 
 import android.Manifest;
+import android.app.Application;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -18,9 +19,11 @@ import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.cardview.CardView;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -80,9 +83,13 @@ public class MainActivity extends XXFActivity {
         }).subscribeOn(Schedulers.io());
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         XXF.registerNetworkCallback(new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(Network network) {

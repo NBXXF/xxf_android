@@ -1,51 +1,27 @@
 package com.xxf.arch.viewmodel;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 
 
+import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
-import com.xxf.arch.rxjava.lifecycle.internal.OutsideLifecycleException;
 import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycle;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * @author youxuan  E-mail:youxuan@icourt.cc
  * @version 2.3.1
- * @Description 具有RxJava生命周期管理
+ * @Description 具有RxJava生命周期管理, XXF.bindToLifecycle(this);
  * @Company Beijing icourt
  * @date createTime：2018/9/7
  */
-enum Event {
-    /**
-     * Constant for onCreate  ViewModel.
-     */
-    ON_CREATE,
-    /**
-     * Constant for clear viewModel.
-     */
-    ON_CLEARED,
-}
-
-public class XXFViewModel extends AndroidViewModel {
-    private static final Function LIFECYCLEFUNCTION = new Function<Event, Event>() {
-        @Override
-        public Event apply(Event event) throws Exception {
-            switch (event) {
-                case ON_CREATE:
-                    return Event.ON_CLEARED;
-                case ON_CLEARED:
-                    throw new OutsideLifecycleException("Cannot bind to lifecycle lifecycle when outside of it.");
-                default:
-                    throw new UnsupportedOperationException("Binding to " + event + " not yet implemented");
-            }
-        }
-    };
+public class XXFViewModel extends AndroidViewModel implements LifecycleProvider<Event> {
     private final BehaviorSubject<Event> lifecycleSubject = BehaviorSubject.create();
 
     public XXFViewModel(@NonNull Application application) {
@@ -53,18 +29,20 @@ public class XXFViewModel extends AndroidViewModel {
         lifecycleSubject.onNext(Event.ON_CREATE);
     }
 
-    public Observable<Event> lifecycle() {
+    @Override
+    public final Observable<Event> lifecycle() {
         return lifecycleSubject.hide();
     }
 
-    /**
-     * 绑定生命周期
-     *
-     * @param <T>
-     * @return
-     */
-    public <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycle.bind(lifecycleSubject, LIFECYCLEFUNCTION);
+    @NonNull
+    @Override
+    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull Event event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+    }
+
+    @Override
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycle.bind(lifecycleSubject, LifecycleFunction.INSTANCE);
     }
 
     @CallSuper

@@ -1,17 +1,22 @@
 package com.xxf.arch.test;
 
 import android.app.Activity;
+import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.xxf.arch.XXF;
+import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.loading.ViewState;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
@@ -20,22 +25,48 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+
+import java.util.concurrent.TimeUnit;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class StateActivity extends Activity {
+import android.app.Application;
+
+public class StateActivity extends XXFActivity {
 
     ActivityStateBinding stateBinding;
     TestAdaper testAdaper;
+    public static class TestViewModel extends XXFViewModel {
 
+        public TestViewModel(@NonNull Application application) {
+            super(application);
+            Observable.interval(1, TimeUnit.SECONDS)
+                    .compose(XXF.bindToLifecycle(this))
+                    .subscribe(new Consumer<Long>() {
+                        @Override
+                        public void accept(Long aLong) throws Exception {
+                            XXF.getLogger().d("=======>xxx:long:" + aLong);
+
+                        }
+                    });
+        }
+
+        @Override
+        protected void onCleared() {
+            super.onCleared();
+            XXF.getLogger().d("=======>xxx:onclear");
+        }
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stateBinding = ActivityStateBinding.inflate(getLayoutInflater(), null, false);
         setContentView(stateBinding.getRoot());
+        TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
 
         stateBinding.recyclerView.setAdapter(testAdaper = new TestAdaper());
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
