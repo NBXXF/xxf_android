@@ -1,9 +1,10 @@
 package com.xxf.arch.test.http;
 
 import com.xxf.arch.XXF;
-import com.xxf.arch.http.interceptor.XXFHttpLoggingInterceptor;
+import com.xxf.arch.http.interceptor.HttpExceptionFeedInterceptor;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Response;
 
@@ -12,29 +13,19 @@ import okhttp3.Response;
  * @Author: XGod
  * @CreateDate: 2020/6/16 17:37
  */
-public class MyLoggerInterceptor extends XXFHttpLoggingInterceptor {
-
-    StringBuilder stringBuilder = new StringBuilder();
-
-
+public class MyLoggerInterceptor extends HttpExceptionFeedInterceptor {
     public MyLoggerInterceptor() {
-        this.setLogger(new Logger() {
-            @Override
-            public void log(String message) {
-                stringBuilder.
-                        append("\n")
-                        .append(message);
-                XXF.getLogger().d(message);
-            }
-        });
-        this.setLevel(Level.BODY);
+
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
-        stringBuilder = new StringBuilder();
-        Response intercept = super.intercept(chain);
-        XXF.getLogger().d("yes:" + stringBuilder.toString());
-        return intercept;
+    protected void onFeedHttpException(String url, String method, Exception e) {
+        XXF.getLogger().d("============>feed ex:" + e);
+
+    }
+
+    @Override
+    protected void onFeedResponseException(String url, String method, String reqBody, int code, String message, long tookMs, String resBody) {
+        XXF.getLogger().d("============>feed ex:" + url + reqBody);
     }
 }

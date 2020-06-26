@@ -18,16 +18,12 @@ package com.xxf.arch.http.interceptor;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -46,13 +42,11 @@ import static okhttp3.internal.platform.Platform.INFO;
  * this class should not be considered stable and may change slightly between releases. If you need
  * a stable logging format, use your own interceptor.
  */
-public class XXFHttpLoggingInterceptor implements Interceptor {
+public final class HttpLoggingInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public enum Level {
-        /**
-         * No logs.
-         */
+        /** No logs. */
         NONE,
         /**
          * Logs request and response lines.
@@ -110,37 +104,28 @@ public class XXFHttpLoggingInterceptor implements Interceptor {
     public interface Logger {
         void log(String message);
 
-        /**
-         * A {@link Logger} defaults output appropriate for the current platform.
-         */
+        /** A {@link Logger} defaults output appropriate for the current platform. */
         Logger DEFAULT = new Logger() {
-            @Override
-            public void log(String message) {
+            @Override public void log(String message) {
                 Platform.get().log(message, INFO, null);
             }
         };
     }
 
-    public XXFHttpLoggingInterceptor() {
+    public HttpLoggingInterceptor() {
         this(Logger.DEFAULT);
     }
 
-    public XXFHttpLoggingInterceptor(Logger logger) {
+    public HttpLoggingInterceptor(Logger logger) {
         this.logger = logger;
     }
 
-    public void setLogger(Logger logger) {
-        this.logger = Objects.requireNonNull(logger);
-    }
-
-    private Logger logger;
+    private final Logger logger;
 
     private volatile Level level = Level.NONE;
 
-    /**
-     * Change the level at which this interceptor logs.
-     */
-    public XXFHttpLoggingInterceptor setLevel(Level level) {
+    /** Change the level at which this interceptor logs. */
+    public HttpLoggingInterceptor setLevel(Level level) {
         if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
         this.level = level;
         return this;
@@ -150,8 +135,7 @@ public class XXFHttpLoggingInterceptor implements Interceptor {
         return level;
     }
 
-    @Override
-    public Response intercept(Chain chain) throws IOException {
+    @Override public Response intercept(Chain chain) throws IOException {
         Level level = this.level;
 
         Request request = chain.request();
@@ -166,8 +150,10 @@ public class XXFHttpLoggingInterceptor implements Interceptor {
         boolean hasRequestBody = requestBody != null;
 
         Connection connection = chain.connection();
-        Protocol protocol = connection != null ? connection.protocol() : Protocol.HTTP_1_1;
-        String requestStartMessage = "--> " + request.method() + ' ' + request.url() + ' ' + protocol;
+        String requestStartMessage = "--> "
+                + request.method()
+                + ' ' + request.url()
+                + (connection != null ? " " + connection.protocol() : "");
         if (!logHeaders && hasRequestBody) {
             requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
         }
@@ -233,9 +219,11 @@ public class XXFHttpLoggingInterceptor implements Interceptor {
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
         String bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
-        logger.log("<-- " + response.code() + ' ' + response.message() + ' '
-                + response.request().url() + " (" + tookMs + "ms" + (!logHeaders ? ", "
-                + bodySize + " body" : "") + ')');
+        logger.log("<-- "
+                + response.code()
+                + (response.message().isEmpty() ? "" : ' ' + response.message())
+                + ' ' + response.request().url()
+                + " (" + tookMs + "ms" + (!logHeaders ? ", " + bodySize + " body" : "") + ')');
 
         if (logHeaders) {
             Headers headers = response.headers();
@@ -255,15 +243,7 @@ public class XXFHttpLoggingInterceptor implements Interceptor {
                 Charset charset = UTF8;
                 MediaType contentType = responseBody.contentType();
                 if (contentType != null) {
-                    try {
-                        charset = contentType.charset(UTF8);
-                    } catch (UnsupportedCharsetException e) {
-                        logger.log("");
-                        logger.log("Couldn't decode the response body; charset is likely malformed.");
-                        logger.log("<-- END HTTP");
-
-                        return response;
-                    }
+                    charset = contentType.charset(UTF8);
                 }
 
                 if (!isPlaintext(buffer)) {
@@ -288,7 +268,7 @@ public class XXFHttpLoggingInterceptor implements Interceptor {
      * Returns true if the body in question probably contains human readable text. Uses a small sample
      * of code points to detect unicode control characters commonly used in binary file signatures.
      */
-    static boolean isPlaintext(Buffer buffer) {
+    public static boolean isPlaintext(Buffer buffer) {
         try {
             Buffer prefix = new Buffer();
             long byteCount = buffer.size() < 64 ? buffer.size() : 64;

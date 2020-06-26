@@ -6,6 +6,12 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical">
+        <Button
+            android:id="@+id/bt_http"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="http" />
 
         <Button
             android:id="@+id/bt_test"

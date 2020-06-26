@@ -14,10 +14,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
+import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.cardview.CardView;
@@ -29,6 +31,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.CacheType;
 
 
 public class MainActivity extends XXFActivity {
@@ -84,7 +87,6 @@ public class MainActivity extends XXFActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,11 +129,28 @@ public class MainActivity extends XXFActivity {
                 .putPrivateFile("test.txt", "173256abs", false)
                 .compose(XXF.bindToErrorNotice())
                 .subscribe();
+
+
         findViewById(R.id.bt_test)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         startActivity(new Intent(view.getContext(), StateActivity.class));
+                    }
+                });
+        findViewById(R.id.bt_http)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        XXF.getApiService(LoginApiService.class)
+                                .getCity(CacheType.firstCache)
+                                .compose(XXF.bindToErrorNotice())
+                                .subscribe(new Consumer<JsonObject>() {
+                                    @Override
+                                    public void accept(JsonObject jsonObject) throws Exception {
+
+                                    }
+                                });
                     }
                 });
 
@@ -166,14 +185,6 @@ public class MainActivity extends XXFActivity {
                     public void onClick(final View v) {
                         Bundle bundle = new Bundle();
                         bundle.putString(ACTIVITY_PARAM, "one");
-                     /*   XXF.startActivityForResult(TestActivity.class, bundle, 1000)
-                                .compose(XXF.bindToErrorNotice())
-                                .subscribe(new Consumer<ActivityResult>() {
-                                    @Override
-                                    public void accept(ActivityResult activityResult) throws Exception {
-                                        ToastUtils.showToast("======>result:" + activityResult.getData().getStringExtra(ACTIVITY_RESULT));
-                                    }
-                                });*/
 
                         // ARouter.getInstance().build("/activity/test").navigation();
                         XXF.startActivityForResult("/activity/test", bundle, 1000)

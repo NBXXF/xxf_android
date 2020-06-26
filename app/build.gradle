@@ -35,7 +35,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-   // implementation 'com.github.NBXXF:xxf_android:2.6.9'
+    // implementation 'com.github.NBXXF:xxf_android:2.6.9'
     implementation project(':xxf_arch')
     implementation project(':xxf_view')
     implementation 'androidx.recyclerview:recyclerview:1.0.0'

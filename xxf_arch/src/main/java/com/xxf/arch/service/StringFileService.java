@@ -1,5 +1,9 @@
 package com.xxf.arch.service;
 
+import android.Manifest;
+
+import androidx.annotation.RequiresPermission;
+
 import java.io.File;
 
 import io.reactivex.Observable;
@@ -29,6 +33,7 @@ public interface StringFileService extends UserFileService {
      * @param childFileName ！！！注意是子文件eg. xx.doc； "/doc/xxx.doc" 不要包含根路径
      * @return
      */
+    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     Observable<String> getUserPublicFile(String childFileName);
 
     /**
@@ -45,6 +50,7 @@ public interface StringFileService extends UserFileService {
      * @param childFileName ！！！注意是子文件eg. xx.doc； "/doc/xxx.doc" 不要包含根路径
      * @return
      */
+    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     Observable<String> getPublicFile(String childFileName);
 
     /**
@@ -65,6 +71,7 @@ public interface StringFileService extends UserFileService {
      * @param append        是否追加模式,否则覆盖
      * @return
      */
+    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     Observable<File> putUserPublicFile(String childFileName, String content, boolean append);
 
 
@@ -86,6 +93,7 @@ public interface StringFileService extends UserFileService {
      * @param append        是否追加模式,否则覆盖
      * @return
      */
+    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
     Observable<File> putPublicFile(String childFileName, String content, boolean append);
 
 
