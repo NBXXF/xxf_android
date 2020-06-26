@@ -33,17 +33,19 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.arouter.XXFUserInfoProvider;
 import com.xxf.arch.core.AndroidActivityStackProvider;
-import com.xxf.arch.rxjava.lifecycle.LifecycleProviderFactory;
 import com.xxf.arch.core.Logger;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.lifecycle.LifecycleOwnerProvider;
+import com.xxf.arch.rxjava.lifecycle.LifecycleProviderFactory;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
+import com.xxf.arch.service.SharedPreferencesService;
+import com.xxf.arch.service.SharedPreferencesServiceImpl;
 import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
@@ -234,6 +236,17 @@ public class XXF {
     public static XXFFileService getFileService() {
         return XXFFileService.getDefault();
     }
+
+    /**
+     * 获取sp文件服务
+     *
+     * @return
+     */
+    @NonNull
+    public static SharedPreferencesService getSharedPreferencesService() {
+        return SharedPreferencesServiceImpl.getInstance();
+    }
+
 
     /**
      * 日志打印器
