@@ -19,6 +19,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.Connection;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -42,11 +43,13 @@ import static okhttp3.internal.platform.Platform.INFO;
  * this class should not be considered stable and may change slightly between releases. If you need
  * a stable logging format, use your own interceptor.
  */
-public final class HttpLoggingInterceptor implements Interceptor {
+public class HttpLoggingInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public enum Level {
-        /** No logs. */
+        /**
+         * No logs.
+         */
         NONE,
         /**
          * Logs request and response lines.
@@ -104,9 +107,12 @@ public final class HttpLoggingInterceptor implements Interceptor {
     public interface Logger {
         void log(String message);
 
-        /** A {@link Logger} defaults output appropriate for the current platform. */
+        /**
+         * A {@link Logger} defaults output appropriate for the current platform.
+         */
         Logger DEFAULT = new Logger() {
-            @Override public void log(String message) {
+            @Override
+            public void log(String message) {
                 Platform.get().log(message, INFO, null);
             }
         };
@@ -124,7 +130,9 @@ public final class HttpLoggingInterceptor implements Interceptor {
 
     private volatile Level level = Level.NONE;
 
-    /** Change the level at which this interceptor logs. */
+    /**
+     * Change the level at which this interceptor logs.
+     */
     public HttpLoggingInterceptor setLevel(Level level) {
         if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
         this.level = level;
@@ -135,7 +143,8 @@ public final class HttpLoggingInterceptor implements Interceptor {
         return level;
     }
 
-    @Override public Response intercept(Chain chain) throws IOException {
+    @Override
+    public Response intercept(Chain chain) throws IOException {
         Level level = this.level;
 
         Request request = chain.request();
