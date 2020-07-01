@@ -1,23 +1,14 @@
 package com.xxf.arch.rxjava.transformer;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
-
-import org.reactivestreams.Publisher;
-
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Flowable;
-import io.reactivex.Maybe;
-import io.reactivex.MaybeSource;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -142,20 +133,4 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
             progressHUD.dismissLoadingDialog();
         }
     }
-
-    @Override
-    public MaybeSource<T> apply(Maybe<T> upstream) {
-        return super.apply(upstream.delay(1, TimeUnit.SECONDS));
-    }
-
-    @Override
-    public ObservableSource<T> apply(Observable<T> upstream) {
-        return super.apply(upstream.delay(1, TimeUnit.SECONDS));
-    }
-
-    @Override
-    public Publisher<T> apply(Flowable<T> upstream) {
-        return super.apply(upstream.delay(1, TimeUnit.SECONDS));
-    }
-
 }

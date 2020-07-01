@@ -39,21 +39,22 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        JsonReader jsonReader = gson.newJsonReader(value.charStream());
-        //宽容解析
-        jsonReader.setLenient(true);
-        try {
-            T result = adapter.read(jsonReader);
-            if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
-                throw new JsonIOException("JSON document was not fully consumed.");
+        //做拦截
+        if (interceptor != null) {
+            return interceptor.onResponseBodyIntercept(gson, adapter, value);
+        } else {
+            JsonReader jsonReader = gson.newJsonReader(value.charStream());
+            //宽容解析
+            jsonReader.setLenient(true);
+            try {
+                T result = adapter.read(jsonReader);
+                if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
+                    throw new JsonIOException("JSON document was not fully consumed.");
+                }
+                return result;
+            } finally {
+                value.close();
             }
-            //转换后 做拦截
-            if (interceptor != null) {
-                return interceptor.onResponseBodyIntercept(gson, adapter, value, result);
-            }
-            return result;
-        } finally {
-            value.close();
         }
     }
 }
