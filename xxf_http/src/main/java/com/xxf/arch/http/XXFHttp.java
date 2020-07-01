@@ -6,11 +6,11 @@ import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.BaseUrlProvider;
-import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
+import com.xxf.arch.annotation.RxJavaInterceptor;
+import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.http.cache.RxHttpCache;
-import com.xxf.arch.http.converter.gson.GsonConvertInterceptor;
 
 import java.io.File;
 import java.util.concurrent.ConcurrentHashMap;
@@ -110,10 +110,10 @@ public class XXFHttp {
 
 
         //解析器拦截可选
-        GsonInterceptor gsonInterceptorAnnotation = apiClazz.getAnnotation(GsonInterceptor.class);
-        GsonConvertInterceptor gsonConvertInterceptor = null;
-        if (gsonInterceptorAnnotation != null) {
-            gsonConvertInterceptor = gsonInterceptorAnnotation.value().newInstance();
+        RxJavaInterceptor rxJavaInterceptorAnnotation = apiClazz.getAnnotation(RxJavaInterceptor.class);
+        RxJavaCallAdapterInterceptor rxJavaInterceptor = null;
+        if ( rxJavaInterceptorAnnotation != null) {
+            rxJavaInterceptor = rxJavaInterceptorAnnotation.value().newInstance();
         }
 
         //rxJava 缓存
@@ -125,7 +125,7 @@ public class XXFHttp {
         }
 
         //创建缓存对象
-        T apiService = new RetrofitBuilder(gsonConvertInterceptor, rxHttpCache)
+        T apiService = new RetrofitBuilder(rxJavaInterceptor, rxHttpCache)
                 .client(ohcb.build())
                 .baseUrl(baseUrl)
                 .build()

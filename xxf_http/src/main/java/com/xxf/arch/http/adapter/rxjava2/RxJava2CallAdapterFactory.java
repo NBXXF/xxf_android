@@ -24,41 +24,18 @@ import retrofit2.Retrofit;
  * @Description 增加 rxcache
  */
 public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
-    /**
-     * Returns an instance which creates synchronous observables that do not operate on any scheduler
-     * by default.
-     */
-    public static RxJava2CallAdapterFactory create(RxHttpCache rxHttpCache) {
-        return new RxJava2CallAdapterFactory(null, false, rxHttpCache);
-    }
-
-    /**
-     * Returns an instance which creates asynchronous observables. Applying
-     * {@link Observable#subscribeOn} has no effect on stream types created by this factory.
-     */
-    public static RxJava2CallAdapterFactory createAsync(RxHttpCache rxHttpCache) {
-        return new RxJava2CallAdapterFactory(null, true, rxHttpCache);
-    }
-
-    /**
-     * Returns an instance which creates synchronous observables that
-     * {@linkplain Observable#subscribeOn(Scheduler) subscribe on} {@code scheduler} by default.
-     */
-    @SuppressWarnings("ConstantConditions") // Guarding public API nullability.
-    public static RxJava2CallAdapterFactory createWithScheduler(Scheduler scheduler) {
-        if (scheduler == null) throw new NullPointerException("scheduler == null");
-        return new RxJava2CallAdapterFactory(scheduler, false, null);
-    }
 
     private final @Nullable
     Scheduler scheduler;
     private final boolean isAsync;
     private RxHttpCache rxHttpCache;
+    private RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor;
 
-    private RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, RxHttpCache rxHttpCache) {
+    public RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, RxHttpCache rxHttpCache, RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor) {
         this.scheduler = scheduler;
         this.isAsync = isAsync;
         this.rxHttpCache = rxHttpCache;
+        this.rxJavaCallAdapterInterceptor = rxJavaCallAdapterInterceptor;
     }
 
     @Override
@@ -85,7 +62,7 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
         if (rawType == Completable.class) {
             // Completable is not parameterized (which is what the rest of this method deals with) so it
             // can only be created with a single configuration.
-            return new RxJava2CallAdapter(Void.class, scheduler, isAsync, this.rxHttpCache, rxCacheType, false, true, false, false,
+            return new RxJava2CallAdapter(Void.class, scheduler, isAsync, this.rxHttpCache, rxCacheType, rxJavaCallAdapterInterceptor, false, true, false, false,
                     false, true);
         }
 
@@ -127,7 +104,7 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
             isBody = true;
         }
 
-        return new RxJava2CallAdapter(responseType, scheduler, isAsync, this.rxHttpCache, rxCacheType, isResult, isBody, isFlowable,
+        return new RxJava2CallAdapter(responseType, scheduler, isAsync, this.rxHttpCache, rxCacheType, rxJavaCallAdapterInterceptor, isResult, isBody, isFlowable,
                 isSingle, isMaybe, false);
     }
 }

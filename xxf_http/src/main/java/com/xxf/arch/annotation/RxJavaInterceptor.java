@@ -1,6 +1,6 @@
 package com.xxf.arch.annotation;
 
-import com.xxf.arch.http.converter.gson.GsonConvertInterceptor;
+import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 
 import java.lang.annotation.ElementType;
 
@@ -14,11 +14,11 @@ import java.lang.annotation.ElementType;
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @java.lang.annotation.Documented
 @java.lang.annotation.Inherited
-public @interface GsonInterceptor {
+public @interface RxJavaInterceptor {
     /**
      * gson解析拦截器
      *
      * @return
      */
-    Class<? extends GsonConvertInterceptor> value();
+    Class<? extends RxJavaCallAdapterInterceptor> value();
 }

@@ -40,8 +40,8 @@ public final class GsonConverterFactory extends Converter.Factory {
      * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
      * decoding from JSON (when no charset is specified by a header) will use UTF-8.
      */
-    public static GsonConverterFactory create(GsonConvertInterceptor interceptor) {
-        return create(new Gson(), interceptor);
+    public static GsonConverterFactory create() {
+        return create(new Gson());
     }
 
     /**
@@ -49,24 +49,22 @@ public final class GsonConverterFactory extends Converter.Factory {
      * decoding from JSON (when no charset is specified by a header) will use UTF-8.
      */
     @SuppressWarnings("ConstantConditions") // Guarding public API nullability.
-    public static GsonConverterFactory create(Gson gson, GsonConvertInterceptor interceptor) {
+    public static GsonConverterFactory create(Gson gson) {
         if (gson == null) throw new NullPointerException("gson == null");
-        return new GsonConverterFactory(gson, interceptor);
+        return new GsonConverterFactory(gson);
     }
 
     private final Gson gson;
-    private GsonConvertInterceptor interceptor;
 
-    private GsonConverterFactory(Gson gson, GsonConvertInterceptor interceptor) {
+    private GsonConverterFactory(Gson gson) {
         this.gson = gson;
-        this.interceptor = interceptor;
     }
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
         TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
-        return new GsonResponseBodyConverter<>(gson, adapter, this.interceptor);
+        return new GsonResponseBodyConverter<>(gson, adapter);
     }
 
     @Override

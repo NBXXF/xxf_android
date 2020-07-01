@@ -29,32 +29,25 @@ import retrofit2.Converter;
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final Gson gson;
     private final TypeAdapter<T> adapter;
-    private GsonConvertInterceptor interceptor;
 
-    GsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter, GsonConvertInterceptor interceptor) {
+    GsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter) {
         this.gson = gson;
         this.adapter = adapter;
-        this.interceptor = interceptor;
     }
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        //做拦截
-        if (interceptor != null) {
-            return interceptor.onResponseBodyIntercept(gson, adapter, value);
-        } else {
-            JsonReader jsonReader = gson.newJsonReader(value.charStream());
-            //宽容解析
-            jsonReader.setLenient(true);
-            try {
-                T result = adapter.read(jsonReader);
-                if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
-                    throw new JsonIOException("JSON document was not fully consumed.");
-                }
-                return result;
-            } finally {
-                value.close();
+        JsonReader jsonReader = gson.newJsonReader(value.charStream());
+        //宽容解析
+        jsonReader.setLenient(true);
+        try {
+            T result = adapter.read(jsonReader);
+            if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
+                throw new JsonIOException("JSON document was not fully consumed.");
             }
+            return result;
+        } finally {
+            value.close();
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.xxf.arch.test;
 
 import android.Manifest;
-import android.app.Application;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -14,18 +13,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.cardview.CardView;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -143,12 +139,12 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(View view) {
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.firstCache)
+                                .getCityError(CacheType.onlyRemote)
                                 .compose(XXF.bindToErrorNotice())
-                                .subscribe(new Consumer<JsonObject>() {
+                                .subscribe(new Consumer<Boolean>() {
                                     @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
-
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        XXF.getLogger().d("========>x:" + aBoolean);
                                     }
                                 });
                     }

@@ -27,10 +27,12 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
     private final boolean isSingle;
     private final boolean isMaybe;
     private final boolean isCompletable;
+    RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor;
 
     RxJava2CallAdapter(Type responseType, @Nullable Scheduler scheduler, boolean isAsync,
                        RxHttpCache rxHttpCache,
                        CacheType rxCacheType,
+                       RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor,
                        boolean isResult, boolean isBody, boolean isFlowable, boolean isSingle, boolean isMaybe,
                        boolean isCompletable) {
         this.responseType = responseType;
@@ -38,6 +40,7 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
         this.isAsync = isAsync;
         this.rxHttpCache = rxHttpCache;
         this.rxCacheType = rxCacheType;
+        this.rxJavaCallAdapterInterceptor = rxJavaCallAdapterInterceptor;
         this.isResult = isResult;
         this.isBody = isBody;
         this.isFlowable = isFlowable;
@@ -54,6 +57,14 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
 
     @Override
     public Object adapt(Call<R> call, @androidx.annotation.Nullable Object[] args) {
+        if (rxJavaCallAdapterInterceptor != null) {
+            return rxJavaCallAdapterInterceptor.adapt(call, args, defaultAdapt(call, args));
+        } else {
+            return defaultAdapt(call, args);
+        }
+    }
+
+    public Object defaultAdapt(Call<R> call, @androidx.annotation.Nullable Object[] args) {
         Observable<Response<R>> responseObservable = isAsync
                 ? new CallEnqueueObservable<>(call, this.rxHttpCache, this.rxCacheType)
                 : new CallExecuteObservable<>(call, this.rxHttpCache, this.rxCacheType);
