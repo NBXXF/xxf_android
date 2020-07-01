@@ -2,29 +2,18 @@ package com.xxf.arch.http.interceptor;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Connection;
-import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.internal.http.HttpHeaders;
-import okhttp3.internal.platform.Platform;
 import okio.Buffer;
 import okio.BufferedSource;
-
-import static okhttp3.internal.platform.Platform.INFO;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -68,7 +57,7 @@ public abstract class HttpExceptionFeedInterceptor implements Interceptor {
      * @param method
      * @param e
      */
-    protected abstract void onFeedHttpException(String url, String method, Exception e);
+    protected abstract void onFeedHttpException(String url, String method, Throwable e);
 
     /**
      * 响应异常汇报

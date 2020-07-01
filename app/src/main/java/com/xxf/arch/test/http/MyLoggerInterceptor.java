@@ -3,11 +3,6 @@ package com.xxf.arch.test.http;
 import com.xxf.arch.XXF;
 import com.xxf.arch.http.interceptor.HttpExceptionFeedInterceptor;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-
-import okhttp3.Response;
-
 /**
  * @Description: java类作用描述
  * @Author: XGod
@@ -19,9 +14,8 @@ public class MyLoggerInterceptor extends HttpExceptionFeedInterceptor {
     }
 
     @Override
-    protected void onFeedHttpException(String url, String method, Exception e) {
+    protected void onFeedHttpException(String url, String method, Throwable e) {
         XXF.getLogger().d("============>feed ex:" + e);
-
     }
 
     @Override

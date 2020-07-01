@@ -13,6 +13,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
@@ -139,12 +140,17 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(View view) {
                         XXF.getApiService(LoginApiService.class)
-                                .getCityError(CacheType.onlyRemote)
+                                .getCity(CacheType.onlyRemote)
                                 .compose(XXF.bindToErrorNotice())
-                                .subscribe(new Consumer<Boolean>() {
+                                .subscribe(new Consumer<JsonObject>() {
                                     @Override
-                                    public void accept(Boolean aBoolean) throws Exception {
-                                        XXF.getLogger().d("========>x:" + aBoolean);
+                                    public void accept(JsonObject jsonObject) throws Exception {
+                                        XXF.getLogger().d("==========>ye");
+                                    }
+                                }, new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        XXF.getLogger().d("==========>no");
                                     }
                                 });
                     }
