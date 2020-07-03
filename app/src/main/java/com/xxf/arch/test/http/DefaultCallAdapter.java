@@ -22,8 +22,7 @@ public class DefaultCallAdapter implements RxJavaCallAdapterInterceptor {
             return observable.doOnNext(new Consumer() {
                 @Override
                 public void accept(Object o) throws Exception {
-                    throw new RuntimeException("xxxx");
-                   // XXF.getLogger().d("==============>全局收到结果：" + call.request().url() + o);
+                    XXF.getLogger().d("==============>全局收到结果：" + call.request().url() + o);
                 }
             }).doOnError(new Consumer<Throwable>() {
                 @Override

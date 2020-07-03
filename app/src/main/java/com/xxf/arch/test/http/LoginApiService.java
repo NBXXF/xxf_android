@@ -15,7 +15,7 @@ import retrofit2.http.GET;
 
 @BaseUrl("http://api.map.baidu.com/")
 @RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
-@Interceptor({MyLoggerInterceptor.class, HttpLoggingInterceptor.class})
+@Interceptor({MyLoggerInterceptor.class, HttpLoggingInterceptor.class, MyLoggerInterceptor2.class})
 @RxJavaInterceptor(DefaultCallAdapter.class)
 public interface LoginApiService {
 
@@ -24,6 +24,7 @@ public interface LoginApiService {
 
     @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
     Observable<Boolean> getCityError(@Cache CacheType cacheType);
+
     @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
     @RxHttpCache(CacheType.onlyCache)
     Observable<JsonObject> getCityOnlyCache();
