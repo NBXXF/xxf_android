@@ -25,9 +25,13 @@ public final class ARouterTabLoader {
         while (it.hasNext()) {
             Map.Entry<String, Class<? extends IRouteGroup>> entry = it.next();
             Class<? extends IRouteGroup> groupMeta = entry.getValue();
-            IRouteGroup iGroupInstance = groupMeta.getConstructor().newInstance();
-            iGroupInstance.loadInto(toRouteMetaMap);
-            it.remove();
+            try {
+                IRouteGroup iGroupInstance = groupMeta.getConstructor().newInstance();
+                iGroupInstance.loadInto(toRouteMetaMap);
+                it.remove();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

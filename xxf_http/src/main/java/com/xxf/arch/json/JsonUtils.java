@@ -8,8 +8,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -149,7 +149,7 @@ public class JsonUtils {
     public static <T> List<T> toBeanList(String json, Class<T> classz) throws JsonParseException {
         T[] arr = gson.fromJson(json, TypeToken.getArray(classz).getType());
         if (arr == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
         return Arrays.asList(arr);
 

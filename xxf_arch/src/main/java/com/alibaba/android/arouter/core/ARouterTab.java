@@ -25,9 +25,8 @@ public final class ARouterTab extends Warehouse {
     public static void ____initLoad() {
         try {
             ARouterTabLoader.loadRoutes(getGroupsIndex(), getRoutes());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
-            throw new RuntimeException("ARouterTab load fail");
         }
     }
 

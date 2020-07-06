@@ -332,7 +332,6 @@ public class XXF {
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void unregisterNetworkCallback(ConnectivityManager.NetworkCallback networkCallback) {
-        NetworkRequest request = new NetworkRequest.Builder().build();
         ConnectivityManager cmgr = (ConnectivityManager) application
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cmgr != null) {
