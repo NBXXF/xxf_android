@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical">
+
         <Button
             android:id="@+id/bt_http"
             android:layout_width="wrap_content"
@@ -34,9 +35,12 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="permission_get" />
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:id="@+id/file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="file" />
 
 
         <Button
@@ -55,9 +59,9 @@
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="10dp"
-            android:layout_margin="10dp"
             app:shadow_endColor="#1AFDFDFD"
             app:shadow_startColor="#F7F7F7"
             app:shadow_topDelta="0">

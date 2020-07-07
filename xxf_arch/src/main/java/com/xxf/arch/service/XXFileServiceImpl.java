@@ -59,7 +59,14 @@ class XXFileServiceImpl implements XXFFileService {
         return Observable.fromCallable(new Callable<File>() {
             @Override
             public File call() throws Exception {
-                return new File(dir, childFileName);
+                File file = new File(dir, childFileName);
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                return file;
             }
         }).map(new Function<File, String>() {
             @Override
@@ -149,7 +156,14 @@ class XXFileServiceImpl implements XXFFileService {
                 .fromCallable(new Callable<File>() {
                     @Override
                     public File call() throws Exception {
-                        return new File(dir, childFileName);
+                        File file = new File(dir, childFileName);
+                        if (!file.getParentFile().exists()) {
+                            file.getParentFile().mkdirs();
+                        }
+                        if (!file.exists()) {
+                            file.createNewFile();
+                        }
+                        return file;
                     }
                 }).map(new Function<File, File>() {
                     @Override

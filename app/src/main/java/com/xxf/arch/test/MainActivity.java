@@ -155,12 +155,30 @@ public class MainActivity extends XXFActivity {
                                 });
                     }
                 });
+        findViewById(R.id.file)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String fileName = "xxxx/test3.text";
+                        XXF.getFileService().putPrivateFile(fileName, "xx\n" + System.currentTimeMillis(), true)
+                                .compose(XXF.bindToErrorNotice())
+                                .subscribe();
+                        XXF.getFileService().getPrivateFile(fileName)
+                                .compose(XXF.bindToErrorNotice())
+                                .subscribe(new Consumer<String>() {
+                                    @Override
+                                    public void accept(String s) throws Exception {
+                                        ToastUtils.showToast("yes:" + s, ToastUtils.ToastType.ERROR);
+                                    }
+                                });
+                    }
+                });
 
         findViewById(R.id.bt_permission_req)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        XXF.requestPermission(Manifest.permission.CAMERA)
+                        XXF.requestPermission(MainActivity.this, Manifest.permission.CAMERA)
 
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
