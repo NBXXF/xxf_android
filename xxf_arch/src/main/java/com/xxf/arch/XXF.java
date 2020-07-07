@@ -576,7 +576,7 @@ public class XXF {
     /**
      * 替代 startActivityForResult
      *
-     * @param activity
+     * @param lifecycleOwner
      * @param intent
      * @param requestCode
      * @return
@@ -584,80 +584,38 @@ public class XXF {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @MainThread
     public static Observable<ActivityResult> startActivityForResult(
-            @NonNull FragmentActivity activity, @NonNull Intent intent, int requestCode) {
-        return RxActivityResultCompact.startActivityForResult(activity, intent, requestCode);
+            @NonNull LifecycleOwner lifecycleOwner, @NonNull Intent intent, int requestCode) {
+        if (lifecycleOwner instanceof FragmentActivity) {
+            return RxActivityResultCompact.startActivityForResult((FragmentActivity) lifecycleOwner, intent, requestCode);
+        } else if (lifecycleOwner instanceof Fragment) {
+            return RxActivityResultCompact.startActivityForResult((Fragment) lifecycleOwner, intent, requestCode);
+        } else {
+            return Observable.error(new IllegalArgumentException("不支持的类型!"));
+        }
     }
 
-
-    /**
-     * 替代 startActivityForResult
-     *
-     * @param fragment
-     * @param intent
-     * @param requestCode
-     * @return
-     */
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    @MainThread
-    public static Observable<ActivityResult> startActivityForResult(
-            @NonNull Fragment fragment, @NonNull Intent intent, int requestCode) {
-        return RxActivityResultCompact.startActivityForResult(fragment, intent, requestCode);
-    }
 
     /**
      * 请求权限
-     * activity栈顶Activity必须是 FragmentActivity,否则会报错
+     * 不可并行
      * 注意:activity  onRequestPermissionsResult方法 必须调用   super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-     * 不可并行
      *
-     * @param permissions {@link android.Manifest}
+     * @param lifecycleOwner
+     * @param permissions    {@link android.Manifest}
      * @return
      */
     @MainThread
-    public static Observable<Boolean> requestPermission(@NonNull final String... permissions) {
-        return Observable
-                .fromCallable(new Callable<FragmentActivity>() {
-                    @Override
-                    public FragmentActivity call() throws Exception {
-                        Activity topActivity = getActivityStackProvider().getTopActivity();
-                        if (topActivity instanceof FragmentActivity) {
-                            return (FragmentActivity) topActivity;
-                        }
-                        throw new RuntimeException("stack top activity must FragmentActivity!");
-                    }
-                })
-                .flatMap(new Function<FragmentActivity, ObservableSource<Boolean>>() {
-                    @Override
-                    public ObservableSource<Boolean> apply(FragmentActivity fragmentActivity) throws Exception {
-                        return requestPermission(fragmentActivity, permissions);
-                    }
-                });
+    public static Observable<Boolean> requestPermission(@NonNull final LifecycleOwner lifecycleOwner,
+                                                        @NonNull final String... permissions) {
+        if (lifecycleOwner instanceof FragmentActivity) {
+            return new RxPermissions((FragmentActivity) lifecycleOwner).request(permissions);
+        } else if (lifecycleOwner instanceof Fragment) {
+            return new RxPermissions((Fragment) lifecycleOwner).request(permissions);
+        } else {
+            return Observable.error(new IllegalArgumentException("不支持的类型!"));
+        }
     }
 
-    /**
-     * 请求权限
-     * 不可并行
-     *
-     * @param activity
-     * @param permissions {@link android.Manifest}
-     * @return
-     */
-    @MainThread
-    public static Observable<Boolean> requestPermission(@NonNull final FragmentActivity activity, @NonNull final String... permissions) {
-        return new RxPermissions(activity).request(permissions);
-    }
-
-    /**
-     * 请求权限
-     * 不可并行
-     *
-     * @param fragment
-     * @param permissions {@link android.Manifest}
-     * @return
-     */
-    public static Observable<Boolean> requestPermission(@NonNull final Fragment fragment, @NonNull final String... permissions) {
-        return new RxPermissions(fragment).request(permissions);
-    }
 
     /**
      * 是否开启该权限
