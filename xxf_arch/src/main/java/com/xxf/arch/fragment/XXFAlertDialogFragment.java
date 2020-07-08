@@ -18,7 +18,7 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.xxf.arch.activity.ActivityForKeyProvider;
-import com.xxf.arch.dialog.TouchListenDialog;
+import com.xxf.arch.dialog.TouchListenAlertDialog;
 
 /**
  * @author xuanyouwu@163.com
@@ -26,7 +26,7 @@ import com.xxf.arch.dialog.TouchListenDialog;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends AppCompatDialogFragment implements ActivityForKeyProvider {
+public class XXFAlertDialogFragment extends AppCompatDialogFragment implements ActivityForKeyProvider {
 
     private View contentView;
 
@@ -47,10 +47,10 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Activi
     @NonNull
     @Override
     public final Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new TouchListenDialog(getContext(), getTheme()) {
+        return new TouchListenAlertDialog(getContext(), getTheme()) {
             @Override
             protected void onDialogTouchOutside(MotionEvent event) {
-                XXFDialogFragment.this.onDialogTouchOutside(event);
+                XXFAlertDialogFragment.this.onDialogTouchOutside(event);
             }
         };
     }

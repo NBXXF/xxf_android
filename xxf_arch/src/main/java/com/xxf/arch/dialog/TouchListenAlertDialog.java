@@ -1,10 +1,11 @@
-package com.xxf.arch.widget;
+package com.xxf.arch.dialog;
 
 import android.content.Context;
-import androidx.appcompat.app.AppCompatDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+
+import androidx.appcompat.app.AlertDialog;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -12,16 +13,16 @@ import android.view.ViewConfiguration;
  * @Description 监听dialog外部点击事件
  * @date createTime：2018/1/4
  */
-public abstract class TouchListenDialog extends AppCompatDialog {
-    public TouchListenDialog(Context context) {
+public abstract class TouchListenAlertDialog extends AlertDialog {
+    public TouchListenAlertDialog(Context context) {
         super(context);
     }
 
-    public TouchListenDialog(Context context, int theme) {
+    public TouchListenAlertDialog(Context context, int theme) {
         super(context, theme);
     }
 
-    protected TouchListenDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected TouchListenAlertDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
