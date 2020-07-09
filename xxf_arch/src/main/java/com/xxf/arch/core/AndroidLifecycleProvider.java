@@ -70,6 +70,13 @@ public class AndroidLifecycleProvider extends SimpleActivityLifecycleCallbacks i
 
     @Override
     public LifecycleProvider<Lifecycle.Event> getLifecycleProvider(LifecycleOwner lifecycleOwner) {
-        return rxLifecycleProviderMap.get(lifecycleOwner);
+        if (lifecycleOwner == null) {
+            return new DestoryLifecycleProvider();
+        }
+        LifecycleProvider<Lifecycle.Event> lifecycleProvider = rxLifecycleProviderMap.get(lifecycleOwner);
+        if (lifecycleOwner == null) {
+            return new DestoryLifecycleProvider();
+        }
+        return lifecycleProvider;
     }
 }

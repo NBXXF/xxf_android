@@ -185,10 +185,12 @@ public class XXF {
             ARouter.openDebug();
         }
         ARouter.init(application);
-        //一次性加载到表中
-        ARouterTab.____initLoad();
+
         //router 解析参数注册
         new ARouterParamsInject().register(application);
+
+        //一次性加载到表中
+        ARouterTab.____initLoad();
     }
 
 
