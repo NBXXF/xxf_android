@@ -19,6 +19,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
+import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
@@ -90,17 +91,28 @@ public class MainActivity extends XXFActivity {
         super.onCreate(savedInstanceState);
 
 
+        new XXFNetwrokPresenter(this, null) {
+            @Override
+            protected void onNetworkAvailable(Network network) {
+                XXF.getLogger().d("===========>net yes1:");
+            }
+
+            @Override
+            protected void onNetworkLost(Network network) {
+                XXF.getLogger().d("===========>net no1:");
+            }
+        };
         XXF.registerNetworkCallback(new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(Network network) {
                 super.onAvailable(network);
-                XXF.getLogger().d("===========>yes:");
+                XXF.getLogger().d("===========>net yes:");
             }
 
             @Override
             public void onLost(Network network) {
                 super.onLost(network);
-                XXF.getLogger().d("===========>no:");
+                XXF.getLogger().d("===========>net no:");
             }
         });
         setContentView(R.layout.activity_main);
