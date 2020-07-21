@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -225,13 +226,25 @@ public class MainActivity extends XXFActivity {
     protected void onStop() {
         super.onStop();
         // Toast.makeText(this,"abcd",Toast.LENGTH_SHORT).show();
-        ToastUtils.showToast("xxxxx", ToastUtils.ToastType.ERROR);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showToast("testxxx", ToastUtils.ToastType.ERROR);
+            }
+        }, 2000);
+        XXF.getLogger().d("=============isBack stop:" + XXF.getActivityStackProvider().isBackground());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("======>onActResult:", "" + this + "_");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        XXF.getLogger().d("=============isBack:" + XXF.getActivityStackProvider().isBackground());
     }
 
     @Override

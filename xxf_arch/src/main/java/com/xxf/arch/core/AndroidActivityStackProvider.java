@@ -105,13 +105,13 @@ public final class AndroidActivityStackProvider extends SimpleActivityLifecycleC
     }
 
     @Override
-    public void onActivityStarted(Activity activity) {
+    public final void onActivityStarted(Activity activity) {
         super.onActivityStarted(activity);
         activityLifecycle.put(activity, Lifecycle.Event.ON_START);
     }
 
     @Override
-    public void onActivityResumed(Activity activity) {
+    public final void onActivityResumed(Activity activity) {
         super.onActivityResumed(activity);
         activityLifecycle.put(activity, Lifecycle.Event.ON_RESUME);
     }
@@ -123,7 +123,7 @@ public final class AndroidActivityStackProvider extends SimpleActivityLifecycleC
     }
 
     @Override
-    public void onActivityStopped(Activity activity) {
+    public final void onActivityStopped(Activity activity) {
         super.onActivityStopped(activity);
         activityLifecycle.put(activity, Lifecycle.Event.ON_STOP);
     }
@@ -133,5 +133,21 @@ public final class AndroidActivityStackProvider extends SimpleActivityLifecycleC
         super.onActivityDestroyed(activity);
         activityLifecycle.remove(activity);
         activityStack.remove(activity);
+    }
+
+    /**
+     * 是否在后台
+     * 所有Activity都是onStop
+     *
+     * @return
+     */
+    public final boolean isBackground() {
+        for (Map.Entry<Activity, Lifecycle.Event> entry : activityLifecycle.entrySet()) {
+            Lifecycle.Event event = entry.getValue();
+            if (event != Lifecycle.Event.ON_STOP) {
+                return false;
+            }
+        }
+        return true;
     }
 }

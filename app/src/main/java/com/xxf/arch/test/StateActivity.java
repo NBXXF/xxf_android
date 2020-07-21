@@ -3,6 +3,7 @@ package com.xxf.arch.test;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,7 +101,7 @@ public class StateActivity extends XXFActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Observable.interval(50, TimeUnit.MILLISECONDS)
+  /*      Observable.interval(50, TimeUnit.MILLISECONDS)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
                 .subscribe(new Consumer<Long>() {
@@ -108,7 +109,7 @@ public class StateActivity extends XXFActivity {
                     public void accept(Long aLong) throws Exception {
                         XXF.getLogger().d("============>rl:" + aLong);
                     }
-                });
+                });*/
 
     }
 
@@ -116,6 +117,19 @@ public class StateActivity extends XXFActivity {
     protected void onPause() {
         super.onPause();
         XXF.getLogger().d("============>rl:pause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Toast.makeText(this,"abcd",Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showToast("test state xxx", ToastUtils.ToastType.ERROR);
+            }
+        }, 2000);
+        XXF.getLogger().d("=============isBack state stop:" + XXF.getActivityStackProvider().isBackground());
     }
 
     @Override

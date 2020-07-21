@@ -163,6 +163,10 @@ public class ToastUtils {
         if (!isMainThread() || TextUtils.isEmpty(notice)) {
             return null;
         }
+        //app 后台不允许toast
+        if (XXF.getActivityStackProvider().isBackground()) {
+            return null;
+        }
         Toast toast = createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
