@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle;
 
 import com.xxf.arch.XXF;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -159,6 +160,16 @@ public final class AndroidActivityStackProvider extends SimpleActivityLifecycleC
      * 重启app
      */
     public void restartApp() {
+        try {
+            ArrayList<Activity> activities = new ArrayList<>(activityStack);
+            for (Activity activity : activities) {
+                if (activity != null) {
+                    activity.finish();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             PackageManager packageManager = XXF.getApplication().getPackageManager();
             if (null == packageManager) {
