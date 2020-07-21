@@ -79,6 +79,8 @@ public class StateActivity extends XXFActivity {
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                XXF.getActivityStackProvider().restartApp();
+
                 loadData();
             }
         });

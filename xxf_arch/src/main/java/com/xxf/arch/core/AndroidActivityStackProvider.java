@@ -2,12 +2,16 @@ package com.xxf.arch.core;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
+
+import com.xxf.arch.XXF;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -149,5 +153,24 @@ public final class AndroidActivityStackProvider extends SimpleActivityLifecycleC
             }
         }
         return true;
+    }
+
+    /**
+     * 重启app
+     */
+    public void restartApp() {
+        try {
+            PackageManager packageManager = XXF.getApplication().getPackageManager();
+            if (null == packageManager) {
+                return;
+            }
+            final Intent intent = packageManager.getLaunchIntentForPackage(XXF.getApplication().getPackageName());
+            if (intent != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                XXF.getApplication().startActivity(intent);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 }
