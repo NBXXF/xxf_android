@@ -1,20 +1,11 @@
 package com.xxf.arch.rxjava.lifecycle;
 
-import android.app.Activity;
-import android.app.Application;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.arch.XXF;
-import com.xxf.arch.rxjava.lifecycle.DestoryLifecycleProvider;
-import com.xxf.arch.rxjava.lifecycle.LifecycleOwnerLifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 
 import java.util.Map;
@@ -38,13 +29,21 @@ public final class LifecycleProviderFactory {
         @Override
         public void onCreate() {
             super.onCreate();
-            rxLifecycleProviderMap.put(getLifecycleOwner(), this);
+            try {
+                rxLifecycleProviderMap.put(getLifecycleOwner(), this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onDestroy() {
             super.onDestroy();
-            rxLifecycleProviderMap.remove(getLifecycleOwner(), this);
+            try {
+                rxLifecycleProviderMap.remove(getLifecycleOwner());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
