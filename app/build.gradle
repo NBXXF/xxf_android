@@ -47,4 +47,5 @@ dependencies {
 
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
     //implementation 'com.github.axuan2015:xxf:1.4.0'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:1.4.0'
 }

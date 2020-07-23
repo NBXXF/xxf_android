@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
@@ -36,6 +38,7 @@ import io.reactivex.Observable;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -103,15 +106,21 @@ public class StateActivity extends XXFActivity {
     @Override
     protected void onResume() {
         super.onResume();
-  /*      Observable.interval(50, TimeUnit.MILLISECONDS)
-                .compose(XXF.bindToLifecycle(this))
-                .compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
+        Observable.interval(50, TimeUnit.MILLISECONDS)
+                .doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        XXF.getLogger().d("============>rl cancel:");
+                    }
+                })
+                //.compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
+                .as(XXF.autoDispose(this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         XXF.getLogger().d("============>rl:" + aLong);
                     }
-                });*/
+                });
 
     }
 
@@ -137,14 +146,7 @@ public class StateActivity extends XXFActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Observable.interval(50, TimeUnit.MILLISECONDS)
-                .compose(XXF.bindToLifecycle(this))
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        XXF.getLogger().d("============>dl:" + aLong);
-                    }
-                });
+        XXF.getLogger().d("============>rl:onDestroy");
     }
 
     private void loadData() {

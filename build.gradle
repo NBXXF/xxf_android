@@ -5,6 +5,10 @@ buildscript {
     ext.android_plugin_version = '3.1.2'
 
     repositories {
+        maven{ url 'https://maven.aliyun.com/repository/google'}
+        maven{ url 'https://maven.aliyun.com/repository/gradle-plugin'}
+        maven{ url 'https://maven.aliyun.com/repository/public'}
+        maven{ url 'https://maven.aliyun.com/repository/jcenter'}
         jcenter()
         maven { url "https://jitpack.io" }
         google()
@@ -20,6 +24,10 @@ buildscript {
 
 allprojects {
     repositories {
+        maven{ url 'https://maven.aliyun.com/repository/google'}
+        maven{ url 'https://maven.aliyun.com/repository/gradle-plugin'}
+        maven{ url 'https://maven.aliyun.com/repository/public'}
+        maven{ url 'https://maven.aliyun.com/repository/jcenter'}
         jcenter()
         maven { url "https://jitpack.io" }
         google()

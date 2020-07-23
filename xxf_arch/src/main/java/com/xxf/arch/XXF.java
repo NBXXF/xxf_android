@@ -30,6 +30,9 @@ import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.arouter.XXFUserInfoProvider;
 import com.xxf.arch.core.AndroidActivityStackProvider;
@@ -372,6 +375,32 @@ public class XXF {
      */
     public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
         return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
+    }
+
+    /**
+     * 自动取消
+     * 默认 onPause就会取消
+     * .as()
+     *
+     * @param lifecycleOwner
+     * @param <T>
+     * @return
+     */
+    public static <T> AutoDisposeConverter<T> autoDispose(@NonNull LifecycleOwner lifecycleOwner) {
+        return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner));
+    }
+
+    /**
+     * 自动取消
+     * .as()
+     *
+     * @param lifecycleOwner
+     * @param untilEvent
+     * @param <T>
+     * @return
+     */
+    public static <T> AutoDisposeConverter<T> autoDispose(@NonNull LifecycleOwner lifecycleOwner, Lifecycle.Event untilEvent) {
+        return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner, untilEvent));
     }
 
     /**
