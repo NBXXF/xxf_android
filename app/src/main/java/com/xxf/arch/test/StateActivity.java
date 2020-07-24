@@ -114,7 +114,7 @@ public class StateActivity extends XXFActivity {
                     }
                 })
                 //.compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
-                .as(XXF.autoDispose(this))
+                .as(XXF.bindLifecycle(this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {

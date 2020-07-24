@@ -379,27 +379,28 @@ public class XXF {
 
     /**
      * 自动取消
-     * 默认 onPause就会取消
-     * .as()
+     * 不同于截流
+     * 用法:observable.as(XXF.bindLifecycle(this))
      *
      * @param lifecycleOwner
      * @param <T>
      * @return
      */
-    public static <T> AutoDisposeConverter<T> autoDispose(@NonNull LifecycleOwner lifecycleOwner) {
+    public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
         return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner));
     }
 
     /**
      * 自动取消
-     * .as()
+     * 不同于截流
+     * 用法:observable.as(XXF.bindLifecycle(this,Lifecycle.Event.OnDestory))
      *
      * @param lifecycleOwner
      * @param untilEvent
      * @param <T>
      * @return
      */
-    public static <T> AutoDisposeConverter<T> autoDispose(@NonNull LifecycleOwner lifecycleOwner, Lifecycle.Event untilEvent) {
+    public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull LifecycleOwner lifecycleOwner, Lifecycle.Event untilEvent) {
         return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner, untilEvent));
     }
 
