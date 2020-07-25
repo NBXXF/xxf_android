@@ -1,13 +1,20 @@
 package com.xxf.view.model;
 
+import java.util.List;
+
 /**
  * Description  带选中属性的item实体
- *
+ * <p>
  * author  youxuan  E-mail:xuanyouwu@163.com
  * date createTime：2017/10/5
  * version 2.1.0
  */
 public interface SelectableEntity {
+
+
+    static void selectSignle(List<SelectableEntity> entities, SelectableEntity selected) {
+
+    }
 
     /**
      * 是否选中
