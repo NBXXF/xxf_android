@@ -12,6 +12,24 @@ import java.util.List;
 public class SelectableUtils {
 
     /**
+     * 是否有选中项
+     *
+     * @param entities
+     * @param <T>
+     * @return
+     */
+    public <T extends SelectableEntity> boolean hasSelected(List<T> entities) {
+        if (entities != null) {
+            for (T item : entities) {
+                if (item != null && item.isItemSelected()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * 清楚所有选中
      *
      * @param entities

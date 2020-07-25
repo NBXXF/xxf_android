@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
@@ -114,7 +112,6 @@ public class StateActivity extends XXFActivity {
                     }
                 })
                 //.compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
-                .as(XXF.bindLifecycle(this))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {

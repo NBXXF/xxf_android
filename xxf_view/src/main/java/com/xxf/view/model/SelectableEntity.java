@@ -11,11 +11,6 @@ import java.util.List;
  */
 public interface SelectableEntity {
 
-
-    static void selectSignle(List<SelectableEntity> entities, SelectableEntity selected) {
-
-    }
-
     /**
      * 是否选中
      *
