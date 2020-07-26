@@ -1,5 +1,8 @@
 package com.xxf.view.recyclerview.adapter;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.Nullable;
+
 import com.xxf.view.model.SelectableEntity;
 
 import java.util.List;
@@ -19,14 +22,44 @@ public class SelectableUtils {
      * @return
      */
     public <T extends SelectableEntity> boolean hasSelected(List<T> entities) {
+        return indexOfFirstSelected(entities) >= 0;
+    }
+
+
+    /**
+     * 获取第一个选中的
+     *
+     * @param entities
+     * @param <T>
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static <T extends SelectableEntity> T getFirstSelected(List<T> entities) {
+        int i = indexOfFirstSelected(entities);
+        if (i >= 0) {
+            return entities.get(i);
+        }
+        return null;
+    }
+
+    /**
+     * 获取第一个选中的交标
+     *
+     * @param entities
+     * @param <T>
+     * @return
+     */
+    public static <T extends SelectableEntity> int indexOfFirstSelected(List<T> entities) {
         if (entities != null) {
-            for (T item : entities) {
+            for (int i = 0; i < entities.size(); i++) {
+                T item = entities.get(i);
                 if (item != null && item.isItemSelected()) {
-                    return true;
+                    return i;
                 }
             }
         }
-        return false;
+        return -1;
     }
 
     /**
