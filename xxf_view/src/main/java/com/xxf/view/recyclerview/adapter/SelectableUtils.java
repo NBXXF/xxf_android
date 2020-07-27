@@ -21,7 +21,7 @@ public class SelectableUtils {
      * @param <T>
      * @return
      */
-    public <T extends SelectableEntity> boolean hasSelected(List<T> entities) {
+    public static <T extends SelectableEntity> boolean hasSelected(List<T> entities) {
         return indexOfFirstSelected(entities) >= 0;
     }
 
@@ -91,8 +91,9 @@ public class SelectableUtils {
         List<T> ts = clearSelected(entities);
         if (ts != null) {
             for (T item : ts) {
-                if (item == selected) {
+                if (item == selected || selected.equals(item)) {
                     item.setItemSelect(true);
+                    break;
                 }
             }
         }
@@ -112,7 +113,7 @@ public class SelectableUtils {
         if (ts != null && selected != null) {
             for (T item : ts) {
                 for (T s : selected) {
-                    if (item == s) {
+                    if (item == s || s.equals(item)) {
                         item.setItemSelect(true);
                     }
                 }
