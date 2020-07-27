@@ -153,8 +153,9 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(View view) {
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.onlyRemote)
+                                .getCity(CacheType.firstCache)
                                 .compose(XXF.bindToErrorNotice())
+                                .take(1)
                                 .subscribe(new Consumer<JsonObject>() {
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {
