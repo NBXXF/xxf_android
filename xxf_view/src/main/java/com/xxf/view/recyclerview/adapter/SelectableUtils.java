@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.xxf.view.model.SelectableEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Description: 选中控制
@@ -91,7 +92,7 @@ public class SelectableUtils {
         List<T> ts = clearSelected(entities);
         if (ts != null) {
             for (T item : ts) {
-                if (item == selected || selected.equals(item)) {
+                if (item == selected || Objects.equals(item, selected)) {
                     item.setItemSelect(true);
                     break;
                 }
@@ -113,7 +114,7 @@ public class SelectableUtils {
         if (ts != null && selected != null) {
             for (T item : ts) {
                 for (T s : selected) {
-                    if (item == s || s.equals(item)) {
+                    if (item == s || Objects.equals(s, item)) {
                         item.setItemSelect(true);
                     }
                 }
