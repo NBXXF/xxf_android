@@ -17,6 +17,7 @@ import javax.net.ssl.X509TrustManager;
 import io.reactivex.annotations.Nullable;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
+import okhttp3.CookieJar;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
@@ -53,6 +54,11 @@ public class OkHttpClientBuilder {
 
     public OkHttpClientBuilder cache(@Nullable Cache cache) {
         builder.cache(cache);
+        return this;
+    }
+
+    public OkHttpClientBuilder cookieJar(@Nullable CookieJar cookieJar) {
+        builder.cookieJar(cookieJar);
         return this;
     }
 

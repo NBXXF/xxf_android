@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.BaseUrlProvider;
+import com.xxf.arch.annotation.CookieJar;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
 import com.xxf.arch.annotation.RxJavaInterceptor;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
@@ -13,6 +14,7 @@ import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.http.cache.RxHttpCache;
 
 import java.io.File;
+import java.net.CookieHandler;
 import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Interceptor;
@@ -41,7 +43,7 @@ public class XXFHttp {
             try {
                 API_MAP.put(apiClazz, api = createApiService(apiClazz));
             } catch (Exception e) {
-               throw  new RuntimeException("创建api异常!",e);
+                throw new RuntimeException("创建api异常!", e);
             }
         }
         return (T) api;
@@ -84,6 +86,18 @@ public class XXFHttp {
         } else {
             baseUrl = baseUrlAnnotation.value();
         }
+
+        /**
+         * 设置cookie
+         */
+        CookieJar cookieJarAnnotation = apiClazz.getAnnotation(CookieJar.class);
+        if (cookieJarAnnotation != null && cookieJarAnnotation.value() != null) {
+            okhttp3.CookieJar cookieJar = cookieJarAnnotation.value().newInstance();
+            if (cookieJar != null) {
+                ohcb.cookieJar(cookieJar);
+            }
+        }
+
         //拦截器可选
         com.xxf.arch.annotation.Interceptor interceptorAnnotation = apiClazz.getAnnotation(com.xxf.arch.annotation.Interceptor.class);
         if (interceptorAnnotation != null) {
@@ -112,7 +126,7 @@ public class XXFHttp {
         //解析器拦截可选
         RxJavaInterceptor rxJavaInterceptorAnnotation = apiClazz.getAnnotation(RxJavaInterceptor.class);
         RxJavaCallAdapterInterceptor rxJavaInterceptor = null;
-        if ( rxJavaInterceptorAnnotation != null) {
+        if (rxJavaInterceptorAnnotation != null) {
             rxJavaInterceptor = rxJavaInterceptorAnnotation.value().newInstance();
         }
 
