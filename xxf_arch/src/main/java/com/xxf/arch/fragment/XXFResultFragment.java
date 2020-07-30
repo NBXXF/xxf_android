@@ -21,7 +21,7 @@ public class XXFResultFragment<R>
 
     @Override
     public void setFragmentConsumer(@Nullable BiConsumer<Fragment, R> consumer) {
-        this.fragmentConsumer = fragmentConsumer;
+        this.fragmentConsumer = consumer;
     }
 
     @Override
