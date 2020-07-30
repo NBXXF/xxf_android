@@ -27,7 +27,7 @@ public class XXFResultAlertDialogFragment<R> extends XXFAlertDialogFragment impl
     }
 
     @Override
-    public final void setDialogFragmentConsumer(@Nullable BiConsumer<DialogFragment, R> consumer) {
+    public  void setFragmentConsumer(@Nullable BiConsumer<DialogFragment, R> consumer) {
         this.dialogFragmentConsumer = consumer;
     }
 
