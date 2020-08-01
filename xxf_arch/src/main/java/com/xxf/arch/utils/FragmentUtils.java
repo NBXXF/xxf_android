@@ -2,6 +2,7 @@
 package com.xxf.arch.utils;
 
 import android.os.Build;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,6 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 
 
 import java.util.List;
@@ -76,6 +78,19 @@ public class FragmentUtils {
         transaction.replace(containerViewId, fragment, tag);
         transaction.commitAllowingStateLoss();
         return fragment;
+    }
+
+    /**
+     * 设置最大生命周期
+     * @param fragmentManager
+     * @param fragment
+     * @param state
+     */
+    public static void setMaxLifecycle(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment,
+                                  @NonNull Lifecycle.State state) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setMaxLifecycle(fragment, state);
+        transaction.commitAllowingStateLoss();
     }
 
     /**
