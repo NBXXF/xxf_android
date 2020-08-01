@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class BaseFragmentAdapter extends FragmentPagerAdapter {
 
-    private enum Behavior {
+    public enum Behavior {
         /**
          * Indicates that {@link Fragment#setUserVisibleHint(boolean)} will be called when the current
          * fragment changes.
