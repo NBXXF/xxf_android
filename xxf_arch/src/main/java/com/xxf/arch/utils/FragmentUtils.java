@@ -82,15 +82,48 @@ public class FragmentUtils {
 
     /**
      * 设置最大生命周期
+     * 必须是已经添加到队列的Fragment
+     *
      * @param fragmentManager
      * @param fragment
      * @param state
      */
     public static void setMaxLifecycle(@NonNull FragmentManager fragmentManager, @NonNull Fragment fragment,
-                                  @NonNull Lifecycle.State state) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setMaxLifecycle(fragment, state);
-        transaction.commitAllowingStateLoss();
+                                       @NonNull Lifecycle.State state) {
+        /**
+         * Cannot setMaxLifecycle for Fragment not attached to FragmentManager FragmentManager
+         */
+        if (fragment.isAdded()) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.setMaxLifecycle(fragment, state);
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    /**
+     * 其他fragment 会执行onPause,一般适合Tab切换,showFragment 会重新执行OnResume,方便业务及时刷新
+     *
+     * @param fragmentManager
+     * @param tabFragment
+     * @param showFragment
+     * @param containerViewId
+     * @return
+     */
+    public static Fragment switchTabFragment(FragmentManager fragmentManager,
+                                             @NonNull List<Fragment> tabFragment,
+                                             @Nullable Fragment showFragment,
+                                             @IdRes int containerViewId) {
+        Fragment result = switchFragment(fragmentManager, showFragment, containerViewId);
+        if (tabFragment != null) {
+            for (Fragment fragment : tabFragment) {
+                if (fragment == showFragment) {
+                    FragmentUtils.setMaxLifecycle(fragmentManager, fragment, Lifecycle.State.RESUMED);
+                } else {
+                    FragmentUtils.setMaxLifecycle(fragmentManager, fragment, Lifecycle.State.STARTED);
+                }
+            }
+        }
+        return result;
     }
 
     /**
