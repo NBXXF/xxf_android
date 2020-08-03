@@ -25,6 +25,21 @@ import java.util.Objects;
 public class FragmentUtils {
 
     /**
+     * 移除
+     *
+     * @param fragmentManager
+     * @param fragment
+     */
+    public static void removeFragment(@NonNull FragmentManager fragmentManager, @Nullable Fragment fragment) {
+        if (fragmentManager != null && fragment != null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+    }
+
+
+    /**
      * 添加fragment
      *
      * @param fragmentManager

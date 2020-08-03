@@ -17,6 +17,7 @@ import java.io.File;
 import java.net.CookieHandler;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.Interceptor;
 
 /**
@@ -145,5 +146,20 @@ public class XXFHttp {
                 .build()
                 .create(apiClazz);
         return apiService;
+    }
+
+    /**
+     * 取消一个订阅
+     *
+     * @param subscribe
+     */
+    public static void dispose(Disposable subscribe) {
+        if (subscribe != null && !subscribe.isDisposed()) {
+            try {
+                subscribe.dispose();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
