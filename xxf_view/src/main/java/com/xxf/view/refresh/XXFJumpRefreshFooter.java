@@ -16,19 +16,19 @@ import com.xxf.view.databinding.XxfJumpRefreshFooterBinding;
 import java.util.Objects;
 
 /**
- * @Description: java类作用描述
+ * @Description: footer 刷新动画默认 loading
  * @Author: XGod
  * @CreateDate: 2020/6/11 19:24
  */
 public class XXFJumpRefreshFooter implements RefreshFooter {
     private Context context;
     private SpinnerStyle mSpinnerStyle = SpinnerStyle.Translate;
-    private XxfJumpRefreshFooterBinding refreshFooterBinding;
+    protected XxfJumpRefreshFooterBinding refreshFooterBinding;
 
     public XXFJumpRefreshFooter(@NonNull Context context) {
         this.context = Objects.requireNonNull(context);
         refreshFooterBinding = XxfJumpRefreshFooterBinding.inflate(LayoutInflater.from(context));
-        refreshFooterBinding.footerAnimationView.setAnimation("xxf_loading.json");
+        refreshFooterBinding.footerAnimationView.setAnimation("xxf_load_more.json");
         refreshFooterBinding.footerAnimationView.setRepeatCount(Integer.MAX_VALUE);
     }
 

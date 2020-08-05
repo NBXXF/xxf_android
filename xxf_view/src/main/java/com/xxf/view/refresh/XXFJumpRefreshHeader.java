@@ -21,7 +21,7 @@ import com.xxf.view.databinding.XxfJumpRefreshHeaderBinding;
 public class XXFJumpRefreshHeader implements RefreshHeader {
     private Context context;
     private SpinnerStyle mSpinnerStyle = SpinnerStyle.Translate;
-    private XxfJumpRefreshHeaderBinding refreshHeaderBinding;
+    protected XxfJumpRefreshHeaderBinding refreshHeaderBinding;
 
     public XXFJumpRefreshHeader(Context context) {
         this.context = context;
