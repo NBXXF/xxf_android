@@ -13,17 +13,22 @@
             android:layout_height="wrap_content"
             android:text="test" />
 
-        <com.xxf.view.loading.XXFListStateLayout
-            android:id="@+id/state_layout"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <com.xxf.view.loading.XXFListStateLayout
+                android:id="@+id/state_layout"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        </com.xxf.view.loading.XXFListStateLayout>
+                android:layout_height="match_parent">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </com.xxf.view.loading.XXFListStateLayout>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     </LinearLayout>
 </layout>

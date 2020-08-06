@@ -7,12 +7,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/footer_animation_view"
             android:layout_width="65dp"
-            android:layout_height="20dp" />
+            android:layout_height="40dp" />
     </LinearLayout>
 </layout>

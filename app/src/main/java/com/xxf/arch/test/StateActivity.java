@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
@@ -99,6 +101,17 @@ public class StateActivity extends XXFActivity {
             }
         });
         testAdaper.bindData(true, new ArrayList<>());
+        stateBinding.refresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                loadData();
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                loadData();
+            }
+        });
     }
 
     @Override
@@ -152,7 +165,7 @@ public class StateActivity extends XXFActivity {
             @Override
             public List<String> call() throws Exception {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(5000);
                 } catch (Exception e) {
 
                 }
@@ -170,6 +183,8 @@ public class StateActivity extends XXFActivity {
                     public void accept(List<String> strings) throws Exception {
                         Log.d("=========", "" + strings);
                         testAdaper.bindData(true, strings);
+                        stateBinding.refresh.finishRefresh();
+                        stateBinding.refresh.finishLoadMore();
                     }
                 });
     }
