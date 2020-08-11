@@ -2,6 +2,10 @@ package com.xxf.arch.test.http;
 
 import com.xxf.arch.XXF;
 
+import java.io.IOException;
+
+import okhttp3.Response;
+
 /**
  * @Description: java类作用描述
  * @Author: XGod
@@ -17,5 +21,11 @@ public class MyLoggerInterceptor2 extends com.xxf.arch.http.interceptor.HttpLogg
             }
         });
         setLevel(Level.BODY);
+    }
+
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        XXF.getLogger().d("===========>retry intercept");
+        return super.intercept(chain);
     }
 }

@@ -27,7 +27,9 @@ import com.xxf.view.cardview.CardView;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.CacheType;
@@ -91,6 +93,12 @@ public class MainActivity extends XXFActivity {
         super.onCreate(savedInstanceState);
 
 
+        double d = 0.0000f;
+        XXF.getLogger().d(String.format("===========>d:%s==0  %s", d, String.valueOf(d == 0)));
+
+        Integer integer = Double.valueOf("0.09111").intValue();
+        XXF.getLogger().d("===========>ssss" + integer);
+
         new XXFNetwrokPresenter(this, null) {
             @Override
             protected void onNetworkAvailable(Network network) {
@@ -153,18 +161,23 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(View view) {
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.firstCache)
-                                .compose(XXF.bindToErrorNotice())
-                                .take(1)
+                                .getCity(CacheType.onlyRemote)
+                                .retry(new BiPredicate<Integer, Throwable>() {
+                                    @Override
+                                    public boolean test(Integer integer, Throwable throwable) throws Exception {
+                                        XXF.getLogger().d("==========>retry:" + integer + "  e:" + throwable);
+                                        return integer < 5;
+                                    }
+                                })
                                 .subscribe(new Consumer<JsonObject>() {
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {
-                                        XXF.getLogger().d("==========>ye");
+                                        XXF.getLogger().d("==========>retry ye");
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        XXF.getLogger().d("==========>no");
+                                        XXF.getLogger().d("==========>retry no");
                                     }
                                 });
                     }

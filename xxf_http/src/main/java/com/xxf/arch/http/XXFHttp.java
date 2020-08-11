@@ -44,7 +44,7 @@ public class XXFHttp {
             try {
                 API_MAP.put(apiClazz, api = createApiService(apiClazz));
             } catch (Exception e) {
-                throw new RuntimeException("创建api异常!", e);
+                throw new RuntimeException(e);
             }
         }
         return (T) api;

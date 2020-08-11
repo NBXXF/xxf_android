@@ -42,6 +42,11 @@
             android:layout_height="wrap_content"
             android:text="file" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
 
         <Button
             android:id="@+id/bt_startActivityForResult"
