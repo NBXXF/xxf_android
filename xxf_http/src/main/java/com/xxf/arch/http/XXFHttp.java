@@ -132,15 +132,14 @@ public class XXFHttp {
         }
 
         //rxJava 缓存
-        RxHttpCache rxHttpCache = null;
+        HttpCacheDirectoryProvider rxHttpCacheDirectoryProvider = null;
         RxHttpCacheProvider rxHttpCacheAnnotation = apiClazz.getAnnotation(RxHttpCacheProvider.class);
         if (rxHttpCacheAnnotation != null) {
-            HttpCacheDirectoryProvider rxHttpCacheDirectoryProvider = rxHttpCacheAnnotation.value().newInstance();
-            rxHttpCache = new RxHttpCache(new File(rxHttpCacheDirectoryProvider.getDirectory()), rxHttpCacheDirectoryProvider.maxSize());
+            rxHttpCacheDirectoryProvider = rxHttpCacheAnnotation.value().newInstance();
         }
 
         //创建缓存对象
-        T apiService = new RetrofitBuilder(rxJavaInterceptor, rxHttpCache)
+        T apiService = new RetrofitBuilder(rxJavaInterceptor, rxHttpCacheDirectoryProvider)
                 .client(ohcb.build())
                 .baseUrl(baseUrl)
                 .build()

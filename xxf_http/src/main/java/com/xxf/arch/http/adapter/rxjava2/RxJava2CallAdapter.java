@@ -1,6 +1,8 @@
 package com.xxf.arch.http.adapter.rxjava2;
 
+import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.http.cache.RxHttpCache;
+import com.xxf.arch.http.cache.RxHttpCacheFactory;
 
 import java.lang.reflect.Type;
 
@@ -19,7 +21,7 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
     private final @Nullable
     Scheduler scheduler;
     private final boolean isAsync;
-    private RxHttpCache rxHttpCache;
+    private HttpCacheDirectoryProvider rxHttpCache;
     private CacheType rxCacheType;
     private final boolean isResult;
     private final boolean isBody;
@@ -30,7 +32,7 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
     RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor;
 
     RxJava2CallAdapter(Type responseType, @Nullable Scheduler scheduler, boolean isAsync,
-                       RxHttpCache rxHttpCache,
+                       HttpCacheDirectoryProvider rxHttpCache,
                        CacheType rxCacheType,
                        RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor,
                        boolean isResult, boolean isBody, boolean isFlowable, boolean isSingle, boolean isMaybe,
@@ -66,15 +68,15 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
 
     public Object defaultAdapt(Call<R> call, @androidx.annotation.Nullable Object[] args) {
         Observable<Response<R>> responseObservable = isAsync
-                ? new CallEnqueueObservable<>(call, this.rxHttpCache, this.rxCacheType)
-                : new CallExecuteObservable<>(call, this.rxHttpCache, this.rxCacheType);
+                ? new CallEnqueueObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), this.rxCacheType)
+                : new CallExecuteObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), this.rxCacheType);
         //参数传递的cacheType
         if (args != null) {
             for (Object arg : args) {
                 if (arg != null && arg instanceof CacheType) {
                     responseObservable = isAsync
-                            ? new CallEnqueueObservable<>(call, this.rxHttpCache, (CacheType) arg)
-                            : new CallExecuteObservable<>(call, this.rxHttpCache, (CacheType) arg);
+                            ? new CallEnqueueObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), (CacheType) arg)
+                            : new CallExecuteObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), (CacheType) arg);
                     break;
                 }
             }

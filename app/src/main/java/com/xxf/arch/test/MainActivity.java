@@ -161,23 +161,16 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(View view) {
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.onlyRemote)
-                                .retry(new BiPredicate<Integer, Throwable>() {
-                                    @Override
-                                    public boolean test(Integer integer, Throwable throwable) throws Exception {
-                                        XXF.getLogger().d("==========>retry:" + integer + "  e:" + throwable);
-                                        return integer < 5;
-                                    }
-                                })
+                                .getCity(CacheType.firstCache)
                                 .subscribe(new Consumer<JsonObject>() {
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {
-                                        XXF.getLogger().d("==========>retry ye");
+                                        XXF.getLogger().d("==========>retry ye:" + jsonObject);
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        XXF.getLogger().d("==========>retry no");
+                                        XXF.getLogger().d("==========>retry no:" + throwable);
                                     }
                                 });
                     }

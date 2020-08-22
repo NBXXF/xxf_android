@@ -1,6 +1,7 @@
 
 package com.xxf.arch.http.adapter.rxjava2;
 
+import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.http.cache.RxHttpCache;
 
 import java.lang.annotation.Annotation;
@@ -28,10 +29,10 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
     private final @Nullable
     Scheduler scheduler;
     private final boolean isAsync;
-    private RxHttpCache rxHttpCache;
+    private HttpCacheDirectoryProvider rxHttpCache;
     private RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor;
 
-    public RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, RxHttpCache rxHttpCache, RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor) {
+    public RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, HttpCacheDirectoryProvider rxHttpCache, RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor) {
         this.scheduler = scheduler;
         this.isAsync = isAsync;
         this.rxHttpCache = rxHttpCache;

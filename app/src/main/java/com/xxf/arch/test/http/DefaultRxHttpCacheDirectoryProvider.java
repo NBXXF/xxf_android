@@ -16,7 +16,7 @@ public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheDirectoryPr
     @NonNull
     @Override
     public String getDirectory() {
-        File file = new File(BaseApplication.getInstance().getCacheDir(), "okHttpCache");
+        File file = new File(BaseApplication.getInstance().getCacheDir(), "okHttpCache4");
         if (!file.exists()) {
             file.mkdirs();
         }
