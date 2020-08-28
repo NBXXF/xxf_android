@@ -38,7 +38,7 @@ public class OkHttpClientBuilder {
             .hostnameVerifier(new TrustAllHostnameVerifier())
             .retryOnConnectionFailure(true)
             .writeTimeout(1, TimeUnit.MINUTES)
-            .connectTimeout(20, TimeUnit.MILLISECONDS)
+            .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(1, TimeUnit.MINUTES)
             .connectionPool(CONNECTION_POOL);
 
