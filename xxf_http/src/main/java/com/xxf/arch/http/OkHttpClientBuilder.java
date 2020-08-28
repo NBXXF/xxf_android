@@ -38,8 +38,8 @@ public class OkHttpClientBuilder {
             .hostnameVerifier(new TrustAllHostnameVerifier())
             .retryOnConnectionFailure(true)
             .writeTimeout(1, TimeUnit.MINUTES)
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(2, TimeUnit.MINUTES)
+            .connectTimeout(20, TimeUnit.MILLISECONDS)
+            .readTimeout(1, TimeUnit.MINUTES)
             .connectionPool(CONNECTION_POOL);
 
     public OkHttpClientBuilder addInterceptor(Interceptor interceptor) {
