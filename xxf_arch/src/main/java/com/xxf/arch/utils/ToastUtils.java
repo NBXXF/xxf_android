@@ -1,8 +1,10 @@
 package com.xxf.arch.utils;
 
+import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -20,9 +22,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.xxf.arch.R;
 import com.xxf.arch.XXF;
+import com.xxf.view.sanckbar.Snackbar;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -114,26 +118,15 @@ public class ToastUtils {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static boolean isToastAvailable() {
         try {
-            final String CHECK_OP_NO_THROW = "checkOpNoThrow";
-            final String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
-            AppOpsManager mAppOps = (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
-            ApplicationInfo appInfo = getContext().getApplicationInfo();
-            String pkg = getContext().getApplicationContext().getPackageName();
-            int uid = appInfo.uid;
-            Class appOpsClass = null;
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    appOpsClass = Class.forName(AppOpsManager.class.getName());
-                    Method checkOpNoThrowMethod = appOpsClass.getMethod(CHECK_OP_NO_THROW, Integer.TYPE, Integer.TYPE, String.class);
-                    Field opPostNotificationValue = appOpsClass.getDeclaredField(OP_POST_NOTIFICATION);
-                    int value = (int) opPostNotificationValue.get(Integer.class);
-                    return ((int) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        } catch (Throwable e) {
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getContext());
+            boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
+            return areNotificationsEnabled;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        /**
+         * 默认可用
+         */
         return true;
     }
 
@@ -167,6 +160,13 @@ public class ToastUtils {
         if (XXF.getActivityStackProvider().isBackground()) {
             return null;
         }
+
+        //如果系统禁用Toast,用SnackBar替代
+        if (!isToastAvailable()) {
+            Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
+            showSnackBar(topActivity, notice, type);
+            return null;
+        }
         Toast toast = createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
@@ -174,6 +174,53 @@ public class ToastUtils {
         }
         toast.show();
         return toast;
+    }
+
+    public static void showSnackBar(@NonNull Activity topActivity, @NonNull CharSequence notice, @NonNull ToastType type) {
+        if (topActivity != null && !topActivity.isDestroyed() && !topActivity.isFinishing()) {
+            Snackbar snackbar = Snackbar.make(topActivity.getWindow().getDecorView(), notice, Snackbar.LENGTH_SHORT);
+            View snackbarView = snackbar.getView();
+            try {
+                int statusBarHeight = getStatusBarHeight(topActivity);
+                snackbarView.setPadding(0, statusBarHeight, 0, 0);
+                snackbarView.setBackgroundColor(0xFF333333);
+                TextView textView = (TextView) snackbarView.findViewById(com.xxf.view.sanckbar.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                textView.setMaxLines(3);
+                textView.setCompoundDrawablePadding(DensityUtil.dip2px(7));
+                int dp19 = DensityUtil.dip2px(19);
+                switch (type) {
+                    case ERROR:
+                        Drawable errorDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_error);
+                        errorDrawable.setBounds(0, 0, dp19, dp19);
+                        textView.setCompoundDrawables(errorDrawable, null, null, null);
+                        break;
+                    case NORMAL:
+                        textView.setCompoundDrawables(null, null, null, null);
+                        break;
+                    case SUCCESS:
+                        Drawable successDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_success);
+                        successDrawable.setBounds(0, 0, dp19, dp19);
+                        textView.setCompoundDrawables(successDrawable, null, null, null);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            snackbar.show();
+        }
+    }
+
+    /**
+     * 获取状态栏高度
+     *
+     * @param context context
+     * @return 状态栏高度
+     */
+    private static int getStatusBarHeight(Context context) {
+        // 获得状态栏高度
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        return context.getResources().getDimensionPixelSize(resourceId);
     }
 
     public static Toast createToast(CharSequence msg, ToastType type) {

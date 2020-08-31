@@ -153,7 +153,8 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(view.getContext(), StateActivity.class));
+                        //startActivity(new Intent(view.getContext(), StateActivity.class));
+                        ToastUtils.showToast("hellofgfdhgsfhgsfghfvgsvgvsksvhbvshjvbhjbvhjvbshbsvbhhvbhvbhvbfhsfhvbhvbfshvbsfbbfsvbbbfsvhjbvfhbvfshbhbfvs", ToastUtils.ToastType.SUCCESS);
                     }
                 });
         findViewById(R.id.bt_http)
