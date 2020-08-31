@@ -40,7 +40,8 @@ public class WeChatObservable extends Observable<BaseResp> {
 
     @Override
     protected void subscribeActual(final Observer<? super BaseResp> observer) {
-        WXEntryDispatcher.setEventHandler(new EventHandler() {
+        EventHandler eventHandler;
+        WXEntryDispatcher.setEventHandler(eventHandler = new EventHandler() {
             @Override
             public void dispose() {
                 WXEntryDispatcher.setEventHandler(null);
@@ -53,9 +54,9 @@ public class WeChatObservable extends Observable<BaseResp> {
 
             @Override
             public void onReq(BaseReq baseReq) {
-                if (observer != null) {
+               /* if (observer != null) {
                     observer.onSubscribe(this);
-                }
+                }*/
             }
 
             @Override
@@ -98,6 +99,7 @@ public class WeChatObservable extends Observable<BaseResp> {
                 }
             }
         });
+        observer.onSubscribe(eventHandler);
         IWXAPI wxApi = WXAPIFactory.createWXAPI(this.context.getApplicationContext(), this.clientId);
         wxApi.registerApp(clientId);
         wxApi.sendReq(this.baseReq);
