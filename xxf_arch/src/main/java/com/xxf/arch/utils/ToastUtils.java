@@ -2,6 +2,7 @@ package com.xxf.arch.utils;
 
 import android.app.Activity;
 import android.app.AppOpsManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
@@ -29,6 +30,10 @@ import com.xxf.arch.XXF;
 import com.xxf.view.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * Description
@@ -53,6 +58,7 @@ public class ToastUtils {
 
     private static Field sField_TN;
     private static Field sField_TN_Handler;
+    private static Object iNotificationManagerObj;
 
     private ToastUtils() {
     }
@@ -114,8 +120,7 @@ public class ToastUtils {
      *
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static boolean isToastAvailable() {
+    public static boolean isNotificationEnabled() {
         try {
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getContext());
             boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
@@ -123,11 +128,9 @@ public class ToastUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /**
-         * 默认可用
-         */
-        return true;
+        return false;
     }
+
 
     /**
      * 校验线程
@@ -160,19 +163,58 @@ public class ToastUtils {
             return null;
         }
 
-        //如果系统禁用Toast,用SnackBar替代
-        if (!isToastAvailable()) {
-            Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
-            showSnackBar(topActivity, notice, type);
-            return null;
-        }
         Toast toast = createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);
         }
-        toast.show();
+        if (isNotificationEnabled()) {
+            toast.show();
+        } else {
+            try {
+                /**
+                 * hook 一下系统notifycation
+                 */
+                showSystemToast(toast);
+            } catch (Throwable e) {
+                e.printStackTrace();
+                /**
+                 * 再不行 用自定义的顶部snackBar
+                 */
+                Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
+                showSnackBar(topActivity, notice, type);
+                return null;
+            }
+        }
         return toast;
+    }
+
+    /**
+     * 强制显示系统Toast
+     */
+    private static void showSystemToast(Toast toast) throws Throwable {
+        Method getServiceMethod = Toast.class.getDeclaredMethod("getService");
+        getServiceMethod.setAccessible(true);
+        //hook INotificationManager
+        if (iNotificationManagerObj == null) {
+            iNotificationManagerObj = getServiceMethod.invoke(null);
+            Class iNotificationManagerCls = Class.forName("android.app.INotificationManager");
+            Object iNotificationManagerProxy = Proxy.newProxyInstance(toast.getClass().getClassLoader(), new Class[]{iNotificationManagerCls}, new InvocationHandler() {
+                @Override
+                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                    //强制使用系统Toast
+                    if ("enqueueToast".equals(method.getName())
+                            || "enqueueToastEx".equals(method.getName())) {  //华为p20 pro上为enqueueToastEx
+                        args[0] = "android";
+                    }
+                    return method.invoke(iNotificationManagerObj, args);
+                }
+            });
+            Field sServiceFiled = Toast.class.getDeclaredField("sService");
+            sServiceFiled.setAccessible(true);
+            sServiceFiled.set(null, iNotificationManagerProxy);
+        }
+        toast.show();
     }
 
     public static void showSnackBar(@NonNull Activity topActivity, @NonNull CharSequence notice, @NonNull ToastType type) {
