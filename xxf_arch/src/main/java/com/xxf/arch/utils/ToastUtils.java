@@ -26,10 +26,9 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.xxf.arch.R;
 import com.xxf.arch.XXF;
-import com.xxf.view.sanckbar.Snackbar;
+import com.xxf.view.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * Description
@@ -184,7 +183,7 @@ public class ToastUtils {
                 int statusBarHeight = getStatusBarHeight(topActivity);
                 snackbarView.setPadding(0, statusBarHeight, 0, 0);
                 snackbarView.setBackgroundColor(0xFF333333);
-                TextView textView = (TextView) snackbarView.findViewById(com.xxf.view.sanckbar.R.id.snackbar_text);
+                TextView textView = (TextView) snackbarView.findViewById(com.xxf.view.snackbar.R.id.snackbar_text);
                 textView.setTextColor(Color.WHITE);
                 textView.setMaxLines(3);
                 textView.setCompoundDrawablePadding(DensityUtil.dip2px(7));
