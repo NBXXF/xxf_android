@@ -186,6 +186,20 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding, T>
         return false;
     }
 
+    /**
+     * 移除所有Header
+     *
+     * @return
+     */
+    public boolean removeHeaders() {
+        if (mHeaders != null && !mHeaders.isEmpty()) {
+            mHeaders.clear();
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
+    }
+
     public boolean removeFooter(View view) {
         if (getFooterCount() > 0) {
             if (mFooters.contains(view)) {
@@ -193,6 +207,20 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding, T>
                 notifyDataSetChanged();
                 return remove;
             }
+        }
+        return false;
+    }
+
+    /**
+     * 移除所有footer
+     *
+     * @return
+     */
+    public boolean removeFooters() {
+        if (mFooters != null && !mFooters.isEmpty()) {
+            mFooters.clear();
+            notifyDataSetChanged();
+            return true;
         }
         return false;
     }
