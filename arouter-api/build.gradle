@@ -4,6 +4,12 @@ android {
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 21
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
     }
 
     dataBinding {
@@ -15,13 +21,9 @@ android {
     }
 }
 
+
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api project(path: ':xxf_http')
+    annotationProcessor 'com.alibaba:arouter-compiler:1.2.0'
+    api 'com.alibaba:arouter-annotation:1.0.6'
     api 'androidx.appcompat:appcompat:1.1.0'
-    api 'com.google.android.material:material:1.1.0'
-    api 'com.github.NBXXF:xxf_snackbar:1.0.2'
-    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'com.uber.autodispose:autodispose-android-archcomponents:1.4.0'
-    api project(path: ':arouter-api')
 }

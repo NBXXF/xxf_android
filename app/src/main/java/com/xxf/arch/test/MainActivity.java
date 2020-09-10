@@ -14,6 +14,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
@@ -227,8 +228,8 @@ public class MainActivity extends XXFActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString(ACTIVITY_PARAM, "one");
 
-                        // ARouter.getInstance().build("/activity/test").navigation();
-                        XXF.startActivityForResult("/activity/test", bundle, 1000)
+                        ARouter.getInstance().build("/activity/test?name=1&age=" + System.currentTimeMillis()).navigation();
+                 /*       XXF.startActivityForResult("/activity/test", bundle, 1000)
                                 .compose(XXF.bindToErrorNotice())
                                 .take(1)
                                 .subscribe(new Consumer<ActivityResult>() {
@@ -236,7 +237,7 @@ public class MainActivity extends XXFActivity {
                                     public void accept(ActivityResult activityResult) throws Exception {
                                         Log.d("=======>result:", activityResult.getData().getStringExtra(ACTIVITY_RESULT));
                                     }
-                                });
+                                });*/
                     }
                 });
         //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);

@@ -26,7 +26,7 @@ public class TestActivity extends XXFActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTestBinding.inflate(getLayoutInflater(), null, false);
         setContentView(binding.getRoot());
-        ToastUtils.showToast("param:" + param, ToastUtils.ToastType.SUCCESS);
+        ToastUtils.showToast("param:" + param + " name:" + getIntent().getStringExtra("name") + " age:" + getIntent().getStringExtra("age"), ToastUtils.ToastType.SUCCESS);
 
         binding.btSetResult.setOnClickListener(new View.OnClickListener() {
             @Override
