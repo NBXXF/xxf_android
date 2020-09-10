@@ -230,13 +230,13 @@ public class ToastUtils {
 
     public static void showSnackBar(@NonNull Activity topActivity, @NonNull CharSequence notice, @NonNull ToastType type) {
         if (topActivity != null && !topActivity.isDestroyed() && !topActivity.isFinishing()) {
-            Snackbar snackbar = Snackbar.make(topActivity.getWindow().getDecorView(), notice, Snackbar.LENGTH_SHORT);
-            View snackbarView = snackbar.getView();
             try {
+                Snackbar snackbar = Snackbar.make(topActivity.getWindow().getDecorView(), notice, Snackbar.LENGTH_SHORT);
+                View snackbarView = snackbar.getView();
                 int statusBarHeight = getStatusBarHeight(topActivity);
                 snackbarView.setPadding(0, statusBarHeight, 0, 0);
                 snackbarView.setBackgroundColor(0xFF333333);
-                TextView textView = (TextView) snackbarView.findViewById(com.xxf.view.snackbar.R.id.snackbar_text);
+                TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
                 textView.setTextColor(Color.WHITE);
                 textView.setMaxLines(3);
                 textView.setCompoundDrawablePadding(DensityUtil.dip2px(7));
@@ -256,10 +256,10 @@ public class ToastUtils {
                         textView.setCompoundDrawables(successDrawable, null, null, null);
                         break;
                 }
+                snackbar.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            snackbar.show();
         }
     }
 
