@@ -175,7 +175,7 @@ public class ToastUtils {
                 /**
                  * hook 一下系统notifycation
                  */
-                showSystemToast(toast);
+                showSystemToast(toast, notice, type);
             } catch (Throwable e) {
                 e.printStackTrace();
                 /**
@@ -192,7 +192,7 @@ public class ToastUtils {
     /**
      * 强制显示系统Toast
      */
-    private static void showSystemToast(Toast toast) throws Throwable {
+    private static void showSystemToast(Toast toast, CharSequence notice, @NonNull ToastType type) throws Throwable {
         Method getServiceMethod = Toast.class.getDeclaredMethod("getService");
         getServiceMethod.setAccessible(true);
         //hook INotificationManager
@@ -202,12 +202,23 @@ public class ToastUtils {
             Object iNotificationManagerProxy = Proxy.newProxyInstance(toast.getClass().getClassLoader(), new Class[]{iNotificationManagerCls}, new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    //强制使用系统Toast
-                    if ("enqueueToast".equals(method.getName())
-                            || "enqueueToastEx".equals(method.getName())) {  //华为p20 pro上为enqueueToastEx
-                        args[0] = "android";
+                    try {
+
+                        //强制使用系统Toast
+                        if ("enqueueToast".equals(method.getName())
+                                || "enqueueToastEx".equals(method.getName())) {  //华为p20 pro上为enqueueToastEx
+                            args[0] = "android";
+                        }
+                        return method.invoke(iNotificationManagerObj, args);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        /**
+                         * 再不行 用自定义的顶部snackBar
+                         */
+                        Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
+                        showSnackBar(topActivity, notice, type);
                     }
-                    return method.invoke(iNotificationManagerObj, args);
+                    return proxy;
                 }
             });
             Field sServiceFiled = Toast.class.getDeclaredField("sService");
