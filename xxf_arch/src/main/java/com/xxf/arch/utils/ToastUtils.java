@@ -59,6 +59,7 @@ public class ToastUtils {
     private static Field sField_TN;
     private static Field sField_TN_Handler;
     private static Object iNotificationManagerObj;
+    private static CharSequence noticeString;
 
     private ToastUtils() {
     }
@@ -163,6 +164,11 @@ public class ToastUtils {
             return null;
         }
 
+        /**
+         * 全局單個toast賦值
+         */
+        noticeString = notice;
+
         Toast toast = createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
@@ -216,7 +222,7 @@ public class ToastUtils {
                          * 再不行 用自定义的顶部snackBar
                          */
                         Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
-                        showSnackBar(topActivity, notice, type);
+                        showSnackBar(topActivity, noticeString, type);
                     }
                     return proxy;
                 }
@@ -229,6 +235,9 @@ public class ToastUtils {
     }
 
     public static void showSnackBar(@NonNull Activity topActivity, @NonNull CharSequence notice, @NonNull ToastType type) {
+        if (TextUtils.isEmpty(notice)) {
+            return;
+        }
         if (topActivity != null && !topActivity.isDestroyed() && !topActivity.isFinishing()) {
             try {
                 Snackbar snackbar = Snackbar.make(topActivity.getWindow().getDecorView(), notice, Snackbar.LENGTH_SHORT);

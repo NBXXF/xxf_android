@@ -155,7 +155,7 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(View view) {
                         //startActivity(new Intent(view.getContext(), StateActivity.class));
-                        ToastUtils.showToast("hellofgfdhgsfhgsfghfvgsvgvsksvhbvshjvbhjbvhjvbshbsvbhhvbhvbhvbfhsfhvbhvbfshvbsfbbfsvbbbfsvhjbvfhbvfshbhbfvs", ToastUtils.ToastType.SUCCESS);
+                        ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                     }
                 });
         findViewById(R.id.bt_http)
