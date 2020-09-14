@@ -177,20 +177,23 @@ public class ToastUtils {
         if (isNotificationEnabled()) {
             toast.show();
         } else {
-            try {
-                /**
-                 * hook 一下系统notifycation
-                 */
+            Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
+            showSnackBar(topActivity, notice, type);
+            return null;
+            /* try {
+             *//**
+             * hook 一下系统notifycation
+             *//*
                 showSystemToast(toast, notice, type);
             } catch (Throwable e) {
                 e.printStackTrace();
-                /**
-                 * 再不行 用自定义的顶部snackBar
-                 */
+                *//**
+             * 再不行 用自定义的顶部snackBar
+             *//*
                 Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
                 showSnackBar(topActivity, notice, type);
                 return null;
-            }
+            }*/
         }
         return toast;
     }
