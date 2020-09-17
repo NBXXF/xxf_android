@@ -544,25 +544,38 @@ public class StatusBarUtils {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    public static void setLightMode(Activity activity) {
-        setMIUIStatusBarDarkIcon(activity, true);
-        setMeizuStatusBarDarkIcon(activity, true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    /**
+     * 设置状态栏颜色
+     *
+     * @param activity
+     * @param dark     是否深色 否则浅色 一般是黑和白
+     */
+    private static void setStatusBarDark(Activity activity, boolean dark) {
+        View view = activity.getWindow().getDecorView();
+        int oldVis = view.getSystemUiVisibility();
+        int newVis = oldVis;
+        if (dark) {
+            newVis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        } else {
+            newVis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }
+        if (newVis != oldVis) {
+            view.setSystemUiVisibility(newVis);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    public static void setDarkMode(Activity activity) {
-        setMIUIStatusBarDarkIcon(activity, false);
-        setMeizuStatusBarDarkIcon(activity, false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+    /**
+     * Convenience method to remove a visibility flag from the view, leaving other flags that are
+     * not specified intact.
+     */
+    public static void removeVisibilityFlag(Activity activity, final int flag) {
+        View view = activity.getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            final int vis = view.getSystemUiVisibility();
+            view.setSystemUiVisibility(vis & ~flag);
         }
     }
+
 
     /**
      * 修改 MIUI V6  以上状态栏颜色
