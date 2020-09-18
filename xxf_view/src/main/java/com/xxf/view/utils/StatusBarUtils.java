@@ -763,10 +763,29 @@ public class StatusBarUtils {
      * @param context context
      * @return 状态栏高度
      */
-    private static int getStatusBarHeight(Context context) {
-        // 获得状态栏高度
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        return context.getResources().getDimensionPixelSize(resourceId);
+    public static int getStatusBarHeight(Context context) {
+        try {
+            // 获得状态栏高度
+            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+            return context.getResources().getDimensionPixelSize(resourceId);
+        } catch (Throwable e) {
+            return 0;
+        }
+    }
+
+    /**
+     * 设置自定义的StatusBar布局
+     *
+     * @param activity
+     * @param view
+     */
+    public static void setStatusBarCustomerView(Activity activity, View view) {
+        if (view != null && activity != null) {
+            hideFakeStatusBarView(activity);
+            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            layoutParams.height = getStatusBarHeight(activity);
+            view.setLayoutParams(layoutParams);
+        }
     }
 
     /**
