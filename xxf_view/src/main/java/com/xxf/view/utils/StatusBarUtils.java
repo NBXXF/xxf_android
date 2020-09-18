@@ -550,7 +550,7 @@ public class StatusBarUtils {
      * @param activity
      * @param dark     是否深色 否则浅色 一般是黑和白
      */
-    private static void setStatusBarDark(Activity activity, boolean dark) {
+    public static void setStatusBarDark(Activity activity, boolean dark) {
         setMIUIStatusBarDarkIcon(activity, dark);
         setMeizuStatusBarDarkIcon(activity, dark);
         View view = activity.getWindow().getDecorView();
