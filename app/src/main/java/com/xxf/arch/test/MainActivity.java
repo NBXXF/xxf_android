@@ -24,6 +24,7 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
+import com.xxf.view.utils.StatusBarUtils;
 
 import java.util.concurrent.Callable;
 
@@ -125,6 +126,9 @@ public class MainActivity extends XXFActivity {
             }
         });
         setContentView(R.layout.activity_main);
+        StatusBarUtils.setTransparentForWindow(this);
+        StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout));
+
         CardView cardView = findViewById(R.id.card);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
