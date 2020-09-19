@@ -13,22 +13,32 @@
             android:layout_height="wrap_content"
             android:text="test" />
 
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/refresh"
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <com.xxf.view.loading.XXFListStateLayout
-                android:id="@+id/state_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </ScrollView>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </com.xxf.view.loading.XXFListStateLayout>
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#FF0000" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:background="#6cf"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
     </LinearLayout>
 </layout>

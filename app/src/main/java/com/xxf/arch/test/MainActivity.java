@@ -3,6 +3,7 @@ package com.xxf.arch.test;
 import android.Manifest;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -79,6 +80,8 @@ public class MainActivity extends XXFActivity {
             Log.d("================>p", "onDestroy");
         }
     }
+
+
 
     private Observable<Object> getXXData() {
         return Observable.fromCallable(new Callable<Object>() {
@@ -158,8 +161,8 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //startActivity(new Intent(view.getContext(), StateActivity.class));
-                        ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
+                        startActivity(new Intent(view.getContext(), StateActivity.class));
+                        //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                     }
                 });
         findViewById(R.id.bt_http)

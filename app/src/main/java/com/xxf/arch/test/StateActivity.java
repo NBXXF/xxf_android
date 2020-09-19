@@ -2,9 +2,15 @@ package com.xxf.arch.test;
 
 import android.app.Activity;
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +18,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
@@ -24,12 +32,14 @@ import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.loading.ViewState;
+import com.xxf.view.recyclerview.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -82,56 +92,55 @@ public class StateActivity extends XXFActivity {
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XXF.getActivityStackProvider().restartApp();
+            //    Bitmap bitmap = getBitmap(stateBinding.recyclerView);
+                Bitmap bitmap = RecyclerViewUtils.shotRecyclerViewVisibleItems(stateBinding.recyclerView);
 
-                loadData();
-            }
-        });
-        stateBinding.stateLayout.setErrorRetryListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadData();
-            }
-        });
-        stateBinding.stateLayout.setEmptyActionText("点击", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.showToast("点击了!", ToastUtils.ToastType.ERROR);
-                stateBinding.stateLayout.setEmptyText(null);
+                XXF.getLogger().d("=============>bitmap:" + bitmap);
+                XXF.getLogger().d("=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
+                stateBinding.preview.setImageBitmap(bitmap);
+
+                // loadData();
             }
         });
         testAdaper.bindData(true, new ArrayList<>());
-        stateBinding.refresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                loadData();
-            }
+        loadData();
+    }
 
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                loadData();
-            }
-        });
+    private static Bitmap getBitmap(RecyclerView view) {
+
+        // 把一个View转换成图片
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        //测量在屏幕上宽和高
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        //确定View的大小和位置的,然后将其绘制出来
+        //  view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        if (bitmap != null) {
+            return bitmap;
+        }
+        return convertViewToBitmap(view);
+    }
+
+    /**
+     * 主要方法：创建一个bitmap放于画布之上进行绘制 （简直如有神助）
+     */
+    private static Bitmap convertViewToBitmap(View view) {
+       /* Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),
+                view.getHeight(), Bitmap.Config.ARGB_8888);*/
+    /*    view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));*/
+        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Observable.interval(50, TimeUnit.MILLISECONDS)
-                .doOnDispose(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        XXF.getLogger().d("============>rl cancel:");
-                    }
-                })
-                //.compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_PAUSE))
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        XXF.getLogger().d("============>rl:" + aLong);
-                    }
-                });
-
     }
 
     @Override
@@ -160,20 +169,15 @@ public class StateActivity extends XXFActivity {
     }
 
     private void loadData() {
-        stateBinding.stateLayout.setViewState(ViewState.VIEW_STATE_LOADING);
         Observable.fromCallable(new Callable<List<String>>() {
             @Override
             public List<String> call() throws Exception {
-                try {
-                    Thread.sleep(5000);
-                } catch (Exception e) {
-
+                List<String> strings = new ArrayList<>();
+                int i1 = new Random().nextInt(200);
+                for (int i = 0; i < i1; i++) {
+                    strings.add("i:" + i);
                 }
-
-                if (System.currentTimeMillis() % 3 == 0) {
-                    return Arrays.asList("1", "2", "3");
-                }
-                return new ArrayList<>();
+                return strings;
             }
         }).subscribeOn(Schedulers.io())
                 .compose(XXF.bindToLifecycle(this))
@@ -183,8 +187,6 @@ public class StateActivity extends XXFActivity {
                     public void accept(List<String> strings) throws Exception {
                         Log.d("=========", "" + strings);
                         testAdaper.bindData(true, strings);
-                        stateBinding.refresh.finishRefresh();
-                        stateBinding.refresh.finishLoadMore();
                     }
                 });
     }
@@ -198,7 +200,8 @@ public class StateActivity extends XXFActivity {
 
         @Override
         public void onBindHolder(XXFViewHolder<ItemTestBinding, String> holder, @Nullable String s, int index) {
-
+            holder.getBinding().textView.setText(s);
+            XXF.getLogger().d("===============>init:" + index);
         }
     }
 }
