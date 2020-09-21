@@ -93,11 +93,14 @@ public class RecyclerViewUtils {
         if (!checkShotRecyclerView(recyclerView)) {
             return null;
         }
+        if (startItem < 0 || endItem <= startItem) {
+            return null;
+        }
         try {
             RecyclerView.Adapter adapter = recyclerView.getAdapter();
             Bitmap bigBitmap = null;
             if (adapter != null) {
-                int size = endItem - startItem;
+                int size = Math.min(endItem - startItem, adapter.getItemCount());
                 int height = 0;
                 Paint paint = new Paint();
                 final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
