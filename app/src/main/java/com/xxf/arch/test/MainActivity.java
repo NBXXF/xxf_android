@@ -25,11 +25,14 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
+import com.xxf.view.utils.ResourcesUtil;
 import com.xxf.view.utils.StatusBarUtils;
 
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -80,7 +83,6 @@ public class MainActivity extends XXFActivity {
             Log.d("================>p", "onDestroy");
         }
     }
-
 
 
     private Observable<Object> getXXData() {
@@ -161,7 +163,35 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(view.getContext(), StateActivity.class));
+                        Observable.fromCallable(new Callable<Object>() {
+                            @Override
+                            public Object call() throws Exception {
+                                ResourcesUtil.checkResources(Arrays.asList(
+                                        R.string.block_canary_delete,
+                                        R.string.leak_canary_delete,
+                                        R.string.leak_canary_display_activity_label,
+                                        R.string.leak_canary_shortcut_label,
+                                        R.string.block_canary_share_with,
+                                        R.string.leak_canary_share_with,
+                                        R.string.leak_canary_share_with,
+                                        R.string.block_canary_delete_all,
+                                        R.string.leak_canary_delete_all,
+                                        R.string.abc_searchview_description_search,
+                                        R.string.search_menu_title,
+                                        R.string.leak_canary_generating_hq_bitmap_toast_failure_notice,
+                                        R.string.leak_canary_generating_hq_bitmap_toast_notice,
+                                        R.string.leak_canary_notification_message));
+                                return true;
+                            }
+                        }).subscribeOn(Schedulers.io())
+                                .doOnError(new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        System.out.println("===========" + throwable.getMessage());
+                                    }
+                                })
+                                .subscribe();
+                        //startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                     }
                 });
