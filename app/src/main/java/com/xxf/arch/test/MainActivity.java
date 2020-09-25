@@ -161,6 +161,9 @@ public class MainActivity extends XXFActivity {
 
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
+
+                        String url = null;
+                        ARouter.getInstance().build(url).navigation();
                         //startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                     }

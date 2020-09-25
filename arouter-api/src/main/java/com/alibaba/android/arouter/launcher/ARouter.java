@@ -143,6 +143,12 @@ public final class ARouter {
      * @param path Where you go.
      */
     public Postcard build(String path) {
+        /**
+         * 兼容空路由的情况 否则会报错
+         */
+        if (android.text.TextUtils.isEmpty(path)) {
+            return _ARouter.getInstance().build(ARouterConfig.ROUTER_NULL_PATH);
+        }
         try {
             /**
              * 支持 /xx/xx?name=1&age=2009 自動裝載參數
