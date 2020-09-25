@@ -30,15 +30,21 @@
             android:layout_height="10dp"
             android:background="#FF0000" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <com.xxf.view.loading.XXFListStateLayout
+            android:id="@+id/list_item"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:background="#6cf"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#6cf"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </com.xxf.view.loading.XXFListStateLayout>
     </LinearLayout>
 </layout>

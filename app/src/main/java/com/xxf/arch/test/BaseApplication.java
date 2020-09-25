@@ -20,6 +20,7 @@ import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.view.loading.DefaultProgressHUDImpl;
+import com.xxf.view.loading.XXFStateLayout;
 import com.xxf.view.refresh.XXFJumpRefreshFooter;
 import com.xxf.view.refresh.XXFJumpRefreshHeader;
 
@@ -81,5 +82,6 @@ public class BaseApplication extends Application {
                 return new XXFJumpRefreshFooter(context);
             }
         });
+       // XXFStateLayout.setDefaultEmptyText(R.string.app_name);
     }
 }

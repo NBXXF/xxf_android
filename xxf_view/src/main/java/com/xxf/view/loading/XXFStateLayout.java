@@ -37,7 +37,16 @@ import static com.xxf.view.loading.ViewState.VIEW_STATE_UNKNOWN;
  * 动态控制参考{@link #setEmptyText(CharSequence)} {@link #setEmptyActionText(CharSequence, OnClickListener)}
  */
 public class XXFStateLayout extends FrameLayout {
+    static int defaultEmptyTextId;
 
+    /**
+     * 设置默认空文案 以兼容国际化
+     *
+     * @param emptyTextId
+     */
+    public static void setDefaultEmptyText(@StringRes int emptyTextId) {
+        XXFStateLayout.defaultEmptyTextId = emptyTextId;
+    }
 
     private LayoutInflater mInflater;
 
@@ -113,6 +122,9 @@ public class XXFStateLayout extends FrameLayout {
         if (emptyViewResId > -1 && mEmptyView == null) {
             mEmptyView = mInflater.inflate(emptyViewResId, this, false);
             addView(mEmptyView, mEmptyView.getLayoutParams());
+            if (defaultEmptyTextId > 0) {
+                setEmptyText(defaultEmptyTextId);
+            }
         }
 
         if (errorViewResId > -1 && mErrorView == null) {
@@ -269,6 +281,7 @@ public class XXFStateLayout extends FrameLayout {
      * 注意:emptyText默认可见
      * emptyActionText默认不可见
      * 动态控制参考{@link #setEmptyText(CharSequence)} {@link #setEmptyActionText(CharSequence, OnClickListener)}
+     *
      * @param emptyText 为空""/null 自动隐藏该控件
      * @return
      */
@@ -289,8 +302,9 @@ public class XXFStateLayout extends FrameLayout {
      * 设置  空 action 文案与点击事件
      * R.id.alpha_empty_action_tv
      * * 注意:emptyText默认可见
-     *  * emptyActionText默认不可见
-     *  * 动态控制参考{@link #setEmptyText(CharSequence)} {@link #setEmptyActionText(CharSequence, OnClickListener)}
+     * * emptyActionText默认不可见
+     * * 动态控制参考{@link #setEmptyText(CharSequence)} {@link #setEmptyActionText(CharSequence, OnClickListener)}
+     *
      * @param emptyActionText 为空""/null 自动隐藏该控件
      * @param listener        可空
      * @return

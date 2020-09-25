@@ -92,7 +92,7 @@ public class StateActivity extends XXFActivity {
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    Bitmap bitmap = getBitmap(stateBinding.recyclerView);
+                //    Bitmap bitmap = getBitmap(stateBinding.recyclerView);
                 Bitmap bitmap = RecyclerViewUtils.shotRecyclerViewVisibleItems(stateBinding.recyclerView);
 
                 XXF.getLogger().d("=============>bitmap:" + bitmap);
@@ -186,7 +186,7 @@ public class StateActivity extends XXFActivity {
                     @Override
                     public void accept(List<String> strings) throws Exception {
                         Log.d("=========", "" + strings);
-                        testAdaper.bindData(true, strings);
+                        testAdaper.bindData(true, new ArrayList<>());
                     }
                 });
     }
