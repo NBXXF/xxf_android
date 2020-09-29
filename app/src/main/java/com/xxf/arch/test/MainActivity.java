@@ -370,7 +370,6 @@ public class MainActivity extends XXFActivity {
 
                                         for (String item : list) {
                                             String s = "<string name=\"%s_alpha_%s\">%s</string>";
-                                            String
                                         }
                                     }
                                 });
