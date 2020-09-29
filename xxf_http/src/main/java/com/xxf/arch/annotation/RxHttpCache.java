@@ -9,7 +9,10 @@ import retrofit2.CacheType;
  * @version 2.3.1
  * @Description 网络缓存
  * @date createTime：2018/9/7
+ * <p>
+ * 已经过时 请使用 @Cache CacheType cacheType
  */
+@Deprecated
 @java.lang.annotation.Target({ElementType.METHOD})
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @java.lang.annotation.Documented

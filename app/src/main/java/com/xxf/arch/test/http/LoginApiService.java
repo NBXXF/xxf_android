@@ -15,7 +15,7 @@ import retrofit2.http.GET;
 
 @BaseUrl("http://api.map.baidu.com/")
 @RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
-@Interceptor({MyLoggerInterceptor.class, HttpLoggingInterceptor.class, MyLoggerInterceptor2.class})
+@Interceptor({MyLoggerInterceptor.class, MyLoggerInterceptor2.class})
 @RxJavaInterceptor(DefaultCallAdapter.class)
 public interface LoginApiService {
 

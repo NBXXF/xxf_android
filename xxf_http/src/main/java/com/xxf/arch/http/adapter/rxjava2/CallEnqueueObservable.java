@@ -31,6 +31,7 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
     private RxHttpCache rxHttpCache;
     private CacheType rxCacheType;
     boolean readCache;
+
     CallEnqueueObservable(Call<T> originalCall, RxHttpCache rxHttpCache, CacheType rxCacheType) {
         this.originalCall = originalCall;
         this.rxHttpCache = rxHttpCache;
@@ -42,11 +43,11 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
     protected void subscribeActual(Observer<? super Response<T>> observer) {
         // Since Call is a one-shot type, clone it for each new observer.
         Call<T> call = originalCall.clone();
-        CallCallback<T> callback = new CallCallback<>(call, observer, this.rxHttpCache,this.readCache);
+        CallCallback<T> callback = new CallCallback<>(call, observer, this.rxHttpCache, this.readCache);
         observer.onSubscribe(callback);
         switch (this.rxCacheType) {
             case firstCache: {
-                //先拿缓存 onNext一次
+                //先拿缓存 onNext一次,不论成功失败
                 try {
                     Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
                     if (response != null) {
@@ -55,6 +56,34 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 } finally {
+                    enqueueCall(call, callback);
+                }
+            }
+            break;
+            case lastCache: {
+                //先拿缓存 onNext一次
+                Response<T> response = null;
+                try {
+                    response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                if (response != null) {
+                    try {
+                        observer.onNext(response);
+                        callback.setDispatchNext(false);
+                        enqueueCall(call, callback);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        try {
+                            observer.onError(e);
+                        } catch (Exception inner) {
+                            Exceptions.throwIfFatal(inner);
+                            RxJavaPlugins.onError(new CompositeException(e, inner));
+                        }
+                    }
+                } else {
+                    callback.setDispatchNext(true);
                     enqueueCall(call, callback);
                 }
             }
@@ -125,6 +154,14 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
         boolean terminated = false;
         RxHttpCache rxHttpCache;
         boolean readCache;
+        /**
+         * 是否向下分发
+         */
+        boolean dispatchNext = true;
+
+        public void setDispatchNext(boolean dispatchNext) {
+            this.dispatchNext = dispatchNext;
+        }
 
         CallCallback(Call<?> call, Observer<? super Response<T>> observer, RxHttpCache rxHttpCache, boolean readCache) {
             this.call = call;
@@ -160,7 +197,9 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
          */
         private void dispatchResponse(Response<T> response) {
             try {
-                observer.onNext(response);
+                if (dispatchNext) {
+                    observer.onNext(response);
+                }
 
                 if (!disposed) {
                     terminated = true;

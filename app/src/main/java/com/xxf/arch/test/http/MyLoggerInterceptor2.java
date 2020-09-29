@@ -25,7 +25,6 @@ public class MyLoggerInterceptor2 extends com.xxf.arch.http.interceptor.HttpLogg
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        XXF.getLogger().d("===========>retry intercept");
         return super.intercept(chain);
     }
 }
