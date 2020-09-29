@@ -1,6 +1,7 @@
 package com.xxf.arch.test;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -26,6 +27,12 @@ import com.xxf.view.cardview.CardView;
 import com.xxf.view.view.ReverseFrameLayout;
 import com.xxf.view.utils.StatusBarUtils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -191,16 +198,140 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String fileName = "xxxx/test3.text";
-                        XXF.getFileService().putPrivateFile(fileName, "xx\n" + System.currentTimeMillis(), true)
+                        String fileName = "aaa.text";
+                        String s = "99% FC\n" +
+                                "98% FA\n" +
+                                "97% F7\n" +
+                                "96% F5\n" +
+                                "95% F2\n" +
+                                "94% F0\n" +
+                                "93% ED\n" +
+                                "92% EB\n" +
+                                "91% E8\n" +
+                                "90% E6\n" +
+                                "89% E3\n" +
+                                "88% E0\n" +
+                                "87% DE\n" +
+                                "86% DB\n" +
+                                "85% D9\n" +
+                                "84% D6\n" +
+                                "83% D4\n" +
+                                "82% D1\n" +
+                                "81% CF\n" +
+                                "80% CC\n" +
+                                "79% C9\n" +
+                                "78% C7\n" +
+                                "77% C4\n" +
+                                "76% C2\n" +
+                                "75% BF\n" +
+                                "74% BD\n" +
+                                "73% BA\n" +
+                                "72% B8\n" +
+                                "71% B5\n" +
+                                "70% B3\n" +
+                                "69% B0\n" +
+                                "68% AD\n" +
+                                "67% AB\n" +
+                                "66% A8\n" +
+                                "65% A6\n" +
+                                "64% A3\n" +
+                                "63% A1\n" +
+                                "62% 9E\n" +
+                                "61% 9C\n" +
+                                "60% 99\n" +
+                                "59% 96\n" +
+                                "57% 94\n" +
+                                "56% 91\n" +
+                                "56% 8F\n" +
+                                "55% 8C\n" +
+                                "54% 8A\n" +
+                                "53% 87\n" +
+                                "52% 85\n" +
+                                "51% 82\n" +
+                                "50% 80\n" +
+                                "49% 7D\n" +
+                                "48% 7A\n" +
+                                "47% 78\n" +
+                                "46% 75\n" +
+                                "45% 73\n" +
+                                "44% 70\n" +
+                                "43% 6E\n" +
+                                "42% 6B\n" +
+                                "41% 69\n" +
+                                "40% 66\n" +
+                                "39% 63\n" +
+                                "38% 61\n" +
+                                "37% 5E\n" +
+                                "36% 5C\n" +
+                                "35% 59\n" +
+                                "34% 57\n" +
+                                "33% 54\n" +
+                                "32% 52\n" +
+                                "31% 4F\n" +
+                                "30% 4D\n" +
+                                "29% 4A\n" +
+                                "28% 47\n" +
+                                "27% 45\n" +
+                                "26% 42\n" +
+                                "25% 40\n" +
+                                "24% 3D\n" +
+                                "23% 3B\n" +
+                                "22% 38\n" +
+                                "21% 36\n" +
+                                "20% 33\n" +
+                                "19% 30\n" +
+                                "18% 2E\n" +
+                                "17% 2B\n" +
+                                "16% 29\n" +
+                                "15% 26\n" +
+                                "14% 24\n" +
+                                "13% 21\n" +
+                                "12% 1F\n" +
+                                "11% 1C\n" +
+                                "10% 1A\n" +
+                                "9% 17\n" +
+                                "8% 14\n" +
+                                "7% 12\n" +
+                                "6% 0F\n" +
+                                "5% 0D\n" +
+                                "4% 0A\n" +
+                                "3% 08\n" +
+                                "2% 05\n" +
+                                "1% 03\n" +
+                                "0% 00";
+                        XXF.getFileService().putPrivateFile(fileName, s, false)
                                 .compose(XXF.bindToErrorNotice())
-                                .subscribe();
-                        XXF.getFileService().getPrivateFile(fileName)
-                                .compose(XXF.bindToErrorNotice())
-                                .subscribe(new Consumer<String>() {
+                                .subscribe(new Consumer<File>() {
+                                    @SuppressLint("CheckResult")
                                     @Override
-                                    public void accept(String s) throws Exception {
-                                        ToastUtils.showToast("yes:" + s, ToastUtils.ToastType.ERROR);
+                                    public void accept(File file) throws Exception {
+                                        StringBuffer stringBuffer = new StringBuffer();
+                                        try {
+                                            FileReader fr = new FileReader(file.getAbsolutePath());
+                                            BufferedReader bf = new BufferedReader(fr);
+                                            String str;
+                                            /**
+                                             *  <string name="wallet_address_manager_01">请输入区块链地址</string>
+                                             */
+                                            // 按行读取字符串
+                                            while ((str = bf.readLine()) != null) {
+                                                String s = "<string name=\"_alpha_%s\">%s</string>";
+                                                String[] s1 = str.split("%");
+                                                stringBuffer.append(String.format(s, s1[0].trim(), "#" + s1[1].trim()));
+                                            }
+                                            bf.close();
+                                            fr.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        XXF.getFileService().putPrivateFile("bbb.txt", stringBuffer.toString(), false)
+                                                .subscribe();
+                                        XXF.getLogger().d("============>yes:" + stringBuffer.toString());
+                                    }
+                                }, new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        XXF.getLogger().d("============>no:" + throwable);
                                     }
                                 });
                     }
@@ -208,8 +339,43 @@ public class MainActivity extends XXFActivity {
 
         findViewById(R.id.bt_permission_req)
                 .setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("CheckResult")
                     @Override
                     public void onClick(final View v) {
+                        String fileName = "replace.text";
+                        String s = "";
+                        XXF.getFileService().putPrivateFile(fileName, s, false)
+                                .subscribe(new Consumer<File>() {
+                                    @Override
+                                    public void accept(File file) throws Exception {
+                                        List<String> list = new ArrayList<>();
+                                        List<String> files = new ArrayList<>();
+                                        try {
+                                            FileReader fr = new FileReader(file.getAbsolutePath());
+                                            BufferedReader bf = new BufferedReader(fr);
+                                            String str;
+                                            /**
+                                             *  <string name="wallet_address_manager_01">请输入区块链地址</string>
+                                             */
+                                            // 按行读取字符串
+                                            while ((str = bf.readLine()) != null) {
+                                                list.add(str.substring(str.indexOf("#"), str.indexOf("</")));
+                                                files.add(str.substring(str.indexOf("name="), str.indexOf(">#")));
+                                            }
+                                            bf.close();
+                                            fr.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        for (String item : list) {
+                                            String s = "<string name=\"%s_alpha_%s\">%s</string>";
+                                            String
+                                        }
+                                    }
+                                });
+
+
                         XXF.requestPermission(MainActivity.this, Manifest.permission.CAMERA)
 
                                 .subscribe(new Consumer<Boolean>() {
