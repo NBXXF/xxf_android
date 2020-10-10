@@ -116,6 +116,40 @@ public class ResourcesUtil {
         checkResources(ignoreIds, aClass);
     }
 
+
+    /**
+     * 获取r文件的所有字符串资源ids
+     *
+     * @param rClazz
+     * @return
+     */
+    public static List<Integer> getStringResources(Class... rClazz) {
+        List<Integer> idList = new ArrayList<>();
+        if (rClazz != null) {
+            for (Class aClass : rClazz) {
+                Class innerClazz[] = aClass.getDeclaredClasses();
+                for (Class claszInner : innerClazz) {
+                    /**
+                     * find string.class
+                     */
+                    if (!TextUtils.equals(claszInner.getSimpleName(), "string")) {
+                        continue;
+                    }
+                    Field[] fields = claszInner.getDeclaredFields();
+                    for (Field field : fields) {
+                        try {
+                            int id = field.getInt(claszInner);
+                            idList.add(id);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        return idList;
+    }
+
     private static class RepeatResourcesException extends Exception {
         public RepeatResourcesException(String message) {
             super(message);
