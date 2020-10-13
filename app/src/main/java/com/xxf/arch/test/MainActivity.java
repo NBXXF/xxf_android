@@ -137,6 +137,7 @@ public class MainActivity extends XXFActivity {
         StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout));
 
         CardView cardView = findViewById(R.id.card);
+        Log.d("========>t:", getResources().getResourceEntryName(R.id.card) + "    " + getResources().getResourceName(R.id.card));
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

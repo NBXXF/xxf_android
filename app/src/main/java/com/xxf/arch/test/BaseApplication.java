@@ -23,6 +23,11 @@ import com.xxf.view.loading.DefaultProgressHUDImpl;
 import com.xxf.view.loading.XXFStateLayout;
 import com.xxf.view.refresh.XXFJumpRefreshFooter;
 import com.xxf.view.refresh.XXFJumpRefreshHeader;
+import com.xxf.view.utils.ResourcesUtil;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -82,6 +87,17 @@ public class BaseApplication extends Application {
                 return new XXFJumpRefreshFooter(context);
             }
         });
-       // XXFStateLayout.setDefaultEmptyText(R.string.app_name);
+        // XXFStateLayout.setDefaultEmptyText(R.string.app_name);
+        List<Integer> ignores = new ArrayList<>();
+        ignores.addAll(ResourcesUtil.getStringResources(androidx.appcompat.R.class));
+        ignores.addAll(ResourcesUtil.getDrawableResources(androidx.appcompat.R.class));
+
+        ignores.addAll(ResourcesUtil.getStringResources(com.squareup.leakcanary.R.class));
+        ignores.addAll(ResourcesUtil.getDrawableResources(com.squareup.leakcanary.R.class));
+
+
+        ignores.addAll(ResourcesUtil.getStringResources(com.github.moduth.blockcanary.R.class));
+        ignores.addAll(ResourcesUtil.getDrawableResources(com.github.moduth.blockcanary.R.class));
+        ResourcesUtil.checkResources(ignores);
     }
 }

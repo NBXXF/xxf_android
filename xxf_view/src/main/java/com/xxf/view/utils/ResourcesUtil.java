@@ -2,9 +2,11 @@ package com.xxf.view.utils;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.util.SparseArray;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -17,6 +19,8 @@ import com.xxf.arch.XXF;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,71 +53,116 @@ public class ResourcesUtil {
     }
 
     /**
-     * 检查资源重复 第一步只检查字符串
-     * 未来:id 颜色等等,请期待
-     * 避免lint lint缺陷就是能忽略检查
-     */
-    public static void checkResources(List<Integer> ignoreIds, Class... rClazz) throws RepeatResourcesException, ClassNotFoundException {
-        if (rClazz != null) {
-            Map<String, List<String>> stringIntegerMap = new HashMap<>();
-            for (Class aClass : rClazz) {
-                Class innerClazz[] = aClass.getDeclaredClasses();
-                for (Class claszInner : innerClazz) {
-                    /**
-                     * find string.class
-                     */
-                    if (!TextUtils.equals(claszInner.getSimpleName(), "string")) {
-                        continue;
-                    }
-                    Field[] fields = claszInner.getDeclaredFields();
-                    for (Field field : fields) {
-
-                        try {
-                            int id = field.getInt(claszInner);
-                            /**
-                             * 忽略检查的id
-                             */
-                            if (ignoreIds != null && ignoreIds.contains(id)) {
-                                continue;
-                            }
-                            String value = getString(id);
-                            List<String> idNames = stringIntegerMap.get(value);
-                            if (idNames == null) {
-                                idNames = new ArrayList<>();
-                            }
-                            idNames.add(field.getName());
-                            stringIntegerMap.put(value, idNames);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-            boolean hasRepeat = false;
-            StringBuffer repeatBuilder = new StringBuffer("String[内容重复]");
-            for (Map.Entry<String, List<String>> entry : stringIntegerMap.entrySet()) {
-                if (entry.getValue() != null && entry.getValue().size() > 1) {
-                    hasRepeat = true;
-                    repeatBuilder.append(entry.getValue());
-                    repeatBuilder.append(";");
-                }
-            }
-            if (hasRepeat) {
-                throw new RepeatResourcesException(repeatBuilder.toString());
-            }
-        }
-    }
-
-    /**
      * 检查所有
      * 主module app R文件的内容是已经合并好的,但是有第三方依赖库里面的资源重复
      * 检查资源重复 第一步只检查字符串
      * 未来:id 颜色等等,请期待
      * 避免lint lint缺陷就是能忽略检查
      */
-    public static void checkResources(List<Integer> ignoreIds) throws RepeatResourcesException, ClassNotFoundException {
-        Class<?> aClass = Class.forName(getContext().getPackageName() + ".R");
-        checkResources(ignoreIds, aClass);
+    public static void checkResources(List<Integer> ignoreIds) {
+        Class<?> aClass = null;
+        try {
+            aClass = Class.forName(getContext().getPackageName() + ".R");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        if (aClass == null) {
+            return;
+        }
+        List<Integer> stringResources = getStringResources(aClass);
+        stringResources.removeAll(ignoreIds);
+        /**
+         * 字符串
+         * key:string values:ids集合
+         */
+        Map<String, List<String>> stringRepeatMap = new HashMap<>();
+        for (Integer id : stringResources) {
+            String key = getString(id);
+            List<String> idNames = stringRepeatMap.get(key);
+            if (idNames == null) {
+                idNames = new ArrayList<>();
+            }
+            idNames.add(getContext().getResources().getResourceEntryName(id));
+            stringRepeatMap.put(key, idNames);
+        }
+
+        List<Integer> drawableResources = getDrawableResources(aClass);
+        drawableResources.removeAll(ignoreIds);
+
+        /**
+         * 图片
+         * key:drawable values:ids集合
+         */
+        Map<String, List<String>> drawableRepeatMap = new HashMap<>();
+        for (Integer id : drawableResources) {
+            /**
+             * 会存在load 不出来的xml的图片
+             */
+            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), id);
+            if (bitmap != null) {
+                bitmap = BitmapUtils.scale(bitmap, 32, 32);
+                bitmap = BitmapUtils.grey(bitmap);
+            } else {
+                /**
+                 * 加载xml中的drawable
+                 */
+                //bitmap = BitmapUtils.drawableToBitmap(getDrawable(id));
+            }
+            if (bitmap == null) {
+                continue;
+            }
+            byte[] bytes = BitmapUtils.toByte(bitmap);
+            BitmapUtils.recycle(bitmap);
+            String key = null;
+            if (bytes != null) {
+                try {
+                    key = MD5Util.getMD5String(bytes);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                bytes = null;
+            }
+            if (TextUtils.isEmpty(key)) {
+                continue;
+            }
+            List<String> idNames = drawableRepeatMap.get(key);
+            if (idNames == null) {
+                idNames = new ArrayList<>();
+            }
+            idNames.add(getContext().getResources().getResourceEntryName(id));
+            drawableRepeatMap.put(key, idNames);
+        }
+        stringRepeatMap = convertRepeatMap(stringRepeatMap);
+        StringBuffer repeatBuilder = new StringBuffer("String重复" + stringRepeatMap.size() + "条:");
+        for (Map.Entry<String, List<String>> entry : stringRepeatMap.entrySet()) {
+            repeatBuilder.append(entry.getValue());
+            repeatBuilder.append(";");
+        }
+
+
+        drawableRepeatMap = convertRepeatMap(drawableRepeatMap);
+        repeatBuilder.append("image相似或重复" + drawableRepeatMap.size() + "条:");
+        for (Map.Entry<String, List<String>> entry : drawableRepeatMap.entrySet()) {
+            repeatBuilder.append(entry.getValue());
+            repeatBuilder.append(";");
+        }
+
+        if (!stringRepeatMap.isEmpty() || !drawableRepeatMap.isEmpty()) {
+            throw new RepeatResourcesException(repeatBuilder.toString());
+        }
+    }
+
+    private static Map<String, List<String>> convertRepeatMap(Map<String, List<String>> map) {
+        if (map != null) {
+            Iterator<Map.Entry<String, List<String>>> iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, List<String>> next = iterator.next();
+                if (next.getValue() == null || next.getValue().size() <= 1) {
+                    iterator.remove();
+                }
+            }
+        }
+        return map;
     }
 
 
@@ -150,7 +199,36 @@ public class ResourcesUtil {
         return idList;
     }
 
-    private static class RepeatResourcesException extends Exception {
+    /**
+     * 获取指定R文件下面的所有drawable 资源ids
+     *
+     * @param rClazz
+     * @return
+     */
+    public static List<Integer> getDrawableResources(Class... rClazz) {
+        List<Integer> idList = new ArrayList<>();
+        if (rClazz != null) {
+            for (Class aClass : rClazz) {
+                Class innerClazz[] = aClass.getDeclaredClasses();
+                for (Class claszInner : innerClazz) {
+                    if (TextUtils.equals(claszInner.getSimpleName(), "drawable") || TextUtils.equals(claszInner.getSimpleName(), "mipmap")) {
+                        Field[] fields = claszInner.getDeclaredFields();
+                        for (Field field : fields) {
+                            try {
+                                int id = field.getInt(claszInner);
+                                idList.add(id);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return idList;
+    }
+
+    public static class RepeatResourcesException extends RuntimeException {
         public RepeatResourcesException(String message) {
             super(message);
         }
