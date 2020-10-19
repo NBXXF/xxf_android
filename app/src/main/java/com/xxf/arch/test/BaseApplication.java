@@ -98,6 +98,6 @@ public class BaseApplication extends Application {
 
         ignores.addAll(ResourcesUtil.getStringResources(com.github.moduth.blockcanary.R.class));
         ignores.addAll(ResourcesUtil.getDrawableResources(com.github.moduth.blockcanary.R.class));
-        ResourcesUtil.checkResources(ignores);
+      //  ResourcesUtil.checkResources(ignores);
     }
 }

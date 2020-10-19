@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.xxf.arch.json.typeadapter.bool.BooleanTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.LongTypeAdapter;
+import com.xxf.arch.json.typeadapter.number.PercentageDoubleTypeAdapter;
+import com.xxf.arch.json.typeadapter.number.PercentageFloatTypeAdapter;
 
 public class GsonFactory {
     /**
@@ -21,6 +23,10 @@ public class GsonFactory {
                 //  .registerTypeAdapter(String.class, new StringNullAdapter())//将空字符串转换成""
                 .registerTypeAdapter(Boolean.class, new BooleanTypeAdapter())
                 .registerTypeAdapter(Long.class, new LongTypeAdapter())
+                .registerTypeAdapter(Double.class, new PercentageDoubleTypeAdapter())
+                .registerTypeAdapter(double.class, new PercentageDoubleTypeAdapter())
+                .registerTypeAdapter(Float.class, new PercentageFloatTypeAdapter())
+                .registerTypeAdapter(float.class, new PercentageFloatTypeAdapter())
                 .create();
     }
 }

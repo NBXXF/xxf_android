@@ -7,8 +7,10 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -19,6 +21,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
@@ -96,6 +99,16 @@ public class MainActivity extends XXFActivity {
         }).subscribeOn(Schedulers.io());
     }
 
+    class TestModel {
+        float p;
+
+        @Override
+        public String toString() {
+            return "TestModel{" +
+                    "p=" + p +
+                    '}';
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +179,9 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Log.d("==========>yes:", "" +JsonUtils.toBean(" {\n" +
+                                "    \"p\": \"51.2%\"\n" +
+                                "  }",TestModel.class));
 
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
