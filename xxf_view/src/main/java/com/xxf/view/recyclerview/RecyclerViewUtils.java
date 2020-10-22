@@ -2,12 +2,16 @@ package com.xxf.view.recyclerview;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.LruCache;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.IntRange;
@@ -17,6 +21,9 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description: RecyclerViewView 工具类
@@ -46,6 +53,13 @@ public class RecyclerViewUtils {
         }
     }
 
+    private static Bitmap createBitmap(View v) {
+        Bitmap bmp = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmp);
+        v.draw(c);
+        return bmp;
+    }
+
     /**
      * 截取屏幕 可见的部分
      * 如果用recyclerView直接截图会 最上最下的Item展示不全的问题
@@ -56,13 +70,67 @@ public class RecyclerViewUtils {
     @Nullable
     @CheckResult
     public static Bitmap shotRecyclerViewVisibleItems(@NonNull RecyclerView recyclerView) {
+        return shotRecyclerViewVisibleItems(recyclerView, -1);
+    }
+
+    /**
+     * 截取屏幕 可见的部分
+     *
+     * @param recyclerView
+     * @param backgroundColor -1 代表不设置背景
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static Bitmap shotRecyclerViewVisibleItems(@NonNull RecyclerView recyclerView, int backgroundColor) {
         if (!checkShotRecyclerView(recyclerView)) {
             return null;
         }
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-        int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-        return shotRecyclerView(recyclerView, firstVisibleItem, lastVisibleItem,false);
+        try {
+            Paint paint = new Paint();
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+            // Use 1/8th of the available memory for this memory cache.
+            final int cacheSize = maxMemory / 8;
+            LruCache<Integer, Bitmap> bitmapCache = new LruCache<>(cacheSize);
+            int height = recyclerView.getPaddingTop();
+            List<Integer> topIndex = new ArrayList<>();
+            for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                View childAt = recyclerView.getChildAt(i);
+                ViewGroup.LayoutParams layoutParams = childAt.getLayoutParams();
+                int topMargin = 0, bottomMargin = 0;
+                if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) layoutParams;
+                    topMargin = marginLayoutParams.topMargin;
+                    bottomMargin = marginLayoutParams.bottomMargin;
+                }
+                int topY = height + topMargin;
+                topIndex.add(topY);
+                Bitmap bitmapFromView = createBitmap(childAt);
+                bitmapCache.put(i, bitmapFromView);
+                height = topY + childAt.getHeight() + bottomMargin;
+            }
+            height += recyclerView.getPaddingBottom();
+            Bitmap bigBitmap = Bitmap.createBitmap(recyclerView.getMeasuredWidth(), height, Bitmap.Config.ARGB_8888);
+            Canvas bigCanvas = new Canvas(bigBitmap);
+            Drawable lBackground = recyclerView.getBackground();
+            if (backgroundColor != -1) {
+                bigCanvas.drawColor(backgroundColor);
+            } else if (lBackground instanceof ColorDrawable) {
+                ColorDrawable lColorDrawable = (ColorDrawable) lBackground;
+                int lColor = lColorDrawable.getColor();
+                bigCanvas.drawColor(lColor);
+            }
+            for (int i = 0; i < bitmapCache.size(); i++) {
+                Bitmap bitmap = bitmapCache.get(i);
+                int x = (bigBitmap.getWidth() - bitmap.getWidth()) / 2;
+                bigCanvas.drawBitmap(bitmap, x > 0 ? x : 0, topIndex.get(i), paint);
+                bitmap.recycle();
+            }
+            return bigBitmap;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -75,90 +143,6 @@ public class RecyclerViewUtils {
         return recyclerView != null
                 && (recyclerView.getLayoutManager() instanceof LinearLayoutManager)
                 && ((LinearLayoutManager) recyclerView.getLayoutManager()).getOrientation() == LinearLayoutManager.VERTICAL;
-    }
-
-    /**
-     * 同步 截图RecyclerView
-     * 如果有网络图片加载 请提前滚动一遍recyclerView
-     * 有oom风险 不推荐
-     *
-     * @param recyclerView
-     * @param startItem
-     * @param endItem
-     * @return
-     */
-    @Nullable
-    @CheckResult
-    public static Bitmap shotRecyclerView(@NonNull RecyclerView recyclerView, int startItem, int endItem, boolean executeBindViewHolder) {
-        if (!checkShotRecyclerView(recyclerView)) {
-            return null;
-        }
-        if (startItem < 0 || endItem <= startItem) {
-            return null;
-        }
-        try {
-            RecyclerView.Adapter adapter = recyclerView.getAdapter();
-            Bitmap bigBitmap = null;
-            if (adapter != null) {
-                int size = Math.min(endItem - startItem, adapter.getItemCount());
-                int height = 0;
-                Paint paint = new Paint();
-                final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
-                // Use 1/8th of the available memory for this memory cache.
-                final int cacheSize = maxMemory / 8;
-                LruCache<String, Bitmap> bitmapCache = new LruCache<>(cacheSize);
-                SparseIntArray bitmapLeft = new SparseIntArray(size);
-                SparseIntArray bitmapTop = new SparseIntArray(size);
-                for (int i = 0; i < size; i++) {
-                    int adapterPos = i + startItem;
-                    RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(adapterPos));
-                    if (executeBindViewHolder) {
-                        adapter.onBindViewHolder(holder, adapterPos);
-                    }
-                    RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
-                    holder.itemView.measure(
-                            View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth() - layoutParams.leftMargin - layoutParams.rightMargin, View.MeasureSpec.EXACTLY),
-                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                    );
-                    holder.itemView.layout(
-                            layoutParams.leftMargin,
-                            layoutParams.topMargin,
-                            holder.itemView.getMeasuredWidth() + layoutParams.leftMargin,
-                            holder.itemView.getMeasuredHeight() + layoutParams.topMargin
-                    );
-                    holder.itemView.setDrawingCacheEnabled(true);
-                    holder.itemView.buildDrawingCache();
-                    Bitmap drawingCache = holder.itemView.getDrawingCache();
-                    if (drawingCache != null) {
-                        bitmapCache.put(String.valueOf(i), drawingCache);
-                    }
-
-                    height += layoutParams.topMargin;
-                    bitmapLeft.put(i, layoutParams.leftMargin);
-                    bitmapTop.put(i, height);
-                    height += holder.itemView.getMeasuredHeight() + layoutParams.bottomMargin;
-                }
-
-                bigBitmap = Bitmap.createBitmap(recyclerView.getMeasuredWidth(), height, Bitmap.Config.ARGB_8888);
-                Canvas bigCanvas = new Canvas(bigBitmap);
-                Drawable lBackground = recyclerView.getBackground();
-                if (lBackground instanceof ColorDrawable) {
-                    ColorDrawable lColorDrawable = (ColorDrawable) lBackground;
-                    int lColor = lColorDrawable.getColor();
-                    bigCanvas.drawColor(lColor);
-                }
-                int paddingStart = ViewCompat.getPaddingStart(recyclerView);
-                for (int i = 0; i < size; i++) {
-                    Bitmap bitmap = bitmapCache.get(String.valueOf(i));
-                    bigCanvas.drawBitmap(bitmap, paddingStart + bitmapLeft.get(i), bitmapTop.get(i), paint);
-                    bitmap.recycle();
-                }
-            }
-            return bigBitmap;
-        } catch (OutOfMemoryError oom) {
-            return null;
-        }
     }
 
 }
