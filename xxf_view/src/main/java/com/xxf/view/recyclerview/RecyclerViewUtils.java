@@ -62,7 +62,7 @@ public class RecyclerViewUtils {
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
         int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-        return shotRecyclerView(recyclerView, firstVisibleItem, lastVisibleItem);
+        return shotRecyclerView(recyclerView, firstVisibleItem, lastVisibleItem,false);
     }
 
     /**
@@ -89,7 +89,7 @@ public class RecyclerViewUtils {
      */
     @Nullable
     @CheckResult
-    public static Bitmap shotRecyclerView(@NonNull RecyclerView recyclerView, int startItem, int endItem) {
+    public static Bitmap shotRecyclerView(@NonNull RecyclerView recyclerView, int startItem, int endItem, boolean executeBindViewHolder) {
         if (!checkShotRecyclerView(recyclerView)) {
             return null;
         }
@@ -113,7 +113,9 @@ public class RecyclerViewUtils {
                 for (int i = 0; i < size; i++) {
                     int adapterPos = i + startItem;
                     RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(adapterPos));
-                    adapter.onBindViewHolder(holder, adapterPos);
+                    if (executeBindViewHolder) {
+                        adapter.onBindViewHolder(holder, adapterPos);
+                    }
                     RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
                     holder.itemView.measure(
                             View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth() - layoutParams.leftMargin - layoutParams.rightMargin, View.MeasureSpec.EXACTLY),

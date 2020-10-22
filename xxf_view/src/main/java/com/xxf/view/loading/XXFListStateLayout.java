@@ -11,6 +11,7 @@ import android.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.view.recyclerview.XXFRecycledViewPool;
+import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFUIAdapterObserver;
 
 import java.util.HashMap;
@@ -36,6 +37,26 @@ public class XXFListStateLayout extends XXFStateLayout {
         super(context, attrs, defStyle);
     }
 
+    /**
+     * 是否宽容模式,只针对 XXFRecyclerAdapter,
+     * 如果设置为true 则自动判断不包含header footer
+     * 否则 判断包含header footer
+     */
+    private boolean lenient;
+
+    /**
+     * 设置是否 宽容模式,只针对 XXFRecyclerAdapter,
+     *
+     * @param lenient
+     */
+    public void setLenient(boolean lenient) {
+        this.lenient = lenient;
+    }
+
+    public boolean isLenient() {
+        return lenient;
+    }
+
     RecyclerView childRecyclerView;
     AbsListView childAbsListView;
     private Map<Object, Object> cacheObservers = new HashMap<>();
@@ -44,7 +65,11 @@ public class XXFListStateLayout extends XXFStateLayout {
         protected void updateUI() {
             if (childRecyclerView != null
                     && childRecyclerView.getAdapter() != null) {
-                setViewState(childRecyclerView.getAdapter().getItemCount() <= 0 ? ViewState.VIEW_STATE_EMPTY : ViewState.VIEW_STATE_CONTENT);
+                if (childRecyclerView.getAdapter() instanceof XXFRecyclerAdapter && isLenient()) {
+                    setViewState(((XXFRecyclerAdapter) childRecyclerView.getAdapter()).isDataEmpty() ? ViewState.VIEW_STATE_EMPTY : ViewState.VIEW_STATE_CONTENT);
+                } else {
+                    setViewState(childRecyclerView.getAdapter().getItemCount() <= 0 ? ViewState.VIEW_STATE_EMPTY : ViewState.VIEW_STATE_CONTENT);
+                }
             }
         }
     };
@@ -71,6 +96,7 @@ public class XXFListStateLayout extends XXFStateLayout {
     };
 
     XXFRecycledViewPool xxfRecycledViewPool;
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
