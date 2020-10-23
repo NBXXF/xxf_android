@@ -17,6 +17,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
@@ -179,16 +181,27 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.d("==========>yes:", "" +JsonUtils.toBean(" {\n" +
+                        Log.d("==========>yes:", "" + JsonUtils.toBean(" {\n" +
                                 "    \"p\": \"51.2%\"\n" +
-                                "  }",TestModel.class));
+                                "  }", TestModel.class));
 
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
 
-                   /*     String url = null;
-                        ARouter.getInstance().build(url).navigation();*/
-                        startActivity(new Intent(view.getContext(), StateActivity.class));
+                        String url = "qweqwe";
+                        ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
+                            @Override
+                            public void onArrival(Postcard postcard) {
+
+                            }
+
+                            @Override
+                            public void onLost(Postcard postcard) {
+                                super.onLost(postcard);
+                                XXF.getLogger().d("=============>跳转失败");
+                            }
+                        });
+                        // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                     }
                 });

@@ -206,7 +206,11 @@ final class _ARouter {
      */
     protected Postcard build(String path, String group, Boolean afterReplace) {
         if (TextUtils.isEmpty(path) || TextUtils.isEmpty(group)) {
-            throw new HandlerException(Consts.TAG + "Parameter is invalid!");
+            /**
+             * 去除检查,就让其跳转不了
+             */
+            // throw new HandlerException(Consts.TAG + "Parameter is invalid!");
+            return new Postcard(path, null);
         } else {
             if (!afterReplace) {
                 PathReplaceService pService = ARouter.getInstance().navigation(PathReplaceService.class);
@@ -222,10 +226,12 @@ final class _ARouter {
      * Extract the default group from path.
      */
     private String extractGroup(String path) {
-        if (TextUtils.isEmpty(path) || !path.startsWith("/")) {
+        /**
+         * 去除检查,就让其跳转不了
+         */
+  /*      if (TextUtils.isEmpty(path) || !path.startsWith("/")) {
             throw new HandlerException(Consts.TAG + "Extract the default group failed, the path must be start with '/' and contain more than 2 '/'!");
-        }
-
+        }*/
         try {
             String defaultGroup = path.substring(1, path.indexOf("/", 1));
             if (TextUtils.isEmpty(defaultGroup)) {
@@ -396,7 +402,7 @@ final class _ARouter {
                         ((android.support.v4.app.Fragment) instance).setArguments(postcard.getExtras());
                     }*/
                     throw new RuntimeException("not support v4");
-                   // return instance;
+                    // return instance;
                 } catch (Exception ex) {
                     logger.error(Consts.TAG, "Fetch fragment instance error, " + TextUtils.formatStackTrace(ex.getStackTrace()));
                 }
