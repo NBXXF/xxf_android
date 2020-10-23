@@ -101,7 +101,15 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             int lastSpanGroupIndex = spanSizeLookup.getSpanGroupIndex(itemCount - 1, spanCount);
             Divider vd = dividerLookup.getVerticalDivider(position);
             Divider hd = dividerLookup.getHorizontalDivider(position);
-            outRect.left = vd == null ? 0 : vd.size;
+            int column = position % spanCount; // item column
+            if (column == 0) {
+                outRect.right = vd == null ? 0 : vd.size / 2;
+            } else if (column == spanCount - 1) {
+                outRect.left = vd == null ? 0 : vd.size / 2;
+            } else {
+                outRect.right = vd == null ? 0 : vd.size / 2;
+                outRect.left = vd == null ? 0 : vd.size / 2;
+            }
             outRect.bottom = hd == null ? 0 : hd.size;
             if (spanIndex == 0) outRect.left = 0;
             if (lastSpanGroupIndex == spanGroupIndex) outRect.bottom = 0;
