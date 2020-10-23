@@ -1,6 +1,7 @@
 package com.xxf.arch.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ import com.xxf.arch.activity.ActivityForKeyProvider;
  */
 
 public class XXFFragment
-        extends Fragment implements ActivityForKeyProvider {
+        extends Fragment implements ActivityForKeyProvider, IShotFragment {
 
     private View contentView;
 
@@ -110,4 +111,14 @@ public class XXFFragment
         super.onDestroy();
     }
 
+    /**
+     * 子类自己实现
+     *
+     * @param shotArgs
+     * @return
+     */
+    @Override
+    public Bitmap shotFragment(@Nullable Bundle shotArgs) {
+        return null;
+    }
 }

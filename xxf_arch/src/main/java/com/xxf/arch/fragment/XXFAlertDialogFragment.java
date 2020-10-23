@@ -2,6 +2,7 @@ package com.xxf.arch.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,7 +27,7 @@ import com.xxf.arch.dialog.TouchListenAlertDialog;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFAlertDialogFragment extends AppCompatDialogFragment implements ActivityForKeyProvider {
+public class XXFAlertDialogFragment extends AppCompatDialogFragment implements ActivityForKeyProvider,IShotFragment {
 
     private View contentView;
 
@@ -195,4 +196,8 @@ public class XXFAlertDialogFragment extends AppCompatDialogFragment implements A
         }
     }
 
+    @Override
+    public Bitmap shotFragment(@Nullable Bundle shotArgs) {
+        return null;
+    }
 }
