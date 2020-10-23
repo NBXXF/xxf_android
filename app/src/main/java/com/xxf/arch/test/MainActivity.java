@@ -188,7 +188,8 @@ public class MainActivity extends XXFActivity {
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
 
-                        String url = "qweqwe";
+                     //   String url = "qweqwe";
+                        String url = null;
                         ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
                             @Override
                             public void onArrival(Postcard postcard) {
@@ -198,7 +199,7 @@ public class MainActivity extends XXFActivity {
                             @Override
                             public void onLost(Postcard postcard) {
                                 super.onLost(postcard);
-                                XXF.getLogger().d("=============>跳转失败");
+                                XXF.getLogger().d("=============>跳转失败"+postcard.getPath());
                             }
                         });
                         // startActivity(new Intent(view.getContext(), StateActivity.class));

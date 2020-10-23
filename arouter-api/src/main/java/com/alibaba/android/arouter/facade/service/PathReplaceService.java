@@ -2,6 +2,8 @@ package com.alibaba.android.arouter.facade.service;
 
 import android.net.Uri;
 
+import androidx.annotation.Nullable;
+
 import com.alibaba.android.arouter.facade.template.IProvider;
 
 /**
@@ -18,12 +20,12 @@ public interface PathReplaceService extends IProvider {
      *
      * @param path raw path
      */
-    String forString(String path);
+    String forString(@Nullable String path);
 
     /**
      * For uri type.
      *
      * @param uri raw uri
      */
-    Uri forUri(Uri uri);
+    Uri forUri(@Nullable Uri uri);
 }
