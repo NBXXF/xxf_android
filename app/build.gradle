@@ -38,6 +38,7 @@ dependencies {
     // implementation 'com.github.NBXXF:xxf_android:2.6.9'
     implementation project(':xxf_arch')
     implementation project(':xxf_view')
+    implementation project(':xxf_http')
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'

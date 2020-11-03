@@ -56,7 +56,7 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 } finally {
-                    enqueueCall(call, callback);
+                    enqueueCall(call, callback,true);
                 }
             }
             break;
@@ -72,7 +72,7 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
                     try {
                         observer.onNext(response);
                         callback.setDispatchNext(false);
-                        enqueueCall(call, callback);
+                        enqueueCall(call, callback,true);
                     } catch (Throwable e) {
                         e.printStackTrace();
                         try {
@@ -84,12 +84,12 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
                     }
                 } else {
                     callback.setDispatchNext(true);
-                    enqueueCall(call, callback);
+                    enqueueCall(call, callback,true);
                 }
             }
             break;
             case firstRemote: {
-                enqueueCall(call, callback);
+                enqueueCall(call, callback,false);
             }
             break;
             case onlyCache: {
@@ -115,7 +115,7 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
                         observer.onNext(response);
                         observer.onComplete();
                     } else {
-                        enqueueCall(call, callback);
+                        enqueueCall(call, callback,true);
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -129,23 +129,71 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
             }
             break;
             case onlyRemote: {
-                enqueueCall(call, callback);
+                enqueueCall(call, callback,false);
             }
             break;
             default: {
-                enqueueCall(call, callback);
+                enqueueCall(call, callback,false);
             }
             break;
         }
     }
 
-    private void enqueueCall(Call<T> call, CallCallback<T> callback) {
+    private void enqueueCall(Call<T> call, CallCallback<T> callback, boolean forceSyncCache) {
         //执行网络请求
+        /**
+         * 第一次onNext 出现错误了 就Disposed了
+         */
         if (!callback.isDisposed()) {
             call.enqueue(callback);
+        } else if (forceSyncCache) {
+            /**
+             * 强制同步缓存
+             */
+            call.clone().enqueue(new SyncCacheCallBack<T>(this.rxHttpCache));
         }
     }
 
+    /**
+     * 永远同步缓存
+     *
+     * @param <T>
+     */
+    private static final class SyncCacheCallBack<T> implements Disposable, Callback<T> {
+        private volatile boolean disposed;
+        RxHttpCache rxHttpCache;
+
+        public SyncCacheCallBack(RxHttpCache rxHttpCache) {
+            this.rxHttpCache = rxHttpCache;
+        }
+
+        @Override
+        public void dispose() {
+            disposed = true;
+        }
+
+        @Override
+        public boolean isDisposed() {
+            return disposed;
+        }
+
+        @Override
+        public void onResponse(Call<T> call, Response<T> response) {
+            /**
+             * 不管是否结束都需要保存缓存
+             */
+            try {
+                rxHttpCache.put(response);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<T> call, Throwable t) {
+
+        }
+    }
 
     private static final class CallCallback<T> implements Disposable, Callback<T> {
         private final Call<?> call;
