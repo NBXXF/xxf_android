@@ -7,10 +7,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -26,11 +24,12 @@ import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
+import com.xxf.arch.test.http.FormatTestModel;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
-import com.xxf.view.view.ReverseFrameLayout;
 import com.xxf.view.utils.StatusBarUtils;
+import com.xxf.view.view.ReverseFrameLayout;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -188,7 +187,7 @@ public class MainActivity extends XXFActivity {
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
 
-                     //   String url = "qweqwe";
+                        //   String url = "qweqwe";
                         String url = null;
                         ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
                             @Override
@@ -199,9 +198,19 @@ public class MainActivity extends XXFActivity {
                             @Override
                             public void onLost(Postcard postcard) {
                                 super.onLost(postcard);
-                                XXF.getLogger().d("=============>跳转失败"+postcard.getPath());
+                                XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
                             }
                         });
+
+                        String json = "{\n" +
+                                "  \"v1\": \"0.37674367\",\n" +
+                                "  \"v2\": \"0.37674367\",\n" +
+                                "  \"v3\": \"0.37674367\",\n" +
+                                "  \"v4\": \"0.37674367\",\n" +
+                                "  \"v5\": \"0.37674367\"\n" +
+                                "}";
+                        FormatTestModel testModel = JsonUtils.toBean(json, FormatTestModel.class);
+                        XXF.getLogger().d("===============>t:" + testModel);
                         // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                     }
