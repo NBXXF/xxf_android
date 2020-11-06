@@ -1,4 +1,4 @@
-package com.xxf.arch.json.typeadapter.format;
+package com.xxf.arch.json.typeadapter.format.formatobject;
 
 import java.math.BigDecimal;
 

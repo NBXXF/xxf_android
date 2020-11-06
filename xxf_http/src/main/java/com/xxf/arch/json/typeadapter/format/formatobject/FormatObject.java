@@ -1,4 +1,6 @@
-package com.xxf.arch.json.typeadapter.format;
+package com.xxf.arch.json.typeadapter.format.formatobject;
+
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -7,6 +9,8 @@ import java.io.Serializable;
  * 作用:0.333333333333,UI只展示0.33
  * @Author: XGod
  * @CreateDate: 2020/11/5 15:13
+ * <p>
+ * 文档参考 https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html
  */
 public class FormatObject<O, F> implements Serializable {
     /**
@@ -27,6 +31,7 @@ public class FormatObject<O, F> implements Serializable {
         return format;
     }
 
+    @NonNull
     public O getOrigin() {
         return origin;
     }

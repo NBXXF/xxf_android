@@ -22,9 +22,9 @@ import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
+import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
-import com.xxf.arch.test.http.FormatTestModel;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
@@ -203,13 +203,16 @@ public class MainActivity extends XXFActivity {
                         });
 
                         String json = "{\n" +
-                                "  \"v1\": \"0.37674367\",\n" +
-                                "  \"v2\": \"0.37674367\",\n" +
-                                "  \"v3\": \"0.37674367\",\n" +
-                                "  \"v4\": \"0.37674367\",\n" +
-                                "  \"v5\": \"0.37674367\"\n" +
+                                "  \"num\": \"1948367743.1273676543\",\n" +
+                                "  \"num1\": 1948367743.1273676543,\n" +
+                                "  \"percent\": \"0.1273676543\",\n" +
+                                "  \"percent2\": 15.1273676543,\n" +
+                                "  \"percent3\": -35.1273676543,\n" +
+                                "  \"percent4\": 71.1273676543,\n" +
+                                "  \"time\": \"1604631895000\",\n" +
+                                "  \"money\": 3456435.32674335\n" +
                                 "}";
-                        FormatTestModel testModel = JsonUtils.toBean(json, FormatTestModel.class);
+                        FormatDemoModel testModel = JsonUtils.toBean(json, FormatDemoModel.class);
                         XXF.getLogger().d("===============>t:" + testModel);
                         // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
