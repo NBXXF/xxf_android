@@ -32,6 +32,16 @@ public class FormatDemoModel {
      * "time": 1604631895000,
      * "money": 3456435.32674335
      * }
+     *
+     * 输出:
+     * {num=FormatObject{origin=1948367743.1273676543, format=1948367743.13},
+     * num1=FormatObject{origin=1948367743.1273676543, format=1948367743.13},
+     * percent=FormatObject{origin=0.1273676543, format=12.74%},
+     * percent2=FormatObject{origin=15.1273676543, format=1512.74%},
+     * percent3=FormatObject{origin=-35.1273676543, format=-3512.74%},
+     * percent4=FormatObject{origin=71.1273676543, format=+7112.74%},
+     * time=FormatObject{origin=1604631895000, format=2020-11-06 11:04},
+     * money=FormatObject{origin=3456435.32674335, format=￥3456435.33}}
      */
 
     /**
@@ -74,7 +84,7 @@ public class FormatDemoModel {
             NumberFormat percentInstance = NumberFormat.getPercentInstance(Locale.CHINA);
             percentInstance.setGroupingUsed(false);
             percentInstance.setMinimumFractionDigits(2);
-            percentInstance.setMinimumFractionDigits(2);
+            percentInstance.setMaximumFractionDigits(2);
             return percentInstance.format(origin);
         }
     }
@@ -89,7 +99,7 @@ public class FormatDemoModel {
             NumberFormat percentInstance = NumberFormat.getPercentInstance(Locale.CHINA);
             percentInstance.setGroupingUsed(false);
             percentInstance.setMinimumFractionDigits(0);
-            percentInstance.setMinimumFractionDigits(2);
+            percentInstance.setMaximumFractionDigits(2);
             return percentInstance.format(origin);
         }
     }
@@ -104,7 +114,7 @@ public class FormatDemoModel {
             NumberFormat percentInstance = NumberFormat.getPercentInstance(Locale.CHINA);
             percentInstance.setGroupingUsed(false);
             percentInstance.setMinimumFractionDigits(0);
-            percentInstance.setMinimumFractionDigits(2);
+            percentInstance.setMaximumFractionDigits(2);
 
             try {
                 ((DecimalFormat) percentInstance).setPositivePrefix("+");
@@ -134,33 +144,57 @@ public class FormatDemoModel {
             NumberFormat currencyInstance = NumberFormat.getCurrencyInstance(Locale.CHINA);
             currencyInstance.setGroupingUsed(false);
             currencyInstance.setMinimumFractionDigits(0);
-            currencyInstance.setMinimumFractionDigits(2);
+            currencyInstance.setMaximumFractionDigits(2);
             return currencyInstance.format(origin);
         }
     }
 
+    /**
+     * {num=FormatObject{origin=1948367743.1273676543, format=1948367743.13}
+     */
     @JsonAdapter(MyFractionNumberObjectFormatTypeAdapter.class)
     public NumberFormatObject num;
 
 
+    /**
+     * {origin=1948367743.1273676543, format=1948367743.13}
+     */
     @JsonAdapter(MyFractionNumberObjectFormatTypeAdapter2.class)
     public NumberFormatObject num1;
 
+    /**
+     * {origin=0.1273676543, format=12.74%},
+     */
     @JsonAdapter(MyPercentNumberObjectFormatTypeAdapter.class)
     public NumberFormatObject percent;
 
+    /**
+     * {origin=15.1273676543, format=1512.74%}
+     */
     @JsonAdapter(MyPercentNumberObjectFormatTypeAdapter2.class)
     public NumberFormatObject percent2;
 
+    /**
+     * {origin=-35.1273676543, format=-3512.74%}
+     */
     @JsonAdapter(MyPercentNumberObjectFormatTypeAdapter3.class)
     public NumberFormatObject percent3;
 
+    /**
+     * {origin=71.1273676543, format=+7112.74%}
+     */
     @JsonAdapter(MyPercentNumberObjectFormatTypeAdapter3.class)
     public NumberFormatObject percent4;
 
+    /**
+     * {origin=1604631895000, format=2020-11-06 11:04}
+     */
     @JsonAdapter(MyTimeObjectFormatTypeAdapter.class)
     public TimeFormatObject time;
 
+    /**
+     * {origin=3456435.32674335, format=￥3456435.33}
+     */
     @JsonAdapter(MyMoneyObjectFormatTypeAdapter.class)
     public NumberFormatObject money;
 
@@ -177,15 +211,4 @@ public class FormatDemoModel {
                 ", money=" + money +
                 '}';
     }
-    /**
-     * 输出结果:
-     * FormatTestModel{num=FormatObject{origin=1948367743.1273676543, format=1948367743.13},
-     * num1=FormatObject{origin=1948367743.1273676543, format=1948367743.13},
-     * percent=FormatObject{origin=0.1273676543, format=12.74%},
-     * percent2=FormatObject{origin=15.1273676543, format=1512.74%},
-     * percent3=FormatObject{origin=-35.1273676543, format=-3512.74%},
-     * percent4=FormatObject{origin=71.1273676543, format=+7112.74%},
-     * time=FormatObject{origin=1604631895000, format=2020-11-06 11:04},
-     * money=FormatObject{origin=3456435.32674335, format=￥3456435.33}}
-     */
 }
