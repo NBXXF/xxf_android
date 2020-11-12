@@ -16,6 +16,9 @@
  */
 package com.xxf.arch.utils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -566,6 +569,34 @@ public class NumberUtils {
         try {
             return Short.parseShort(str);
         } catch (final NumberFormatException nfe) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 转换成 货币运算
+     *
+     * @param str
+     * @return
+     */
+    @NonNull
+    public static BigDecimal toBigDecimal(final String str) {
+        return toBigDecimal(str, new BigDecimal(0));
+    }
+
+    /**
+     * 转换成 货币运算
+     *
+     * @param str
+     * @param defaultValue 默认值
+     * @return
+     */
+    @Nullable
+    public static BigDecimal toBigDecimal(final String str, @Nullable final BigDecimal defaultValue) {
+        try {
+            return new BigDecimal(str);
+        } catch (Exception e) {
+            e.printStackTrace();
             return defaultValue;
         }
     }
