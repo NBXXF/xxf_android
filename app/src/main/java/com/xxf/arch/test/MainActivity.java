@@ -40,7 +40,13 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.CacheType;
@@ -111,6 +117,7 @@ public class MainActivity extends XXFActivity {
         }
     }
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,6 +183,56 @@ public class MainActivity extends XXFActivity {
                 .subscribe();
 
 
+        Observable.just(1)
+                .map(new Function<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer) throws Exception {
+                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    111");
+                        throw new RuntimeException("xxxxx");
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Integer>>() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public ObservableSource<? extends Integer> apply(Throwable throwable) throws Exception {
+                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    wwww");
+                        if (throwable instanceof RuntimeException) {
+                            Observable<Integer> empty = Observable.empty();
+                            return empty.doOnComplete(new Action() {
+                                @Override
+                                public void run() throws Exception {
+                                    XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    33333");
+                                }
+                            })
+                                    .subscribeOn(AndroidSchedulers.mainThread())
+                                    .observeOn(AndroidSchedulers.mainThread());
+                        }
+                        return Observable.error(throwable);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    5555");
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    6666");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "   7777");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "   88888");
+                    }
+                });
         findViewById(R.id.bt_test)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
