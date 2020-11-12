@@ -26,6 +26,7 @@ import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
+import com.xxf.arch.utils.NumberUtils;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.cardview.CardView;
 import com.xxf.view.utils.StatusBarUtils;
@@ -35,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -273,6 +275,14 @@ public class MainActivity extends XXFActivity {
                         XXF.getLogger().d("===============>t:" + testModel);
                         // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
+
+                        System.out.println("============>f:"+NumberUtils.formatRoundUp("5.5", 0, 0));
+                        System.out.println("============>f:"+NumberUtils.formatRoundDown("5.5", 0, 0));
+                        System.out.println("============>f:"+NumberUtils.formatRoundHalfUp("5.5", 0, 0));
+                        System.out.println("============>f:"+NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP,3));
+                        System.out.println("============>f:"+NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP,4));
+                        System.out.println("============>f:"+NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP,5));
+                        System.out.println("============>f:"+NumberUtils.format("325.578435643", 0, 5, RoundingMode.HALF_UP,6));
                     }
                 });
         findViewById(R.id.bt_http)
