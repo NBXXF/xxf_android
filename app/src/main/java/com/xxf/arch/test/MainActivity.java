@@ -36,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
@@ -275,14 +276,24 @@ public class MainActivity extends XXFActivity {
                         XXF.getLogger().d("===============>t:" + testModel);
                         // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
-
-                        System.out.println("============>f:"+NumberUtils.formatRoundUp("5.5", 0, 0));
-                        System.out.println("============>f:"+NumberUtils.formatRoundDown("5.5", 0, 0));
-                        System.out.println("============>f:"+NumberUtils.formatRoundHalfUp("5.5", 0, 0));
-                        System.out.println("============>f:"+NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP,3));
-                        System.out.println("============>f:"+NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP,4));
-                        System.out.println("============>f:"+NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP,5));
-                        System.out.println("============>f:"+NumberUtils.format("325.578435643", 0, 5, RoundingMode.HALF_UP,6));
+                        System.out.println("============>f:" + NumberUtils.formatRoundUp("5.5", 0, 0));
+                        System.out.println("============>f:" + NumberUtils.formatRoundDown("5.5", 0, 0));
+                        System.out.println("============>f:" + NumberUtils.formatRoundHalfUp("5.5", 0, 0));
+                        System.out.println("============>f:" + NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP, 3));
+                        System.out.println("============>f:" + NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP, 4));
+                        System.out.println("============>f:" + NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP, 5));
+                        System.out.println("============>f:" + NumberUtils.format("325.578435643", 0, 5, RoundingMode.HALF_UP, 6));
+                        System.out.println("============>f2:" + NumberUtils.add(10, 20));
+                        System.out.println("============>f2:" + NumberUtils.add(10.5, 11.5));
+                        System.out.println("============>f2:" + NumberUtils.add(10.2, 10.1));
+                        System.out.println("============>f2:" + NumberUtils.multiply(10.2, 2));
+                        System.out.println("============>f2:" + NumberUtils.divide(10.2, 2));
+                        System.out.println("============>f2:" + NumberUtils.subtract(10.2, 1.1));
+                        System.out.println("============>f3:" + NumberUtils.min(1, 3));
+                        System.out.println("============>f3:" + NumberUtils.min(new BigDecimal(1), new BigDecimal(2)));
+                        System.out.println("============>f3:" + NumberUtils.max(new BigDecimal(1), new BigDecimal(2)));
+                        System.out.println("============>f3:" + NumberUtils.inClosedRange(new BigDecimal(1), new BigDecimal(1), new BigDecimal(2)));
+                        System.out.println("============>f3:" + NumberUtils.inOpenedRange(new BigDecimal(1), new BigDecimal(1), new BigDecimal(2)));
                     }
                 });
         findViewById(R.id.bt_http)

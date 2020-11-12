@@ -16,6 +16,7 @@
  */
 package com.xxf.arch.utils;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -183,6 +184,193 @@ public class NumberUtils {
             e.printStackTrace();
         }
         return defaultValue;
+    }
+
+    @NonNull
+    public static BigDecimal add(Object b1, Object b2) {
+        return add(b1, b2, new BigDecimal(0));
+    }
+
+    /**
+     * 加法
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static BigDecimal add(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
+        try {
+            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
+                return ((BigDecimal) b1).add((BigDecimal) b2);
+            }
+            return new BigDecimal(b1.toString()).add(new BigDecimal(b2.toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    /**
+     * 减法
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
+    @NonNull
+    public static BigDecimal subtract(Object b1, Object b2) {
+        return subtract(b1, b2, new BigDecimal(0));
+    }
+
+    /**
+     * 减法
+     *
+     * @param b1
+     * @param b2
+     * @param defaultValue
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static BigDecimal subtract(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
+        try {
+            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
+                return ((BigDecimal) b1).subtract((BigDecimal) b2);
+            }
+            return new BigDecimal(b1.toString()).subtract(new BigDecimal(b2.toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    /**
+     * 乘法
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
+    @NonNull
+    public static BigDecimal multiply(Object b1, Object b2) {
+        return multiply(b1, b2, new BigDecimal(0));
+    }
+
+    /**
+     * 乘法
+     *
+     * @param b1
+     * @param b2
+     * @param defaultValue
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static BigDecimal multiply(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
+        try {
+            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
+                return ((BigDecimal) b1).multiply((BigDecimal) b2);
+            }
+            return new BigDecimal(b1.toString()).multiply(new BigDecimal(b2.toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    /**
+     * 除法
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
+    @NonNull
+    public static BigDecimal divide(Object b1, Object b2) {
+        return divide(b1, b2, new BigDecimal(0));
+    }
+
+    /**
+     * 除法
+     *
+     * @param b1
+     * @param b2
+     * @param defaultValue
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static BigDecimal divide(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
+        try {
+            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
+                return ((BigDecimal) b1).divide((BigDecimal) b2);
+            }
+            return new BigDecimal(b1.toString()).divide(new BigDecimal(b2.toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    /**
+     * 最小值
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
+    @NonNull
+    public static BigDecimal min(BigDecimal b1, BigDecimal b2) {
+        if (b1 == null || b2 == null) {
+            return new BigDecimal(0);
+        }
+        return b1.min(b2);
+    }
+
+    /**
+     * 最大值
+     *
+     * @param b1
+     * @param b2
+     * @return
+     */
+    @NonNull
+    public static BigDecimal max(BigDecimal b1, BigDecimal b2) {
+        if (b1 == null || b2 == null) {
+            return new BigDecimal(0);
+        }
+        return b1.max(b2);
+    }
+
+    /**
+     * 是否在闭区间内eg.[3,5]
+     *
+     * @param value
+     * @param min
+     * @param max
+     * @return
+     */
+    public static boolean inClosedRange(BigDecimal value, BigDecimal min, BigDecimal max) {
+        if (value == null || min == null || max == null) {
+            return false;
+        }
+        return max.compareTo(min) > 0 && value.compareTo(min) >= 0 && value.compareTo(max) <= 0;
+    }
+
+    /**
+     * 是否在开区间内eg.(3,5)
+     * @param value
+     * @param min
+     * @param max
+     * @return
+     */
+    public static boolean inOpenedRange(BigDecimal value, BigDecimal min, BigDecimal max) {
+        if (value == null || min == null || max == null) {
+            return false;
+        }
+        return max.compareTo(min) > 0 && value.compareTo(min) > 0 && value.compareTo(max) < 0;
     }
 
     /**
