@@ -315,7 +315,7 @@ public class NumberUtils {
      * 除法
      * 会出现 : Non-terminating decimal expansion; no exact representable decimal result.
      * 因为BigDecimal的divide方法出现了无限循环小数
-     * 默认最多8位小数,且舍入模式为FLOOR 正数等同于down 负数则更小  5.5->5    5.5->-6
+     * 默认最多16位小数,且舍入模式为FLOOR 正数等同于down 负数则更小  5.5->5    5.5->-6
      *
      * @param b1
      * @param b2
@@ -323,7 +323,7 @@ public class NumberUtils {
      */
     @NonNull
     public static BigDecimal divide(Object b1, Object b2) {
-        return divide(b1, b2, 8);
+        return divide(b1, b2, 16);
     }
 
     /**
