@@ -13,6 +13,8 @@ public interface FormatTypeAdapter<T> {
      * 原始数据
      * 文档参考 https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html
      * 建议使用 避免国际化问题
+     * com.xxf.arch.utils.NumberUtils#format();
+     * <p>
      * NumberFormat.getNumberInstance(Locale.CHINA);
      * NumberFormat.getPercentInstance(Locale.CHINA);
      * NumberFormat.getCurrencyInstance(Locale.CHINA);

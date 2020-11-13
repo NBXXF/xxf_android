@@ -103,6 +103,8 @@ public abstract class NumberObjectFormatTypeAdapter extends TypeAdapter<NumberFo
      * decimalFormat.setDecimalFormatSymbols(symbols);
      * decimalFormat.setGroupingUsed(false);
      * 建议使用
+     * com.xxf.arch.utils.NumberUtils#format();
+     * <p>
      * NumberFormat.getNumberInstance(Locale.CHINA);
      * NumberFormat.getPercentInstance(Locale.CHINA);
      * NumberFormat.getCurrencyInstance(Locale.CHINA);
