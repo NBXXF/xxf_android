@@ -276,6 +276,7 @@ public class MainActivity extends XXFActivity {
                         XXF.getLogger().d("===============>t:" + testModel);
                         // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
+                        System.out.println("============>f2:" + NumberUtils.divide(10.2, 2) + "  " + (new BigDecimal(10.2).divide(new BigDecimal(2))));
                         System.out.println("============>f:" + NumberUtils.formatRoundUp("5.5", 0, 0));
                         System.out.println("============>f:" + NumberUtils.formatRoundDown("5.5", 0, 0));
                         System.out.println("============>f:" + NumberUtils.formatRoundHalfUp("5.5", 0, 0));
@@ -286,8 +287,8 @@ public class MainActivity extends XXFActivity {
                         System.out.println("============>f2:" + NumberUtils.add(10, 20));
                         System.out.println("============>f2:" + NumberUtils.add(10.5, 11.5));
                         System.out.println("============>f2:" + NumberUtils.add(10.2, 10.1));
-                        System.out.println("============>f2:" + NumberUtils.multiply(10.2, 2));
-                        System.out.println("============>f2:" + NumberUtils.divide(10.2, 2));
+                        System.out.println("============>f2:" + NumberUtils.multiply(10.2, 2).doubleValue());
+                        System.out.println("============>f2:" + NumberUtils.divide(10.2, 2).doubleValue());
                         System.out.println("============>f2:" + NumberUtils.subtract(10.2, 1.1));
                         System.out.println("============>f3:" + NumberUtils.min(1, 3));
                         System.out.println("============>f3:" + NumberUtils.min(new BigDecimal(1), new BigDecimal(2)));

@@ -26,6 +26,8 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 /**
@@ -175,7 +177,7 @@ public class NumberUtils {
             /**
              * 需要用BigDecimal 来接收否则有精度损失问题
              */
-            String format = numberInstance.format(number instanceof BigDecimal ? number : new BigDecimal(number.toString()));
+            String format = numberInstance.format(innerConvertDecimal(number));
             if (format.length() > maxLength) {
                 format = format.substring(0, maxLength);
                 if (format.endsWith(".")) {
@@ -187,6 +189,35 @@ public class NumberUtils {
             e.printStackTrace();
         }
         return defaultValue;
+    }
+
+    /**
+     * 万能转换Decimal  double转string会有精度丢失问题 且BigDecimal构造函数必须是具体类型
+     *
+     * @param number
+     * @return
+     */
+    private static BigDecimal innerConvertDecimal(Object number) throws NumberFormatException, ArithmeticException {
+        if (number instanceof Long || number instanceof Integer ||
+                number instanceof Short || number instanceof Byte ||
+                number instanceof AtomicInteger ||
+                number instanceof AtomicLong ||
+                (number instanceof BigInteger &&
+                        ((BigInteger) number).bitLength() < 64)) {
+            return new BigDecimal(((Number) number).longValue());
+        } else if (number instanceof BigDecimal) {
+            return (BigDecimal) number;
+        } else if (number instanceof BigInteger) {
+            return new BigDecimal((BigInteger) number);
+        } else if (number instanceof Float) {
+            return new BigDecimal((Float) number);
+        } else if (number instanceof Double) {
+            return new BigDecimal((double) number);
+        } else if (number instanceof String) {
+            return new BigDecimal((String) number);
+        } else {
+            return new BigDecimal(String.valueOf(number));
+        }
     }
 
     @NonNull
@@ -205,10 +236,9 @@ public class NumberUtils {
     @CheckResult
     public static BigDecimal add(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
         try {
-            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
-                return ((BigDecimal) b1).add((BigDecimal) b2);
-            }
-            return new BigDecimal(b1.toString()).add(new BigDecimal(b2.toString()));
+            BigDecimal bc1 = innerConvertDecimal(b1);
+            BigDecimal bc2 = innerConvertDecimal(b2);
+            return bc1.add(bc2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -239,10 +269,9 @@ public class NumberUtils {
     @CheckResult
     public static BigDecimal subtract(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
         try {
-            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
-                return ((BigDecimal) b1).subtract((BigDecimal) b2);
-            }
-            return new BigDecimal(b1.toString()).subtract(new BigDecimal(b2.toString()));
+            BigDecimal bc1 = innerConvertDecimal(b1);
+            BigDecimal bc2 = innerConvertDecimal(b2);
+            return bc1.subtract(bc2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -273,10 +302,9 @@ public class NumberUtils {
     @CheckResult
     public static BigDecimal multiply(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
         try {
-            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
-                return ((BigDecimal) b1).multiply((BigDecimal) b2);
-            }
-            return new BigDecimal(b1.toString()).multiply(new BigDecimal(b2.toString()));
+            BigDecimal bc1 = innerConvertDecimal(b1);
+            BigDecimal bc2 = innerConvertDecimal(b2);
+            return bc1.multiply(bc2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -307,10 +335,9 @@ public class NumberUtils {
     @CheckResult
     public static BigDecimal divide(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
         try {
-            if (b1 instanceof BigDecimal && b2 instanceof BigDecimal) {
-                return ((BigDecimal) b1).divide((BigDecimal) b2);
-            }
-            return new BigDecimal(b1.toString()).divide(new BigDecimal(b2.toString()));
+            BigDecimal bc1 = innerConvertDecimal(b1);
+            BigDecimal bc2 = innerConvertDecimal(b2);
+            return bc1.divide(bc2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -355,11 +382,51 @@ public class NumberUtils {
      * @param max
      * @return
      */
+    public static boolean inClosedRange(Object value, Object min, Object max) {
+        try {
+            BigDecimal bdValue = innerConvertDecimal(value);
+            BigDecimal bdMin = innerConvertDecimal(min);
+            BigDecimal bdMax = innerConvertDecimal(max);
+            return inClosedRange(bdValue, bdMin, bdMax);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * 是否在闭区间内eg.[3,5]
+     *
+     * @param value
+     * @param min
+     * @param max
+     * @return
+     */
     public static boolean inClosedRange(BigDecimal value, BigDecimal min, BigDecimal max) {
         if (value == null || min == null || max == null) {
             return false;
         }
         return max.compareTo(min) > 0 && value.compareTo(min) >= 0 && value.compareTo(max) <= 0;
+    }
+
+    /**
+     * 是否在开区间内eg.(3,5)
+     *
+     * @param value
+     * @param min
+     * @param max
+     * @return
+     */
+    public static boolean inOpenedRange(Object value, Object min, Object max) {
+        try {
+            BigDecimal bdValue = innerConvertDecimal(value);
+            BigDecimal bdMin = innerConvertDecimal(min);
+            BigDecimal bdMax = innerConvertDecimal(max);
+            return inOpenedRange(bdValue, bdMin, bdMax);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
