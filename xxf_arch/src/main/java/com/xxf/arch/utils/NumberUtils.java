@@ -172,7 +172,10 @@ public class NumberUtils {
             numberInstance.setMinimumFractionDigits(minFractionDigits);
             numberInstance.setMaximumFractionDigits(maxFractionDigits);
             numberInstance.setRoundingMode(roundingMode);
-            String format = numberInstance.format((number instanceof String || number instanceof CharSequence) ? new BigDecimal(number.toString()) : number);
+            /**
+             * 需要用BigDecimal 来接收否则有精度损失问题
+             */
+            String format = numberInstance.format(number instanceof BigDecimal ? number : new BigDecimal(number.toString()));
             if (format.length() > maxLength) {
                 format = format.substring(0, maxLength);
                 if (format.endsWith(".")) {
@@ -361,6 +364,7 @@ public class NumberUtils {
 
     /**
      * 是否在开区间内eg.(3,5)
+     *
      * @param value
      * @param min
      * @param max
