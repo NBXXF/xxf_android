@@ -313,6 +313,9 @@ public class NumberUtils {
 
     /**
      * 除法
+     * 会出现 : Non-terminating decimal expansion; no exact representable decimal result.
+     * 因为BigDecimal的divide方法出现了无限循环小数
+     * 默认最多8位小数,且舍入模式为FLOOR 正数等同于down 负数则更小  5.5->5    5.5->-6
      *
      * @param b1
      * @param b2
@@ -320,7 +323,7 @@ public class NumberUtils {
      */
     @NonNull
     public static BigDecimal divide(Object b1, Object b2) {
-        return divide(b1, b2, new BigDecimal(0));
+        return divide(b1, b2, 8);
     }
 
     /**
@@ -328,16 +331,41 @@ public class NumberUtils {
      *
      * @param b1
      * @param b2
+     * @param scale 保留小数位 默认舍入模式为FLOOR 正数等同于down 负数则更小  5.5->5    5.5->-6
+     * @return
+     */
+    public static BigDecimal divide(Object b1, Object b2, int scale) {
+        return divide(b1, b2, scale, RoundingMode.FLOOR);
+    }
+
+    /**
+     * @param b1
+     * @param b2
+     * @param scale        保留小数位
+     * @param roundingMode
+     * @return
+     */
+    public static BigDecimal divide(Object b1, Object b2, int scale, RoundingMode roundingMode) {
+        return divide(b1, b2, scale, roundingMode, new BigDecimal(0));
+    }
+
+    /**
+     * 除法
+     *
+     * @param b1
+     * @param b2
+     * @param scale        保留小数位
+     * @param roundingMode 舍入模式
      * @param defaultValue
      * @return
      */
     @Nullable
     @CheckResult
-    public static BigDecimal divide(Object b1, Object b2, @Nullable BigDecimal defaultValue) {
+    public static BigDecimal divide(Object b1, Object b2, int scale, RoundingMode roundingMode, @Nullable BigDecimal defaultValue) {
         try {
             BigDecimal bc1 = innerConvertDecimal(b1);
             BigDecimal bc2 = innerConvertDecimal(b2);
-            return bc1.divide(bc2);
+            return bc1.divide(bc2, scale, roundingMode);
         } catch (Exception e) {
             e.printStackTrace();
         }
