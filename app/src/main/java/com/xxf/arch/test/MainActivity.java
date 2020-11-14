@@ -18,7 +18,6 @@ import androidx.lifecycle.LifecycleOwner;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
@@ -301,19 +300,33 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.lastCache)
+
+                        Observable.fromCallable(new Callable<Object>() {
+                            @Override
+                            public Object call() throws Exception {
+                               return XXF.getApiService(LoginApiService.class)
+                                        .getCity(CacheType.firstCache).blockingFirst();
+                            }
+                        }).subscribeOn(Schedulers.newThread())
+                                .subscribe(new Consumer<Object>() {
+                                    @Override
+                                    public void accept(Object o) throws Exception {
+                                        XXF.getLogger().d("==========>retry ye222:" + o + " thread:" + Thread.currentThread().getName());
+                                    }
+                                });
+                      /*  XXF.getApiService(LoginApiService.class)
+                                .getCity(CacheType.firstCache)
                                 .subscribe(new Consumer<JsonObject>() {
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {
-                                        XXF.getLogger().d("==========>retry ye:" + jsonObject);
+                                        XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        XXF.getLogger().d("==========>retry no:" + throwable);
+                                        XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
                                     }
-                                });
+                                });*/
                     }
                 });
         findViewById(R.id.file)
