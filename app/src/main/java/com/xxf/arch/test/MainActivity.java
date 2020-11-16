@@ -277,12 +277,17 @@ public class MainActivity extends XXFActivity {
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                         System.out.println("============>f2:" + NumberUtils.divide(10.2, 2) + "  " + (new BigDecimal(10.2).divide(new BigDecimal(2))));
                         System.out.println("============>f:" + NumberUtils.formatRoundUp("5.5", 0, 0));
+                        System.out.println("============>f:" + NumberUtils.formatRoundUp("0", 0, 0));
+                        System.out.println("============>f:" + NumberUtils.formatRoundUp("-10.24", 0, 0));
                         System.out.println("============>f:" + NumberUtils.formatRoundDown("5.5", 0, 0));
                         System.out.println("============>f:" + NumberUtils.formatRoundHalfUp("5.5", 0, 0));
                         System.out.println("============>f:" + NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP, 3));
                         System.out.println("============>f:" + NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP, 4));
                         System.out.println("============>f:" + NumberUtils.format("325.5", 0, 5, RoundingMode.HALF_UP, 5));
                         System.out.println("============>f:" + NumberUtils.format("325.578435643", 0, 5, RoundingMode.HALF_UP, 6));
+                        System.out.println("============>f:" + NumberUtils.format("-325.578435643", 0, 5, RoundingMode.HALF_UP, true));
+                        System.out.println("============>f:" + NumberUtils.format("0", 0, 5, RoundingMode.HALF_UP, true));
+                        System.out.println("============>f:" + NumberUtils.format("325.578435643", 0, 5, RoundingMode.HALF_UP, true));
                         System.out.println("============>f2:" + NumberUtils.add(10, 20));
                         System.out.println("============>f2:" + NumberUtils.add(10.5, 11.5));
                         System.out.println("============>f2:" + NumberUtils.add(10.2, 10.1));
@@ -304,7 +309,7 @@ public class MainActivity extends XXFActivity {
                         Observable.fromCallable(new Callable<Object>() {
                             @Override
                             public Object call() throws Exception {
-                               return XXF.getApiService(LoginApiService.class)
+                                return XXF.getApiService(LoginApiService.class)
                                         .getCity(CacheType.firstCache).blockingFirst();
                             }
                         }).subscribeOn(Schedulers.newThread())

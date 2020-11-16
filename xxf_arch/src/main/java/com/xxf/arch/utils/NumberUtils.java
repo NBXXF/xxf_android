@@ -24,6 +24,7 @@ import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -124,8 +125,33 @@ public class NumberUtils {
                 maxFractionDigits,
                 roundingMode,
                 maxLength,
+                false,
                 String.valueOf(0));
     }
+
+
+    /**
+     * @param number
+     * @param minFractionDigits 小数位最小长度
+     * @param maxFractionDigits 小数位最大长度
+     * @param roundingMode      舍入模式模式
+     * @param sign              是否转换有符号数
+     * @return
+     */
+    public static String format(Object number,
+                                int minFractionDigits,
+                                int maxFractionDigits,
+                                RoundingMode roundingMode,
+                                boolean sign) {
+        return format(number,
+                minFractionDigits,
+                maxFractionDigits,
+                roundingMode,
+                Integer.MAX_VALUE,
+                sign,
+                String.valueOf(0));
+    }
+
 
     /**
      * 1、ROUND_UP：向远离零的方向舍入。
@@ -159,6 +185,7 @@ public class NumberUtils {
      * @param maxFractionDigits 小数位最大长度
      * @param roundingMode      舍入模式模式
      * @param maxLength         最大长度 字符串截取 比如设置5 10023787834.10->10023
+     * @param sign              是否转换有符号数
      * @param defaultValue      异常默认值
      * @return
      */
@@ -167,6 +194,7 @@ public class NumberUtils {
                                 int maxFractionDigits,
                                 RoundingMode roundingMode,
                                 int maxLength,
+                                boolean sign,
                                 String defaultValue) {
         try {
             NumberFormat numberInstance = NumberFormat.getNumberInstance(Locale.CHINA);
@@ -174,6 +202,15 @@ public class NumberUtils {
             numberInstance.setMinimumFractionDigits(minFractionDigits);
             numberInstance.setMaximumFractionDigits(maxFractionDigits);
             numberInstance.setRoundingMode(roundingMode);
+            if (sign) {
+                try {
+                    DecimalFormat decimalFormat = (DecimalFormat) numberInstance;
+                    decimalFormat.setPositivePrefix("+");
+                    decimalFormat.setNegativePrefix("-");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             /**
              * 需要用BigDecimal 来接收否则有精度损失问题
              */
