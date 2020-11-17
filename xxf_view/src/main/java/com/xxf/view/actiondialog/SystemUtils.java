@@ -2,9 +2,9 @@ package com.xxf.view.actiondialog;
 
 import android.Manifest;
 import android.app.Activity;
-import androidx.lifecycle.Lifecycle;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -14,14 +14,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresPermission;
-import androidx.fragment.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
@@ -54,6 +59,7 @@ public class SystemUtils {
     public static final int REQUEST_CODE_CAMERA = 59999;
     public static final int REQUEST_CODE_ALBUM = 59998;
     public static final int REQUEST_CODE_DOCUMENT = 59997;
+    public static final int REQUEST_CODE_SHARE = 59996;
 
 
     /**
@@ -516,6 +522,89 @@ public class SystemUtils {
 
         public Intent build() {
             return this.mCropIntent;
+        }
+    }
+
+    /**
+     * 分享文本
+     *
+     * @param context
+     * @param text    分享文本
+     * @return
+     */
+    public static Observable<ActivityResult> shareText(Context context, String text) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        try {
+            String scheme = Uri.parse(text).getScheme();
+            if (TextUtils.equals(scheme, "http") || TextUtils.equals(scheme, "https")) {
+                sendIntent.setType("text/html");
+            } else {
+                sendIntent.setType("text/plain");
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+            sendIntent.setType("text/plain");
+        }
+        Intent chooser = Intent.createChooser(sendIntent, "share text");
+        if (context instanceof LifecycleOwner) {
+            return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
+        } else {
+            return Observable
+                    .fromCallable(new Callable<ActivityResult>() {
+                        @Override
+                        public ActivityResult call() throws Exception {
+                            context.startActivity(chooser);
+                            return new ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, new Intent());
+                        }
+                    });
+        }
+    }
+
+    /**
+     * 分享文件
+     *
+     * @param context
+     * @param filePath  文件
+     * @param authority
+     * @return
+     */
+    public static Observable<ActivityResult> shareFile(Context context, String filePath, String authority) {
+        File file = new File(filePath);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(context, authority, file);
+        } else {
+            uri = Uri.fromFile(file);
+        }
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        // 授予目录临时共享权限
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        String fileType = null;
+        if (uri != null) {
+            ContentResolver contentResolver = context.getContentResolver();
+            if (contentResolver != null) {
+                fileType = contentResolver.getType(uri);
+            }
+        }
+        if (TextUtils.isEmpty(filePath)) {
+            fileType = "*/*";
+        }
+        intent.setDataAndType(uri, fileType);
+        Intent chooser = Intent.createChooser(intent, file.getName());
+        if (context instanceof LifecycleOwner) {
+            return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
+        } else {
+            return Observable
+                    .fromCallable(new Callable<ActivityResult>() {
+                        @Override
+                        public ActivityResult call() throws Exception {
+                            context.startActivity(chooser);
+                            return new ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, new Intent());
+                        }
+                    });
         }
     }
 }

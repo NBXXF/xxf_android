@@ -27,6 +27,7 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.NumberUtils;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.actiondialog.SystemUtils;
 import com.xxf.view.cardview.CardView;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.view.ReverseFrameLayout;
@@ -246,8 +247,8 @@ public class MainActivity extends XXFActivity {
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
 
-                        //   String url = "qweqwe";
-                        String url = "/activity/test";
+                           String url = "qweqwe";
+                       // String url = "/activity/test";
                         ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
                             @Override
                             public void onArrival(Postcard postcard) {
@@ -299,6 +300,8 @@ public class MainActivity extends XXFActivity {
                         System.out.println("============>f3:" + NumberUtils.max(new BigDecimal(1), new BigDecimal(2)));
                         System.out.println("============>f3:" + NumberUtils.inClosedRange(new BigDecimal(1), new BigDecimal(1), new BigDecimal(2)));
                         System.out.println("============>f3:" + NumberUtils.inOpenedRange(new BigDecimal(1), new BigDecimal(1), new BigDecimal(2)));
+
+                        SystemUtils.shareText(MainActivity.this,"http://www.baidu.com").subscribe();
                     }
                 });
         findViewById(R.id.bt_http)
