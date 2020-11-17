@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -7,22 +7,32 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_input"
+        <com.xxf.view.view.MaxHeightView
             android:layout_width="match_parent"
-            android:text="1"
-            android:padding="10dp"
-            android:layout_height="wrap_content"/>
+            app:maxHeight="80dp"
+            android:background="#6cf"
+            android:layout_height="wrap_content">
+
+
+            <EditText
+                android:id="@+id/et_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="17483737\ngfdgfdbvvcfd\n9\n2\n4\n4\n5\n667" />
+        </com.xxf.view.view.MaxHeightView>
+
         <Button
             android:id="@+id/bt_setResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="setResult"/>
+            android:text="setResult" />
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
-            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
         </androidx.viewpager.widget.ViewPager>
 

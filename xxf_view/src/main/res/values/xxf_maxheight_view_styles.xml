@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MaxHeightView">
+        <attr name="maxHeightRatio" format="reference|float" />
+        <attr name="maxHeight" format="reference|dimension" />
+    </declare-styleable>
+</resources>

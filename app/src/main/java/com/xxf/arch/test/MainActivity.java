@@ -247,7 +247,7 @@ public class MainActivity extends XXFActivity {
                         layout.toggleColor();
 
                         //   String url = "qweqwe";
-                        String url = null;
+                        String url = "/activity/test";
                         ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
                             @Override
                             public void onArrival(Postcard postcard) {
