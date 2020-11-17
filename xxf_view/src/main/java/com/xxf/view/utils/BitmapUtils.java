@@ -9,11 +9,15 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
+
+import com.xxf.arch.XXF;
 
 import java.nio.ByteBuffer;
 
@@ -188,5 +192,131 @@ public class BitmapUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 创建bitmap
+     *
+     * @param view
+     * @param width
+     * @param height
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    private Bitmap createBitmap(View view, int width, int height) {
+        try {
+            int measuredWidth = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
+            int measuredHeight = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
+            view.measure(measuredWidth, measuredHeight);
+            view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+            Bitmap bmp = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(bmp);
+            view.draw(c);
+            return bmp;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 创建bitmap
+     *
+     * @param v
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public Bitmap createBitmap(View v) {
+        try {
+            Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                    Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            v.draw(canvas);
+            return bitmap;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 把两个位图覆盖合成为一个位图，上下拼接
+     *
+     * @param topBitmap
+     * @param bottomBitmap
+     * @param isBaseMax    是否以高度大的位图为准，true则小图等比拉伸，false则大图等比压缩
+     * @return
+     */
+    @CheckResult
+    @Nullable
+    public static Bitmap mergeBitmapVertical(Bitmap topBitmap, Bitmap bottomBitmap, boolean isBaseMax) {
+        try {
+            if (topBitmap == null || topBitmap.isRecycled()
+                    || bottomBitmap == null || bottomBitmap.isRecycled()) {
+                XXF.getLogger().d("merge" + "topBitmap=" + topBitmap + ";bottomBitmap=" + bottomBitmap);
+                return null;
+            }
+            int width = 0;
+            if (isBaseMax) {
+                width = topBitmap.getWidth() > bottomBitmap.getWidth() ? topBitmap.getWidth() : bottomBitmap.getWidth();
+            } else {
+                width = topBitmap.getWidth() < bottomBitmap.getWidth() ? topBitmap.getWidth() : bottomBitmap.getWidth();
+            }
+            Bitmap tempBitmapT = topBitmap;
+            Bitmap tempBitmapB = bottomBitmap;
+
+            if (topBitmap.getWidth() != width) {
+                tempBitmapT = Bitmap.createScaledBitmap(topBitmap, width, (int) (topBitmap.getHeight() * 1f / topBitmap.getWidth() * width), false);
+            } else if (bottomBitmap.getWidth() != width) {
+                tempBitmapB = Bitmap.createScaledBitmap(bottomBitmap, width, (int) (bottomBitmap.getHeight() * 1f / bottomBitmap.getWidth() * width), false);
+            }
+
+            int height = tempBitmapT.getHeight() + tempBitmapB.getHeight();
+
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+
+            Rect topRect = new Rect(0, 0, tempBitmapT.getWidth(), tempBitmapT.getHeight());
+            Rect bottomRect = new Rect(0, 0, tempBitmapB.getWidth(), tempBitmapB.getHeight());
+
+            Rect bottomRectT = new Rect(0, tempBitmapT.getHeight(), width, height);
+
+            canvas.drawBitmap(tempBitmapT, topRect, topRect, null);
+            canvas.drawBitmap(tempBitmapB, bottomRect, bottomRectT, null);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 渲染背景
+     *
+     * @param backgroundColor
+     * @param orginBitmap
+     * @return
+     */
+    @CheckResult
+    @Nullable
+    public static Bitmap drawBitmapBackground(Bitmap orginBitmap, int backgroundColor) {
+        try {
+            if (orginBitmap == null) {
+                return null;
+            }
+            Paint paint = new Paint();
+            paint.setColor(backgroundColor);
+            Bitmap bitmap = Bitmap.createBitmap(orginBitmap.getWidth(),
+                    orginBitmap.getHeight(), orginBitmap.getConfig());
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawRect(0, 0, orginBitmap.getWidth(), orginBitmap.getHeight(), paint);
+            canvas.drawBitmap(orginBitmap, 0, 0, paint);
+            return bitmap;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

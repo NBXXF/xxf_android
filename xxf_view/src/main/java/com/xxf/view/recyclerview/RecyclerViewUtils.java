@@ -2,22 +2,16 @@ package com.xxf.view.recyclerview;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.LruCache;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.CheckResult;
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -87,6 +81,7 @@ public class RecyclerViewUtils {
             return null;
         }
         try {
+            LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
             Paint paint = new Paint();
             final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
             // Use 1/8th of the available memory for this memory cache.
@@ -98,10 +93,10 @@ public class RecyclerViewUtils {
                 View childAt = recyclerView.getChildAt(i);
                 ViewGroup.LayoutParams layoutParams = childAt.getLayoutParams();
                 int topMargin = 0, bottomMargin = 0;
-                if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
-                    ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) layoutParams;
-                    topMargin = marginLayoutParams.topMargin;
-                    bottomMargin = marginLayoutParams.bottomMargin;
+                if (layoutParams instanceof RecyclerView.LayoutParams) {
+                    RecyclerView.LayoutParams marginLayoutParams = (RecyclerView.LayoutParams) layoutParams;
+                    topMargin = marginLayoutParams.topMargin + linearLayoutManager.getTopDecorationHeight(childAt);
+                    bottomMargin = marginLayoutParams.bottomMargin + linearLayoutManager.getBottomDecorationHeight(childAt);
                 }
                 int topY = height + topMargin;
                 topIndex.add(topY);
