@@ -196,6 +196,7 @@ public class BitmapUtils {
 
     /**
      * 创建bitmap
+     * 适合未显示在UI界面上了的View
      *
      * @param view
      * @param width
@@ -204,7 +205,7 @@ public class BitmapUtils {
      */
     @Nullable
     @CheckResult
-    private Bitmap createBitmap(View view, int width, int height) {
+    public static Bitmap createBitmap(View view, int width, int height) {
         try {
             int measuredWidth = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
             int measuredHeight = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
@@ -222,13 +223,14 @@ public class BitmapUtils {
 
     /**
      * 创建bitmap
+     * 适合已经显示在UI界面上了的View
      *
      * @param v
      * @return
      */
     @Nullable
     @CheckResult
-    public Bitmap createBitmap(View v) {
+    public  static Bitmap createBitmap(View v) {
         try {
             Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                     Bitmap.Config.ARGB_8888);
