@@ -12,12 +12,18 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.ScrollView;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.arch.XXF;
+import com.xxf.view.recyclerview.RecyclerViewUtils;
 
 import java.nio.ByteBuffer;
 
@@ -224,13 +230,32 @@ public class BitmapUtils {
     /**
      * 创建bitmap
      * 适合已经显示在UI界面上了的View
+     * <p>
+     * 支持 显示在界面上的任意非滚动布局
+     * <p>
+     * 支持滚动布局支持如下:
+     * RecyclerView
+     * WebView
+     * NestedScrollView
+     * ScrollView
+     * <p>
+     * 注意:recyclerView 截取是在缓存中的item拼接的图片
      *
      * @param v
      * @return
      */
     @Nullable
     @CheckResult
-    public  static Bitmap createBitmap(View v) {
+    public static Bitmap createBitmap(View v) {
+        if (v instanceof WebView) {
+            return createBitmap((WebView) v);
+        } else if (v instanceof RecyclerView) {
+            return RecyclerViewUtils.shotRecyclerViewVisibleItems((RecyclerView) v);
+        } else if (v instanceof NestedScrollView) {
+            return createBitmap((NestedScrollView) v);
+        } else if (v instanceof ScrollView) {
+            return createBitmap((ScrollView) v);
+        }
         try {
             Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                     Bitmap.Config.ARGB_8888);
@@ -238,6 +263,112 @@ public class BitmapUtils {
             v.draw(canvas);
             return bitmap;
         } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 截取WebView的图片
+     *
+     * @param webView
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static Bitmap createBitmap(WebView webView) {
+        try {
+            //指定测量规则
+            webView.measure(0, 0);
+            //获取webView宽高
+            int width = webView.getMeasuredWidth();
+            int height = webView.getMeasuredHeight();
+            //设置缓存机制开启
+            webView.setDrawingCacheEnabled(true);
+            //创建缓存
+            webView.buildDrawingCache();
+            //根据webView宽高创建bitmap
+            Bitmap bm = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
+            //创建画布
+            Canvas bigCanvas = new Canvas(bm);
+            //绘制内容
+            webView.draw(bigCanvas);
+            return bm;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 截取ScrollView 截图
+     *
+     * @param scrollView
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static Bitmap createBitmap(ScrollView scrollView) {
+        try {
+            int h = 0;
+            Bitmap bitmap = null;
+            /**
+             * 一般来说只有一个child
+             */
+            for (int i = 0; i < scrollView.getChildCount(); i++) {
+                View childAt = scrollView.getChildAt(i);
+                h += childAt.getHeight();
+                if (childAt.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) childAt.getLayoutParams();
+                    h += marginLayoutParams.topMargin + marginLayoutParams.bottomMargin;
+                }
+            }
+            h += scrollView.getPaddingTop() + scrollView.getPaddingBottom();
+            bitmap = Bitmap.createBitmap(
+                    scrollView.getWidth(), h,
+                    Bitmap.Config.RGB_565
+            );
+            Canvas canvas = new Canvas(bitmap);//把创建的bitmap放到画布中去
+            scrollView.draw(canvas);//绘制canvas 画布
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 截取NestedScrollView 截图
+     *
+     * @param scrollView
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static Bitmap createBitmap(NestedScrollView scrollView) {
+        try {
+            int h = 0;
+            Bitmap bitmap = null;
+            /**
+             * 一般来说只有一个child
+             */
+            for (int i = 0; i < scrollView.getChildCount(); i++) {
+                View childAt = scrollView.getChildAt(i);
+                h += childAt.getHeight();
+                if (childAt.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) childAt.getLayoutParams();
+                    h += marginLayoutParams.topMargin + marginLayoutParams.bottomMargin;
+                }
+            }
+            h += scrollView.getPaddingTop() + scrollView.getPaddingBottom();
+            bitmap = Bitmap.createBitmap(
+                    scrollView.getWidth(), h,
+                    Bitmap.Config.RGB_565
+            );
+            Canvas canvas = new Canvas(bitmap);//把创建的bitmap放到画布中去
+            scrollView.draw(canvas);//绘制canvas 画布
+            return bitmap;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

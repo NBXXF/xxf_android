@@ -4,10 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -29,11 +31,14 @@ import com.xxf.arch.utils.NumberUtils;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.SystemUtils;
 import com.xxf.view.cardview.CardView;
+import com.xxf.view.utils.BitmapUtils;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.view.ReverseFrameLayout;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -304,6 +309,19 @@ public class MainActivity extends XXFActivity {
                         System.out.println("============>f4:" + NumberUtils.max(new BigDecimal(1), new BigDecimal(3.5), new BigDecimal(2.5)));
                         System.out.println("============>f4:" + NumberUtils.min(new BigDecimal(1), new BigDecimal(-3.5), new BigDecimal(2.5)));
 
+                        String picFilePath = "aaa.png";
+                        Bitmap cacheBitmap = BitmapUtils.createBitmap((View) findViewById(R.id.scrollView));
+                        File shareFile = new File(Environment.getExternalStorageDirectory(), picFilePath);
+                        try {
+                            if (!shareFile.exists()) {
+                                shareFile.createNewFile();
+                            }
+                            saveImage(shareFile, cacheBitmap, 100);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
                         SystemUtils.shareText(MainActivity.this, "http://www.baidu.com").subscribe();
                     }
                 });
@@ -562,6 +580,19 @@ public class MainActivity extends XXFActivity {
                     }
                 });
         //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
+    }
+
+
+    public static void saveImage(File file, Bitmap bitmap, int quality) throws IOException {
+        if (bitmap == null || file == null) {
+            return;
+        }
+        FileOutputStream fos = new FileOutputStream(file);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+        byte[] bytes = stream.toByteArray();
+        fos.write(bytes);
+        fos.close();
     }
 
     @Override
