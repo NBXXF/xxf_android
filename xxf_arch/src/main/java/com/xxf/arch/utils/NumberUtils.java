@@ -2149,4 +2149,22 @@ public class NumberUtils {
     public static int compare(byte x, byte y) {
         return x - y;
     }
+
+    /**
+     * 比较任意数字大小
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static int compare(Object x, Object y) {
+        try {
+            BigDecimal xBd = innerConvertDecimal(x);
+            BigDecimal yBd = innerConvertDecimal(y);
+            return xBd.compareTo(yBd);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
