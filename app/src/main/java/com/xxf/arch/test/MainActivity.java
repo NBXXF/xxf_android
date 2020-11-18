@@ -301,6 +301,8 @@ public class MainActivity extends XXFActivity {
                         System.out.println("============>f3:" + NumberUtils.inClosedRange(new BigDecimal(1), new BigDecimal(1), new BigDecimal(2)));
                         System.out.println("============>f3:" + NumberUtils.inOpenedRange(new BigDecimal(1), new BigDecimal(1), new BigDecimal(2)));
                         System.out.println("============>f4:" + NumberUtils.compare(1, 3.5));
+                        System.out.println("============>f4:" + NumberUtils.max(new BigDecimal(1), new BigDecimal(3.5), new BigDecimal(2.5)));
+                        System.out.println("============>f4:" + NumberUtils.min(new BigDecimal(1), new BigDecimal(-3.5), new BigDecimal(2.5)));
 
                         SystemUtils.shareText(MainActivity.this, "http://www.baidu.com").subscribe();
                     }

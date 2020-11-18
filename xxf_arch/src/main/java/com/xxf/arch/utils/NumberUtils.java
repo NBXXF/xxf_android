@@ -424,19 +424,46 @@ public class NumberUtils {
         return b1.min(b2);
     }
 
+    @NonNull
+    public static BigDecimal min(BigDecimal... array) {
+        try {
+            if (array != null && array.length > 0) {
+                BigDecimal min = array[0];
+                for (BigDecimal bigDecimal : array) {
+                    if (bigDecimal.compareTo(min) < 0) {
+                        min = bigDecimal;
+                    }
+                }
+                return min;
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return new BigDecimal(Integer.MIN_VALUE);
+    }
+
     /**
      * 最大值
      *
-     * @param b1
-     * @param b2
-     * @return
+     * @param array 数字
+     * @return 最大值
      */
     @NonNull
-    public static BigDecimal max(BigDecimal b1, BigDecimal b2) {
-        if (b1 == null || b2 == null) {
-            return new BigDecimal(0);
+    public static BigDecimal max(final BigDecimal... array) {
+        try {
+            if (array != null && array.length > 0) {
+                BigDecimal max = array[0];
+                for (BigDecimal bigDecimal : array) {
+                    if (bigDecimal.compareTo(max) > 0) {
+                        max = bigDecimal;
+                    }
+                }
+                return max;
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
-        return b1.max(b2);
+        return new BigDecimal(Integer.MAX_VALUE);
     }
 
     /**
