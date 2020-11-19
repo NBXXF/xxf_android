@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -245,6 +246,9 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
+                        XXF.getLogger().d("===========>xxxx:"+parse.getPath());
+                        XXF.getLogger().d("===========>xxxx:"+parse.getPathSegments());
                         Log.d("==========>yes:", "" + JsonUtils.toBean(" {\n" +
                                 "    \"p\": \"51.2%\"\n" +
                                 "  }", TestModel.class));

@@ -5,4 +5,8 @@
         <attr name="maxHeightRatio" format="reference|float" />
         <attr name="maxHeight" format="reference|dimension" />
     </declare-styleable>
+
+    <declare-styleable name="ScaleLayout">
+        <attr name="scaleRatio" format="reference|float" />
+    </declare-styleable>
 </resources>
