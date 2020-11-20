@@ -41,12 +41,12 @@ public class ScaleFrameLayout extends FrameLayout {
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.ScaleLayout);
         if (a.hasValue(R.styleable.ScaleLayout_scaleRatio)) {
-            scaleRatio = a.getFloat(R.styleable.ScaleLayout_scaleRatio, 1);
+            scaleRatio = a.getFloat(R.styleable.ScaleLayout_scaleRatio, 1.0f);
         }
         a.recycle();
     }
 
-    private float scaleRatio = 0.6f;
+    private float scaleRatio = 1.0f;
 
     private void scaleViewGroup(ViewGroup viewGroup) {
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
