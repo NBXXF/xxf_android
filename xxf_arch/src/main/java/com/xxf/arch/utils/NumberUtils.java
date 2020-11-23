@@ -247,8 +247,30 @@ public class NumberUtils {
         } else if (number instanceof BigInteger) {
             return new BigDecimal((BigInteger) number);
         } else if (number instanceof Float) {
+            /**
+             * 直接转有精度丢失 系统16位截取
+             */
+            BigDecimal bigDecimal = new BigDecimal(String.valueOf(number));
+            if (bigDecimal.scale() < 16) {
+                return bigDecimal;
+            }
+            /**
+             *直接构造函数又有 四舍五入的问题
+             * 如:1.9->1.89999997
+             */
             return new BigDecimal((Float) number);
         } else if (number instanceof Double) {
+            /**
+             * 直接转有精度丢失 系统16位截取
+             */
+            BigDecimal bigDecimal = new BigDecimal(String.valueOf(number));
+            if (bigDecimal.scale() < 16) {
+                return bigDecimal;
+            }
+            /**
+             *直接构造函数又有 四舍五入的问题
+             * 如:1.9->1.89999997
+             */
             return new BigDecimal((double) number);
         } else if (number instanceof String) {
             return new BigDecimal((String) number);
