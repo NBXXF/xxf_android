@@ -72,7 +72,7 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Activi
      */
     @Nullable
     @Override
-    public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public  View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (this.contentView != null) {
             ViewGroup parent = (ViewGroup) this.contentView.getParent();
             if (parent != null) {
@@ -123,7 +123,7 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Activi
      * 会重复调用 禁止复写
      */
     @Override
-    public final void onDestroyView() {
+    public void onDestroyView() {
         super.onDestroyView();
     }
 
