@@ -1,13 +1,19 @@
 package com.xxf.arch.http.adapter.rxjava2;
 
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
-import com.xxf.arch.http.cache.RxHttpCache;
 import com.xxf.arch.http.cache.RxHttpCacheFactory;
+import com.xxf.arch.http.cache.transformer.FirstCacheTransformer;
+import com.xxf.arch.http.cache.transformer.FirstRemoteTransformer;
+import com.xxf.arch.http.cache.transformer.IfCacheTransformer;
+import com.xxf.arch.http.cache.transformer.LastCacheTransformer;
+import com.xxf.arch.http.cache.transformer.OnlyCacheTransformer;
+import com.xxf.arch.http.cache.transformer.OnlyRemoteTransformer;
 
 import java.lang.reflect.Type;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.Scheduler;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -67,20 +73,44 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
     }
 
     public Object defaultAdapt(Call<R> call, @androidx.annotation.Nullable Object[] args) {
-        Observable<Response<R>> responseObservable = isAsync
-                ? new CallEnqueueObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), this.rxCacheType)
-                : new CallExecuteObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), this.rxCacheType);
+        Observable<Response<R>> responseObservable = isAsync ? new CallEnqueueObservable<>(call) : new CallExecuteObservable<>(call);
         //参数传递的cacheType
         if (args != null) {
             for (Object arg : args) {
                 if (arg != null && arg instanceof CacheType) {
-                    responseObservable = isAsync
-                            ? new CallEnqueueObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), (CacheType) arg)
-                            : new CallExecuteObservable<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache), (CacheType) arg);
+                    this.rxCacheType = (CacheType) arg;
                     break;
                 }
             }
         }
+        if (this.rxCacheType == null) {
+            this.rxCacheType = CacheType.onlyRemote;
+        }
+        ObservableTransformer<Response<R>, Response<R>> cacheTransformer;
+        switch (this.rxCacheType) {
+            case firstCache:
+                cacheTransformer = new FirstCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
+                break;
+            case firstRemote:
+                cacheTransformer = new FirstRemoteTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
+                break;
+            case ifCache:
+                cacheTransformer = new IfCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
+                break;
+            case onlyCache:
+                cacheTransformer = new OnlyCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
+                break;
+            case lastCache:
+                cacheTransformer = new LastCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
+                break;
+            case onlyRemote:
+                cacheTransformer = new OnlyRemoteTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
+                break;
+            default:
+                cacheTransformer = new OnlyRemoteTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
+                break;
+        }
+        responseObservable = responseObservable.compose(cacheTransformer);
 
         Observable<?> observable;
         if (isResult) {

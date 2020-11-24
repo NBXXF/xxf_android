@@ -3,10 +3,9 @@ package com.xxf.arch.http.cache;
 
 
 import android.os.Build;
+import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
-
-import android.text.TextUtils;
 
 import com.xxf.arch.http.cache.disklrucache.SimpleDiskLruCache;
 import com.xxf.arch.http.interceptor.HttpLoggingInterceptor;
@@ -16,8 +15,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Callable;
 
+import io.reactivex.Observable;
 import io.reactivex.annotations.Nullable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -115,6 +117,26 @@ public class RxHttpCache {
         return null;
     }
 
+    /**
+     * 异步缓存
+     *
+     * @param response
+     * @param <T>
+     */
+    @Nullable
+    public <T> void putAsync(final Response<T> response) {
+        Observable
+                .fromCallable(new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        put(response);
+                        return true;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
     @Nullable
     public <T> void put(Response<T> response) {
         if (cache == null) {
@@ -124,8 +146,9 @@ public class RxHttpCache {
         String contentType = response.headers().get("Content-Type");
         /**
          * 只缓存json
+         * 且是成功状态
          */
-        boolean supportContentCache = contentType != null && contentType.toLowerCase().startsWith("application/json");
+        boolean supportContentCache = contentType != null && contentType.toLowerCase().startsWith("application/json") && response.isSuccessful();
         if (supportContentCache) {
             Request request = response.raw().request();
             if (TextUtils.equals(requestMethod, "GET")) {

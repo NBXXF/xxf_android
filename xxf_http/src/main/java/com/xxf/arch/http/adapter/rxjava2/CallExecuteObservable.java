@@ -1,13 +1,19 @@
+/*
+ * Copyright (C) 2016 Jake Wharton
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.xxf.arch.http.adapter.rxjava2;
-
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import com.xxf.arch.http.cache.RxHttpCache;
-
-import java.net.ConnectException;
-import java.net.UnknownHostException;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -15,27 +21,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.CompositeException;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
-import retrofit2.CacheType;
 import retrofit2.Call;
-import retrofit2.OkHttpCallConvertor;
 import retrofit2.Response;
 
-/**
- * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 增加rxcache控制模式
- */
-@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 final class CallExecuteObservable<T> extends Observable<Response<T>> {
     private final Call<T> originalCall;
-    private RxHttpCache rxHttpCache;
-    private CacheType rxCacheType;
-    boolean readCache;
 
-    CallExecuteObservable(Call<T> originalCall, RxHttpCache rxHttpCache, CacheType rxCacheType) {
+    CallExecuteObservable(Call<T> originalCall) {
         this.originalCall = originalCall;
-        this.rxHttpCache = rxHttpCache;
-        this.rxCacheType = rxCacheType;
-        this.readCache = this.rxCacheType != CacheType.onlyRemote;
     }
 
     @Override
@@ -47,134 +40,10 @@ final class CallExecuteObservable<T> extends Observable<Response<T>> {
         if (disposable.isDisposed()) {
             return;
         }
-        boolean readCache = this.rxCacheType != CacheType.onlyRemote;
-        switch (this.rxCacheType) {
-            case firstCache: {
-                //先拿缓存 onNext一次
-                try {
-                    Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
-                    if (response != null) {
-                        observer.onNext(response);
-                    }
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                } finally {
-                    //执行网络请求
-                    executeCall(observer, call, disposable);
-                }
-            }
-            break;
-            case firstRemote: {
-                executeCall(observer, call, disposable);
-            }
-            break;
-            case onlyCache: {
-                try {
-                    Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
-                    observer.onNext(response);
-                    observer.onComplete();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                    try {
-                        observer.onError(e);
-                    } catch (Exception inner) {
-                        Exceptions.throwIfFatal(inner);
-                        RxJavaPlugins.onError(new CompositeException(e, inner));
-                    }
-                }
-            }
-            break;
-            case ifCache: {
-                try {
-                    Response<T> response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
-                    if (response != null) {
-                        observer.onNext(response);
-                        observer.onComplete();
-                    } else {
-                        executeCall(observer, call, disposable);
-                    }
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                    try {
-                        observer.onError(e);
-                    } catch (Exception inner) {
-                        Exceptions.throwIfFatal(inner);
-                        RxJavaPlugins.onError(new CompositeException(e, inner));
-                    }
-                }
-            }
-            break;
-            case onlyRemote: {
-                executeCall(observer, call, disposable);
-            }
-            break;
-            default: {
-                executeCall(observer, call, disposable);
-            }
-            break;
-        }
-    }
 
-    /**
-     * 缓存
-     *
-     * @param response
-     */
-    private void cacheRxSafe(Response<T> response) {
-        try {
-            rxHttpCache.put(response);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void executeCall(Observer<? super Response<T>> observer, Call<T> call, CallDisposable disposable) {
         boolean terminated = false;
         try {
-            Response<T> response = null;
-            try {
-                response = call.execute();
-                cacheRxSafe(response);
-            } catch (ConnectException e) {
-                //链接错误,没网了,读取缓存
-                if (readCache) {
-                    try {
-                        response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
-                    //有缓存
-                    if (response != null && !disposable.isDisposed()) {
-                        observer.onNext(response);
-                        terminated = true;
-                        observer.onComplete();
-                        //不继续抛异常
-                        return;
-                    }
-                }
-                //抛出去
-                throw e;
-            } catch (UnknownHostException e) {
-                //链接错误,没网了,读取缓存
-                if (readCache) {
-                    try {
-                        response = (Response<T>) this.rxHttpCache.get(call.request(), new OkHttpCallConvertor<T>().apply(call));
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                    }
-                    //有缓存
-                    if (response != null && !disposable.isDisposed()) {
-                        observer.onNext(response);
-                        terminated = true;
-                        observer.onComplete();
-                        //不继续抛异常
-                        return;
-                    }
-                }
-                //抛出去
-                throw e;
-            }
-
+            Response<T> response = call.execute();
             if (!disposable.isDisposed()) {
                 observer.onNext(response);
             }

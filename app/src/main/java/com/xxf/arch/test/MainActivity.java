@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
@@ -309,9 +310,9 @@ public class MainActivity extends XXFActivity {
                         System.out.println("============>f4:" + NumberUtils.min(new BigDecimal(1), new BigDecimal(-3.5), new BigDecimal(2.5)));
 */
                         float d = 1.9f;
-                        System.out.println("============>fdd00:"+ new BigDecimal(d).scale());
-                        System.out.println("============>fdd01:"+ new BigDecimal("1.98387").scale());
-                        System.out.println("============>fdd002:"+ 1.12534564365654365436543654654356436565436543654);
+                        System.out.println("============>fdd00:" + new BigDecimal(d).scale());
+                        System.out.println("============>fdd01:" + new BigDecimal("1.98387").scale());
+                        System.out.println("============>fdd002:" + 1.12534564365654365436543654654356436565436543654);
                         System.out.println("============>fdd:" + NumberUtils.formatRoundDown("1.9", 0, 8));
                         System.out.println("============>fdd2:" + NumberUtils.formatRoundDown(d, 0, 8));
                         System.out.println("============>fdd3:" + formatNumberDynamicScaleNoGroup(d, 11, 0, 8, true));
@@ -337,25 +338,18 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        Observable.fromCallable(new Callable<Object>() {
-                            @Override
-                            public Object call() throws Exception {
-                                return XXF.getApiService(LoginApiService.class)
-                                        .getCity(CacheType.firstCache).blockingFirst();
-                            }
-                        }).subscribeOn(Schedulers.newThread())
-                                .subscribe(new Consumer<Object>() {
-                                    @Override
-                                    public void accept(Object o) throws Exception {
-                                        XXF.getLogger().d("==========>retry ye222:" + o + " thread:" + Thread.currentThread().getName());
-                                    }
-                                });
-                      /*  XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.firstCache)
+                        XXF.getApiService(LoginApiService.class)
+                                .getCity(CacheType.lastCache)
                                 .subscribe(new Consumer<JsonObject>() {
+                                    boolean first = true;
+
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {
+                                        if (first) {
+                                            first = false;
+                                            XXF.getLogger().d("==========>retry ye first:" + jsonObject + " thread:" + Thread.currentThread().getName());
+                                            throw new RuntimeException("xxx");
+                                        }
                                         XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {
@@ -363,7 +357,7 @@ public class MainActivity extends XXFActivity {
                                     public void accept(Throwable throwable) throws Exception {
                                         XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
                                     }
-                                });*/
+                                });
                     }
                 });
         findViewById(R.id.file)

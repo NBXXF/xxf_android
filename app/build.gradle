@@ -48,4 +48,6 @@ dependencies {
 
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'
+
+    //compile 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 }

@@ -25,9 +25,9 @@ public class RxHttpCacheFactory {
         try {
             String dir = cacheDirectoryProvider.getDirectory();
             long size = cacheDirectoryProvider.maxSize();
-            rxHttpCache = cacheMap.get(cacheDirectoryProvider.getDirectory());
+            rxHttpCache = cacheMap.get(dir);
             if (rxHttpCache == null) {
-                cacheMap.put(dir, new RxHttpCache(new File(dir), size));
+                cacheMap.put(dir, rxHttpCache = new RxHttpCache(new File(dir), size));
             }
         } catch (Exception e) {
             e.printStackTrace();
