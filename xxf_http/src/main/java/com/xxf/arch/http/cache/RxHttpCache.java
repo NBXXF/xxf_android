@@ -101,7 +101,7 @@ public class RxHttpCache {
                 String recordTimeKey = CACHE_PREFIX + urlKey;
                 SimpleDiskLruCache.StringEntry recordTimeEntry = diskLruCache.getString(recordTimeKey);
                 long lastCacheTime = Long.parseLong(recordTimeEntry.getString());
-                return lastCacheTime + cacheTime > System.currentTimeMillis();
+                return (lastCacheTime + cacheTime) > System.currentTimeMillis();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.xxf.arch.http.cache.RxHttpCache;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -64,10 +65,10 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                     public Response<R> call() throws Exception {
                         String cacheTime = call.request().header(KEY_HEADER_CACHE);
                         /**
-                         * 默认永久缓存
+                         * 默认缓存一天
                          */
                         if (TextUtils.isEmpty(cacheTime)) {
-                            cacheTime = String.valueOf(Long.MAX_VALUE);
+                            cacheTime = String.valueOf(TimeUnit.DAYS.toMillis(1));
                         }
                         Response<R> response = (Response<R>) rxHttpCache.get(call.request(), new OkHttpCallConvertor<R>().apply(call), Long.parseLong(cacheTime));
                         return response;

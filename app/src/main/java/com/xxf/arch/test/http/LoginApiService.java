@@ -21,6 +21,13 @@ import retrofit2.http.Headers;
 public interface LoginApiService {
 
     /**
+     * @param cacheType
+     * @return
+     */
+    @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    Observable<JsonObject> getCity(@Cache CacheType cacheType);
+
+    /**
      * 缓存5s
      * 添加在方法上     @Headers("cache:5000")
      *
@@ -29,7 +36,7 @@ public interface LoginApiService {
      */
     @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
     @Headers("cache:5000")
-    Observable<JsonObject> getCity(@Cache CacheType cacheType);
+    Observable<JsonObject> getCity2(@Cache CacheType cacheType);
 
     /**
      * 缓存
@@ -39,7 +46,7 @@ public interface LoginApiService {
      * @return
      */
     @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
-    Observable<JsonObject> getCity2(@Header("cache") long time, @Cache CacheType cacheType);
+    Observable<JsonObject> getCity3(@Header("cache") long time, @Cache CacheType cacheType);
 
 
     @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
