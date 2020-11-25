@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.JsonAdapter;
 import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
 import com.xxf.arch.json.typeadapter.format.formatobject.TimeFormatObject;
+import com.xxf.arch.json.typeadapter.format.impl.number.Number_percent_auto_2_2_DOWN_FormatTypeAdapter;
+import com.xxf.arch.json.typeadapter.format.impl.number.Number_percent_auto_FormatTypeAdapter;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -19,6 +21,8 @@ import java.util.Locale;
 public class FormatDemoModel {
 
     /**
+     * 更多模板参考com.xxf.arch.json.typeadapter.format.impl.number包下面
+     * com.xxf.arch.json.typeadapter.format.impl.time包下面
      * 文档参考 https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html
      *
      * 测试数据
@@ -77,7 +81,7 @@ public class FormatDemoModel {
     /**
      * 固定两位小数格式化
      */
-    public class MyPercentNumberObjectFormatTypeAdapter extends PercentNumberObjectFormatTypeAdapter {
+    public class MyPercentNumberObjectFormatTypeAdapter extends Number_percent_auto_FormatTypeAdapter {
 
         @Override
         public String format(@NonNull BigDecimal origin) throws Exception {
@@ -92,7 +96,7 @@ public class FormatDemoModel {
     /**
      * 最大两位百分数格式化
      */
-    public class MyPercentNumberObjectFormatTypeAdapter2 extends PercentNumberObjectFormatTypeAdapter {
+    public class MyPercentNumberObjectFormatTypeAdapter2 extends Number_percent_auto_FormatTypeAdapter {
 
         @Override
         public String format(@NonNull BigDecimal origin) throws Exception {
@@ -107,7 +111,7 @@ public class FormatDemoModel {
     /**
      * 有符号小数数格式化
      */
-    public class MyPercentNumberObjectFormatTypeAdapter3 extends PercentNumberObjectFormatTypeAdapter {
+    public class MyPercentNumberObjectFormatTypeAdapter3 extends Number_percent_auto_FormatTypeAdapter {
 
         @Override
         public String format(@NonNull BigDecimal origin) throws Exception {
@@ -163,9 +167,9 @@ public class FormatDemoModel {
     public NumberFormatObject num1;
 
     /**
-     * {origin=0.1273676543, format=12.74%},
+     * 异步分割框架自动格式化处理 {origin=0.1273676543, format=12.74%},
      */
-    @JsonAdapter(MyPercentNumberObjectFormatTypeAdapter.class)
+    @JsonAdapter(Number_percent_auto_2_2_DOWN_FormatTypeAdapter.class)
     public NumberFormatObject percent;
 
     /**

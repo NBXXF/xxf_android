@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -17,10 +18,14 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.json.JsonUtils;
+import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
@@ -30,6 +35,7 @@ import com.xxf.view.actiondialog.SystemUtils;
 import com.xxf.view.cardview.CardView;
 import com.xxf.view.utils.BitmapUtils;
 import com.xxf.view.utils.StatusBarUtils;
+import com.xxf.view.view.ReverseFrameLayout;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -242,7 +248,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                     /*   Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
+                        Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
                         XXF.getLogger().d("===========>xxxx:" + parse.getPath());
                         XXF.getLogger().d("===========>xxxx:" + parse.getPathSegments());
                         Log.d("==========>yes:", "" + JsonUtils.toBean(" {\n" +
@@ -308,7 +314,6 @@ public class MainActivity extends XXFActivity {
                         System.out.println("============>f4:" + NumberUtils.compare(1, 3.5));
                         System.out.println("============>f4:" + NumberUtils.max(new BigDecimal(1), new BigDecimal(3.5), new BigDecimal(2.5)));
                         System.out.println("============>f4:" + NumberUtils.min(new BigDecimal(1), new BigDecimal(-3.5), new BigDecimal(2.5)));
-*/
                         float d = 1.9f;
                         System.out.println("============>fdd00:" + new BigDecimal(d).scale());
                         System.out.println("============>fdd01:" + new BigDecimal("1.98387").scale());
