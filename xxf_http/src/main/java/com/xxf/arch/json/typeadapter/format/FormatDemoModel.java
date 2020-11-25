@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.JsonAdapter;
 import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
 import com.xxf.arch.json.typeadapter.format.formatobject.TimeFormatObject;
+import com.xxf.arch.json.typeadapter.format.impl.number.Number_percent_2_2_DOWN_Signed_FormatTypeAdapter;
 import com.xxf.arch.json.typeadapter.format.impl.number.Number_percent_auto_2_2_DOWN_FormatTypeAdapter;
 import com.xxf.arch.json.typeadapter.format.impl.number.Number_percent_auto_FormatTypeAdapter;
 
@@ -179,9 +180,9 @@ public class FormatDemoModel {
     public NumberFormatObject percent2;
 
     /**
-     * {origin=-35.1273676543, format=-3512.74%}
+     * {origin=-35.1273676543, format=-35.74%}
      */
-    @JsonAdapter(MyPercentNumberObjectFormatTypeAdapter3.class)
+    @JsonAdapter(Number_percent_2_2_DOWN_Signed_FormatTypeAdapter.class)
     public NumberFormatObject percent3;
 
     /**

@@ -30,7 +30,9 @@ public class Number_percent_2_2_DOWN_Signed_FormatTypeAdapter extends NumberObje
         try {
             DecimalFormat decimalFormat = (DecimalFormat) numberInstance;
             decimalFormat.setPositivePrefix("+");
+            decimalFormat.setPositiveSuffix("%");
             decimalFormat.setNegativePrefix("-");
+            decimalFormat.setNegativeSuffix("%");
         } catch (Exception e) {
             e.printStackTrace();
         }
