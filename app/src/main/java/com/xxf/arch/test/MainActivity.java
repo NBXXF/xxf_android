@@ -343,7 +343,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        XXF.getApiService(LoginApiService.class)
+                       /* XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.lastCache)
                                 .subscribe(new Consumer<JsonObject>() {
                                     boolean first = true;
@@ -355,6 +355,20 @@ public class MainActivity extends XXFActivity {
                                             XXF.getLogger().d("==========>retry ye first:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                             throw new RuntimeException("xxx");
                                         }
+                                        XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
+                                    }
+                                }, new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
+                                    }
+                                });*/
+
+                        XXF.getApiService(LoginApiService.class)
+                                .getCity(CacheType.firstCache)
+                                .subscribe(new Consumer<JsonObject>() {
+                                    @Override
+                                    public void accept(JsonObject jsonObject) throws Exception {
                                         XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {

@@ -1,7 +1,5 @@
 package retrofit2;
 
-import java.lang.reflect.Field;
-
 import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 
@@ -13,9 +11,6 @@ public class OkHttpCallConvertor<T> implements Function<Call<T>, Converter<Respo
 
     @Override
     public Converter<ResponseBody, T> apply(Call<T> call) throws Exception {
-        OkHttpCall<T> okCall = (OkHttpCall<T>) call;
-        Field responseConverter = okCall.getClass().getDeclaredField("responseConverter");
-        responseConverter.setAccessible(true);
-        return (Converter<ResponseBody, T>) responseConverter.get(okCall);
+        return (Converter<ResponseBody, T>) ((OkHttpCall<T>) call).responseConverter;
     }
 }

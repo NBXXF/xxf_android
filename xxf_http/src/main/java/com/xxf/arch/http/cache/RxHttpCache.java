@@ -38,11 +38,12 @@ import retrofit2.Response;
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class RxHttpCache {
     private static final int VERSION = 201105;
-    private SimpleDiskLruCache cache;
+    private SimpleDiskLruCache diskLruCache;
+    private static final String CACHE_PREFIX = "http_prefix_";
 
     public RxHttpCache(File directory, long maxSize) {
         try {
-            cache = SimpleDiskLruCache.open(directory, VERSION, maxSize);
+            diskLruCache = SimpleDiskLruCache.open(directory, VERSION, maxSize);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,14 +58,16 @@ public class RxHttpCache {
     }
 
     @Nullable
-    public <T> Response<T> get(Request request, Converter<ResponseBody, T> responseConverter) {
-        if (cache == null) {
+    public <T> Response<T> get(Request request, Converter<ResponseBody, T> responseConverter, long cacheTime) {
+        if (diskLruCache == null) {
             return null;
         }
         String requestMethod = request.method();
         if (TextUtils.equals(requestMethod, "GET")) {
             String key = key(request.url());
-            return getResponseByKey(key, responseConverter);
+            if (checkCache(key, cacheTime)) {
+                return getResponseByKey(key, responseConverter);
+            }
         } else if (requestMethod.equals("POST")) {
             try {
                 Buffer buffer = new Buffer();
@@ -77,13 +80,49 @@ public class RxHttpCache {
                 }
                 if (HttpLoggingInterceptor.isPlaintext(buffer)) {
                     String key = key(request.url() + buffer.clone().readString(charset));
-                    return getResponseByKey(key, responseConverter);
+                    if (checkCache(key, cacheTime)) {
+                        return getResponseByKey(key, responseConverter);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return null;
+    }
+
+    /**
+     * @param urlKey
+     * @return
+     */
+    private boolean checkCache(String urlKey, long cacheTime) {
+        if (diskLruCache != null && cacheTime >= 0) {
+            try {
+                String recordTimeKey = CACHE_PREFIX + urlKey;
+                SimpleDiskLruCache.StringEntry recordTimeEntry = diskLruCache.getString(recordTimeKey);
+                long lastCacheTime = Long.parseLong(recordTimeEntry.getString());
+                return lastCacheTime + cacheTime > System.currentTimeMillis();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 记录缓存时间
+     *
+     * @param urlKey
+     */
+    private void recordCacheTime(String urlKey) {
+        if (diskLruCache != null) {
+            String recordTimeKey = CACHE_PREFIX + urlKey;
+            try {
+                diskLruCache.put(recordTimeKey, String.valueOf(System.currentTimeMillis()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -97,7 +136,7 @@ public class RxHttpCache {
     private <T> Response<T> getResponseByKey(String key, Converter<ResponseBody, T> responseConverter) {
         SimpleDiskLruCache.StringEntry stringEntry = null;
         try {
-            stringEntry = cache.getString(key);
+            stringEntry = diskLruCache.getString(key);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,7 +178,7 @@ public class RxHttpCache {
 
     @Nullable
     public <T> void put(Response<T> response) {
-        if (cache == null) {
+        if (diskLruCache == null) {
             return;
         }
         String requestMethod = response.raw().request().method();
@@ -154,7 +193,8 @@ public class RxHttpCache {
             if (TextUtils.equals(requestMethod, "GET")) {
                 String key = key(request.url());
                 try {
-                    cache.put(key, JsonUtils.toJsonString(response.body()));
+                    diskLruCache.put(key, JsonUtils.toJsonString(response.body()));
+                    recordCacheTime(key);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -171,7 +211,8 @@ public class RxHttpCache {
                     if (HttpLoggingInterceptor.isPlaintext(buffer)) {
                         String key = key(request.url() + buffer.clone().readString(charset));
                         try {
-                            cache.put(key, JsonUtils.toJsonString(response.body()));
+                            diskLruCache.put(key, JsonUtils.toJsonString(response.body()));
+                            recordCacheTime(key);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

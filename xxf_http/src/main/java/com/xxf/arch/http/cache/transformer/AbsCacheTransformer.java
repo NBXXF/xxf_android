@@ -1,5 +1,7 @@
 package com.xxf.arch.http.cache.transformer;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.xxf.arch.http.cache.RxHttpCache;
@@ -20,6 +22,7 @@ import retrofit2.Response;
  * @CreateDate: 2017/11/24 10:44
  */
 public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Response<R>, Response<R>> {
+    private static final String KEY_HEADER_CACHE = "cache";
     final RxHttpCache rxHttpCache;
     final Call<R> call;
 
@@ -59,7 +62,14 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                 .fromCallable(new Callable<Response<R>>() {
                     @Override
                     public Response<R> call() throws Exception {
-                        Response<R> response = (Response<R>) rxHttpCache.get(call.request(), new OkHttpCallConvertor<R>().apply(call));
+                        String cacheTime = call.request().header(KEY_HEADER_CACHE);
+                        /**
+                         * 默认永久缓存
+                         */
+                        if (TextUtils.isEmpty(cacheTime)) {
+                            cacheTime = String.valueOf(Long.MAX_VALUE);
+                        }
+                        Response<R> response = (Response<R>) rxHttpCache.get(call.request(), new OkHttpCallConvertor<R>().apply(call), Long.parseLong(cacheTime));
                         return response;
                     }
                 })

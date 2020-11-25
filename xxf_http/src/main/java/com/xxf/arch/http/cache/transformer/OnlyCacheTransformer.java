@@ -10,7 +10,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * @Description: 只从本地缓存中拿取,没有缓存
+ * @Description: 只从本地缓存中拿取, 没有缓存立即compelete Observale.empty
  * @Author: XGod
  * @CreateDate: 2020/11/24 10:53
  */

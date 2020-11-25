@@ -16,6 +16,7 @@ import retrofit2.Response;
  */
 public class IfCacheTransformer<R> extends AbsCacheTransformer<R> {
 
+
     public IfCacheTransformer(@NonNull Call<R> call, RxHttpCache rxHttpCache) {
         super(call, rxHttpCache);
     }
