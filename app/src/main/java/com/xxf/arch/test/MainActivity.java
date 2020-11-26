@@ -54,6 +54,7 @@ import java.util.concurrent.Callable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -259,8 +260,8 @@ public class MainActivity extends XXFActivity {
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
 
-                        String url = "qweqwe";
-                        // String url = "/activity/test";
+                        /*    String url = "qweqwe";*/
+                        String url = "/activity/test";
                         ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
                             @Override
                             public void onArrival(Postcard postcard) {
@@ -367,11 +368,18 @@ public class MainActivity extends XXFActivity {
 
                         XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.firstCache)
+                                .subscribeOn(Schedulers.newThread())
                                 .compose(XXF.bindToErrorNotice())
-                                .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
+                                //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
                                 .subscribe(new Consumer<JsonObject>() {
+                                    boolean first = true;
+
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {
+                                       /* if (first) {
+                                            first = false;
+                                            throw new RuntimeException("xxxx");
+                                        }*/
                                         XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {
@@ -687,6 +695,11 @@ public class MainActivity extends XXFActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("======>onActResult:", "" + this + "_");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
