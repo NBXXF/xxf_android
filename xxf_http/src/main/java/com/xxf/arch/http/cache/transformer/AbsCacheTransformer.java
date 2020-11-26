@@ -47,6 +47,7 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                 .doOnNext(new Consumer<Response<R>>() {
                     @Override
                     public void accept(Response<R> rResponse) throws Exception {
+                        System.out.println("==========>retry cached");
                         rxHttpCache.putAsync(rResponse);
                     }
                 });

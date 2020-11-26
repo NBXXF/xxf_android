@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.facade.Postcard;
@@ -54,7 +53,6 @@ import java.util.concurrent.Callable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -367,8 +365,7 @@ public class MainActivity extends XXFActivity {
                                 });*/
 
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.firstCache)
-                                .subscribeOn(Schedulers.newThread())
+                                .getCity(CacheType.lastCache)
                                 .compose(XXF.bindToErrorNotice())
                                 //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
                                 .subscribe(new Consumer<JsonObject>() {

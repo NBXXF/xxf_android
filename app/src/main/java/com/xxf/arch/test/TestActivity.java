@@ -45,7 +45,7 @@ public class TestActivity extends XXFActivity {
         });
 
         XXF.getApiService(LoginApiService.class)
-                .getCity(CacheType.firstCache)
+                .getCity(CacheType.lastCache)
                 .compose(XXF.bindToErrorNotice())
                 //  .as(XXF.bindLifecycle(this, Lifecycle.Event.ON_DESTROY))
                 .subscribe(new Consumer<JsonObject>() {
