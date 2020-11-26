@@ -33,27 +33,101 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 
 ##### http请求
       ``` 1. http接口interface声明（与retrofit十分类似)
-      @BaseUrl(com.tokentm.businesscard.config.BuildConfig.API_URL) //必选;baseurl 为retrofit的基础路由,比如:http://www.baidu.com/
-      @Interceptor({TokenInterceptor.class})  //可选;拦截器 继承自okhttp3.Interceptor
-      @NetworkInterceptor({MyLoggerInterceptor.class})
-      @GsonInterceptor(GlobalGsonConvertInterceptor.class) //可选; json或者gson转换拦截器 继承自com.xxf.arch.http.converter.gson.GsonConvertInterceptor
-      public interface BackupApiService {
-      
-      
-       @GET("config/question")
-       Observable<ResponseDTO<List<SecurityQuestionDTO>>> backupUpConfigQuestionQuery();
-       
-       
-       }
-       
-       //缓存模式 在参数中加注解,@Cache 优先级高于 @RxHttpCache
-         @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
-         Observable<JsonObject> getCity(@Cache CacheType cacheType);
-         
-        //缓存模式 在方法上加注解 
-        @GET("http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
-        @RxHttpCache(CacheType.onlyCache)
-        Observable<JsonObject> getCityOnlyCache();
+
+/**
+ * 提供基础路由
+ */
+@BaseUrl("http://api.map.baidu.com/")
+
+/**
+ * 提供缓存目录设置
+ */
+@RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
+/**
+ * 声明拦截器
+ */
+@Interceptor({MyLoggerInterceptor.class, MyLoggerInterceptor2.class})
+
+/**
+ * 声明rxJava拦截器
+ */
+@RxJavaInterceptor(DefaultCallAdapter.class)
+public interface LoginApiService {
+
+    /**
+     * 声明接口 跟retrofit一致
+     *
+     * @return
+     */
+    @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    Observable<JsonObject> getCity();
+
+    /**
+     * 在retrofit上面扩展了 @Cache 设置缓存类型
+     *
+     * @param cacheType
+     * @return
+     */
+    @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    Observable<JsonObject> getCity(@Cache CacheType cacheType);
+
+    /**
+     * 缓存5s
+     * 添加在方法上     @Headers("cache:5000")
+     *
+     * @param cacheType
+     * @return
+     */
+    @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    @Headers("cache:5000")
+    Observable<JsonObject> getCity2(@Cache CacheType cacheType);
+
+    /**
+     * 缓存
+     * 添加在参数上 @Header("cache") long time
+     *
+     * @param cacheType
+     * @return
+     */
+    @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    Observable<JsonObject> getCity3(@Header("cache") long time, @Cache CacheType cacheType);
+
+
+    @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    @RxHttpCache(CacheType.onlyCache)
+    Observable<JsonObject> getCityOnlyCache();
+
+}
+
+public enum CacheType {
+    /**
+     * 先从本地缓存拿取,然后从服务器拿取,可能会onNext两次,如果本地没有缓存 最少执行oNext一次
+     */
+    firstCache,
+    /**
+     * 先从服务器获取,没有网络 读取本地缓存
+     */
+    firstRemote,
+    /**
+     * 只从服务器拿取
+     */
+    onlyRemote,
+    /**
+     * 只从本地缓存中拿取,没有缓存 执行逻辑同Observable.empty()
+     */
+    onlyCache,
+
+    /**
+     * 如果本地存在就返回本地的,否则返回网络的数据
+     */
+    ifCache,
+
+    /**
+     * 读取上次的缓存,上次没有缓存就返回网络的数据,然后同步缓存;
+     * 上次有缓存,也会同步网络数据 但不会onNext
+     */
+    lastCache;
+}
    ```
    
    
