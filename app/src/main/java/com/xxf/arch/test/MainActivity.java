@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.facade.Postcard;
@@ -365,7 +366,9 @@ public class MainActivity extends XXFActivity {
                                 });*/
 
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.lastCache)
+                                .getCity(CacheType.firstCache)
+                                .compose(XXF.bindToErrorNotice())
+                                .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
                                 .subscribe(new Consumer<JsonObject>() {
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {

@@ -41,13 +41,16 @@ public class FirstCacheTransformer<R> extends AbsCacheTransformer<R> {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 } finally {
-                    /**
-                     * 一定要保证执行一遍 否则缓存数据报错 永远不能请求新数据了
-                     */
-                    Response<R> rResponse = cacheAfter(remoteObservable).blockingFirst();
-                    if (!emitter.isDisposed()) {
+                    try {
+                        /**
+                         * 一定要保证执行一遍 否则缓存数据报错 永远不能请求新数据了
+                         */
+                        Response<R> rResponse = cacheAfter(remoteObservable).blockingFirst();
                         emitter.onNext(rResponse);
                         emitter.onComplete();
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        emitter.onError(e);
                     }
                 }
             }

@@ -7,6 +7,7 @@ import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import retrofit2.Call;
 
 /**
@@ -19,10 +20,15 @@ public class DefaultCallAdapter implements RxJavaCallAdapterInterceptor {
     public Object adapt(Call call, @Nullable Object[] args, Object rxJavaObservable) {
         if (rxJavaObservable instanceof Observable) {
             Observable observable = (Observable) rxJavaObservable;
-            return observable.doOnNext(new Consumer() {
+            return observable.map(new Function() {
+                @Override
+                public Object apply(Object o) throws Exception {
+                    return o;
+                }
+            }).doOnNext(new Consumer() {
                 @Override
                 public void accept(Object o) throws Exception {
-                  //  XXF.getLogger().d("==============>全局收到结果：" + call.request().url() + o);
+                    //  XXF.getLogger().d("==============>全局收到结果：" + call.request().url() + o);
                 }
             }).doOnError(new Consumer<Throwable>() {
                 @Override
