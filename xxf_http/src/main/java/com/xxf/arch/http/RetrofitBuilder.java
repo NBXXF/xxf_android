@@ -13,7 +13,6 @@ import com.xxf.arch.json.GsonFactory;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.CallAdapter;
@@ -55,7 +54,7 @@ public class RetrofitBuilder {
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson()))
                 .addConverterFactory(JsonConverterFactory.create())
-                .addCallAdapterFactory(new RxJava2CallAdapterFactory(Schedulers.io(),true,rxHttpCache,interceptor));
+                .addCallAdapterFactory(new RxJava2CallAdapterFactory(null,true,rxHttpCache,interceptor));
     }
 
 

@@ -8,9 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -24,18 +22,12 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
-import com.xxf.arch.json.JsonUtils;
-import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
-import com.xxf.arch.utils.NumberUtils;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.actiondialog.SystemUtils;
 import com.xxf.view.cardview.CardView;
-import com.xxf.view.utils.BitmapUtils;
 import com.xxf.view.utils.StatusBarUtils;
-import com.xxf.view.view.ReverseFrameLayout;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -43,7 +35,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -248,7 +239,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
+                   /*     Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
                         XXF.getLogger().d("===========>xxxx:" + parse.getPath());
                         XXF.getLogger().d("===========>xxxx:" + parse.getPathSegments());
                         Log.d("==========>yes:", "" + JsonUtils.toBean(" {\n" +
@@ -256,7 +247,7 @@ public class MainActivity extends XXFActivity {
                                 "  }", TestModel.class));
 
                         ReverseFrameLayout layout = findViewById(R.id.grayLayout);
-                        layout.toggleColor();
+                        layout.toggleColor();*/
 
                         /*    String url = "qweqwe";*/
                         String url = "/activity/test";
@@ -273,7 +264,7 @@ public class MainActivity extends XXFActivity {
                             }
                         });
 
-                        String json = "{\n" +
+                     /*   String json = "{\n" +
                                 "  \"num\": \"1948367743.1273676543\",\n" +
                                 "  \"num1\": 1948367743.1273676543,\n" +
                                 "  \"percent\": \"0.1273676543\",\n" +
@@ -336,7 +327,7 @@ public class MainActivity extends XXFActivity {
                         }
 
 
-                        SystemUtils.shareText(MainActivity.this, "http://www.baidu.com").subscribe();
+                        SystemUtils.shareText(MainActivity.this, "http://www.baidu.com").subscribe();*/
                     }
                 });
         findViewById(R.id.bt_http)
@@ -365,7 +356,7 @@ public class MainActivity extends XXFActivity {
                                 });*/
 
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.lastCache)
+                                .getCity(CacheType.firstCache)
                                 .compose(XXF.bindToErrorNotice())
                                 //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
                                 .subscribe(new Consumer<JsonObject>() {
@@ -373,10 +364,10 @@ public class MainActivity extends XXFActivity {
 
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Exception {
-                                       /* if (first) {
+                                        if (first) {
                                             first = false;
                                             throw new RuntimeException("xxxx");
-                                        }*/
+                                        }
                                         XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {

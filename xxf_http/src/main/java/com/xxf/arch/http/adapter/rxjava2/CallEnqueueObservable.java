@@ -27,23 +27,44 @@ import retrofit2.Response;
 
 final class CallEnqueueObservable<T> extends Observable<Response<T>> {
     private final Call<T> originalCall;
+    private final boolean noDispose;
 
-    CallEnqueueObservable(Call<T> originalCall) {
+    /**
+     * @param originalCall
+     * @param noDispose    不取消
+     */
+    CallEnqueueObservable(Call<T> originalCall, boolean noDispose) {
         this.originalCall = originalCall;
+        this.noDispose = noDispose;
     }
 
     @Override
     protected void subscribeActual(Observer<? super Response<T>> observer) {
         // Since Call is a one-shot type, clone it for each new observer.
         Call<T> call = originalCall.clone();
-        CallCallback<T> callback = new CallCallback<>(call, observer);
+        CallCallback<T> callback = noDispose ? new NoDisposeCallCallback<>(call, observer) : new CallCallback<>(call, observer);
         observer.onSubscribe(callback);
-        if (!callback.isDisposed()) {
+        if (noDispose || !callback.isDisposed()) {
             call.enqueue(callback);
         }
     }
 
-    private static final class CallCallback<T> implements Disposable, Callback<T> {
+    private static final class NoDisposeCallCallback<T> extends CallCallback<T> {
+
+        NoDisposeCallCallback(Call<?> call, Observer<? super Response<T>> observer) {
+            super(call, observer);
+        }
+
+        @Override
+        public void dispose() {
+            /**
+             * 注释掉 不取消请求
+             */
+            //super.dispose();
+        }
+    }
+
+    private static class CallCallback<T> implements Disposable, Callback<T> {
         private final Call<?> call;
         private final Observer<? super Response<T>> observer;
         private volatile boolean disposed;
@@ -94,8 +115,8 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
 
         @Override
         public void dispose() {
-            disposed = true;
-            call.cancel();
+           /* disposed = true;
+            call.cancel();*/
         }
 
         @Override

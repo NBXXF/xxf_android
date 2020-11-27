@@ -73,7 +73,6 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
     }
 
     public Object defaultAdapt(Call<R> call, @androidx.annotation.Nullable Object[] args) {
-        Observable<Response<R>> responseObservable = isAsync ? new CallEnqueueObservable<>(call) : new CallExecuteObservable<>(call);
         //参数传递的cacheType
         if (args != null) {
             for (Object arg : args) {
@@ -86,27 +85,35 @@ final class RxJava2CallAdapter<R> extends OkHttpRxJavaCallAdapter<R, Object> {
         if (this.rxCacheType == null) {
             this.rxCacheType = CacheType.onlyRemote;
         }
+        Observable<Response<R>> responseObservable = null;
         ObservableTransformer<Response<R>, Response<R>> cacheTransformer;
         switch (this.rxCacheType) {
             case firstCache:
+                responseObservable = isAsync ? new CallEnqueueObservable<>(call, true) : new CallExecuteObservable<>(call);
                 cacheTransformer = new FirstCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
                 break;
             case firstRemote:
+                responseObservable = isAsync ? new CallEnqueueObservable<>(call, false) : new CallExecuteObservable<>(call);
                 cacheTransformer = new FirstRemoteTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
                 break;
             case ifCache:
+                responseObservable = isAsync ? new CallEnqueueObservable<>(call, false) : new CallExecuteObservable<>(call);
                 cacheTransformer = new IfCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
                 break;
             case onlyCache:
+                responseObservable = isAsync ? new CallEnqueueObservable<>(call, false) : new CallExecuteObservable<>(call);
                 cacheTransformer = new OnlyCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
                 break;
             case lastCache:
+                responseObservable = isAsync ? new CallEnqueueObservable<>(call, true) : new CallExecuteObservable<>(call);
                 cacheTransformer = new LastCacheTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
                 break;
             case onlyRemote:
+                responseObservable = isAsync ? new CallEnqueueObservable<>(call, false) : new CallExecuteObservable<>(call);
                 cacheTransformer = new OnlyRemoteTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
                 break;
             default:
+                responseObservable = isAsync ? new CallEnqueueObservable<>(call, false) : new CallExecuteObservable<>(call);
                 cacheTransformer = new OnlyRemoteTransformer<>(call, RxHttpCacheFactory.getCache(this.rxHttpCache));
                 break;
         }

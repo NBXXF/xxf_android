@@ -7,8 +7,6 @@ import com.xxf.arch.http.cache.RxHttpCache;
 import java.util.Arrays;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -32,28 +30,14 @@ public class FirstCacheTransformer<R> extends AbsCacheTransformer<R> {
         /**
          * .concatDelayError
          * 第一次执行中断 不会影响 第二次执行 但是下游报错后无法处理了,且上游无法感知下游报错
-         *
+         *  避免 onError 覆盖onNext 需要指定 .observeOn(AndroidSchedulers.mainThread()
          */
 
         return Observable.concatDelayError(
                 Arrays.asList(
-                        getCacheOrEmpty().observeOn(Schedulers.io())
-                        ,
-                        Observable.create(new ObservableOnSubscribe<Response<R>>() {
-                            @Override
-                            public void subscribe(ObservableEmitter<Response<R>> emitter) throws Exception {
-                                try {
-                                    Response<R> rResponse = cacheAfter(remoteObservable).blockingFirst();
-                                    emitter.onNext(rResponse);
-                                    emitter.onComplete();
-                                } catch (Throwable e) {
-                                    e.printStackTrace();
-                                    emitter.onError(e);
-                                }
-                            }
-                        }).observeOn(AndroidSchedulers.mainThread())
-                )
-        );
+                        getCacheOrEmpty().observeOn(AndroidSchedulers.mainThread()),
+                        cacheAfter(remoteObservable).observeOn(AndroidSchedulers.mainThread()))
+        ).observeOn(Schedulers.io());
     }
 
 }

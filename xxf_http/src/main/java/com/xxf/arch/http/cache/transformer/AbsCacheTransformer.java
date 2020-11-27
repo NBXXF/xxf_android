@@ -13,6 +13,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.OkHttpCallConvertor;
 import retrofit2.Response;
@@ -47,7 +48,6 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                 .doOnNext(new Consumer<Response<R>>() {
                     @Override
                     public void accept(Response<R> rResponse) throws Exception {
-                        System.out.println("==========>retry cached");
                         rxHttpCache.putAsync(rResponse);
                     }
                 });
@@ -75,6 +75,7 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                         return response;
                     }
                 })
+                .subscribeOn(Schedulers.io())
                 .onErrorResumeNext(Observable.<Response<R>>empty());
     }
 }
