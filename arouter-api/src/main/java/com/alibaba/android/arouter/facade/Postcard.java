@@ -37,7 +37,6 @@ public final class Postcard extends RouteMeta {
     private int timeout = 300;      // Navigation timeout, TimeUnit.Second
     private IProvider provider;     // It will be set value, if this postcard was provider.
     private boolean greenChannel;
-    private SerializationService serializationService;
 
     // Animation
     private Bundle optionsCompat;    // The transition animation of activity
@@ -227,7 +226,7 @@ public final class Postcard extends RouteMeta {
      * @return current
      */
     public Postcard withObject(@Nullable String key, @Nullable Object value) {
-        serializationService = ARouter.getInstance().navigation(SerializationService.class);
+        SerializationService serializationService = ARouter.getInstance().navigation(SerializationService.class);
         mBundle.putString(key, serializationService.object2Json(value));
         return this;
     }

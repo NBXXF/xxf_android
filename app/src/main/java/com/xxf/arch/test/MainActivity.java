@@ -26,7 +26,6 @@ import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.cardview.CardView;
 import com.xxf.view.utils.StatusBarUtils;
 
 import java.io.BufferedReader;
@@ -159,14 +158,6 @@ public class MainActivity extends XXFActivity {
         StatusBarUtils.setTransparentForWindow(this);
         StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout));
 
-        CardView cardView = findViewById(R.id.card);
-        Log.d("========>t:", getResources().getResourceEntryName(R.id.card) + "    " + getResources().getResourceName(R.id.card));
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cardView.setShadowColor(ColorStateList.valueOf(Color.BLUE), Color.RED, Color.YELLOW);
-            }
-        });
         new Presenter(this, this);
         new XXFLifecyclePresenter<Object>(MainActivity.this, null);
 

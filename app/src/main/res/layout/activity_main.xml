@@ -126,23 +126,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <com.xxf.view.cardview.CardView
-                        android:id="@+id/card"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="10dp"
-                        app:shadow_endColor="#1AFDFDFD"
-                        app:shadow_startColor="#F7F7F7"
-                        app:shadow_topDelta="0">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="startA\n\n\n\nctivityForResult" />
-                    </com.xxf.view.cardview.CardView>
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"

@@ -22,12 +22,11 @@ import java.util.Objects;
  * @CreateDate: 2020/6/11 19:24
  */
 public class XXFJumpRefreshFooter implements RefreshFooter {
-    private Context context;
     private SpinnerStyle mSpinnerStyle = SpinnerStyle.Translate;
     protected XxfJumpRefreshFooterBinding refreshFooterBinding;
 
     public XXFJumpRefreshFooter(@NonNull Context context) {
-        this.context = Objects.requireNonNull(context);
+        Context context1 = Objects.requireNonNull(context);
         refreshFooterBinding = XxfJumpRefreshFooterBinding.inflate(LayoutInflater.from(context));
         refreshFooterBinding.footerAnimationView.setAnimation("xxf_load_more.json");
         refreshFooterBinding.footerAnimationView.setRepeatCount(Integer.MAX_VALUE);

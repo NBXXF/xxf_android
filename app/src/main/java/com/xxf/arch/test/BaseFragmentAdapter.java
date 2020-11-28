@@ -18,7 +18,6 @@ import java.util.List;
 public class BaseFragmentAdapter extends FragmentPagerAdapter {
     private final List<Fragment> fragmentsList = new ArrayList<Fragment>();
     private final List<CharSequence> mFragmentTitles = new ArrayList<CharSequence>();
-    private FragmentManager fm;
 
     public List<Fragment> getFragmentsList() {
         return fragmentsList;
@@ -27,7 +26,6 @@ public class BaseFragmentAdapter extends FragmentPagerAdapter {
 
     public BaseFragmentAdapter(FragmentManager fm) {
         super(fm);
-        this.fm = fm;
     }
 
     public void bindData(boolean isRefresh, List<? extends Fragment> datas) {

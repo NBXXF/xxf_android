@@ -65,13 +65,11 @@ final class CallEnqueueObservable<T> extends Observable<Response<T>> {
     }
 
     private static class CallCallback<T> implements Disposable, Callback<T> {
-        private final Call<?> call;
         private final Observer<? super Response<T>> observer;
         private volatile boolean disposed;
         boolean terminated = false;
 
         CallCallback(Call<?> call, Observer<? super Response<T>> observer) {
-            this.call = call;
             this.observer = observer;
         }
 

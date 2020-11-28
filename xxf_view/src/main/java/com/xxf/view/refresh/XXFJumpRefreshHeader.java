@@ -19,12 +19,10 @@ import com.xxf.view.databinding.XxfJumpRefreshHeaderBinding;
  * @CreateDate: 2020/6/11 19:16
  */
 public class XXFJumpRefreshHeader implements RefreshHeader {
-    private Context context;
     private SpinnerStyle mSpinnerStyle = SpinnerStyle.Translate;
     protected XxfJumpRefreshHeaderBinding refreshHeaderBinding;
 
     public XXFJumpRefreshHeader(Context context) {
-        this.context = context;
         refreshHeaderBinding = XxfJumpRefreshHeaderBinding.inflate(LayoutInflater.from(context));
         refreshHeaderBinding.headerAnimationView.setAnimation("xxf_loading.json");
         refreshHeaderBinding.headerAnimationView.setRepeatCount(Integer.MAX_VALUE);
