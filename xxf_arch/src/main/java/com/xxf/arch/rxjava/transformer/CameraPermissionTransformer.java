@@ -1,7 +1,6 @@
 package com.xxf.arch.rxjava.transformer;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
+import android.Manifest;
 
 import com.xxf.arch.core.permission.RxPermissionTransformer;
 
@@ -13,15 +12,7 @@ import com.xxf.arch.core.permission.RxPermissionTransformer;
  */
 public class CameraPermissionTransformer extends RxPermissionTransformer {
 
-    private CameraPermissionTransformer(@NonNull Context context, @NonNull String rejectNotice) {
-        super(context, rejectNotice);
-    }
-
-    public CameraPermissionTransformer(@NonNull Context context, boolean rejecctJumpPermissionSetting) {
-        super(context, "请开启相机权限", rejecctJumpPermissionSetting);
-    }
-
-    public CameraPermissionTransformer(@NonNull Context context) {
-        super(context, "请开启相机权限");
+    public CameraPermissionTransformer() {
+        super(Manifest.permission.CAMERA);
     }
 }

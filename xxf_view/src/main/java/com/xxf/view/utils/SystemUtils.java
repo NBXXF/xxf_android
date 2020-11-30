@@ -1,6 +1,7 @@
-package com.xxf.view.actiondialog;
+package com.xxf.view.utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -44,8 +45,6 @@ import java.util.concurrent.Callable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -103,29 +102,41 @@ public class SystemUtils {
         return intent;
     }
 
-    public static Disposable doTakePhoto(final FragmentActivity context, Consumer<String> consumer) {
-        return doTakePhoto(context, getRandomImageFile(), consumer);
+    /**
+     * 调用系统拍照
+     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
+     *
+     * @param context
+     * @return
+     */
+    public static Observable<String> takePhoto(final FragmentActivity context) {
+        return takePhoto(context, getRandomImageFile());
     }
 
-    public static Disposable doTakePhoto(final FragmentActivity context, final File imageFile, Consumer<String> consumer) {
+    /**
+     * 调用系统拍照
+     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
+     *
+     * @param context
+     * @param imageFile
+     * @return
+     */
+    public static Observable<String> takePhoto(final FragmentActivity context, final File imageFile) {
         return XXF.requestPermission(context, Manifest.permission.CAMERA)
-                .compose(new CameraPermissionTransformer(context))
+                .take(1)
+                .compose(new CameraPermissionTransformer())
                 .flatMap(new Function<Boolean, ObservableSource<Boolean>>() {
                     @Override
                     public ObservableSource<Boolean> apply(Boolean cameraPermissionAllow) throws Exception {
-                        if (!cameraPermissionAllow) {
-                            throw new RuntimeException("camera permission dennied");
-                        }
                         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                .compose(new FilePermissionTransformer(context));
+                                .take(1)
+                                .compose(new FilePermissionTransformer());
                     }
                 })
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public ObservableSource<String> apply(Boolean storageCameraPermissionAllow) throws Exception {
-                        if (!storageCameraPermissionAllow) {
-                            throw new RuntimeException("storage permission dennied");
-                        }
                         return XXF.startActivityForResult(context, getTakePhotoIntent(imageFile), REQUEST_CODE_CAMERA)
                                 .take(1)
                                 .filter(new Predicate<ActivityResult>() {
@@ -145,15 +156,13 @@ public class SystemUtils {
                                 });
                     }
                 })
-                .compose(XXF.<String>bindUntilEvent(context, Lifecycle.Event.ON_DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(XXF.<String>bindToErrorNotice())
-                .subscribe(consumer);
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 
     /**
      * 保存图片到相册
+     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
      *
      * @param context
      * @param picName 是name 不说full path
@@ -162,17 +171,8 @@ public class SystemUtils {
      */
     public static Observable<File> saveImageToAlbum(FragmentActivity context, String picName, Bitmap bmp) {
         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new CameraPermissionTransformer(context))
                 .take(1)
-                .map(new Function<Boolean, Boolean>() {
-                    @Override
-                    public Boolean apply(Boolean aBoolean) throws Exception {
-                        if (!aBoolean) {
-                            throw new RuntimeException("permission denied");
-                        }
-                        return aBoolean;
-                    }
-                })
+                .compose(new CameraPermissionTransformer())
                 .flatMap(new Function<Boolean, ObservableSource<File>>() {
                     @Override
                     public ObservableSource<File> apply(Boolean aBoolean) throws Exception {
@@ -206,25 +206,17 @@ public class SystemUtils {
 
     /**
      * 选择相片
+     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
      *
      * @param context
-     * @param consumer
      * @return
      */
-    public static Disposable doSelectAlbum(final FragmentActivity context, Consumer<String> consumer) {
+    public static Observable<String> selectAlbum(final FragmentActivity context) {
         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new CameraPermissionTransformer(context))
                 .take(1)
-                .map(new Function<Boolean, Boolean>() {
-                    @Override
-                    public Boolean apply(Boolean aBoolean) throws Exception {
-                        if (!aBoolean) {
-                            throw new RuntimeException("permission denied");
-                        }
-                        return aBoolean;
-                    }
-                })
+                .compose(new CameraPermissionTransformer())
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public ObservableSource<String> apply(Boolean aBoolean) throws Exception {
                         return XXF.startActivityForResult(context, getAlbumIntent(), REQUEST_CODE_ALBUM)
@@ -246,10 +238,7 @@ public class SystemUtils {
                                 });
                     }
                 })
-                .compose(XXF.<String>bindUntilEvent(context, Lifecycle.Event.ON_DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(XXF.<String>bindToErrorNotice())
-                .subscribe(consumer);
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 
@@ -271,10 +260,9 @@ public class SystemUtils {
      * 选择文档
      *
      * @param activity
-     * @param consumer
      * @return
      */
-    public static Disposable doSelectDocument(final FragmentActivity activity, Consumer<String> consumer) {
+    public static Observable<String> selectDocument(final FragmentActivity activity) {
         Intent intent = getDocumentIntent();
         return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
                 .map(new Function<ActivityResult, String>() {
@@ -286,10 +274,7 @@ public class SystemUtils {
                         return UriUtils.getPath(activity, activityResult.getData().getData());
                     }
                 })
-                .compose(XXF.<String>bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(XXF.<String>bindToErrorNotice())
-                .subscribe(consumer);
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**

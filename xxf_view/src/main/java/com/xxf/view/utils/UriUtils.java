@@ -1,4 +1,4 @@
-package com.xxf.view.actiondialog;
+package com.xxf.view.utils;
 
 import android.content.ContentUris;
 import android.content.Context;

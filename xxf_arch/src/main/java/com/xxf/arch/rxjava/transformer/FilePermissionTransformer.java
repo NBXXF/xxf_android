@@ -1,7 +1,6 @@
 package com.xxf.arch.rxjava.transformer;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
+import android.Manifest;
 
 import com.xxf.arch.core.permission.RxPermissionTransformer;
 
@@ -13,15 +12,7 @@ import com.xxf.arch.core.permission.RxPermissionTransformer;
  */
 public class FilePermissionTransformer extends RxPermissionTransformer {
 
-    private FilePermissionTransformer(@NonNull Context context, @NonNull String rejectNotice) {
-        super(context, rejectNotice);
-    }
-
-    public FilePermissionTransformer(@NonNull Context context, boolean rejecctJumpPermissionSetting) {
-        super(context, "请开启文件权限", rejecctJumpPermissionSetting);
-    }
-
-    public FilePermissionTransformer(@NonNull Context context) {
-        super(context,"请开启文件权限");
+    public FilePermissionTransformer() {
+        super(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 }

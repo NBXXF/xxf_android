@@ -6,11 +6,8 @@ import android.content.ContextWrapper;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
-import com.xxf.view.actiondialog.SystemUtils;
+import com.xxf.view.utils.SystemUtils;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
