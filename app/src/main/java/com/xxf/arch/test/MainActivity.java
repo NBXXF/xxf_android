@@ -3,9 +3,7 @@ package com.xxf.arch.test;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
@@ -16,12 +14,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.alibaba.android.arouter.facade.Postcard;
-import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
@@ -34,6 +31,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -109,11 +107,13 @@ public class MainActivity extends XXFActivity {
 
     class TestModel {
         float p;
+        BigDecimal bigDecimal;
 
         @Override
         public String toString() {
             return "TestModel{" +
                     "p=" + p +
+                    ", bigDecimal=" + bigDecimal +
                     '}';
         }
     }
@@ -230,17 +230,15 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                   /*     Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
+            /*            Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
                         XXF.getLogger().d("===========>xxxx:" + parse.getPath());
-                        XXF.getLogger().d("===========>xxxx:" + parse.getPathSegments());
-                        Log.d("==========>yes:", "" + JsonUtils.toBean(" {\n" +
-                                "    \"p\": \"51.2%\"\n" +
-                                "  }", TestModel.class));
+                        XXF.getLogger().d("===========>xxxx:" + parse.getPathSegments());*/
+                        Log.d("==========>yes:", "" + JsonUtils.toBean("{\"P\":\"51.2%\",\"bigDecimal\":null}", TestModel.class));
 
-                        ReverseFrameLayout layout = findViewById(R.id.grayLayout);
-                        layout.toggleColor();*/
+                     /*   ReverseFrameLayout layout = findViewById(R.id.grayLayout);
+                        layout.toggleColor();
 
-                        /*    String url = "qweqwe";*/
+                        *//*    String url = "qweqwe";*//*
                         String url = "/activity/test";
                         ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
                             @Override
@@ -253,7 +251,7 @@ public class MainActivity extends XXFActivity {
                                 super.onLost(postcard);
                                 XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
                             }
-                        });
+                        });*/
 
                      /*   String json = "{\n" +
                                 "  \"num\": \"1948367743.1273676543\",\n" +

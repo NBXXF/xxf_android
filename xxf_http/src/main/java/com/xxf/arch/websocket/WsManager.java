@@ -32,6 +32,7 @@ public class WsManager implements IWsManager {
     private String wsUrl;
     private WebSocket mWebSocket;
     private OkHttpClient mOkHttpClient;
+    private String tag;
     private Request mRequest;
     private int mCurrentStatus = WsStatus.DISCONNECTED;     //websocket连接状态
     private boolean isNeedReconnect;          //是否需要断线自动重连
@@ -160,6 +161,7 @@ public class WsManager implements IWsManager {
         wsUrl = builder.wsUrl;
         isNeedReconnect = builder.needReconnect;
         mOkHttpClient = builder.mOkHttpClient;
+        this.tag = builder.tag;
         this.mLock = new ReentrantLock();
     }
 
@@ -184,6 +186,11 @@ public class WsManager implements IWsManager {
             }
         } catch (InterruptedException e) {
         }
+    }
+
+    @Override
+    public String tag() {
+        return this.tag;
     }
 
     @Override
@@ -332,6 +339,7 @@ public class WsManager implements IWsManager {
         private String wsUrl;
         private boolean needReconnect = true;
         private OkHttpClient mOkHttpClient;
+        private String tag;
 
         public Builder(Context val) {
             mContext = val;
@@ -349,6 +357,11 @@ public class WsManager implements IWsManager {
 
         public Builder needReconnect(boolean val) {
             needReconnect = val;
+            return this;
+        }
+
+        public Builder tag(String tag) {
+            this.tag = tag;
             return this;
         }
 
