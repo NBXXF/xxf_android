@@ -12,12 +12,14 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.core.RxBus;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
@@ -123,6 +125,15 @@ public class MainActivity extends XXFActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        XXF.subscribeEvent(String.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        XXF.getLogger().d("==============>收到事件:" + s+"  thread:"+Thread.currentThread().getName());
+                    }
+                });
 
         double d = 0.0000f;
         XXF.getLogger().d(String.format("===========>d:%s==0  %s", d, String.valueOf(d == 0)));
@@ -230,6 +241,13 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                XXF.postEvent("发送:" + System.currentTimeMillis());
+                            }
+                        }).start();
+
             /*            Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
                         XXF.getLogger().d("===========>xxxx:" + parse.getPath());
                         XXF.getLogger().d("===========>xxxx:" + parse.getPathSegments());*/

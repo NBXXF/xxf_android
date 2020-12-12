@@ -37,6 +37,7 @@ import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.arouter.XXFUserInfoProvider;
 import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.Logger;
+import com.xxf.arch.core.RxBus;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
@@ -682,6 +683,39 @@ public class XXF {
      */
     public static <T extends ViewModel> T getViewModel(@NonNull ViewModelStoreOwner viewModelStoreOwner, @NonNull String key, @NonNull Class<T> modelClass) {
         return new ViewModelProvider(viewModelStoreOwner).get(key, modelClass);
+    }
+
+
+    /**
+     * 发送事件
+     *
+     * @param event
+     * @return
+     */
+    public static boolean postEvent(@NonNull Object event) {
+        return RxBus.getInstance().postEvent(event);
+    }
+
+
+    /**
+     * 订阅事件,注意线程问题
+     * <p>
+     * 例子:
+     * XXF.subscribeEvent(String.class)
+     * .observeOn(AndroidSchedulers.mainThread())
+     * .as(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
+     * .subscribe(new Consumer<String>() {
+     *
+     * @param eventType
+     * @param <T>
+     * @return
+     * @Override public void accept(String s) throws Exception {
+     * XXF.getLogger().d("==============>收到事件:" + s+"  thread:"+Thread.currentThread().getName());
+     * }
+     * });
+     */
+    public static <T> Observable<T> subscribeEvent(Class<T> eventType) {
+        return RxBus.getInstance().subscribeEvent(eventType);
     }
 
 }
