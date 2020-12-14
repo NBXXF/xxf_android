@@ -35,7 +35,7 @@ public final class ListOrEmpty<T> extends ArrayList<T> {
         @Override
         public ListOrEmpty<T> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             Type itemType = ((ParameterizedType) typeOfT).getActualTypeArguments()[0];
-            Object deserialize = null;
+            T[] deserialize = null;
             if (json.isJsonArray()) {
                 deserialize = context.deserialize(json, TypeToken.getArray(itemType).getType());
             }
