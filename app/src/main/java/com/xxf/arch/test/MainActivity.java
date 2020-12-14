@@ -17,10 +17,11 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
-import com.xxf.arch.core.RxBus;
 import com.xxf.arch.json.JsonUtils;
+import com.xxf.arch.json.datastructure.ListOrSingle;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
@@ -131,7 +132,7 @@ public class MainActivity extends XXFActivity {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        XXF.getLogger().d("==============>收到事件:" + s+"  thread:"+Thread.currentThread().getName());
+                        XXF.getLogger().d("==============>收到事件:" + s + "  thread:" + Thread.currentThread().getName());
                     }
                 });
 
@@ -248,6 +249,25 @@ public class MainActivity extends XXFActivity {
                             }
                         }).start();
 
+                        List<TestModel> list = JsonUtils.toType("[\n" +
+                                "  {\n" +
+                                "    \"p\": 10.5\n" +
+                                "  },\n" +
+                                "  {\n" +
+                                "    \"p\": 10.6\n" +
+                                "  },\n" +
+                                "  {\n" +
+                                "    \"p\": 10.7\n" +
+                                "  }\n" +
+                                "]", new TypeToken<List<TestModel>>() {
+                        }.getType());
+                        XXF.getLogger().d("===========>json:" + list);
+                        list = JsonUtils.toType("{\n" +
+                                "  \"p\": 10.5\n" +
+                                "}", new TypeToken<ListOrSingle<TestModel>>() {
+                        }.getType());
+                        XXF.getLogger().d("===========>json2:" + list);
+
             /*            Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
                         XXF.getLogger().d("===========>xxxx:" + parse.getPath());
                         XXF.getLogger().d("===========>xxxx:" + parse.getPathSegments());*/
@@ -362,7 +382,7 @@ public class MainActivity extends XXFActivity {
                                     }
                                 });*/
 
-                        XXF.getApiService(LoginApiService.class)
+                      /*  XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.firstCache)
                                 .compose(XXF.bindToErrorNotice())
                                 //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
@@ -381,6 +401,17 @@ public class MainActivity extends XXFActivity {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
                                         XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
+                                    }
+                                });*/
+
+                        XXF.getApiService(LoginApiService.class)
+                                .getCity(CacheType.firstCache)
+                                .compose(XXF.bindToErrorNotice())
+                                //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
+                                .subscribe(new Consumer<ListOrSingle<Weather>>() {
+                                    @Override
+                                    public void accept(ListOrSingle<Weather> weathers) throws Exception {
+                                        XXF.getLogger().d("=========>result:" +new ArrayList(weathers));
                                     }
                                 });
                     }

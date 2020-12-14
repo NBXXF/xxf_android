@@ -10,16 +10,9 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.google.gson.JsonObject;
-import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.test.databinding.ActivityTestBinding;
-import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import retrofit2.CacheType;
 
 @Route(path = "/activity/test")
 public class TestActivity extends XXFActivity {
@@ -45,7 +38,7 @@ public class TestActivity extends XXFActivity {
             }
         });
 
-        XXF.getApiService(LoginApiService.class)
+        /*XXF.getApiService(LoginApiService.class)
                 .getCity(CacheType.lastCache)
                 .map(new Function<JsonObject, JsonObject>() {
                     @Override
@@ -66,7 +59,7 @@ public class TestActivity extends XXFActivity {
                     public void accept(Throwable throwable) throws Exception {
                         XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
                     }
-                });
+                });*/
        /* Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {

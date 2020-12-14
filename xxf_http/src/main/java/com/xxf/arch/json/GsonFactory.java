@@ -2,6 +2,8 @@ package com.xxf.arch.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.xxf.arch.json.datastructure.ListOrEmpty;
+import com.xxf.arch.json.datastructure.ListOrSingle;
 import com.xxf.arch.json.typeadapter.bool.BooleanTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.LongTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.PercentageDoubleTypeAdapter;
@@ -27,6 +29,8 @@ public class GsonFactory {
                 .registerTypeAdapter(double.class, new PercentageDoubleTypeAdapter())
                 .registerTypeAdapter(Float.class, new PercentageFloatTypeAdapter())
                 .registerTypeAdapter(float.class, new PercentageFloatTypeAdapter())
+                .registerTypeAdapter(ListOrSingle.class, new ListOrSingle.ListOrSingleTypeAdapter())
+                .registerTypeAdapter(ListOrEmpty.class, new ListOrEmpty.ListOrEmptyTypeAdapter())
                 .create();
     }
 }
