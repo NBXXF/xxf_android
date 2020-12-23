@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * @Description: 文件服务 实现
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/14 12:02
  */
 class XXFileServiceImpl implements XXFFileService {

@@ -49,7 +49,7 @@ import java.math.BigDecimal;
  * DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.CHINA);
  * symbols.setDecimalSeparator('.');
  * decimalFormat.setDecimalFormatSymbols(symbols);
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/5 15:36
  * <p>
  * 用{@link NumberFormatObject}接收

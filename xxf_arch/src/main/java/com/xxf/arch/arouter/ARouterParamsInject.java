@@ -13,7 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxf.arch.core.SimpleActivityLifecycleCallbacks;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  */
 public class ARouterParamsInject extends SimpleActivityLifecycleCallbacks {

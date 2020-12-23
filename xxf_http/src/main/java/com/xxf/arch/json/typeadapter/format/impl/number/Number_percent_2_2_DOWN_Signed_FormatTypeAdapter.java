@@ -12,7 +12,7 @@ import java.util.Locale;
 
 /**
  * @Description: 有符号百分数格式化 2-2位小数,不会自动*100
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/5 15:36
  * <p>
  * 用{@link com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject}接收

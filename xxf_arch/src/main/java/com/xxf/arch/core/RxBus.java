@@ -7,7 +7,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.0
  * @Description 增加Rxbus 提供全局事件收发
  * @date createTime：2018/1/4

@@ -18,7 +18,7 @@ import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * @Description: 已经销毁
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/25 23:50
  */
 class DestoryLifecycleProvider implements LifecycleProvider<Lifecycle.Event> {

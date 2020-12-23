@@ -2,7 +2,7 @@ package com.xxf.arch.test;
 
 /**
  * @Description: TODO @XGode
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/12/14 18:36
  */
 public class Weather {

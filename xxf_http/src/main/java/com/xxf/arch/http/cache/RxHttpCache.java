@@ -30,7 +30,7 @@ import retrofit2.Converter;
 import retrofit2.Response;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description rewrite by xxf  no final
  * <p>
  * 目前只支持json

@@ -17,7 +17,7 @@ import com.xxf.view.R;
  * app:heightRatio="0.5"
  *
  * @Description: 自定义最大高度viewGroup
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/9/24 10:14
  */
 public class MaxHeightView extends FrameLayout {

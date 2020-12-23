@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * @Description: 返回list对象 如果json是jsonObject 那么久返回一个元素的list
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/12/14 17:19
  */
 @JsonAdapter(ListOrSingle.ListOrSingleTypeAdapter.class)

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 /**
  * @Description: 反转颜色
  *  如果用了WebView，请加上webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/9/23 20:19
  */
 public class ReverseFrameLayout extends FrameLayout {

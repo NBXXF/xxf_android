@@ -10,7 +10,7 @@ import com.xxf.view.loading.ViewState;
 import io.reactivex.functions.Action;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description @{@link com.xxf.view.loading.XXFStateLayout} mvvm 绑定
  * <p>
  * 多状态布局 控制绑定

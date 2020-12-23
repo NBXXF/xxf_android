@@ -4,7 +4,7 @@ import com.alibaba.android.arouter.utils.TextUtils;
 
 /**
  * @Description: 权限拒绝异常
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/30 19:05
  */
 public class PermissionDeniedException extends RuntimeException {

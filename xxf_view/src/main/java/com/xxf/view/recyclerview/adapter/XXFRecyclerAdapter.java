@@ -26,7 +26,7 @@ import java.util.List;
  * ClassName BaseRecyclerAdapter
  * Description index:相对于List集合的位置,position:表示在adapter中的位置
  * Company
- * author  youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2015/9/10 10:05
  * version
  */

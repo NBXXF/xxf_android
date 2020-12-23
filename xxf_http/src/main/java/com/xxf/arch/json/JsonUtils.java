@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * ClassName JsonUtils
  * Description  json处理工具类，暂时核心封装Gson解析方式
- * author  youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date 创建时间：2015/6/17 9:43
  * version
  */

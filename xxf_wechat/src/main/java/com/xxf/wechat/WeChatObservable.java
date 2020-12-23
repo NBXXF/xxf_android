@@ -17,7 +17,7 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.plugins.RxJavaPlugins;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 微信授权与分享
  */
 public class WeChatObservable extends Observable<BaseResp> {

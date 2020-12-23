@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 /**
  * @Description: 格式化约束
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/6 10:12
  * 文档参考 https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html
  */

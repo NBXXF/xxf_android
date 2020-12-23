@@ -11,7 +11,7 @@ import com.xxf.view.loading.ViewState;
 import io.reactivex.functions.Action;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.0
  * @Description 特性:  1:设置多状态布局的状态
  * 2:设置错误布局的重试

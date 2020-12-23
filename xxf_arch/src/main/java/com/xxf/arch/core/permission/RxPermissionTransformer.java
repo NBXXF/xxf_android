@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 
 /**
- * @author youxuan  E-mail:youxuan@icourt.cc
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
  * @Description 未授权 转换成错误信号
  * @Company Beijing icourt

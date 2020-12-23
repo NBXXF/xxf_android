@@ -15,7 +15,7 @@ import retrofit2.Response;
 
 /**
  * @Description: 先从本地缓存拿取, 然后从服务器拿取, 可能会onNext两次, 如果本地没有缓存 最少执行oNext一次
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/24 10:53
  */
 public class FirstCacheTransformer<R> extends AbsCacheTransformer<R> {

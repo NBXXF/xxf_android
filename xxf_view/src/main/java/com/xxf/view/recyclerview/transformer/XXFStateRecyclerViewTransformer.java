@@ -11,7 +11,7 @@ import com.xxf.view.loading.XXFStateLayout;
 import java.util.Objects;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description loading..
  */
 public class XXFStateRecyclerViewTransformer<T> extends UILifeTransformerImpl<T> {

@@ -14,7 +14,7 @@ import java.text.ParseException;
 
 /**
  * @Description: 将百分数的字符串转换成小数
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/10/19 17:33
  */
 public class PercentageFloatTypeAdapter extends TypeAdapter<Float> {

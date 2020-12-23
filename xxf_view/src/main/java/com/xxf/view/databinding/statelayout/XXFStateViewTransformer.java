@@ -8,7 +8,7 @@ import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 import com.xxf.view.loading.ViewState;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 多状态布局rx 变换器
  */
 public class XXFStateViewTransformer<T> extends UILifeTransformerImpl<T> {

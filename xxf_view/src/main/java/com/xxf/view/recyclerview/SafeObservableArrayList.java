@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.Collection;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.0
  * @Description 特性: 更安全的 可监听的ArrayList
  * @date createTime：2017/12/18

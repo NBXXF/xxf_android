@@ -16,7 +16,7 @@ import okio.Buffer;
 import okio.BufferedSource;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 专注日常http异常汇报, 由于header太多, 日志系统显示不全, 所以汇报精简日志
  */
 public abstract class HttpExceptionFeedInterceptor implements Interceptor {

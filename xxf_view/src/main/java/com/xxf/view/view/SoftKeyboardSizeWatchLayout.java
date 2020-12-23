@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @Description: 键盘监听
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2016/9/23 20:19
  */
 public class SoftKeyboardSizeWatchLayout extends RelativeLayout {

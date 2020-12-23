@@ -17,7 +17,7 @@ import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 import io.reactivex.functions.BiConsumer;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 推荐使用setResult
  */
 public class XXFDialog<R>

@@ -18,7 +18,7 @@ import java.util.Objects;
 
 /**
  * @Description: footer 刷新动画默认 loading
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/11 19:24
  */
 public class XXFJumpRefreshFooter implements RefreshFooter {

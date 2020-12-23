@@ -16,7 +16,7 @@ import java.util.Locale;
 
 /**
  * @Description: 格式化实例模型参考
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/5 20:45
  */
 public class FormatDemoModel {

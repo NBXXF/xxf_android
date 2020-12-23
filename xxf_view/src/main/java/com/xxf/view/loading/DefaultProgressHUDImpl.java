@@ -10,7 +10,7 @@ import com.xxf.arch.widget.progresshud.ProgressHUD;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.0.1
  * @Description 加载对话框
  * @date createTime：2019/4/11

@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 
 /**
  * @Description: bitmap处理工具类
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/10/13 11:14
  */
 public class BitmapUtils {

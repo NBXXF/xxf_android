@@ -15,7 +15,7 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
- * @author youxuan  E-mail:youxuan@icourt.cc
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
  * @Description 具有RxJava生命周期管理, XXF.bindToLifecycle(this);
  * @Company Beijing icourt

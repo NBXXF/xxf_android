@@ -11,7 +11,7 @@ import java.util.Locale;
 
 /**
  * @Description: 2-15位小数格式化
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/25 10:23
  */
 public class Number_2_15_DOWN_FormatTypeAdapter extends NumberObjectFormatTypeAdapter {

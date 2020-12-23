@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Description  将null的字符串转换为""
  *
- * author  youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2017/7/19
  * version 2.0.0
  */

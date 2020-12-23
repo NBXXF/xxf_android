@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * @Description: 框架格式化数据模型 且保留元数据
  * 作用:0.333333333333,UI只展示0.33
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/5 15:13
  * <p>
  * 文档参考 https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html

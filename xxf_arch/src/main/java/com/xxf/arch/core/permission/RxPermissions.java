@@ -23,7 +23,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.subjects.PublishSubject;
 
 /**
- * @author youxuan  E-mail:youxuan@icourt.cc
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
  * @Description 权限处理, RxPermissions
  * @Company Beijing icourt

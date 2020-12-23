@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 
 /**
  * @Description: 取的okhttp call参数
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/18 10:26
  */
 public abstract class OkHttpRxJavaCallAdapter<R, T> implements CallAdapter<R, T> {

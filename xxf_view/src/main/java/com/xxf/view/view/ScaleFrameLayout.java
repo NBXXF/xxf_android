@@ -17,7 +17,7 @@ import com.xxf.view.R;
 
 /**
  * @Description: 等比例缩放子组件
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/19 19:33
  */
 public class ScaleFrameLayout extends FrameLayout {

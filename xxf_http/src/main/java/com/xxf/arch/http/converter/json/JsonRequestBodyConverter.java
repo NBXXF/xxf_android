@@ -5,7 +5,7 @@ import okhttp3.RequestBody;
 import retrofit2.Converter;
 import java.io.IOException;
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  */
 final class JsonRequestBodyConverter<T> implements Converter<T, RequestBody> {

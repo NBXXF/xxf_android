@@ -30,7 +30,7 @@ import static com.xxf.view.loading.ViewState.VIEW_STATE_LOADING;
 import static com.xxf.view.loading.ViewState.VIEW_STATE_UNKNOWN;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 多状态布局
  * 注意:emptyText默认可见
  * emptyActionText默认不可见

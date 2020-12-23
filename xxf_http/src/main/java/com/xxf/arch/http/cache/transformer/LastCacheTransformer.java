@@ -19,7 +19,7 @@ import retrofit2.Response;
  * 上次有缓存,也会同步网络数据 但不会onNext
  * <p>
  * 一次onNext
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/24 10:53
  */
 public class LastCacheTransformer<R> extends AbsCacheTransformer<R> {

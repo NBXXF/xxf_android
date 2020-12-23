@@ -8,7 +8,7 @@ import android.view.ViewConfiguration;
 import androidx.appcompat.app.AppCompatDialog;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.0
  * @Description 监听dialog外部点击事件
  * @date createTime：2018/1/4

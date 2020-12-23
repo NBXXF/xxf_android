@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import com.airbnb.lottie.LottieAnimationView;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description loading..
  */
 public class XXFLoadingView extends LottieAnimationView {

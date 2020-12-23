@@ -8,7 +8,7 @@ import com.xxf.arch.test.BaseApplication;
 import java.io.File;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description rxjava htpp默认缓存
  */
 public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheDirectoryProvider {

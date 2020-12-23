@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 /**
  * @Description: 不格式化 去除科学计数法展示
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/25 10:23
  */
 public class Number_UNFormatTypeAdapter extends NumberObjectFormatTypeAdapter {

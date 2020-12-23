@@ -4,7 +4,7 @@ import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  */
 public class OkHttpCallConvertor<T> implements Function<Call<T>, Converter<ResponseBody, T>> {

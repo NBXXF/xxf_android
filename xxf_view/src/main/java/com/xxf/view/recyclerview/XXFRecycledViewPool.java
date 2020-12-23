@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @Description: 可以监听池子清理
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/14 10:33
  */
 public class XXFRecycledViewPool extends RecyclerView.RecycledViewPool {

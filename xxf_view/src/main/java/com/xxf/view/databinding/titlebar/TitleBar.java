@@ -9,7 +9,7 @@ import com.xxf.view.utils.ResourcesUtil;
 import io.reactivex.functions.Action;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description token 标题栏
  */
 public class TitleBar implements ITitleBar {

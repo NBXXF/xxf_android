@@ -4,7 +4,7 @@ import retrofit2.Call;
 
 /**
  * @Description: RxJava全局拦截器
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/7/1 15:31
  */
 public interface RxJavaCallAdapterInterceptor {

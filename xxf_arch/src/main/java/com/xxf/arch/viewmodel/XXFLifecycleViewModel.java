@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * @Description: 带生命周期的vm can use XXF.bindToLifecycle(this);
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/7/7 16:56
  */
 public class XXFLifecycleViewModel extends ViewModel implements LifecycleOwnerProvider {

@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 /**
  * @Description: 子页面截图约束
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/10/23 10:39
  */
 public interface IShotFragment {

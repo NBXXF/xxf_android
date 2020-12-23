@@ -20,7 +20,7 @@ import retrofit2.Response;
 
 /**
  * @Description: 缓存变换
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2017/11/24 10:44
  */
 public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Response<R>, Response<R>> {

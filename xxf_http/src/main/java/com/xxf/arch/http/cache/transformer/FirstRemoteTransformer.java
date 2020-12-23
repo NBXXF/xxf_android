@@ -15,7 +15,7 @@ import retrofit2.Response;
 
 /**
  * @Description: 先从服务器获取, 没有网络 读取本地缓存
- * @Author: XGod
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/24 10:53
  */
 public class FirstRemoteTransformer<R> extends AbsCacheTransformer<R> {

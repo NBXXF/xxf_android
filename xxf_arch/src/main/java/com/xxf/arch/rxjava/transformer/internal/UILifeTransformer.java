@@ -3,7 +3,7 @@ package com.xxf.arch.rxjava.transformer.internal;
 import androidx.annotation.UiThread;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description Rx与UI相关转换器
  */
 public interface UILifeTransformer<T> {

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description recyclerview 拖动 排序 工具类
  */
 public class DragItemTouchHelper extends ItemTouchHelper.Callback {
