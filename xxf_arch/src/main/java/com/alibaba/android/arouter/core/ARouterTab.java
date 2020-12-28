@@ -9,7 +9,7 @@ import com.xxf.arch.arouter.ARouterTabLoader;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.annotations.CheckReturnValue;
+import io.reactivex.rxjava3.annotations.CheckReturnValue;
 
 
 /**

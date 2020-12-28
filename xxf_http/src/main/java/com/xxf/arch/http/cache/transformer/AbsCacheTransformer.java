@@ -9,11 +9,12 @@ import com.xxf.arch.http.cache.RxHttpCache;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.ObservableTransformer;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.OkHttpCallConvertor;
 import retrofit2.Response;
@@ -76,6 +77,11 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .onErrorResumeNext(Observable.<Response<R>>empty());
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Response<R>>>() {
+                    @Override
+                    public ObservableSource<? extends Response<R>> apply(Throwable throwable) throws Throwable {
+                       return Observable.<Response<R>>empty();
+                    }
+                });
     }
 }

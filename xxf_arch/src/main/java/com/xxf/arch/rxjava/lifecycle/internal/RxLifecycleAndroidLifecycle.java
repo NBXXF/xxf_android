@@ -1,11 +1,11 @@
 package com.xxf.arch.rxjava.lifecycle.internal;
 
-import androidx.lifecycle.Lifecycle;
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 
-import io.reactivex.Observable;
-import io.reactivex.functions.Function;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Function;
 
 
 /**

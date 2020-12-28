@@ -30,9 +30,6 @@ import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.AutoDisposeConverter;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.arouter.XXFUserInfoProvider;
 import com.xxf.arch.core.AndroidActivityStackProvider;
@@ -58,10 +55,14 @@ import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
+import autodispose2.AutoDispose;
+import autodispose2.AutoDisposeConverter;
+import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.functions.Supplier;
 
 
 /**
@@ -489,9 +490,9 @@ public class XXF {
      * @return
      */
     public static Observable<Class<Activity>> getActivityClassByRouter(@NonNull final String activityRouterPath) {
-        return Observable.defer(new Callable<ObservableSource<? extends Class<Activity>>>() {
+        return Observable.defer(new Supplier<ObservableSource<? extends Class<Activity>>>() {
             @Override
-            public ObservableSource<? extends Class<Activity>> call() throws Exception {
+            public ObservableSource<? extends Class<Activity>> get() throws Throwable {
                 Objects.requireNonNull(activityRouterPath);
                 return getPostcardByRouter(activityRouterPath)
                         .map(new Function<Postcard, Class<Activity>>() {

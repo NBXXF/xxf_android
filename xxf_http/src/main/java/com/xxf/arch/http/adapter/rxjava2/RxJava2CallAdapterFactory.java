@@ -1,6 +1,8 @@
 
 package com.xxf.arch.http.adapter.rxjava2;
 
+import androidx.annotation.Nullable;
+
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.http.cache.RxHttpCache;
 
@@ -8,13 +10,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import io.reactivex.Completable;
-import io.reactivex.Flowable;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
-import io.reactivex.Single;
-import io.reactivex.annotations.Nullable;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.CacheType;
 import retrofit2.CallAdapter;
 import retrofit2.Response;

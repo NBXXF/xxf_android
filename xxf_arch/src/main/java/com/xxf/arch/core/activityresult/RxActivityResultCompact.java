@@ -12,10 +12,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.functions.Predicate;
 
 
 public class RxActivityResultCompact {
@@ -68,20 +68,20 @@ public class RxActivityResultCompact {
         return fragment.getIsAttachedBehavior()
                 .filter(new Predicate<Boolean>() {
                     @Override
-                    public boolean test(@io.reactivex.annotations.NonNull Boolean isAttached) throws Exception {
+                    public boolean test(Boolean isAttached) throws Throwable {
                         return isAttached;
                     }
                 })
                 .flatMap(new Function<Boolean, ObservableSource<ActivityResult>>() {
                     @Override
-                    public ObservableSource<ActivityResult> apply(@io.reactivex.annotations.NonNull Boolean aBoolean) throws Exception {
+                    public ObservableSource<ActivityResult> apply(Boolean aBoolean) throws Exception {
                         fragment.startActivityForResult(intent, requestCode, options);
                         return fragment.getResultPublisher();
                     }
                 })
                 .filter(new Predicate<ActivityResult>() {
                     @Override
-                    public boolean test(@io.reactivex.annotations.NonNull ActivityResult result) throws Exception {
+                    public boolean test( ActivityResult result) throws Exception {
                         return result.getRequestCode() == requestCode;
                     }
                 }).take(1);

@@ -6,7 +6,8 @@ import androidx.annotation.RequiresPermission;
 
 import java.io.File;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
+
 
 /**
  * @Description: java类作用描述

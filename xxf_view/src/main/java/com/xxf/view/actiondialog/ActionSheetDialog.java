@@ -25,14 +25,14 @@ import com.xxf.view.config.AdapterStyle;
 import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
 import com.xxf.view.databinding.XxfDialogBottomActionBinding;
 import com.xxf.view.model.ItemMenu;
+import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
-import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 
 import java.util.List;
 import java.util.Objects;
 
-import io.reactivex.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.BiConsumer;
 
 /**
  * @author xuanyouwu

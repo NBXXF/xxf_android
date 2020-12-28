@@ -3,7 +3,8 @@ package com.xxf.arch.fragment;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import io.reactivex.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.BiConsumer;
+
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -36,7 +37,7 @@ public class XXFResultAlertDialogFragment<R> extends XXFAlertDialogFragment impl
         if (dialogFragmentConsumer != null) {
             try {
                 dialogFragmentConsumer.accept(this, r);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         } else {

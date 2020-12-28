@@ -15,9 +15,10 @@
  */
 package com.xxf.arch.http.adapter.rxjava2;
 
+import androidx.annotation.Nullable;
+
 import java.io.IOException;
 
-import io.reactivex.annotations.Nullable;
 import retrofit2.Response;
 
 /** The result of executing an HTTP request. */

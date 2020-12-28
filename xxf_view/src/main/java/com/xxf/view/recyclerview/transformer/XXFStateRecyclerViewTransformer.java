@@ -56,7 +56,7 @@ public class XXFStateRecyclerViewTransformer<T> extends UILifeTransformerImpl<T>
             this.stateLayout.setViewState(ViewState.VIEW_STATE_ERROR);
             try {
                 this.stateLayout.setErrorText((XXF.getErrorConvertFunction().apply(throwable)));
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }

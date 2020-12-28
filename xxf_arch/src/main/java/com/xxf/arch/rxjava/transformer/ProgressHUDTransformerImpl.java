@@ -117,7 +117,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
                 String parseErrorNotice = "";
                 try {
                     parseErrorNotice = XXF.getErrorConvertFunction().apply(throwable);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
                 }
                 progressHUD.dismissLoadingDialogWithFail(parseErrorNotice);

@@ -1,13 +1,14 @@
 package com.xxf.view.databinding.statelayout;
 
-import androidx.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.xxf.view.loading.XXFStateLayout;
-import com.xxf.view.loading.ViewState;
+import androidx.databinding.BindingAdapter;
 
-import io.reactivex.functions.Action;
+import com.xxf.view.loading.ViewState;
+import com.xxf.view.loading.XXFStateLayout;
+
+import io.reactivex.rxjava3.functions.Action;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -79,7 +80,7 @@ public class StateLayoutBindingAdapter {
                 if (retryListener != null) {
                     try {
                         retryListener.run();
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         e.printStackTrace();
                     }
                 }

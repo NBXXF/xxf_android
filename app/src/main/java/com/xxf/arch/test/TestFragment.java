@@ -13,7 +13,8 @@ import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
 import com.xxf.arch.lifecycle.XXFFullLifecycleObserverAdapter;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
+
 
 public class TestFragment extends Fragment {
     public TestFragment() {

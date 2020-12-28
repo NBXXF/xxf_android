@@ -5,9 +5,9 @@ import androidx.annotation.Nullable;
 import com.xxf.arch.XXF;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 import retrofit2.Call;
 
 /**

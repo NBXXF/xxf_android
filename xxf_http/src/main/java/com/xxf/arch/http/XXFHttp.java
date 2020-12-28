@@ -11,13 +11,10 @@ import com.xxf.arch.annotation.RxHttpCacheProvider;
 import com.xxf.arch.annotation.RxJavaInterceptor;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
-import com.xxf.arch.http.cache.RxHttpCache;
 
-import java.io.File;
-import java.net.CookieHandler;
 import java.util.concurrent.ConcurrentHashMap;
 
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import okhttp3.Interceptor;
 
 /**

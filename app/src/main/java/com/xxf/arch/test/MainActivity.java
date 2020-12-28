@@ -16,7 +16,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
@@ -41,16 +40,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.CacheType;
 
 
@@ -128,7 +127,7 @@ public class MainActivity extends XXFActivity {
 
         XXF.subscribeEvent(String.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
+                .to(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {

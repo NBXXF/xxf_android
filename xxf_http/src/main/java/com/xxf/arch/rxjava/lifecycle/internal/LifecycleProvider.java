@@ -4,7 +4,8 @@ package com.xxf.arch.rxjava.lifecycle.internal;
 import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
+
 
 public interface LifecycleProvider<E> {
     /**

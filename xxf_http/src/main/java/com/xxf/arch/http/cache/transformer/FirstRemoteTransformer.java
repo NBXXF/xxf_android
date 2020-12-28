@@ -7,9 +7,9 @@ import com.xxf.arch.http.cache.RxHttpCache;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Function;
 import retrofit2.Call;
 import retrofit2.Response;
 

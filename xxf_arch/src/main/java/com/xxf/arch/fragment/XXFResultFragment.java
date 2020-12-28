@@ -3,9 +3,7 @@ package com.xxf.arch.fragment;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.xxf.arch.R;
-
-import io.reactivex.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.BiConsumer;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -29,7 +27,7 @@ public class XXFResultFragment<R>
         if (fragmentConsumer != null) {
             try {
                 fragmentConsumer.accept(this, r);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }

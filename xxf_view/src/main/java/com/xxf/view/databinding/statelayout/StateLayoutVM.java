@@ -1,14 +1,15 @@
 package com.xxf.view.databinding.statelayout;
 
+import android.graphics.drawable.Drawable;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.ObservableField;
-import android.graphics.drawable.Drawable;
 
 import com.xxf.view.R;
 import com.xxf.view.loading.ViewState;
 import com.xxf.view.utils.ResourcesUtil;
 
-import io.reactivex.functions.Action;
+import io.reactivex.rxjava3.functions.Action;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq

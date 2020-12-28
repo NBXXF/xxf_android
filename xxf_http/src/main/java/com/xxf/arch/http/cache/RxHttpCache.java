@@ -5,6 +5,7 @@ package com.xxf.arch.http.cache;
 import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.http.cache.disklrucache.SimpleDiskLruCache;
@@ -17,9 +18,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
-import io.reactivex.Observable;
-import io.reactivex.annotations.Nullable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
