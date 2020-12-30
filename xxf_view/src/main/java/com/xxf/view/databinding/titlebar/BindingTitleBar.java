@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.functions.Action;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description token 标题栏
  */
-public class TitleBar implements ITitleBar {
+public class BindingTitleBar implements IBindingTitleBar {
 
     final ObservableField<Drawable> titleBarBackground = new ObservableField<Drawable>();
     final ObservableInt titleBarHeight = new ObservableInt();
@@ -35,7 +35,7 @@ public class TitleBar implements ITitleBar {
     final ObservableField<Action> titleBarRightTextListener = new ObservableField<>();
 
     @Override
-    public ITitleBar setTitleBarBackground(Drawable drawable) {
+    public IBindingTitleBar setTitleBarBackground(Drawable drawable) {
         this.titleBarBackground.set(drawable);
         return this;
     }
@@ -46,7 +46,7 @@ public class TitleBar implements ITitleBar {
     }
 
     @Override
-    public ITitleBar setTitleBarHeight(int dp) {
+    public IBindingTitleBar setTitleBarHeight(int dp) {
         this.titleBarHeight.set(dp);
         return this;
     }
@@ -57,12 +57,12 @@ public class TitleBar implements ITitleBar {
     }
 
     @Override
-    public ITitleBar setTitleBarLeftIcon(int drawableRes, Action action) {
+    public IBindingTitleBar setTitleBarLeftIcon(int drawableRes, Action action) {
         return this.setTitleBarLeftIcon(ResourcesUtil.getDrawable(drawableRes), action);
     }
 
     @Override
-    public ITitleBar setTitleBarLeftIcon(Drawable drawable, Action action) {
+    public IBindingTitleBar setTitleBarLeftIcon(Drawable drawable, Action action) {
         this.titleBarLeftIcon.set(drawable);
         this.titleBarLeftIconListener.set(action);
         return this;
@@ -79,17 +79,17 @@ public class TitleBar implements ITitleBar {
     }
 
     @Override
-    public ITitleBar setTitleBarTitle(int id) {
+    public IBindingTitleBar setTitleBarTitle(int id) {
         return this.setTitleBarTitle(ResourcesUtil.getString(id));
     }
 
     @Override
-    public ITitleBar setTitleBarTitle(CharSequence text) {
+    public IBindingTitleBar setTitleBarTitle(CharSequence text) {
         return this.setTitleBarTitle(text, null);
     }
 
     @Override
-    public ITitleBar setTitleBarTitle(CharSequence text, Action action) {
+    public IBindingTitleBar setTitleBarTitle(CharSequence text, Action action) {
         this.titleBarTitle.set(text);
         this.titleBarTitleListener.set(action);
         return this;
@@ -106,12 +106,12 @@ public class TitleBar implements ITitleBar {
     }
 
     @Override
-    public ITitleBar setTitleBarRightIcon(int drawableRes, Action action) {
+    public IBindingTitleBar setTitleBarRightIcon(int drawableRes, Action action) {
         return this.setTitleBarRightIcon(ResourcesUtil.getDrawable(drawableRes), action);
     }
 
     @Override
-    public ITitleBar setTitleBarRightIcon(Drawable drawable, Action action) {
+    public IBindingTitleBar setTitleBarRightIcon(Drawable drawable, Action action) {
         this.titleBarRightIcon.set(drawable);
         this.titleBarRightIconListener.set(action);
         return this;
@@ -128,12 +128,12 @@ public class TitleBar implements ITitleBar {
     }
 
     @Override
-    public ITitleBar setTitleBarRightText(int id, Action action) {
+    public IBindingTitleBar setTitleBarRightText(int id, Action action) {
         return this.setTitleBarRightText(ResourcesUtil.getString(id), action);
     }
 
     @Override
-    public ITitleBar setTitleBarRightText(CharSequence text, Action action) {
+    public IBindingTitleBar setTitleBarRightText(CharSequence text, Action action) {
         this.titleBarRightText.set(text);
         this.titleBarRightTextListener.set(action);
         return this;
