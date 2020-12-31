@@ -16,11 +16,14 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.datastructure.ListOrSingle;
+import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
+import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
@@ -108,7 +111,8 @@ public class MainActivity extends XXFActivity {
     }
 
     class TestModel {
-        float p;
+        @JsonAdapter(Number_KM_FormatTypeAdapter.class)
+        NumberFormatObject p;
         BigDecimal bigDecimal;
 
         @Override
@@ -250,7 +254,7 @@ public class MainActivity extends XXFActivity {
 
                         List<TestModel> list = JsonUtils.toType("[\n" +
                                 "  {\n" +
-                                "    \"p\": 10.5\n" +
+                                "    \"p\": 100000.5\n" +
                                 "  },\n" +
                                 "  {\n" +
                                 "    \"p\": 10.6\n" +
@@ -410,7 +414,7 @@ public class MainActivity extends XXFActivity {
                                 .subscribe(new Consumer<ListOrSingle<Weather>>() {
                                     @Override
                                     public void accept(ListOrSingle<Weather> weathers) throws Exception {
-                                        XXF.getLogger().d("=========>result:" +new ArrayList(weathers));
+                                        XXF.getLogger().d("=========>result:" + new ArrayList(weathers));
                                     }
                                 });
                     }
