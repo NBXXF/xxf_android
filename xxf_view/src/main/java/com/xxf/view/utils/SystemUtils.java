@@ -47,6 +47,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -592,5 +593,49 @@ public class SystemUtils {
                         }
                     });
         }
+    }
+
+    /**
+     * 发送邮件
+     *
+     * @param context
+     * @param email           邮箱
+     * @param subject         邮件主题
+     * @param content         邮件正文
+     * @param chooserAppTitle 多个邮件app 选择对话框标题
+     * @return
+     */
+    public static Observable<ActivityResult> sendEmail(@NonNull Context context,
+                                                       @NonNull String email,
+                                                       @Nullable String subject,
+                                                       @Nullable String content,
+                                                       @Nullable String chooserAppTitle) {
+        return Observable.defer(new Supplier<ObservableSource<ActivityResult>>() {
+
+            @Override
+            public ObservableSource<ActivityResult> get() throws Throwable {
+                // 必须明确使用mailto前缀来修饰邮件地址,如果使用
+                // intent.putExtra(Intent.EXTRA_EMAIL, email)，结果将匹配不到任何应用
+                Uri uri = Uri.parse("mailto:" + email);
+                String[] emailArr = {email};
+                Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+                intent.putExtra(Intent.EXTRA_CC, emailArr); // 抄送人
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject); // 主题
+                intent.putExtra(Intent.EXTRA_TEXT, content); // 正文
+                Intent chooser = Intent.createChooser(intent, chooserAppTitle);
+                if (context instanceof LifecycleOwner) {
+                    return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
+                } else {
+                    return Observable
+                            .fromCallable(new Callable<ActivityResult>() {
+                                @Override
+                                public ActivityResult call() throws Exception {
+                                    context.startActivity(chooser);
+                                    return new ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, new Intent());
+                                }
+                            });
+                }
+            }
+        });
     }
 }

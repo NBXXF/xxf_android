@@ -29,6 +29,7 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.utils.StatusBarUtils;
+import com.xxf.view.utils.SystemUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -245,6 +246,8 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        SystemUtils.sendEmail(view.getContext(), "2767356588@qq.com", "", "", "请选择邮箱app")
+                                .subscribe();
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
