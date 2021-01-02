@@ -17,17 +17,17 @@ public class ItemMenuImpl<T> implements ItemMenu<T> {
         this.itemTitle = itemTitle;
     }
 
-    public ItemMenuImpl(T item, CharSequence itemTitle, boolean itemDisable) {
+    public ItemMenuImpl(T item, CharSequence itemTitle, boolean isItemSelected) {
         this.item = item;
         this.itemTitle = itemTitle;
-        this.itemDisable = itemDisable;
+        this.isItemSelected = isItemSelected;
     }
 
-    public ItemMenuImpl(T item, CharSequence itemTitle, boolean itemDisable, boolean isItemSelected) {
+    public ItemMenuImpl(T item, CharSequence itemTitle, boolean isItemSelected, boolean itemDisable) {
         this.item = item;
         this.itemTitle = itemTitle;
-        this.itemDisable = itemDisable;
         this.isItemSelected = isItemSelected;
+        this.itemDisable = itemDisable;
     }
 
     @Override
