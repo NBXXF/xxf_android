@@ -106,7 +106,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
                              @NonNull AdapterStyle adapterStyle,
                              @NonNull List<ItemMenu<T>> actionItems,
                              BiConsumer<DialogInterface, ItemMenu<T>> dialogConsumer) {
-        this(context, ActionSheetDialog.CANCEL_BTN_TEXT, title, adapterStyle, actionItems, DensityUtil.getScreenHeightPx() / 2, dialogConsumer);
+        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx() / 2, dialogConsumer);
     }
 
     /**
