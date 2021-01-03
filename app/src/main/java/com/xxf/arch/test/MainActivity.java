@@ -16,17 +16,20 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.google.gson.JsonObject;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.datastructure.ListOrSingle;
+import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
+import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.utils.StatusBarUtils;
+import com.xxf.view.utils.SystemUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -41,16 +44,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.plugins.RxJavaPlugins;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.CacheType;
 
 
@@ -109,7 +112,8 @@ public class MainActivity extends XXFActivity {
     }
 
     class TestModel {
-        float p;
+        @JsonAdapter(Number_KM_FormatTypeAdapter.class)
+        NumberFormatObject p;
         BigDecimal bigDecimal;
 
         @Override
@@ -128,7 +132,7 @@ public class MainActivity extends XXFActivity {
 
         XXF.subscribeEvent(String.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
+                .to(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
@@ -242,6 +246,8 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        SystemUtils.sendEmail(view.getContext(), "2767356588@qq.com", "", "", "请选择邮箱app")
+                                .subscribe();
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -251,7 +257,7 @@ public class MainActivity extends XXFActivity {
 
                         List<TestModel> list = JsonUtils.toType("[\n" +
                                 "  {\n" +
-                                "    \"p\": 10.5\n" +
+                                "    \"p\": 100000.5\n" +
                                 "  },\n" +
                                 "  {\n" +
                                 "    \"p\": 10.6\n" +
@@ -411,7 +417,7 @@ public class MainActivity extends XXFActivity {
                                 .subscribe(new Consumer<ListOrSingle<Weather>>() {
                                     @Override
                                     public void accept(ListOrSingle<Weather> weathers) throws Exception {
-                                        XXF.getLogger().d("=========>result:" +new ArrayList(weathers));
+                                        XXF.getLogger().d("=========>result:" + new ArrayList(weathers));
                                     }
                                 });
                     }

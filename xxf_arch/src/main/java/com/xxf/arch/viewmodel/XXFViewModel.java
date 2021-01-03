@@ -2,17 +2,17 @@ package com.xxf.arch.viewmodel;
 
 import android.app.Application;
 
-import androidx.lifecycle.AndroidViewModel;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
-
+import androidx.lifecycle.AndroidViewModel;
 
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycle;
 
-import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
+
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq

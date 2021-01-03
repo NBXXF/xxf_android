@@ -13,7 +13,8 @@ import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
-import io.reactivex.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.BiConsumer;
+
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -51,7 +52,7 @@ public  class XXFAlertDialog<R>
         if (dialogConsumer != null) {
             try {
                 dialogConsumer.accept(this, confirmResult);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         } else {

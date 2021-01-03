@@ -1,18 +1,20 @@
 package com.xxf.view.databinding.titlebar;
 
-import androidx.databinding.ObservableField;
-import androidx.databinding.ObservableInt;
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
+import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 
-import io.reactivex.functions.Action;
+import io.reactivex.rxjava3.functions.Action;
+
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 标题栏
  */
-public interface ITitleBar {
+public interface IBindingTitleBar {
 
     //---------------背景和高度---------------//
 
@@ -22,7 +24,7 @@ public interface ITitleBar {
      * @param drawable
      * @return
      */
-    ITitleBar setTitleBarBackground(Drawable drawable);
+    IBindingTitleBar setTitleBarBackground(Drawable drawable);
 
     /**
      * 背景
@@ -36,7 +38,7 @@ public interface ITitleBar {
      *
      * @param dp
      */
-    ITitleBar setTitleBarHeight(int dp);
+    IBindingTitleBar setTitleBarHeight(int dp);
 
 
     /**
@@ -53,14 +55,14 @@ public interface ITitleBar {
      *
      * @param drawableRes
      */
-    ITitleBar setTitleBarLeftIcon(@DrawableRes int drawableRes, Action action);
+    IBindingTitleBar setTitleBarLeftIcon(@DrawableRes int drawableRes, Action action);
 
     /**
      * 左边icon
      *
      * @param drawable
      */
-    ITitleBar setTitleBarLeftIcon(Drawable drawable, Action action);
+    IBindingTitleBar setTitleBarLeftIcon(Drawable drawable, Action action);
 
 
     /**
@@ -85,7 +87,7 @@ public interface ITitleBar {
      *
      * @return
      */
-    ITitleBar setTitleBarTitle(@StringRes int id);
+    IBindingTitleBar setTitleBarTitle(@StringRes int id);
 
 
     /**
@@ -93,14 +95,14 @@ public interface ITitleBar {
      *
      * @return
      */
-    ITitleBar setTitleBarTitle(CharSequence text);
+    IBindingTitleBar setTitleBarTitle(CharSequence text);
 
     /**
      * 中间 标题
      *
      * @return
      */
-    ITitleBar setTitleBarTitle(CharSequence text, Action action);
+    IBindingTitleBar setTitleBarTitle(CharSequence text, Action action);
 
     /**
      * 中间 标题
@@ -125,14 +127,14 @@ public interface ITitleBar {
      *
      * @param drawableRes
      */
-    ITitleBar setTitleBarRightIcon(@DrawableRes int drawableRes, Action action);
+    IBindingTitleBar setTitleBarRightIcon(@DrawableRes int drawableRes, Action action);
 
     /**
      * 右边icon
      *
      * @param drawable
      */
-    ITitleBar setTitleBarRightIcon(Drawable drawable, Action action);
+    IBindingTitleBar setTitleBarRightIcon(Drawable drawable, Action action);
 
     /**
      * 右边icon
@@ -159,7 +161,7 @@ public interface ITitleBar {
      * @param action
      * @return
      */
-    ITitleBar setTitleBarRightText(@StringRes int id, Action action);
+    IBindingTitleBar setTitleBarRightText(@StringRes int id, Action action);
 
     /**
      * 右边文本
@@ -168,7 +170,7 @@ public interface ITitleBar {
      * @param action
      * @return
      */
-    ITitleBar setTitleBarRightText(CharSequence text, Action action);
+    IBindingTitleBar setTitleBarRightText(CharSequence text, Action action);
 
 
     /**

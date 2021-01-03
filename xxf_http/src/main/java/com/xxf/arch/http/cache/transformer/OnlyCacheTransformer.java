@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.xxf.arch.http.cache.RxHttpCache;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
 import retrofit2.Call;
 import retrofit2.Response;
 

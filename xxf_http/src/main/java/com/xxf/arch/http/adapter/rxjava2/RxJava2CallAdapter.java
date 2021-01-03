@@ -1,5 +1,7 @@
 package com.xxf.arch.http.adapter.rxjava2;
 
+import androidx.annotation.Nullable;
+
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.http.cache.RxHttpCacheFactory;
 import com.xxf.arch.http.cache.transformer.FirstCacheTransformer;
@@ -11,12 +13,11 @@ import com.xxf.arch.http.cache.transformer.OnlyRemoteTransformer;
 
 import java.lang.reflect.Type;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Observable;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.Scheduler;
-import io.reactivex.annotations.Nullable;
-import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.rxjava3.core.BackpressureStrategy;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableTransformer;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import retrofit2.CacheType;
 import retrofit2.Call;
 import retrofit2.OkHttpRxJavaCallAdapter;

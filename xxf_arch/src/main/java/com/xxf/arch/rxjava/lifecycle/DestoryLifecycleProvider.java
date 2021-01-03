@@ -1,20 +1,16 @@
 package com.xxf.arch.rxjava.lifecycle;
 
 import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.arch.lifecycle.XXFFullLifecycleObserverAdapter;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycle;
 import com.xxf.arch.rxjava.lifecycle.internal.RxLifecycleAndroidLifecycle;
 
-import java.util.Objects;
-
-import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
 /**
  * @Description: 已经销毁

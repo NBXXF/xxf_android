@@ -20,17 +20,16 @@ import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.view.loading.DefaultProgressHUDImpl;
-import com.xxf.view.loading.XXFStateLayout;
 import com.xxf.view.refresh.XXFJumpRefreshFooter;
 import com.xxf.view.refresh.XXFJumpRefreshHeader;
 import com.xxf.view.utils.ResourcesUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import io.reactivex.functions.Consumer;
-import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq

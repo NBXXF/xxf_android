@@ -8,7 +8,6 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-import io.reactivex.functions.Function;
 
 /**
  * Description

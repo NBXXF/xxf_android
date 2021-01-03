@@ -50,7 +50,7 @@ public class XXFStateViewTransformer<T> extends UILifeTransformerImpl<T> {
             alphaStateViewVM.setLayoutState(ViewState.VIEW_STATE_ERROR);
             try {
                 alphaStateViewVM.setErrorDesc(XXF.getErrorConvertFunction().apply(throwable));
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }

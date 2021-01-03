@@ -12,6 +12,13 @@
             android:background="@android:color/white"
             android:orientation="vertical">
 
+            <com.xxf.view.titlebar.TitleBar
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="20dp"
+                app:backButton="true"
+                app:title="不带返回按钮并标题加粗" />
+
             <View
                 android:id="@+id/statusbarLayout"
                 android:layout_width="wrap_content"
@@ -125,7 +132,6 @@
                         android:id="@+id/contentPanel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-
 
 
                     <androidx.cardview.widget.CardView

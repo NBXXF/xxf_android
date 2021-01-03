@@ -2,6 +2,8 @@ package com.xxf.arch.http;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.Nullable;
+
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -14,7 +16,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import io.reactivex.annotations.Nullable;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.CookieJar;

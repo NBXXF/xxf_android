@@ -1,16 +1,14 @@
 
 
 package com.xxf.arch.rxjava.lifecycle.internal;
-import com.xxf.arch.rxjava.lifecycle.internal.Functions;
-import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
-import com.xxf.arch.rxjava.lifecycle.internal.Preconditions;
 
-import io.reactivex.Observable;
-import io.reactivex.annotations.CheckReturnValue;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
+import androidx.annotation.NonNull;
+
+import io.reactivex.rxjava3.annotations.CheckReturnValue;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.BiFunction;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.functions.Predicate;
 
 public class RxLifecycle {
 

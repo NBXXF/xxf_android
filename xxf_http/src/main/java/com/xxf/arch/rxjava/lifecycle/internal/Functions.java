@@ -2,10 +2,11 @@ package com.xxf.arch.rxjava.lifecycle.internal;
 
 import java.util.concurrent.CancellationException;
 
-import io.reactivex.Completable;
-import io.reactivex.exceptions.Exceptions;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.exceptions.Exceptions;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.functions.Predicate;
+
 
 final class Functions {
 

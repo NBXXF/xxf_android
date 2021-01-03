@@ -9,7 +9,7 @@ import com.xxf.arch.annotation.RxJavaInterceptor;
 import com.xxf.arch.json.datastructure.ListOrSingle;
 import com.xxf.arch.test.Weather;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.CacheType;
 import retrofit2.http.Cache;
 import retrofit2.http.GET;

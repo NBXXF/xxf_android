@@ -1,6 +1,6 @@
 package retrofit2;
 
-import io.reactivex.functions.Function;
+import io.reactivex.rxjava3.functions.Function;
 import okhttp3.ResponseBody;
 
 /**

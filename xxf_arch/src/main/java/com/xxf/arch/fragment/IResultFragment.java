@@ -3,7 +3,8 @@ package com.xxf.arch.fragment;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import io.reactivex.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.BiConsumer;
+
 
 public interface IResultFragment<V extends Fragment, R> {
 
