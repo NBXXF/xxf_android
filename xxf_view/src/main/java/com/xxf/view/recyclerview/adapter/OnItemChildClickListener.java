@@ -3,8 +3,9 @@ package com.xxf.view.recyclerview.adapter;
 import android.view.View;
 
 import androidx.databinding.ViewDataBinding;
+import androidx.viewbinding.ViewBinding;
 
-public interface OnItemChildClickListener<V extends ViewDataBinding, T> {
+public interface OnItemChildClickListener<V extends ViewDataBinding & ViewBinding, T> {
 
     /**
      * @param adapter

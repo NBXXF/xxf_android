@@ -1,11 +1,12 @@
 package com.xxf.view.recyclerview.adapter;
 
-import androidx.databinding.ObservableArrayList;
 import androidx.annotation.CheckResult;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ViewDataBinding;
+import androidx.viewbinding.ViewBinding;
 
 import com.xxf.view.model.SelectableEntity;
 
@@ -21,7 +22,7 @@ import java.util.List;
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public abstract class XXFSelectableAdapter<V extends ViewDataBinding, T extends SelectableEntity> extends XXFRecyclerAdapter<V, T> implements ISelectableAdapter {
+public abstract class XXFSelectableAdapter<V extends ViewDataBinding & ViewBinding, T extends SelectableEntity> extends XXFRecyclerAdapter<V, T> implements ISelectableAdapter {
 
     public static final int SELECT_TYPE_UNSELECTABLE = 200;
     public static final int SELECT_TYPE_SINGLE = 201;

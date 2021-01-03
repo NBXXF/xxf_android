@@ -3,6 +3,7 @@ package com.xxf.view.recyclerview.adapter;
 import android.view.View;
 
 import androidx.databinding.ViewDataBinding;
+import androidx.viewbinding.ViewBinding;
 
 /**
  * Description
@@ -11,7 +12,7 @@ import androidx.databinding.ViewDataBinding;
  * date createTime：2017/10/3
  * version 2.1.0
  */
-public interface OnItemLongClickListener<V extends ViewDataBinding, T> {
+public interface OnItemLongClickListener<V extends ViewDataBinding & ViewBinding, T> {
 
     /**
      * @param adapter

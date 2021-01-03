@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 /**
  * Description
@@ -16,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public class XXFViewHolder<V extends ViewDataBinding, T> extends RecyclerView.ViewHolder
+public class XXFViewHolder<V extends ViewDataBinding & ViewBinding, T> extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
     private XXFRecyclerAdapter<V, T> baseRecyclerAdapter;
     private SparseArray<View> holder = null;

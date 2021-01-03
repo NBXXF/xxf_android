@@ -1,8 +1,9 @@
 package com.xxf.view.recyclerview.adapter;
 
-import androidx.databinding.ObservableArrayList;
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ViewDataBinding;
+import androidx.viewbinding.ViewBinding;
 
 /**
  * Description 多布局的适配器
@@ -11,7 +12,7 @@ import androidx.databinding.ViewDataBinding;
  * date createTime：2017/10/4
  * version 2.1.0
  */
-public abstract class MultiRecyclerAdapter<V extends ViewDataBinding,T extends MultiViewEntity> extends XXFRecyclerAdapter<V,T> {
+public abstract class MultiRecyclerAdapter<V extends ViewDataBinding & ViewBinding,T extends MultiViewEntity> extends XXFRecyclerAdapter<V,T> {
     public MultiRecyclerAdapter() {
     }
 
