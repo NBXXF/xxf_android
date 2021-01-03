@@ -48,7 +48,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
     /**
      * 取消按钮文本
      */
-    public static CharSequence CANCEL_BTN_TEXT = "cancel";
+    public static CharSequence CANCEL_BTN_TEXT = "Cancel";
 
     public static class Builder {
         private Context context;
