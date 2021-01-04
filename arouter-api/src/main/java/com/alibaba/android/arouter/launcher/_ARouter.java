@@ -408,6 +408,7 @@ final class _ARouter {
                         return instance;
                     } else if (instance instanceof androidx.fragment.app.Fragment) {
                         ((androidx.fragment.app.Fragment) instance).setArguments(postcard.getExtras());
+                        return instance;
                     }
                     /* else if (instance instanceof android.support.v4.app.Fragment) {
                         ((android.support.v4.app.Fragment) instance).setArguments(postcard.getExtras());
