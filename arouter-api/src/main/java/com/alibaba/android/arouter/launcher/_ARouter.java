@@ -406,7 +406,10 @@ final class _ARouter {
                     if (instance instanceof Fragment) {
                         ((Fragment) instance).setArguments(postcard.getExtras());
                         return instance;
-                    }/* else if (instance instanceof android.support.v4.app.Fragment) {
+                    } else if (instance instanceof androidx.fragment.app.Fragment) {
+                        ((androidx.fragment.app.Fragment) instance).setArguments(postcard.getExtras());
+                    }
+                    /* else if (instance instanceof android.support.v4.app.Fragment) {
                         ((android.support.v4.app.Fragment) instance).setArguments(postcard.getExtras());
                     }*/
                     throw new RuntimeException("not support v4");
