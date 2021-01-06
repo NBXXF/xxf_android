@@ -332,7 +332,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
      */
     @Nullable
     @CheckResult
-    private XXFViewHolder<V, T> getViewHolder(int index) {
+    public XXFViewHolder<V, T> getViewHolder(int index) {
         if (checkIndex(index)) {
             try {
                 return (XXFViewHolder<V, T>) this.attachedRecyclerView.findViewHolderForAdapterPosition(index);
