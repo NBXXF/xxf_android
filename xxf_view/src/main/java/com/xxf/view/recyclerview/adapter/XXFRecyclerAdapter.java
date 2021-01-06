@@ -27,6 +27,7 @@ import java.util.List;
  * ClassName BaseRecyclerAdapter
  * Description index:相对于List集合的位置,position:表示在adapter中的位置
  * Company
+ *
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2015/9/10 10:05
  * version
@@ -321,6 +322,25 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
      */
     public int getIndex(@NonNull T t) {
         return getData().indexOf(t);
+    }
+
+    /**
+     * 获取指定item 的viewholder 一定要在缓存中的,一定要recycler.setAdapter 之后获取,否则返回null
+     *
+     * @param index
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    private XXFViewHolder<V, T> getViewHolder(int index) {
+        if (checkIndex(index)) {
+            try {
+                return (XXFViewHolder<V, T>) this.attachedRecyclerView.findViewHolderForAdapterPosition(index);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     /**
