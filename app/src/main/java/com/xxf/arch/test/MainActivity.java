@@ -24,11 +24,13 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.datastructure.ListOrSingle;
+import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
 import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
+import com.xxf.arch.utils.NumberUtils;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
@@ -299,19 +301,19 @@ public class MainActivity extends XXFActivity {
                             }
                         });
 
-                     /*   String json = "{\n" +
+                        String json = "{\n" +
                                 "  \"num\": \"1948367743.1273676543\",\n" +
                                 "  \"num1\": 1948367743.1273676543,\n" +
                                 "  \"percent\": \"0.1273676543\",\n" +
                                 "  \"percent2\": 15.1273676543,\n" +
                                 "  \"percent3\": -35.1273676543,\n" +
                                 "  \"percent4\": 71.1273676543,\n" +
-                                "  \"time\": \"1604631895000\",\n" +
+                                "  \"time\": \"2020-12-05T07:35:57\",\n" +
                                 "  \"money\": 3456435.32674335\n" +
                                 "}";
                         FormatDemoModel testModel = JsonUtils.toBean(json, FormatDemoModel.class);
                         XXF.getLogger().d("===============>t:" + testModel);
-                        // startActivity(new Intent(view.getContext(), StateActivity.class));
+                          /*   // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                         System.out.println("============>f2:" + NumberUtils.divide(10.2, 2) + "  " + (new BigDecimal(10.2).divide(new BigDecimal(2))));
                         System.out.println("============>f:" + NumberUtils.formatRoundUp("5.5", 0, 0));

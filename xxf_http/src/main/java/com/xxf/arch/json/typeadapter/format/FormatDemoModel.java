@@ -138,7 +138,7 @@ public class FormatDemoModel {
 
         @Override
         public String format(@NonNull Long origin) throws Exception {
-            return android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", origin).toString();
+            return android.text.format.DateFormat.format("MM-dd HH:mm", origin).toString();
         }
     }
 
