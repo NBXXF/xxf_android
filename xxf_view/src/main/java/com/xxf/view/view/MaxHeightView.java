@@ -28,7 +28,7 @@ public class MaxHeightView extends FrameLayout {
     /**
      * @param maxHeight 像素
      */
-    public void setMaxHeight(float maxHeight) {
+    public void setMaximumHeight(float maxHeight) {
         if (this.mMaxHeight != mMaxHeight) {
             this.mMaxHeight = mMaxHeight;
             this.requestLayout();
@@ -36,14 +36,26 @@ public class MaxHeightView extends FrameLayout {
     }
 
     /**
-     * 占屏幕比例
+     * 占最大高度屏幕比例
      *
      * @param heightRatio
      */
-    public void setHeightRatio(@FloatRange(from = 0.0f, to = 1.0f) float heightRatio) {
-        setMaxHeight(heightRatio * getScreenHeight());
+    public void setMaximumHeightRatio(@FloatRange(from = 0.0f, to = 1.0f) float heightRatio) {
+        setMaximumHeight(heightRatio * getScreenHeight());
     }
 
+    /**
+     * 占最小高度屏幕比例
+     *
+     * @param heightRatio
+     */
+    public void setMinimumHeightRatio(@FloatRange(from = 0.0f, to = 1.0f) float heightRatio) {
+        setMinimumHeight((int) (heightRatio * getScreenHeight()));
+    }
+
+    public int getMaximumHeight() {
+        return mMaxHeight;
+    }
 
     public MaxHeightView(Context context) {
         super(context);
@@ -66,6 +78,11 @@ public class MaxHeightView extends FrameLayout {
             mMaxHeight = a.getLayoutDimension(R.styleable.MaxHeightView_maxHeight, 0);
         } else if (a.hasValue(R.styleable.MaxHeightView_maxHeightRatio)) {
             mMaxHeight = (int) (a.getFloat(R.styleable.MaxHeightView_maxHeightRatio, 0) * getScreenHeight());
+        }
+
+        if (a.hasValue(R.styleable.MaxHeightView_minHeightRatio)) {
+            int minHeight = (int) (a.getFloat(R.styleable.MaxHeightView_minHeightRatio, 0) * getScreenHeight());
+            setMinimumHeight(minHeight);
         }
         a.recycle();
     }

@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
@@ -246,8 +248,8 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SystemUtils.sendEmail(view.getContext(), "2767356588@qq.com", "", "", "请选择邮箱app")
-                                .subscribe();
+                       /* SystemUtils.sendEmail(view.getContext(), "2767356588@qq.com", "", "", "请选择邮箱app")
+                                .subscribe();*/
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -282,7 +284,7 @@ public class MainActivity extends XXFActivity {
                      /*   ReverseFrameLayout layout = findViewById(R.id.grayLayout);
                         layout.toggleColor();
 
-                        *//*    String url = "qweqwe";*//*
+                        *//*    String url = "qweqwe";*/
                         String url = "/activity/test";
                         ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
                             @Override
@@ -295,7 +297,7 @@ public class MainActivity extends XXFActivity {
                                 super.onLost(postcard);
                                 XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
                             }
-                        });*/
+                        });
 
                      /*   String json = "{\n" +
                                 "  \"num\": \"1948367743.1273676543\",\n" +

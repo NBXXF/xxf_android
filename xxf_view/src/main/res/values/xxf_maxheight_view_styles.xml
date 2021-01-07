@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="MaxHeightView">
+    <declare-styleable name="MaxHeightView" tools:ignore="ResourceName">
         <attr name="maxHeightRatio" format="reference|float" />
         <attr name="maxHeight" format="reference|dimension" />
+        <attr name="minHeightRatio" format="reference|float" />
     </declare-styleable>
 
-    <declare-styleable name="ScaleLayout">
+    <declare-styleable name="ScaleLayout" tools:ignore="ResourceName">
         <attr name="scaleRatio" format="reference|float" />
     </declare-styleable>
 </resources>

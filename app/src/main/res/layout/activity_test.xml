@@ -9,9 +9,10 @@
 
         <com.xxf.view.view.MaxHeightView
             android:layout_width="match_parent"
-            app:maxHeight="80dp"
+            android:layout_height="wrap_content"
             android:background="#6cf"
-            android:layout_height="wrap_content">
+            app:maxHeightRatio="0.5"
+            app:minHeightRatio="0.3">
 
 
             <EditText
