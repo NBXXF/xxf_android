@@ -8,6 +8,7 @@ import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.http.converter.json.JsonConverterFactory;
+import com.xxf.arch.http.converter.string.ScalarsConverterFactory;
 import com.xxf.arch.json.GsonFactory;
 
 import java.util.List;
@@ -52,6 +53,7 @@ public class RetrofitBuilder {
     public RetrofitBuilder(RxJavaCallAdapterInterceptor interceptor, HttpCacheDirectoryProvider rxHttpCache) {
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson()))
                 .addConverterFactory(JsonConverterFactory.create())
                 .addCallAdapterFactory(new RxJava2CallAdapterFactory(null,true,rxHttpCache,interceptor));
