@@ -1,4 +1,4 @@
-package com.xxf.view.utils;
+package com.xxf.arch.utils;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -10,18 +10,28 @@ import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+
 import androidx.annotation.AnyRes;
+import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 
+import static android.content.ContentResolver.SCHEME_CONTENT;
 import static android.content.Context.STORAGE_SERVICE;
 
 /**
  * Description
  * Company Beijing icourt
+ *
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2017/4/8
  * version 1.0.0
@@ -134,17 +144,88 @@ public class UriUtils {
 
 
     /**
+     * 是否是文件描述符
+     *
+     * @param filePath
+     * @return
+     */
+    public static boolean isFileDescriptor(String filePath) {
+        try {
+            Uri fileProviderUri = Uri.parse(filePath);
+            return TextUtils.equals(fileProviderUri.getScheme(), SCHEME_CONTENT);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Nullable
+    @CheckResult
+    public static ParcelFileDescriptor getFileDescriptorSafe(Context context, String filePath) {
+        try {
+            Uri fileProviderUri = Uri.parse(filePath);
+            return context.getContentResolver().openFileDescriptor(fileProviderUri, "r");
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * 获取android 7.0文件共享目录下文件描述
      * 用完之后 请close
      *
      * @param context
      * @param uri
      */
-    public static ParcelFileDescriptor get_N_FileDescriptor(Context context, Uri uri)
+    public static ParcelFileDescriptor getFileDescriptor(Context context, Uri uri)
             throws FileNotFoundException {
         return context.getContentResolver().openFileDescriptor(uri, "r");
     }
 
+    /**
+     * 文件描述转byte
+     *
+     * @param pfd
+     * @return
+     */
+    public static final byte[] fileDescriptor2Byte(ParcelFileDescriptor pfd) {
+        byte[] bytes = null;
+        try {
+            bytes = inputStream2Byte(new FileInputStream(pfd.getFileDescriptor()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    /**
+     * 流转byte
+     *
+     * @param is
+     * @return
+     */
+    static final byte[] inputStream2Byte(InputStream is) {
+        byte[] buffer = null;
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] b = new byte[1024];
+            int n;
+            while ((n = is.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            is.close();
+            bos.close();
+            buffer = bos.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        return buffer;
+    }
 
     /**
      * @param uri The Uri to check.

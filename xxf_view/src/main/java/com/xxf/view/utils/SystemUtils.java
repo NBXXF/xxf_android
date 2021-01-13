@@ -33,6 +33,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.CameraPermissionTransformer;
 import com.xxf.arch.rxjava.transformer.FilePermissionTransformer;
+import com.xxf.arch.utils.UriUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
