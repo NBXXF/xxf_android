@@ -58,6 +58,7 @@ import java.util.concurrent.Callable;
 import autodispose2.AutoDispose;
 import autodispose2.AutoDisposeConverter;
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -593,7 +594,9 @@ public class XXF {
                         }
                         throw new RuntimeException("stack top activity must FragmentActivity!");
                     }
-                }).flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
                     @Override
                     public ObservableSource<ActivityResult> apply(FragmentActivity fragmentActivity) throws Exception {
                         return startActivityForResult(fragmentActivity,

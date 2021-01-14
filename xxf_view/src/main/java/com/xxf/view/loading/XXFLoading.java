@@ -57,7 +57,7 @@ public class XXFLoading {
     private final ImageView mIconView;
     private final TextView mMsgView;
     private final DialogInterface.OnDismissListener mDismissListener;
-    private Handler mHandler;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     @State
     private int mState;
     @DrawableRes
@@ -171,35 +171,41 @@ public class XXFLoading {
      * 显示loading
      */
     public void show() {
-        if (mState == STATE_FREE) {
-            mState = STATE_LOADING;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mState == STATE_FREE) {
+                    mState = STATE_LOADING;
 
-            mDialog.show();
-            try {
-                mIconView.setImageResource(mLoadingDrawable);
-            } catch (OutOfMemoryError ignored) {
+                    mDialog.show();
+                    try {
+                        mIconView.setImageResource(mLoadingDrawable);
+                    } catch (OutOfMemoryError ignored) {
+                    }
+                    startLoadingAnimation();
+                } else if (mState == STATE_DISMISSING && !mReshowingWhileDismissing) {
+                    mReshowingWhileDismissing = true;
+                }
             }
-            startLoadingAnimation();
-
-            if (mHandler == null) {
-                mHandler = new Handler(Looper.getMainLooper());
-            }
-        } else if (mState == STATE_DISMISSING && !mReshowingWhileDismissing) {
-            mReshowingWhileDismissing = true;
-        }
+        });
     }
 
     /**
      * 立马结束loading
      */
     public void dismissImmediately() {
-        if (mState == STATE_LOADING) {
-            mState = STATE_DISMISSING;
-            try {
-                mDialog.dismiss();
-            } catch (Exception ignored) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mState == STATE_LOADING) {
+                    mState = STATE_DISMISSING;
+                    try {
+                        mDialog.dismiss();
+                    } catch (Exception ignored) {
+                    }
+                }
             }
-        }
+        });
     }
 
     /**
@@ -228,55 +234,59 @@ public class XXFLoading {
     }
 
     public void dismissWithResult(String msg, @DrawableRes final int resultIconRes, final Runnable endAction) {
-        if (mState == STATE_LOADING) {
-            mState = STATE_RESULTING;
-            setMessage(msg);
-            
-            mIconView.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    stopLoadingAnimation();
-                    try {
-                        mIconView.setImageResource(resultIconRes);
-                    } catch (OutOfMemoryError ignored) {
-                    }
-                    mIconView.animate().alpha(1).setListener(null).start();
-                }
-            }).start();
-            if (mHandler != null) {
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (endAction == null) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mState == STATE_LOADING) {
+                    mState = STATE_RESULTING;
+                    setMessage(msg);
+                    mIconView.animate().alpha(0).setDuration(200).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            stopLoadingAnimation();
                             try {
-                                mState = STATE_DISMISSING;
-                                mDialog.dismiss();
+                                mIconView.setImageResource(resultIconRes);
                             } catch (Throwable ignored) {
                             }
-                        } else {
-                            try {
-                                mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
-                                        try {
-                                            mDialog.setOnDismissListener(mDismissListener);
-                                        } finally {
-                                            release();
-                                        }
-                                        if (endAction != null) {
-                                            endAction.run();
-                                        }
-                                    }
-                                });
-                                mState = STATE_DISMISSING;
-                                mDialog.dismiss();
-                            } catch (Throwable ignored) {
-                            }
+                            mIconView.animate().alpha(1).setListener(null).start();
                         }
+                    }).start();
+                    if (mHandler != null) {
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (endAction == null) {
+                                    try {
+                                        mState = STATE_DISMISSING;
+                                        mDialog.dismiss();
+                                    } catch (Throwable ignored) {
+                                    }
+                                } else {
+                                    try {
+                                        mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                            @Override
+                                            public void onDismiss(DialogInterface dialog) {
+                                                try {
+                                                    mDialog.setOnDismissListener(mDismissListener);
+                                                } finally {
+                                                    release();
+                                                }
+                                                if (endAction != null) {
+                                                    endAction.run();
+                                                }
+                                            }
+                                        });
+                                        mState = STATE_DISMISSING;
+                                        mDialog.dismiss();
+                                    } catch (Throwable ignored) {
+                                    }
+                                }
+                            }
+                        }, 200 + mResultDuration);
                     }
-                }, 200 + mResultDuration);
+                }
             }
-        }
+        });
     }
 
     private void stopLoadingAnimation() {
@@ -309,7 +319,6 @@ public class XXFLoading {
     private void releaseResource() {
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
-            mHandler = null;
         }
 
         if (mState == STATE_LOADING) {
