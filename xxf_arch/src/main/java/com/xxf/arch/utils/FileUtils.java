@@ -10,10 +10,14 @@ import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.Nullable;
+
 import com.xxf.arch.XXF;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -21,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.security.DigestInputStream;
@@ -1398,6 +1403,31 @@ public final class FileUtils {
         int lastSep = filePath.lastIndexOf(File.separator);
         if (lastPoi == -1 || lastSep >= lastPoi) return "";
         return filePath.substring(lastPoi + 1);
+    }
+
+    /**
+     * 从Stream中获取String
+     *
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
+    @Nullable
+    @CheckResult
+    public static String getFileString(final String filePath) {
+        try {
+            BufferedReader localBufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+
+            StringBuilder localStringBuilder = new StringBuilder();
+            String str;
+            while ((str = localBufferedReader.readLine()) != null) {
+                localStringBuilder.append(str).append("\n");
+            }
+            return localStringBuilder.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
