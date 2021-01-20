@@ -26,34 +26,28 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.arch.rxjava.transformer.CameraPermissionTransformer;
-import com.xxf.arch.rxjava.transformer.FilePermissionTransformer;
+import com.xxf.arch.core.permission.RxPermissionTransformer;
 import com.xxf.arch.utils.UriUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
 import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  */
 public class SystemUtils {
@@ -62,16 +56,8 @@ public class SystemUtils {
     public static final int REQUEST_CODE_ALBUM = 59998;
     public static final int REQUEST_CODE_DOCUMENT = 59997;
     public static final int REQUEST_CODE_SHARE = 59996;
+    public static final int REQUEST_CODE_CROP = 59995;
 
-
-    /**
-     * @return 获取随机图片文件(未实际生成)
-     */
-    public static File getRandomImageFile() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
-        String fileName = String.format("capture_img_%s.jpg", sdf.format(new Date()));
-        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName);
-    }
 
     /**
      * 获取拍照意图
@@ -110,58 +96,99 @@ public class SystemUtils {
      * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
      *
      * @param context
+     * @param inputPath
+     * @param cropBuilder 裁切
      * @return
      */
-    public static Observable<String> takePhoto(final FragmentActivity context) {
-        return takePhoto(context, getRandomImageFile());
-    }
-
-    /**
-     * 调用系统拍照
-     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
-     *
-     * @param context
-     * @param imageFile
-     * @return
-     */
-    public static Observable<String> takePhoto(final FragmentActivity context, final File imageFile) {
-        return XXF.requestPermission(context, Manifest.permission.CAMERA)
-                .take(1)
-                .compose(new CameraPermissionTransformer())
-                .flatMap(new Function<Boolean, ObservableSource<Boolean>>() {
-                    @Override
-                    public ObservableSource<Boolean> apply(Boolean cameraPermissionAllow) throws Exception {
-                        return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                .take(1)
-                                .compose(new FilePermissionTransformer());
-                    }
-                })
+    public static Observable<String> takePhoto(final FragmentActivity context, final String inputPath,
+                                               @Nullable PathCropIntentBuilder cropBuilder) {
+        return XXF.requestPermission(context, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(new RxPermissionTransformer(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @SuppressLint("MissingPermission")
                     @Override
                     public ObservableSource<String> apply(Boolean storageCameraPermissionAllow) throws Exception {
-                        return XXF.startActivityForResult(context, getTakePhotoIntent(imageFile), REQUEST_CODE_CAMERA)
-                                .take(1)
-                                .filter(new Predicate<ActivityResult>() {
+                        return XXF.startActivityForResult(context, getTakePhotoIntent(new File(inputPath)), REQUEST_CODE_CAMERA)
+                                .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
                                     @Override
-                                    public boolean test(ActivityResult result) throws Exception {
-                                        return result.isOk();
-                                    }
-                                })
-                                .map(new Function<ActivityResult, String>() {
-                                    @Override
-                                    public String apply(ActivityResult activityResult) throws Exception {
+                                    public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
                                         if (!activityResult.isOk()) {
-                                            throw new RuntimeException("cancel");
+                                            return Observable.empty();
                                         }
-                                        return imageFile.getAbsolutePath();
+                                        return Observable.just(inputPath);
                                     }
                                 });
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread());
+                .flatMap(new Function<String, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(String s) throws Throwable {
+                        if (cropBuilder != null) {
+                            cropBuilder.inputImgFile(new File(s));
+                            return XXF.startActivityForResult(context, cropBuilder.build(), REQUEST_CODE_CROP)
+                                    .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
+                                        @Override
+                                        public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
+                                            if (!activityResult.isOk()) {
+                                                return Observable.empty();
+                                            }
+                                            return Observable.just(cropBuilder.outPutPath);
+                                        }
+                                    });
+                        }
+                        return Observable.just(s);
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     * 选择相片
+     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
+     *
+     * @param context
+     * @return
+     */
+    public static Observable<String> selectAlbum(final FragmentActivity context, @Nullable PathCropIntentBuilder cropBuilder) {
+        return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(new RxPermissionTransformer(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .flatMap(new Function<Boolean, ObservableSource<String>>() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public ObservableSource<String> apply(Boolean aBoolean) throws Exception {
+                        return XXF.startActivityForResult(context, getAlbumIntent(), REQUEST_CODE_ALBUM)
+                                .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
+                                    @Override
+                                    public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
+                                        if (!activityResult.isOk()) {
+                                            return Observable.empty();
+                                        }
+                                        return Observable.just(UriUtils.getPath(context, activityResult.getData().getData()));
+                                    }
+                                });
+                    }
+                })
+                .flatMap(new Function<String, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(String s) throws Throwable {
+                        if (cropBuilder != null) {
+                            cropBuilder.inputImgFile(new File(s));
+                            return XXF.startActivityForResult(context, cropBuilder.build(), REQUEST_CODE_CROP)
+                                    .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
+                                        @Override
+                                        public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
+                                            if (!activityResult.isOk()) {
+                                                return Observable.empty();
+                                            }
+                                            return Observable.just(cropBuilder.outPutPath);
+                                        }
+                                    });
+                        }
+                        return Observable.just(s);
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread());
+    }
 
     /**
      * 保存图片到相册
@@ -174,8 +201,7 @@ public class SystemUtils {
      */
     public static Observable<File> saveImageToAlbum(FragmentActivity context, String picName, Bitmap bmp) {
         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .take(1)
-                .compose(new CameraPermissionTransformer())
+                .compose(new RxPermissionTransformer(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<File>>() {
                     @Override
                     public ObservableSource<File> apply(Boolean aBoolean) throws Exception {
@@ -201,47 +227,10 @@ public class SystemUtils {
                                         return picFile;
                                     }
                                 })
-                                .subscribeOn(Schedulers.io());
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread());
                     }
-                })
-                .compose(XXF.bindUntilEvent(context, Lifecycle.Event.ON_DESTROY));
-    }
-
-    /**
-     * 选择相片
-     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
-     *
-     * @param context
-     * @return
-     */
-    public static Observable<String> selectAlbum(final FragmentActivity context) {
-        return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .take(1)
-                .compose(new CameraPermissionTransformer())
-                .flatMap(new Function<Boolean, ObservableSource<String>>() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public ObservableSource<String> apply(Boolean aBoolean) throws Exception {
-                        return XXF.startActivityForResult(context, getAlbumIntent(), REQUEST_CODE_ALBUM)
-                                .take(1)
-                                .filter(new Predicate<ActivityResult>() {
-                                    @Override
-                                    public boolean test(ActivityResult result) throws Exception {
-                                        return result.isOk();
-                                    }
-                                })
-                                .map(new Function<ActivityResult, String>() {
-                                    @Override
-                                    public String apply(ActivityResult activityResult) throws Exception {
-                                        if (!activityResult.isOk()) {
-                                            throw new RuntimeException("cancel");
-                                        }
-                                        return UriUtils.getPath(context, activityResult.getData().getData());
-                                    }
-                                });
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread());
+                });
     }
 
 
@@ -448,6 +437,15 @@ public class SystemUtils {
             return XXF.getApplication().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         } else {
             return null;
+        }
+    }
+
+    public static class PathCropIntentBuilder extends CropIntentBuilder {
+        public String outPutPath;
+
+        public PathCropIntentBuilder(String outPutPath) {
+            this.outPutPath = outPutPath;
+            this.outputFile(new File(outPutPath));
         }
     }
 
