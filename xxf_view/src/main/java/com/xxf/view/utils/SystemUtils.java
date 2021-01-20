@@ -96,11 +96,10 @@ public class SystemUtils {
      * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
      *
      * @param context
-     * @param inputPath
      * @param cropBuilder 裁切
      * @return
      */
-    public static Observable<String> takePhoto(final FragmentActivity context, final String inputPath,
+    public static Observable<String> takePhoto(final FragmentActivity context,
                                                @Nullable PathCropIntentBuilder cropBuilder) {
         return XXF.requestPermission(context, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .compose(new RxPermissionTransformer(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
@@ -108,14 +107,18 @@ public class SystemUtils {
                     @SuppressLint("MissingPermission")
                     @Override
                     public ObservableSource<String> apply(Boolean storageCameraPermissionAllow) throws Exception {
-                        return XXF.startActivityForResult(context, getTakePhotoIntent(new File(inputPath)), REQUEST_CODE_CAMERA)
+                        File picFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), System.currentTimeMillis() + ".png");
+                        if (!picFile.exists()) {
+                            picFile.createNewFile();
+                        }
+                        return XXF.startActivityForResult(context, getTakePhotoIntent(picFile), REQUEST_CODE_CAMERA)
                                 .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
                                     @Override
                                     public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
                                         if (!activityResult.isOk()) {
                                             return Observable.empty();
                                         }
-                                        return Observable.just(inputPath);
+                                        return Observable.just(picFile.getAbsolutePath());
                                     }
                                 });
                     }

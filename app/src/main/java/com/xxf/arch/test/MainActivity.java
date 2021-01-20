@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.alibaba.android.arouter.facade.Postcard;
-import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
@@ -30,7 +28,6 @@ import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdap
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
-import com.xxf.arch.utils.NumberUtils;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
@@ -287,19 +284,27 @@ public class MainActivity extends XXFActivity {
                         layout.toggleColor();
 
                         *//*    String url = "qweqwe";*/
-                        String url = "/activity/test";
-                        ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
-                            @Override
-                            public void onArrival(Postcard postcard) {
-
-                            }
-
-                            @Override
-                            public void onLost(Postcard postcard) {
-                                super.onLost(postcard);
-                                XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
-                            }
-                        });
+//                        String url = "/activity/test";
+//                        ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
+//                            @Override
+//                            public void onArrival(Postcard postcard) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onLost(Postcard postcard) {
+//                                super.onLost(postcard);
+//                                XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
+//                            }
+//                        });
+                        SystemUtils.takePhoto(MainActivity.this, null)
+                                .to(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
+                                .subscribe(new Consumer<String>() {
+                                    @Override
+                                    public void accept(String s) throws Throwable {
+                                        ToastUtils.showToast("xx" + s, ToastUtils.ToastType.ERROR);
+                                    }
+                                });
 
                         String json = "{\n" +
                                 "  \"num\": \"1948367743.1273676543\",\n" +
