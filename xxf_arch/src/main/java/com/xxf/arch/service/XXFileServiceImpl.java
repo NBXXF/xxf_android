@@ -80,7 +80,7 @@ class XXFileServiceImpl implements XXFFileService {
         });
     }
 
-    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     @Override
     public Observable<String> getUserPublicFile(String childFileName) {
         return getUserPublicFileDir()
@@ -103,7 +103,7 @@ class XXFileServiceImpl implements XXFFileService {
                 });
     }
 
-    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     @Override
     public Observable<String> getPublicFile(String childFileName) {
         return getPublicFileDir()
@@ -126,7 +126,7 @@ class XXFileServiceImpl implements XXFFileService {
                 });
     }
 
-    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     @Override
     public Observable<File> putUserPublicFile(String childFileName, String content, boolean append) {
         return getUserPublicFileDir()
@@ -184,7 +184,7 @@ class XXFileServiceImpl implements XXFFileService {
                 });
     }
 
-    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     @Override
     public Observable<File> putPublicFile(String childFileName, String content, boolean append) {
         return getPublicFileDir()
