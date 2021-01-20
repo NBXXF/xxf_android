@@ -24,6 +24,10 @@ public class PermissionDeniedException extends RuntimeException {
      * @return
      */
     public LinkedHashMap<String, Boolean> getPermissionResult() {
+        return getPermissionResult(this.permission);
+    }
+
+    public static LinkedHashMap<String, Boolean> getPermissionResult(String... permission) {
         LinkedHashMap<String, Boolean> linkedHashMap = new LinkedHashMap<>();
         if (permission != null) {
             for (String per : permission) {
@@ -45,7 +49,7 @@ public class PermissionDeniedException extends RuntimeException {
      * @return
      */
     public static final String convertDesc(String... permissions) {
-        LinkedHashMap<String, Boolean> permissionResult = new PermissionDeniedException(permissions).getPermissionResult();
+        LinkedHashMap<String, Boolean> permissionResult = getPermissionResult(permissions);
         StringBuilder permissionSb = new StringBuilder("");
         int i = 0;
         for (Map.Entry<String, Boolean> entry : permissionResult.entrySet()) {
