@@ -1,12 +1,8 @@
 package com.xxf.arch.service;
 
 import android.Manifest;
-import android.content.Context;
-import android.os.Environment;
 
 import androidx.annotation.RequiresPermission;
-
-import com.xxf.arch.XXF;
 
 import java.io.File;
 import java.io.FileReader;
@@ -16,7 +12,6 @@ import java.util.concurrent.Callable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -200,72 +195,6 @@ class XXFileServiceImpl implements XXFFileService {
                     }
                 });
     }
-
-    @Override
-    public Observable<File> getUserPrivateFileDir() {
-        return getPrivateFileDir()
-                .map(new Function<File, File>() {
-                    @Override
-                    public File apply(File file) throws Exception {
-                        File userFile = new File(file, XXF.getUserInfoProvider().getUserId());
-                        if (!userFile.exists()) {
-                            userFile.mkdir();
-                        }
-                        return userFile;
-                    }
-                });
-    }
-
-    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    @Override
-    public Observable<File> getUserPublicFileDir() {
-        return getPublicFileDir()
-                .map(new Function<File, File>() {
-                    @Override
-                    public File apply(File file) throws Exception {
-                        File userFile = new File(file, XXF.getUserInfoProvider().getUserId());
-                        if (!userFile.exists()) {
-                            userFile.mkdir();
-                        }
-                        return userFile;
-                    }
-                });
-    }
-
-    @Override
-    public Observable<File> getPrivateFileDir() {
-        return Observable.fromCallable(new Callable<File>() {
-            @Override
-            public File call() throws Exception {
-                File file = XXF.getApplication().getDir(
-                        XXFileServiceImpl.class.getSimpleName(),
-                        Context.MODE_PRIVATE);
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-                return file;
-            }
-        }).subscribeOn(Schedulers.io());
-    }
-
-    @RequiresPermission(allOf = Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    @Override
-    public Observable<File> getPublicFileDir() {
-        return Observable.fromCallable(new Callable<File>() {
-            @Override
-            public File call() throws Exception {
-                File file = new File(
-                        new StringBuilder(Environment.getExternalStorageDirectory().getAbsolutePath())
-                                .append(File.separator)
-                                .append(XXF.getApplication().getPackageName())
-                                .append(File.separator)
-                                .append(XXFileServiceImpl.class.getSimpleName())
-                                .toString());
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-                return file;
-            }
-        }).subscribeOn(Schedulers.io());
-    }
 }
+
+
