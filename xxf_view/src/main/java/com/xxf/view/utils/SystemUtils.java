@@ -448,7 +448,15 @@ public class SystemUtils {
 
         public PathCropIntentBuilder(String outPutPath) {
             this.outPutPath = outPutPath;
-            this.outputFile(new File(outPutPath));
+            File file = new File(outPutPath);
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+            this.outputFile(file);
         }
     }
 
