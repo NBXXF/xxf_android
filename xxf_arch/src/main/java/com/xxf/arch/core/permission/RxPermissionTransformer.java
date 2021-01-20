@@ -14,8 +14,7 @@ import io.reactivex.rxjava3.functions.Function;
 /**
  * @version 2.3.1
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
- * @Description 未授权 转换成错误信号
- * @Company Beijing icourt
+ * @Description 将不正确的信号 转换成错误信号
  * @date createTime：2018/9/3
  */
 public class RxPermissionTransformer implements ObservableTransformer<Boolean, Boolean> {
