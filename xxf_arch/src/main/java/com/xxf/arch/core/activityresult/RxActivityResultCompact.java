@@ -38,13 +38,13 @@ public class RxActivityResultCompact {
     public static Observable<ActivityResult> startActivityForResult(
             @NonNull Fragment fragment, @NonNull Intent intent, int requestCode) {
 
-        return startActivityForResult(fragment.getFragmentManager(), intent, requestCode, null);
+        return startActivityForResult(fragment.getChildFragmentManager(), intent, requestCode, null);
     }
 
     public static Observable<ActivityResult> startActivityForResult(
             @NonNull Fragment fragment, @NonNull Intent intent, int requestCode, @NonNull Bundle options) {
 
-        return startActivityForResult(fragment.getFragmentManager(), intent, requestCode, options);
+        return startActivityForResult(fragment.getChildFragmentManager(), intent, requestCode, options);
     }
 
     private static Observable<ActivityResult> startActivityForResult(
