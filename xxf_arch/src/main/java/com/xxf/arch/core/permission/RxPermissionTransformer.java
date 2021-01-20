@@ -12,16 +12,16 @@ import io.reactivex.rxjava3.functions.Function;
 
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 未授权 转换成错误信号
  * @Company Beijing icourt
  * @date createTime：2018/9/3
  */
 public class RxPermissionTransformer implements ObservableTransformer<Boolean, Boolean> {
-    final String permission;
+    final String[] permission;
 
-    public RxPermissionTransformer(@NonNull String permission) {
+    public RxPermissionTransformer(@NonNull String... permission) {
         this.permission = permission;
     }
 

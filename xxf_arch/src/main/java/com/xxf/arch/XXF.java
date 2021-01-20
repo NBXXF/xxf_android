@@ -458,7 +458,7 @@ public class XXF {
         if (topActivity instanceof LifecycleOwner) {
             return bindToProgressHud((LifecycleOwner) topActivity);
         } else {
-            throw new RuntimeException("topActivity is not FragmentActivity or LifecycleOwner");
+            return ProgressHUDTransformerImpl.EMPTY;
         }
     }
 
@@ -595,7 +595,6 @@ public class XXF {
                         throw new RuntimeException("stack top activity must FragmentActivity!");
                     }
                 })
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
                     @Override
                     public ObservableSource<ActivityResult> apply(FragmentActivity fragmentActivity) throws Exception {
@@ -620,19 +619,25 @@ public class XXF {
     @MainThread
     public static Observable<ActivityResult> startActivityForResult(
             @NonNull LifecycleOwner lifecycleOwner, @NonNull Intent intent, int requestCode) {
-        if (lifecycleOwner instanceof FragmentActivity) {
-            return RxActivityResultCompact.startActivityForResult((FragmentActivity) lifecycleOwner, intent, requestCode);
-        } else if (lifecycleOwner instanceof Fragment) {
-            return RxActivityResultCompact.startActivityForResult((Fragment) lifecycleOwner, intent, requestCode);
-        } else {
-            return Observable.error(new IllegalArgumentException("不支持的类型!"));
-        }
+        return Observable
+                .defer(new Supplier<ObservableSource<? extends ActivityResult>>() {
+                    @Override
+                    public ObservableSource<? extends ActivityResult> get() throws Throwable {
+                        if (lifecycleOwner instanceof FragmentActivity) {
+                            return RxActivityResultCompact.startActivityForResult((FragmentActivity) lifecycleOwner, intent, requestCode);
+                        } else if (lifecycleOwner instanceof Fragment) {
+                            return RxActivityResultCompact.startActivityForResult((Fragment) lifecycleOwner, intent, requestCode);
+                        } else {
+                            return Observable.error(new IllegalArgumentException("不支持的类型!"));
+                        }
+                    }
+                }).subscribeOn(AndroidSchedulers.mainThread());
     }
 
 
     /**
      * 请求权限
-     * 不可并行
+     * 不可用zip 等操作符
      * 注意:activity  onRequestPermissionsResult方法 必须调用   super.onRequestPermissionsResult(requestCode, permissions, grantResults);
      *
      * @param lifecycleOwner
@@ -642,13 +647,19 @@ public class XXF {
     @MainThread
     public static Observable<Boolean> requestPermission(@NonNull final LifecycleOwner lifecycleOwner,
                                                         @NonNull final String... permissions) {
-        if (lifecycleOwner instanceof FragmentActivity) {
-            return new RxPermissions((FragmentActivity) lifecycleOwner).request(permissions);
-        } else if (lifecycleOwner instanceof Fragment) {
-            return new RxPermissions((Fragment) lifecycleOwner).request(permissions);
-        } else {
-            return Observable.error(new IllegalArgumentException("不支持的类型!"));
-        }
+        return Observable
+                .defer(new Supplier<ObservableSource<? extends Boolean>>() {
+                    @Override
+                    public ObservableSource<? extends Boolean> get() throws Throwable {
+                        if (lifecycleOwner instanceof FragmentActivity) {
+                            return new RxPermissions((FragmentActivity) lifecycleOwner).request(permissions);
+                        } else if (lifecycleOwner instanceof Fragment) {
+                            return new RxPermissions((Fragment) lifecycleOwner).request(permissions);
+                        } else {
+                            return Observable.error(new IllegalArgumentException("不支持的类型!"));
+                        }
+                    }
+                }).subscribeOn(AndroidSchedulers.mainThread());
     }
 
 
@@ -713,10 +724,6 @@ public class XXF {
      * @param eventType
      * @param <T>
      * @return
-     * @Override public void accept(String s) throws Exception {
-     * XXF.getLogger().d("==============>收到事件:" + s+"  thread:"+Thread.currentThread().getName());
-     * }
-     * });
      */
     public static <T> Observable<T> subscribeEvent(Class<T> eventType) {
         return RxBus.getInstance().subscribeEvent(eventType);

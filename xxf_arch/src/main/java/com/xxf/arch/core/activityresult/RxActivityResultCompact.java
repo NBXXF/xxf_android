@@ -19,7 +19,7 @@ import io.reactivex.rxjava3.functions.Predicate;
 
 
 public class RxActivityResultCompact {
-    private static final String FRAGMENT_TAG = "_RESULT_HANDLE_FRAGMENT_";
+    private static final String FRAGMENT_TAG = RxActivityResultCompact.class.getName();
 
     public static Observable<ActivityResult> startActivityForResult(
             @NonNull FragmentActivity activity, @NonNull Intent intent, int requestCode) {

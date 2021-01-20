@@ -73,7 +73,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
  */
 public final class RxPermissions {
 
-    static final String TAG = RxPermissions.class.getSimpleName();
+    static final String TAG = RxPermissions.class.getName();
     static final Object TRIGGER = new Object();
 
     @VisibleForTesting
