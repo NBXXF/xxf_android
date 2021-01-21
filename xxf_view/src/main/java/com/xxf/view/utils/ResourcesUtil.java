@@ -4,7 +4,6 @@ package com.xxf.view.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
@@ -15,15 +14,14 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
 import com.xxf.arch.XXF;
+import com.xxf.arch.utils.EncryptUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -116,7 +114,7 @@ public class ResourcesUtil {
             String key = null;
             if (bytes != null) {
                 try {
-                    key = MD5Util.getMD5String(bytes);
+                    key = EncryptUtils.encryptMD5ToString(bytes);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
