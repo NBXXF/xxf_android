@@ -1500,4 +1500,20 @@ public final class FileUtils {
     public interface OnReplaceListener {
         boolean onReplace(File srcFile, File destFile);
     }
+
+    /**
+     * 生成文件名
+     * 采用md5 避免重复
+     *
+     * @param url 可以http 和path
+     * @return
+     */
+    @Nullable
+    public static String generateFileName(String url) {
+        if (!TextUtils.isEmpty(url)) {
+            String fileExtension = getFileExtension(url);
+            return EncryptUtils.encryptMD5ToString(url) + "." + fileExtension;
+        }
+        return null;
+    }
 }
