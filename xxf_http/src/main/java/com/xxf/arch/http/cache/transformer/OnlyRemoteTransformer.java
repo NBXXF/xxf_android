@@ -2,7 +2,7 @@ package com.xxf.arch.http.cache.transformer;
 
 import androidx.annotation.NonNull;
 
-import com.xxf.arch.http.cache.RxHttpCache;
+import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
@@ -17,8 +17,8 @@ import retrofit2.Response;
 public class OnlyRemoteTransformer<R> extends AbsCacheTransformer<R> {
 
 
-    public OnlyRemoteTransformer(@NonNull Call<R> call, RxHttpCache rxHttpCache) {
-        super(call, rxHttpCache);
+    public OnlyRemoteTransformer(@NonNull Call<R> call, HttpCacheConfigProvider rxHttpCacheConfig) {
+        super(call, rxHttpCacheConfig);
     }
 
     @Override

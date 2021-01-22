@@ -20,7 +20,7 @@ public class RxHttpCacheFactory {
 
     @CheckResult
     @Nullable
-    public static synchronized RxHttpCache getCache(HttpCacheDirectoryProvider cacheDirectoryProvider) {
+    public static synchronized RxHttpCache getCache(HttpCacheConfigProvider cacheDirectoryProvider) {
         RxHttpCache rxHttpCache = null;
         try {
             String dir = cacheDirectoryProvider.getDirectory();

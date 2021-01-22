@@ -3,8 +3,7 @@ package com.xxf.arch.http.adapter.rxjava2;
 
 import androidx.annotation.Nullable;
 
-import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
-import com.xxf.arch.http.cache.RxHttpCache;
+import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
@@ -16,7 +15,6 @@ import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.core.Single;
-import retrofit2.CacheType;
 import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -30,10 +28,10 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
     private final @Nullable
     Scheduler scheduler;
     private final boolean isAsync;
-    private HttpCacheDirectoryProvider rxHttpCache;
+    private HttpCacheConfigProvider rxHttpCache;
     private RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor;
 
-    public RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, HttpCacheDirectoryProvider rxHttpCache, RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor) {
+    public RxJava2CallAdapterFactory(@Nullable Scheduler scheduler, boolean isAsync, HttpCacheConfigProvider rxHttpCache, RxJavaCallAdapterInterceptor rxJavaCallAdapterInterceptor) {
         this.scheduler = scheduler;
         this.isAsync = isAsync;
         this.rxHttpCache = rxHttpCache;
@@ -44,27 +42,12 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
     public @Nullable
     CallAdapter<?, ?> get(
             Type returnType, Annotation[] annotations, Retrofit retrofit) {
-        CacheType rxCacheType = CacheType.onlyRemote;
-        if (annotations != null) {
-            for (Annotation annotation : annotations) {
-                if (annotation == null) {
-                    continue;
-                }
-                //找到第一个注解的RxCache
-                if (annotation.annotationType() == com.xxf.arch.annotation.RxHttpCache.class) {
-                    rxCacheType = ((com.xxf.arch.annotation.RxHttpCache) annotation).value();
-                    break;
-                }
-            }
-        }
-
-
         Class<?> rawType = getRawType(returnType);
 
         if (rawType == Completable.class) {
             // Completable is not parameterized (which is what the rest of this method deals with) so it
             // can only be created with a single configuration.
-            return new RxJava2CallAdapter(Void.class, scheduler, isAsync, this.rxHttpCache, rxCacheType, rxJavaCallAdapterInterceptor, false, true, false, false,
+            return new RxJava2CallAdapter(Void.class, scheduler, isAsync, this.rxHttpCache, rxJavaCallAdapterInterceptor, false, true, false, false,
                     false, true);
         }
 
@@ -106,7 +89,7 @@ public final class RxJava2CallAdapterFactory extends CallAdapter.Factory {
             isBody = true;
         }
 
-        return new RxJava2CallAdapter(responseType, scheduler, isAsync, this.rxHttpCache, rxCacheType, rxJavaCallAdapterInterceptor, isResult, isBody, isFlowable,
+        return new RxJava2CallAdapter(responseType, scheduler, isAsync, this.rxHttpCache, rxJavaCallAdapterInterceptor, isResult, isBody, isFlowable,
                 isSingle, isMaybe, false);
     }
 }

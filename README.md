@@ -1,11 +1,15 @@
 # xxf架构
 xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 1. 去除RxLife,用Android自带的lifecycle来管理RxJava的生命周期
-2. viewmodel中也可以使用rxjava bind生命周期,跟activity一样,可以处理rxjava的生命周期
+2. viewModel中也可以使用rxjava bind生命周期,跟activity一样,可以处理rxjava的生命周期
 3. 权限请求可以用RxJava链式调用,不用写复杂的回调
 4. startActivityForResult可以用RxJava链式调用,不用写复杂的回调
 5. 简单配置http,轻松完成网络请求
 6. http双缓存,多种策略保证数据及时交互
+7. 时间和货币格式化全权交割给框架处理
+8. 各种工具类Number,Time,File,Toast,Zip,Arrays....等15种
+9. 扩展ARouter支持 path为http 或者路径携带参数/user/login?phone=17611639077
+10. 封装常见自定义View TitleBar,Loading,ScaleFrameLayout,MaxHeightView,SoftKeyboardSizeWatchLayout...等20种
 
 #### 用法
 ##### 引入项目
@@ -18,7 +22,7 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 需要继承XXFactivity
 绑定布局 用@BindView
 绑定vm  用@BindVM
-
+ ```
     @BindView(R.layout.other_activity_devloper_helper_setting)
     @BindVM(DeveloperHelperSettingVM.class)
     public class DeveloperHelperSettingActivity
@@ -30,10 +34,10 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
             getBinding().setVariable(BR.vm, getVm());
         }
     }
-
+ ```
 ##### http请求
       ``` 1. http接口interface声明（与retrofit十分类似)
-
+ ```
 /**
  * 提供基础路由
  */
@@ -98,7 +102,8 @@ public interface LoginApiService {
     Observable<JsonObject> getCityOnlyCache();
 
 }
-
+ ```
+ ```
 public enum CacheType {
     /**
      * 先从本地缓存拿取,然后从服务器拿取,可能会onNext两次,如果本地没有缓存 最少执行oNext一次

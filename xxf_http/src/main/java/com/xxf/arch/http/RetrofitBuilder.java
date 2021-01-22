@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.xxf.arch.http.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
-import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
+import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.http.converter.json.JsonConverterFactory;
 import com.xxf.arch.http.converter.string.ScalarsConverterFactory;
@@ -50,7 +50,7 @@ public class RetrofitBuilder {
      */
     protected Retrofit.Builder builder;
 
-    public RetrofitBuilder(RxJavaCallAdapterInterceptor interceptor, HttpCacheDirectoryProvider rxHttpCache) {
+    public RetrofitBuilder(RxJavaCallAdapterInterceptor interceptor, HttpCacheConfigProvider rxHttpCache) {
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(ScalarsConverterFactory.create())

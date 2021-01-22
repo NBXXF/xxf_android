@@ -1,6 +1,6 @@
 package com.xxf.arch.annotation;
 
-import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
+import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import java.lang.annotation.ElementType;
 
@@ -14,7 +14,7 @@ import java.lang.annotation.ElementType;
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @java.lang.annotation.Documented
 @java.lang.annotation.Inherited
-public @interface RxHttpCacheProvider {
+public @interface RxHttpCacheConfig {
 
-    Class<? extends HttpCacheDirectoryProvider> value();
+    Class<? extends HttpCacheConfigProvider> value();
 }

@@ -4,10 +4,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.xxf.arch.http.cache.RxHttpCache;
+import com.xxf.arch.http.cache.HttpCacheConfigProvider;
+import com.xxf.arch.http.cache.RxHttpCacheFactory;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
@@ -26,12 +26,12 @@ import retrofit2.Response;
  */
 public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Response<R>, Response<R>> {
     private static final String KEY_HEADER_CACHE = "cache";
-    final RxHttpCache rxHttpCache;
+    final HttpCacheConfigProvider rxHttpCacheConfig;
     final Call<R> call;
 
-    public AbsCacheTransformer(@NonNull Call<R> call, RxHttpCache rxHttpCache) {
+    public AbsCacheTransformer(@NonNull Call<R> call, HttpCacheConfigProvider rxHttpCacheConfig) {
         this.call = call;
-        this.rxHttpCache = rxHttpCache;
+        this.rxHttpCacheConfig = rxHttpCacheConfig;
     }
 
     @Override
@@ -49,7 +49,7 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                 .doOnNext(new Consumer<Response<R>>() {
                     @Override
                     public void accept(Response<R> rResponse) throws Exception {
-                        rxHttpCache.putAsync(rResponse);
+                        RxHttpCacheFactory.getCache(rxHttpCacheConfig).putAsync(rResponse);
                     }
                 });
     }
@@ -66,13 +66,10 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                     @Override
                     public Response<R> call() throws Exception {
                         String cacheTime = call.request().header(KEY_HEADER_CACHE);
-                        /**
-                         * 默认缓存一天
-                         */
                         if (TextUtils.isEmpty(cacheTime)) {
-                            cacheTime = String.valueOf(TimeUnit.DAYS.toMillis(1));
+                            cacheTime = String.valueOf(rxHttpCacheConfig.cacheTime());
                         }
-                        Response<R> response = (Response<R>) rxHttpCache.get(call.request(), new OkHttpCallConvertor<R>().apply(call), Long.parseLong(cacheTime));
+                        Response<R> response = (Response<R>) RxHttpCacheFactory.getCache(rxHttpCacheConfig).get(call.request(), new OkHttpCallConvertor<R>().apply(call), Long.parseLong(cacheTime));
                         return response;
                     }
                 })
@@ -80,7 +77,7 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                 .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Response<R>>>() {
                     @Override
                     public ObservableSource<? extends Response<R>> apply(Throwable throwable) throws Throwable {
-                       return Observable.<Response<R>>empty();
+                        return Observable.<Response<R>>empty();
                     }
                 });
     }

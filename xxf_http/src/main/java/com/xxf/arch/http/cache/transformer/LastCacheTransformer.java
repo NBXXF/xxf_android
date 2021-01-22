@@ -2,7 +2,7 @@ package com.xxf.arch.http.cache.transformer;
 
 import androidx.annotation.NonNull;
 
-import com.xxf.arch.http.cache.RxHttpCache;
+import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import java.util.Arrays;
 
@@ -25,8 +25,8 @@ import retrofit2.Response;
 public class LastCacheTransformer<R> extends AbsCacheTransformer<R> {
 
 
-    public LastCacheTransformer(@NonNull Call<R> call, RxHttpCache rxHttpCache) {
-        super(call, rxHttpCache);
+    public LastCacheTransformer(@NonNull Call<R> call, HttpCacheConfigProvider rxHttpCacheConfig) {
+        super(call, rxHttpCacheConfig);
     }
 
     @Override

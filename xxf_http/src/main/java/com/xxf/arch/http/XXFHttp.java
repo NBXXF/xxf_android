@@ -7,10 +7,10 @@ import androidx.annotation.RequiresApi;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.BaseUrlProvider;
 import com.xxf.arch.annotation.CookieJar;
-import com.xxf.arch.annotation.RxHttpCacheProvider;
+import com.xxf.arch.annotation.RxHttpCacheConfig;
 import com.xxf.arch.annotation.RxJavaInterceptor;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
-import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
+import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -129,8 +129,8 @@ public class XXFHttp {
         }
 
         //rxJava 缓存
-        HttpCacheDirectoryProvider rxHttpCacheDirectoryProvider = null;
-        RxHttpCacheProvider rxHttpCacheAnnotation = apiClazz.getAnnotation(RxHttpCacheProvider.class);
+        HttpCacheConfigProvider rxHttpCacheDirectoryProvider = null;
+        RxHttpCacheConfig rxHttpCacheAnnotation = apiClazz.getAnnotation(RxHttpCacheConfig.class);
         if (rxHttpCacheAnnotation != null) {
             rxHttpCacheDirectoryProvider = rxHttpCacheAnnotation.value().newInstance();
         }
