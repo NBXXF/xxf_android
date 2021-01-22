@@ -49,7 +49,9 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                 .doOnNext(new Consumer<Response<R>>() {
                     @Override
                     public void accept(Response<R> rResponse) throws Exception {
-                        RxHttpCacheFactory.getCache(rxHttpCacheConfig).putAsync(rResponse);
+                        if (rxHttpCacheConfig.isCache(rResponse.body())) {
+                            RxHttpCacheFactory.getCache(rxHttpCacheConfig).putAsync(rResponse);
+                        }
                     }
                 });
     }

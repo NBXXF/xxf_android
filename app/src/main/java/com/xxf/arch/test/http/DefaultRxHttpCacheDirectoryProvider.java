@@ -24,11 +24,6 @@ public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheConfigProvi
         return file.getAbsolutePath();
     }
 
-    @Override
-    public long maxSize() {
-        //100M
-        return 100 * 1024 * 1024;
-    }
 
     @Override
     public boolean isCache(@Nullable Object body) {
