@@ -440,9 +440,9 @@ public class TitleBar extends FrameLayout
         }
 
         // TextView 里面必须有东西才能被点击
-        mLeftView.setEnabled(BaseBarInitializer.checkContainContent(mLeftView));
-        mTitleView.setEnabled(BaseBarInitializer.checkContainContent(mTitleView));
-        mRightView.setEnabled(BaseBarInitializer.checkContainContent(mRightView));
+//        mLeftView.setEnabled(BaseBarInitializer.checkContainContent(mLeftView));
+//        mTitleView.setEnabled(BaseBarInitializer.checkContainContent(mTitleView));
+//        mRightView.setEnabled(BaseBarInitializer.checkContainContent(mRightView));
 
         post(new Runnable() {
             @Override

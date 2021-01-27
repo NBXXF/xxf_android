@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.xxf.view.titlebar.AutoEnableTextView;
 import com.xxf.view.titlebar.ITitleBarInitializer;
-
 
 
 public abstract class BaseBarInitializer implements ITitleBarInitializer {
@@ -82,7 +82,7 @@ public abstract class BaseBarInitializer implements ITitleBarInitializer {
     public abstract Drawable getBackIcon(Context context);
 
     protected TextView createTextView(Context context) {
-        return new TextView(context);
+        return new AutoEnableTextView(context);
     }
 
     /**
