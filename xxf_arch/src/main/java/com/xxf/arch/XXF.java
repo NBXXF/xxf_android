@@ -729,4 +729,15 @@ public class XXF {
         return RxBus.getInstance().subscribeEvent(eventType);
     }
 
+    /**
+     * 订阅粘性事件
+     *
+     * @param eventType
+     * @param <T>
+     * @return
+     */
+    public static <T> Observable<T> subscribeStickyEvent(Class<T> eventType) {
+        return RxBus.getInstance().subscribeStickyEvent(eventType);
+    }
+
 }
