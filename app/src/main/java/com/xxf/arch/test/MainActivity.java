@@ -435,6 +435,12 @@ public class MainActivity extends XXFActivity {
                                     @Override
                                     public void accept(ListOrSingle<Weather> weathers) throws Exception {
                                         XXF.getLogger().d("=========>result:" + new ArrayList(weathers));
+                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis()/1000);
+                                    }
+                                }, new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Throwable {
+                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis()/1000);
                                     }
                                 });
                     }

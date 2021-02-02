@@ -12,6 +12,17 @@ import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
+import org.reactivestreams.Publisher;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.MaybeSource;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Function;
+
 /**
  * @version 2.3.0
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -104,6 +115,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onNext(T t) {
+        XXF.getLogger().d("===========>time next:" + System.currentTimeMillis() / 1000);
         if (progressHUD != null) {
             progressHUD.dismissLoadingDialogWithSuccess(successNotice, 1000);
         }
@@ -118,6 +130,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onError(Throwable throwable) {
+        XXF.getLogger().d("===========>time2:" + System.currentTimeMillis() / 1000);
         if (progressHUD != null) {
             if (TextUtils.isEmpty(errorNotice)) {
                 String parseErrorNotice = "";
@@ -139,4 +152,28 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
             progressHUD.dismissLoadingDialog();
         }
     }
+
+    @Override
+    public MaybeSource<T> apply(Maybe<T> upstream) {
+        return super.apply(upstream.delay(1, TimeUnit.SECONDS));
+    }
+
+    @Override
+    public ObservableSource<T> apply(Observable<T> upstream) {
+        return ((Observable<T>) super.apply(upstream))
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends T>>() {
+                    @Override
+                    public ObservableSource<? extends T> apply(Throwable throwable) throws Throwable {
+                        Observable<T> observable = Observable.error(throwable);
+                        observable = observable.delaySubscription(1, TimeUnit.SECONDS);
+                        return observable;
+                    }
+                }).delay(1, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public Publisher<T> apply(Flowable<T> upstream) {
+        return super.apply(upstream.delay(1, TimeUnit.SECONDS));
+    }
+
 }
