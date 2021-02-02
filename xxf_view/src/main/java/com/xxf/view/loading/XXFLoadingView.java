@@ -25,7 +25,7 @@ public class XXFLoadingView extends LottieAnimationView {
 
     public XXFLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setAnimation("xxf_loading.json");
+        setAnimation("xxf_hud_loading.json");
         setRepeatCount(Integer.MAX_VALUE);
     }
 

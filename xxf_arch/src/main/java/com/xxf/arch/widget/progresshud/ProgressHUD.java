@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 /**
  * Description  加载对话框定义
+ *
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：17/2/4
  * version
@@ -27,15 +28,17 @@ public interface ProgressHUD {
      * 加载成功的提示
      *
      * @param notice
+     * @param delayTime 延迟时间 毫秒
      */
-    void dismissLoadingDialogWithSuccess(String notice);
+    void dismissLoadingDialogWithSuccess(String notice, long delayTime);
 
     /**
      * 加载失败的提示
      *
      * @param notice
+     * @param delayTime 延迟时间 毫秒
      */
-    void dismissLoadingDialogWithFail(String notice);
+    void dismissLoadingDialogWithFail(String notice, long delayTime);
 
     /**
      * 是否正在展示加载对话框

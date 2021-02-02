@@ -43,6 +43,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -420,8 +421,15 @@ public class MainActivity extends XXFActivity {
                                 });*/
 
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.firstCache)
-                                .compose(XXF.bindToErrorNotice())
+                                .getCity(CacheType.onlyRemote)
+                                .map(new Function<ListOrSingle<Weather>, ListOrSingle<Weather>>() {
+                                    @Override
+                                    public ListOrSingle<Weather> apply(ListOrSingle<Weather> weathers) throws Throwable {
+                                        Thread.sleep(3000);
+                                        return weathers;
+                                    }
+                                })
+                                .compose(XXF.bindToProgressHud())
                                 //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
                                 .subscribe(new Consumer<ListOrSingle<Weather>>() {
                                     @Override

@@ -19,7 +19,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.view.loading.DefaultProgressHUDImpl;
+import com.xxf.view.loading.XXFLoadingDialog;
 import com.xxf.view.refresh.XXFJumpRefreshFooter;
 import com.xxf.view.refresh.XXFJumpRefreshHeader;
 import com.xxf.view.utils.ResourcesUtil;
@@ -57,10 +57,16 @@ public class BaseApplication extends Application {
         XXF.init(new XXF.Builder(this, new ProgressHUDFactory.ProgressHUDProvider() {
             @Override
             public ProgressHUD onCreateProgressHUD(LifecycleOwner lifecycleOwner) {
-                if (lifecycleOwner instanceof FragmentActivity) {
+             /*   if (lifecycleOwner instanceof FragmentActivity) {
                     return new DefaultProgressHUDImpl((FragmentActivity) lifecycleOwner);
                 } else if (lifecycleOwner instanceof Fragment) {
                     return new DefaultProgressHUDImpl(((Fragment) lifecycleOwner).getContext());
+                }*/
+
+                if (lifecycleOwner instanceof FragmentActivity) {
+                    return new XXFLoadingDialog((FragmentActivity) lifecycleOwner,null);
+                } else if (lifecycleOwner instanceof Fragment) {
+                    return new XXFLoadingDialog(((Fragment) lifecycleOwner).getContext(),null);
                 }
                 return null;
             }

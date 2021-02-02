@@ -4,15 +4,17 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
+import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.0
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 加载与loading提示结合
  * @date createTime：2018/1/4
  */
@@ -24,9 +26,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
      */
     public static class Builder {
         ProgressHUD progressHUD;
-        String loadingNotice;
-        String errorNotice;
-        String successNotice;
+        String loadingNotice = "loading...";
+        String errorNotice = "failed";
+        String successNotice = "success";
+
+        public Builder(@NonNull LifecycleOwner lifecycleOwner) {
+            this.progressHUD = ProgressHUDFactory.getInstance().getProgressHUD(lifecycleOwner);
+        }
 
         public Builder(@NonNull ProgressHUDProvider progressHUDProvider) {
             this.progressHUD = progressHUDProvider.progressHUD();
@@ -99,14 +105,14 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
     @Override
     public void onNext(T t) {
         if (progressHUD != null) {
-            progressHUD.dismissLoadingDialogWithSuccess(successNotice);
+            progressHUD.dismissLoadingDialogWithSuccess(successNotice, 1000);
         }
     }
 
     @Override
     public void onComplete() {
         if (progressHUD != null && progressHUD.isShowLoading()) {
-            progressHUD.dismissLoadingDialogWithSuccess(successNotice);
+            progressHUD.dismissLoadingDialogWithSuccess(successNotice, 1000);
         }
     }
 
@@ -120,9 +126,9 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-                progressHUD.dismissLoadingDialogWithFail(parseErrorNotice);
+                progressHUD.dismissLoadingDialogWithFail(parseErrorNotice, 1000);
             } else {
-                progressHUD.dismissLoadingDialogWithFail(errorNotice);
+                progressHUD.dismissLoadingDialogWithFail(errorNotice, 1000);
             }
         }
     }
