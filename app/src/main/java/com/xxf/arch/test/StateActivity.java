@@ -161,8 +161,8 @@ public class StateActivity extends XXFActivity {
                 return strings;
             }
         }).subscribeOn(Schedulers.io())
-                .compose(XXF.bindToLifecycle(this))
                 .observeOn(AndroidSchedulers.mainThread())
+                .to(XXF.bindLifecycle(this))
                 .subscribe(new Consumer<List<String>>() {
                     @Override
                     public void accept(List<String> strings) throws Exception {

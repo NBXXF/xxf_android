@@ -31,7 +31,7 @@ public class TestFragment extends Fragment {
         public void onCreate() {
             super.onCreate();
             Observable.just(1)
-                    .compose(XXF.bindToLifecycle(this))
+                    .to(XXF.bindLifecycle(getLifecycleOwner()))
                     .subscribe();
             Log.d("================>p2", "onCreate");
         }

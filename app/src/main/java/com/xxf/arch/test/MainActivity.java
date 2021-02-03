@@ -84,9 +84,6 @@ public class MainActivity extends XXFActivity {
         @Override
         public void onCreate() {
             super.onCreate();
-
-            Observable.just(1)
-                    .compose(XXF.bindToLifecycle(this));
             Log.d("================>p", "onCreate");
         }
 

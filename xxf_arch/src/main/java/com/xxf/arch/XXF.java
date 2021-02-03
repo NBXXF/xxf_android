@@ -39,8 +39,6 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.activityresult.RxActivityResultCompact;
 import com.xxf.arch.core.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
-import com.xxf.arch.lifecycle.LifecycleOwnerProvider;
-import com.xxf.arch.rxjava.lifecycle.LifecycleProviderFactory;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
 import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -57,6 +55,7 @@ import java.util.concurrent.Callable;
 
 import autodispose2.AutoDispose;
 import autodispose2.AutoDisposeConverter;
+import autodispose2.android.AutoDisposeAndroidPlugins;
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -179,6 +178,12 @@ public class XXF {
                     XXF.userInfoProvider = builder.userInfoProvider;
                     activityStackProvider = new AndroidActivityStackProvider(application);
                     ProgressHUDFactory.setProgressHUDProvider(builder.progressHUDProvider);
+                    /**
+                     * 默认不检查线程
+                     */
+                    AutoDisposeAndroidPlugins.setOnCheckMainThread(() -> {
+                        return true; // Use whatever heuristics you prefer.
+                    });
                     initRouter();
                 }
             }
@@ -345,40 +350,7 @@ public class XXF {
         }
     }
 
-    /**
-     * 绑定生命周期
-     *
-     * @param lifecycleOwner
-     * @param event
-     * @param <T>
-     * @return
-     */
-    public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
-        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwner).bindUntilEvent(event);
-    }
 
-    /**
-     * 绑定生命周期
-     *
-     * @param lifecycleOwnerProvider
-     * @param event
-     * @param <T>
-     * @return
-     */
-    public static <T> LifecycleTransformer<T> bindUntilEvent(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider, @NonNull Lifecycle.Event event) {
-        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwnerProvider == null ? null : lifecycleOwnerProvider.getLifecycleOwner()).bindUntilEvent(event);
-    }
-
-    /**
-     * 绑定生命周期
-     *
-     * @param lifecycleOwner
-     * @param <T>
-     * @return
-     */
-    public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
-        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwner).bindToLifecycle();
-    }
 
     /**
      * 自动取消
@@ -407,16 +379,6 @@ public class XXF {
         return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner, untilEvent));
     }
 
-    /**
-     * 绑定生命周期
-     *
-     * @param lifecycleOwnerProvider
-     * @param <T>
-     * @return
-     */
-    public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleOwnerProvider lifecycleOwnerProvider) {
-        return LifecycleProviderFactory.getLifecycleProvider(lifecycleOwnerProvider == null ? null : lifecycleOwnerProvider.getLifecycleOwner()).bindToLifecycle();
-    }
 
     /**
      * 绑定生命周期
