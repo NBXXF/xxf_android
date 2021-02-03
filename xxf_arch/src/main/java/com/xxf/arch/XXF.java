@@ -49,8 +49,8 @@ import com.xxf.arch.service.SharedPreferencesService;
 import com.xxf.arch.service.SharedPreferencesServiceImpl;
 import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
+import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -429,16 +429,6 @@ public class XXF {
         return lifecycleProvider.bindToLifecycle();
     }
 
-    /**
-     * 绑定loading
-     *
-     * @param builder
-     * @param <T>
-     * @return
-     */
-    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(ProgressHUDTransformerImpl.Builder builder) {
-        return builder.build();
-    }
 
     /**
      * 绑定loading
@@ -470,9 +460,20 @@ public class XXF {
      * @return
      */
     public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(LifecycleOwner lifecycleOwner) {
-        ProgressHUD progressHUD = ProgressHUDFactory.getInstance().getProgressHUD(lifecycleOwner);
-        return new ProgressHUDTransformerImpl.Builder(progressHUD).build();
+        return new ProgressHUDTransformerImpl(lifecycleOwner);
     }
+
+    /**
+     * 绑定loading
+     *
+     * @param progressHUDProvider
+     * @param <T>
+     * @return
+     */
+    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(ProgressHUDProvider progressHUDProvider) {
+        return new ProgressHUDTransformerImpl(progressHUDProvider);
+    }
+
 
     /**
      * 绑定错误提示

@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.dimAmount = 0.1f;
+            lp.gravity = Gravity.CENTER;
             window.setAttributes(lp);
         }
         LayoutTransition lt = new LayoutTransition();
