@@ -14,10 +14,13 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
+import com.xxf.arch.utils.DensityUtil;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.recyclerview.RecyclerViewUtils;
+import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
+import com.xxf.view.recyclerview.itemdecorations.GridItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +68,13 @@ public class StateActivity extends XXFActivity {
         // TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
 
         stateBinding.recyclerView.setAdapter(testAdaper = new TestAdaper());
+        testAdaper.setOnItemClickListener(new OnItemClickListener<ItemTestBinding, String>() {
+            @Override
+            public void onItemClick(XXFRecyclerAdapter<ItemTestBinding, String> adapter, XXFViewHolder<ItemTestBinding, String> holder, View itemView, int index, String item) {
+                XXF.getLogger().d("===========>width:" + holder.itemView.getWidth() + "  height:" + holder.itemView.getHeight());
+            }
+        });
+        stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +122,7 @@ public class StateActivity extends XXFActivity {
     }
 
     class TestAdaper extends XXFRecyclerAdapter<ItemTestBinding, String> {
+
 
         @Override
         protected ItemTestBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {

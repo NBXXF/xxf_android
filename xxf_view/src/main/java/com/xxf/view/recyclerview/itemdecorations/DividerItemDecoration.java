@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @time 2016-08-24 14:04
  * <p>
  */
+@Deprecated
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public static class Divider {
 
