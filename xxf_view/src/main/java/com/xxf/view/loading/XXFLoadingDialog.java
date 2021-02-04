@@ -1,13 +1,11 @@
 package com.xxf.view.loading;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -59,9 +57,9 @@ public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
             lp.gravity = Gravity.CENTER;
             window.setAttributes(lp);
         }
-        LayoutTransition lt = new LayoutTransition();
-        lt.enableTransitionType(LayoutTransition.CHANGING);
-        ((ViewGroup) binding.getRoot()).setLayoutTransition(lt);
+/*        LayoutTransition lt = new LayoutTransition();
+        lt.enableTransitionType(LayoutTransition.APPEARING | LayoutTransition.DISAPPEARING);
+        ((ViewGroup) binding.getRoot()).setLayoutTransition(lt);*/
         setCancelable(false);
         setCanceledOnTouchOutside(false);
     }

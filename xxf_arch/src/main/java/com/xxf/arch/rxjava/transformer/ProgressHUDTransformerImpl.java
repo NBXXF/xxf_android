@@ -1,8 +1,7 @@
 package com.xxf.arch.rxjava.transformer;
 
-import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
@@ -34,7 +33,11 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     ProgressHUD progressHUD;
     String loadingNotice = "loading...";
-    String errorNotice = "failed";
+    /**
+     * 为null将会用真正的错误信息
+     * 既不想用真正的错误信息 也不展示传递错误信息 可以传递 双引号""
+     */
+    String errorNotice = null;
     String successNotice = "success";
     long noticeDuration = 1000;
     LifecycleOwner lifecycleOwner;
@@ -51,17 +54,21 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
         this.progressHUD = progressHUDProvider.progressHUD();
     }
 
-    public ProgressHUDTransformerImpl setLoadingNotice(String loadingNotice) {
+    public ProgressHUDTransformerImpl setLoadingNotice(@Nullable String loadingNotice) {
         this.loadingNotice = loadingNotice;
         return this;
     }
 
-    public ProgressHUDTransformerImpl setErrorNotice(String errorNotice) {
+    /**
+     * 为null将会用真正的错误信息
+     * 既不想用真正的错误信息 也不展示传递的错误信息 可以传递 双引号""
+     */
+    public ProgressHUDTransformerImpl setErrorNotice(@Nullable String errorNotice) {
         this.errorNotice = errorNotice;
         return this;
     }
 
-    public ProgressHUDTransformerImpl setSuccessNotice(String successNotice) {
+    public ProgressHUDTransformerImpl setSuccessNotice(@Nullable String successNotice) {
         this.successNotice = successNotice;
         return this;
     }
@@ -145,7 +152,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onError(Throwable throwable) {
-        if (TextUtils.isEmpty(errorNotice)) {
+        if (errorNotice == null) {
             try {
                 errorNotice = XXF.getErrorConvertFunction().apply(throwable);
             } catch (Throwable e) {
