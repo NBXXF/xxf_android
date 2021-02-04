@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
@@ -30,7 +32,6 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.utils.StatusBarUtils;
-import com.xxf.view.utils.SystemUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -43,7 +44,6 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -282,27 +282,19 @@ public class MainActivity extends XXFActivity {
                         layout.toggleColor();
 
                         *//*    String url = "qweqwe";*/
-//                        String url = "/activity/test";
-//                        ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
-//                            @Override
-//                            public void onArrival(Postcard postcard) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onLost(Postcard postcard) {
-//                                super.onLost(postcard);
-//                                XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
-//                            }
-//                        });
-                        SystemUtils.takePhoto(MainActivity.this, null)
-                                .to(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
-                                .subscribe(new Consumer<String>() {
-                                    @Override
-                                    public void accept(String s) throws Throwable {
-                                        ToastUtils.showToast("xx" + s, ToastUtils.ToastType.ERROR);
-                                    }
-                                });
+                        String url = "/activity/test";
+                        ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
+                            @Override
+                            public void onArrival(Postcard postcard) {
+
+                            }
+
+                            @Override
+                            public void onLost(Postcard postcard) {
+                                super.onLost(postcard);
+                                XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
+                            }
+                        });
 
                         String json = "{\n" +
                                 "  \"num\": \"1948367743.1273676543\",\n" +
@@ -432,12 +424,12 @@ public class MainActivity extends XXFActivity {
                                     @Override
                                     public void accept(ListOrSingle<Weather> weathers) throws Exception {
                                         XXF.getLogger().d("=========>result:" + new ArrayList(weathers));
-                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis()/1000);
+                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis() / 1000);
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Throwable {
-                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis()/1000);
+                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis() / 1000);
                                     }
                                 });
                     }
@@ -666,6 +658,9 @@ public class MainActivity extends XXFActivity {
         //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
     }
 
+    public void jumpState(View v) {
+        startActivity(new Intent(this, StateActivity.class));
+    }
 
     public static void saveImage(File file, Bitmap bitmap, int quality) throws IOException {
         if (bitmap == null || file == null) {

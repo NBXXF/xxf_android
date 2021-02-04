@@ -12,18 +12,18 @@ import com.airbnb.lottie.LottieAnimationView;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description loading..
  */
-public class XXFLoadingView extends LottieAnimationView {
+public class XXFLoadingImageView extends LottieAnimationView {
 
 
-    public XXFLoadingView(Context context) {
+    public XXFLoadingImageView(Context context) {
         this(context, null);
     }
 
-    public XXFLoadingView(Context context, AttributeSet attrs) {
+    public XXFLoadingImageView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public XXFLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public XXFLoadingImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setAnimation("xxf_hud_loading.json");
         setRepeatCount(Integer.MAX_VALUE);

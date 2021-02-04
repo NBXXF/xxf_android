@@ -2,23 +2,18 @@ package com.xxf.arch.test;
 
 import android.app.Application;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
-import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.recyclerview.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
@@ -83,71 +78,16 @@ public class StateActivity extends XXFActivity {
                 // loadData();
             }
         });
+        stateBinding.btnLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadData();
+            }
+        });
         testAdaper.bindData(true, new ArrayList<>());
         loadData();
     }
 
-    private static Bitmap getBitmap(RecyclerView view) {
-
-        // 把一个View转换成图片
-        view.setDrawingCacheEnabled(true);
-        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        //测量在屏幕上宽和高
-        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        //确定View的大小和位置的,然后将其绘制出来
-        //  view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
-        if (bitmap != null) {
-            return bitmap;
-        }
-        return convertViewToBitmap(view);
-    }
-
-    /**
-     * 主要方法：创建一个bitmap放于画布之上进行绘制 （简直如有神助）
-     */
-    private static Bitmap convertViewToBitmap(View view) {
-       /* Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),
-                view.getHeight(), Bitmap.Config.ARGB_8888);*/
-    /*    view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));*/
-        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-        return bitmap;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        XXF.getLogger().d("============>rl:pause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Toast.makeText(this,"abcd",Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtils.showToast("test state xxx", ToastUtils.ToastType.ERROR);
-            }
-        }, 2000);
-        XXF.getLogger().d("=============isBack state stop:" + XXF.getActivityStackProvider().isBackground());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        XXF.getLogger().d("============>rl:onDestroy");
-    }
 
     private void loadData() {
         Observable.fromCallable(new Callable<List<String>>() {
@@ -166,8 +106,7 @@ public class StateActivity extends XXFActivity {
                 .subscribe(new Consumer<List<String>>() {
                     @Override
                     public void accept(List<String> strings) throws Exception {
-                        Log.d("=========", "" + strings);
-                        testAdaper.bindData(true, new ArrayList<>());
+                        testAdaper.bindData(true, strings);
                     }
                 });
     }
@@ -182,7 +121,6 @@ public class StateActivity extends XXFActivity {
         @Override
         public void onBindHolder(XXFViewHolder<ItemTestBinding, String> holder, @Nullable String s, int index) {
             holder.getBinding().textView.setText(s);
-            XXF.getLogger().d("===============>init:" + index);
         }
     }
 }

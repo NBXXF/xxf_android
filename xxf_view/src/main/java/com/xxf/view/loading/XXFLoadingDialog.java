@@ -102,7 +102,7 @@ public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
         binding.getRoot().postDelayed(dismissTask, delayTime < 0 ? 0 : delayTime);
     }
 
-    private void updateText(String notice) {
+    public void updateText(String notice) {
         binding.msgTv.setText(notice);
         binding.msgTv.setVisibility(TextUtils.isEmpty(notice) ? View.GONE : View.VISIBLE);
     }

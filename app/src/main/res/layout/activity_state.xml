@@ -14,6 +14,13 @@
             android:text="test" />
 
 
+        <Button
+            android:id="@+id/btn_load"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="load" />
+
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -33,18 +40,18 @@
         <com.xxf.view.loading.XXFListStateLayout
             android:id="@+id/list_item"
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:background="#6cf"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3" />
         </com.xxf.view.loading.XXFListStateLayout>
     </LinearLayout>
 </layout>

@@ -128,6 +128,14 @@
                         android:padding="10dp"
                         android:text="startActivityForResult" />
 
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:onClick="jumpState"
+                        android:text="state" />
+
+
                     <FrameLayout
                         android:id="@+id/contentPanel"
                         android:layout_width="match_parent"

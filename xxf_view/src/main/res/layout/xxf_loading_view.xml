@@ -14,10 +14,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="10" />
 
-        <com.xxf.view.loading.XXFLoadingView
+        <com.xxf.view.loading.XXFLoadingImageView
             android:id="@id/alpha_loading_view_iv"
-            android:layout_width="65dp"
-            android:layout_height="20dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
             android:clickable="true" />
 
