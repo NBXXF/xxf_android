@@ -66,7 +66,7 @@ public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
 
     @Override
     public void showLoadingDialog(@Nullable String notice) {
-        updateText(notice);
+        updateStateText(notice);
         binding.loadingIv.setAnimation("xxf_hud_loading.json");
         binding.loadingIv.setRepeatCount(Integer.MAX_VALUE);
         binding.loadingIv.playAnimation();
@@ -82,7 +82,7 @@ public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
 
     @Override
     public void dismissLoadingDialogWithSuccess(String notice, long delayTime) {
-        updateText(notice);
+        updateStateText(notice);
         binding.loadingIv.setAnimation("xxf_hud_success.json");
         binding.loadingIv.setRepeatCount(0);
         binding.loadingIv.playAnimation();
@@ -92,7 +92,7 @@ public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
 
     @Override
     public void dismissLoadingDialogWithFail(String notice, long delayTime) {
-        updateText(notice);
+        updateStateText(notice);
         binding.loadingIv.setAnimation("xxf_hud_fail.json");
         binding.loadingIv.setRepeatCount(0);
         binding.loadingIv.playAnimation();
@@ -100,7 +100,8 @@ public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
         binding.getRoot().postDelayed(dismissTask, delayTime < 0 ? 0 : delayTime);
     }
 
-    public void updateText(String notice) {
+    @Override
+    public void updateStateText(String notice) {
         binding.msgTv.setText(notice);
         binding.msgTv.setVisibility(TextUtils.isEmpty(notice) ? View.GONE : View.VISIBLE);
     }

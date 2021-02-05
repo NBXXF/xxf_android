@@ -1,5 +1,6 @@
 package com.xxf.arch.rxjava.transformer;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
@@ -41,6 +42,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
     String successNotice = "success";
     long noticeDuration = 1000;
     LifecycleOwner lifecycleOwner;
+    boolean dismissOnNext = true;
 
     public ProgressHUDTransformerImpl(ProgressHUD progressHUD) {
         this.progressHUD = progressHUD;
@@ -54,7 +56,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
         this.progressHUD = progressHUDProvider.progressHUD();
     }
 
-    public ProgressHUDTransformerImpl setLoadingNotice(@Nullable String loadingNotice) {
+    public ProgressHUDTransformerImpl<T> setLoadingNotice(@Nullable String loadingNotice) {
         this.loadingNotice = loadingNotice;
         return this;
     }
@@ -63,22 +65,32 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
      * 为null将会用真正的错误信息
      * 既不想用真正的错误信息 也不展示传递的错误信息 可以传递 双引号""
      */
-    public ProgressHUDTransformerImpl setErrorNotice(@Nullable String errorNotice) {
+    public ProgressHUDTransformerImpl<T> setErrorNotice(@Nullable String errorNotice) {
         this.errorNotice = errorNotice;
         return this;
     }
 
-    public ProgressHUDTransformerImpl setSuccessNotice(@Nullable String successNotice) {
+    public ProgressHUDTransformerImpl<T> setSuccessNotice(@Nullable String successNotice) {
         this.successNotice = successNotice;
         return this;
     }
 
-    public ProgressHUDTransformerImpl setNoticeDuration(long noticeDuration) {
+    public ProgressHUDTransformerImpl<T> setNoticeDuration(long noticeDuration) {
         this.noticeDuration = noticeDuration < 0 ? 0 : noticeDuration;
         return this;
     }
 
-    private ProgressHUD getSafeProgressHUD() {
+    public ProgressHUDTransformerImpl<T> setDismissOnNext(boolean dismissOnNext) {
+        this.dismissOnNext = dismissOnNext;
+        return this;
+    }
+
+    @Nullable
+    @CheckResult
+    protected ProgressHUD getSafeProgressHUD() {
+        if (!HandlerUtils.isMainThread()) {
+            return null;
+        }
         if (progressHUD != null) {
             return progressHUD;
         }
@@ -112,21 +124,23 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onNext(T t) {
-        if (HandlerUtils.isMainThread()) {
-            ProgressHUD safeProgressHUD = getSafeProgressHUD();
-            if (safeProgressHUD != null) {
-                safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
-            }
-        } else {
-            HandlerUtils.getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    ProgressHUD safeProgressHUD = getSafeProgressHUD();
-                    if (safeProgressHUD != null) {
-                        safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
-                    }
+        if (dismissOnNext) {
+            if (HandlerUtils.isMainThread()) {
+                ProgressHUD safeProgressHUD = getSafeProgressHUD();
+                if (safeProgressHUD != null) {
+                    safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
                 }
-            });
+            } else {
+                HandlerUtils.getMainHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ProgressHUD safeProgressHUD = getSafeProgressHUD();
+                        if (safeProgressHUD != null) {
+                            safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
+                        }
+                    }
+                });
+            }
         }
     }
 

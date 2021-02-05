@@ -48,10 +48,6 @@ import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
@@ -186,61 +182,12 @@ public class MainActivity extends XXFActivity {
 
 
         XXF.getFileService()
-                .putPrivateFile("test.txt", "173256abs", false)
+                .putFilesString("test.txt", "173256abs", false, false,false)
                 .compose(XXF.bindToErrorNotice())
+                .to(XXF.bindLifecycle(this))
                 .subscribe();
 
 
-        Observable.just(1)
-                .map(new Function<Integer, Integer>() {
-                    @Override
-                    public Integer apply(Integer integer) throws Exception {
-                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    111");
-                        throw new RuntimeException("xxxxx");
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Integer>>() {
-                    @SuppressLint("CheckResult")
-                    @Override
-                    public ObservableSource<? extends Integer> apply(Throwable throwable) throws Exception {
-                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    wwww");
-                        if (throwable instanceof RuntimeException) {
-                            Observable<Integer> empty = Observable.empty();
-                            return empty.doOnComplete(new Action() {
-                                @Override
-                                public void run() throws Exception {
-                                    XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    33333");
-                                }
-                            })
-                                    .subscribeOn(AndroidSchedulers.mainThread())
-                                    .observeOn(AndroidSchedulers.mainThread());
-                        }
-                        return Observable.error(throwable);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    5555");
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "    6666");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "   7777");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        XXF.getLogger().d("=============>thread:" + Thread.currentThread().getName() + "   88888");
-                    }
-                });
         findViewById(R.id.bt_test)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -539,7 +486,7 @@ public class MainActivity extends XXFActivity {
                                 "2% 05\n" +
                                 "1% 03\n" +
                                 "0% 00";
-                        XXF.getFileService().putPrivateFile(fileName, s, false)
+                        XXF.getFileService().putFilesString(fileName, s, false, false,false)
                                 .compose(XXF.bindToErrorNotice())
                                 .subscribe(new Consumer<File>() {
                                     @SuppressLint("CheckResult")
@@ -564,7 +511,9 @@ public class MainActivity extends XXFActivity {
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
-                                        XXF.getFileService().putPrivateFile("bbb.txt", stringBuffer.toString(), false)
+                                        XXF.getFileService().putFilesString("bbb.txt", stringBuffer.toString(), false, false,false)
+                                                .subscribe();
+                                        XXF.getFileService().putCacheString("bbb.txt", stringBuffer.toString(), false, false,false)
                                                 .subscribe();
                                         XXF.getLogger().d("============>yes:" + stringBuffer.toString());
                                     }
@@ -584,7 +533,7 @@ public class MainActivity extends XXFActivity {
                     public void onClick(final View v) {
                         String fileName = "replace.text";
                         String s = "";
-                        XXF.getFileService().putPrivateFile(fileName, s, false)
+                        XXF.getFileService().putFilesString(fileName, s, false, false,false)
                                 .subscribe(new Consumer<File>() {
                                     @Override
                                     public void accept(File file) throws Exception {

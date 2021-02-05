@@ -46,4 +46,12 @@ public interface ProgressHUD {
      * @return
      */
     boolean isShowLoading();
+
+
+    /**
+     * 更新提示文案
+     *
+     * @param notice
+     */
+    void updateStateText(String notice);
 }

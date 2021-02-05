@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.model.DownloadTask;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.DensityUtil;
@@ -22,6 +24,7 @@ import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.GridItemDecoration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class StateActivity extends XXFActivity {
@@ -96,6 +100,49 @@ public class StateActivity extends XXFActivity {
         });
         testAdaper.bindData(true, new ArrayList<>());
         loadData();
+
+
+        stateBinding.btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  XXF.getFileService()
+                        .getPrivateFileDir()
+                        .flatMap(new Function<File, ObservableSource<File>>() {
+                            @Override
+                            public ObservableSource<File> apply(File file) throws Throwable {
+                                return XXF.getFileService()
+                                        .download("http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4", new File(file, "test.mp4").getAbsolutePath());
+                            }
+                        })
+                        .compose(XXF.bindToProgressHud())
+                        .subscribe();*/
+
+                XXF.getFileService()
+                        .getFilesDir(false, false)
+                        .flatMap(new Function<File, Observable<DownloadTask>>() {
+                            @Override
+                            public Observable<DownloadTask> apply(File file) throws Throwable {
+                                return XXF.getFileService()
+                                        .downloadTask("http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4", new File(file, "test.mp4").getAbsolutePath());
+                            }
+                        })
+                        .compose(new ProgressHUDTransformerImpl<DownloadTask>(StateActivity.this) {
+                            @Override
+                            public void onNext(DownloadTask downloadTask) {
+                                super.onNext(downloadTask);
+                                getSafeProgressHUD().updateStateText((downloadTask.getCurrent() * 1.0f / downloadTask.getDuration()) * 100 + "%");
+                            }
+                        }.setDismissOnNext(false))
+                        .to(XXF.bindLifecycle(StateActivity.this))
+                        .subscribe(new Consumer<DownloadTask>() {
+                            @Override
+                            public void accept(DownloadTask downloadTask) throws Throwable {
+                                XXF.getLogger().d("=========>task2:" + downloadTask);
+                            }
+                        });
+
+            }
+        });
     }
 
 

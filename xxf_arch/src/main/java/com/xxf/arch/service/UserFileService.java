@@ -1,19 +1,14 @@
 package com.xxf.arch.service;
 
-import android.Manifest;
-import android.app.Activity;
 import android.os.Environment;
 
-import androidx.lifecycle.LifecycleOwner;
-
 import com.xxf.arch.XXF;
-import com.xxf.arch.core.permission.RxPermissionTransformer;
+import com.xxf.arch.utils.FileUtils;
 
 import java.io.File;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
@@ -41,90 +36,59 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public interface UserFileService {
     /**
-     * data/data/app包名/files/
-     *不需要权限
+     * 不需要权限
+     * 规则 如果sd卡挂载 就用sd 否则用私有区域
+     * differUser=false data/data/app包名/files/     或者/mnt/sdcard/Android/data/app包名/files/Download
+     * differUser=true data/data/app包名/files/userId/    或者/mnt/sdcard/Android/data/app包名/files/Download/userId/
+     *
+     * @param differUser      区分用户
+     * @param forceInnerFiles 是否强制使用私有区域存储
      * @return
      */
-    default Observable<File> getPrivateFileDir() {
+    default Observable<File> getFilesDir(boolean differUser, boolean forceInnerFiles) {
         return Observable.fromCallable(new Callable<File>() {
             @Override
             public File call() throws Exception {
-                File file = XXF.getApplication().getFilesDir();
-                if (!file.exists()) {
-                    file.mkdirs();
+                File dir = XXF.getApplication().getFilesDir();
+                if (!forceInnerFiles && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                    dir = XXF.getApplication().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
                 }
-                return file;
+                FileUtils.createOrExistsDir(dir);
+                if (differUser) {
+                    dir = new File(dir, XXF.getUserInfoProvider().getUserId());
+                    FileUtils.createOrExistsDir(dir);
+                }
+                return dir;
             }
         }).subscribeOn(Schedulers.io());
     }
 
     /**
-     * data/data/app包名/files/userId/
      * 不需要权限
+     * differUser=false data/data/app包名/cache/     或者/mnt/sdcard/Android/data/app包名/cache
+     * differUser=true data/data/app包名/cache/userId/    或者/mnt/sdcard/Android/data/app包名/cache/userId/
+     *
+     * @param differUser      区分用户
+     * @param forceInnerCache 是否强制使用私有区域存储
      * @return
      */
-    default Observable<File> getUserPrivateFileDir() {
-        return getPrivateFileDir()
-                .map(new Function<File, File>() {
-                    @Override
-                    public File apply(File file) throws Exception {
-                        File userFile = new File(file, XXF.getUserInfoProvider().getUserId());
-                        if (!userFile.exists()) {
-                            userFile.mkdir();
-                        }
-                        return userFile;
-                    }
-                });
+    default Observable<File> getCacheDir(boolean differUser, boolean forceInnerCache) {
+        return Observable.fromCallable(new Callable<File>() {
+            @Override
+            public File call() throws Exception {
+                File dir = XXF.getApplication().getCacheDir();
+                if (!forceInnerCache && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                    dir = XXF.getApplication().getExternalCacheDir();
+                }
+                FileUtils.createOrExistsDir(dir);
+                if (differUser) {
+                    dir = new File(dir, XXF.getUserInfoProvider().getUserId());
+                    FileUtils.createOrExistsDir(dir);
+                }
+                return dir;
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
-
-    /**
-     * /mnt/sdcard/app包名/
-     * 会自动请求权限
-     * @return
-     */
-    default Observable<File> getPublicFileDir() {
-        Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
-        if (topActivity instanceof LifecycleOwner) {
-            return XXF.requestPermission((LifecycleOwner) topActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .compose(new RxPermissionTransformer(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                    .map(new Function<Boolean, File>() {
-                        @Override
-                        public File apply(Boolean aBoolean) throws Throwable {
-                            File file = new File(
-                                    new StringBuilder(Environment.getExternalStorageDirectory().getAbsolutePath())
-                                            .append(File.separator)
-                                            .append(XXF.getApplication().getPackageName())
-                                            .toString());
-                            if (!file.exists()) {
-                                file.mkdirs();
-                            }
-                            return file;
-                        }
-                    });
-        } else {
-            return Observable.error(new RuntimeException("top activity must LifecycleOwner"));
-        }
-    }
-
-
-    /**
-     * /mnt/sdcard/app包名/userId/
-     * 会自动请求权限
-     * @return
-     */
-    default Observable<File> getUserPublicFileDir() {
-        return getPublicFileDir()
-                .map(new Function<File, File>() {
-                    @Override
-                    public File apply(File file) throws Exception {
-                        File userFile = new File(file, XXF.getUserInfoProvider().getUserId());
-                        if (!userFile.exists()) {
-                            userFile.mkdir();
-                        }
-                        return userFile;
-                    }
-                });
-    }
 
 }
