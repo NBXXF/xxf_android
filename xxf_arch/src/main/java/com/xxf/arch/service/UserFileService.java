@@ -51,7 +51,7 @@ public interface UserFileService {
             public File call() throws Exception {
                 File dir = XXF.getApplication().getFilesDir();
                 if (!forceInnerFiles && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                    dir = XXF.getApplication().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                    dir = XXF.getApplication().getExternalFilesDir(null);
                 }
                 FileUtils.createOrExistsDir(dir);
                 if (differUser) {
