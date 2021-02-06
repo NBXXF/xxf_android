@@ -19,20 +19,52 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 
 /**
- * Environment.getDataDirectory() = /data
- * Environment.getDownloadCacheDirectory() = /cache
- * Environment.getExternalStorageDirectory() = /mnt/sdcard
- * Environment.getExternalStoragePublicDirectory(“test”) = /mnt/sdcard/test
- * Environment.getRootDirectory() = /system
- * getPackageCodePath() = /data/app/com.my.app-1.apk
- * getPackageResourcePath() = /data/app/com.my.app-1.apk
- * getCacheDir() = /data/data/com.my.app/cache
- * getDatabasePath(“test”) = /data/data/com.my.app/databases/test
- * getDir(“test”, Context.MODE_PRIVATE) = /data/data/com.my.app/app_test
- * getExternalCacheDir() = /mnt/sdcard/Android/data/com.my.app/cache
- * getExternalFilesDir(“test”) = /mnt/sdcard/Android/data/com.my.app/files/test
- * getExternalFilesDir(null) = /mnt/sdcard/Android/data/com.my.app/files
- * getFilesDir() = /data/data/com.my.app/files
+ * 1、内部存储
+ * 内部存储：手机内部存储的根目录
+ * 对应路径：Environment.getDataDirectory().getParentFile()
+ * <p>
+ * 方法	路径
+ * Environment.getDataDirectory()	/data
+ * Environment.getDownloadCacheDirectory()	/cache
+ * Environment.getRootDirectory()	/system
+ * 2、外部存储
+ * 外部存储：分为 SD 卡和扩展卡内存
+ * SD 卡路径获取方法：Environment.getExternalStorageDirectory() /storage/sdcard0
+ * <p>
+ * SD 卡的九大公有路径如下：
+ * <p>
+ * 方法	路径
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_ALARMS)	/storage/sdcard0/Alarms
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM)	/storage/sdcard0/DCIM
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS)	/storage/sdcard0/Download
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES)	/storage/sdcard0/Movies
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_MUSIC)	/storage/sdcard0/Music
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_NOTIFICATIONS)	/storage/sdcard0/Notifications
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES)	/storage/sdcard0/Pictures
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_PODCASTS)	/storage/sdcard0/Podcasts
+ * Environment.getExternalStoragePublicDirectory(DIRECTORY_RINGTONES)	/storage/sdcard0/Ringtones
+ * 注：Google官方建议我们数据应该存储在私有目录下，不建议存储在公有目录下或其他地方。
+ * <p>
+ * 3、权限相关
+ * 方法	路径	权限
+ * Context.getFilesDir	/data/user/0/应用包名/files	默认可读写
+ * Context.getCacheDir	/data/user/0/应用包名/cache	默认可读写
+ * Context.CodeCacheDir	/data/user/0/应用包名/code_cache	默认可读写
+ * Context.getDatabasePath	/data/user/0/应用包名/databases/参数名	默认可读写
+ * Context.getDir	/data/user/0/应用包名/app_参数名	默认可读写
+ * Context.getFileStreamPath	/data/data/应用包名/files/download	默认可读写
+ * Context.getObbDir	/storage/emulated/0/Android/obb/应用包名	默认可读写
+ * Context.getExternalFilesDir	/storage/emulated/0/Android/data/应用包名/files/Download	默认可读写
+ * Context.getExternalCacheDir	/storage/emulated/0/Android/data/应用包名/cache	默认可读写
+ * Environment.getExternalStorageDirectory	/storage/emulated/0	6.0和以后需要申请权限
+ * Environment.getExternalStoragePublicDirectory	/storage/emulated/0/Download	6.0和以后需要申请权限
+ * Environment.getDownloadCacheDirectory	/cache	6.0和以后需要申请权限
+ * Context.getRootDirectory	/system	不可以读写，需要 root 权限
+ * <!--添加外部存储的读/写权限 -->
+ * <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+ * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+ * <p>
+ * 可参考https://www.123si.org/android/article/android-file-directory-and-permissions/
  */
 public interface UserFileService {
     /**
