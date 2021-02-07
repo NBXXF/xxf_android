@@ -1505,15 +1505,20 @@ public final class FileUtils {
      * 生成文件名
      * 采用md5 避免重复
      *
-     * @param url 可以http 和path
+     * @param url              可以http 和path
+     * @param defaultExtension 默认后缀 入zip mp3 png 不带. 避免有些不规则的url
      * @return
      */
     @Nullable
-    public static String generateFileName(String url) {
+    public static String generateFileName(String url, String defaultExtension) {
         if (!TextUtils.isEmpty(url)) {
             String fileExtension = getFileExtension(url);
+            if (TextUtils.isEmpty(fileExtension)) {
+                fileExtension = defaultExtension;
+            }
             return EncryptUtils.encryptMD5ToString(url) + "." + fileExtension;
         }
         return null;
     }
+
 }

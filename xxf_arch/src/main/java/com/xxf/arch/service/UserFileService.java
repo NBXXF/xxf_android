@@ -54,7 +54,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * Context.getDir	/data/user/0/应用包名/app_参数名	默认可读写
  * Context.getFileStreamPath	/data/data/应用包名/files/download	默认可读写
  * Context.getObbDir	/storage/emulated/0/Android/obb/应用包名	默认可读写
- * Context.getExternalFilesDir	/storage/emulated/0/Android/data/应用包名/files/Download	默认可读写
+ * Context.getExternalFilesDir	/storage/emulated/0/Android/data/应用包名/files/	默认可读写
  * Context.getExternalCacheDir	/storage/emulated/0/Android/data/应用包名/cache	默认可读写
  * Environment.getExternalStorageDirectory	/storage/emulated/0	6.0和以后需要申请权限
  * Environment.getExternalStoragePublicDirectory	/storage/emulated/0/Download	6.0和以后需要申请权限
@@ -70,8 +70,8 @@ public interface UserFileService {
     /**
      * 不需要权限
      * 规则 如果sd卡挂载 就用sd 否则用私有区域
-     * differUser=false data/data/app包名/files/     或者/mnt/sdcard/Android/data/app包名/files/Download
-     * differUser=true data/data/app包名/files/userId/    或者/mnt/sdcard/Android/data/app包名/files/Download/userId/
+     * differUser=false data/data/app包名/files/     或者/mnt/sdcard/Android/data/app包名/files/
+     * differUser=true data/data/app包名/files/userId/    或者/mnt/sdcard/Android/data/app包名/files/userId/
      *
      * @param differUser      区分用户
      * @param forceInnerFiles 是否强制使用私有区域存储
