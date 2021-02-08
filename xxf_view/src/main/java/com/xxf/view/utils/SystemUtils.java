@@ -523,16 +523,18 @@ public class SystemUtils {
     }
 
     /**
-     * 分享文本
+     * 分享文本 或者链接
      *
      * @param context
-     * @param text    分享文本
+     * @param text        分享文本
+     * @param packageName 指定 包名 空 会调用系统选择面板,否则调用指定的app
      * @return
      */
-    public static Observable<ActivityResult> shareText(Context context, String text) {
+    public static Observable<ActivityResult> shareText(Context context, String text, @Nullable String packageName) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
             String scheme = Uri.parse(text).getScheme();
             if (TextUtils.equals(scheme, "http") || TextUtils.equals(scheme, "https")) {
@@ -543,6 +545,9 @@ public class SystemUtils {
         } catch (Throwable e) {
             e.printStackTrace();
             sendIntent.setType("text/plain");
+        }
+        if (!TextUtils.isEmpty(packageName)) {
+            sendIntent.setPackage(packageName);
         }
         Intent chooser = Intent.createChooser(sendIntent, "share text");
         if (context instanceof LifecycleOwner) {
@@ -577,6 +582,7 @@ public class SystemUtils {
             uri = Uri.fromFile(file);
         }
         intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         // 授予目录临时共享权限
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         String fileType = null;

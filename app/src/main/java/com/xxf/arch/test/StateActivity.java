@@ -23,6 +23,7 @@ import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.GridItemDecoration;
+import com.xxf.view.utils.SystemUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -95,6 +96,8 @@ public class StateActivity extends XXFActivity {
         stateBinding.btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SystemUtils.shareText(StateActivity.this, "http://www.baidu.com", "com.whatsapp1")
+                        .subscribe();
                 loadData();
             }
         });
