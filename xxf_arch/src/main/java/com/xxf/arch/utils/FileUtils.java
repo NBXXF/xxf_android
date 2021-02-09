@@ -9,6 +9,7 @@ import android.os.StatFs;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.Nullable;
@@ -1517,6 +1518,26 @@ public final class FileUtils {
                 fileExtension = defaultExtension;
             }
             return EncryptUtils.encryptMD5ToString(url) + "." + fileExtension;
+        }
+        return null;
+    }
+
+    /**
+     * 获取文件的mime类型
+     *
+     * @param url url = file path or whatever suitable URL you want.
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static String getMimeType(String url) {
+        try {
+            String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+            if (extension != null) {
+                return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         return null;
     }

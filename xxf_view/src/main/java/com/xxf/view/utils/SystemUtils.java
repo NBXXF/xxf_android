@@ -31,6 +31,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.core.permission.RxPermissionTransformer;
+import com.xxf.arch.utils.FileUtils;
 import com.xxf.arch.utils.UriUtils;
 
 import java.io.File;
@@ -568,11 +569,18 @@ public class SystemUtils {
      * 分享文件
      *
      * @param context
-     * @param filePath  文件
-     * @param authority 如果文件是私有目录一定要传递  authority
+     * @param filePath    文件
+     * @param authority   如果文件是私有目录一定要传递  authority 或者 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+     *                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+     *                    StrictMode.setVmPolicy(builder.build());
+     *                    }
+     * @param packageName 指定 包名 空 会调用系统选择面板,否则调用指定的app
      * @return
      */
-    public static Observable<ActivityResult> shareFile(Context context, String filePath, @Nullable String authority) {
+    public static Observable<ActivityResult> shareFile(Context context,
+                                                       String filePath,
+                                                       @Nullable String authority,
+                                                       @Nullable String packageName) {
         return Observable.defer(new Supplier<ObservableSource<ActivityResult>>() {
             @Override
             public ObservableSource<ActivityResult> get() throws Throwable {
@@ -588,17 +596,20 @@ public class SystemUtils {
                 intent.putExtra(Intent.EXTRA_STREAM, uri);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                String fileType = null;
-                if (uri != null) {
+                String fileType = FileUtils.getMimeType(filePath);
+                if (TextUtils.isEmpty(fileType)) {
                     ContentResolver contentResolver = context.getContentResolver();
                     if (contentResolver != null) {
                         fileType = contentResolver.getType(uri);
                     }
                 }
-                if (TextUtils.isEmpty(filePath)) {
-                    fileType = "*/*";
+                if (TextUtils.isEmpty(fileType)) {
+                    fileType = "file/*";
                 }
                 intent.setDataAndType(uri, fileType);
+                if (!TextUtils.isEmpty(packageName)) {
+                    intent.setPackage(packageName);
+                }
                 Intent chooser = Intent.createChooser(intent, file.getName());
                 if (context instanceof LifecycleOwner) {
                     return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);

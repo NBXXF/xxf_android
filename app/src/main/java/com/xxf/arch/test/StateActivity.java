@@ -158,7 +158,7 @@ public class StateActivity extends XXFActivity {
      * 分享到Ins(本地图片)
      */
     private void sharedToIns() {
-        String type = "image/*";
+        String type = "*/*";
         Uri uri =
                 Uri.parse("android.resource://" + getPackageName() + "/" + R.mipmap.ic_launcher1);
         Intent share = new Intent(Intent.ACTION_SEND);
