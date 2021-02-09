@@ -569,46 +569,51 @@ public class SystemUtils {
      *
      * @param context
      * @param filePath  文件
-     * @param authority
+     * @param authority 如果文件是私有目录一定要传递  authority
      * @return
      */
-    public static Observable<ActivityResult> shareFile(Context context, String filePath, String authority) {
-        File file = new File(filePath);
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context, authority, file);
-        } else {
-            uri = Uri.fromFile(file);
-        }
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // 授予目录临时共享权限
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        String fileType = null;
-        if (uri != null) {
-            ContentResolver contentResolver = context.getContentResolver();
-            if (contentResolver != null) {
-                fileType = contentResolver.getType(uri);
+    public static Observable<ActivityResult> shareFile(Context context, String filePath, @Nullable String authority) {
+        return Observable.defer(new Supplier<ObservableSource<ActivityResult>>() {
+            @Override
+            public ObservableSource<ActivityResult> get() throws Throwable {
+                File file = new File(filePath);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                Uri uri;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && authority != null) {
+                    uri = FileProvider.getUriForFile(context, authority, file);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                } else {
+                    uri = Uri.fromFile(file);
+                }
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                String fileType = null;
+                if (uri != null) {
+                    ContentResolver contentResolver = context.getContentResolver();
+                    if (contentResolver != null) {
+                        fileType = contentResolver.getType(uri);
+                    }
+                }
+                if (TextUtils.isEmpty(filePath)) {
+                    fileType = "*/*";
+                }
+                intent.setDataAndType(uri, fileType);
+                Intent chooser = Intent.createChooser(intent, file.getName());
+                if (context instanceof LifecycleOwner) {
+                    return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
+                } else {
+                    return Observable
+                            .fromCallable(new Callable<ActivityResult>() {
+                                @Override
+                                public ActivityResult call() throws Exception {
+                                    context.startActivity(chooser);
+                                    return new ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, new Intent());
+                                }
+                            });
+                }
             }
-        }
-        if (TextUtils.isEmpty(filePath)) {
-            fileType = "*/*";
-        }
-        intent.setDataAndType(uri, fileType);
-        Intent chooser = Intent.createChooser(intent, file.getName());
-        if (context instanceof LifecycleOwner) {
-            return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
-        } else {
-            return Observable
-                    .fromCallable(new Callable<ActivityResult>() {
-                        @Override
-                        public ActivityResult call() throws Exception {
-                            context.startActivity(chooser);
-                            return new ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, new Intent());
-                        }
-                    });
-        }
+        });
     }
 
     /**

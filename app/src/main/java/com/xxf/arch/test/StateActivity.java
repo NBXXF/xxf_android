@@ -1,7 +1,9 @@
 package com.xxf.arch.test;
 
 import android.app.Application;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,6 @@ import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.GridItemDecoration;
-import com.xxf.view.utils.SystemUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -96,9 +97,13 @@ public class StateActivity extends XXFActivity {
         stateBinding.btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SystemUtils.shareText(StateActivity.this, "http://www.baidu.com", "com.whatsapp1")
-                        .subscribe();
+              /*  SystemUtils.shareText(StateActivity.this, "XXX http://www.baidu.com",
+                        "com.instagram.android")
+                        .subscribe();*/
+
+
                 loadData();
+                sharedToIns();
             }
         });
         testAdaper.bindData(true, new ArrayList<>());
@@ -148,6 +153,22 @@ public class StateActivity extends XXFActivity {
         });
     }
 
+
+    /**
+     * 分享到Ins(本地图片)
+     */
+    private void sharedToIns() {
+        String type = "image/*";
+        Uri uri =
+                Uri.parse("android.resource://" + getPackageName() + "/" + R.mipmap.ic_launcher1);
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType(type);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+//        startActivity(Intent.createChooser(share, "Share to"))
+        share.putExtra(Intent.EXTRA_TITLE, "share oneHope");
+        share.setPackage("com.instagram.android");
+        startActivity(share);
+    }
 
     private void loadData() {
         Observable.fromCallable(new Callable<List<String>>() {
