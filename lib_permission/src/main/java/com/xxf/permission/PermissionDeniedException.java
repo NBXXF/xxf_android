@@ -1,6 +1,8 @@
-package com.xxf.arch.exception;
+package com.xxf.permission;
 
-import com.xxf.arch.XXF;
+import android.content.Context;
+import android.content.pm.PackageManager;
+
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,22 +25,23 @@ public class PermissionDeniedException extends RuntimeException {
      *
      * @return
      */
-    public LinkedHashMap<String, Boolean> getPermissionResult() {
-        return getPermissionResult(this.permission);
+    public LinkedHashMap<String, Boolean> getPermissionResult(Context context) {
+        return getPermissionResult(context, this.permission);
     }
 
-    public static LinkedHashMap<String, Boolean> getPermissionResult(String... permission) {
+    public static LinkedHashMap<String, Boolean> getPermissionResult(Context context, String... permission) {
         LinkedHashMap<String, Boolean> linkedHashMap = new LinkedHashMap<>();
         if (permission != null) {
             for (String per : permission) {
-                linkedHashMap.put(per, XXF.isGrantedPermission(per));
+                linkedHashMap.put(per, context.checkSelfPermission(per) == PackageManager.PERMISSION_GRANTED);
             }
         }
         return linkedHashMap;
     }
 
-    public PermissionDeniedException(String... permission) {
-        super(convertDesc(permission));
+
+    public PermissionDeniedException(Context context, String... permission) {
+        super(convertDesc(context, permission));
         this.permission = permission;
     }
 
@@ -48,8 +51,8 @@ public class PermissionDeniedException extends RuntimeException {
      * @param permissions
      * @return
      */
-    public static final String convertDesc(String... permissions) {
-        LinkedHashMap<String, Boolean> permissionResult = getPermissionResult(permissions);
+    public static final String convertDesc(Context context, String... permissions) {
+        LinkedHashMap<String, Boolean> permissionResult = getPermissionResult(context, permissions);
         StringBuilder permissionSb = new StringBuilder("");
         int i = 0;
         for (Map.Entry<String, Boolean> entry : permissionResult.entrySet()) {

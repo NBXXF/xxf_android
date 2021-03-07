@@ -25,4 +25,6 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     api 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.0.0'
     api project(path: ':arouter-api')
+    api project(path: ':lib_permission')
+    api project(path: ':lib_activityresult')
 }

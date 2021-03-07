@@ -29,10 +29,11 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
-import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.arch.core.permission.RxPermissionTransformer;
+import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.utils.FileUtils;
 import com.xxf.arch.utils.UriUtils;
+import com.xxf.permission.PermissionDeniedException;
+import com.xxf.permission.transformer.RxPermissionTransformer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -94,7 +95,7 @@ public class SystemUtils {
 
     /**
      * 调用系统拍照
-     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
+     * 自动请求权限 没有权限报异常 {@link PermissionDeniedException}
      *
      * @param context
      * @param cropBuilder 裁切
@@ -103,7 +104,7 @@ public class SystemUtils {
     public static Observable<String> takePhoto(final FragmentActivity context,
                                                @Nullable PathCropIntentBuilder cropBuilder) {
         return XXF.requestPermission(context, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new RxPermissionTransformer(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(new RxPermissionTransformer(context,Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @SuppressLint("MissingPermission")
                     @Override
@@ -148,14 +149,14 @@ public class SystemUtils {
 
     /**
      * 选择相片
-     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
+     * 自动请求权限 没有权限报异常 {@link PermissionDeniedException}
      *
      * @param context
      * @return
      */
     public static Observable<String> selectAlbum(final FragmentActivity context, @Nullable PathCropIntentBuilder cropBuilder) {
         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new RxPermissionTransformer(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(new RxPermissionTransformer(context,Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @SuppressLint("MissingPermission")
                     @Override
@@ -196,7 +197,7 @@ public class SystemUtils {
 
     /**
      * 保存图片到相册
-     * 自动请求权限 没有权限报异常 {@link com.xxf.arch.exception.PermissionDeniedException}
+     * 自动请求权限 没有权限报异常 {@link PermissionDeniedException}
      *
      * @param context
      * @param picName 是name 不说full path
@@ -205,7 +206,7 @@ public class SystemUtils {
      */
     public static Observable<File> saveImageToAlbum(FragmentActivity context, String picName, Bitmap bmp) {
         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new RxPermissionTransformer(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(new RxPermissionTransformer(context,Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<File>>() {
                     @Override
                     public ObservableSource<File> apply(Boolean aBoolean) throws Exception {

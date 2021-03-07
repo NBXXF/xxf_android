@@ -1,4 +1,4 @@
-package com.xxf.arch.core.activityresult;
+package com.xxf.activityresult;
 
 import android.content.Context;
 import android.content.Intent;

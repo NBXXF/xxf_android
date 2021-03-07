@@ -1,8 +1,7 @@
-package com.xxf.arch.rxjava.transformer;
+package com.xxf.permission.transformer;
 
 import android.Manifest;
-
-import com.xxf.arch.core.permission.RxPermissionTransformer;
+import android.content.Context;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -12,7 +11,7 @@ import com.xxf.arch.core.permission.RxPermissionTransformer;
  */
 public class FilePermissionTransformer extends RxPermissionTransformer {
 
-    public FilePermissionTransformer() {
-        super(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    public FilePermissionTransformer(Context context) {
+        super(context,Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 }

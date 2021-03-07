@@ -1,8 +1,10 @@
-package com.xxf.arch.core.permission;
+package com.xxf.permission.transformer;
+
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.xxf.arch.exception.PermissionDeniedException;
+import com.xxf.permission.PermissionDeniedException;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -19,9 +21,11 @@ import io.reactivex.rxjava3.functions.Function;
  */
 public class RxPermissionTransformer implements ObservableTransformer<Boolean, Boolean> {
     final String[] permission;
+    final Context context;
 
-    public RxPermissionTransformer(@NonNull String... permission) {
+    public RxPermissionTransformer(Context context, @NonNull String... permission) {
         this.permission = permission;
+        this.context = context.getApplicationContext();
     }
 
     @Override
@@ -31,7 +35,7 @@ public class RxPermissionTransformer implements ObservableTransformer<Boolean, B
                     @Override
                     public Boolean apply(Boolean granted) throws Exception {
                         if (!granted) {
-                            throw new PermissionDeniedException(permission);
+                            throw new PermissionDeniedException(context,permission);
                         }
                         return granted;
                     }

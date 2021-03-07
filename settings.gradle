@@ -1,3 +1,5 @@
+include ':lib_activityresult'
+include ':lib_permission'
 include ':app',
         ':xxf_http',
         ':xxf_arch',

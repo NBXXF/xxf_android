@@ -1,4 +1,4 @@
-package com.xxf.arch.core.permission;
+package com.xxf.permission;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -11,8 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
-import com.xxf.arch.rxjava.transformer.CameraPermissionTransformer;
-import com.xxf.arch.rxjava.transformer.FilePermissionTransformer;
+import com.xxf.permission.transformer.CameraPermissionTransformer;
+import com.xxf.permission.transformer.FilePermissionTransformer;
+import com.xxf.permission.transformer.RxPermissionTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
