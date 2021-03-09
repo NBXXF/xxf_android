@@ -11,13 +11,14 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/arouter-api" />
             <option value="$PROJECT_DIR$/lib_activityresult" />
+            <option value="$PROJECT_DIR$/lib_arouter-api" />
+            <option value="$PROJECT_DIR$/lib_bus" />
+            <option value="$PROJECT_DIR$/lib_http" />
             <option value="$PROJECT_DIR$/lib_permission" />
-            <option value="$PROJECT_DIR$/xxf_arch" />
-            <option value="$PROJECT_DIR$/xxf_http" />
-            <option value="$PROJECT_DIR$/xxf_view" />
-            <option value="$PROJECT_DIR$/xxf_wechat" />
+            <option value="$PROJECT_DIR$/lib_view" />
+            <option value="$PROJECT_DIR$/lib_wechat" />
+            <option value="$PROJECT_DIR$/xxf" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

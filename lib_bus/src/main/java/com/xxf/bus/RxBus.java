@@ -1,4 +1,4 @@
-package com.xxf.arch.core;
+package com.xxf.bus;
 
 import androidx.annotation.NonNull;
 

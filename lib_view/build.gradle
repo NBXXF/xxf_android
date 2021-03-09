@@ -27,6 +27,6 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'com.airbnb.android:lottie:3.4.0'
     compileOnly 'com.scwang.smart:refresh-layout-kernel:2.0.1'
-    implementation project(path: ':xxf_arch')
+    implementation project(path: ':xxf')
 
 }

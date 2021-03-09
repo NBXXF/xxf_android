@@ -1,8 +1,9 @@
+include ':lib_bus'
 include ':lib_activityresult'
 include ':lib_permission'
 include ':app',
-        ':xxf_http',
-        ':xxf_arch',
-        ':xxf_view',
-        ':xxf_wechat',
-        ':arouter-api'
+        ':lib_http',
+        ':xxf',
+        ':lib_view',
+        ':lib_wechat',
+        ':lib_arouter-api'

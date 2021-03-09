@@ -34,7 +34,7 @@ import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.arouter.XXFUserInfoProvider;
 import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.Logger;
-import com.xxf.arch.core.RxBus;
+import com.xxf.bus.RxBus;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.activityresult.RxActivityResultCompact;
 import com.xxf.permission.RxPermissions;
