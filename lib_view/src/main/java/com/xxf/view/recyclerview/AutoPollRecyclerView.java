@@ -59,7 +59,7 @@ public class AutoPollRecyclerView extends MaxHeightRecyclerView {
         if (getLayoutManager() instanceof LinearLayoutManager) {
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) getLayoutManager();
             loopIndex = linearLayoutManager.findFirstVisibleItemPosition();
-            if (loopIndex == RecyclerView.NO_POSITION) {
+            if (loopIndex == NO_POSITION) {
                 loopIndex = 0;
             }
         }

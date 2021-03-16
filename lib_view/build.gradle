@@ -23,6 +23,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api project(path: ':lib_adapter')
     compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'com.airbnb.android:lottie:3.4.0'

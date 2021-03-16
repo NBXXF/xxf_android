@@ -7,12 +7,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Vibrator;
+import android.util.Log;
+
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import android.util.Log;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -1,7 +1,5 @@
 package com.xxf.view.model;
 
-import java.util.List;
-
 /**
  * Description  带选中属性的item实体
  * <p>
