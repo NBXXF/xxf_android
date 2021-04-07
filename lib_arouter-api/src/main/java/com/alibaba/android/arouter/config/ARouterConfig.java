@@ -10,6 +10,6 @@ public interface ARouterConfig {
     /**
      * web http 地址
      */
-    String KEY_WEB_URL = "___url";
+    String KEY_WEB_URL = "url";
 
 }
