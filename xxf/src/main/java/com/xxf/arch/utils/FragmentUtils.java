@@ -156,7 +156,8 @@ public class FragmentUtils {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         // 先判断是否被add过
-        if (!fragment.isAdded()) {
+        if (!fragment.isAdded() && !fragmentManager.getFragments().contains(fragment)) {
+            transaction.remove(fragment).commitAllowingStateLoss();
             //hide all
             List<Fragment> fragments = fragmentManager.getFragments();
             for (Fragment f : fragments) {
