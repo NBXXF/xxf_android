@@ -43,7 +43,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
     /**
      * 【数据】发生改变的监听 不包括header/footer
      */
-    private final ObservableList.OnListChangedCallback<ObservableList<T>> dataChangeCallback = new ObservableList.OnListChangedCallback<ObservableList<T>>() {
+    protected final ObservableList.OnListChangedCallback<ObservableList<T>> dataChangeCallback = new ObservableList.OnListChangedCallback<ObservableList<T>>() {
         @Override
         public void onChanged(ObservableList<T> sender) {
             int start = getHeaderCount();
