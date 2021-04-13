@@ -348,7 +348,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
      * @param t
      * @return
      */
-    public final boolean addItem(@IntRange(from = 0) int index, @Nullable T t) {
+    public  boolean addItem(@IntRange(from = 0) int index, @Nullable T t) {
         if (checkAddIndex(index)
                 && checkItem(t)
                 && !getData().contains(t)) {
@@ -358,7 +358,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
         return false;
     }
 
-    public final boolean addItems(@IntRange(from = 0) int index, @NonNull List<? extends T> datas) {
+    public  boolean addItems(@IntRange(from = 0) int index, @NonNull List<? extends T> datas) {
         if (checkList(datas)
                 && checkAddIndex(index)
                 && !getData().containsAll(datas)) {
@@ -369,7 +369,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
         return false;
     }
 
-    public final boolean addItems(@NonNull Collection<? extends T> datas) {
+    public  boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)
                 && !getData().containsAll(datas)) {
             if (getData().addAll(datas)) {
@@ -379,7 +379,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
         return false;
     }
 
-    public final boolean addItem(@NonNull T t) {
+    public  boolean addItem(@NonNull T t) {
         if (checkItem(t)
                 && !getData().contains(t)) {
             if (getData().add(t)) {
@@ -395,7 +395,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
      * @param t
      * @return
      */
-    public final boolean updateItem(@NonNull T t) {
+    public  boolean updateItem(@NonNull T t) {
         if (checkItem(t)) {
             int index = getIndex(t);
             if (index >= 0) {
@@ -412,7 +412,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
      * @param t
      * @return
      */
-    public final boolean updateItem(int index, @NonNull T t) {
+    public  boolean updateItem(int index, @NonNull T t) {
         if (checkItem(t)) {
             if (index >= 0) {
                 getData().set(index, t);
@@ -426,7 +426,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
      * @param index 相对于List的位置
      * @return
      */
-    public final boolean removeItem(@IntRange(from = 0) int index) {
+    public  boolean removeItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
             getData().remove(index);
             return true;
@@ -441,7 +441,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding
      * @param t
      * @return
      */
-    public final boolean removeItem(@NonNull T t) {
+    public  boolean removeItem(@NonNull T t) {
         return removeItem(getIndex(t));
     }
 
