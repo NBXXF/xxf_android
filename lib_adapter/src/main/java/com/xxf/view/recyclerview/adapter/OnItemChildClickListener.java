@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.databinding.ViewDataBinding;
 import androidx.viewbinding.ViewBinding;
 
-public interface OnItemChildClickListener<V extends ViewDataBinding & ViewBinding, T> {
+public interface OnItemChildClickListener<V extends ViewBinding, T> {
 
     /**
      * @param adapter

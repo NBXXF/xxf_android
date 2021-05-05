@@ -32,7 +32,7 @@ import java.util.List;
  * date createTime：2015/9/10 10:05
  * version
  */
-public abstract class XXFRecyclerAdapter<V extends ViewDataBinding & ViewBinding, T>
+public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
         extends RecyclerView.Adapter<XXFViewHolder<V, T>>
         implements DragItemTouchHelper.AdapterSourceProvider {
     public static final View inflaterView(@LayoutRes int id, RecyclerView recyclerView) {

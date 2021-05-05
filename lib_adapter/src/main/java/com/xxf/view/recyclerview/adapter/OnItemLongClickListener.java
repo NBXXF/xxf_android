@@ -12,7 +12,7 @@ import androidx.viewbinding.ViewBinding;
  * date createTime：2017/10/3
  * version 2.1.0
  */
-public interface OnItemLongClickListener<V extends ViewDataBinding & ViewBinding, T> {
+public interface OnItemLongClickListener<V extends ViewBinding, T> {
 
     /**
      * @param adapter

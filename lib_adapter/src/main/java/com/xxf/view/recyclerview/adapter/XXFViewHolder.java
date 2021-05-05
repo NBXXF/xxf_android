@@ -17,11 +17,11 @@ import androidx.viewbinding.ViewBinding;
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public class XXFViewHolder<V extends ViewDataBinding & ViewBinding, T> extends RecyclerView.ViewHolder
+public class XXFViewHolder<V extends  ViewBinding, T> extends RecyclerView.ViewHolder
         implements View.OnClickListener, View.OnLongClickListener {
     private XXFRecyclerAdapter<V, T> baseRecyclerAdapter;
     private SparseArray<View> holder = null;
-    private ViewDataBinding binding;
+    private ViewBinding binding;
 
     @Nullable
     public V getBinding() {
