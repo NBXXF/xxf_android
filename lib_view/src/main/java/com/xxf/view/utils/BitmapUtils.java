@@ -1,6 +1,7 @@
 package com.xxf.view.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -11,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -34,6 +36,27 @@ import java.nio.ByteBuffer;
  */
 public class BitmapUtils {
 
+    /**
+     * 解码 图片文件的属性
+     *
+     * @param path
+     * @return
+     */
+    @Nullable
+    @CheckResult
+    public static Size decodeSize(String path) {
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;//这个参数设置为true才有效，
+            Bitmap bmp = BitmapFactory.decodeFile(path, options);//这里的bitmap是个空
+            if (options.outWidth > 0 && options.outHeight > 0) {
+                return new Size(options.outWidth, options.outHeight);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 将图片变灰
