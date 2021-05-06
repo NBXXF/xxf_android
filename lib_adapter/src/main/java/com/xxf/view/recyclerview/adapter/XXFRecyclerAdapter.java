@@ -12,15 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableList;
-import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
-import com.xxf.view.recyclerview.DragItemTouchHelper;
 import com.xxf.view.recyclerview.SafeObservableArrayList;
+import com.xxf.view.recyclerview.touchhelper.ItemTouchHelperAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,9 +32,9 @@ import java.util.List;
  * date createTime：2015/9/10 10:05
  * version
  */
-public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
+public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         extends RecyclerView.Adapter<XXFViewHolder<V, T>>
-        implements DragItemTouchHelper.AdapterSourceProvider {
+        implements ItemTouchHelperAdapter {
     public static final View inflaterView(@LayoutRes int id, RecyclerView recyclerView) {
         return LayoutInflater.from(recyclerView.getContext())
                 .inflate(id, recyclerView, false);
@@ -88,11 +88,6 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
     protected RecyclerView attachedRecyclerView;
 
     public ObservableArrayList<T> getData() {
-        return dataList;
-    }
-
-    @Override
-    public List<T> getAdapterSource() {
         return dataList;
     }
 
@@ -348,7 +343,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
      * @param t
      * @return
      */
-    public  boolean addItem(@IntRange(from = 0) int index, @Nullable T t) {
+    public boolean addItem(@IntRange(from = 0) int index, @Nullable T t) {
         if (checkAddIndex(index)
                 && checkItem(t)
                 && !getData().contains(t)) {
@@ -358,7 +353,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
         return false;
     }
 
-    public  boolean addItems(@IntRange(from = 0) int index, @NonNull List<? extends T> datas) {
+    public boolean addItems(@IntRange(from = 0) int index, @NonNull List<? extends T> datas) {
         if (checkList(datas)
                 && checkAddIndex(index)
                 && !getData().containsAll(datas)) {
@@ -369,7 +364,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
         return false;
     }
 
-    public  boolean addItems(@NonNull Collection<? extends T> datas) {
+    public boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)
                 && !getData().containsAll(datas)) {
             if (getData().addAll(datas)) {
@@ -379,7 +374,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
         return false;
     }
 
-    public  boolean addItem(@NonNull T t) {
+    public boolean addItem(@NonNull T t) {
         if (checkItem(t)
                 && !getData().contains(t)) {
             if (getData().add(t)) {
@@ -395,7 +390,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
      * @param t
      * @return
      */
-    public  boolean updateItem(@NonNull T t) {
+    public boolean updateItem(@NonNull T t) {
         if (checkItem(t)) {
             int index = getIndex(t);
             if (index >= 0) {
@@ -412,7 +407,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
      * @param t
      * @return
      */
-    public  boolean updateItem(int index, @NonNull T t) {
+    public boolean updateItem(int index, @NonNull T t) {
         if (checkItem(t)) {
             if (index >= 0) {
                 getData().set(index, t);
@@ -426,7 +421,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
      * @param index 相对于List的位置
      * @return
      */
-    public  boolean removeItem(@IntRange(from = 0) int index) {
+    public boolean removeItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
             getData().remove(index);
             return true;
@@ -441,7 +436,7 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
      * @param t
      * @return
      */
-    public  boolean removeItem(@NonNull T t) {
+    public boolean removeItem(@NonNull T t) {
         return removeItem(getIndex(t));
     }
 
@@ -592,5 +587,29 @@ public abstract class XXFRecyclerAdapter<V extends  ViewBinding, T>
         return attachedRecyclerView != null ? attachedRecyclerView.getContext() : null;
     }
 
+    /**
+     * 滑动消失
+     *
+     * @param position The position of the item dismissed.
+     */
+    @Override
+    public void onItemTouchDismiss(int position) {
+        dataList.remove(position);
+        //notifyItemRemoved(position);
+    }
+
+    /**
+     * 拖拽交换
+     *
+     * @param fromPosition The start position of the moved item.
+     * @param toPosition   Then resolved position of the moved item.
+     * @return
+     */
+    @Override
+    public boolean onItemTouchMove(int fromPosition, int toPosition) {
+        Collections.swap(dataList, fromPosition, toPosition);
+        //notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
 }
 

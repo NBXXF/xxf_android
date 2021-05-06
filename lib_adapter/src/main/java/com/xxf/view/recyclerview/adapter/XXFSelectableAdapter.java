@@ -18,11 +18,12 @@ import java.util.List;
 /**
  * Description  可选择的适配器
  * <p>
+ *
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public abstract class XXFSelectableAdapter<V extends ViewDataBinding & ViewBinding, T extends SelectableEntity> extends XXFRecyclerAdapter<V, T> implements ISelectableAdapter {
+public abstract class XXFSelectableAdapter<V extends ViewBinding, T extends SelectableEntity> extends XXFRecyclerAdapter<V, T> implements ISelectableAdapter {
 
     public static final int SELECT_TYPE_UNSELECTABLE = 200;
     public static final int SELECT_TYPE_SINGLE = 201;
