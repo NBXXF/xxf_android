@@ -1,19 +1,43 @@
 package com.xxf.view.recyclerview;
 
+import androidx.annotation.CallSuper;
 import androidx.databinding.ObservableArrayList;
 import androidx.annotation.CheckResult;
 import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.0
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 特性: 更安全的 可监听的ArrayList
  * @date createTime：2017/12/18
  */
 public class SafeObservableArrayList<T> extends ObservableArrayList<T> {
+    private Set<OnListChangedCallback> listChangedCallbacks = new HashSet<>();
+
+
+    public boolean hasRegister(OnListChangedCallback listener) {
+        return listChangedCallbacks.contains(listener);
+    }
+
+    @CallSuper
+    @Override
+    public void addOnListChangedCallback(OnListChangedCallback listener) {
+        super.addOnListChangedCallback(listener);
+        listChangedCallbacks.add(listener);
+    }
+
+    @CallSuper
+    @Override
+    public void removeOnListChangedCallback(OnListChangedCallback listener) {
+        super.removeOnListChangedCallback(listener);
+        listChangedCallbacks.remove(listener);
+    }
+
     @Override
     public boolean add(@Nullable T object) {
         return super.add(object);
@@ -31,7 +55,7 @@ public class SafeObservableArrayList<T> extends ObservableArrayList<T> {
     @Override
     public boolean addAll(Collection<? extends T> collection) {
         //NullPointerException  为空就不要刷新
-        if (collection == null || collection.isEmpty()) {
+        if (collection == null) {
             return false;
         }
         return super.addAll(collection);

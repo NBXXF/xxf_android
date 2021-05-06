@@ -84,10 +84,10 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     private static final int FOOTER_VIEW_TYPE = -20000;
     private final List<View> mHeaders = new ArrayList<View>();
     private final List<View> mFooters = new ArrayList<View>();
-    private ObservableArrayList<T> dataList = new SafeObservableArrayList<T>();
+    private SafeObservableArrayList<T> dataList = new SafeObservableArrayList<T>();
     protected RecyclerView attachedRecyclerView;
 
-    public ObservableArrayList<T> getData() {
+    public SafeObservableArrayList<T> getData() {
         return dataList;
     }
 
@@ -108,8 +108,8 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return mFooters.size();
     }
 
-    public XXFRecyclerAdapter(@NonNull ObservableArrayList<T> data) {
-        this.dataList = (data == null ? new ObservableArrayList<T>() : data);
+    public XXFRecyclerAdapter(@NonNull SafeObservableArrayList<T> data) {
+        this.dataList = (data == null ? new SafeObservableArrayList<T>() : data);
         this.dataList.removeOnListChangedCallback(dataChangeCallback);
         this.dataList.addOnListChangedCallback(dataChangeCallback);
     }
@@ -607,8 +607,19 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     @Override
     public boolean onItemTouchMove(int fromPosition, int toPosition) {
-        Collections.swap(dataList, fromPosition, toPosition);
-        //notifyItemMoved(fromPosition, toPosition);
+        boolean autoNotify = dataList.hasRegister(dataChangeCallback);
+        if (autoNotify) {
+            dataList.removeOnListChangedCallback(dataChangeCallback);
+        }
+        //fix issues
+        try {
+            Collections.swap(dataList, fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);
+        } finally {
+            if (autoNotify) {
+                dataList.addOnListChangedCallback(dataChangeCallback);
+            }
+        }
         return true;
     }
 }

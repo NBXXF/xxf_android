@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
@@ -25,6 +26,7 @@ import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.GridItemDecoration;
+import com.xxf.view.recyclerview.touchhelper.SimpleItemTouchHelperCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -74,6 +76,7 @@ public class StateActivity extends XXFActivity {
         // TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
 
         stateBinding.recyclerView.setAdapter(testAdaper = new TestAdaper());
+        new ItemTouchHelper(new SimpleItemTouchHelperCallback(testAdaper)).attachToRecyclerView(stateBinding.recyclerView);
         testAdaper.setOnItemClickListener(new OnItemClickListener<ItemTestBinding, String>() {
             @Override
             public void onItemClick(XXFRecyclerAdapter<ItemTestBinding, String> adapter, XXFViewHolder<ItemTestBinding, String> holder, View itemView, int index, String item) {

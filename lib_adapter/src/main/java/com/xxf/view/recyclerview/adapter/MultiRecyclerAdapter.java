@@ -5,6 +5,8 @@ import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ViewDataBinding;
 import androidx.viewbinding.ViewBinding;
 
+import com.xxf.view.recyclerview.SafeObservableArrayList;
+
 /**
  * Description 多布局的适配器
  *
@@ -16,7 +18,7 @@ public abstract class MultiRecyclerAdapter<V extends ViewDataBinding & ViewBindi
     public MultiRecyclerAdapter() {
     }
 
-    public MultiRecyclerAdapter(@NonNull ObservableArrayList<T> data) {
+    public MultiRecyclerAdapter(@NonNull SafeObservableArrayList<T> data) {
         super(data);
     }
 
