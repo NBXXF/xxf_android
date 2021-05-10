@@ -18,6 +18,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.callback.NavCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xxf.arch.XXF;
@@ -30,6 +31,7 @@ import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdap
 import com.xxf.arch.presenter.XXFLifecyclePresenter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
+import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.utils.StatusBarUtils;
 
@@ -45,6 +47,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -182,7 +185,7 @@ public class MainActivity extends XXFActivity {
 
 
         XXF.getFileService()
-                .putFilesString("test.txt", "173256abs", false, false,false)
+                .putFilesString("test.txt", "173256abs", false, false, false)
                 .compose(XXF.bindToErrorNotice())
                 .to(XXF.bindLifecycle(this))
                 .subscribe();
@@ -355,7 +358,7 @@ public class MainActivity extends XXFActivity {
                                         XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
                                     }
                                 });*/
-
+/*
                         XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.onlyRemote)
                                 .map(new Function<ListOrSingle<Weather>, ListOrSingle<Weather>>() {
@@ -377,6 +380,15 @@ public class MainActivity extends XXFActivity {
                                     @Override
                                     public void accept(Throwable throwable) throws Throwable {
                                         XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis() / 1000);
+                                    }
+                                });*/
+
+                        XXF.getApiService(LoginApiService.class)
+                                .getCity(new TestQueryJsonField("hello&key=sss" + System.currentTimeMillis()))
+                                .subscribe(new Consumer<JsonObject>() {
+                                    @Override
+                                    public void accept(JsonObject jsonObject) throws Throwable {
+
                                     }
                                 });
                     }
@@ -486,7 +498,7 @@ public class MainActivity extends XXFActivity {
                                 "2% 05\n" +
                                 "1% 03\n" +
                                 "0% 00";
-                        XXF.getFileService().putFilesString(fileName, s, false, false,false)
+                        XXF.getFileService().putFilesString(fileName, s, false, false, false)
                                 .compose(XXF.bindToErrorNotice())
                                 .subscribe(new Consumer<File>() {
                                     @SuppressLint("CheckResult")
@@ -511,9 +523,9 @@ public class MainActivity extends XXFActivity {
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
-                                        XXF.getFileService().putFilesString("bbb.txt", stringBuffer.toString(), false, false,false)
+                                        XXF.getFileService().putFilesString("bbb.txt", stringBuffer.toString(), false, false, false)
                                                 .subscribe();
-                                        XXF.getFileService().putCacheString("bbb.txt", stringBuffer.toString(), false, false,false)
+                                        XXF.getFileService().putCacheString("bbb.txt", stringBuffer.toString(), false, false, false)
                                                 .subscribe();
                                         XXF.getLogger().d("============>yes:" + stringBuffer.toString());
                                     }
@@ -533,7 +545,7 @@ public class MainActivity extends XXFActivity {
                     public void onClick(final View v) {
                         String fileName = "replace.text";
                         String s = "";
-                        XXF.getFileService().putFilesString(fileName, s, false, false,false)
+                        XXF.getFileService().putFilesString(fileName, s, false, false, false)
                                 .subscribe(new Consumer<File>() {
                                     @Override
                                     public void accept(File file) throws Exception {

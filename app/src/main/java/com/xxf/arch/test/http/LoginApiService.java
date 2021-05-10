@@ -14,6 +14,7 @@ import retrofit2.http.Cache;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Query;
 
 /**
  * 提供基础路由
@@ -76,5 +77,9 @@ public interface LoginApiService {
 
     @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
     Observable<JsonObject> getCityOnlyCache();
+
+
+    @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    Observable<JsonObject> getCity(@Query("test") TestQueryJsonField queryJsonField);
 
 }
