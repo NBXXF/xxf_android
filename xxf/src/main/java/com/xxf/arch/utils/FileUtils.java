@@ -19,6 +19,7 @@ import com.xxf.arch.XXF;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -45,7 +46,7 @@ import javax.net.ssl.HttpsURLConnection;
  * @CreateDate: 2020/6/14 12:01
  */
 public final class FileUtils {
-
+    private static final int BUFFER_SIZE = 8192;
     private static final String LINE_SEP = System.getProperty("line.separator");
 
     private FileUtils() {
@@ -1536,6 +1537,44 @@ public final class FileUtils {
             if (extension != null) {
                 return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
             }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Input stream to output stream.
+     */
+    @Nullable
+    @CheckResult
+    public static ByteArrayOutputStream input2OutputStream(final InputStream is) {
+        if (is == null) return null;
+        try {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            byte[] b = new byte[BUFFER_SIZE];
+            int len;
+            while ((len = is.read(b, 0, BUFFER_SIZE)) != -1) {
+                os.write(b, 0, len);
+            }
+            return os;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Nullable
+    @CheckResult
+    public static byte[] getFileBytes(final InputStream is) {
+        try {
+            return input2OutputStream(is).toByteArray();
         } catch (Throwable e) {
             e.printStackTrace();
         }

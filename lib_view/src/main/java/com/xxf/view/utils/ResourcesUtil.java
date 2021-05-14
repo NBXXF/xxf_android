@@ -10,14 +10,21 @@ import android.text.TextUtils;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.EncryptUtils;
+import com.xxf.arch.utils.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +56,106 @@ public class ResourcesUtil {
     public static int getColor(@ColorRes int resId) {
         return ContextCompat.getColor(getContext(), resId);
     }
+
+
+    public static int getIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "id", getContext().getPackageName());
+    }
+
+
+    public static int getStringIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "string", getContext().getPackageName());
+    }
+
+
+    public static int getColorIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "color", getContext().getPackageName());
+    }
+
+
+    public static int getDimenIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "dimen", getContext().getPackageName());
+    }
+
+
+    public static int getDrawableIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "drawable", getContext().getPackageName());
+    }
+
+
+    public static int getMipmapIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "mipmap", getContext().getPackageName());
+    }
+
+
+    public static int getLayoutIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "layout", getContext().getPackageName());
+    }
+
+
+    public static int getStyleIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "style", getContext().getPackageName());
+    }
+
+
+    public static int getAnimIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "anim", getContext().getPackageName());
+    }
+
+
+    public static int getMenuIdByName(String name) {
+        return getContext().getResources().getIdentifier(name, "menu", getContext().getPackageName());
+    }
+
+
+    public static boolean copyFileFromAssets(final String assetsFilePath, final String destFilePath) {
+        boolean res = true;
+        try {
+            String[] assets = getContext().getAssets().list(assetsFilePath);
+            if (assets != null && assets.length > 0) {
+                for (String asset : assets) {
+                    res &= copyFileFromAssets(assetsFilePath + "/" + asset, destFilePath + "/" + asset);
+                }
+            } else {
+                res = FileUtils.writeFileFromIS(
+                        new File(destFilePath),
+                        getContext().getAssets().open(assetsFilePath), false
+                );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            res = false;
+        }
+        return res;
+    }
+
+
+    public static String readAssets2String(final String assetsFilePath) {
+        return readAssets2String(assetsFilePath, null);
+    }
+
+
+    public static String readAssets2String(final String assetsFilePath, @Nullable final String charsetName) {
+        try {
+            InputStream is = getContext().getAssets().open(assetsFilePath);
+            byte[] bytes = FileUtils.getFileBytes(is);
+            if (bytes == null) return "";
+            if (TextUtils.isEmpty(charsetName)) {
+                return new String(bytes);
+            } else {
+                try {
+                    return new String(bytes, charsetName);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    return "";
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
 
     /**
      * 检查所有
