@@ -34,6 +34,7 @@ import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.utils.StatusBarUtils;
+import com.xxf.view.utils.SystemUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -195,6 +196,8 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        SystemUtils.takePhoto(MainActivity.this, null)
+                                .subscribe();
                        /* SystemUtils.sendEmail(view.getContext(), "2767356588@qq.com", "", "", "请选择邮箱app")
                                 .subscribe();*/
                         new Thread(new Runnable() {

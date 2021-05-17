@@ -2,6 +2,8 @@ package com.xxf.arch.test;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -32,8 +34,8 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  * @date createTime：2018/9/7
  */
@@ -64,9 +66,9 @@ public class BaseApplication extends Application {
                 }*/
 
                 if (lifecycleOwner instanceof FragmentActivity) {
-                    return new XXFLoadingDialog((FragmentActivity) lifecycleOwner,null);
+                    return new XXFLoadingDialog((FragmentActivity) lifecycleOwner, null);
                 } else if (lifecycleOwner instanceof Fragment) {
-                    return new XXFLoadingDialog(((Fragment) lifecycleOwner).getContext(),null);
+                    return new XXFLoadingDialog(((Fragment) lifecycleOwner).getContext(), null);
                 }
                 return null;
             }
@@ -103,6 +105,19 @@ public class BaseApplication extends Application {
 
         ignores.addAll(ResourcesUtil.getStringResources(com.github.moduth.blockcanary.R.class));
         ignores.addAll(ResourcesUtil.getDrawableResources(com.github.moduth.blockcanary.R.class));
-      //  ResourcesUtil.checkResources(ignores);
+        //  ResourcesUtil.checkResources(ignores);
+
+        setVmPolicy();
+    }
+
+    //虚拟机策略检测
+    private void setVmPolicy() {
+        /**
+         * 临时解决文件 FileUriExposedException
+         */
+   /*     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }*/
     }
 }
