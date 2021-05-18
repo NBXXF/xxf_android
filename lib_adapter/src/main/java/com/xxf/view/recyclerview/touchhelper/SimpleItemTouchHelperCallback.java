@@ -55,8 +55,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         }
 
         // Notify the adapter of the move
-        mAdapter.onItemTouchMove(source.getAdapterPosition(), target.getAdapterPosition());
-        return true;
+        return mAdapter.onItemTouchMove(source.getAdapterPosition(), target.getAdapterPosition());
     }
 
     @Override

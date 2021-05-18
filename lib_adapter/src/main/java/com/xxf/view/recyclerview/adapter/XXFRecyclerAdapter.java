@@ -607,13 +607,17 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     @Override
     public boolean onItemTouchMove(int fromPosition, int toPosition) {
+        if (isHeader(fromPosition) || isHeader(toPosition) ||
+                isFooter(fromPosition) || isFooter(toPosition)) {
+            return false;
+        }
         boolean autoNotify = dataList.hasRegister(dataChangeCallback);
         if (autoNotify) {
             dataList.removeOnListChangedCallback(dataChangeCallback);
         }
         //fix issues
         try {
-            Collections.swap(dataList, fromPosition, toPosition);
+            Collections.swap(dataList, fromPosition - getHeaderCount(), toPosition - getHeaderCount());
             notifyItemMoved(fromPosition, toPosition);
         } finally {
             if (autoNotify) {
