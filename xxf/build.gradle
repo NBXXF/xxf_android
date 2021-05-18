@@ -28,4 +28,5 @@ dependencies {
     api project(path: ':lib_permission')
     api project(path: ':lib_activityresult')
     api project(path: ':lib_bus')
+    api project(path: ':lib_fileprovider')
 }

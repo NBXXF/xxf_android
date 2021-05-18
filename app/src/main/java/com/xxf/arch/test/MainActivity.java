@@ -48,15 +48,12 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.CacheType;
 
 
 public class MainActivity extends XXFActivity {
@@ -196,8 +193,19 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SystemUtils.takePhoto(MainActivity.this, null)
-                                .subscribe();
+                        SystemUtils.selectFile(MainActivity.this, "*/*")
+                                .compose(XXF.bindToErrorNotice())
+                                .to(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
+                                .subscribe(new Consumer<String>() {
+                                    @Override
+                                    public void accept(String s) throws Throwable {
+
+                                        XXF.getLogger().d("==========>path:" + s);
+                                    }
+                                });
+                        if (true) {
+                            return;
+                        }
                        /* SystemUtils.sendEmail(view.getContext(), "2767356588@qq.com", "", "", "请选择邮箱app")
                                 .subscribe();*/
                         new Thread(new Runnable() {

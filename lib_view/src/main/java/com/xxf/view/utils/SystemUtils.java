@@ -43,6 +43,7 @@ import java.util.concurrent.Callable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -104,7 +105,7 @@ public class SystemUtils {
     public static Observable<String> takePhoto(final FragmentActivity context,
                                                @Nullable PathCropIntentBuilder cropBuilder) {
         return XXF.requestPermission(context, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new RxPermissionTransformer(context,Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(new RxPermissionTransformer(context, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @SuppressLint("MissingPermission")
                     @Override
@@ -156,7 +157,7 @@ public class SystemUtils {
      */
     public static Observable<String> selectAlbum(final FragmentActivity context, @Nullable PathCropIntentBuilder cropBuilder) {
         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new RxPermissionTransformer(context,Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(new RxPermissionTransformer(context, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @SuppressLint("MissingPermission")
                     @Override
@@ -206,7 +207,7 @@ public class SystemUtils {
      */
     public static Observable<File> saveImageToAlbum(FragmentActivity context, String picName, Bitmap bmp) {
         return XXF.requestPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new RxPermissionTransformer(context,Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(new RxPermissionTransformer(context, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .flatMap(new Function<Boolean, ObservableSource<File>>() {
                     @Override
                     public ObservableSource<File> apply(Boolean aBoolean) throws Exception {
@@ -239,36 +240,33 @@ public class SystemUtils {
     }
 
 
-    private static Intent getDocumentIntent() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        String[] supportedMimeTypes = {
-                //  "application/msword",
-                "application/pdf"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, supportedMimeTypes);
-        //先支持pdf
-        intent.setType("application/pdf");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);//多选
-        return intent;
-    }
-
-
     /**
-     * 选择文档
+     * 选择文件
+     * Intent.ACTION_OPEN_DOCUMENT 只 支持 图片 文档 视频 音频 意图
+     * 注意！！ 华为mate20x【【Intent.ACTION_GET_CONTENT 有bug 不能选择具体类型】】
      *
      * @param activity
+     * @param type     如  "image/* "
      * @return
      */
-    public static Observable<String> selectDocument(final FragmentActivity activity) {
-        Intent intent = getDocumentIntent();
+
+    public static Observable<String> selectFile(final FragmentActivity activity, String type) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(type);
         return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
-                .map(new Function<ActivityResult, String>() {
+                .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
                     @Override
-                    public String apply(ActivityResult activityResult) throws Exception {
+                    public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
                         if (!activityResult.isOk()) {
-                            throw new RuntimeException("cancel");
+                            return Observable.empty();
                         }
-                        return UriUtils.getPath(activity, activityResult.getData().getData());
+                        return Observable.fromCallable(new Callable<String>() {
+                            @Override
+                            public String call() throws Exception {
+                                return UriUtils.getPath(activity, activityResult.getData().getData());
+                            }
+                        }).subscribeOn(Schedulers.io());
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread());

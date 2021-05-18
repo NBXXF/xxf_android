@@ -1,26 +1,32 @@
 package com.xxf.arch.utils;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.FileUtils;
 import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.AnyRes;
 import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -44,7 +50,11 @@ public class UriUtils {
      */
     public static String getPath(final Context context, final Uri uri) {
         try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                return uriToFileApiQ(uri, context).getAbsolutePath();
+            }
             // DocumentProvider
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                     && DocumentsContract.isDocumentUri(context, uri)) {
                 // ExternalStorageProvider
@@ -108,6 +118,46 @@ public class UriUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 适配android 10
+     *
+     * @param uri
+     * @param context
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static File uriToFileApiQ(Uri uri, Context context) {
+        File file = null;
+        if (uri == null) return file;
+        //android10以上转换
+        if (uri.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+            file = new File(uri.getPath());
+        } else if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //把文件复制到沙盒目录
+            ContentResolver contentResolver = context.getContentResolver();
+            String displayName = System.currentTimeMillis() + Math.round((Math.random() + 1) * 1000)
+                    + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri));
+
+//            注释掉的方法可以获取到原文件的文件名，但是比较耗时
+//            Cursor cursor = contentResolver.query(uri, null, null, null, null);
+//            if (cursor.moveToFirst()) {
+//                String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));}
+
+            try {
+                InputStream is = contentResolver.openInputStream(uri);
+                File cache = new File(context.getCacheDir().getAbsolutePath(), displayName);
+                FileOutputStream fos = new FileOutputStream(cache);
+                FileUtils.copy(is, fos);
+                file = cache;
+                fos.close();
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
     }
 
     /**
