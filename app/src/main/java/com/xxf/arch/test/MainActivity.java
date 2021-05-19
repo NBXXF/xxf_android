@@ -193,7 +193,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SystemUtils.selectFile(MainActivity.this, "*/*")
+                        SystemUtils.selectFile(MainActivity.this, new String[]{"image/*"})
                                 .compose(XXF.bindToErrorNotice())
                                 .to(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
                                 .subscribe(new Consumer<String>() {

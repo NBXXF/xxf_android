@@ -34,10 +34,14 @@ import com.xxf.arch.utils.FileUtils;
 import com.xxf.arch.utils.UriUtils;
 import com.xxf.permission.PermissionDeniedException;
 import com.xxf.permission.transformer.RxPermissionTransformer;
+import com.xxf.view.exception.FileNotMatchTypeException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -239,21 +243,24 @@ public class SystemUtils {
                 });
     }
 
+    public static Observable<String> selectFile(final FragmentActivity activity) {
+        return selectFile(activity, new String[]{"*/*"});
+    }
 
     /**
      * 选择文件
-     * Intent.ACTION_OPEN_DOCUMENT 只 支持 图片 文档 视频 音频 意图
-     * 注意！！ 华为mate20x【【Intent.ACTION_GET_CONTENT 有bug 不能选择具体类型】】
+     * Intent.ACTION_OPEN_DOCUMENT 只 支持 图片 文档 视频 音频 意图[在锤子手机上不能选择pdf]
+     * 注意！！ 华为mate20x【【Intent.ACTION_GET_CONTENT 有bug 不能选择具体类型】】 目前没有很好的解决方案 建议自己做文件选择器
      *
      * @param activity
-     * @param type     如  "image/* "
+     * @param mimeTypes {"image/*", "text/*"}; 每个元素只能是单一的
      * @return
      */
-
-    public static Observable<String> selectFile(final FragmentActivity activity, String type) {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+    public static Observable<String> selectFile(final FragmentActivity activity, String[] mimeTypes) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType(type);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
                 .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
                     @Override
@@ -265,6 +272,31 @@ public class SystemUtils {
                             @Override
                             public String call() throws Exception {
                                 return UriUtils.getPath(activity, activityResult.getData().getData());
+                            }
+                        }).map(new Function<String, String>() {
+                            @Override
+                            public String apply(String s) throws Throwable {
+                                /**
+                                 * fix:华为手机【【Intent.ACTION_GET_CONTENT 】 还能跳转到文件管理器选择其他类型的文件
+                                 */
+                                HashMap<String, HashSet<String>> mimeTypeMap = new HashMap<>();
+                                for (String mimeType : mimeTypes) {
+                                    String[] split = mimeType.split("/");
+                                    if (mimeTypeMap.get(split[0]) == null) {
+                                        mimeTypeMap.put(split[0], new HashSet<>());
+                                    }
+                                    mimeTypeMap.get(split[0]).add(split[1]);
+                                }
+                                if (mimeTypeMap.get("*") != null) {
+                                    return s;
+                                }
+                                String fileMimeType = FileUtils.getMimeType(s);
+                                String[] fileMimeTypeArray = fileMimeType.split("/");
+                                HashSet<String> supportTypes = mimeTypeMap.get(fileMimeTypeArray[0]);
+                                if (supportTypes != null && (supportTypes.contains("*") || supportTypes.contains(fileMimeTypeArray[1]))) {
+                                    return s;
+                                }
+                                throw new FileNotMatchTypeException("file not match type " + Arrays.toString(mimeTypes));
                             }
                         }).subscribeOn(Schedulers.io());
                     }
