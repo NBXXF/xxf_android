@@ -6,6 +6,7 @@ import com.xxf.arch.annotation.Interceptor;
 import com.xxf.arch.annotation.RxHttpCacheConfig;
 import com.xxf.arch.annotation.RxJavaInterceptor;
 import com.xxf.arch.json.datastructure.ListOrSingle;
+import com.xxf.arch.json.datastructure.QueryJsonField;
 import com.xxf.arch.test.Weather;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -80,6 +81,6 @@ public interface LoginApiService {
 
 
     @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
-    Observable<JsonObject> getCity(@Query("test") TestQueryJsonField queryJsonField);
+    Observable<JsonObject> getCity(@Query("test") QueryJsonField<TestQueryJsonField> queryJsonField);
 
 }

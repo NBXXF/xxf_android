@@ -25,6 +25,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.datastructure.ListOrSingle;
+import com.xxf.arch.json.datastructure.QueryJsonField;
 import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
 import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
@@ -395,7 +396,7 @@ public class MainActivity extends XXFActivity {
                                 });*/
 
                         XXF.getApiService(LoginApiService.class)
-                                .getCity(new TestQueryJsonField("hello&key=sss" + System.currentTimeMillis()))
+                                .getCity(QueryJsonField.create(new TestQueryJsonField("hello&key=sss" + System.currentTimeMillis())))
                                 .subscribe(new Consumer<JsonObject>() {
                                     @Override
                                     public void accept(JsonObject jsonObject) throws Throwable {
