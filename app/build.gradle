@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+def des = rootProject.ext.dependencies
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
     defaultConfig {
@@ -38,14 +38,7 @@ dependencies {
     // implementation 'com.github.NBXXF:xxf_android:2.6.9'
     implementation project(':xxf')
     implementation project(':lib_view')
-    implementation project(':lib_http')
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
-    // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
-    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
 
 
-    annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
-    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'
+    annotationProcessor des.router_ap
 }

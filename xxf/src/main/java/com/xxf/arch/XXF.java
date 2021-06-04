@@ -639,32 +639,6 @@ public class XXF {
 
 
     /**
-     * 获取ViewModel
-     *
-     * @param viewModelStoreOwner
-     * @param modelClass
-     * @param <T>
-     * @return
-     */
-    public static <T extends ViewModel> T getViewModel(@NonNull ViewModelStoreOwner viewModelStoreOwner, @NonNull Class<T> modelClass) {
-        return new ViewModelProvider(viewModelStoreOwner).get(modelClass);
-    }
-
-    /**
-     * 获取ViewModel
-     *
-     * @param viewModelStoreOwner
-     * @param key
-     * @param modelClass
-     * @param <T>
-     * @return
-     */
-    public static <T extends ViewModel> T getViewModel(@NonNull ViewModelStoreOwner viewModelStoreOwner, @NonNull String key, @NonNull Class<T> modelClass) {
-        return new ViewModelProvider(viewModelStoreOwner).get(key, modelClass);
-    }
-
-
-    /**
      * 发送事件
      *
      * @param event

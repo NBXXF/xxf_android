@@ -4,6 +4,9 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
+
+def des = rootProject.ext.dependencies
 android {
     resourcePrefix 'xxf';
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
@@ -24,11 +27,11 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(path: ':lib_adapter')
-    implementation project(path: ':lib_fileprovider')
-    compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation 'com.airbnb.android:lottie:3.4.0'
-    compileOnly 'com.scwang.smart:refresh-layout-kernel:2.0.1'
-    implementation project(path: ':xxf')
+    api project(path: ':lib_fileprovider')
+    api project(path: ':xxf')
+
+    api des.lottie
+    api des.smart_refresh
+
 
 }

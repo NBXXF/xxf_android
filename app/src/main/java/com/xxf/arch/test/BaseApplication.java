@@ -99,12 +99,6 @@ public class BaseApplication extends Application {
         ignores.addAll(ResourcesUtil.getStringResources(androidx.appcompat.R.class));
         ignores.addAll(ResourcesUtil.getDrawableResources(androidx.appcompat.R.class));
 
-        ignores.addAll(ResourcesUtil.getStringResources(com.squareup.leakcanary.R.class));
-        ignores.addAll(ResourcesUtil.getDrawableResources(com.squareup.leakcanary.R.class));
-
-
-        ignores.addAll(ResourcesUtil.getStringResources(com.github.moduth.blockcanary.R.class));
-        ignores.addAll(ResourcesUtil.getDrawableResources(com.github.moduth.blockcanary.R.class));
         //  ResourcesUtil.checkResources(ignores);
 
         setVmPolicy();

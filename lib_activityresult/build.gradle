@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'com.github.dcendents.android-maven'
 }
-
+def des = rootProject.ext.dependencies
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
     defaultConfig {
@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    compileOnly 'androidx.fragment:fragment:1.1.0'
-    compileOnly 'io.reactivex.rxjava3:rxjava:3.0.8'
-    compileOnly 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    api des.material
+    api des.rxJava
+    api des.rxAndroid
 }

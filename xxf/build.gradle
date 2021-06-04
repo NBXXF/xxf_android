@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+
+def des = rootProject.ext.dependencies
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
     defaultConfig {
@@ -18,10 +20,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api 'androidx.appcompat:appcompat:1.1.0'
-    api 'com.google.android.material:material:1.1.0'
+    api des.material
     api 'com.github.NBXXF:xxf_snackbar:1.0.2'
-    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     api 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.0.0'
     api project(path: ':lib_http')
     api project(path: ':lib_arouter-api')

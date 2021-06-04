@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+def des = rootProject.ext.dependencies
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
     defaultConfig {
@@ -14,10 +15,10 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    compileOnly 'androidx.annotation:annotation:1.1.0'
-    api 'io.reactivex.rxjava3:rxjava:3.0.8'
-    api 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    api des.material
+    api des.rxJava
+    api des.rxAndroid
     api 'com.github.NBXXF:retrofit2:1.0.9'
-    api 'com.google.code.gson:gson:2.8.6'
-    api 'com.squareup.okhttp3:okhttp:4.9.0'
+    api des. gson
+    api des. okhttp
 }

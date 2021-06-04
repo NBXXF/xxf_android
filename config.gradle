@@ -1,0 +1,23 @@
+ext {
+
+    dependencies = [
+            //主要依赖库
+            material              : "com.google.android.material:material:1.4.0-beta01",
+
+            // ------------- 第三方-------------
+            rxAndroid             : 'io.reactivex.rxjava3:rxandroid:3.0.0',
+            rxJava                : 'io.reactivex.rxjava3:rxjava:3.0.8',
+            gson                  : "com.google.code.gson:gson:2.8.6",
+            okhttp                : "com.squareup.okhttp3:okhttp:4.9.0",
+
+            router_ap             : "com.alibaba:arouter-compiler:1.2.2",
+            router_annotation     : 'com.alibaba:arouter-annotation:1.0.6',
+
+            //-----------刷新-----------
+            smart_refresh         : "com.scwang.smart:refresh-layout-kernel:2.0.3",
+            refresh_footer        : 'com.scwang.smart:refresh-footer-classics:2.0.3',    //经典加载
+            lottie                : "com.airbnb.android:lottie:3.4.0"
+
+    ]
+
+}

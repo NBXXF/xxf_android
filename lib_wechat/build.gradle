@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+def des = rootProject.ext.dependencies
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
     defaultConfig {
@@ -10,5 +11,5 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-    compileOnly 'io.reactivex.rxjava3:rxjava:3.0.8'
+    api des.rxJava
 }
