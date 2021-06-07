@@ -35,6 +35,7 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.bus.ActionTypeEvent;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
 
@@ -127,6 +128,14 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionTypeEvent actionTypeEvent = ActionTypeEvent.create("hello", "test");
+        ActionTypeEvent actionTypeEvent2 = ActionTypeEvent.create("hello", "test");
+        if(actionTypeEvent==actionTypeEvent2) {
+            Log.d("=======>"," actionTypeEvent equals");
+        }
+        Log.d("=======>"," actionTypeEvent:"+actionTypeEvent);
+        Log.d("=======>"," actionTypeEvent2:"+actionTypeEvent2);
 
         XXF.subscribeEvent(String.class)
                 .observeOn(AndroidSchedulers.mainThread())
