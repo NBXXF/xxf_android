@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.viewbinding.ViewBinding;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.model.DownloadTask;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
+import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.DensityUtil;
 import com.xxf.arch.viewmodel.XXFViewModel;
@@ -77,12 +79,6 @@ public class StateActivity extends XXFActivity {
 
         stateBinding.recyclerView.setAdapter(testAdaper = new TestAdaper());
         new ItemTouchHelper(new SimpleItemTouchHelperCallback(testAdaper)).attachToRecyclerView(stateBinding.recyclerView);
-        testAdaper.setOnItemClickListener(new OnItemClickListener<ItemTestBinding, String>() {
-            @Override
-            public void onItemClick(XXFRecyclerAdapter<ItemTestBinding, String> adapter, XXFViewHolder<ItemTestBinding, String> holder, View itemView, int index, String item) {
-                XXF.getLogger().d("===========>width:" + holder.itemView.getWidth() + "  height:" + holder.itemView.getHeight());
-            }
-        });
         stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,38 +170,53 @@ public class StateActivity extends XXFActivity {
     }
 
     private void loadData() {
-        Observable.fromCallable(new Callable<List<String>>() {
+        Observable.fromCallable(new Callable<List<Integer>>() {
             @Override
-            public List<String> call() throws Exception {
-                List<String> strings = new ArrayList<>();
+            public List<Integer> call() throws Exception {
+                List<Integer> strings = new ArrayList<>();
                 int i1 = new Random().nextInt(200);
                 for (int i = 0; i < i1; i++) {
-                    strings.add("i:" + i);
+                    strings.add(i);
                 }
                 return strings;
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .to(XXF.bindLifecycle(this))
-                .subscribe(new Consumer<List<String>>() {
+                .subscribe(new Consumer<List<Integer>>() {
                     @Override
-                    public void accept(List<String> strings) throws Exception {
+                    public void accept(List<Integer> strings) throws Exception {
                         testAdaper.bindData(true, strings);
                     }
                 });
     }
 
-    class TestAdaper extends XXFRecyclerAdapter<ItemTestBinding, String> {
+    class TestAdaper extends XXFRecyclerAdapter<ViewBinding, Integer> {
 
 
         @Override
-        protected ItemTestBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
+        public int getViewType(int index) {
+            if (getItem(index).intValue() % 2 == 0) {
+                return 1;
+            }
+            return super.getViewType(index);
+        }
+
+        @Override
+        protected ViewBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
+            if (viewType == 1) {
+                return ItemTest2Binding.inflate(inflater, viewGroup, false);
+            }
             return ItemTestBinding.inflate(inflater, viewGroup, false);
         }
 
         @Override
-        public void onBindHolder(XXFViewHolder<ItemTestBinding, String> holder, @Nullable String s, int index) {
-            holder.getBinding().textView.setText(s);
+        public void onBindHolder(XXFViewHolder<ViewBinding, Integer> holder, @Nullable Integer item, int index) {
+            if (holder.getBinding() instanceof ItemTestBinding) {
+                ((ItemTestBinding) holder.getBinding()).textView.setText("s:" + item);
+            } else if (holder.getBinding() instanceof ItemTest2Binding) {
+                ((ItemTest2Binding) holder.getBinding()).textView.setText("vs:" + item);
+            }
         }
     }
 }
