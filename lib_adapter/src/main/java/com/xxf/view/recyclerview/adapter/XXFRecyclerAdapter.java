@@ -164,7 +164,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return index < mFooters.size() ? mFooters.get(index) : null;
     }
 
-    private boolean isHeader(int viewType) {
+    public boolean isHeader(int viewType) {
         return viewType >= HEADER_VIEW_TYPE && viewType < (HEADER_VIEW_TYPE + mHeaders.size());
     }
 
@@ -222,7 +222,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return false;
     }
 
-    private boolean isFooter(int viewType) {
+    public boolean isFooter(int viewType) {
         return viewType >= FOOTER_VIEW_TYPE && viewType < (FOOTER_VIEW_TYPE + mFooters.size());
     }
 
@@ -607,8 +607,10 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     @Override
     public boolean onItemTouchMove(int fromPosition, int toPosition) {
-        if (isHeader(fromPosition) || isHeader(toPosition) ||
-                isFooter(fromPosition) || isFooter(toPosition)) {
+        int fromItemViewType = getItemViewType(fromPosition);
+        int toItemViewType = getItemViewType(toPosition);
+        if (isHeader(fromItemViewType) || isHeader(toItemViewType) ||
+                isFooter(fromItemViewType) || isFooter(toItemViewType)) {
             return false;
         }
         boolean autoNotify = dataList.hasRegister(dataChangeCallback);
