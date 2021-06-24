@@ -37,6 +37,23 @@ public class XXFViewHolder<V extends ViewBinding, T> extends RecyclerView.ViewHo
         this.binding = binding;
     }
 
+    /**
+     * 绑定的构造方法
+     * @param baseRecyclerAdapter
+     * @param binding
+     * @param bindItemClick
+     */
+    public XXFViewHolder(XXFRecyclerAdapter<V, T> baseRecyclerAdapter, V binding, boolean bindItemClick) {
+        this(baseRecyclerAdapter,binding.getRoot(),bindItemClick);
+        this.setBinding(binding);
+    }
+
+    /**
+     * 普通view的构造方法
+     * @param baseRecyclerAdapter
+     * @param itemView
+     * @param bindItemClick
+     */
     public XXFViewHolder(XXFRecyclerAdapter<V, T> baseRecyclerAdapter, View itemView, boolean bindItemClick) {
         super(itemView);
         this.baseRecyclerAdapter = baseRecyclerAdapter;

@@ -226,6 +226,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return viewType >= FOOTER_VIEW_TYPE && viewType < (FOOTER_VIEW_TYPE + mFooters.size());
     }
 
+    public boolean isFooter(View view) {
+        return mFooters.contains(view);
+    }
 
     /**
      * @param isRefresh 是否下拉刷新
