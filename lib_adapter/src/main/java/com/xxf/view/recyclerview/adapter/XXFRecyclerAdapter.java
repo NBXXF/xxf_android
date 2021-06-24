@@ -472,16 +472,16 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
             return new XXFViewHolder(this, footerView, false);
         } else {
             V v = onCreateBinding(LayoutInflater.from(viewGroup.getContext()), viewGroup, viewType);
-            return onCreateItemHolder(v);
+            return onCreateItemHolder(v,viewGroup,viewType);
         }
     }
 
     /**
-     * 创建viewHolder
+     * 创建item viewHolder
      *
      * @return
      */
-    protected XXFViewHolder<V, T> onCreateItemHolder(V v) {
+    protected XXFViewHolder<V, T> onCreateItemHolder(V v,ViewGroup viewGroup, int viewType) {
         XXFViewHolder<V, T> viewHolder = new XXFViewHolder(this, v.getRoot(), true);
         viewHolder.setBinding(v);
         return viewHolder;
