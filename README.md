@@ -15,7 +15,7 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
 ##### 引入项目
  ```
     //必选
-    implementation 'com.github.NBXXF:xxf_android:2.5.x'//主要lib
+    implementation 'com.github.NBXXF:xxf_android:3.6.0.4'//主要lib
  ```
  
 ##### Activity / Fragment / DialogFaragment
@@ -36,7 +36,7 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
     }
  ```
 ##### http请求
-      ``` 1. http接口interface声明（与retrofit十分类似)
+ 1. http接口interface声明（与retrofit十分类似)
  ```
 /**
  * 提供基础路由
@@ -103,6 +103,7 @@ public interface LoginApiService {
 
 }
  ```
+缓存模式
  ```
 public enum CacheType {
     /**
@@ -134,9 +135,8 @@ public enum CacheType {
     lastCache;
 }
    ```
-   
-   
-         ```2. api 请求方式,并绑定loading对话框
+2. api 请求方式,并绑定loading对话框
+```
        XXF.getApiService(BackupApiService.class)
                 .backupUpConfigQuestionQuery()
                 .map(new ResponseDTOSimpleFunction<List<SecurityQuestionDTO>>())
@@ -147,12 +147,11 @@ public enum CacheType {
                      
                     }
                 });
-   ```
+```
 
 ##### RxJava生命周期管理
 在Activity,Fragment,DialogFragment与ViewModel中都可以使用RxJava管理生命周期,语法保持一致,如下:
-
-
+  ```
       io.reactivex.Observable.interval(1, TimeUnit.SECONDS)
                     .compose(XXF.<Long>bindToLifecycle(GrContactsFragment.this))//绑定生命周期
                     .subscribe(new Consumer<Long>() {
@@ -162,10 +161,11 @@ public enum CacheType {
                         }
                     });
 
-
+  ```
 ##### 权限使用Rx链式调用
 
       //请求授权
+        ```
       XXF.requestPermission(MainActivity.this, Manifest.permission.CAMERA)
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
@@ -176,10 +176,9 @@ public enum CacheType {
                                 
       //获取是否授权                          
       ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
-            
-
+     ```
 ##### startActivityForResult Rx链式调用
-
+  ```
      XXF.startActivityForResult(MainActivity.this, new Intent(MainActivity.this, TestActivity.class), 1001)
                                 .subscribe(new Consumer<ActivityResult>() {
                                     @Override
@@ -187,6 +186,9 @@ public enum CacheType {
                                         ToastUtils.showToast(v.getContext(), "activityResult:reqcode:" + activityResult.getRequestCode() + ";resCode" + activityResult.getResultCode() + ";data:" + activityResult.getData().getStringExtra("data"));
 
                                     }
-                                });                                     
-
+                                });   
+  ```                                  
 ##### RecyclerView 分割线
+1.  DividerDecorationFactory 工厂模式 
+2.  DividerDecoration 水平或者分割线  
+3.  GridItemDecoration  格子分割线  
