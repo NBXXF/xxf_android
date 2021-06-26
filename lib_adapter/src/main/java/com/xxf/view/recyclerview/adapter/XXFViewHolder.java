@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.InnerViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
@@ -21,7 +22,7 @@ import com.xxf.view.recyclerview.touchhelper.ItemTouchHelperViewHolder;
  * date createTime：2017/10/5
  * version 2.1.0
  */
-public class XXFViewHolder<V extends ViewBinding, T> extends RecyclerView.ViewHolder
+public class XXFViewHolder<V extends ViewBinding, T> extends InnerViewHolder
         implements ItemTouchHelperViewHolder, View.OnClickListener, View.OnLongClickListener {
     private XXFRecyclerAdapter<V, T> baseRecyclerAdapter;
     private SparseArray<View> holder = null;
@@ -35,6 +36,11 @@ public class XXFViewHolder<V extends ViewBinding, T> extends RecyclerView.ViewHo
 
     public void setBinding(V binding) {
         this.binding = binding;
+    }
+
+
+    public XXFRecyclerAdapter<V, T> getRecyclerAdapter() {
+        return this.baseRecyclerAdapter;
     }
 
     /**
