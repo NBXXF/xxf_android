@@ -3,6 +3,7 @@ package com.xxf.arch.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,16 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.xxf.arch.activity.ActivityForKeyProvider;
+import com.xxf.arch.component.ObservableComponent;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -22,11 +30,29 @@ import com.xxf.arch.activity.ActivityForKeyProvider;
  * @date createTime：2018/9/7
  */
 
-public class XXFFragment
-        extends Fragment implements ActivityForKeyProvider, IShotFragment {
+public class XXFFragment<E>
+        extends Fragment implements ObservableComponent<Fragment, E>,ActivityForKeyProvider {
 
     private View contentView;
+    private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
+    @Override
+    public Observable<Pair<Fragment, E>> getComponentObservable() {
+        return componentSubject.ofType(Object.class)
+                .map(new Function<Object, Pair<Fragment, E>>() {
+                    @Override
+                    public Pair<Fragment, E> apply(Object o) throws Throwable {
+                        return Pair.create(XXFFragment.this, (E) o);
+                    }
+                });
+    }
+
+    @Override
+    public void setComponentResult(E result) {
+        if (result != null) {
+            componentSubject.onNext(result);
+        }
+    }
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,14 +137,4 @@ public class XXFFragment
         super.onDestroy();
     }
 
-    /**
-     * 子类自己实现
-     *
-     * @param shotArgs
-     * @return
-     */
-    @Override
-    public Bitmap shotFragment(@Nullable Bundle shotArgs) {
-        return null;
-    }
 }

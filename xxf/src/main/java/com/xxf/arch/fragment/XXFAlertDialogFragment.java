@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,19 +18,45 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 import com.xxf.arch.activity.ActivityForKeyProvider;
+import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenAlertDialog;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
+
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFAlertDialogFragment extends AppCompatDialogFragment implements ActivityForKeyProvider, IShotFragment {
-
+public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>, ActivityForKeyProvider {
     private View contentView;
+    private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
+
+    @Override
+    public Observable<Pair<DialogFragment, E>> getComponentObservable() {
+        return componentSubject.ofType(Object.class)
+                .map(new Function<Object, Pair<DialogFragment, E>>() {
+                    @Override
+                    public Pair<DialogFragment, E> apply(Object o) throws Throwable {
+                        return Pair.create(XXFAlertDialogFragment.this, (E) o);
+                    }
+                });
+    }
+
+    @Override
+    public void setComponentResult(E result) {
+        if (result != null) {
+            componentSubject.onNext(result);
+        }
+    }
+
 
     @CallSuper
     @Override
@@ -123,7 +150,7 @@ public class XXFAlertDialogFragment extends AppCompatDialogFragment implements A
      * 会重复调用 禁止复写
      */
     @Override
-    public  void onDestroyView() {
+    public void onDestroyView() {
         super.onDestroyView();
     }
 
@@ -196,8 +223,4 @@ public class XXFAlertDialogFragment extends AppCompatDialogFragment implements A
         }
     }
 
-    @Override
-    public Bitmap shotFragment(@Nullable Bundle shotArgs) {
-        return null;
-    }
 }

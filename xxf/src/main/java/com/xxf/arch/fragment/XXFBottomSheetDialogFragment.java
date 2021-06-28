@@ -3,6 +3,7 @@ package com.xxf.arch.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,16 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.xxf.arch.activity.ActivityForKeyProvider;
+import com.xxf.arch.component.ObservableComponent;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 /**
  * @version 2.3.1
@@ -25,11 +33,29 @@ import com.xxf.arch.activity.ActivityForKeyProvider;
  * @date createTime：2018/9/7
  */
 
-public class XXFBottomSheetDialogFragment
-        extends BottomSheetDialogFragment implements ActivityForKeyProvider, IShotFragment {
+public class XXFBottomSheetDialogFragment<E>
+        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E>, ActivityForKeyProvider {
 
     private View contentView;
+    private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
+    @Override
+    public Observable<Pair<BottomSheetDialogFragment, E>> getComponentObservable() {
+        return componentSubject.ofType(Object.class)
+                .map(new Function<Object, Pair<BottomSheetDialogFragment, E>>() {
+                    @Override
+                    public Pair<BottomSheetDialogFragment, E> apply(Object o) throws Throwable {
+                        return Pair.create(XXFBottomSheetDialogFragment.this, (E) o);
+                    }
+                });
+    }
+
+    @Override
+    public void setComponentResult(E result) {
+        if (result != null) {
+            componentSubject.onNext(result);
+        }
+    }
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -175,15 +201,5 @@ public class XXFBottomSheetDialogFragment
         if (dialogWidow != null) {
             dialogWidow.setWindowAnimations(resId);
         }
-    }
-    /**
-     * 子类自己实现
-     *
-     * @param shotArgs
-     * @return
-     */
-    @Override
-    public Bitmap shotFragment(@Nullable Bundle shotArgs) {
-        return null;
     }
 }

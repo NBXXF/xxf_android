@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,9 +18,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.DialogFragment;
 
 import com.xxf.arch.activity.ActivityForKeyProvider;
+import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -27,10 +35,28 @@ import com.xxf.arch.dialog.TouchListenDialog;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment extends AppCompatDialogFragment implements ActivityForKeyProvider,IShotFragment {
+public class XXFDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>{
 
     private View contentView;
+    private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
+    @Override
+    public Observable<Pair<DialogFragment, E>> getComponentObservable() {
+        return componentSubject.ofType(Object.class)
+                .map(new Function<Object, Pair<DialogFragment, E>>() {
+                    @Override
+                    public Pair<DialogFragment, E> apply(Object o) throws Throwable {
+                        return Pair.create(XXFDialogFragment.this, (E) o);
+                    }
+                });
+    }
+
+    @Override
+    public void setComponentResult(E result) {
+        if (result != null) {
+            componentSubject.onNext(result);
+        }
+    }
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -194,10 +220,5 @@ public class XXFDialogFragment extends AppCompatDialogFragment implements Activi
         if (dialogWidow != null) {
             dialogWidow.setWindowAnimations(resId);
         }
-    }
-
-    @Override
-    public Bitmap shotFragment(@Nullable Bundle shotArgs) {
-        return null;
     }
 }

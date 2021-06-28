@@ -9,10 +9,11 @@ import android.net.Network;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
@@ -37,7 +38,6 @@ import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.view.utils.StatusBarUtils;
-import com.xxf.view.utils.SystemUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -131,11 +131,11 @@ public class MainActivity extends XXFActivity {
 
         ActionTypeEvent actionTypeEvent = ActionTypeEvent.create("hello", "test");
         ActionTypeEvent actionTypeEvent2 = ActionTypeEvent.create("hello", "test");
-        if(actionTypeEvent==actionTypeEvent2) {
-            Log.d("=======>"," actionTypeEvent equals");
+        if (actionTypeEvent == actionTypeEvent2) {
+            Log.d("=======>", " actionTypeEvent equals");
         }
-        Log.d("=======>"," actionTypeEvent:"+actionTypeEvent);
-        Log.d("=======>"," actionTypeEvent2:"+actionTypeEvent2);
+        Log.d("=======>", " actionTypeEvent:" + actionTypeEvent);
+        Log.d("=======>", " actionTypeEvent2:" + actionTypeEvent2);
 
         XXF.subscribeEvent(String.class)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -204,21 +204,18 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SystemUtils.selectFile(MainActivity.this, new String[]{"image/*"})
-                                .compose(XXF.bindToErrorNotice())
-                                .to(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
-                                .subscribe(new Consumer<String>() {
-                                    @Override
-                                    public void accept(String s) throws Throwable {
-
-                                        XXF.getLogger().d("==========>path:" + s);
-                                    }
-                                });
+                        TestDialogFragment test = new TestDialogFragment();
+                        test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
+                            @Override
+                            public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {
+                                XXF.getLogger().d("========>订阅:"+dialogFragmentStringPair.second);
+                                dialogFragmentStringPair.first.dismissAllowingStateLoss();
+                            }
+                        });
+                        test.show(getSupportFragmentManager(), TestDialogFragment.class.getName());
                         if (true) {
                             return;
                         }
-                       /* SystemUtils.sendEmail(view.getContext(), "2767356588@qq.com", "", "", "请选择邮箱app")
-                                .subscribe();*/
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
