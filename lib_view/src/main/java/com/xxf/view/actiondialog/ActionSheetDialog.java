@@ -56,7 +56,6 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
         private CharSequence cancelText = ActionSheetDialog.CANCEL_BTN_TEXT;
         private List<ItemMenu<String>> mItems = new ArrayList<>();
         private AdapterStyle adapterStyle = new AdapterStyle.Builder().build();
-        private BiConsumer<DialogInterface, ItemMenu<String>> dialogConsumer;
 
         public Builder(@NonNull Context context) {
             this.context = context;
@@ -78,35 +77,33 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
             return this;
         }
 
-        public Builder setItems(String[] items, final BiConsumer<DialogInterface, ItemMenu<String>> dialogConsumer) {
-            return this.setItems(items, null, dialogConsumer);
+        public Builder setItems(String[] items) {
+            return this.setItems(items, null);
         }
 
-        public Builder setItems(String[] items, String selected, final BiConsumer<DialogInterface, ItemMenu<String>> dialogConsumer) {
-            return setItems(new ArrayList<String>(Arrays.asList(items)), selected, dialogConsumer);
+        public Builder setItems(String[] items, String selected) {
+            return setItems(new ArrayList<String>(Arrays.asList(items)), selected);
         }
 
-        public Builder setItems(List<String> items, String selected, final BiConsumer<DialogInterface, ItemMenu<String>> dialogConsumer) {
+        public Builder setItems(List<String> items, String selected) {
             this.mItems.clear();
             for (String item : items) {
                 this.mItems.add(new ItemMenuImpl<>(item, item, TextUtils.equals(item, selected)));
             }
-            this.dialogConsumer = dialogConsumer;
             return this;
         }
 
 
         public ActionSheetDialog<String> build() {
-            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, DensityUtil.getScreenHeightPx() / 2, dialogConsumer);
+            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, DensityUtil.getScreenHeightPx() / 2);
         }
     }
 
     public ActionSheetDialog(@NonNull Context context,
                              @Nullable CharSequence title,
                              @NonNull AdapterStyle adapterStyle,
-                             @NonNull List<ItemMenu<T>> actionItems,
-                             BiConsumer<DialogInterface, ItemMenu<T>> dialogConsumer) {
-        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx() / 2, dialogConsumer);
+                             @NonNull List<ItemMenu<T>> actionItems) {
+        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx() / 2);
     }
 
     /**
@@ -115,16 +112,14 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
      * @param adapterStyle
      * @param actionItems
      * @param maxHeightForAdapter PX 适配器高度,默认不限制高度 或者0不限制高度
-     * @param dialogConsumer
      */
     public ActionSheetDialog(@NonNull Context context,
                              @Nullable CharSequence title,
                              @Nullable CharSequence cancelText,
                              @NonNull AdapterStyle adapterStyle,
                              @NonNull List<? extends ItemMenu> actionItems,
-                             int maxHeightForAdapter,
-                             BiConsumer<DialogInterface, ItemMenu<T>> dialogConsumer) {
-        super(context, R.style.xxf_AnimBottomDialog, dialogConsumer);
+                             int maxHeightForAdapter) {
+        super(context, R.style.xxf_AnimBottomDialog);
         this.adapterStyle = Objects.requireNonNull(adapterStyle);
         this.actionItems = Objects.requireNonNull(actionItems);
         this.maxHeightForAdapter = maxHeightForAdapter;
@@ -171,7 +166,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
             @Override
             public void onItemClick(XXFRecyclerAdapter adapter, XXFViewHolder holder, View itemView, int index, Object o) {
                 ItemMenu<T> itemMenu = (ItemMenu) o;
-                setResult(itemMenu);
+                setComponentResult(itemMenu);
             }
         });
 

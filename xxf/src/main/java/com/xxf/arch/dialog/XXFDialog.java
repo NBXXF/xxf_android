@@ -4,17 +4,24 @@ package com.xxf.arch.dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 
 /**
@@ -23,43 +30,38 @@ import io.reactivex.rxjava3.functions.BiConsumer;
  */
 public class XXFDialog<R>
         extends AppCompatDialog
-        implements ProgressHUDProvider, IResultDialog<R> {
+        implements ObservableComponent<AppCompatDialog,R>, ProgressHUDProvider {
 
-    private BiConsumer<DialogInterface, R> dialogConsumer;
-
-    protected XXFDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, R> dialogConsumer) {
-        super(context);
-        this.dialogConsumer = dialogConsumer;
-    }
-
-    protected XXFDialog(@NonNull Context context, int themeResId, @Nullable BiConsumer<DialogInterface, R> dialogConsumer) {
-        super(context, themeResId);
-        this.dialogConsumer = dialogConsumer;
-    }
-
-    protected XXFDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener, @Nullable BiConsumer<DialogInterface, R> onDialogClickListener) {
-        super(context, cancelable, cancelListener);
-        this.dialogConsumer = onDialogClickListener;
-    }
-
-    /**
-     * 分发确认结果
-     *
-     * @param confirmResult
-     * @return
-     */
+    private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
     @Override
-    public final void setResult(R confirmResult) {
-        if (dialogConsumer != null) {
-            try {
-                dialogConsumer.accept(this, confirmResult);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        } else {
-            dismiss();
+    public Observable<Pair<AppCompatDialog, R>> getComponentObservable() {
+        return componentSubject.ofType(Object.class)
+                .map(new Function<Object, Pair<AppCompatDialog,  R>>() {
+                    @Override
+                    public Pair<AppCompatDialog,  R> apply(Object o) throws Throwable {
+                        return Pair.create(XXFDialog.this, (R) o);
+                    }
+                });
+    }
+
+    @Override
+    public void setComponentResult(R result) {
+        if (result != null) {
+            componentSubject.onNext(result);
         }
     }
+    protected XXFDialog(@NonNull Context context) {
+        super(context);
+    }
+
+    protected XXFDialog(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
+    protected XXFDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
+        super(context, cancelable, cancelListener);
+    }
+
 
     @Override
     public ProgressHUD progressHUD() {

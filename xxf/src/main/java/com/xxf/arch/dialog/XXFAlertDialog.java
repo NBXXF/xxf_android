@@ -3,17 +3,25 @@ package com.xxf.arch.dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.xxf.arch.component.ObservableComponent;
+import com.xxf.arch.fragment.XXFAlertDialogFragment;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 
 /**
@@ -22,44 +30,39 @@ import io.reactivex.rxjava3.functions.BiConsumer;
  */
 public  class XXFAlertDialog<R>
         extends AlertDialog
-        implements ProgressHUDProvider, IResultDialog<R> {
+        implements ObservableComponent<AlertDialog,R>, ProgressHUDProvider {
 
-    private BiConsumer<DialogInterface, R> dialogConsumer;
+    private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
-    protected XXFAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, R> dialogConsumer) {
-        super(context);
-        this.dialogConsumer = dialogConsumer;
-    }
-
-    protected XXFAlertDialog(@NonNull Context context, int themeResId, @Nullable BiConsumer<DialogInterface, R> dialogConsumer) {
-        super(context, themeResId);
-        this.dialogConsumer = dialogConsumer;
-    }
-
-    protected XXFAlertDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener, @Nullable BiConsumer<DialogInterface, R> dialogConsumer) {
-        super(context, cancelable, cancelListener);
-        this.dialogConsumer = dialogConsumer;
-    }
-
-    /**
-     * 分发确认结果
-     *
-     * @param confirmResult
-     * @return
-     */
     @Override
-    public final void setResult(R confirmResult) {
-        if (dialogConsumer != null) {
-            try {
-                dialogConsumer.accept(this, confirmResult);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        } else {
-            dismiss();
+    public Observable<Pair<AlertDialog, R>> getComponentObservable() {
+        return componentSubject.ofType(Object.class)
+                .map(new Function<Object, Pair<AlertDialog,  R>>() {
+                    @Override
+                    public Pair<AlertDialog,  R> apply(Object o) throws Throwable {
+                        return Pair.create(XXFAlertDialog.this, (R) o);
+                    }
+                });
+    }
+
+    @Override
+    public void setComponentResult(R result) {
+        if (result != null) {
+            componentSubject.onNext(result);
         }
     }
 
+    protected XXFAlertDialog(@NonNull Context context) {
+        super(context);
+    }
+
+    protected XXFAlertDialog(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
+    protected XXFAlertDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
+        super(context, cancelable, cancelListener);
+    }
 
     @Override
     public ProgressHUD progressHUD() {

@@ -66,9 +66,9 @@ public class BaseApplication extends Application {
                 }*/
 
                 if (lifecycleOwner instanceof FragmentActivity) {
-                    return new XXFLoadingDialog((FragmentActivity) lifecycleOwner, null);
+                    return new XXFLoadingDialog((FragmentActivity) lifecycleOwner);
                 } else if (lifecycleOwner instanceof Fragment) {
-                    return new XXFLoadingDialog(((Fragment) lifecycleOwner).getContext(), null);
+                    return new XXFLoadingDialog(((Fragment) lifecycleOwner).getContext());
                 }
                 return null;
             }

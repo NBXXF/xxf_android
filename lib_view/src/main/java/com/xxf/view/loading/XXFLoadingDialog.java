@@ -24,10 +24,10 @@ import io.reactivex.rxjava3.functions.BiConsumer;
  * Date: 2/2/21 6:03 PM
  * Description: 进度会话框
  */
-public class XXFLoadingDialog extends XXFDialog implements ProgressHUD {
+public class XXFLoadingDialog extends XXFDialog<Object> implements ProgressHUD {
 
-    public XXFLoadingDialog(@NonNull Context context, @Nullable BiConsumer dialogConsumer) {
-        super(context, R.style.xxf_loading_dialog_style, dialogConsumer);
+    public XXFLoadingDialog(@NonNull Context context) {
+        super(context, R.style.xxf_loading_dialog_style);
         binding = XxfLoadingDialogBinding.inflate(LayoutInflater.from(context));
     }
 
