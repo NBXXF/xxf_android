@@ -1,13 +1,13 @@
 package com.xxf.arch.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
@@ -15,8 +15,9 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.xxf.arch.activity.ActivityForKeyProvider;
 import com.xxf.arch.component.ObservableComponent;
@@ -56,6 +57,7 @@ public class XXFBottomSheetDialogFragment<E>
             componentSubject.onNext(result);
         }
     }
+
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -201,5 +203,22 @@ public class XXFBottomSheetDialogFragment<E>
         if (dialogWidow != null) {
             dialogWidow.setWindowAnimations(resId);
         }
+    }
+
+    /**
+     * 调用时机:oncreateView之后
+     * 1.onViewCreated
+     * 2.onStart
+     * 3.onResume
+     * 都可以
+     *
+     * @return
+     */
+    @Nullable
+    public BottomSheetBehavior<FrameLayout> getBehavior() {
+        if (getDialog() instanceof BottomSheetDialog) {
+            return ((BottomSheetDialog) getDialog()).getBehavior();
+        }
+        return null;
     }
 }
