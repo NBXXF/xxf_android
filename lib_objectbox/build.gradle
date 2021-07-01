@@ -1,5 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+plugins {
+    id 'com.android.library'
+    id 'io.objectbox' // apply last
+    id 'com.github.dcendents.android-maven'
+}
+
 def des = rootProject.ext.dependencies
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
@@ -12,13 +16,8 @@ android {
         targetCompatibility 1.8
     }
 }
-
 dependencies {
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    api des.material
     api des.rxJava
-    api des.rxAndroid
-    api 'com.github.NBXXF:retrofit2:1.0.9'
+    api des.material
     api des.gson
-    api des.okhttp
 }
