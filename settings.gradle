@@ -1,3 +1,6 @@
+include ':lib_view_gradient'
+include ':lib_view_ratio'
+include ':lib_view_round'
 include ':lib_objectbox'
 include ':lib_fileprovider'
 include ':lib_adapter'

@@ -20,6 +20,9 @@
             <option value="$PROJECT_DIR$/lib_objectbox" />
             <option value="$PROJECT_DIR$/lib_permission" />
             <option value="$PROJECT_DIR$/lib_view" />
+            <option value="$PROJECT_DIR$/lib_view_gradient" />
+            <option value="$PROJECT_DIR$/lib_view_ratio" />
+            <option value="$PROJECT_DIR$/lib_view_round" />
             <option value="$PROJECT_DIR$/lib_wechat" />
             <option value="$PROJECT_DIR$/xxf" />
           </set>

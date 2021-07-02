@@ -1,0 +1,8 @@
+<resources>
+
+    <declare-styleable name="xxf_radius_style">
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+
+</resources>

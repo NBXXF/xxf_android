@@ -192,3 +192,33 @@ public enum CacheType {
 1.  DividerDecorationFactory 工厂模式 
 2.  DividerDecoration 水平或者分割线  
 3.  GridItemDecoration  格子分割线  
+
+##### 圆角组件(app:radius="8dp",app:radius="360dp" 为圆形   详细参考下面每个类的 类注释！！！)
+1. XXFRoundButton
+2. XXFRoundCheckedTextView
+3. XXFRoundEditText
+4. XXFRoundImageView
+5. XXFRoundTextView
+6. XXFRoundLayout
+7. XXFRoundLinearLayout
+8. XXFRoundRelativeLayout
+
+##### 带渐变背景的组件(app:start_color app:end_color  详细参考下面每个类的 类注释！！！)
+1. XXFGradientCompatButton
+2. XXFGradientCompatCheckedTextView
+3. XXFGradientCompatEditText
+4. XXFGradientCompatImageView
+5. XXFGradientCompatTextView
+6. XXFGradientFrameLayout
+7. XXFGradientLinearLayout
+8. XXFGradientRelativeLayout
+
+##### 设置宽高比例的组件(app:widthRatio app:heightRatio  详细参考下面每个类的 类注释！！！)
+1. XXFRationCompatButton
+2. XXFRationCompatCheckedTextView
+3. XXFRationCompatEditText
+4. XXFRationCompatImageView
+5. XXFRationCompatTextView
+6. XXFRationFrameLayout
+7. XXFRationLinearLayout
+8. XXFRationtRelativeLayout

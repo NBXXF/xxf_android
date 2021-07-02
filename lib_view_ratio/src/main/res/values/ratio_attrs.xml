@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="xxf_ratio_styleable" tools:ignore="ResourceName">
+        <!-- 宽度比例系数 -->
+        <attr name="widthRatio" format="float" />
+        <!-- 高度比例系数 -->
+        <attr name="heightRatio" format="float" />
+        <!-- 宽高比 -->
+        <attr name="aspectRatio" format="float" />
+        <!-- 测量模式 -->
+        <attr name="datumRatio">
+            <!-- 自动 -->
+            <enum name="datumAuto" value="0" />
+            <!-- 以宽度为基准 -->
+            <enum name="datumWidth" value="1" />
+            <!-- 以高度为基准 -->
+            <enum name="datumHeight" value="2" />
+        </attr>
+    </declare-styleable>
+
+</resources>
