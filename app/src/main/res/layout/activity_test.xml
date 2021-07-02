@@ -7,21 +7,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.xxf.view.view.MaxHeightView
-            android:layout_width="match_parent"
+        <com.xxf.view.view.MaxOrMinLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#6cf"
+
+            app:minWidthRatio="0.4"
+            app:maxWidthRatio="0.6"
+
+            app:minHeightRatio="0.3"
             app:maxHeightRatio="0.5"
-            app:minHeightRatio="0.3">
+            >
 
 
             <EditText
                 android:id="@+id/et_input"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="17483737\ngfdgfdbvvcfd\n9\n2\n4\n4\n5\n667" />
-        </com.xxf.view.view.MaxHeightView>
+                android:text="17483737" />
+        </com.xxf.view.view.MaxOrMinLayout>
 
         <Button
             android:id="@+id/bt_setResult"
