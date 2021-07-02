@@ -43,6 +43,7 @@ public class CornerUtil {
             } else {
                 clipViewRoundRect(view, radius);
             }
+            radiusTr.recycle();
         }
     }
 
