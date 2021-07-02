@@ -7,6 +7,7 @@ import androidx.annotation.WorkerThread;
 import com.xxf.objectbox.id.MurmurHash;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -44,7 +45,7 @@ public class ObjectBoxUtils {
      * @throws Exception
      */
     @WorkerThread
-    public static <T> void put(@NonNull Box<T> box, @NonNull List<T> insertData, @NonNull ListMergeFunction<T> mergeFunction) throws Exception {
+    public static <T> void put(@NonNull Box<T> box, @NonNull List<T> insertData, @NonNull ObjectBoxMergeFunction<T> mergeFunction) throws Throwable {
         Objects.requireNonNull(box);
         Objects.requireNonNull(insertData);
         Objects.requireNonNull(mergeFunction);
@@ -67,17 +68,12 @@ public class ObjectBoxUtils {
      * @throws Exception
      */
     @WorkerThread
-    public static <T> void put(@NonNull Box<T> box, @NonNull T insertData, @NonNull MergeFunction<T> mergeFunction) throws Exception {
-        Objects.requireNonNull(box);
-        Objects.requireNonNull(insertData);
-        Objects.requireNonNull(mergeFunction);
-        T inserted = box.get(box.getId(insertData));
-        T apply = mergeFunction.apply(insertData, inserted);
-        box.put(apply);
+    public static <T> void put(@NonNull Box<T> box, @NonNull T insertData, @NonNull ObjectBoxMergeFunction<T> mergeFunction) throws Throwable {
+        put(box, Arrays.asList(insertData), mergeFunction);
     }
 
     /**
-     * 清除表 替换全部
+     * 清除表所有数据 替换全部
      *
      * @param box
      * @param insertData
@@ -85,7 +81,7 @@ public class ObjectBoxUtils {
      * @param <T>
      */
     @WorkerThread
-    public static <T> void replaceAll(@NonNull Box<T> box, @NonNull List<T> insertData, @NonNull ListMergeFunction<T> mergeFunction) throws Exception {
+    public static <T> void replaceAll(@NonNull Box<T> box, @NonNull List<T> insertData, @NonNull ObjectBoxMergeFunction<T> mergeFunction) throws Throwable {
         Objects.requireNonNull(box);
         Objects.requireNonNull(insertData);
         Objects.requireNonNull(mergeFunction);
