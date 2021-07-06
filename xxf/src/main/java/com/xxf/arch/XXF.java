@@ -587,9 +587,9 @@ public class XXF {
                     @Override
                     public ObservableSource<? extends ActivityResult> get() throws Throwable {
                         if (lifecycleOwner instanceof FragmentActivity) {
-                            return RxActivityResultCompact.startActivityForResult((FragmentActivity) lifecycleOwner, intent, requestCode);
+                            return RxActivityResultCompact.INSTANCE.startActivityForResult((FragmentActivity) lifecycleOwner, intent, requestCode);
                         } else if (lifecycleOwner instanceof Fragment) {
-                            return RxActivityResultCompact.startActivityForResult((Fragment) lifecycleOwner, intent, requestCode);
+                            return RxActivityResultCompact.INSTANCE.startActivityForResult((Fragment) lifecycleOwner, intent, requestCode);
                         } else {
                             return Observable.error(new IllegalArgumentException("不支持的类型!"));
                         }

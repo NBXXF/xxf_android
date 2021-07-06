@@ -1,37 +1,11 @@
-package com.xxf.activityresult;
+package com.xxf.activityresult
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.Activity
+import android.content.Intent
 
-
-public class ActivityResult {
-    private int requestCode;
-    private int resultCode;
-    private Intent data;
-
-    public ActivityResult(int requestCode, int resultCode, Intent data) {
-        this.requestCode = requestCode;
-        this.resultCode = resultCode;
-        this.data = data;
-    }
-
-    public int getRequestCode() {
-        return requestCode;
-    }
-
-    public int getResultCode() {
-        return resultCode;
-    }
-
-    public Intent getData() {
-        return data;
-    }
-
-    public boolean isOk() {
-        return resultCode == Activity.RESULT_OK;
-    }
-
-    public boolean isCanceled() {
-        return resultCode == Activity.RESULT_CANCELED;
-    }
+class ActivityResult(val requestCode: Int, val resultCode: Int, val data: Intent) {
+    val isOk: Boolean
+        get() = resultCode == Activity.RESULT_OK
+    val isCanceled: Boolean
+        get() = resultCode == Activity.RESULT_CANCELED
 }
