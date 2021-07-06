@@ -243,7 +243,7 @@ public class ToastUtils {
         }
         if (topActivity != null && !topActivity.isDestroyed() && !topActivity.isFinishing()) {
             try {
-                Snackbar snackbar = Snackbar.make(topActivity.getWindow().getDecorView(), notice, Snackbar.LENGTH_SHORT);
+                Snackbar snackbar = Snackbar.Companion.make(topActivity.getWindow().getDecorView(), notice, Snackbar.LENGTH_SHORT);
                 View snackbarView = snackbar.getView();
                 int statusBarHeight = getStatusBarHeight(topActivity);
                 snackbarView.setPadding(0, statusBarHeight, 0, 0);

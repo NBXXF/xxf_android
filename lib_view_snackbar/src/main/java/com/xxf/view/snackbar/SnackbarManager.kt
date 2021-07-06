@@ -1,4 +1,9 @@
-package com.xxf.view.snackbar;
+package com.xxf.view.snackbar
+
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import java.lang.ref.WeakReference
 
 /*
  * Copyright (C) 2015 The Android Open Source Project
@@ -14,97 +19,58 @@ package com.xxf.view.snackbar;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ */ /**
+ * Manages [Snackbar]s.
  */
+internal class SnackbarManager private constructor() {
+    private val mLock: Any
+    private val mHandler: Handler
+    private var mCurrentSnackbar: SnackbarRecord? = null
+    private var mNextSnackbar: SnackbarRecord? = null
 
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-
-import java.lang.ref.WeakReference;
-
-/**
- * Manages {@link Snackbar}s.
- */
-class SnackbarManager {
-
-    private static final int MSG_TIMEOUT = 0;
-
-    private static final int SHORT_DURATION_MS = 1500;
-    private static final int LONG_DURATION_MS = 2750;
-
-    private static SnackbarManager sSnackbarManager;
-
-    static SnackbarManager getInstance() {
-        if (sSnackbarManager == null) {
-            sSnackbarManager = new SnackbarManager();
-        }
-        return sSnackbarManager;
+    internal interface Callback {
+        fun show()
+        fun dismiss(event: Int)
     }
 
-    private final Object mLock;
-    private final Handler mHandler;
-
-    private SnackbarRecord mCurrentSnackbar;
-    private SnackbarRecord mNextSnackbar;
-
-    private SnackbarManager() {
-        mLock = new Object();
-        mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                switch (message.what) {
-                    case MSG_TIMEOUT:
-                        handleTimeout((SnackbarRecord) message.obj);
-                        return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    interface Callback {
-        void show();
-
-        void dismiss(int event);
-    }
-
-    public void show(int duration, Callback callback) {
-        synchronized (mLock) {
+    fun show(duration: Int, callback: Callback) {
+        synchronized(mLock) {
             if (isCurrentSnackbar(callback)) {
                 // Means that the callback is already in the queue. We'll just update the duration
-                mCurrentSnackbar.duration = duration;
+                mCurrentSnackbar!!.duration = duration
                 // If this is the TSnackbar currently being shown, call re-schedule it's
                 // timeout
-                mHandler.removeCallbacksAndMessages(mCurrentSnackbar);
-                scheduleTimeoutLocked(mCurrentSnackbar);
-                return;
+                mHandler.removeCallbacksAndMessages(mCurrentSnackbar)
+                scheduleTimeoutLocked(mCurrentSnackbar)
+                return
             } else if (isNextSnackbar(callback)) {
                 // We'll just update the duration
-                mNextSnackbar.duration = duration;
+                mNextSnackbar!!.duration = duration
             } else {
                 // Else, we need to create a new record and queue it
-                mNextSnackbar = new SnackbarRecord(duration, callback);
+                mNextSnackbar = SnackbarRecord(duration, callback)
             }
-
             if (mCurrentSnackbar != null && cancelSnackbarLocked(mCurrentSnackbar,
-                    Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE)) {
+                            Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE)) {
                 // If we currently have a TSnackbar, try and cancel it and wait in line
-                return;
+                return
             } else {
                 // Clear out the current snackbar
-                mCurrentSnackbar = null;
+                mCurrentSnackbar = null
                 // Otherwise, just show it now
-                showNextSnackbarLocked();
+                showNextSnackbarLocked()
             }
         }
     }
 
-    public void dismiss(Callback callback, int event) {
-        synchronized (mLock) {
+    fun dismiss(callback: Callback, event: Int) {
+        synchronized(mLock) {
             if (isCurrentSnackbar(callback)) {
-                cancelSnackbarLocked(mCurrentSnackbar, event);
-            } else if (isNextSnackbar(callback)) {
-                cancelSnackbarLocked(mNextSnackbar, event);
+                cancelSnackbarLocked(mCurrentSnackbar, event)
+            } else if(isNextSnackbar(callback)) {
+                cancelSnackbarLocked(mNextSnackbar, event)
+            }else{
+                
             }
         }
     }
@@ -113,13 +79,13 @@ class SnackbarManager {
      * Should be called when a TSnackbar is no longer displayed. This is after any exit
      * animation has finished.
      */
-    public void onDismissed(Callback callback) {
-        synchronized (mLock) {
+    fun onDismissed(callback: Callback) {
+        synchronized(mLock) {
             if (isCurrentSnackbar(callback)) {
                 // If the callback is from a TSnackbar currently show, remove it and show a new one
-                mCurrentSnackbar = null;
+                mCurrentSnackbar = null
                 if (mNextSnackbar != null) {
-                    showNextSnackbarLocked();
+                    showNextSnackbarLocked()
                 }
             }
         }
@@ -129,110 +95,129 @@ class SnackbarManager {
      * Should be called when a TSnackbar is being shown. This is after any entrance animation has
      * finished.
      */
-    public void onShown(Callback callback) {
-        synchronized (mLock) {
+    fun onShown(callback: Callback) {
+        synchronized(mLock) {
             if (isCurrentSnackbar(callback)) {
-                scheduleTimeoutLocked(mCurrentSnackbar);
+                scheduleTimeoutLocked(mCurrentSnackbar)
             }
         }
     }
 
-    public void cancelTimeout(Callback callback) {
-        synchronized (mLock) {
+    fun cancelTimeout(callback: Callback) {
+        synchronized(mLock) {
             if (isCurrentSnackbar(callback)) {
-                mHandler.removeCallbacksAndMessages(mCurrentSnackbar);
+                mHandler.removeCallbacksAndMessages(mCurrentSnackbar)
             }
         }
     }
 
-    public void restoreTimeout(Callback callback) {
-        synchronized (mLock) {
+    fun restoreTimeout(callback: Callback) {
+        synchronized(mLock) {
             if (isCurrentSnackbar(callback)) {
-                scheduleTimeoutLocked(mCurrentSnackbar);
+                scheduleTimeoutLocked(mCurrentSnackbar)
             }
         }
     }
 
-    public boolean isCurrent(Callback callback) {
-        synchronized (mLock) {
-            return isCurrentSnackbar(callback);
+    fun isCurrent(callback: Callback): Boolean {
+        synchronized(mLock) { return isCurrentSnackbar(callback) }
+    }
+
+    fun isCurrentOrNext(callback: Callback): Boolean {
+        synchronized(mLock) { return isCurrentSnackbar(callback) || isNextSnackbar(callback) }
+    }
+
+    private class SnackbarRecord internal constructor(duration: Int, callback: Callback) {
+        val callback: WeakReference<Callback>
+        var duration: Int
+        fun isSnackbar(callback: Callback?): Boolean {
+            return callback != null && this.callback.get() === callback
+        }
+
+        init {
+            this.callback = WeakReference(callback)
+            this.duration = duration
         }
     }
 
-    public boolean isCurrentOrNext(Callback callback) {
-        synchronized (mLock) {
-            return isCurrentSnackbar(callback) || isNextSnackbar(callback);
-        }
-    }
-
-    private static class SnackbarRecord {
-        private final WeakReference<Callback> callback;
-        private int duration;
-
-        SnackbarRecord(int duration, Callback callback) {
-            this.callback = new WeakReference<>(callback);
-            this.duration = duration;
-        }
-
-        boolean isSnackbar(Callback callback) {
-            return callback != null && this.callback.get() == callback;
-        }
-    }
-
-    private void showNextSnackbarLocked() {
+    private fun showNextSnackbarLocked() {
         if (mNextSnackbar != null) {
-            mCurrentSnackbar = mNextSnackbar;
-            mNextSnackbar = null;
-
-            final Callback callback = mCurrentSnackbar.callback.get();
+            mCurrentSnackbar = mNextSnackbar
+            mNextSnackbar = null
+            val callback = mCurrentSnackbar!!.callback.get()
             if (callback != null) {
-                callback.show();
+                callback.show()
             } else {
                 // The callback doesn't exist any more, clear out the TSnackbar
-                mCurrentSnackbar = null;
+                mCurrentSnackbar = null
             }
         }
     }
 
-    private boolean cancelSnackbarLocked(SnackbarRecord record, int event) {
-        final Callback callback = record.callback.get();
+    private fun cancelSnackbarLocked(record: SnackbarRecord?, event: Int): Boolean {
+        val callback = record!!.callback.get()
         if (callback != null) {
-            callback.dismiss(event);
-            return true;
+            callback.dismiss(event)
+            return true
         }
-        return false;
+        return false
     }
 
-    private boolean isCurrentSnackbar(Callback callback) {
-        return mCurrentSnackbar != null && mCurrentSnackbar.isSnackbar(callback);
+    private fun isCurrentSnackbar(callback: Callback): Boolean {
+        return mCurrentSnackbar != null && mCurrentSnackbar!!.isSnackbar(callback)
     }
 
-    private boolean isNextSnackbar(Callback callback) {
-        return mNextSnackbar != null && mNextSnackbar.isSnackbar(callback);
+    private fun isNextSnackbar(callback: Callback): Boolean {
+        return mNextSnackbar != null && mNextSnackbar!!.isSnackbar(callback)
     }
 
-    private void scheduleTimeoutLocked(SnackbarRecord r) {
-        if (r.duration == Snackbar.LENGTH_INDEFINITE) {
+    private fun scheduleTimeoutLocked(r: SnackbarRecord?) {
+        if (r!!.duration == Snackbar.LENGTH_INDEFINITE) {
             // If we're set to indefinite, we don't want to set a timeout
-            return;
+            return
         }
-
-        int durationMs = LONG_DURATION_MS;
+        var durationMs = LONG_DURATION_MS
         if (r.duration > 0) {
-            durationMs = r.duration;
+            durationMs = r.duration
         } else if (r.duration == Snackbar.LENGTH_SHORT) {
-            durationMs = SHORT_DURATION_MS;
+            durationMs = SHORT_DURATION_MS
         }
-        mHandler.removeCallbacksAndMessages(r);
-        mHandler.sendMessageDelayed(Message.obtain(mHandler, MSG_TIMEOUT, r), durationMs);
+        mHandler.removeCallbacksAndMessages(r)
+        mHandler.sendMessageDelayed(Message.obtain(mHandler, MSG_TIMEOUT, r), durationMs.toLong())
     }
 
-    private void handleTimeout(SnackbarRecord record) {
-        synchronized (mLock) {
-            if (mCurrentSnackbar == record || mNextSnackbar == record) {
-                cancelSnackbarLocked(record, Snackbar.Callback.DISMISS_EVENT_TIMEOUT);
+    private fun handleTimeout(record: SnackbarRecord) {
+        synchronized(mLock) {
+            if (mCurrentSnackbar === record || mNextSnackbar === record) {
+                cancelSnackbarLocked(record, Snackbar.Callback.DISMISS_EVENT_TIMEOUT)
             }
         }
     }
 
+    companion object {
+        private const val MSG_TIMEOUT = 0
+        private const val SHORT_DURATION_MS = 1500
+        private const val LONG_DURATION_MS = 2750
+        private var sSnackbarManager: SnackbarManager? = null
+        val instance: SnackbarManager
+            get() {
+                if (sSnackbarManager == null) {
+                    sSnackbarManager = SnackbarManager()
+                }
+                return sSnackbarManager!!
+            }
+    }
+
+    init {
+        mLock = Any()
+        mHandler = Handler(Looper.getMainLooper(), Handler.Callback { message ->
+            when (message.what) {
+                MSG_TIMEOUT -> {
+                    handleTimeout(message.obj as SnackbarRecord)
+                    return@Callback true
+                }
+            }
+            false
+        })
+    }
 }

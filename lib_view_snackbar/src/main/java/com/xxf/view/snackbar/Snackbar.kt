@@ -1,636 +1,517 @@
-package com.xxf.view.snackbar;
+package com.xxf.view.snackbar
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import com.google.android.material.behavior.SwipeDismissBehavior;
+import android.annotation.TargetApi
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.text.TextUtils
+import android.util.DisplayMetrics
+import android.view.*
+import android.view.animation.Animation
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.annotation.IntDef
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewPropertyAnimatorListenerAdapter
+import com.google.android.material.behavior.SwipeDismissBehavior
+import java.lang.annotation.Retention
+import java.lang.annotation.RetentionPolicy
 
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.ViewPropertyAnimatorListenerAdapter;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toolbar;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-
-public final class Snackbar {
-
-    public static abstract class Callback {
-
-        public static final int DISMISS_EVENT_SWIPE = 0;
-
-        public static final int DISMISS_EVENT_ACTION = 1;
-
-        public static final int DISMISS_EVENT_TIMEOUT = 2;
-
-        public static final int DISMISS_EVENT_MANUAL = 3;
-
-        public static final int DISMISS_EVENT_CONSECUTIVE = 4;
-
-        @IntDef({
-                DISMISS_EVENT_SWIPE, DISMISS_EVENT_ACTION, DISMISS_EVENT_TIMEOUT,
-                DISMISS_EVENT_MANUAL, DISMISS_EVENT_CONSECUTIVE
-        })
-
+class Snackbar private constructor(private val mParent: ViewGroup?) {
+    abstract class Callback {
+        @IntDef(DISMISS_EVENT_SWIPE, DISMISS_EVENT_ACTION, DISMISS_EVENT_TIMEOUT, DISMISS_EVENT_MANUAL, DISMISS_EVENT_CONSECUTIVE)
         @Retention(RetentionPolicy.SOURCE)
-        public @interface DismissEvent {
+        annotation class DismissEvent
 
-        }
+        fun onDismissed(snackbar: Snackbar?, @DismissEvent event: Int) {}
+        fun onShown(snackbar: Snackbar?) {}
 
-        public void onDismissed(Snackbar snackbar, @DismissEvent int event) {
-
-        }
-
-        public void onShown(Snackbar snackbar) {
-
+        companion object {
+            const val DISMISS_EVENT_SWIPE = 0
+            const val DISMISS_EVENT_ACTION = 1
+            const val DISMISS_EVENT_TIMEOUT = 2
+            const val DISMISS_EVENT_MANUAL = 3
+            const val DISMISS_EVENT_CONSECUTIVE = 4
         }
     }
 
-    @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
+    @IntDef(LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG)
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Duration {
-    }
+    annotation class Duration
+    companion object {
+        const val LENGTH_INDEFINITE = -2
+        const val LENGTH_SHORT = -1
+        const val LENGTH_LONG = 0
+        private const val ANIMATION_DURATION = 250
+        private const val ANIMATION_FADE_DURATION = 180
+        private var sHandler: Handler? = null
+        private const val MSG_SHOW = 0
+        private const val MSG_DISMISS = 1
+        fun make(view: View, text: CharSequence, @Duration duration: Int): Snackbar {
+            val snackbar = Snackbar(findSuitableParent(view))
+            snackbar.setText(text)
+            snackbar.setDuration(duration)
+            return snackbar
+        }
 
-    public static final int LENGTH_INDEFINITE = -2;
+        fun make(view: View, @StringRes resId: Int, @Duration duration: Int): Snackbar {
+            return make(view, view.resources
+                    .getText(resId), duration)
+        }
 
-    public static final int LENGTH_SHORT = -1;
-
-    public static final int LENGTH_LONG = 0;
-
-    private static final int ANIMATION_DURATION = 250;
-    private static final int ANIMATION_FADE_DURATION = 180;
-
-    private static final Handler sHandler;
-    private static final int MSG_SHOW = 0;
-    private static final int MSG_DISMISS = 1;
-
-    static {
-        sHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                switch (message.what) {
-                    case MSG_SHOW:
-                        ((Snackbar) message.obj).showView();
-                        return true;
-                    case MSG_DISMISS:
-                        ((Snackbar) message.obj).hideView(message.arg1);
-                        return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private final ViewGroup mParent;
-    private final Context mContext;
-    private final SnackbarLayout mView;
-    private int mDuration;
-    private Callback mCallback;
-
-    private Snackbar(ViewGroup parent) {
-        mParent = parent;
-        mContext = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        mView = (SnackbarLayout) inflater.inflate(R.layout.xxf_snackbar_layout, mParent, false);
-    }
-
-    @NonNull
-    public static Snackbar make(@NonNull View view, @NonNull CharSequence text, @Duration int duration) {
-        Snackbar snackbar = new Snackbar(findSuitableParent(view));
-        snackbar.setText(text);
-        snackbar.setDuration(duration);
-        return snackbar;
-    }
-
-    @NonNull
-    public static Snackbar make(@NonNull View view, @StringRes int resId, @Duration int duration) {
-        return make(view, view.getResources()
-                .getText(resId), duration);
-    }
-
-    private static ViewGroup findSuitableParent(View view) {
-        ViewGroup fallback = null;
-        do {
-            if (view instanceof CoordinatorLayout) {
-                return (ViewGroup) view;
-            } else if (view instanceof FrameLayout) {
-                if (view.getId() == android.R.id.content) {
-                    return (ViewGroup) view;
-                } else {
-                    fallback = (ViewGroup) view;
-                }
-            } else if (view instanceof androidx.appcompat.widget.Toolbar || view instanceof Toolbar) {
-                /*
+        private fun findSuitableParent(view: View): ViewGroup? {
+            var view: View? = view
+            var fallback: ViewGroup? = null
+            do {
+                if (view is CoordinatorLayout) {
+                    return view
+                } else if (view is FrameLayout) {
+                    fallback = if (view.getId() == android.R.id.content) {
+                        return view
+                    } else {
+                        view
+                    }
+                } else if (view is Toolbar || view is android.widget.Toolbar) {
+                    /*
                     If we return the toolbar here, the toast will be attached inside the toolbar.
                     So we need to find a some sibling ViewGroup to the toolbar that comes after the toolbar
                     If we don't find such view, the toast will be attached to the root activity view
                  */
-                if (view.getParent() instanceof ViewGroup) {
-                    ViewGroup parent = (ViewGroup) view.getParent();
+                    if (view.parent is ViewGroup) {
+                        val parent = view.parent as ViewGroup
 
-                    // check if there's something else beside toolbar
-                    if (parent.getChildCount() > 1) {
-                        int childrenCnt = parent.getChildCount();
-                        int toolbarIdx = 0;
-                        for (int i = 0; i < childrenCnt; i++) {
-                            // find the index of toolbar in the layout (most likely 0, but who knows)
-                            if (parent.getChildAt(i) == view) {
-                                toolbarIdx = i;
-                                // check if there's something else after the toolbar in the layout
-                                if (toolbarIdx < childrenCnt - 1) {
-                                    //try to find some ViewGroup where you can attach the toast
-                                    while (i < childrenCnt) {
-                                        i++;
-                                        View v = parent.getChildAt(i);
-                                        if (v instanceof ViewGroup) return (ViewGroup) v;
+                        // check if there's something else beside toolbar
+                        if (parent.childCount > 1) {
+                            val childrenCnt = parent.childCount
+                            var toolbarIdx = 0
+                            var i = 0
+                            while (i < childrenCnt) {
+
+                                // find the index of toolbar in the layout (most likely 0, but who knows)
+                                if (parent.getChildAt(i) === view) {
+                                    toolbarIdx = i
+                                    // check if there's something else after the toolbar in the layout
+                                    if (toolbarIdx < childrenCnt - 1) {
+                                        //try to find some ViewGroup where you can attach the toast
+                                        while (i < childrenCnt) {
+                                            i++
+                                            val v = parent.getChildAt(i)
+                                            if (v is ViewGroup) return v
+                                        }
                                     }
+                                    break
                                 }
-                                break;
+                                i++
                             }
                         }
                     }
-                }
 
 //                return (ViewGroup) view;
-            }
-
-            if (view != null) {
-                final ViewParent parent = view.getParent();
-                view = parent instanceof View ? (View) parent : null;
-            }
-        } while (view != null);
-
-        return fallback;
-    }
-
-    @Deprecated
-    public Snackbar addIcon(int resource_id, int size) {
-        final TextView tv = mView.getMessageView();
-
-        tv.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(Bitmap.createScaledBitmap(((BitmapDrawable) (mContext.getResources()
-                .getDrawable(resource_id))).getBitmap(), size, size, true)), null, null, null);
-
-        return this;
-    }
-
-    public Snackbar setIconPadding(int padding) {
-        final TextView tv = mView.getMessageView();
-        tv.setCompoundDrawablePadding(padding);
-        return this;
-    }
-
-    public Snackbar setIconLeft(@DrawableRes int drawableRes, float sizeDp) {
-        final TextView tv = mView.getMessageView();
-        Drawable drawable = ContextCompat.getDrawable(mContext, drawableRes);
-        if (drawable != null) {
-            drawable = fitDrawable(drawable, (int) convertDpToPixel(sizeDp, mContext));
-        } else {
-            throw new IllegalArgumentException("resource_id is not a valid drawable!");
+                }
+                if (view != null) {
+                    val parent = view.parent
+                    view = if (parent is View) parent else null
+                }
+            } while (view != null)
+            return fallback
         }
-        final Drawable[] compoundDrawables = tv.getCompoundDrawables();
-        tv.setCompoundDrawables(drawable, compoundDrawables[1], compoundDrawables[2], compoundDrawables[3]);
-        return this;
+
+        private fun convertDpToPixel(dp: Float, context: Context): Float {
+            val resources = context.resources
+            val metrics = resources.displayMetrics
+            return dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        }
+
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        private fun getBitmap(vectorDrawable: VectorDrawable): Bitmap {
+            val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth,
+                    vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+            vectorDrawable.draw(canvas)
+            return bitmap
+        }
+
+        private fun getBitmap(drawable: Drawable): Bitmap {
+            return if (drawable is BitmapDrawable) {
+                drawable.bitmap
+            } else if (drawable is VectorDrawable) {
+                getBitmap(drawable)
+            } else {
+                throw IllegalArgumentException("unsupported drawable type")
+            }
+        }
+
+        init {
+            sHandler = Handler(Looper.getMainLooper(), Handler.Callback { message ->
+                when (message.what) {
+                    MSG_SHOW -> {
+                        (message.obj as Snackbar).showView()
+                        return@Callback true
+                    }
+                    MSG_DISMISS -> {
+                        (message.obj as Snackbar).hideView(message.arg1)
+                        return@Callback true
+                    }
+                }
+                false
+            })
+        }
     }
 
-    public Snackbar setIconRight(@DrawableRes int drawableRes, float sizeDp) {
-        final TextView tv = mView.getMessageView();
-        Drawable drawable = ContextCompat.getDrawable(mContext, drawableRes);
-        if (drawable != null) {
-            drawable = fitDrawable(drawable, (int) convertDpToPixel(sizeDp, mContext));
+    private val mContext: Context
+    private val mView: SnackbarLayout
+
+    @get:Duration
+    var duration = 0
+        private set
+    private var mCallback: Callback? = null
+    @Deprecated("")
+    fun addIcon(resource_id: Int, size: Int): Snackbar {
+        val tv = mView.messageView
+        tv!!.setCompoundDrawablesWithIntrinsicBounds(BitmapDrawable(Bitmap.createScaledBitmap((mContext.resources
+                .getDrawable(resource_id) as BitmapDrawable).bitmap, size, size, true)), null, null, null)
+        return this
+    }
+
+    fun setIconPadding(padding: Int): Snackbar {
+        val tv = mView.messageView
+        tv!!.compoundDrawablePadding = padding
+        return this
+    }
+
+    fun setIconLeft(@DrawableRes drawableRes: Int, sizeDp: Float): Snackbar {
+        val tv = mView.messageView
+        var drawable = ContextCompat.getDrawable(mContext, drawableRes)
+        drawable = if (drawable != null) {
+            fitDrawable(drawable, convertDpToPixel(sizeDp, mContext).toInt())
         } else {
-            throw new IllegalArgumentException("resource_id is not a valid drawable!");
+            throw IllegalArgumentException("resource_id is not a valid drawable!")
         }
-        final Drawable[] compoundDrawables = tv.getCompoundDrawables();
-        tv.setCompoundDrawables(compoundDrawables[0], compoundDrawables[1], drawable, compoundDrawables[3]);
-        return this;
+        val compoundDrawables = tv!!.compoundDrawables
+        tv.setCompoundDrawables(drawable, compoundDrawables[1], compoundDrawables[2], compoundDrawables[3])
+        return this
+    }
+
+    fun setIconRight(@DrawableRes drawableRes: Int, sizeDp: Float): Snackbar {
+        val tv = mView.messageView
+        var drawable = ContextCompat.getDrawable(mContext, drawableRes)
+        drawable = if (drawable != null) {
+            fitDrawable(drawable, convertDpToPixel(sizeDp, mContext).toInt())
+        } else {
+            throw IllegalArgumentException("resource_id is not a valid drawable!")
+        }
+        val compoundDrawables = tv!!.compoundDrawables
+        tv.setCompoundDrawables(compoundDrawables[0], compoundDrawables[1], drawable, compoundDrawables[3])
+        return this
     }
 
     /**
      * Overrides the max width of this snackbar's layout. This is typically not necessary; the snackbar
      * width will be according to Google's Material guidelines. Specifically, the max width will be
-     * <p>
+     *
+     *
      * To allow the snackbar to have a width equal to the parent view, set a value <= 0.
      *
      * @param maxWidth the max width in pixels
      * @return this TSnackbar
      */
-    public Snackbar setMaxWidth(int maxWidth) {
-        mView.mMaxWidth = maxWidth;
-
-        return this;
+    fun setMaxWidth(maxWidth: Int): Snackbar {
+        mView.mMaxWidth = maxWidth
+        return this
     }
 
-    private Drawable fitDrawable(Drawable drawable, int sizePx) {
-        if (drawable.getIntrinsicWidth() != sizePx || drawable.getIntrinsicHeight() != sizePx) {
-
-            if (drawable instanceof BitmapDrawable) {
-
-                drawable = new BitmapDrawable(mContext.getResources(), Bitmap.createScaledBitmap(getBitmap(drawable), sizePx, sizePx, true));
+    private fun fitDrawable(drawable: Drawable, sizePx: Int): Drawable {
+        var drawable = drawable
+        if (drawable.intrinsicWidth != sizePx || drawable.intrinsicHeight != sizePx) {
+            if (drawable is BitmapDrawable) {
+                drawable = BitmapDrawable(mContext.resources, Bitmap.createScaledBitmap(getBitmap(drawable), sizePx, sizePx, true))
             }
         }
-        drawable.setBounds(0, 0, sizePx, sizePx);
-
-        return drawable;
+        drawable.setBounds(0, 0, sizePx, sizePx)
+        return drawable
     }
 
-    private static float convertDpToPixel(float dp, Context context) {
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
+    fun setAction(@StringRes resId: Int, listener: View.OnClickListener?): Snackbar {
+        return setAction(mContext.getText(resId), listener)
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static Bitmap getBitmap(VectorDrawable vectorDrawable) {
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
-                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        vectorDrawable.draw(canvas);
-        return bitmap;
+    fun setAction(text: CharSequence?, listener: View.OnClickListener?): Snackbar {
+        return setAction(text, true, listener)
     }
 
-    private static Bitmap getBitmap(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        } else if (drawable instanceof VectorDrawable) {
-            return getBitmap((VectorDrawable) drawable);
-        } else {
-            throw new IllegalArgumentException("unsupported drawable type");
-        }
-    }
-
-    @NonNull
-    public Snackbar setAction(@StringRes int resId, View.OnClickListener listener) {
-        return setAction(mContext.getText(resId), listener);
-    }
-
-    @NonNull
-    public Snackbar setAction(CharSequence text, final View.OnClickListener listener) {
-        return setAction(text, true, listener);
-    }
-
-    @NonNull
-    public Snackbar setAction(CharSequence text, final boolean shouldDismissOnClick, final View.OnClickListener listener) {
-        final TextView tv = mView.getActionView();
-
+    fun setAction(text: CharSequence?, shouldDismissOnClick: Boolean, listener: View.OnClickListener?): Snackbar {
+        val tv: TextView? = mView.actionView
         if (TextUtils.isEmpty(text) || listener == null) {
-            tv.setVisibility(View.GONE);
-            tv.setOnClickListener(null);
+            tv!!.visibility = View.GONE
+            tv.setOnClickListener(null)
         } else {
-            tv.setVisibility(View.VISIBLE);
-            tv.setText(text);
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onClick(view);
-                    if(shouldDismissOnClick) {
-                        dispatchDismiss(Callback.DISMISS_EVENT_ACTION);
-                    }
-                }
-            });
-        }
-        return this;
-    }
-
-    @NonNull
-    public Snackbar setActionTextColor(ColorStateList colors) {
-        final TextView tv = mView.getActionView();
-        tv.setTextColor(colors);
-        return this;
-    }
-
-    @NonNull
-    public Snackbar setActionTextColor(@ColorInt int color) {
-        final TextView tv = mView.getActionView();
-        tv.setTextColor(color);
-        return this;
-    }
-
-
-    @NonNull
-    public Snackbar setText(@NonNull CharSequence message) {
-        final TextView tv = mView.getMessageView();
-        tv.setText(message);
-        return this;
-    }
-
-
-    @NonNull
-    public Snackbar setText(@StringRes int resId) {
-        return setText(mContext.getText(resId));
-    }
-
-    @NonNull
-    public Snackbar setDuration(@Duration int duration) {
-        mDuration = duration;
-        return this;
-    }
-
-    @Duration
-    public int getDuration() {
-        return mDuration;
-    }
-
-    @NonNull
-    public View getView() {
-        return mView;
-    }
-
-    public void show() {
-        SnackbarManager.getInstance()
-                .show(mDuration, mManagerCallback);
-    }
-
-    public void dismiss() {
-        dispatchDismiss(Callback.DISMISS_EVENT_MANUAL);
-    }
-
-    private void dispatchDismiss(@Callback.DismissEvent int event) {
-        SnackbarManager.getInstance()
-                .dismiss(mManagerCallback, event);
-    }
-
-    @NonNull
-    public Snackbar setCallback(Callback callback) {
-        mCallback = callback;
-        return this;
-    }
-
-    public boolean isShown() {
-        return SnackbarManager.getInstance()
-                .isCurrent(mManagerCallback);
-    }
-
-    public boolean isShownOrQueued() {
-        return SnackbarManager.getInstance()
-                .isCurrentOrNext(mManagerCallback);
-    }
-
-    private final SnackbarManager.Callback mManagerCallback = new SnackbarManager.Callback() {
-        @Override
-        public void show() {
-            sHandler.sendMessage(sHandler.obtainMessage(MSG_SHOW, Snackbar.this));
-        }
-
-        @Override
-        public void dismiss(int event) {
-            sHandler.sendMessage(sHandler.obtainMessage(MSG_DISMISS, event, 0, Snackbar.this));
-        }
-    };
-
-    final void showView() {
-        if (mView.getParent() == null) {
-            final ViewGroup.LayoutParams lp = mView.getLayoutParams();
-
-            if (lp instanceof CoordinatorLayout.LayoutParams) {
-                final Behavior behavior = new Behavior();
-                behavior.setStartAlphaSwipeDistance(0.1f);
-                behavior.setEndAlphaSwipeDistance(0.6f);
-                behavior.setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_START_TO_END);
-                behavior.setListener(new SwipeDismissBehavior.OnDismissListener() {
-                    @Override
-                    public void onDismiss(View view) {
-                        dispatchDismiss(Callback.DISMISS_EVENT_SWIPE);
-                    }
-
-                    @Override
-                    public void onDragStateChanged(int state) {
-                        switch (state) {
-                            case SwipeDismissBehavior.STATE_DRAGGING:
-                            case SwipeDismissBehavior.STATE_SETTLING:
-
-                                SnackbarManager.getInstance()
-                                        .cancelTimeout(mManagerCallback);
-                                break;
-                            case SwipeDismissBehavior.STATE_IDLE:
-
-                                SnackbarManager.getInstance()
-                                        .restoreTimeout(mManagerCallback);
-                                break;
-                        }
-                    }
-                });
-                ((CoordinatorLayout.LayoutParams) lp).setBehavior(behavior);
-            }
-            mParent.addView(mView);
-        }
-
-        mView.setOnAttachStateChangeListener(new SnackbarLayout.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                if (isShownOrQueued()) {
-                    sHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            onViewHidden(Callback.DISMISS_EVENT_MANUAL);
-                        }
-                    });
+            tv!!.visibility = View.VISIBLE
+            tv.text = text
+            tv.setOnClickListener { view ->
+                listener.onClick(view)
+                if (shouldDismissOnClick) {
+                    dispatchDismiss(Callback.DISMISS_EVENT_ACTION)
                 }
             }
-        });
+        }
+        return this
+    }
 
+    fun setActionTextColor(colors: ColorStateList?): Snackbar {
+        val tv: TextView? = mView.actionView
+        tv!!.setTextColor(colors)
+        return this
+    }
+
+    fun setActionTextColor(@ColorInt color: Int): Snackbar {
+        val tv: TextView? = mView.actionView
+        tv!!.setTextColor(color)
+        return this
+    }
+
+    fun setText(message: CharSequence): Snackbar {
+        val tv = mView.messageView
+        tv!!.text = message
+        return this
+    }
+
+    fun setText(@StringRes resId: Int): Snackbar {
+        return setText(mContext.getText(resId))
+    }
+
+    fun setDuration(@Duration duration: Int): Snackbar {
+        this.duration = duration
+        return this
+    }
+
+    val view: View
+        get() = mView
+
+    fun show() {
+        SnackbarManager.instance
+                .show(duration, mManagerCallback)
+    }
+
+    fun dismiss() {
+        dispatchDismiss(Callback.DISMISS_EVENT_MANUAL)
+    }
+
+    private fun dispatchDismiss(@Callback.DismissEvent event: Int) {
+        SnackbarManager.instance
+                .dismiss(mManagerCallback, event)
+    }
+
+    fun setCallback(callback: Callback?): Snackbar {
+        mCallback = callback
+        return this
+    }
+
+    val isShown: Boolean
+        get() = SnackbarManager.instance
+                .isCurrent(mManagerCallback)
+    val isShownOrQueued: Boolean
+        get() = SnackbarManager.instance
+                .isCurrentOrNext(mManagerCallback)
+    private val mManagerCallback: SnackbarManager.Callback = object : SnackbarManager.Callback {
+        override fun show() {
+            sHandler!!.sendMessage(sHandler!!.obtainMessage(MSG_SHOW, this@Snackbar))
+        }
+
+        override fun dismiss(event: Int) {
+            sHandler!!.sendMessage(sHandler!!.obtainMessage(MSG_DISMISS, event, 0, this@Snackbar))
+        }
+    }
+
+    fun showView() {
+        if (mView.parent == null) {
+            val lp = mView.layoutParams
+            if (lp is CoordinatorLayout.LayoutParams) {
+                val behavior: Behavior = Behavior()
+                behavior.setStartAlphaSwipeDistance(0.1f)
+                behavior.setEndAlphaSwipeDistance(0.6f)
+                behavior.setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_START_TO_END)
+                behavior.listener = object : SwipeDismissBehavior.OnDismissListener {
+                    override fun onDismiss(view: View) {
+                        dispatchDismiss(Callback.DISMISS_EVENT_SWIPE)
+                    }
+
+                    override fun onDragStateChanged(state: Int) {
+                        when (state) {
+                            SwipeDismissBehavior.STATE_DRAGGING, SwipeDismissBehavior.STATE_SETTLING -> SnackbarManager.instance
+                                    .cancelTimeout(mManagerCallback)
+                            SwipeDismissBehavior.STATE_IDLE -> SnackbarManager.instance
+                                    .restoreTimeout(mManagerCallback)
+                        }
+                    }
+                }
+                lp.behavior = behavior
+            }
+            mParent!!.addView(mView)
+        }
+        mView.setOnAttachStateChangeListener(object : SnackbarLayout.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View?) {}
+            override fun onViewDetachedFromWindow(v: View?) {
+                if (isShownOrQueued) {
+                    sHandler!!.post { onViewHidden(Callback.DISMISS_EVENT_MANUAL) }
+                }
+            }
+        })
         if (ViewCompat.isLaidOut(mView)) {
-            animateViewIn();
+            animateViewIn()
         } else {
-            mView.setOnLayoutChangeListener(new SnackbarLayout.OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View view, int left, int top, int right, int bottom) {
-                    animateViewIn();
-                    mView.setOnLayoutChangeListener(null);
+            mView.setOnLayoutChangeListener(object : SnackbarLayout.OnLayoutChangeListener {
+                override fun onLayoutChange(view: View?, left: Int, top: Int, right: Int, bottom: Int) {
+                    animateViewIn()
+                    mView.setOnLayoutChangeListener(null)
                 }
-            });
+            })
         }
     }
 
-    private void animateViewIn() {
+    private fun animateViewIn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            ViewCompat.setTranslationY(mView, -mView.getHeight());
+            ViewCompat.setTranslationY(mView, -mView.height.toFloat())
             ViewCompat.animate(mView)
                     .translationY(0f)
-                    .setInterpolator(com.xxf.view.snackbar.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                    .setDuration(ANIMATION_DURATION)
-                    .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(View view) {
+                    .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                    .setDuration(ANIMATION_DURATION.toLong())
+                    .setListener(object : ViewPropertyAnimatorListenerAdapter() {
+                        override fun onAnimationStart(view: View) {
                             mView.animateChildrenIn(ANIMATION_DURATION - ANIMATION_FADE_DURATION,
-                                    ANIMATION_FADE_DURATION);
+                                    ANIMATION_FADE_DURATION)
                         }
 
-                        @Override
-                        public void onAnimationEnd(View view) {
+                        override fun onAnimationEnd(view: View) {
                             if (mCallback != null) {
-                                mCallback.onShown(Snackbar.this);
+                                mCallback!!.onShown(this@Snackbar)
                             }
-                            SnackbarManager.getInstance()
-                                    .onShown(mManagerCallback);
+                            SnackbarManager.instance
+                                    .onShown(mManagerCallback)
                         }
                     })
-                    .start();
+                    .start()
         } else {
-            Animation anim = AnimationUtils.loadAnimation(mView.getContext(),
-                    R.anim.xxf_sanckbar_top_in);
-            anim.setInterpolator(com.xxf.view.snackbar.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-            anim.setDuration(ANIMATION_DURATION);
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationEnd(Animation animation) {
+            val anim = android.view.animation.AnimationUtils.loadAnimation(mView.context,
+                    R.anim.xxf_sanckbar_top_in)
+            anim.interpolator = AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR
+            anim.duration = ANIMATION_DURATION.toLong()
+            anim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationEnd(animation: Animation) {
                     if (mCallback != null) {
-                        mCallback.onShown(Snackbar.this);
+                        mCallback!!.onShown(this@Snackbar)
                     }
-                    SnackbarManager.getInstance()
-                            .onShown(mManagerCallback);
+                    SnackbarManager.instance
+                            .onShown(mManagerCallback)
                 }
 
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
-            mView.startAnimation(anim);
+                override fun onAnimationStart(animation: Animation) {}
+                override fun onAnimationRepeat(animation: Animation) {}
+            })
+            mView.startAnimation(anim)
         }
     }
 
-    private void animateViewOut(final int event) {
+    private fun animateViewOut(event: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             ViewCompat.animate(mView)
-                    .translationY(-mView.getHeight())
-                    .setInterpolator(com.xxf.view.snackbar.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                    .setDuration(ANIMATION_DURATION)
-                    .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(View view) {
-                            mView.animateChildrenOut(0, ANIMATION_FADE_DURATION);
+                    .translationY(-mView.height.toFloat())
+                    .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                    .setDuration(ANIMATION_DURATION.toLong())
+                    .setListener(object : ViewPropertyAnimatorListenerAdapter() {
+                        override fun onAnimationStart(view: View) {
+                            mView.animateChildrenOut(0, ANIMATION_FADE_DURATION)
                         }
 
-                        @Override
-                        public void onAnimationEnd(View view) {
-                            onViewHidden(event);
+                        override fun onAnimationEnd(view: View) {
+                            onViewHidden(event)
                         }
                     })
-                    .start();
+                    .start()
         } else {
-            Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.xxf_sanckbar_top_out);
-            anim.setInterpolator(com.xxf.view.snackbar.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-            anim.setDuration(ANIMATION_DURATION);
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    onViewHidden(event);
+            val anim = android.view.animation.AnimationUtils.loadAnimation(mView.context, R.anim.xxf_sanckbar_top_out)
+            anim.interpolator = AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR
+            anim.duration = ANIMATION_DURATION.toLong()
+            anim.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationEnd(animation: Animation) {
+                    onViewHidden(event)
                 }
 
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
-            mView.startAnimation(anim);
+                override fun onAnimationStart(animation: Animation) {}
+                override fun onAnimationRepeat(animation: Animation) {}
+            })
+            mView.startAnimation(anim)
         }
     }
 
-    final void hideView(int event) {
-        if (mView.getVisibility() != View.VISIBLE || isBeingDragged()) {
-            onViewHidden(event);
+    fun hideView(event: Int) {
+        if (mView.visibility != View.VISIBLE || isBeingDragged) {
+            onViewHidden(event)
         } else {
-            animateViewOut(event);
+            animateViewOut(event)
         }
     }
 
-    private void onViewHidden(int event) {
-
-        SnackbarManager.getInstance()
-                .onDismissed(mManagerCallback);
-
+    private fun onViewHidden(event: Int) {
+        SnackbarManager.instance
+                .onDismissed(mManagerCallback)
         if (mCallback != null) {
-            mCallback.onDismissed(this, event);
+            mCallback!!.onDismissed(this, event)
         }
-
-        final ViewParent parent = mView.getParent();
-        if (parent instanceof ViewGroup) {
-            ((ViewGroup) parent).removeView(mView);
+        val parent = mView.parent
+        if (parent is ViewGroup) {
+            parent.removeView(mView)
         }
     }
 
-    private boolean isBeingDragged() {
-        final ViewGroup.LayoutParams lp = mView.getLayoutParams();
-
-        if (lp instanceof CoordinatorLayout.LayoutParams) {
-            final CoordinatorLayout.LayoutParams cllp = (CoordinatorLayout.LayoutParams) lp;
-            final CoordinatorLayout.Behavior behavior = cllp.getBehavior();
-
-            if (behavior instanceof SwipeDismissBehavior) {
-                return ((SwipeDismissBehavior) behavior).getDragState()
-                        != SwipeDismissBehavior.STATE_IDLE;
-            }
-        }
-        return false;
-    }
-
-
-    final class Behavior extends SwipeDismissBehavior<SnackbarLayout> {
-        @Override
-        public boolean canSwipeDismissView(View child) {
-            return child instanceof SnackbarLayout;
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(CoordinatorLayout parent, SnackbarLayout child,
-                                             MotionEvent event) {
-
-
-            if (parent.isPointInChildBounds(child, (int) event.getX(), (int) event.getY())) {
-                switch (event.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                        SnackbarManager.getInstance()
-                                .cancelTimeout(mManagerCallback);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        SnackbarManager.getInstance()
-                                .restoreTimeout(mManagerCallback);
-                        break;
+    private val isBeingDragged: Boolean
+        private get() {
+            val lp = mView.layoutParams
+            if (lp is CoordinatorLayout.LayoutParams) {
+                val behavior = lp.behavior
+                if (behavior is SwipeDismissBehavior<*>) {
+                    return (behavior.dragState
+                            != SwipeDismissBehavior.STATE_IDLE)
                 }
             }
-
-            return super.onInterceptTouchEvent(parent, child, event);
+            return false
         }
+
+    internal inner class Behavior : SwipeDismissBehavior<SnackbarLayout?>() {
+        override fun canSwipeDismissView(child: View): Boolean {
+            return child is SnackbarLayout
+        }
+
+        override fun onInterceptTouchEvent(parent: CoordinatorLayout, child: SnackbarLayout,
+                                           event: MotionEvent): Boolean {
+            if (parent.isPointInChildBounds(child!!, event.x.toInt(), event.y.toInt())) {
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> SnackbarManager.instance
+                            .cancelTimeout(mManagerCallback)
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> SnackbarManager.instance
+                            .restoreTimeout(mManagerCallback)
+                }
+            }
+            return super.onInterceptTouchEvent(parent, child, event)
+        }
+    }
+
+    init {
+        mContext = mParent!!.context
+        val inflater = LayoutInflater.from(mContext)
+        mView = inflater.inflate(R.layout.xxf_snackbar_layout, mParent, false) as SnackbarLayout
     }
 }

@@ -1,40 +1,27 @@
-package com.xxf.view.snackbar;
+package com.xxf.view.snackbar
 
+import android.view.animation.Animation
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.Interpolator
+import android.view.animation.LinearInterpolator
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
-
-
-public class AnimationUtils {
-    public static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
-    public static final Interpolator FAST_OUT_SLOW_IN_INTERPOLATOR = new FastOutSlowInInterpolator();
-    public static final Interpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
-
-    AnimationUtils() {
+object AnimationUtils {
+    val LINEAR_INTERPOLATOR: Interpolator = LinearInterpolator()
+    @JvmField
+    val FAST_OUT_SLOW_IN_INTERPOLATOR: Interpolator = FastOutSlowInInterpolator()
+    val DECELERATE_INTERPOLATOR: Interpolator = DecelerateInterpolator()
+    fun lerp(startValue: Float, endValue: Float, fraction: Float): Float {
+        return startValue + fraction * (endValue - startValue)
     }
 
-    static float lerp(float startValue, float endValue, float fraction) {
-        return startValue + fraction * (endValue - startValue);
+    fun lerp(startValue: Int, endValue: Int, fraction: Float): Int {
+        return startValue + Math.round(fraction * (endValue - startValue).toFloat())
     }
 
-    static int lerp(int startValue, int endValue, float fraction) {
-        return startValue + Math.round(fraction * (float) (endValue - startValue));
-    }
-
-    public static class AnimationListenerAdapter implements Animation.AnimationListener {
-        public AnimationListenerAdapter() {
-        }
-
-        public void onAnimationStart(Animation animation) {
-        }
-
-        public void onAnimationEnd(Animation animation) {
-        }
-
-        public void onAnimationRepeat(Animation animation) {
-        }
+    class AnimationListenerAdapter : Animation.AnimationListener {
+        override fun onAnimationStart(animation: Animation) {}
+        override fun onAnimationEnd(animation: Animation) {}
+        override fun onAnimationRepeat(animation: Animation) {}
     }
 }
