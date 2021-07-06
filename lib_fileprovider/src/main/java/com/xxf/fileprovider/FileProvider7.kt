@@ -1,17 +1,12 @@
-package com.xxf.fileprovider;
+package com.xxf.fileprovider
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.os.Build;
-
-import androidx.core.content.FileProvider;
-
-import java.io.File;
-import java.util.List;
-
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import androidx.core.content.FileProvider
+import java.io.File
 
 /**
  * public void takePhotoNoCompress(View view) {
@@ -23,12 +18,14 @@ import java.util.List;
  * mCurrentPhotoPath = file.getAbsolutePath();
  * // 仅需改变这一行
  * Uri fileUri = FileProvider7.getUriForFile(this, file);
- * <p>
+ *
+ *
  * takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
  * startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PHOTO);
  * }
  * }
- * <p>
+ *
+ *
  * 示例二 安装apk
  * public void installApk(View view) {
  * File file = new File(Environment.getExternalStorageDirectory(),
@@ -40,78 +37,69 @@ import java.util.List;
  * startActivity(intent);
  * }
  */
-public class FileProvider7 {
-
-    public static String getAuthority(Context context) {
-        return context.getPackageName() + ".android7.fileprovider";
+object FileProvider7 {
+    fun getAuthority(context: Context): String {
+        return context.packageName + ".android7.fileprovider"
     }
 
-    public static Uri getUriForFile(Context context, File file) {
-        Uri fileUri = null;
-        if (Build.VERSION.SDK_INT >= 24) {
-            fileUri = getUriForFile24(context, file);
+    fun getUriForFile(context: Context, file: File?): Uri? {
+        var fileUri: Uri? = null
+        fileUri = if (Build.VERSION.SDK_INT >= 24) {
+            getUriForFile24(context, file)
         } else {
-            fileUri = Uri.fromFile(file);
+            Uri.fromFile(file)
         }
-        return fileUri;
+        return fileUri
     }
 
-
-    public static Uri getUriForFile24(Context context, File file) {
-        Uri fileUri = FileProvider.getUriForFile(context,
-                context.getPackageName() + ".android7.fileprovider",
-                file);
-        return fileUri;
+    fun getUriForFile24(context: Context, file: File?): Uri {
+        return FileProvider.getUriForFile(context,
+                context.packageName + ".android7.fileprovider",
+                file!!)
     }
 
-
-    public static void setIntentDataAndType(Context context,
-                                            Intent intent,
-                                            String type,
-                                            File file,
-                                            boolean writeAble) {
+    fun setIntentDataAndType(context: Context,
+                             intent: Intent,
+                             type: String?,
+                             file: File?,
+                             writeAble: Boolean) {
         if (Build.VERSION.SDK_INT >= 24) {
-            intent.setDataAndType(getUriForFile(context, file), type);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(getUriForFile(context, file), type)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             if (writeAble) {
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             }
         } else {
-            intent.setDataAndType(Uri.fromFile(file), type);
+            intent.setDataAndType(Uri.fromFile(file), type)
         }
     }
 
-
-    public static void setIntentData(Context context,
-                                     Intent intent,
-                                     File file,
-                                     boolean writeAble) {
+    fun setIntentData(context: Context,
+                      intent: Intent,
+                      file: File?,
+                      writeAble: Boolean) {
         if (Build.VERSION.SDK_INT >= 24) {
-            intent.setData(getUriForFile(context, file));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.data = getUriForFile(context, file)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             if (writeAble) {
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             }
         } else {
-            intent.setData(Uri.fromFile(file));
+            intent.data = Uri.fromFile(file)
         }
     }
 
-
-    public static void grantPermissions(Context context, Intent intent, Uri uri, boolean writeAble) {
-
-        int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+    fun grantPermissions(context: Context, intent: Intent, uri: Uri?, writeAble: Boolean) {
+        var flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
         if (writeAble) {
-            flag |= Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+            flag = flag or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         }
-        intent.addFlags(flag);
-        List<ResolveInfo> resInfoList = context.getPackageManager()
-                .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resInfoList) {
-            String packageName = resolveInfo.activityInfo.packageName;
-            context.grantUriPermission(packageName, uri, flag);
+        intent.addFlags(flag)
+        val resInfoList = context.packageManager
+                .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        for (resolveInfo in resInfoList) {
+            val packageName = resolveInfo.activityInfo.packageName
+            context.grantUriPermission(packageName, uri, flag)
         }
     }
-
-
 }

@@ -13,45 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.xxf.objectbox
 
-package com.xxf.objectbox;
-
-import io.objectbox.BoxStore;
-import io.objectbox.reactive.DataObserver;
-import io.objectbox.reactive.DataSubscription;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import io.reactivex.rxjava3.functions.Cancellable;
+import io.objectbox.BoxStore
+import io.reactivex.rxjava3.core.Observable
 
 /**
  * Static methods to Rx-ify ObjectBox queries.
  */
-public abstract class RxBoxStore {
+object RxBoxStore {
     /**
      * Using the returned Observable, you can be notified about data changes.
      * Once a transaction is committed, you will get info on classes with changed Objects.
      */
-    public static <T> Observable<Class> observable(final BoxStore boxStore) {
-        return Observable.create(new ObservableOnSubscribe<Class>() {
-            @Override
-            public void subscribe(final ObservableEmitter<Class> emitter) throws Exception {
-                final DataSubscription dataSubscription = boxStore.subscribe().observer(new DataObserver<Class>() {
-                    @Override
-                    public void onData(Class data) {
-                        if (!emitter.isDisposed()) {
-                            emitter.onNext(data);
-                        }
-                    }
-                });
-                emitter.setCancellable(new Cancellable() {
-                    @Override
-                    public void cancel() throws Exception {
-                        dataSubscription.cancel();
-                    }
-                });
+    fun <T> observable(boxStore: BoxStore): Observable<Class<*>> {
+        return Observable.create { emitter ->
+            val dataSubscription = boxStore.subscribe().observer { data ->
+                if (!emitter.isDisposed) {
+                    emitter.onNext(data)
+                }
             }
-        });
+            emitter.setCancellable { dataSubscription.cancel() }
+        }
     }
-
 }

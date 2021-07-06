@@ -1,14 +1,9 @@
-package com.xxf.bus;
+package com.xxf.bus
 
-import androidx.annotation.NonNull;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.subjects.PublishSubject;
-import io.reactivex.rxjava3.subjects.Subject;
-
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
+import io.reactivex.rxjava3.subjects.Subject
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @version 2.3.0
@@ -16,21 +11,12 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @Description 增加Rxbus 提供全局事件收发
  * @date createTime：2018/1/4
  */
-public final class RxBus {
-    private final Map<Class<?>, Object> mStickyEventMap = new ConcurrentHashMap<>();
-    private final Subject<Object> bus;
-
-    private RxBus() {
-        bus = PublishSubject.create().toSerialized();
+object RxBus {
+    private val mStickyEventMap: MutableMap<Class<*>, Any> = ConcurrentHashMap()
+    private val bus: Subject<Any> by lazy {
+        PublishSubject.create<Any>().toSerialized();
     }
 
-    private static class SingletonHolder {
-        private static final RxBus defaultRxBus = new RxBus();
-    }
-
-    public static RxBus getInstance() {
-        return SingletonHolder.defaultRxBus;
-    }
 
     /**
      * 发送 事件
@@ -38,13 +24,13 @@ public final class RxBus {
      * @param event
      * @return 是否发送成功, event==null false
      */
-    public boolean postEvent(@NonNull Object event) {
+    fun postEvent(event: Any): Boolean {
         if (event == null) {
-            return false;
+            return false
         }
-        bus.onNext(event);
-        mStickyEventMap.put(event.getClass(), event);
-        return true;
+        bus.onNext(event)
+        mStickyEventMap[event.javaClass] = event
+        return true
     }
 
     /**
@@ -52,34 +38,26 @@ public final class RxBus {
      *
      * @return
      */
-    public boolean hasObservable() {
-        return bus.hasObservers();
+    fun hasObservable(): Boolean {
+        return bus.hasObservers()
     }
 
     /**
      * 订阅特定类型的Event Observable,注意线程问题
      */
-    public <T> Observable<T> subscribeEvent(Class<T> eventType) {
-        return bus.ofType(eventType);
-    }
-
-
-    /**
-     * 订阅粘性事件
-     *
-     * @param eventType
-     * @param <T>
-     * @return
-     */
-    public <T> Observable<T> subscribeStickyEvent(Class<T> eventType) {
-        synchronized (mStickyEventMap) {
-            Observable<T> observable = bus.ofType(eventType);
-            final Object event = mStickyEventMap.get(eventType);
-            if (event != null) {
-                return observable.startWith(Observable.just(eventType.cast(event)));
-            } else {
-                return observable;
+    fun <T> subscribeEvent(eventType: Class<T>, sticky: Boolean = false): Observable<T> {
+        if (sticky) {
+            synchronized(mStickyEventMap) {
+                val observable = bus.ofType(eventType)
+                val event = mStickyEventMap[eventType]
+                return if (event != null) {
+                    return observable.startWith(Observable.just(eventType.cast(event)));
+                } else {
+                    return observable;
+                }
             }
+        } else {
+            return bus.ofType(eventType);
         }
     }
 }

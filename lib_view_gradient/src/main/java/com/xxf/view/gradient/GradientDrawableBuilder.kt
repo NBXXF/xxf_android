@@ -1,147 +1,128 @@
-package com.xxf.view.gradient;
+package com.xxf.view.gradient
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.util.AttributeSet;
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.util.AttributeSet
 
-public class GradientDrawableBuilder {
+class GradientDrawableBuilder {
+    private var startColor = 0
+    private var centerColor = 0
+    private var endColor = 0
+    private var orientation: GradientDrawable.Orientation? = GradientDrawable.Orientation.TOP_BOTTOM
+    private var radiusCornerTopLeft = 0f
+    private var radiusCornerTopRight = 0f
+    private var radiusCornerBottomRight = 0f
+    private var radiusCornerBottomLeft = 0f
 
-    private int startColor;
-    private int centerColor;
-    private int endColor;
-    private GradientDrawable.Orientation orientation = GradientDrawable.Orientation.TOP_BOTTOM;
-    private float radiusCornerTopLeft = 0;
-    private float radiusCornerTopRight = 0;
-    private float radiusCornerBottomRight = 0;
-    private float radiusCornerBottomLeft = 0;
-
-    public GradientDrawableBuilder() {
+    constructor() {}
+    constructor(context: Context, attrs: AttributeSet?) {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.GradientLayout, 0, 0)
+        startColor = a.getColor(R.styleable.GradientLayout_start_color, -1)
+        centerColor = a.getColor(R.styleable.GradientLayout_center_color, -1)
+        endColor = a.getColor(R.styleable.GradientLayout_end_color, -1)
+        radiusCornerTopLeft = a.getFloat(R.styleable.GradientLayout_radius_top_left, 0f)
+        radiusCornerTopRight = a.getFloat(R.styleable.GradientLayout_radius_top_right, 0f)
+        radiusCornerBottomLeft = a.getFloat(R.styleable.GradientLayout_radius_bottom_left, 0f)
+        radiusCornerBottomRight = a.getFloat(R.styleable.GradientLayout_radius_bottom_right, 0f)
+        val attrOrientation = a.getInt(R.styleable.GradientLayout_orientation, 0)
+        orientation = intToOrientation(attrOrientation)
+        a.recycle()
     }
 
-    public GradientDrawableBuilder(final Context context, final AttributeSet attrs) {
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GradientLayout, 0, 0);
-        this.startColor = a.getColor(R.styleable.GradientLayout_start_color, -1);
-        this.centerColor = a.getColor(R.styleable.GradientLayout_center_color, -1);
-        this.endColor = a.getColor(R.styleable.GradientLayout_end_color, -1);
-
-        this.radiusCornerTopLeft = a.getFloat(R.styleable.GradientLayout_radius_top_left, 0);
-        this.radiusCornerTopRight = a.getFloat(R.styleable.GradientLayout_radius_top_right, 0);
-        this.radiusCornerBottomLeft = a.getFloat(R.styleable.GradientLayout_radius_bottom_left, 0);
-        this.radiusCornerBottomRight = a.getFloat(R.styleable.GradientLayout_radius_bottom_right, 0);
-
-        final int attrOrientation = a.getInt(R.styleable.GradientLayout_orientation, 0);
-        this.orientation = intToOrientation(attrOrientation);
-        a.recycle();
+    fun setCenterColor(centerColor: Int) {
+        this.centerColor = centerColor
     }
 
-    public void setCenterColor(int centerColor) {
-        this.centerColor = centerColor;
+    fun setStartColor(startColor: Int): GradientDrawableBuilder {
+        this.startColor = startColor
+        return this
     }
 
-    public GradientDrawableBuilder setStartColor(final int startColor) {
-        this.startColor = startColor;
-        return this;
+    fun setEndColor(endColor: Int): GradientDrawableBuilder {
+        this.endColor = endColor
+        return this
     }
 
-    public GradientDrawableBuilder setEndColor(final int endColor) {
-        this.endColor = endColor;
-        return this;
+    fun setOrientation(orientation: GradientDrawable.Orientation?): GradientDrawableBuilder {
+        this.orientation = orientation
+        return this
     }
 
-    public GradientDrawableBuilder setOrientation(final GradientDrawable.Orientation orientation) {
-        this.orientation = orientation;
-        return this;
+    fun setRadiusCornerTopLeft(radius: Float): GradientDrawableBuilder {
+        radiusCornerTopLeft = radius
+        return this
     }
 
-    public GradientDrawableBuilder setRadiusCornerTopLeft(final float radius) {
-        this.radiusCornerTopLeft = radius;
-        return this;
+    fun setRadiusCornerTopRight(radius: Float): GradientDrawableBuilder {
+        radiusCornerTopRight = radius
+        return this
     }
 
-    public GradientDrawableBuilder setRadiusCornerTopRight(final float radius) {
-        this.radiusCornerTopRight = radius;
-        return this;
+    fun setRadiusCornerBottomRight(radius: Float): GradientDrawableBuilder {
+        radiusCornerBottomRight = radius
+        return this
     }
 
-    public GradientDrawableBuilder setRadiusCornerBottomRight(final float radius) {
-        this.radiusCornerBottomRight = radius;
-        return this;
+    fun setRadiusCornerBottomLeft(radius: Float): GradientDrawableBuilder {
+        radiusCornerBottomLeft = radius
+        return this
     }
 
-    public GradientDrawableBuilder setRadiusCornerBottomLeft(final float radius) {
-        this.radiusCornerBottomLeft = radius;
-        return this;
-    }
-
-
-    public GradientDrawable build() {
-        populateMissingColors();
-        final int colors[];
-        if (centerColor != -1) {
-            colors = new int[]{this.startColor, this.centerColor, this.endColor};
+    fun build(): GradientDrawable {
+        populateMissingColors()
+        val colors: IntArray
+        colors = if (centerColor != -1) {
+            intArrayOf(startColor, centerColor, endColor)
         } else {
-            colors = new int[]{this.startColor, this.endColor};
+            intArrayOf(startColor, endColor)
         }
-        final GradientDrawable.Orientation validOrientation = this.orientation == null
-                ? GradientDrawable.Orientation.TOP_BOTTOM
-                : this.orientation;
-        GradientDrawable drawable = new GradientDrawable(validOrientation, colors);
-        float[] radii = new float[8];
-        radii[0] = radiusCornerTopLeft;
-        radii[1] = radiusCornerTopLeft;
-        radii[2] = radiusCornerTopRight;
-        radii[3] = radiusCornerTopRight;
-        radii[4] = radiusCornerBottomRight;
-        radii[5] = radiusCornerBottomRight;
-        radii[6] = radiusCornerBottomLeft;
-        radii[7] = radiusCornerBottomLeft;
-        drawable.setCornerRadii(radii);
-        return drawable;
+        val validOrientation = if (orientation == null) GradientDrawable.Orientation.TOP_BOTTOM else orientation!!
+        val drawable = GradientDrawable(validOrientation, colors)
+        val radii = FloatArray(8)
+        radii[0] = radiusCornerTopLeft
+        radii[1] = radiusCornerTopLeft
+        radii[2] = radiusCornerTopRight
+        radii[3] = radiusCornerTopRight
+        radii[4] = radiusCornerBottomRight
+        radii[5] = radiusCornerBottomRight
+        radii[6] = radiusCornerBottomLeft
+        radii[7] = radiusCornerBottomLeft
+        drawable.cornerRadii = radii
+        return drawable
     }
 
-    private GradientDrawable.Orientation intToOrientation(final int original) {
-        switch (original) {
-            case 1:
-                return GradientDrawable.Orientation.TR_BL;
-            case 2:
-                return GradientDrawable.Orientation.RIGHT_LEFT;
-            case 3:
-                return GradientDrawable.Orientation.BR_TL;
-            case 4:
-                return GradientDrawable.Orientation.BOTTOM_TOP;
-            case 5:
-                return GradientDrawable.Orientation.BL_TR;
-            case 6:
-                return GradientDrawable.Orientation.LEFT_RIGHT;
-            case 7:
-                return GradientDrawable.Orientation.TL_BR;
-            case 0:
-            default:
-                return GradientDrawable.Orientation.TOP_BOTTOM;
+    private fun intToOrientation(original: Int): GradientDrawable.Orientation {
+        return when (original) {
+            1 -> GradientDrawable.Orientation.TR_BL
+            2 -> GradientDrawable.Orientation.RIGHT_LEFT
+            3 -> GradientDrawable.Orientation.BR_TL
+            4 -> GradientDrawable.Orientation.BOTTOM_TOP
+            5 -> GradientDrawable.Orientation.BL_TR
+            6 -> GradientDrawable.Orientation.LEFT_RIGHT
+            7 -> GradientDrawable.Orientation.TL_BR
+            0 -> GradientDrawable.Orientation.TOP_BOTTOM
+            else -> GradientDrawable.Orientation.TOP_BOTTOM
         }
     }
 
-    private void populateMissingColors() {
-        if (this.endColor == -1 && this.startColor == -1) {
-            this.startColor = Color.RED;
+    private fun populateMissingColors() {
+        if (endColor == -1 && startColor == -1) {
+            startColor = Color.RED
         }
-
-        if (this.endColor == -1) {
-            this.endColor = lighter(this.startColor, 0.5f);
-            return;
+        if (endColor == -1) {
+            endColor = lighter(startColor, 0.5f)
+            return
         }
-
-        if (this.startColor == -1) {
-            this.startColor = lighter(this.endColor, 0.5f);
+        if (startColor == -1) {
+            startColor = lighter(endColor, 0.5f)
         }
     }
 
-    private int lighter(final int color, final float factor) {
-        final int red = (int) ((Color.red(color) * (1 - factor) / 255 + factor) * 255);
-        final int green = (int) ((Color.green(color) * (1 - factor) / 255 + factor) * 255);
-        final int blue = (int) ((Color.blue(color) * (1 - factor) / 255 + factor) * 255);
-        return Color.argb(Color.alpha(color), red, green, blue);
+    private fun lighter(color: Int, factor: Float): Int {
+        val red = ((Color.red(color) * (1 - factor) / 255 + factor) * 255).toInt()
+        val green = ((Color.green(color) * (1 - factor) / 255 + factor) * 255).toInt()
+        val blue = ((Color.blue(color) * (1 - factor) / 255 + factor) * 255).toInt()
+        return Color.argb(Color.alpha(color), red, green, blue)
     }
 }

@@ -13,150 +13,94 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.xxf.objectbox
 
-package com.xxf.objectbox;
-
-import java.util.List;
-
-import io.objectbox.query.Query;
-import io.objectbox.reactive.DataObserver;
-import io.objectbox.reactive.DataSubscription;
-import io.reactivex.rxjava3.core.BackpressureStrategy;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.FlowableEmitter;
-import io.reactivex.rxjava3.core.FlowableOnSubscribe;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.core.SingleEmitter;
-import io.reactivex.rxjava3.core.SingleOnSubscribe;
-import io.reactivex.rxjava3.functions.Cancellable;
+import io.objectbox.query.Query
+import io.objectbox.reactive.DataObserver
+import io.reactivex.rxjava3.core.*
 
 /**
  * Static methods to Rx-ify ObjectBox queries.
  */
-public abstract class RxQuery {
+object RxQuery {
     /**
      * The returned Flowable emits Query results one by one. Once all results have been processed, onComplete is called.
      * Uses BackpressureStrategy.BUFFER.
      */
-    public static <T> Flowable<T> flowableOneByOne(final Query<T> query) {
-        return flowableOneByOne(query, BackpressureStrategy.BUFFER);
+    fun <T> flowableOneByOne(query: Query<T>): Flowable<T> {
+        return flowableOneByOne(query, BackpressureStrategy.BUFFER)
     }
 
     /**
      * The returned Flowable emits Query results one by one. Once all results have been processed, onComplete is called.
      * Uses given BackpressureStrategy.
      */
-    public static <T> Flowable<T> flowableOneByOne(final Query<T> query, BackpressureStrategy strategy) {
-        return Flowable.create(new FlowableOnSubscribe<T>() {
-            @Override
-            public void subscribe(final FlowableEmitter<T> emitter) throws Exception {
-                createListItemEmitter(query, emitter);
-            }
-
-        }, strategy);
+    fun <T> flowableOneByOne(query: Query<T>, strategy: BackpressureStrategy?): Flowable<T> {
+        return Flowable.create({ emitter -> createListItemEmitter(query, emitter) }, strategy)
     }
 
-    static <T> void createListItemEmitter(final Query<T> query, final FlowableEmitter<T> emitter) {
-        final DataSubscription dataSubscription = query.subscribe().observer(new DataObserver<List<T>>() {
-            @Override
-            public void onData(List<T> data) {
-                for (T datum : data) {
-                    if (emitter.isCancelled()) {
-                        return;
-                    } else {
-                        emitter.onNext(datum);
-                    }
-                }
-                if (!emitter.isCancelled()) {
-                    emitter.onComplete();
+    fun <T> createListItemEmitter(query: Query<T>, emitter: FlowableEmitter<T>) {
+        val dataSubscription = query.subscribe().observer(DataObserver { data ->
+            for (datum in data) {
+                if (emitter.isCancelled) {
+                    return@DataObserver
+                } else {
+                    emitter.onNext(datum)
                 }
             }
-        });
-        emitter.setCancellable(new Cancellable() {
-            @Override
-            public void cancel() throws Exception {
-                dataSubscription.cancel();
+            if (!emitter.isCancelled) {
+                emitter.onComplete()
             }
-        });
+        })
+        emitter.setCancellable { dataSubscription.cancel() }
     }
 
     /**
      * The returned Observable emits Query results as Lists.
      * Never completes, so you will get updates when underlying data changes
-     * (see {@link Query#subscribe()} for details).
+     * (see [Query.subscribe] for details).
      */
-    public static <T> Observable<List<T>> observable(final Query<T> query) {
-        return Observable.create(new ObservableOnSubscribe<List<T>>() {
-            @Override
-            public void subscribe(final ObservableEmitter<List<T>> emitter) throws Exception {
-                final DataSubscription dataSubscription = query.subscribe().observer(new DataObserver<List<T>>() {
-                    @Override
-                    public void onData(List<T> data) {
-                        if (!emitter.isDisposed()) {
-                            emitter.onNext(data);
-                        }
-                    }
-                });
-                emitter.setCancellable(new Cancellable() {
-                    @Override
-                    public void cancel() throws Exception {
-                        dataSubscription.cancel();
-                    }
-                });
+    fun <T> observable(query: Query<T>): Observable<List<T>> {
+        return Observable.create { emitter ->
+            val dataSubscription = query.subscribe().observer { data ->
+                if (!emitter.isDisposed) {
+                    emitter.onNext(data)
+                }
             }
-        });
+            emitter.setCancellable { dataSubscription.cancel() }
+        }
     }
 
     /**
      * 只观察变化  .onlyChanges()
      * The returned Observable emits Query results as Lists.
      * Never completes, so you will get updates when underlying data changes
-     * (see {@link Query#subscribe()} for details).
+     * (see [Query.subscribe] for details).
      */
-    public static <T> Observable<List<T>> observableChange(final Query<T> query) {
-        return Observable.create(new ObservableOnSubscribe<List<T>>() {
-            @Override
-            public void subscribe(final ObservableEmitter<List<T>> emitter) throws Exception {
-                final DataSubscription dataSubscription = query.subscribe()
-                        .onlyChanges()
-                        .observer(new DataObserver<List<T>>() {
-                            @Override
-                            public void onData(List<T> data) {
-                                if (!emitter.isDisposed()) {
-                                    emitter.onNext(data);
-                                }
-                            }
-                        });
-                emitter.setCancellable(new Cancellable() {
-                    @Override
-                    public void cancel() throws Exception {
-                        dataSubscription.cancel();
+    fun <T> observableChange(query: Query<T>): Observable<List<T>> {
+        return Observable.create { emitter ->
+            val dataSubscription = query.subscribe()
+                    .onlyChanges()
+                    .observer { data ->
+                        if (!emitter.isDisposed) {
+                            emitter.onNext(data)
+                        }
                     }
-                });
-            }
-        });
+            emitter.setCancellable { dataSubscription.cancel() }
+        }
     }
 
     /**
      * The returned Single emits one Query result as a List.
      */
-    public static <T> Single<List<T>> single(final Query<T> query) {
-        return Single.create(new SingleOnSubscribe<List<T>>() {
-            @Override
-            public void subscribe(final SingleEmitter<List<T>> emitter) throws Exception {
-                query.subscribe().single().observer(new DataObserver<List<T>>() {
-                    @Override
-                    public void onData(List<T> data) {
-                        if (!emitter.isDisposed()) {
-                            emitter.onSuccess(data);
-                        }
-                    }
-                });
-                // no need to cancel, single never subscribes
+    fun <T> single(query: Query<T>): Single<List<T>> {
+        return Single.create { emitter ->
+            query.subscribe().single().observer { data ->
+                if (!emitter.isDisposed) {
+                    emitter.onSuccess(data)
+                }
             }
-        });
+            // no need to cancel, single never subscribes
+        }
     }
 }

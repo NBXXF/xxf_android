@@ -645,7 +645,7 @@ public class XXF {
      * @return
      */
     public static boolean postEvent(@NonNull Object event) {
-        return RxBus.getInstance().postEvent(event);
+        return RxBus.INSTANCE.postEvent(event);
     }
 
 
@@ -663,7 +663,7 @@ public class XXF {
      * @return
      */
     public static <T> Observable<T> subscribeEvent(Class<T> eventType) {
-        return RxBus.getInstance().subscribeEvent(eventType);
+        return RxBus.INSTANCE.subscribeEvent(eventType,false);
     }
 
     /**
@@ -674,7 +674,7 @@ public class XXF {
      * @return
      */
     public static <T> Observable<T> subscribeStickyEvent(Class<T> eventType) {
-        return RxBus.getInstance().subscribeStickyEvent(eventType);
+        return RxBus.INSTANCE.subscribeEvent(eventType,true);
     }
 
 }

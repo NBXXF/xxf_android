@@ -1,23 +1,19 @@
-package com.xxf.objectbox;
+package com.xxf.objectbox
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-
-import java.io.File;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import io.objectbox.BoxStore;
-import io.objectbox.BoxStoreBuilder;
+import android.app.Application
+import io.objectbox.BoxStore
+import io.objectbox.BoxStoreBuilder
+import io.objectbox.exception.DbException
+import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * @Description: objectBox
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2018/7/16 17:34
  */
-public class ObjectBoxFactory {
-    private static volatile Map<String, BoxStore> boxStoreMap = new ConcurrentHashMap<>();
+object ObjectBoxFactory {
+    private val boxStoreMap: MutableMap<String, BoxStore> = ConcurrentHashMap()
 
     /**
      * 创建box
@@ -26,26 +22,27 @@ public class ObjectBoxFactory {
      * @param objectStoreDirectory 路径
      * @return
      */
-    public static synchronized BoxStore getBoxStore(BoxStoreBuilder boxStoreBuilder,
-                                                    File objectStoreDirectory) {
-        BoxStore boxStore = null;
+    @Synchronized
+    fun getBoxStore(boxStoreBuilder: BoxStoreBuilder,
+                    objectStoreDirectory: File): BoxStore? {
+        var boxStore: BoxStore? = null
         try {
-            boxStore = boxStoreMap.get(objectStoreDirectory.getAbsolutePath());
+            boxStore = boxStoreMap[objectStoreDirectory.absolutePath]
             if (boxStore == null) {
-                boxStoreMap.put(objectStoreDirectory.getAbsolutePath(), boxStore = buildBox(boxStoreBuilder, objectStoreDirectory));
+                boxStoreMap[objectStoreDirectory.absolutePath] = buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
             }
-        } catch (Exception e) {
+        } catch (e: Exception) {
             try {
                 /**
                  * fix https://github.com/objectbox/objectbox-java/issues/610
                  */
-                BoxStore.deleteAllFiles(objectStoreDirectory);
-                boxStoreMap.put(objectStoreDirectory.getAbsolutePath(), boxStore = buildBox(boxStoreBuilder, objectStoreDirectory));
-            } catch (Exception retryEx) {
-                retryEx.printStackTrace();
+                BoxStore.deleteAllFiles(objectStoreDirectory)
+                boxStoreMap[objectStoreDirectory.absolutePath] = buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
+            } catch (retryEx: Exception) {
+                retryEx.printStackTrace()
             }
         }
-        return boxStore;
+        return boxStore
     }
 
     /**
@@ -56,12 +53,12 @@ public class ObjectBoxFactory {
      * @param dbName          数据库名字 非路径
      * @return
      */
-    public static synchronized BoxStore getBoxStore(Application application,
-                                                    BoxStoreBuilder boxStoreBuilder,
-                                                    String dbName) {
-        return getBoxStore(boxStoreBuilder, new File(application.getCacheDir(), dbName));
+    @Synchronized
+    fun getBoxStore(application: Application,
+                    boxStoreBuilder: BoxStoreBuilder,
+                    dbName: String?): BoxStore? {
+        return getBoxStore(boxStoreBuilder, File(application.cacheDir, dbName))
     }
-
 
     /**
      * 构建数据库
@@ -70,11 +67,11 @@ public class ObjectBoxFactory {
      * @return
      * @throws io.objectbox.exception.DbException
      */
-    private static synchronized BoxStore buildBox(BoxStoreBuilder boxStoreBuilder, @NonNull File objectStoreDirectory) throws io.objectbox.exception.DbException {
+    @Synchronized
+    @Throws(DbException::class)
+    private fun buildBox(boxStoreBuilder: BoxStoreBuilder, objectStoreDirectory: File): BoxStore {
         return boxStoreBuilder
                 .directory(objectStoreDirectory)
-                .build();
+                .build()
     }
-
-
 }

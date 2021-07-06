@@ -1,36 +1,29 @@
-package com.xxf.view.round;
+package com.xxf.view.round
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.RelativeLayout
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:43
  */
-public class XXFRoundRelativeLayout extends RelativeLayout implements XXFRoundWidget {
-    public XXFRoundRelativeLayout(Context context) {
-        super(context);
+open class XXFRoundRelativeLayout : RelativeLayout, XXFRoundWidget {
+    constructor(context: Context?) : super(context) {}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+        CornerUtil.clipView(this, attrs)
     }
 
-    public XXFRoundRelativeLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        CornerUtil.clipView(this, attrs);
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        CornerUtil.clipView(this, attrs)
     }
 
-    public XXFRoundRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        CornerUtil.clipView(this, attrs);
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+        CornerUtil.clipView(this, attrs)
     }
 
-    public XXFRoundRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        CornerUtil.clipView(this, attrs);
-    }
-
-    @Override
-    public void setRadius(float radius) {
-        CornerUtil.clipViewRadius(this, radius);
+    override fun setRadius(radius: Float) {
+        CornerUtil.clipViewRadius(this, radius)
     }
 }

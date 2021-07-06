@@ -1,38 +1,24 @@
-package com.xxf.objectbox;
+package com.xxf.objectbox
 
-
-import androidx.annotation.NonNull;
-import androidx.annotation.WorkerThread;
-
-import com.xxf.objectbox.id.MurmurHash;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import io.objectbox.Box;
-
+import androidx.annotation.WorkerThread
+import com.xxf.objectbox.id.MurmurHash
+import io.objectbox.Box
+import java.util.*
 
 /**
  * @Description: objectBox 扩展
  * @Author: XGod
  * @CreateDate: 2020/7/25 22:55
  */
-public class ObjectBoxUtils {
-
-    private ObjectBoxUtils() {
-    }
-
+object ObjectBoxUtils {
     /**
      * 生成id
      *
      * @param id
      * @return
      */
-    public static long generateId(String id) {
-        return MurmurHash.hash32(id);
+    fun generateId(id: String): Long {
+        return MurmurHash.hash32(id).toLong()
     }
 
     /**
@@ -43,19 +29,20 @@ public class ObjectBoxUtils {
      * @param mergeFunction
      * @param <T>
      * @throws Exception
-     */
+    </T> */
     @WorkerThread
-    public static <T> void put(@NonNull Box<T> box, @NonNull List<T> insertData, @NonNull ObjectBoxMergeFunction<T> mergeFunction) throws Throwable {
-        Objects.requireNonNull(box);
-        Objects.requireNonNull(insertData);
-        Objects.requireNonNull(mergeFunction);
-        List<Long> ids = new ArrayList<>();
-        for (T t : insertData) {
-            ids.add(box.getId(t));
+    @Throws(Throwable::class)
+    fun <T> put(box: Box<T>, insertData: List<T>, mergeFunction: ObjectBoxMergeFunction<T>) {
+        Objects.requireNonNull(box)
+        Objects.requireNonNull(insertData)
+        Objects.requireNonNull(mergeFunction)
+        val ids: MutableList<Long> = ArrayList()
+        for (t in insertData) {
+            ids.add(box.getId(t))
         }
-        Map<Long, T> insertedMap = box.getMap(ids);
-        List<T> apply = mergeFunction.apply(insertData, insertedMap);
-        box.put(apply);
+        val insertedMap = box.getMap(ids)
+        val apply = mergeFunction.apply(insertData, insertedMap)
+        box.put(apply)
     }
 
     /**
@@ -66,10 +53,11 @@ public class ObjectBoxUtils {
      * @param mergeFunction
      * @param <T>
      * @throws Exception
-     */
+    </T> */
     @WorkerThread
-    public static <T> void put(@NonNull Box<T> box, @NonNull T insertData, @NonNull ObjectBoxMergeFunction<T> mergeFunction) throws Throwable {
-        put(box, Arrays.asList(insertData), mergeFunction);
+    @Throws(Throwable::class)
+    fun <T> put(box: Box<T>, insertData: T, mergeFunction: ObjectBoxMergeFunction<T>) {
+        put(box, Arrays.asList(insertData), mergeFunction)
     }
 
     /**
@@ -79,24 +67,22 @@ public class ObjectBoxUtils {
      * @param insertData
      * @param mergeFunction
      * @param <T>
-     */
+    </T> */
     @WorkerThread
-    public static <T> void replaceAll(@NonNull Box<T> box, @NonNull List<T> insertData, @NonNull ObjectBoxMergeFunction<T> mergeFunction) throws Throwable {
-        Objects.requireNonNull(box);
-        Objects.requireNonNull(insertData);
-        Objects.requireNonNull(mergeFunction);
-        List<Long> ids = new ArrayList<>();
-        for (T t : insertData) {
-            ids.add(box.getId(t));
+    @Throws(Throwable::class)
+    fun <T> replaceAll(box: Box<T>, insertData: List<T>, mergeFunction: ObjectBoxMergeFunction<T>) {
+        Objects.requireNonNull(box)
+        Objects.requireNonNull(insertData)
+        Objects.requireNonNull(mergeFunction)
+        val ids: MutableList<Long> = ArrayList()
+        for (t in insertData) {
+            ids.add(box.getId(t))
         }
-        Map<Long, T> insertedMap = box.getMap(ids);
-        List<T> apply = mergeFunction.apply(insertData, insertedMap);
-        box.getStore().runInTx(new Runnable() {
-            @Override
-            public void run() {
-                box.removeAll();
-                box.put(apply);
-            }
-        });
+        val insertedMap = box.getMap(ids)
+        val apply = mergeFunction.apply(insertData, insertedMap)
+        box.store.runInTx {
+            box.removeAll()
+            box.put(apply)
+        }
     }
 }

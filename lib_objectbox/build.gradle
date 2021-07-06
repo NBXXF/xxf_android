@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'io.objectbox' // apply last
     id 'com.github.dcendents.android-maven'
 }
