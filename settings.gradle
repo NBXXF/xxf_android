@@ -7,6 +7,7 @@ include ':lib_adapter'
 include ':lib_bus'
 include ':lib_activityresult'
 include ':lib_permission'
+include ':lib_view_snackbar'
 include ':app',
         ':lib_http',
         ':xxf',
