@@ -1,80 +1,70 @@
-package com.xxf.view.ration;
+package com.xxf.view.ration
 
-import android.content.Context;
-import android.util.AttributeSet;
-
-import com.xxf.view.ration.inner.RatioDatumMode;
-import com.xxf.view.ration.inner.RatioLayoutDelegate;
-import com.xxf.view.ration.inner.XXFRatioWidget;
-import com.xxf.view.round.XXFRoundEditText;
+import android.content.Context
+import android.util.AttributeSet
+import com.xxf.view.ration.inner.RatioDatumMode
+import com.xxf.view.ration.inner.RatioLayoutDelegate
+import com.xxf.view.ration.inner.RatioLayoutDelegate.Companion.obtain
+import com.xxf.view.ration.inner.XXFRatioWidget
+import com.xxf.view.round.XXFRoundEditText
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
  * Date: 2/4/21 2:45 PM
  * Description: 支持宽高比例
- * {@link R.styleable.xxf_ratio_styleable}
- * <p>
+ * [R.styleable.xxf_ratio_styleable]
+ *
+ *
  * <declare-styleable name="xxf_ratio_styleable" tools:ignore="ResourceName">
- * <!-- 宽度比例系数 -->
- * <attr name="widthRatio" format="float" />
- * <!-- 高度比例系数 -->
- * <attr name="heightRatio" format="float" />
- * <!-- 宽高比 -->
- * <attr name="aspectRatio" format="float" />
- * <!-- 测量模式 -->
+ *
+ * <attr name="widthRatio" format="float"></attr>
+ *
+ * <attr name="heightRatio" format="float"></attr>
+ *
+ * <attr name="aspectRatio" format="float"></attr>
+ *
  * <attr name="datumRatio">
- * <!-- 自动 -->
- * <enum name="datumAuto" value="0" />
- * <!-- 以宽度为基准 -->
- * <enum name="datumWidth" value="1" />
- * <!-- 以高度为基准 -->
- * <enum name="datumHeight" value="2" />
- * </attr>
- * </declare-styleable>
+ *
+ * <enum name="datumAuto" value="0"></enum>
+ *
+ * <enum name="datumWidth" value="1"></enum>
+ *
+ * <enum name="datumHeight" value="2"></enum>
+</attr> *
+</declare-styleable> *
  */
+class XXFRatioEditText : XXFRoundEditText, XXFRatioWidget {
+    private var mRatioLayoutDelegate: RatioLayoutDelegate<*>? = null
 
-public class XXFRatioEditText extends XXFRoundEditText implements XXFRatioWidget {
-
-    private RatioLayoutDelegate mRatioLayoutDelegate;
-
-    public XXFRatioEditText(Context context) {
-        super(context);
+    constructor(context: Context?) : super(context) {}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+        mRatioLayoutDelegate = obtain(this, attrs!!)
     }
 
-    public XXFRatioEditText(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mRatioLayoutDelegate = RatioLayoutDelegate.obtain(this, attrs);
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        mRatioLayoutDelegate = obtain(this, attrs!!, defStyleAttr)
     }
 
-    public XXFRatioEditText(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        mRatioLayoutDelegate = RatioLayoutDelegate.obtain(this, attrs, defStyleAttr);
-    }
-
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if(mRatioLayoutDelegate != null){
-            mRatioLayoutDelegate.update(widthMeasureSpec,heightMeasureSpec);
-            widthMeasureSpec = mRatioLayoutDelegate.getWidthMeasureSpec();
-            heightMeasureSpec = mRatioLayoutDelegate.getHeightMeasureSpec();
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-
-
-    @Override
-    public void setAspectRatio(float aspectRatio) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        var widthMeasureSpec = widthMeasureSpec
+        var heightMeasureSpec = heightMeasureSpec
         if (mRatioLayoutDelegate != null) {
-            mRatioLayoutDelegate.setAspectRatio(aspectRatio);
+            mRatioLayoutDelegate!!.update(widthMeasureSpec, heightMeasureSpec)
+            widthMeasureSpec = mRatioLayoutDelegate!!.widthMeasureSpec
+            heightMeasureSpec = mRatioLayoutDelegate!!.heightMeasureSpec
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
+    override fun setAspectRatio(aspectRatio: Float) {
+        if (mRatioLayoutDelegate != null) {
+            mRatioLayoutDelegate!!.setAspectRatio(aspectRatio)
         }
     }
 
-    @Override
-    public void setRatio(RatioDatumMode mode, float widthRatio, float heightRatio) {
-        if(mRatioLayoutDelegate != null){
-            mRatioLayoutDelegate.setRatio(mode, widthRatio, heightRatio);
+    override fun setRatio(mode: RatioDatumMode?, widthRatio: Float, heightRatio: Float) {
+        if (mRatioLayoutDelegate != null) {
+            mRatioLayoutDelegate!!.setRatio(mode, widthRatio, heightRatio)
         }
     }
 }
