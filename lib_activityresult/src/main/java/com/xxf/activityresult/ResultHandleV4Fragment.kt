@@ -26,6 +26,6 @@ class ResultHandleV4Fragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        resultPublisher.onNext(ActivityResult(requestCode, resultCode, data!!))
+        resultPublisher.onNext(ActivityResult(requestCode, resultCode, data))
     }
 }
