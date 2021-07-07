@@ -1,5 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.github.dcendents.android-maven'
+}
 def des = rootProject.ext.dependencies
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
