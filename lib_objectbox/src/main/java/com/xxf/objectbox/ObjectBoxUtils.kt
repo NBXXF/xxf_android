@@ -1,7 +1,9 @@
 package com.xxf.objectbox
 
 import androidx.annotation.WorkerThread
-import com.xxf.objectbox.id.MurmurHash
+import com.xxf.hash.Murmur3A
+import com.xxf.hash.Murmur3F
+import com.xxf.hash.PrimitiveDataChecksum
 import io.objectbox.Box
 import java.util.*
 
@@ -18,7 +20,9 @@ object ObjectBoxUtils {
      * @return
      */
     fun generateId(id: String): Long {
-        return MurmurHash.hash32(id).toLong()
+        val primitiveDataChecksum = PrimitiveDataChecksum(Murmur3A());
+        primitiveDataChecksum.updateUtf8(id);
+        return primitiveDataChecksum.value;
     }
 
     /**

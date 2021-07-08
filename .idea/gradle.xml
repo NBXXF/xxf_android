@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/lib_arouter-api" />
             <option value="$PROJECT_DIR$/lib_bus" />
             <option value="$PROJECT_DIR$/lib_fileprovider" />
+            <option value="$PROJECT_DIR$/lib_hash" />
             <option value="$PROJECT_DIR$/lib_http" />
             <option value="$PROJECT_DIR$/lib_objectbox" />
             <option value="$PROJECT_DIR$/lib_permission" />

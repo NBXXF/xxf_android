@@ -37,6 +37,7 @@ import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
+import com.xxf.objectbox.ObjectBoxUtils;
 import com.xxf.view.utils.StatusBarUtils;
 
 import java.io.BufferedReader;
@@ -128,6 +129,12 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        long hello = ObjectBoxUtils.INSTANCE.generateId("hello");
+        long hello2 = ObjectBoxUtils.INSTANCE.generateId("hello");
+        ToastUtils.showToast(" issame:"+(hello==hello2), ToastUtils.ToastType.ERROR);
+        Log.d("=====>","hello2:"+ObjectBoxUtils.INSTANCE.generateId("XXXXXXXXXXXXYTTYFDYTFTYDFYTFDTYTDFYTYFTYFTWE685R6535656365ATDRTUDFTDUATFDUA"));
+        Log.d("=====>","hello2:"+ObjectBoxUtils.INSTANCE.generateId("付广告费含苞待放吧`非共和国和身份和规范化共和国符合规范和规范化规范化股份"));
+
 
         ActionTypeEvent actionTypeEvent = ActionTypeEvent.create("hello", "test");
         ActionTypeEvent actionTypeEvent2 = ActionTypeEvent.create("hello", "test");

@@ -22,4 +22,5 @@ dependencies {
     api des.rxJava
     api des.material
     api des.gson
+    api project(path: ':lib_hash')
 }
