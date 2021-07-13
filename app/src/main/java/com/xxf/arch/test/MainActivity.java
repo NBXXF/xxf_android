@@ -602,7 +602,7 @@ public class MainActivity extends XXFActivity {
                                 });
 
 
-                        XXF.requestPermission(MainActivity.this, Manifest.permission.CAMERA)
+                        XXF.requestPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
 
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override

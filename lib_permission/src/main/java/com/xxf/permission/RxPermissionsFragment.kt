@@ -76,8 +76,8 @@ class RxPermissionsFragment : Fragment() {
         mLogging = logging
     }
 
-    fun getSubjectByPermission(permission: String): PublishSubject<Permission> {
-        return mSubjects[permission]!!
+    fun getSubjectByPermission(permission: String): PublishSubject<Permission>? {
+        return mSubjects[permission]
     }
 
     fun containsByPermission(permission: String): Boolean {
