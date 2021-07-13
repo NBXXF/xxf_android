@@ -22,13 +22,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        UserDbService.INSTANCE.replaceTable(this,Arrays.asList(new User(1,"张三",10),
-                new User(101,"李四",10),
-                new User(5,"王五",10),
-                new User(5,"甲6",10)));
+        try {
+             UserDbService.INSTANCE.clearTable(this);
+
+             Thread.sleep(500);
+            UserDbService.INSTANCE.addAll(this,Arrays.asList(new User(0,"张三",10),
+                    new User(0,"李四",10),
+                    new User(0,"王五",10),
+                    new User(0,"甲6",10)));
 
 
-        List<User> users = UserDbService.INSTANCE.queryAll(this);
-        Log.d("=======>","query:"+users);
+            List<User> users = UserDbService.INSTANCE.queryAll(this);
+            Log.d("=======>","query:"+users);
+        }catch (Throwable e)
+        {
+
+        }
+
     }
 }

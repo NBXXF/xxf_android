@@ -8,6 +8,7 @@ import com.xxf.objectbox.ObjectBoxFactory
 import com.xxf.objectbox.demo.model.MyObjectBox
 import com.xxf.objectbox.demo.model.User
 import com.xxf.objectbox.demo.model.User_
+import com.xxf.objectbox.putMergePo
 import com.xxf.objectbox.replaceTable
 import io.objectbox.Box
 
@@ -53,7 +54,17 @@ object UserDbService {
     }
 
     fun addAll(context: Context, users: List<User>) {
-        getBox(context).put(users)
+        val start=System.currentTimeMillis();
+        getBox(context).putMergePo(users);
+        val end=System.currentTimeMillis();
+        Log.d("======>","take:"+(end-start));
+    }
+
+    fun addAll2(context: Context, users: List<User>) {
+        val start=System.currentTimeMillis();
+        getBox(context).put(users);
+        val end=System.currentTimeMillis();
+        Log.d("======>","take2:"+(end-start));
     }
 
 
@@ -69,10 +80,15 @@ object UserDbService {
         return getBox(context).all;
     }
 
+    fun clearTable(context: Context)
+    {
+        getBox(context).removeAll();
+    }
+
     //按条件查询
     fun queryById(context: Context, id: Long): User? {
         return getBox(context).query()
-                .equal(User_.id, id)
+               // .equal(User_.id, id)
                 .build()
                 .findFirst();
     }

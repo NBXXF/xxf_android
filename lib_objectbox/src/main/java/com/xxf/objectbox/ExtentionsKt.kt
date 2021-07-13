@@ -1,6 +1,7 @@
 package com.xxf.objectbox
 
 import io.objectbox.Box
+import io.objectbox.Property
 
 /**
  * @Description: objectBox
@@ -12,7 +13,6 @@ import io.objectbox.Box
 
 
 typealias DbMergeBlock<T> = (insertData: List<T>, box: Box<T>) -> List<T>;
-
 /**
  * 替换表的全部数据行,最终保留 ->insertData
  * @param entities
@@ -34,6 +34,41 @@ inline fun <reified T> Box<T>.replaceTable(insertData: List<T>, mergeBlock: DbMe
         removeAll()
         put(mergeResult);
     }
+}
+
+/**
+ * 提供合并扩展
+ */
+@Throws(Throwable::class)
+inline fun <reified T : UniqueIndexMergePo<T>> Box<T>.put(insertData: List<T>, mergeBlock: DbMergeBlock<T>) {
+    put(mergeBlock(insertData, this));
+}
+
+
+/**
+ * 按唯一索引进行合并行合并
+ */
+@Throws(Throwable::class)
+inline fun <reified T : UniqueIndexMergePo<T>> Box<T>.putMergePo(insertData: List<T>) {
+    put(insertData) { insertData: List<T>, box: Box<T> ->
+        var p:Property<T>?=null;
+        val map = insertData.map {
+            val toIdFromUniqueIndex = it.getMergeUniqueIndex();
+            p = toIdFromUniqueIndex.first;
+            toIdFromUniqueIndex.second;
+        }
+        val localIndDb= mutableMapOf<String,T>()
+        box.query().`in`(p!!, map.toTypedArray()).build().find().forEach {
+          localIndDb.put(it.getMergeUniqueIndex().second,it);
+        }
+        insertData.forEach {
+            val itemInDb = localIndDb.get(it.getMergeUniqueIndex().second);
+            if(itemInDb!=null) {
+                it.setMergeId(getId(itemInDb));
+            }
+        }
+        insertData;
+    };
 }
 
 
