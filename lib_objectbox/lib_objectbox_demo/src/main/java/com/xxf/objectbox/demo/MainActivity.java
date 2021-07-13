@@ -16,10 +16,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        UserDbService.INSTANCE.addAll(this,Arrays.asList(new User(1,"张三",10),
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserDbService.INSTANCE.replaceTable(this,Arrays.asList(new User(1,"张三",10),
                 new User(101,"李四",10),
                 new User(5,"王五",10),
                 new User(5,"甲6",10)));
+
 
         List<User> users = UserDbService.INSTANCE.queryAll(this);
         Log.d("=======>","query:"+users);

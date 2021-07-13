@@ -6,6 +6,7 @@ import com.xxf.objectbox.ObjectBoxFactory
 import com.xxf.objectbox.demo.model.MyObjectBox
 import com.xxf.objectbox.demo.model.User
 import com.xxf.objectbox.demo.model.User_
+import com.xxf.objectbox.replaceTable
 import io.objectbox.Box
 
 /**
@@ -24,11 +25,17 @@ object UserDbService {
     }
 
     fun addAll(context: Context, users: List<User>) {
-        getBox(context).put(users);
+        getBox(context).put(users)
+    }
+
+    fun replaceTable(context: Context, users: List<User>) {
+        getBox(context).replaceTable(users) { insertData: List<User>, box: Box<User> ->
+            insertData;
+        };
     }
 
     fun update(context: Context, user: User): Long {
-        return getBox(context).put(user);
+        return getBox(context).put(user)
     }
 
     fun delete(context: Context, user: User): Boolean {
