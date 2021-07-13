@@ -2,6 +2,8 @@ package com.xxf.objectbox.demo
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
+import com.xxf.objectbox.DbMergeBlock
 import com.xxf.objectbox.ObjectBoxFactory
 import com.xxf.objectbox.demo.model.MyObjectBox
 import com.xxf.objectbox.demo.model.User
@@ -15,10 +17,36 @@ import io.objectbox.Box
  * Description ://数据库service
  */
 object UserDbService {
+
     private fun getBox(context: Context): Box<User> {
         return ObjectBoxFactory.getBoxStore(context.applicationContext!! as Application, MyObjectBox.builder(), User::class.simpleName)!!.boxFor(User::class.java);
     }
 
+    class MergeClass:DbMergeBlock<User>
+    {
+        override fun invoke(insertData: List<User>, box: Box<User>): List<User> {
+            Log.d("=====>","DbMergeBlock:"+insertData);
+            return insertData;
+        }
+    }
+
+    fun replaceTable(context: Context, users: List<User>) {
+        //方式1
+//        getBox(context).replaceTable(users,object :MergeBlock<User>{
+//            override fun invoke(insertData: List<User>, box: Box<User>): List<User> {
+//                  return  insertData;
+//            }
+//        });
+
+        //方式2
+//        getBox(context).replaceTable(users,{
+//            insertData: List<User>, box: Box<User> ->
+//            insertData;
+//        });
+
+        //方式3
+        getBox(context).replaceTable(users,MergeClass());
+    }
 
     fun add(context: Context, user: User): Long {
         return getBox(context).put(user);
@@ -28,11 +56,6 @@ object UserDbService {
         getBox(context).put(users)
     }
 
-    fun replaceTable(context: Context, users: List<User>) {
-        getBox(context).replaceTable(users) { insertData: List<User>, box: Box<User> ->
-            insertData;
-        };
-    }
 
     fun update(context: Context, user: User): Long {
         return getBox(context).put(user)
@@ -54,3 +77,4 @@ object UserDbService {
                 .findFirst();
     }
 }
+

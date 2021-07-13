@@ -10,15 +10,17 @@ import io.objectbox.Box
  * object box 扩展
  */
 
+
+typealias DbMergeBlock<T> = (insertData: List<T>, box: Box<T>) -> List<T>;
+
 /**
  * 替换表的全部数据行,最终保留 ->insertData
  * @param entities
  */
 @Throws(Throwable::class)
 inline fun <reified T> Box<T>.replaceTable(insertData: List<T>) {
-    store.runInTx {
-        removeAll()
-        put(insertData);
+    this.replaceTable(insertData) { insertData: List<T>, box: Box<T> ->
+        insertData
     }
 }
 
@@ -26,10 +28,12 @@ inline fun <reified T> Box<T>.replaceTable(insertData: List<T>) {
  * 替换表的全部数据行,最终保留 ->insertData
  */
 @Throws(Throwable::class)
-inline fun <reified T> Box<T>.replaceTable(insertData: List<T>, mergeBlock: (insertData: List<T>, box: Box<T>) -> List<T>) {
+inline fun <reified T> Box<T>.replaceTable(insertData: List<T>, mergeBlock: DbMergeBlock<T>) {
     val mergeResult = mergeBlock(insertData, this);
-    this.replaceTable(mergeResult);
+    store.runInTx {
+        removeAll()
+        put(mergeResult);
+    }
 }
-
 
 
