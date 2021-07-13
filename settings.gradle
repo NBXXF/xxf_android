@@ -1,5 +1,5 @@
-include ':lib_objectbox:lib_objectbox_demo'
 include ':lib_hash'
+include ':lib_objectbox:lib_objectbox_demo'
 include ':lib_view_gradient'
 include ':lib_view_ratio'
 include ':lib_view_round'
