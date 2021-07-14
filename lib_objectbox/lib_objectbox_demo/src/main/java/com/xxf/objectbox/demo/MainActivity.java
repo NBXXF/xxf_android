@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         try {
-             UserDbService.INSTANCE.clearTable(this);
-
-             Thread.sleep(500);
             UserDbService.INSTANCE.addAll(this,Arrays.asList(new User(0,"张三",10),
                     new User(0,"李四",10),
                     new User(0,"王五",10),

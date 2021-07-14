@@ -2,6 +2,9 @@ package com.xxf.objectbox
 
 import io.objectbox.Box
 import io.objectbox.Property
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
+import io.objectbox.annotation.Unique
 
 /**
  * @Description: objectBox
@@ -11,8 +14,37 @@ import io.objectbox.Property
  * object box 扩展
  */
 
-
+//合并block定义
 typealias DbMergeBlock<T> = (insertData: List<T>, box: Box<T>) -> List<T>;
+
+/**
+ *按唯一索引合并block类定义
+ *
+ * 模型需要实现 UniqueIndexMergePojie接口
+ * 用法 getBox(context).put(users,UniqueIndexMergeBlock());
+ */
+open class UniqueIndexMergeBlock<T : UniqueIndexMergePo<T>> : DbMergeBlock<T> {
+    override fun invoke(insertData: List<T>, box: Box<T>): List<T> {
+        var p: Property<T>? = null;
+        val map = insertData.map {
+            val toIdFromUniqueIndex = it.getMergeUniqueIndex();
+            p = toIdFromUniqueIndex.first;
+            toIdFromUniqueIndex.second;
+        }
+        val localIndDb = mutableMapOf<String, T>()
+        box.query().`in`(p!!, map.toTypedArray()).build().find().forEach {
+            localIndDb.put(it.getMergeUniqueIndex().second, it);
+        }
+        insertData.forEach {
+            val itemInDb = localIndDb.get(it.getMergeUniqueIndex().second);
+            if (itemInDb != null) {
+                it.setMergeId(box.getId(itemInDb));
+            }
+        }
+        return insertData;
+    }
+}
+
 /**
  * 替换表的全部数据行,最终保留 ->insertData
  * @param entities
@@ -42,33 +74,6 @@ inline fun <reified T> Box<T>.replaceTable(insertData: List<T>, mergeBlock: DbMe
 @Throws(Throwable::class)
 inline fun <reified T : UniqueIndexMergePo<T>> Box<T>.put(insertData: List<T>, mergeBlock: DbMergeBlock<T>) {
     put(mergeBlock(insertData, this));
-}
-
-
-/**
- * 按唯一索引进行合并行合并
- */
-@Throws(Throwable::class)
-inline fun <reified T : UniqueIndexMergePo<T>> Box<T>.putMergePo(insertData: List<T>) {
-    put(insertData) { insertData: List<T>, box: Box<T> ->
-        var p:Property<T>?=null;
-        val map = insertData.map {
-            val toIdFromUniqueIndex = it.getMergeUniqueIndex();
-            p = toIdFromUniqueIndex.first;
-            toIdFromUniqueIndex.second;
-        }
-        val localIndDb= mutableMapOf<String,T>()
-        box.query().`in`(p!!, map.toTypedArray()).build().find().forEach {
-          localIndDb.put(it.getMergeUniqueIndex().second,it);
-        }
-        insertData.forEach {
-            val itemInDb = localIndDb.get(it.getMergeUniqueIndex().second);
-            if(itemInDb!=null) {
-                it.setMergeId(getId(itemInDb));
-            }
-        }
-        insertData;
-    };
 }
 
 

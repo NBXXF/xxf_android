@@ -3,13 +3,10 @@ package com.xxf.objectbox.demo
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.xxf.objectbox.DbMergeBlock
-import com.xxf.objectbox.ObjectBoxFactory
+import com.xxf.objectbox.*
 import com.xxf.objectbox.demo.model.MyObjectBox
 import com.xxf.objectbox.demo.model.User
 import com.xxf.objectbox.demo.model.User_
-import com.xxf.objectbox.putMergePo
-import com.xxf.objectbox.replaceTable
 import io.objectbox.Box
 
 /**
@@ -55,16 +52,9 @@ object UserDbService {
 
     fun addAll(context: Context, users: List<User>) {
         val start=System.currentTimeMillis();
-        getBox(context).putMergePo(users);
+        getBox(context).put(users,UniqueIndexMergeBlock());
         val end=System.currentTimeMillis();
         Log.d("======>","take:"+(end-start));
-    }
-
-    fun addAll2(context: Context, users: List<User>) {
-        val start=System.currentTimeMillis();
-        getBox(context).put(users);
-        val end=System.currentTimeMillis();
-        Log.d("======>","take2:"+(end-start));
     }
 
 
