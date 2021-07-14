@@ -52,7 +52,8 @@ object UserDbService {
 
     fun addAll(context: Context, users: List<User>) {
         val start=System.currentTimeMillis();
-        getBox(context).put(users,UniqueIndexMergeBlock());
+       // getBox(context).put(users,UniqueIndexMergeBlock());
+        getBox(context).put(users);
         val end=System.currentTimeMillis();
         Log.d("======>","take:"+(end-start));
     }
