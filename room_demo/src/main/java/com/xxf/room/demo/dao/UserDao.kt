@@ -17,6 +17,12 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE id IN (:ids)")
     fun loadAllById(vararg ids: Int): List<User>
 
+    @Query("SELECT * FROM user WHERE name LIKE '%' || (:name) || '%' ")
+    fun loadByName(name:String): List<User>
+
+    @Query("SELECT * FROM user WHERE name MATCH (:name)")
+    fun loadByName2(name:String): List<User>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg users: User);
 

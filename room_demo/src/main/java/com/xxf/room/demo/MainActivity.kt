@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private fun test()
     {
         val db: UserDatabase = Room
-                .databaseBuilder(applicationContext, UserDatabase ::class.java, "test_db4")
+                .databaseBuilder(applicationContext, UserDatabase ::class.java, "test_db6")
                 .allowMainThreadQueries()
                 .build()
 
@@ -67,10 +67,14 @@ class MainActivity : AppCompatActivity() {
             {
                 list.add(User(index+9999,"测试:"+index,1))
             }
-            val start=System.currentTimeMillis();
+            var start=System.currentTimeMillis();
             dao.insertAll2(list);
-            val end=System.currentTimeMillis();
-            Log.d("=====>","take2:"+(end-start));
+            Log.d("=====>","take2:"+(System.currentTimeMillis()-start));
+
+            start=System.currentTimeMillis();
+            val loadByName = dao.loadByName2("测");
+            Log.d("=====>","like query room:"+(System.currentTimeMillis()-start)+"  "+loadByName);
+
         }).start();
     }
 }

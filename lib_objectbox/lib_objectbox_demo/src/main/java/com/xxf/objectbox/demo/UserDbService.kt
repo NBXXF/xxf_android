@@ -77,11 +77,11 @@ object UserDbService {
     }
 
     //按条件查询
-    fun queryById(context: Context, id: Long): User? {
+    fun query(context: Context, name:String): List<User> {
         return getBox(context).query()
-               // .equal(User_.id, id)
+                .contains(User_.name,name)
                 .build()
-                .findFirst();
+                .find();
     }
 }
 

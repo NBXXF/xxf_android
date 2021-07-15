@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.xxf.objectbox.demo.model.Teacher;
 import com.xxf.objectbox.demo.model.User;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         test();
+        test2();
     }
 
     private void test()
@@ -48,12 +50,26 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 UserDbService.INSTANCE.clearTable(MainActivity.this);
                 List<User> users=new ArrayList<>();
-                for(int i=0;i<10000;i++)
-                {
+                for(int i=0;i<10000;i++) {
                     users.add( new User(0,"李四:"+i,i));
                 }
                 UserDbService.INSTANCE.addAll(MainActivity.this,users);
+
+                long start=System.currentTimeMillis();
+                UserDbService.INSTANCE.query(MainActivity.this,"李");
+                Log.d("====> objectbox:",""+(System.currentTimeMillis()-start));
             }
         }).start();
+    }
+
+    private void test2()
+    {
+        Teacher aa = new Teacher(1001, "aa");
+        TeacherDbService.INSTANCE.add(this,Arrays.asList(aa));
+
+        aa.setId(1002);
+        TeacherDbService.INSTANCE.add(this,Arrays.asList(aa));
+        List<Teacher> teachers = TeacherDbService.INSTANCE.queryAll(this);
+        Log.d("====>teachers:",""+teachers);
     }
 }
