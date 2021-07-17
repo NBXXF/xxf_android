@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.BaseUrlProvider;
 import com.xxf.arch.annotation.CookieJar;
+import com.xxf.arch.annotation.Dispatcher;
 import com.xxf.arch.annotation.RxHttpCacheConfig;
 import com.xxf.arch.annotation.RxJavaInterceptor;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
@@ -16,10 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  * @date createTime：2018/9/7
  */
@@ -135,9 +137,16 @@ public class XXFHttp {
             rxHttpCacheDirectoryProvider = rxHttpCacheAnnotation.value().newInstance();
         }
 
+        OkHttpClient build = ohcb.build();
+        Dispatcher dispatcher = apiClazz.getAnnotation(Dispatcher.class);
+        if (dispatcher != null) {
+            build.dispatcher().setMaxRequests(dispatcher.maxRequests());
+            build.dispatcher().setMaxRequests(dispatcher.maxRequestsPerHost());
+        }
+
         //创建缓存对象
         T apiService = new RetrofitBuilder(rxJavaInterceptor, rxHttpCacheDirectoryProvider)
-                .client(ohcb.build())
+                .client(build)
                 .baseUrl(baseUrl)
                 .build()
                 .create(apiClazz);

@@ -2,6 +2,7 @@ package com.xxf.arch.test.http;
 
 import com.google.gson.JsonObject;
 import com.xxf.arch.annotation.BaseUrl;
+import com.xxf.arch.annotation.Dispatcher;
 import com.xxf.arch.annotation.Interceptor;
 import com.xxf.arch.annotation.RxHttpCacheConfig;
 import com.xxf.arch.annotation.RxJavaInterceptor;
@@ -21,6 +22,11 @@ import retrofit2.http.Query;
  * 提供基础路由
  */
 @BaseUrl("http://api.map.baidu.com/")
+
+/**
+ * 指定并发调度
+ */
+@Dispatcher(maxRequests = 1,maxRequestsPerHost = 2)
 
 /**
  * 提供缓存目录设置

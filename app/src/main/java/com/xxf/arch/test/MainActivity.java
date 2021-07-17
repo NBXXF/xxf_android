@@ -131,9 +131,9 @@ public class MainActivity extends XXFActivity {
         super.onCreate(savedInstanceState);
         long hello = ObjectBoxUtils.INSTANCE.generateId("hello");
         long hello2 = ObjectBoxUtils.INSTANCE.generateId("hello");
-        ToastUtils.showToast(" issame:"+(hello==hello2), ToastUtils.ToastType.ERROR);
-        Log.d("=====>","hello2:"+ObjectBoxUtils.INSTANCE.generateId("XXXXXXXXXXXXYTTYFDYTFTYDFYTFDTYTDFYTYFTYFTWE685R6535656365ATDRTUDFTDUATFDUA"));
-        Log.d("=====>","hello2:"+ObjectBoxUtils.INSTANCE.generateId("付广告费含苞待放吧`非共和国和身份和规范化共和国符合规范和规范化规范化股份"));
+        ToastUtils.showToast(" issame:" + (hello == hello2), ToastUtils.ToastType.ERROR);
+        Log.d("=====>", "hello2:" + ObjectBoxUtils.INSTANCE.generateId("XXXXXXXXXXXXYTTYFDYTFTYDFYTFDTYTDFYTYFTYFTWE685R6535656365ATDRTUDFTDUATFDUA"));
+        Log.d("=====>", "hello2:" + ObjectBoxUtils.INSTANCE.generateId("付广告费含苞待放吧`非共和国和身份和规范化共和国符合规范和规范化规范化股份"));
 
 
         ActionTypeEvent actionTypeEvent = ActionTypeEvent.create("hello", "test");
@@ -215,7 +215,7 @@ public class MainActivity extends XXFActivity {
                         test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
                             @Override
                             public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {
-                                XXF.getLogger().d("========>订阅:"+dialogFragmentStringPair.second);
+                                XXF.getLogger().d("========>订阅:" + dialogFragmentStringPair.second);
                                 dialogFragmentStringPair.first.dismissAllowingStateLoss();
                             }
                         });
@@ -409,14 +409,17 @@ public class MainActivity extends XXFActivity {
                                     }
                                 });*/
 
-                        XXF.getApiService(LoginApiService.class)
-                                .getCity(QueryJsonField.create(new TestQueryJsonField("hello&key=sss" + System.currentTimeMillis())))
-                                .subscribe(new Consumer<JsonObject>() {
-                                    @Override
-                                    public void accept(JsonObject jsonObject) throws Throwable {
-
-                                    }
-                                });
+                        for (int i = 0; i < 1000; i++) {
+                            final int fi = i;
+                            XXF.getApiService(LoginApiService.class)
+                                    .getCity(QueryJsonField.create(new TestQueryJsonField("hello&key=sss" + System.currentTimeMillis())))
+                                    .subscribe(new Consumer<JsonObject>() {
+                                        @Override
+                                        public void accept(JsonObject jsonObject) throws Throwable {
+                                            XXF.getLogger().d("=====>fi:" + fi+"  "+System.currentTimeMillis());
+                                        }
+                                    });
+                        }
                     }
                 });
         findViewById(R.id.file)
