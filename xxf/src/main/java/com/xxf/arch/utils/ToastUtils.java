@@ -1,7 +1,9 @@
 package com.xxf.arch.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AppOpsManager;
+import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -34,6 +36,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Description
@@ -45,11 +49,77 @@ import java.lang.reflect.Proxy;
  * 2:替代方案 SnackbarUtils.showSnack(topActivity, noticeStr);
  * <p>
  * <p>
+ *
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2017/4/27
  * version 1.0.0
  */
 public class ToastUtils {
+    /**
+     * 数量限制的toast 避免栈内挤压过多toast  也能批量取消taost
+     */
+    private static class LimitToast extends Toast {
+        private static int MAX_TOAST = 10;
+        private static volatile ArrayList<Toast> toastArrayList = new ArrayList<>();
+
+        public LimitToast(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void show() {
+            try {
+                //队列里面太多, 取消前面部分
+                while (toastArrayList.size() > MAX_TOAST) {
+                    Toast toast = toastArrayList.get(0);
+                    toastArrayList.remove(toast);
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (!toastArrayList.contains(this)) {
+                    toastArrayList.add(this);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            super.show();
+        }
+
+        @Override
+        public void cancel() {
+            super.cancel();
+            try {
+                toastArrayList.remove(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * 取消所有Toast
+         */
+        static void cancelAll() {
+            try {
+                //队列里面太多
+                while (toastArrayList.size() > 0) {
+                    Toast toast = toastArrayList.get(0);
+                    toastArrayList.remove(toast);
+                    if (toast != null) {
+                        toast.cancel();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public enum ToastType {
         NORMAL,
         ERROR,
@@ -60,6 +130,7 @@ public class ToastUtils {
     private static Field sField_TN_Handler;
     private static Object iNotificationManagerObj;
     private static CharSequence noticeString;
+
 
     private ToastUtils() {
     }
@@ -169,7 +240,7 @@ public class ToastUtils {
          */
         noticeString = notice;
 
-        Toast toast = createToast(notice, type);
+        LimitToast toast = createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);
@@ -202,7 +273,7 @@ public class ToastUtils {
      * 强制显示系统Toast
      */
     private static void showSystemToast(Toast toast, CharSequence notice, @NonNull ToastType type) throws Throwable {
-        Method getServiceMethod = Toast.class.getDeclaredMethod("getService");
+        @SuppressLint("SoonBlockedPrivateApi") Method getServiceMethod = Toast.class.getDeclaredMethod("getService");
         getServiceMethod.setAccessible(true);
         //hook INotificationManager
         if (iNotificationManagerObj == null) {
@@ -287,7 +358,7 @@ public class ToastUtils {
         return context.getResources().getDimensionPixelSize(resourceId);
     }
 
-    public static Toast createToast(CharSequence msg, ToastType type) {
+    public static LimitToast createToast(CharSequence msg, ToastType type) {
         LayoutInflater inflater = LayoutInflater.from(XXF.getApplication());
         View view = inflater.inflate(R.layout.xxf_toast_layout, null);
 
@@ -309,7 +380,7 @@ public class ToastUtils {
                 break;
         }
         text.setText(msg);
-        Toast toast = new Toast(XXF.getApplication());
+        LimitToast toast = new LimitToast(XXF.getApplication());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(view);
@@ -324,5 +395,12 @@ public class ToastUtils {
      */
     private static boolean isMainThread() {
         return Looper.myLooper() == Looper.getMainLooper();
+    }
+
+    /**
+     * 取消全部toast
+     */
+    public static void cancelAll() {
+        LimitToast.cancelAll();
     }
 }
