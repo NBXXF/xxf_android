@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater);
     }
     private val db by lazy {
-        Room.databaseBuilder(applicationContext, UserDatabase::class.java, "test_db6")
+        Room.databaseBuilder(applicationContext, UserDatabase::class.java, "test_db7")
                 .allowMainThreadQueries()
                 .build()
     }
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val user = User();
-            user.id = System.currentTimeMillis();
+            user.id = "aaa_"+System.currentTimeMillis();
             user.name = binding.etInput.text.toString();
             user.releaseYear = 1970;
             db.userDao().insertAll(user);
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         Thread(Runnable {
             val list: MutableList<User> = mutableListOf<User>();
             for (index in 0..10000) {
-                list.add(User((index + 9999).toLong(), "测试:" + index, 1))
+                list.add(User(""+(index + 9999).toLong(), "测试:" + index, 1))
             }
             var start = System.currentTimeMillis();
             dao.insertAll2(list);

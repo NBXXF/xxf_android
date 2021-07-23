@@ -16,12 +16,12 @@ import androidx.room.PrimaryKey
 class User {
   //  @PrimaryKey(autoGenerate = true)
     @PrimaryKey
-     var id = 0L
+     var id = ""
      var name: String? = null;
      @ColumnInfo(name = "release_year")
      var releaseYear:Int=0;
 
-    constructor(id: Long, name: String?, releaseYear: Int) {
+    constructor(id: String, name: String?, releaseYear: Int) {
         this.id = id
         this.name = name
         this.releaseYear = releaseYear
