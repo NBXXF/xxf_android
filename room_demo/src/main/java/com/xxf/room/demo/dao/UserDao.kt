@@ -2,6 +2,7 @@ package com.xxf.room.demo.dao
 
 import androidx.room.*
 import com.xxf.room.demo.model.User
+import io.reactivex.rxjava3.core.Observable
 
 
 /**
@@ -13,6 +14,9 @@ import com.xxf.room.demo.model.User
 interface UserDao {
     @Query("SELECT * FROM user")
     fun loadAll(): List<User>
+
+    @Query("SELECT * FROM user")
+    fun loadRxAll(): Observable<List<User>>
 
     @Query("SELECT * FROM user WHERE id IN (:ids)")
     fun loadAllById(vararg ids: Int): List<User>
@@ -31,5 +35,11 @@ interface UserDao {
 
     @Delete
     fun delete(song: User);
+
+    /**
+     * 全部删除
+     */
+    @Query("DELETE FROM user")
+    fun deleteAllUser()
 
 }

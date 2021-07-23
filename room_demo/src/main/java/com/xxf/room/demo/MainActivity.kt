@@ -1,79 +1,98 @@
 package com.xxf.room.demo
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.xxf.room.demo.dao.UserDao
 import com.xxf.room.demo.database.UserDatabase
+import com.xxf.room.demo.databinding.ActivityMainBinding
 import com.xxf.room.demo.model.User
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    private val binding by lazy {
+        ActivityMainBinding.inflate(layoutInflater);
     }
-
-    override fun onResume() {
-        super.onResume()
-        test()
-    }
-
-
-    private fun test()
-    {
-        val db: UserDatabase = Room
-                .databaseBuilder(applicationContext, UserDatabase ::class.java, "test_db6")
+    private val db by lazy {
+        Room.databaseBuilder(applicationContext, UserDatabase::class.java, "test_db6")
                 .allowMainThreadQueries()
                 .build()
-
-        db.userDao().loadAll().forEach {
-            db.userDao().delete(it);
-        }
-
-
-        val user = User();
-        user.id=1002;
-        user.name="2张三";
-        user.releaseYear=1970;
-        db.userDao().insertAll(user);
-
-
-        val user2 = User();
-        user2.id=1001;
-        user2.name="1李四";
-        user2.releaseYear=1970;
-        db.userDao().insertAll(user2);
-
-        val loadAll = db.userDao().loadAll();
-        Log.d("=====>","all:"+loadAll);
-
-        val start=System.currentTimeMillis();
-        db.userDao().insertAll(User(1004,"测试",1),
-                User(1005,"测试",1),
-                User(1006,"测试",1),
-             User(1007,"测试",1));
-        val end=System.currentTimeMillis();
-        Log.d("=====>","take:"+(end-start));
-        yc(db.userDao());
+    }
+    private val adapter by lazy {
+        UserAdapter();
     }
 
-    private fun yc(dao:UserDao)
-    {
-        Thread(Runnable {
-            val list:MutableList<User> = mutableListOf<User>();
-            for (index in 0..10000)
-            {
-                list.add(User(index+9999,"测试:"+index,1))
-            }
-            var start=System.currentTimeMillis();
-            dao.insertAll2(list);
-            Log.d("=====>","take2:"+(System.currentTimeMillis()-start));
 
-            start=System.currentTimeMillis();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+        initView()
+    }
+
+    private fun initView() {
+        binding.recyclerView.adapter = adapter;
+        binding.btnInsert.setOnClickListener {
+            if (TextUtils.isEmpty(binding.etInput.text)) {
+                Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
+            val user = User();
+            user.id = System.currentTimeMillis();
+            user.name = binding.etInput.text.toString();
+            user.releaseYear = 1970;
+            db.userDao().insertAll(user);
+            Toast.makeText(this, "插入成功", Toast.LENGTH_SHORT).show();
+        }
+        binding.btnDeleteAll.setOnClickListener {
+            db.userDao().deleteAllUser();
+        }
+        binding.btnUpdate.setOnClickListener {
+            if (TextUtils.isEmpty(binding.etInput.text)) {
+                Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
+            val get = db.userDao().loadAll()
+                    .get(0);
+            get.name = binding.etInput.text.toString();
+            db.userDao().insertAll(get);
+            Toast.makeText(this, "更新成功", Toast.LENGTH_SHORT).show();
+        }
+
+        binding.btnQuery.setOnClickListener {
+            if (TextUtils.isEmpty(binding.etInput.text)) {
+                Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
+            val loadByName = db.userDao().loadByName(binding.etInput.text.toString());
+            adapter.bindData(true, loadByName);
+        }
+
+        //监听数据库变化
+        db.userDao().loadRxAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    adapter.bindData(true, it);
+                    Log.d("=====>data by rx", "" + it);
+                }
+    }
+
+    private fun yc(dao: UserDao) {
+        Thread(Runnable {
+            val list: MutableList<User> = mutableListOf<User>();
+            for (index in 0..10000) {
+                list.add(User((index + 9999).toLong(), "测试:" + index, 1))
+            }
+            var start = System.currentTimeMillis();
+            dao.insertAll2(list);
+            Log.d("=====>", "take2:" + (System.currentTimeMillis() - start));
+
+            start = System.currentTimeMillis();
             val loadByName = dao.loadByName2("测");
-            Log.d("=====>","like query room:"+(System.currentTimeMillis()-start)+"  "+loadByName);
+            Log.d("=====>", "like query room:" + (System.currentTimeMillis() - start) + "  " + loadByName);
 
         }).start();
     }
