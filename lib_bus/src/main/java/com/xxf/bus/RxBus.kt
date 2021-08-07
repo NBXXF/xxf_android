@@ -24,7 +24,7 @@ object RxBus {
      * @param event
      * @return 是否发送成功, event==null false
      */
-    fun postEvent(event: Any): Boolean {
+    fun postEvent(event: Any?): Boolean {
         if (event == null) {
             return false
         }

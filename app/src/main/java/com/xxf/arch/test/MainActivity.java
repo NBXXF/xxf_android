@@ -143,7 +143,7 @@ public class MainActivity extends XXFActivity {
         }
         Log.d("=======>", " actionTypeEvent:" + actionTypeEvent);
         Log.d("=======>", " actionTypeEvent2:" + actionTypeEvent2);
-
+        
         XXF.subscribeEvent(String.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .to(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))

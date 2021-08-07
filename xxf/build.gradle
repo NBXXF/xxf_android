@@ -21,8 +21,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api des.material
-    api 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.0.0'
     api project(path: ':lib_http')
+    api project(path: ':lib_rxlifecycle')
     api project(path: ':lib_view_snackbar')
     api project(path: ':lib_arouter-api')
     api project(path: ':lib_permission')

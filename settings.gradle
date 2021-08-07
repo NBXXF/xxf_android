@@ -1,3 +1,6 @@
+include ':lib_rxlifecycle:lib_rxlifecycledemo'
+include ':lib_rxlifecycle'
+include ':lib_bus:lib_bus_demo'
 include ':room_demo'
 include ':lib_hash'
 include ':lib_objectbox:lib_objectbox_demo'
