@@ -1,6 +1,8 @@
 package com.xxf.view.databinding.view;
 
 import androidx.databinding.BindingAdapter;
+
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 扩展view的绑定
  */
+@SuppressLint("RestrictedApi")
 public class ViewBindingAdapter extends androidx.databinding.adapters.ViewBindingAdapter {
 
 
