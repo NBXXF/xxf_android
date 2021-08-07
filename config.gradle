@@ -6,9 +6,9 @@ ext {
 
             // ------------- 第三方-------------
             rxAndroid             : 'io.reactivex.rxjava3:rxandroid:3.0.0',
-            rxJava                : 'io.reactivex.rxjava3:rxjava:3.0.8',
-            gson                  : "com.google.code.gson:gson:2.8.6",
-            okhttp                : "com.squareup.okhttp3:okhttp:4.9.0",
+            rxJava                : 'io.reactivex.rxjava3:rxjava:3.0.13',
+            gson                  : "com.google.code.gson:gson:2.8.7",
+            okhttp                : "com.squareup.okhttp3:okhttp:4.9.1",
 
             router_ap             : "com.alibaba:arouter-compiler:1.2.2",
             router_annotation     : 'com.alibaba:arouter-annotation:1.0.6',
