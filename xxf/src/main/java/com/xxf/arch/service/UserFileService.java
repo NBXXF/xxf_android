@@ -3,7 +3,7 @@ package com.xxf.arch.service;
 import android.os.Environment;
 
 import com.xxf.arch.XXF;
-import com.xxf.arch.utils.FileUtils;
+import com.xxf.utils.FileUtils;
 
 import java.io.File;
 import java.util.concurrent.Callable;

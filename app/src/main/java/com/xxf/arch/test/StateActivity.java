@@ -1,6 +1,5 @@
 package com.xxf.arch.test;
 
-import android.app.Application;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,8 +21,8 @@ import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
-import com.xxf.arch.utils.DensityUtil;
-import com.xxf.view.recyclerview.RecyclerViewUtils;
+import com.xxf.utils.DensityUtil;
+import com.xxf.utils.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.DividerDecoration;
@@ -35,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -60,13 +57,13 @@ public class StateActivity extends XXFActivity {
        // stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
         stateBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //stateBinding.recyclerView.addItemDecoration(ItemDecorationFactory.createHorizontalItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(DensityUtil.dip2px(20)).color(Color.RED)));
-        DividerDecoration dividerItemDecoration=new DividerDecoration(this,Color.YELLOW,DensityUtil.dip2px(20));
+        DividerDecoration dividerItemDecoration=new DividerDecoration(this,Color.YELLOW, DensityUtil.dip2px(this,20));
        stateBinding.recyclerView.addItemDecoration(dividerItemDecoration);
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //    Bitmap bitmap = getBitmap(stateBinding.recyclerView);
-                Bitmap bitmap = RecyclerViewUtils.shotRecyclerViewVisibleItems(stateBinding.recyclerView);
+                Bitmap bitmap = RecyclerViewUtils.INSTANCE.shotRecyclerViewVisibleItems(stateBinding.recyclerView);
 
                 XXF.getLogger().d("=============>bitmap:" + bitmap);
                 XXF.getLogger().d("=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());

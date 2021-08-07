@@ -2,8 +2,6 @@ package com.xxf.arch.test;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
-import android.os.StrictMode;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -24,7 +22,7 @@ import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.view.loading.XXFLoadingDialog;
 import com.xxf.view.refresh.XXFJumpRefreshFooter;
 import com.xxf.view.refresh.XXFJumpRefreshHeader;
-import com.xxf.view.utils.ResourcesUtil;
+import com.xxf.utils.ResourcesUtil;
 
 import java.util.ArrayList;
 import java.util.List;

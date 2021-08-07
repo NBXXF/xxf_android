@@ -1,7 +1,6 @@
 package com.xxf.view.actiondialog;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,8 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.xxf.arch.XXF;
 import com.xxf.arch.dialog.XXFDialog;
-import com.xxf.arch.utils.DensityUtil;
+import com.xxf.utils.DensityUtil;
 import com.xxf.view.R;
 import com.xxf.view.config.AdapterStyle;
 import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
@@ -34,8 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import io.reactivex.rxjava3.functions.BiConsumer;
 
 /**
  * @author xuanyouwu
@@ -95,7 +93,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
 
 
         public ActionSheetDialog<String> build() {
-            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, DensityUtil.getScreenHeightPx() / 2);
+            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, DensityUtil.getScreenHeightPx(XXF.getApplication()) / 2);
         }
     }
 
@@ -103,7 +101,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
                              @Nullable CharSequence title,
                              @NonNull AdapterStyle adapterStyle,
                              @NonNull List<ItemMenu<T>> actionItems) {
-        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx() / 2);
+        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx(XXF.getApplication()) / 2);
     }
 
     /**

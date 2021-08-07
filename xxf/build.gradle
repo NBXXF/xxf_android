@@ -22,6 +22,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api des.material
     api project(path: ':lib_http')
+    api project(path: ':lib_utils')
     api project(path: ':lib_rxlifecycle')
     api project(path: ':lib_view_snackbar')
     api project(path: ':lib_arouter-api')

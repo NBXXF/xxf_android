@@ -1,6 +1,8 @@
 package com.xxf.arch.service;
 
-import com.xxf.arch.utils.FileUtils;
+
+import com.xxf.arch.XXF;
+import com.xxf.utils.FileUtils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -28,7 +30,7 @@ public interface StringFileService extends UserFileService {
                 .defer(new Supplier<ObservableSource<? extends String>>() {
                     @Override
                     public ObservableSource<? extends String> get() throws Throwable {
-                        if (FileUtils.isFileExists(file)) {
+                        if (FileUtils.isFileExists(XXF.getApplication(),file)) {
                             try (FileReader fr = new FileReader(file)) {
                                 char[] bt = new char[1024];
                                 StringBuffer sb = new StringBuffer();

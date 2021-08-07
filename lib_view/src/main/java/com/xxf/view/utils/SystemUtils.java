@@ -30,10 +30,10 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
 import com.xxf.activityresult.ActivityResult;
-import com.xxf.arch.utils.FileUtils;
 import com.xxf.arch.utils.UriUtils;
 import com.xxf.permission.PermissionDeniedException;
 import com.xxf.permission.transformer.RxPermissionTransformer;
+import com.xxf.utils.FileUtils;
 import com.xxf.view.exception.FileNotMatchTypeException;
 
 import java.io.File;
@@ -47,7 +47,6 @@ import java.util.concurrent.Callable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;

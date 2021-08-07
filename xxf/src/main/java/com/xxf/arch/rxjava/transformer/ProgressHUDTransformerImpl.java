@@ -7,10 +7,10 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
-import com.xxf.arch.utils.HandlerUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
+import com.xxf.utils.HandlerUtils;
 
 import org.reactivestreams.Publisher;
 
@@ -88,7 +88,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
     @Nullable
     @CheckResult
     protected ProgressHUD getSafeProgressHUD() {
-        if (!HandlerUtils.isMainThread()) {
+        if (!HandlerUtils.INSTANCE.isMainThread()) {
             return null;
         }
         if (progressHUD != null) {
@@ -103,13 +103,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onSubscribe() {
-        if (HandlerUtils.isMainThread()) {
+        if (HandlerUtils.INSTANCE.isMainThread()) {
             ProgressHUD safeProgressHUD = getSafeProgressHUD();
             if (safeProgressHUD != null) {
                 safeProgressHUD.showLoadingDialog(loadingNotice);
             }
         } else {
-            HandlerUtils.getMainHandler().post(new Runnable() {
+            HandlerUtils.INSTANCE.getMainHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     ProgressHUD safeProgressHUD = getSafeProgressHUD();
@@ -125,13 +125,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
     @Override
     public void onNext(T t) {
         if (dismissOnNext) {
-            if (HandlerUtils.isMainThread()) {
+            if (HandlerUtils.INSTANCE.isMainThread()) {
                 ProgressHUD safeProgressHUD = getSafeProgressHUD();
                 if (safeProgressHUD != null) {
                     safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
                 }
             } else {
-                HandlerUtils.getMainHandler().post(new Runnable() {
+                HandlerUtils.INSTANCE.getMainHandler().post(new Runnable() {
                     @Override
                     public void run() {
                         ProgressHUD safeProgressHUD = getSafeProgressHUD();
@@ -146,13 +146,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onComplete() {
-        if (HandlerUtils.isMainThread()) {
+        if (HandlerUtils.INSTANCE.isMainThread()) {
             ProgressHUD safeProgressHUD = getSafeProgressHUD();
             if (safeProgressHUD != null) {
                 safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
             }
         } else {
-            HandlerUtils.getMainHandler().post(new Runnable() {
+            HandlerUtils.INSTANCE.getMainHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     ProgressHUD safeProgressHUD = getSafeProgressHUD();
@@ -173,13 +173,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
                 e.printStackTrace();
             }
         }
-        if (HandlerUtils.isMainThread()) {
+        if (HandlerUtils.INSTANCE.isMainThread()) {
             ProgressHUD safeProgressHUD = getSafeProgressHUD();
             if (safeProgressHUD != null) {
                 safeProgressHUD.dismissLoadingDialogWithFail(errorNotice, noticeDuration);
             }
         } else {
-            HandlerUtils.getMainHandler().post(new Runnable() {
+            HandlerUtils.INSTANCE.getMainHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     ProgressHUD safeProgressHUD = getSafeProgressHUD();
@@ -193,13 +193,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onCancel() {
-        if (HandlerUtils.isMainThread()) {
+        if (HandlerUtils.INSTANCE.isMainThread()) {
             ProgressHUD safeProgressHUD = getSafeProgressHUD();
             if (safeProgressHUD != null) {
                 safeProgressHUD.dismissLoadingDialog();
             }
         } else {
-            HandlerUtils.getMainHandler().post(new Runnable() {
+            HandlerUtils.INSTANCE.getMainHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     ProgressHUD safeProgressHUD = getSafeProgressHUD();

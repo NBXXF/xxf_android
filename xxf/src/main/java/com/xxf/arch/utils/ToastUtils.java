@@ -29,6 +29,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.xxf.arch.R;
 import com.xxf.arch.XXF;
+import com.xxf.utils.DensityUtil;
 import com.xxf.view.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
@@ -322,8 +323,8 @@ public class ToastUtils {
                 TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
                 textView.setTextColor(Color.WHITE);
                 textView.setMaxLines(3);
-                textView.setCompoundDrawablePadding(DensityUtil.dip2px(7));
-                int dp19 = DensityUtil.dip2px(19);
+                textView.setCompoundDrawablePadding(DensityUtil.dip2px(topActivity,7));
+                int dp19 = DensityUtil.dip2px(topActivity,19);
                 switch (type) {
                     case ERROR:
                         Drawable errorDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_error);
@@ -363,7 +364,7 @@ public class ToastUtils {
         View view = inflater.inflate(R.layout.xxf_toast_layout, null);
 
         TextView text = view.findViewById(android.R.id.message);
-        int dp19 = DensityUtil.dip2px(19);
+        int dp19 = DensityUtil.dip2px(XXF.getApplication(), 19);
         switch (type) {
             case ERROR:
                 Drawable errorDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_error);

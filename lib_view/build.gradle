@@ -28,6 +28,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(path: ':lib_adapter')
     api project(path: ':lib_fileprovider')
+    api project(path: ':lib_utils')
     api project(path: ':xxf')
 
     api des.lottie

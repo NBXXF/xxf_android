@@ -2,7 +2,7 @@ package com.xxf.arch.service;
 
 import com.xxf.arch.http.OkHttpClientBuilder;
 import com.xxf.arch.model.DownloadTask;
-import com.xxf.arch.utils.FileUtils;
+import com.xxf.utils.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
