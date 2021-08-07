@@ -31,6 +31,6 @@ object RxLifecycle {
      * @return
     </T> */
     fun <T> bindLifecycle(lifecycleOwner: LifecycleOwner, untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY): AutoDisposeConverter<T> {
-        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner))
+        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner,untilEvent))
     }
 }
