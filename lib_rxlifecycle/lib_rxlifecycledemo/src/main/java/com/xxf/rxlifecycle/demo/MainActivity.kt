@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Lifecycle
+import autodispose2.AutoDispose
 import com.xxf.rxlifecycle.bindLifecycle
 import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit

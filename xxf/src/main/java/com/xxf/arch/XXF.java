@@ -21,9 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.alibaba.android.arouter.core.ARouterTab;
 import com.alibaba.android.arouter.core.LogisticsCenter;
@@ -39,8 +36,6 @@ import com.xxf.activityresult.ActivityResult;
 import com.xxf.activityresult.RxActivityResultCompact;
 import com.xxf.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
-import com.xxf.arch.rxjava.lifecycle.internal.LifecycleProvider;
-import com.xxf.arch.rxjava.lifecycle.internal.LifecycleTransformer;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
 import com.xxf.arch.service.SharedPreferencesService;
@@ -379,17 +374,6 @@ public class XXF {
         return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner, untilEvent));
     }
 
-
-    /**
-     * 绑定生命周期
-     *
-     * @param lifecycleProvider
-     * @param <T>
-     * @return
-     */
-    public static <T> LifecycleTransformer<T> bindToLifecycle(@NonNull LifecycleProvider lifecycleProvider) {
-        return lifecycleProvider.bindToLifecycle();
-    }
 
 
     /**

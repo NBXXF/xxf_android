@@ -24,7 +24,6 @@ import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.DensityUtil;
-import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.view.recyclerview.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
@@ -48,28 +47,6 @@ public class StateActivity extends XXFActivity {
 
     ActivityStateBinding stateBinding;
     TestAdaper testAdaper;
-
-    public static class TestViewModel extends XXFViewModel {
-
-        public TestViewModel(@NonNull Application application) {
-            super(application);
-            Observable.interval(1, TimeUnit.SECONDS)
-                    .compose(XXF.bindToLifecycle(this))
-                    .subscribe(new Consumer<Long>() {
-                        @Override
-                        public void accept(Long aLong) throws Exception {
-                            XXF.getLogger().d("=======>xxx:long:" + aLong);
-
-                        }
-                    });
-        }
-
-        @Override
-        protected void onCleared() {
-            super.onCleared();
-            XXF.getLogger().d("=======>xxx:onclear");
-        }
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
