@@ -44,14 +44,13 @@ import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
+import com.xxf.rxlifecycle.RxLifecycle;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import autodispose2.AutoDispose;
 import autodispose2.AutoDisposeConverter;
-import autodispose2.android.AutoDisposeAndroidPlugins;
-import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
@@ -173,10 +172,7 @@ public class XXF {
                     XXF.userInfoProvider = builder.userInfoProvider;
                     activityStackProvider = new AndroidActivityStackProvider(application);
                     ProgressHUDFactory.setProgressHUDProvider(builder.progressHUDProvider);
-                    /**
-                     * 默认不检查线程
-                     */
-                    AutoDisposeAndroidPlugins.setOnCheckMainThread(() -> {
+                    RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
                     });
                     initRouter();
@@ -357,7 +353,7 @@ public class XXF {
      * @return
      */
     public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
-        return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner));
+       return RxLifecycle.INSTANCE.bindLifecycle(lifecycleOwner, Lifecycle.Event.ON_DESTROY);
     }
 
     /**
@@ -371,7 +367,7 @@ public class XXF {
      * @return
      */
     public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull LifecycleOwner lifecycleOwner, Lifecycle.Event untilEvent) {
-        return AutoDispose.<T>autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner, untilEvent));
+        return RxLifecycle.INSTANCE.bindLifecycle(lifecycleOwner, untilEvent);
     }
 
 
