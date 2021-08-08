@@ -26,18 +26,12 @@ import java.util.*
  */
 object ResourcesUtil {
 
-    /**
-     * @param context设计为可选参数 主要是VectorEnabledTintResources 和 TintResources 的影响
-     */
-    fun getString(@StringRes resId: Int,context: Context= applicationContext): String {
-        return context.getString(resId)
+    fun getString(@StringRes resId: Int): String {
+        return applicationContext.getString(resId)
     }
 
-    /**
-     * @param context设计为可选参数 主要是VectorEnabledTintResources 和 TintResources 的影响
-     */
-    fun getString(@StringRes resId: Int, vararg formatArgs: Any?,context: Context=applicationContext): String {
-        return context.getString(resId, *formatArgs)
+    fun getString(@StringRes resId: Int, vararg formatArgs: Any?): String {
+        return applicationContext.getString(resId, *formatArgs)
     }
 
     /**
