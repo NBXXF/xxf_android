@@ -27,9 +27,10 @@ import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.xxf.application.activity.ActivityStackProvider;
+import com.xxf.application.activity.AndroidActivityStackProvider;
 import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.arouter.XXFUserInfoProvider;
-import com.xxf.arch.core.AndroidActivityStackProvider;
 import com.xxf.arch.core.Logger;
 import com.xxf.bus.RxBus;
 import com.xxf.activityresult.ActivityResult;
@@ -49,7 +50,6 @@ import com.xxf.rxlifecycle.RxLifecycle;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
-import autodispose2.AutoDispose;
 import autodispose2.AutoDisposeConverter;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -155,7 +155,6 @@ public class XXF {
 
 
     private static Logger logger;
-    private static AndroidActivityStackProvider activityStackProvider;
     private static Consumer<Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
@@ -170,7 +169,6 @@ public class XXF {
                     XXF.errorHandler = builder.errorHandler;
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
-                    activityStackProvider = new AndroidActivityStackProvider(application);
                     ProgressHUDFactory.setProgressHUDProvider(builder.progressHUDProvider);
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
@@ -214,8 +212,8 @@ public class XXF {
      *
      * @return
      */
-    public static AndroidActivityStackProvider getActivityStackProvider() {
-        return activityStackProvider;
+    public static ActivityStackProvider getActivityStackProvider() {
+        return AndroidActivityStackProvider.INSTANCE;
     }
 
     /**

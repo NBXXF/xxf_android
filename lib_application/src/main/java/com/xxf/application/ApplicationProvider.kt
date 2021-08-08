@@ -1,10 +1,12 @@
 package com.xxf.application
 
+import android.app.Application
 import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import com.xxf.application.activity.AndroidActivityStackProvider
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -35,6 +37,7 @@ class ApplicationProvider : ContentProvider() {
     override fun onCreate(): Boolean {
         context?.let {
             applicationContext = it.applicationContext
+            AndroidActivityStackProvider.register((it.applicationContext as Application))
         }
         return true
     }

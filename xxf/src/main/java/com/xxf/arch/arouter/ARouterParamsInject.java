@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.xxf.arch.core.SimpleActivityLifecycleCallbacks;
+import com.xxf.application.activity.SimpleActivityLifecycleCallbacks;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
