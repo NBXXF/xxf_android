@@ -20,7 +20,6 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 
-import com.xxf.arch.activity.ActivityForKeyProvider;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
 

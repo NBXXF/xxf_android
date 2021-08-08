@@ -12,10 +12,8 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-import com.xxf.arch.activity.ActivityForKeyProvider;
 import com.xxf.arch.component.ObservableComponent;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -31,7 +29,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 
 public class XXFFragment<E>
-        extends Fragment implements ObservableComponent<Fragment, E>,ActivityForKeyProvider {
+        extends Fragment implements ObservableComponent<Fragment, E> {
 
     private View contentView;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();

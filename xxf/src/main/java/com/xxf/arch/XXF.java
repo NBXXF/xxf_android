@@ -30,7 +30,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
 import com.xxf.arch.arouter.ARouterParamsInject;
-import com.xxf.arch.arouter.XXFUserInfoProvider;
+import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.arch.core.Logger;
 import com.xxf.bus.RxBus;
 import com.xxf.activityresult.ActivityResult;

@@ -1,4 +1,4 @@
-package com.xxf.arch.arouter;
+package com.xxf.arch.core;
 
 import com.alibaba.android.arouter.facade.template.IProvider;
 

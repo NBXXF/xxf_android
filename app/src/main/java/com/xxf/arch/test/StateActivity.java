@@ -10,12 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewbinding.ViewBinding;
 
 import com.xxf.arch.XXF;
-import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.model.DownloadTask;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
@@ -40,7 +40,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class StateActivity extends XXFActivity {
+public class StateActivity extends AppCompatActivity {
 
     ActivityStateBinding stateBinding;
     TestAdaper testAdaper;

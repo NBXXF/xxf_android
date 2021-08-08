@@ -19,7 +19,6 @@ import androidx.annotation.StyleRes;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.xxf.arch.activity.ActivityForKeyProvider;
 import com.xxf.arch.component.ObservableComponent;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -35,7 +34,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 
 public class XXFBottomSheetDialogFragment<E>
-        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E>, ActivityForKeyProvider {
+        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E> {
 
     private View contentView;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();

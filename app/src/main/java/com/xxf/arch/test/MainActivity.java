@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
@@ -24,7 +25,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xxf.arch.XXF;
-import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.datastructure.ListOrSingle;
 import com.xxf.arch.json.datastructure.QueryJsonField;
@@ -60,7 +60,7 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class MainActivity extends XXFActivity {
+public class MainActivity extends AppCompatActivity {
     public static class User<T> {
         private T t;
 
@@ -631,7 +631,7 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(final View v) {
                         Bundle bundle = new Bundle();
-                        bundle.putString(ACTIVITY_PARAM, "one");
+                        bundle.putString("ACTIVITY_PARAM", "one");
 
                         ARouter.getInstance().build("/activity/test?name=1&age=" + System.currentTimeMillis()).navigation();
                  /*       XXF.startActivityForResult("/activity/test", bundle, 1000)

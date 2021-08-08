@@ -1,41 +1,33 @@
-package com.xxf.arch.arouter;
+package com.xxf.arch.arouter
 
-import androidx.annotation.NonNull;
-
-import com.alibaba.android.arouter.facade.model.RouteMeta;
-import com.alibaba.android.arouter.facade.template.IRouteGroup;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
+import com.alibaba.android.arouter.facade.model.RouteMeta
+import com.alibaba.android.arouter.facade.template.IRouteGroup
+import java.lang.reflect.InvocationTargetException
+import java.util.*
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 自动导入到内存表中(map)
  */
-public final class ARouterTabLoader {
-    private ARouterTabLoader() {
-    }
-
-    public static void loadRoutes(@NonNull Map<String, Class<? extends IRouteGroup>> fromGroupsIndex, @NonNull Map<String, RouteMeta> toRouteMetaMap) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Objects.requireNonNull(fromGroupsIndex);
-        Objects.requireNonNull(toRouteMetaMap);
-        Iterator<Map.Entry<String, Class<? extends IRouteGroup>>> it = fromGroupsIndex.entrySet().iterator();
+object ARouterTabLoader {
+    @JvmStatic
+    @Throws(NoSuchMethodException::class, IllegalAccessException::class, InvocationTargetException::class, InstantiationException::class)
+    fun loadRoutes(fromGroupsIndex: MutableMap<String?, Class<out IRouteGroup>>, toRouteMetaMap: Map<String?, RouteMeta?>) {
+        Objects.requireNonNull(fromGroupsIndex)
+        Objects.requireNonNull(toRouteMetaMap)
+        val it: MutableIterator<Map.Entry<String?, Class<out IRouteGroup>>> = fromGroupsIndex.entries.iterator()
         while (it.hasNext()) {
-            Map.Entry<String, Class<? extends IRouteGroup>> entry = it.next();
-            Class<? extends IRouteGroup> groupMeta = entry.getValue();
+            val entry = it.next()
+            val groupMeta = entry.value
             try {
-                IRouteGroup iGroupInstance = groupMeta.getConstructor().newInstance();
-                iGroupInstance.loadInto(toRouteMetaMap);
-                it.remove();
-            } catch (Exception e) {
-                e.printStackTrace();
+                val iGroupInstance = groupMeta.getConstructor().newInstance()
+                iGroupInstance.loadInto(toRouteMetaMap)
+                it.remove()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
-
-
     /**
      * 有init初始化问题,arouter发现表中没有才会初始化并init,如果在这里加载，一开始就Init了,设计不好
      *
@@ -45,7 +37,8 @@ public final class ARouterTabLoader {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws InstantiationException
-     *//*
+     */
+    /*
     public static void loadProvider(@NonNull Map<String, RouteMeta> fromProvidersIndex, @NonNull Map<Class, IProvider> toProviderMap) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         for (Map.Entry<String, RouteMeta> entry : fromProvidersIndex.entrySet()) {
             RouteMeta routeMeta = entry.getValue();

@@ -2,7 +2,6 @@ package com.xxf.arch.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 
-import com.xxf.arch.activity.ActivityForKeyProvider;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenAlertDialog;
 
@@ -35,7 +33,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>, ActivityForKeyProvider {
+public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>{
     private View contentView;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
