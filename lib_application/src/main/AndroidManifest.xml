@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xxf.application">
+    <application>
+        <provider
+            android:name="com.xxf.application.ApplicationProvider"
+            android:authorities="${applicationId}.ApplicationProvider"
+            android:exported="false"
+            android:multiprocess="true" />
+    </application>
+
+</manifest>

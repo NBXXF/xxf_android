@@ -30,9 +30,11 @@ dependencies {
     api project(path: ':lib_fileprovider')
     api project(path: ':lib_utils')
     api project(path: ':xxf')
+    api project(path: ':lib_application')
 
     api des.lottie
     api des.smart_refresh
+
 
 
 }

@@ -3,6 +3,7 @@ package com.xxf.arch.test;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
+import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
@@ -47,6 +49,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("====>app","app:"+ ApplicationProvider.applicationContext);
+        Toast.makeText(this,"yes:"+ApplicationProvider.applicationContext,Toast.LENGTH_LONG).show();
         INSTANCE = this;
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
