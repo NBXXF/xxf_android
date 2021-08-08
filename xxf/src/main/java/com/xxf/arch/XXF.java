@@ -27,6 +27,7 @@ import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.xxf.application.ApplicationProvider;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
 import com.xxf.arch.arouter.ARouterParamsInject;
@@ -611,7 +612,7 @@ public class XXF {
      * @return
      */
     public static boolean isGrantedPermission(@NonNull String permission) {
-        return ContextCompat.checkSelfPermission(getApplication(), permission) ==
+        return ContextCompat.checkSelfPermission(ApplicationProvider.applicationContext, permission) ==
                 PackageManager.PERMISSION_GRANTED;
     }
 

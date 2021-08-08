@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
+import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.XXF;
 
 import java.util.Map;
@@ -20,7 +21,7 @@ public class SharedPreferencesServiceImpl implements SharedPreferencesService {
 
     public static SharedPreferencesService getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new SharedPreferencesServiceImpl(XXF.getApplication());
+            INSTANCE = new SharedPreferencesServiceImpl(ApplicationProvider.applicationContext);
         }
         return INSTANCE;
     }

@@ -2,11 +2,7 @@ package com.xxf.arch.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AppOpsManager;
-import android.app.Application;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -22,11 +18,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.R;
 import com.xxf.arch.XXF;
 import com.xxf.utils.DensityUtil;
@@ -34,11 +30,9 @@ import com.xxf.view.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Description
@@ -185,7 +179,7 @@ public class ToastUtils {
 
 
     private static Context getContext() {
-        return XXF.getApplication();
+        return ApplicationProvider.applicationContext;
     }
 
     /**
@@ -215,7 +209,7 @@ public class ToastUtils {
     @UiThread
     @Nullable
     public static Toast showToast(@StringRes int notice, @NonNull ToastType type) {
-        return showToast(XXF.getApplication().getString(notice), type);
+        return showToast(getContext().getString(notice), type);
     }
 
     /**
@@ -323,11 +317,11 @@ public class ToastUtils {
                 TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
                 textView.setTextColor(Color.WHITE);
                 textView.setMaxLines(3);
-                textView.setCompoundDrawablePadding(DensityUtil.dip2px(topActivity,7));
-                int dp19 = DensityUtil.dip2px(topActivity,19);
+                textView.setCompoundDrawablePadding(DensityUtil.dip2px(7));
+                int dp19 = DensityUtil.dip2px(19);
                 switch (type) {
                     case ERROR:
-                        Drawable errorDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_error);
+                        Drawable errorDrawable = ApplicationProvider.applicationContext.getDrawable(R.drawable.xxf_ic_toast_error);
                         errorDrawable.setBounds(0, 0, dp19, dp19);
                         textView.setCompoundDrawables(errorDrawable, null, null, null);
                         break;
@@ -335,7 +329,7 @@ public class ToastUtils {
                         textView.setCompoundDrawables(null, null, null, null);
                         break;
                     case SUCCESS:
-                        Drawable successDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_success);
+                        Drawable successDrawable = ApplicationProvider.applicationContext.getDrawable(R.drawable.xxf_ic_toast_success);
                         successDrawable.setBounds(0, 0, dp19, dp19);
                         textView.setCompoundDrawables(successDrawable, null, null, null);
                         break;
@@ -360,14 +354,14 @@ public class ToastUtils {
     }
 
     public static LimitToast createToast(CharSequence msg, ToastType type) {
-        LayoutInflater inflater = LayoutInflater.from(XXF.getApplication());
+        LayoutInflater inflater = LayoutInflater.from(ApplicationProvider.applicationContext);
         View view = inflater.inflate(R.layout.xxf_toast_layout, null);
 
         TextView text = view.findViewById(android.R.id.message);
-        int dp19 = DensityUtil.dip2px(XXF.getApplication(), 19);
+        int dp19 = DensityUtil.dip2px( 19);
         switch (type) {
             case ERROR:
-                Drawable errorDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_error);
+                Drawable errorDrawable = ApplicationProvider.applicationContext.getDrawable(R.drawable.xxf_ic_toast_error);
                 errorDrawable.setBounds(0, 0, dp19, dp19);
                 text.setCompoundDrawables(errorDrawable, null, null, null);
                 break;
@@ -375,13 +369,13 @@ public class ToastUtils {
                 text.setCompoundDrawables(null, null, null, null);
                 break;
             case SUCCESS:
-                Drawable successDrawable = XXF.getApplication().getDrawable(R.drawable.xxf_ic_toast_success);
+                Drawable successDrawable = ApplicationProvider.applicationContext.getDrawable(R.drawable.xxf_ic_toast_success);
                 successDrawable.setBounds(0, 0, dp19, dp19);
                 text.setCompoundDrawables(successDrawable, null, null, null);
                 break;
         }
         text.setText(msg);
-        LimitToast toast = new LimitToast(XXF.getApplication());
+        LimitToast toast = new LimitToast(ApplicationProvider.applicationContext);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(view);

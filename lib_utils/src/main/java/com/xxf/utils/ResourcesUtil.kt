@@ -9,6 +9,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.xxf.application.applicationContext
 import com.xxf.utils.BitmapUtils.grey
 import com.xxf.utils.BitmapUtils.recycle
 import com.xxf.utils.BitmapUtils.scale
@@ -24,20 +25,33 @@ import java.util.*
  * @Description 资源文件工具类
  */
 object ResourcesUtil {
-    fun getString(context: Context, @StringRes resId: Int): String {
+
+    /**
+     * @param context设计为可选参数 主要是VectorEnabledTintResources 和 TintResources 的影响
+     */
+    fun getString(@StringRes resId: Int,context: Context= applicationContext): String {
         return context.getString(resId)
     }
 
-    fun getString(context: Context, @StringRes resId: Int, vararg formatArgs: Any?): String {
+    /**
+     * @param context设计为可选参数 主要是VectorEnabledTintResources 和 TintResources 的影响
+     */
+    fun getString(@StringRes resId: Int, vararg formatArgs: Any?,context: Context=applicationContext): String {
         return context.getString(resId, *formatArgs)
     }
 
-    fun getDrawable(context: Context?, @DrawableRes resId: Int): Drawable? {
+    /**
+     * @param context设计为可选参数 主要是VectorEnabledTintResources 和 TintResources 的影响
+     */
+    fun getDrawable(@DrawableRes resId: Int,context: Context=applicationContext): Drawable? {
         return ContextCompat.getDrawable(context!!, resId)
     }
 
+    /**
+     * @param context设计为可选参数 主要是VectorEnabledTintResources 和 TintResources 的影响
+     */
     @ColorInt
-    fun getColor(context: Context?, @ColorRes resId: Int): Int {
+    fun getColor(@ColorRes resId: Int,context: Context=applicationContext): Int {
         return ContextCompat.getColor(context!!, resId)
     }
 
@@ -81,18 +95,18 @@ object ResourcesUtil {
         return context.resources.getIdentifier(name, "menu", context.packageName)
     }
 
-    fun copyFileFromAssets(context: Context, assetsFilePath: String, destFilePath: String): Boolean {
+    fun copyFileFromAssets(assetsFilePath: String, destFilePath: String): Boolean {
         var res = true
         try {
-            val assets = context.assets.list(assetsFilePath)
+            val assets = applicationContext.assets.list(assetsFilePath)
             if (assets != null && assets.size > 0) {
                 for (asset in assets) {
-                    res = res and copyFileFromAssets(context, "$assetsFilePath/$asset", "$destFilePath/$asset")
+                    res = res and copyFileFromAssets("$assetsFilePath/$asset", "$destFilePath/$asset")
                 }
             } else {
                 res = FileUtils.writeFileFromIS(
                         File(destFilePath),
-                        context.assets.open(assetsFilePath), false
+                     applicationContext.assets.open(assetsFilePath), false
                 )
             }
         } catch (e: IOException) {
@@ -103,9 +117,9 @@ object ResourcesUtil {
     }
 
     @JvmOverloads
-    fun readAssets2String(context: Context, assetsFilePath: String?, charsetName: String? = null): String {
+    fun readAssets2String(assetsFilePath: String?, charsetName: String? = null): String {
         return try {
-            val `is` = context.assets.open(assetsFilePath!!)
+            val `is` = applicationContext.assets.open(assetsFilePath!!)
             val bytes = FileUtils.getFileBytes(`is`) ?: return ""
             if (TextUtils.isEmpty(charsetName)) {
                 String(bytes)
@@ -130,10 +144,10 @@ object ResourcesUtil {
      * 未来:id 颜色等等,请期待
      * 避免lint lint缺陷就是能忽略检查
      */
-    fun checkResources(context: Context, ignoreIds: List<Int>?) {
+    fun checkResources( ignoreIds: List<Int>?) {
         var aClass: Class<*>? = null
         try {
-            aClass = Class.forName(context.packageName + ".R")
+            aClass = Class.forName(applicationContext.packageName + ".R")
         } catch (ex: ClassNotFoundException) {
             ex.printStackTrace()
         }
@@ -148,12 +162,12 @@ object ResourcesUtil {
          */
         var stringRepeatMap: MutableMap<String?, MutableList<String?>?>? = HashMap()
         for (id in stringResources) {
-            val key = getString(context, id)
+            val key = getString(id)
             var idNames = stringRepeatMap!![key]
             if (idNames == null) {
                 idNames = ArrayList()
             }
-            idNames.add(context.resources.getResourceEntryName(id))
+            idNames.add(applicationContext.resources.getResourceEntryName(id))
             stringRepeatMap[key] = idNames
         }
         val drawableResources = getDrawableResources(aClass)
@@ -167,7 +181,7 @@ object ResourcesUtil {
             /**
              * 会存在load 不出来的xml的图片
              */
-            var bitmap = BitmapFactory.decodeResource(context.resources, id)
+            var bitmap = BitmapFactory.decodeResource(applicationContext.resources, id)
             if (bitmap != null) {
                 bitmap = scale(bitmap, 32, 32)
                 bitmap = grey(bitmap)
@@ -198,7 +212,7 @@ object ResourcesUtil {
             if (idNames == null) {
                 idNames = ArrayList()
             }
-            idNames.add(context.resources.getResourceEntryName(id))
+            idNames.add(applicationContext.resources.getResourceEntryName(id))
             drawableRepeatMap[key] = idNames
         }
         stringRepeatMap = convertRepeatMap(stringRepeatMap)

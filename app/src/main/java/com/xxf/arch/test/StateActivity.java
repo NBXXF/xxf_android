@@ -57,7 +57,7 @@ public class StateActivity extends AppCompatActivity {
        // stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
         stateBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //stateBinding.recyclerView.addItemDecoration(ItemDecorationFactory.createHorizontalItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(DensityUtil.dip2px(20)).color(Color.RED)));
-        DividerDecoration dividerItemDecoration=new DividerDecoration(this,Color.YELLOW, DensityUtil.dip2px(this,20));
+        DividerDecoration dividerItemDecoration=new DividerDecoration(this,Color.YELLOW, DensityUtil.dip2px(20));
        stateBinding.recyclerView.addItemDecoration(dividerItemDecoration);
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override

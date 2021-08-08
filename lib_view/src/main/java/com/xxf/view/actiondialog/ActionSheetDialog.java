@@ -93,7 +93,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
 
 
         public ActionSheetDialog<String> build() {
-            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, DensityUtil.getScreenHeightPx(XXF.getApplication()) / 2);
+            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, DensityUtil.getScreenHeightPx() / 2);
         }
     }
 
@@ -101,7 +101,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
                              @Nullable CharSequence title,
                              @NonNull AdapterStyle adapterStyle,
                              @NonNull List<ItemMenu<T>> actionItems) {
-        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx(XXF.getApplication()) / 2);
+        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx() / 2);
     }
 
     /**

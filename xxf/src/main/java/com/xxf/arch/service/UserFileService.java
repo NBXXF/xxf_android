@@ -2,6 +2,7 @@ package com.xxf.arch.service;
 
 import android.os.Environment;
 
+import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.XXF;
 import com.xxf.utils.FileUtils;
 
@@ -81,9 +82,9 @@ public interface UserFileService {
         return Observable.fromCallable(new Callable<File>() {
             @Override
             public File call() throws Exception {
-                File dir = XXF.getApplication().getFilesDir();
+                File dir = ApplicationProvider.applicationContext.getFilesDir();
                 if (!forceInnerFiles && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                    dir = XXF.getApplication().getExternalFilesDir(null);
+                    dir = ApplicationProvider.applicationContext.getExternalFilesDir(null);
                 }
                 FileUtils.createOrExistsDir(dir);
                 if (differUser) {
@@ -108,9 +109,9 @@ public interface UserFileService {
         return Observable.fromCallable(new Callable<File>() {
             @Override
             public File call() throws Exception {
-                File dir = XXF.getApplication().getCacheDir();
+                File dir = ApplicationProvider.applicationContext.getCacheDir();
                 if (!forceInnerCache && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                    dir = XXF.getApplication().getExternalCacheDir();
+                    dir = ApplicationProvider.applicationContext.getExternalCacheDir();
                 }
                 FileUtils.createOrExistsDir(dir);
                 if (differUser) {

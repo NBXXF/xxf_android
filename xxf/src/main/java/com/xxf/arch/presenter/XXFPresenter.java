@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.XXF;
 
 import java.util.Objects;
@@ -36,7 +37,7 @@ public class XXFPresenter<V> implements LifecyclePresenter<V> {
     @NonNull
     @Override
     public final <T extends Application> T getApplication() {
-        return (T) XXF.getApplication();
+        return (T) ApplicationProvider.applicationContext;
     }
 
     @Override

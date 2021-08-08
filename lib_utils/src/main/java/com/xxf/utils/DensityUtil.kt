@@ -40,36 +40,36 @@ val Int.sp
 
 object DensityUtil {
     @JvmStatic
-    fun getScreenHeightPx(context: Context): Int {
-        return context.resources.displayMetrics.heightPixels
+    fun getScreenHeightPx(): Int {
+        return ApplicationProvider.applicationContext.resources.displayMetrics.heightPixels
     }
 
     @JvmStatic
-    fun getScreenWidthPx(context: Context): Int {
-        return context.resources.displayMetrics.widthPixels
+    fun getScreenWidthPx(): Int {
+        return ApplicationProvider.applicationContext.resources.displayMetrics.widthPixels
     }
 
     @JvmStatic
-    fun dip2px(context: Context, dpValue: Float): Int {
-        val scale = context.resources.displayMetrics.density
+    fun dip2px(dpValue: Float): Int {
+        val scale = ApplicationProvider.applicationContext.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
     }
 
     @JvmStatic
-    fun px2dip(context: Context, pxValue: Float): Int {
-        val scale = context.resources.displayMetrics.density
+    fun px2dip(pxValue: Float): Int {
+        val scale =ApplicationProvider.applicationContext.resources.displayMetrics.density
         return (pxValue / scale + 0.5f).toInt()
     }
 
     @JvmStatic
-    fun px2sp(context: Context, pxValue: Float): Int {
-        val scale = context.resources.displayMetrics.density
+    fun px2sp( pxValue: Float): Int {
+        val scale =ApplicationProvider.applicationContext.resources.displayMetrics.density
         return (pxValue / scale + 0.5f).toInt()
     }
 
     @JvmStatic
-    fun sp2px(context: Context, spValue: Float): Int {
-        val scale = context.resources.displayMetrics.density
+    fun sp2px(spValue: Float): Int {
+        val scale = ApplicationProvider.applicationContext.resources.displayMetrics.density
         return (spValue * scale + 0.5f).toInt()
     }
 }

@@ -28,6 +28,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.XXF;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.utils.UriUtils;
@@ -79,7 +80,7 @@ public class SystemUtils {
         } else {
             ContentValues contentValues = new ContentValues(1);
             contentValues.put("_data", imageFile.getAbsolutePath());
-            Uri outImgUri = XXF.getApplication().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            Uri outImgUri = ApplicationProvider.applicationContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, outImgUri);
         }
         return intent;
@@ -402,7 +403,7 @@ public class SystemUtils {
      * @param charSequence
      */
     public static void copyTextToClipboard(@Nullable String lable, @NonNull CharSequence charSequence) {
-        ClipboardManager cmb = (ClipboardManager) XXF.getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager cmb = (ClipboardManager) ApplicationProvider.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE);
         if (cmb == null) {
             return;
         }
@@ -416,7 +417,7 @@ public class SystemUtils {
      * @param charSequence
      */
     public static void copyTextToClipboard(@NonNull CharSequence charSequence) {
-        ClipboardManager cmb = (ClipboardManager) XXF.getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager cmb = (ClipboardManager) ApplicationProvider.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE);
         if (cmb == null) {
             return;
         }
@@ -430,7 +431,7 @@ public class SystemUtils {
      * @return
      */
     public static CharSequence getTextFromClipboard() {
-        ClipboardManager cmb = (ClipboardManager) XXF.getApplication().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager cmb = (ClipboardManager) ApplicationProvider.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE);
         if (cmb != null) {
             if (cmb.hasPrimaryClip()) {
                 if (cmb.getPrimaryClip().getItemCount() > 0) {
@@ -460,7 +461,7 @@ public class SystemUtils {
 
     private static Uri queryMediaImageUri(File imageFile) {
         String filePath = imageFile.getAbsolutePath();
-        Cursor cursor = XXF.getApplication().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{"_id"}, "_data=? ", new String[]{filePath}, (String) null);
+        Cursor cursor = ApplicationProvider.applicationContext.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{"_id"}, "_data=? ", new String[]{filePath}, (String) null);
         if (cursor != null && cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndex("_id"));
             Uri baseUri = Uri.parse("content://media/external/images/media");
@@ -468,7 +469,7 @@ public class SystemUtils {
         } else if (imageFile.exists()) {
             ContentValues values = new ContentValues();
             values.put("_data", filePath);
-            return XXF.getApplication().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            return ApplicationProvider.applicationContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         } else {
             return null;
         }
