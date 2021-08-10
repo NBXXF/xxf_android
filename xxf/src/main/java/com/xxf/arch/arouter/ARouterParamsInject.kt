@@ -12,7 +12,7 @@ import com.xxf.application.activity.SimpleActivityLifecycleCallbacks
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  */
-class ARouterParamsInject : SimpleActivityLifecycleCallbacks() {
+object ARouterParamsInject : SimpleActivityLifecycleCallbacks() {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         super.onActivityCreated(activity, savedInstanceState)
         ARouter.getInstance().inject(activity)

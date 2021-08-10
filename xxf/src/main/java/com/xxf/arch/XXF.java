@@ -55,9 +55,11 @@ import autodispose2.AutoDisposeConverter;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Supplier;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -121,11 +123,17 @@ public class XXF {
         Application application;
         @NonNull
         ProgressHUDFactory.ProgressHUDProvider progressHUDProvider;
+        boolean asyncInit;
 
         public Builder(@NonNull Application application,
                        @NonNull ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
             this.application = Objects.requireNonNull(application);
             this.progressHUDProvider = Objects.requireNonNull(progressHUDProvider);
+        }
+
+        public Builder setAsyncInit(boolean asyncInit) {
+            this.asyncInit = asyncInit;
+            return this;
         }
 
         public Builder setLogger(@NonNull Logger logger) {
@@ -162,6 +170,7 @@ public class XXF {
 
 
     public static void init(Builder builder) {
+        long start=System.currentTimeMillis();
         if (XXF.application == null) {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
@@ -174,25 +183,36 @@ public class XXF {
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
                     });
-                    initRouter();
+                    initRouter(builder.asyncInit);
                 }
             }
         }
+        Log.d("======>take:",""+(System.currentTimeMillis()-start));
     }
 
     /**
      * arouter
      */
-    private static void initRouter() {
-        if (logger.isLoggable()) {
-            ARouter.openLog();
-            ARouter.openDebug();
+    private static void initRouter(boolean asyncInit) {
+      Observable<Boolean> initRequst=Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                if (logger.isLoggable()) {
+                    ARouter.openLog();
+                    ARouter.openDebug();
+                }
+                ARouter.init(application);
+                //一次性加载到表中
+                ARouterTab.____initLoad();
+                //router 解析参数注册
+                ARouterParamsInject.INSTANCE.register(application);
+                return true;
+            }
+        });
+        if(asyncInit) {
+            initRequst=initRequst.subscribeOn(Schedulers.io());
         }
-        ARouter.init(application);
-        //一次性加载到表中
-        ARouterTab.____initLoad();
-        //router 解析参数注册
-        new ARouterParamsInject().register(application);
+        initRequst.subscribe();
     }
 
 

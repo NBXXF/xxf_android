@@ -74,7 +74,8 @@ public class BaseApplication extends Application {
                 }
                 return null;
             }
-        }).setErrorHandler(new Consumer<Throwable>() {
+        }).setAsyncInit(true)
+                .setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
                 ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR);
