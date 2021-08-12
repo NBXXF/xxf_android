@@ -261,47 +261,54 @@ public class SystemUtils {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
-                .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
+        return XXF.requestPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(new RxPermissionTransformer(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .flatMap(new Function<Boolean, ObservableSource<String>>() {
                     @Override
-                    public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
-                        if (!activityResult.isOk()) {
-                            return Observable.empty();
-                        }
-                        return Observable.fromCallable(new Callable<String>() {
-                            @Override
-                            public String call() throws Exception {
-                                return UriUtils.getPath(activity, activityResult.getData().getData());
-                            }
-                        }).map(new Function<String, String>() {
-                            @Override
-                            public String apply(String s) throws Throwable {
-                                /**
-                                 * fix:华为手机【【Intent.ACTION_GET_CONTENT 】 还能跳转到文件管理器选择其他类型的文件
-                                 */
-                                HashMap<String, HashSet<String>> mimeTypeMap = new HashMap<>();
-                                for (String mimeType : mimeTypes) {
-                                    String[] split = mimeType.split("/");
-                                    if (mimeTypeMap.get(split[0]) == null) {
-                                        mimeTypeMap.put(split[0], new HashSet<>());
+                    public ObservableSource<String> apply(Boolean aBoolean) throws Throwable {
+                        return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
+                                .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
+                                    @Override
+                                    public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
+                                        if (!activityResult.isOk()) {
+                                            return Observable.empty();
+                                        }
+                                        return Observable.fromCallable(new Callable<String>() {
+                                            @Override
+                                            public String call() throws Exception {
+                                                return UriUtils.getPath(activity, activityResult.getData().getData());
+                                            }
+                                        }).map(new Function<String, String>() {
+                                            @Override
+                                            public String apply(String s) throws Throwable {
+                                                /**
+                                                 * fix:华为手机【【Intent.ACTION_GET_CONTENT 】 还能跳转到文件管理器选择其他类型的文件
+                                                 */
+                                                HashMap<String, HashSet<String>> mimeTypeMap = new HashMap<>();
+                                                for (String mimeType : mimeTypes) {
+                                                    String[] split = mimeType.split("/");
+                                                    if (mimeTypeMap.get(split[0]) == null) {
+                                                        mimeTypeMap.put(split[0], new HashSet<>());
+                                                    }
+                                                    mimeTypeMap.get(split[0]).add(split[1]);
+                                                }
+                                                if (mimeTypeMap.get("*") != null) {
+                                                    return s;
+                                                }
+                                                String fileMimeType = FileUtils.getMimeType(s);
+                                                String[] fileMimeTypeArray = fileMimeType.split("/");
+                                                HashSet<String> supportTypes = mimeTypeMap.get(fileMimeTypeArray[0]);
+                                                if (supportTypes != null && (supportTypes.contains("*") || supportTypes.contains(fileMimeTypeArray[1]))) {
+                                                    return s;
+                                                }
+                                                throw new FileNotMatchTypeException("file not match type " + Arrays.toString(mimeTypes));
+                                            }
+                                        }).subscribeOn(Schedulers.io());
                                     }
-                                    mimeTypeMap.get(split[0]).add(split[1]);
-                                }
-                                if (mimeTypeMap.get("*") != null) {
-                                    return s;
-                                }
-                                String fileMimeType = FileUtils.getMimeType(s);
-                                String[] fileMimeTypeArray = fileMimeType.split("/");
-                                HashSet<String> supportTypes = mimeTypeMap.get(fileMimeTypeArray[0]);
-                                if (supportTypes != null && (supportTypes.contains("*") || supportTypes.contains(fileMimeTypeArray[1]))) {
-                                    return s;
-                                }
-                                throw new FileNotMatchTypeException("file not match type " + Arrays.toString(mimeTypes));
-                            }
-                        }).subscribeOn(Schedulers.io());
+                                })
+                                .observeOn(AndroidSchedulers.mainThread());
                     }
-                })
-                .observeOn(AndroidSchedulers.mainThread());
+                });
     }
 
     /**

@@ -39,6 +39,7 @@ import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.objectbox.ObjectBoxUtils;
 import com.xxf.view.utils.StatusBarUtils;
+import com.xxf.view.utils.SystemUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -630,10 +631,17 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
+                        SystemUtils.selectFile(MainActivity.this)
+                                .subscribe(new Consumer<String>() {
+                                    @Override
+                                    public void accept(String s) throws Throwable {
+                                        Log.d("=====>path",s);
+                                    }
+                                });
                         Bundle bundle = new Bundle();
                         bundle.putString("ACTIVITY_PARAM", "one");
 
-                        ARouter.getInstance().build("/activity/test?name=1&age=" + System.currentTimeMillis()).navigation();
+                      //  ARouter.getInstance().build("/activity/test?name=1&age=" + System.currentTimeMillis()).navigation();
                  /*       XXF.startActivityForResult("/activity/test", bundle, 1000)
                                 .compose(XXF.bindToErrorNotice())
                                 .take(1)
