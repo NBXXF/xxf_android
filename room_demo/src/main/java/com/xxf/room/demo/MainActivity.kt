@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
+import com.xxf.arch.json.JsonUtils
 import com.xxf.room.demo.dao.UserDao
 import com.xxf.room.demo.database.UserDatabase
 import com.xxf.room.demo.databinding.ActivityMainBinding
@@ -31,6 +32,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initView()
+
+        val testModel=TestColorModel("#80E5E5E5");
+        val toJsonString = JsonUtils.toJsonString(testModel);
+        Log.d("=====>序列化颜色:",toJsonString);
+
+        val deserlizeModel = JsonUtils.toBean(toJsonString,TestColorModel::class.java);
+        Log.d("=====>反序列化颜色:",""+deserlizeModel);
     }
 
     private fun initView() {
