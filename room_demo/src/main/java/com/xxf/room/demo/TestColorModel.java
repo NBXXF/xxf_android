@@ -1,7 +1,8 @@
 package com.xxf.room.demo;
 
 import com.google.gson.annotations.JsonAdapter;
-import com.xxf.arch.json.typeadapter.color.RGBAColorTypeAdapter;
+import com.xxf.arch.json.typeadapter.color.RGBAColorHexIntTypeAdapter;
+import com.xxf.arch.json.typeadapter.color.RGBAColorStringTypeAdapter;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -9,17 +10,23 @@ import com.xxf.arch.json.typeadapter.color.RGBAColorTypeAdapter;
  * Description ://TODO
  */
 public class TestColorModel {
-    @JsonAdapter(RGBAColorTypeAdapter.class)
+    @JsonAdapter(RGBAColorStringTypeAdapter.class)
    public String color;
 
-    public TestColorModel(String color) {
+    @JsonAdapter(RGBAColorHexIntTypeAdapter.class)
+    public int colorInt;
+
+
+    public TestColorModel(String color, int colorInt) {
         this.color = color;
+        this.colorInt = colorInt;
     }
 
     @Override
     public String toString() {
         return "TestColorModel{" +
                 "color='" + color + '\'' +
+                ", colorInt='" + colorInt + '\'' +
                 '}';
     }
 }

@@ -1,9 +1,12 @@
 package com.xxf.room.demo
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.xxf.arch.json.JsonUtils
@@ -28,17 +31,19 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initView()
 
-        val testModel=TestColorModel("#80E5E5E5");
+        val testModel=TestColorModel("#80E5E5E5", 0x80E5E5E5.toInt());
         val toJsonString = JsonUtils.toJsonString(testModel);
         Log.d("=====>序列化颜色:",toJsonString);
 
         val deserlizeModel = JsonUtils.toBean(toJsonString,TestColorModel::class.java);
         Log.d("=====>反序列化颜色:",""+deserlizeModel);
+        Log.d("=====>反序列化颜色2:","#"+Integer.toHexString(deserlizeModel.colorInt));
     }
 
     private fun initView() {

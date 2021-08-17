@@ -19,7 +19,7 @@ import java.io.IOException;
  * 反序列化(服务器到本地模型):将8位的#RGBA转换成8位的#ARGB
  * 序列化（本地模型到服务器）:将8位的#AGBB转换成8位的#RGBA
  */
-public class RGBAColorTypeAdapter extends TypeAdapter<String> {
+public class RGBAColorStringTypeAdapter extends TypeAdapter<String> {
 
     @Override
     public void write(JsonWriter out, String argbColor) throws IOException {
