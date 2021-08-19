@@ -50,10 +50,21 @@ import java.util.ArrayList;
  * version 1.0.0
  */
 public class ToastUtils {
+    @Nullable
+    private static ToastFactory toastFactory;
+
+    public static void setToastFactory(@Nullable ToastFactory toastFactory) {
+        ToastUtils.toastFactory = toastFactory;
+    }
+
+    public interface ToastFactory {
+        LimitToast createToast(CharSequence msg, ToastType type,Context applicationContext);
+    }
+
     /**
      * 数量限制的toast 避免栈内挤压过多toast  也能批量取消taost
      */
-    private static class LimitToast extends Toast {
+    public static class LimitToast extends Toast {
         private static int MAX_TOAST = 10;
         private static volatile ArrayList<Toast> toastArrayList = new ArrayList<>();
 
@@ -235,7 +246,7 @@ public class ToastUtils {
          */
         noticeString = notice;
 
-        LimitToast toast = createToast(notice, type);
+        LimitToast toast =ToastUtils.toastFactory!=null? ToastUtils.toastFactory.createToast(notice, type,ApplicationProvider.applicationContext): createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);
@@ -353,12 +364,12 @@ public class ToastUtils {
         return context.getResources().getDimensionPixelSize(resourceId);
     }
 
-    public static LimitToast createToast(CharSequence msg, ToastType type) {
+    private static LimitToast createToast(CharSequence msg, ToastType type) {
         LayoutInflater inflater = LayoutInflater.from(ApplicationProvider.applicationContext);
         View view = inflater.inflate(R.layout.xxf_toast_layout, null);
 
         TextView text = view.findViewById(android.R.id.message);
-        int dp19 = DensityUtil.dip2px( 19);
+        int dp19 = DensityUtil.dip2px(19);
         switch (type) {
             case ERROR:
                 Drawable errorDrawable = ApplicationProvider.applicationContext.getDrawable(R.drawable.xxf_ic_toast_error);
