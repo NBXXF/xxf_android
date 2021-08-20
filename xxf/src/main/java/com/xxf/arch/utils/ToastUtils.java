@@ -63,9 +63,10 @@ public class ToastUtils {
          * @param msg
          * @param type
          * @param applicationContext
-         * @param flag 可以标记toast业务类型 比如位置,也可以根据后端返回的状态码进行颜色 着重文字提示
-         *            默认0
+         * @param flag 任意类型的整形 可以标记toast业务类型 比如位置,也可以根据后端返回的状态码进行颜色 着重文字提示
+         *            默认Gravity.CENTER
          *            XXF.bindToErrorNotice 是Integer.MIN_VALUE
+         *            flag的定值 可以参考【Gravity】类的枚举值
          *
          * flag 等价于ErrorHandler 返回的flag  XXF.init().setErrorHandler(new BiConsumer<Integer, Throwable>() {
          *                     @Override
@@ -249,7 +250,7 @@ public class ToastUtils {
     @UiThread
     @Nullable
     public static Toast showToast(@NonNull CharSequence notice, @NonNull ToastType type) {
-         return showToast(notice,type,0);
+         return showToast(notice,type,Gravity.CENTER);
     }
     /**
      * 校验线程
