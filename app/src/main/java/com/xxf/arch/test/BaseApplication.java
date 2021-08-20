@@ -78,8 +78,8 @@ public class BaseApplication extends Application {
         }).setAsyncInit(true)
                 .setErrorHandler(new BiConsumer<Integer, Throwable>() {
                     @Override
-                    public void accept(Integer integer, Throwable throwable) throws Throwable {
-                        ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR);
+                    public void accept(Integer flag, Throwable throwable) throws Throwable {
+                        ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR,flag);
                     }
                 }));
         //可做本module 相关sdk初始化

@@ -66,6 +66,13 @@ public class ToastUtils {
          * @param flag 可以标记toast业务类型 比如位置,也可以根据后端返回的状态码进行颜色 着重文字提示
          *            默认0
          *            XXF.bindToErrorNotice 是Integer.MIN_VALUE
+         *
+         * flag 等价于ErrorHandler 返回的flag  XXF.init().setErrorHandler(new BiConsumer<Integer, Throwable>() {
+         *                     @Override
+         *                     public void accept(Integer flag, Throwable throwable) throws Throwable {
+         *                         ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR,flag);
+         *                     }
+         *                 }));
          * @return
          */
         LimitToast createToast(CharSequence msg, ToastType type,Context applicationContext,int flag);
