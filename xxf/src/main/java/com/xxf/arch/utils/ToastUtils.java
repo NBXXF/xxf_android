@@ -58,7 +58,17 @@ public class ToastUtils {
     }
 
     public interface ToastFactory {
-        LimitToast createToast(CharSequence msg, ToastType type,Context applicationContext);
+        /**
+         *
+         * @param msg
+         * @param type
+         * @param applicationContext
+         * @param flag 可以标记toast业务类型 比如位置,也可以根据后端返回的状态码进行颜色 着重文字提示
+         *            默认0
+         *            XXF.bindToErrorNotice 是Integer.MIN_VALUE
+         * @return
+         */
+        LimitToast createToast(CharSequence msg, ToastType type,Context applicationContext,int flag);
     }
 
     /**
@@ -222,7 +232,6 @@ public class ToastUtils {
     public static Toast showToast(@StringRes int notice, @NonNull ToastType type) {
         return showToast(getContext().getString(notice), type);
     }
-
     /**
      * 校验线程
      * 否则:Can't create handler inside thread that has not called Looper.prepare()
@@ -233,6 +242,19 @@ public class ToastUtils {
     @UiThread
     @Nullable
     public static Toast showToast(@NonNull CharSequence notice, @NonNull ToastType type) {
+         return showToast(notice,type,0);
+    }
+    /**
+     * 校验线程
+     * 否则:Can't create handler inside thread that has not called Looper.prepare()
+     *
+     * @param notice
+     * @param flag  用于标记业务类型
+     * @return
+     */
+    @UiThread
+    @Nullable
+    public static Toast showToast(@NonNull CharSequence notice, @NonNull ToastType type,int flag) {
         if (!isMainThread() || TextUtils.isEmpty(notice)) {
             return null;
         }
@@ -246,7 +268,7 @@ public class ToastUtils {
          */
         noticeString = notice;
 
-        LimitToast toast =ToastUtils.toastFactory!=null? ToastUtils.toastFactory.createToast(notice, type,ApplicationProvider.applicationContext): createToast(notice, type);
+        LimitToast toast =ToastUtils.toastFactory!=null? ToastUtils.toastFactory.createToast(notice, type,ApplicationProvider.applicationContext,flag): createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);

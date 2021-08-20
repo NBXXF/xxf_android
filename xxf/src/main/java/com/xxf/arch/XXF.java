@@ -55,8 +55,7 @@ import autodispose2.AutoDisposeConverter;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.BiConsumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -96,9 +95,9 @@ public class XXF {
             }
         };
         @NonNull
-        Consumer<Throwable> errorHandler = new Consumer<Throwable>() {
+        BiConsumer<Integer,Throwable> errorHandler = new BiConsumer<Integer, Throwable>() {
             @Override
-            public void accept(Throwable throwable) throws Exception {
+            public void accept(Integer integer, Throwable throwable) {
                 ToastUtils.showToast(throwable.getMessage(), ToastUtils.ToastType.ERROR);
             }
         };
@@ -141,7 +140,7 @@ public class XXF {
             return this;
         }
 
-        public Builder setErrorHandler(@NonNull Consumer<Throwable> errorHandler) {
+        public Builder setErrorHandler(@NonNull BiConsumer<Integer, Throwable> errorHandler) {
             this.errorHandler = Objects.requireNonNull(errorHandler);
             return this;
         }
@@ -164,7 +163,7 @@ public class XXF {
 
 
     private static Logger logger;
-    private static Consumer<Throwable> errorHandler;
+    private static BiConsumer<Integer, Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
 

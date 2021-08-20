@@ -2,6 +2,7 @@ package com.xxf.arch.rxjava.transformer;
 
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 
+import io.reactivex.rxjava3.functions.BiConsumer;
 import io.reactivex.rxjava3.functions.Consumer;
 
 
@@ -10,10 +11,10 @@ import io.reactivex.rxjava3.functions.Consumer;
  * @Description
  */
 public class UIErrorTransformer<T> extends UILifeTransformerImpl<T> {
+    public static int FLAG=Integer.MIN_VALUE;
 
-    Consumer<? super Throwable> consumer;
-
-    public UIErrorTransformer(Consumer<? super Throwable> consumer) {
+    BiConsumer<Integer, ? super Throwable> consumer;
+    public UIErrorTransformer( BiConsumer<Integer, ? super Throwable> consumer) {
         this.consumer = consumer;
     }
 
@@ -37,7 +38,7 @@ public class UIErrorTransformer<T> extends UILifeTransformerImpl<T> {
     public final void onError(Throwable throwable) {
         if (consumer != null) {
             try {
-                consumer.accept(throwable);
+                consumer.accept(FLAG,throwable);
             } catch (Throwable e) {
                 e.printStackTrace();
             }

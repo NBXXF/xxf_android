@@ -29,6 +29,7 @@ import com.xxf.utils.ResourcesUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.functions.BiConsumer;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -75,12 +76,12 @@ public class BaseApplication extends Application {
                 return null;
             }
         }).setAsyncInit(true)
-                .setErrorHandler(new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR);
-            }
-        }));
+                .setErrorHandler(new BiConsumer<Integer, Throwable>() {
+                    @Override
+                    public void accept(Integer integer, Throwable throwable) throws Throwable {
+                        ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR);
+                    }
+                }));
         //可做本module 相关sdk初始化
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
