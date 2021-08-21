@@ -178,7 +178,7 @@ public class XXF {
                     XXF.errorHandler = builder.errorHandler;
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
-                    ProgressHUDFactory.setProgressHUDProvider(builder.progressHUDProvider);
+                    ProgressHUDFactory.INSTANCE.setProgressHUDProvider(builder.progressHUDProvider);
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
                     });

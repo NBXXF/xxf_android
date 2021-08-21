@@ -11,6 +11,37 @@ import androidx.annotation.Nullable;
  */
 
 public interface ProgressHUD {
+    ProgressHUD EMPTY = new ProgressHUD() {
+        @Override
+        public void showLoadingDialog(@Nullable String notice) {
+
+        }
+
+        @Override
+        public void dismissLoadingDialog() {
+
+        }
+
+        @Override
+        public void dismissLoadingDialogWithSuccess(String notice, long delayTime) {
+
+        }
+
+        @Override
+        public void dismissLoadingDialogWithFail(String notice, long delayTime) {
+
+        }
+
+        @Override
+        public boolean isShowLoading() {
+            return false;
+        }
+
+        @Override
+        public void updateStateText(String notice) {
+
+        }
+    };
 
     /**
      * 展示加载对话框

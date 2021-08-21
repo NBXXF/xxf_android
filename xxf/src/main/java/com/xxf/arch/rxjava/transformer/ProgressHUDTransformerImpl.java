@@ -95,7 +95,7 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
             return progressHUD;
         }
         if (lifecycleOwner != null) {
-            progressHUD = ProgressHUDFactory.getInstance().getProgressHUD(lifecycleOwner);
+            progressHUD = ProgressHUDFactory.INSTANCE.getProgressHUD(lifecycleOwner);
             return progressHUD;
         }
         return null;

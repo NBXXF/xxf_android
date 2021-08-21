@@ -71,7 +71,7 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
             realContext = this.getContext();
         }
         if (realContext instanceof LifecycleOwner) {
-            return ProgressHUDFactory.getInstance().getProgressHUD((LifecycleOwner) realContext);
+            return ProgressHUDFactory.INSTANCE.getProgressHUD((LifecycleOwner) realContext);
         }
         return null;
     }
