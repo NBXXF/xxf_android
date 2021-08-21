@@ -42,7 +42,7 @@ import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
 import com.xxf.arch.service.SharedPreferencesService;
-import com.xxf.arch.service.SharedPreferencesServiceImpl;
+import com.xxf.arch.service.SpService;
 import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
@@ -57,7 +57,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.BiConsumer;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -184,7 +183,6 @@ public class XXF {
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
                     });
-                    String rootDir = MMKV.initialize(application);
                     initRouter(builder.asyncInit);
                 }
             }
@@ -268,8 +266,8 @@ public class XXF {
      * @return
      */
     @NonNull
-    public static SharedPreferencesService getSharedPreferencesService() {
-        return SharedPreferencesServiceImpl.getInstance();
+    public static SharedPreferencesService getSpService() {
+        return SpService.INSTANCE;
     }
 
 
