@@ -35,4 +35,5 @@ dependencies {
     api project(path: ':lib_bus')
     api project(path: ':lib_objectbox')
     api project(path: ':lib_fileprovider')
+    implementation des.mmkv
 }

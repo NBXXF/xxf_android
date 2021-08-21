@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
+import com.tencent.mmkv.MMKV;
 import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.XXF;
 
@@ -29,7 +30,8 @@ public class SharedPreferencesServiceImpl implements SharedPreferencesService {
     private SharedPreferences mSharedPreferences;
 
     private SharedPreferencesServiceImpl(Context context) {
-        this.mSharedPreferences = context.getSharedPreferences(context.getApplicationContext().getPackageName(), 0);
+        this.mSharedPreferences=MMKV.defaultMMKV();
+      //  this.mSharedPreferences = context.getSharedPreferences(context.getApplicationContext().getPackageName(), 0);
     }
 
     @Override

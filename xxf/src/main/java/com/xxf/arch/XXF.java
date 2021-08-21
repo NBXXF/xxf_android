@@ -27,6 +27,7 @@ import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.tencent.mmkv.MMKV;
 import com.xxf.application.ApplicationProvider;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
@@ -183,6 +184,7 @@ public class XXF {
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
                     });
+                    String rootDir = MMKV.initialize(application);
                     initRouter(builder.asyncInit);
                 }
             }
