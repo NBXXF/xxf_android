@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.alibaba.android.arouter.facade.Postcard;
@@ -31,8 +32,9 @@ import com.xxf.arch.json.datastructure.QueryJsonField;
 import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
 import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
-import com.xxf.arch.presenter.XXFLifecyclePresenter;
+import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
+import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class Presenter extends XXFLifecyclePresenter<Object> {
+    class Presenter extends XXFPresenter<Object> {
 
         public Presenter(@NonNull LifecycleOwner lifecycleOwner, Object view) {
             super(lifecycleOwner, view);
@@ -90,9 +92,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onStart() {
+            super.onStart();
+            Log.d("================>p", "onStart");
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            Log.d("================>p", "onResume");
+        }
+
+        @Override
         public void onPause() {
             super.onPause();
             Log.d("================>p", "onPause");
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+            Log.d("================>p", "onStop");
         }
 
         @Override
@@ -125,11 +145,19 @@ public class MainActivity extends AppCompatActivity {
                     '}';
         }
     }
-
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getLifecycle().addObserver(
+                new XXFLifecycleObserver() {
+                });
+        this.getLifecycle().addObserver(new LifecycleEventObserver() {
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                Log.d("======>test:",""+event);
+            }
+        });
         long hello = ObjectBoxUtils.INSTANCE.generateId("hello");
         long hello2 = ObjectBoxUtils.INSTANCE.generateId("hello");
         ToastUtils.showToast(" issame:" + (hello == hello2), ToastUtils.ToastType.ERROR);
@@ -190,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
         StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout));
 
         new Presenter(this, this);
-        new XXFLifecyclePresenter<Object>(MainActivity.this, null);
 
 
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {

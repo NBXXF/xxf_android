@@ -2,6 +2,8 @@
 package com.xxf.arch.lifecycle;
 
 
+import android.util.Log;
+
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -12,59 +14,33 @@ import androidx.lifecycle.OnLifecycleEvent;
  * @Description lifecycle观察
  * @date createTime：2018/9/7
  */
-public class XXFLifecycleObserver implements LifecycleObserver {
-
-    private XXFFullLifecycleObserver fullLifecycleObserver;
-
-    public XXFLifecycleObserver(XXFFullLifecycleObserver fullLifecycleObserver) {
-        this.fullLifecycleObserver = fullLifecycleObserver;
-    }
-
-    public XXFLifecycleObserver() {
-    }
-
+public interface XXFLifecycleObserver extends LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    protected void onCreate() {
-        if (fullLifecycleObserver != null) {
-            fullLifecycleObserver.onCreate();
-        }
+    default void onCreate(){
+        Log.d("====>life","onCreate");
     }
 
-
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    protected void onStart() {
-        if (fullLifecycleObserver != null) {
-            fullLifecycleObserver.onCreate();
-        }
+    default void onStart(){
+        Log.d("====>life","onStart");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    protected void onResume() {
-        if (fullLifecycleObserver != null) {
-            fullLifecycleObserver.onCreate();
-        }
+    default void onResume(){
+        Log.d("====>life","onResume");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    protected void onPause() {
-        if (fullLifecycleObserver != null) {
-            fullLifecycleObserver.onCreate();
-        }
+    default void onPause(){
+        Log.d("====>life","onPause");
     }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    protected void onStop() {
-        if (fullLifecycleObserver != null) {
-            fullLifecycleObserver.onCreate();
-        }
+    default void onStop(){
+        Log.d("====>life","onStop");
     }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    protected void onDestroy() {
-        if (fullLifecycleObserver != null) {
-            fullLifecycleObserver.onCreate();
-        }
+    default void onDestroy(){
+        Log.d("====>life","onDestroy");
     }
-
 }

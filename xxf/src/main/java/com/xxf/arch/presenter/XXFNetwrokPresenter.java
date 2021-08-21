@@ -16,7 +16,7 @@ import com.xxf.arch.XXF;
  * @Description 网络监听的特殊Presenter
  * @date createTime：2018/9/7
  */
-public abstract class XXFNetwrokPresenter<V> extends XXFLifecyclePresenter<V> {
+public abstract class XXFNetwrokPresenter<V> extends XXFPresenter<V> {
     private boolean isFirstNetonAvailable;
     private final ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
         @Override

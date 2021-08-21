@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.XXF;
-import com.xxf.arch.lifecycle.XXFFullLifecycleObserver;
-import com.xxf.arch.lifecycle.XXFFullLifecycleObserverAdapter;
-import com.xxf.arch.presenter.XXFLifecyclePresenter;
+import com.xxf.arch.presenter.XXFPresenter;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -21,7 +19,7 @@ public class TestFragment extends Fragment {
         new Presenter(this, null);
     }
 
-    class Presenter extends XXFLifecyclePresenter<Object> {
+    class Presenter extends XXFPresenter<Object> {
 
         public Presenter(@NonNull LifecycleOwner lifecycleOwner, Object view) {
             super(lifecycleOwner, view);
@@ -52,37 +50,5 @@ public class TestFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        this.getLifecycle().addObserver(new XXFFullLifecycleObserverAdapter(new XXFFullLifecycleObserver() {
-            @Override
-            public void onCreate() {
-                Log.d("================>p3", "onCreate");
-            }
-
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onResume() {
-
-            }
-
-            @Override
-            public void onPause() {
-                Log.d("================>p3", "onPause");
-            }
-
-            @Override
-            public void onStop() {
-
-            }
-
-            @Override
-            public void onDestroy() {
-                Log.d("================>p3", "onDestroy");
-            }
-        }));
     }
 }

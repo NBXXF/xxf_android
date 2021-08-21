@@ -1,7 +1,9 @@
 
 package com.xxf.arch.lifecycle;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -12,10 +14,10 @@ import androidx.lifecycle.OnLifecycleEvent;
  * @Description lifecycle观察
  * @date createTime：2018/9/7
  */
-public class XXFSimpleLifecycleObserver implements LifecycleObserver {
+public class XXFLifecycleEventObserver implements LifecycleEventObserver{
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
-    protected final void onEvent(LifecycleOwner owner, Lifecycle.Event event) {
+    @Override
+    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
 
     }
 }
