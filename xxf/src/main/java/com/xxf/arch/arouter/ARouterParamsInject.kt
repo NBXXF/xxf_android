@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import com.alibaba.android.arouter.exception.InitException
 import com.alibaba.android.arouter.launcher.ARouter
 import com.xxf.application.activity.SimpleActivityLifecycleCallbacks
 
@@ -15,14 +16,24 @@ import com.xxf.application.activity.SimpleActivityLifecycleCallbacks
 object ARouterParamsInject : SimpleActivityLifecycleCallbacks() {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         super.onActivityCreated(activity, savedInstanceState)
-        ARouter.getInstance().inject(activity)
+        try {
+            ARouter.getInstance();
+            ARouter.getInstance().inject(activity)
+        } catch (e: InitException) {
+            e.printStackTrace();
+        }
         if (activity is FragmentActivity) {
             activity.supportFragmentManager
                     .registerFragmentLifecycleCallbacks(object : FragmentManager.FragmentLifecycleCallbacks() {
-                        override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
-                            super.onFragmentCreated(fm, f, savedInstanceState)
+                        override fun onFragmentPreCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
+                            super.onFragmentPreCreated(fm, f, savedInstanceState)
                             ////自动注入ARouter
-                            ARouter.getInstance().inject(f)
+                            try {
+                                ARouter.getInstance();
+                                ARouter.getInstance().inject(f)
+                            } catch (e: InitException) {
+                                e.printStackTrace();
+                            }
                         }
                     }, true)
         }

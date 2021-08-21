@@ -642,6 +642,8 @@ public class MainActivity extends AppCompatActivity {
                                         ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean, ToastUtils.ToastType.ERROR);
                                     }
                                 });
+                        TestDialogFragment dialogFragment=new TestDialogFragment();
+                        dialogFragment.show(getSupportFragmentManager(),"hello");
                     }
                 });
 

@@ -25,6 +25,7 @@ public class TestDialogFragment extends XXFAlertDialogFragment<String> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("========>hello3:"+this);
         DialogFragmentTestBinding biding = DialogFragmentTestBinding.inflate(getLayoutInflater());
         setContentView(biding.getRoot());
         biding.okBtn.setOnClickListener(new View.OnClickListener() {
