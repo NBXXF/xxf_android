@@ -18,29 +18,29 @@ public interface XXFLifecycleObserver extends LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     default void onCreate(){
-        Log.d("====>life","onCreate");
+        //Log.d("====>life","onCreate");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     default void onStart(){
-        Log.d("====>life","onStart");
+        //Log.d("====>life","onStart");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     default void onResume(){
-        Log.d("====>life","onResume");
+        //Log.d("====>life","onResume");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     default void onPause(){
-        Log.d("====>life","onPause");
+        //Log.d("====>life","onPause");
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     default void onStop(){
-        Log.d("====>life","onStop");
+        //Log.d("====>life","onStop");
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     default void onDestroy(){
-        Log.d("====>life","onDestroy");
+        //Log.d("====>life","onDestroy");
     }
 }
