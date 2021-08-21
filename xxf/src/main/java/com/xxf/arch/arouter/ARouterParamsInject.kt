@@ -19,8 +19,8 @@ object ARouterParamsInject : SimpleActivityLifecycleCallbacks() {
         if (activity is FragmentActivity) {
             activity.supportFragmentManager
                     .registerFragmentLifecycleCallbacks(object : FragmentManager.FragmentLifecycleCallbacks() {
-                        override fun onFragmentPreCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
-                            super.onFragmentPreCreated(fm, f, savedInstanceState)
+                        override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
+                            super.onFragmentCreated(fm, f, savedInstanceState)
                             ////自动注入ARouter
                             ARouter.getInstance().inject(f)
                         }
