@@ -47,7 +47,7 @@ interface IWebSocketClient : Closeable {
     fun subByteMessage(): Observable<ByteString>
 }
 
-class WebSocketClient : IWebSocketClient, WebSocketListener {
+open class WebSocketClient : IWebSocketClient, WebSocketListener {
     private val bus: Subject<Any> by lazy {
         PublishSubject.create<Any>().toSerialized();
     }
