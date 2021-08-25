@@ -16,14 +16,14 @@ public interface SharedPreferencesService {
     Map<String, ?> getAll();
 
     @Nullable
-    String getString(String key, String defaultValue);
+    String getString(String key, @Nullable String defaultValue);
 
-    void putString(String key, String value);
+    void putString(String key,  @Nullable String value);
 
     @Nullable
-    Set<String> getStringSet(String key, Set<String> defaultValue);
+    Set<String> getStringSet(String key,@Nullable Set<String> defaultValue);
 
-    void putStringSet(String key, Set<String> value);
+    void putStringSet(String key, @Nullable Set<String> value);
 
     int getInt(String key, int defaultValue);
 

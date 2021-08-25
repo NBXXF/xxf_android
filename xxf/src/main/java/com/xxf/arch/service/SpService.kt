@@ -21,19 +21,19 @@ object SpService : SharedPreferencesService {
         return mSharedPreferences.all
     }
 
-    override fun getString(key: String, defaultValue: String): String? {
+    override fun getString(key: String, defaultValue: String?): String? {
         return mSharedPreferences.getString(key, defaultValue)
     }
 
-    override fun putString(key: String, value: String) {
+    override fun putString(key: String, value: String?) {
         mSharedPreferences.edit().putString(key, value).commit()
     }
 
-    override fun getStringSet(key: String, defaultValue: Set<String>): Set<String>? {
+    override fun getStringSet(key: String, defaultValue: Set<String>?): Set<String>? {
         return mSharedPreferences.getStringSet(key, defaultValue)
     }
 
-    override fun putStringSet(key: String, value: Set<String>) {
+    override fun putStringSet(key: String, value: Set<String>?) {
         mSharedPreferences.edit().putStringSet(key, value).commit()
     }
 
