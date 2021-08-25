@@ -90,8 +90,8 @@ class WebSocketClient : IWebSocketClient, WebSocketListener {
             if(isNetworkConnected()) {
                 reconnect(retryDelayTime * retryStep * (++retryCount), TimeUnit.MINUTES.toMillis(1), request.newBuilder().build());
             }else {
-                //没有网络 500ms 尝试
-                reconnect(TimeUnit.MILLISECONDS.toMillis(500), TimeUnit.MINUTES.toMillis(1), request.newBuilder().build());
+                //没有网络 300ms 尝试
+                reconnect(TimeUnit.MILLISECONDS.toMillis(300), TimeUnit.MINUTES.toMillis(1), request.newBuilder().build());
             }
         }
     }
