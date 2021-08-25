@@ -5,6 +5,7 @@ package com.xxf.arch.websocket;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/7/23 15:20
  */
+@Deprecated
 public class WsStatus {
 
   public final static int CONNECTED = 1;

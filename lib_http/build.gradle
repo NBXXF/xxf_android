@@ -25,4 +25,5 @@ dependencies {
     api 'com.github.NBXXF:retrofit2:1.0.9'
     api des.gson
     api des.okhttp
+    implementation project(path: ':lib_application')
 }
