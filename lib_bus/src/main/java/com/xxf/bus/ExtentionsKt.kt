@@ -19,6 +19,6 @@ inline fun <reified T> T.postEvent(): Boolean {
  * 订阅事件
  * @param sticky 是否订阅粘性事件
  */
-fun <T> Class<T>.subscribeEvent(sticky: Boolean = false): Observable<T> {
+inline fun <T> Class<T>.subscribeEvent(sticky: Boolean = false): Observable<T> {
     return RxBus.subscribeEvent(this,sticky);
 }

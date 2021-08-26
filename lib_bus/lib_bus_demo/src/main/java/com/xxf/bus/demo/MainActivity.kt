@@ -19,13 +19,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        String.javaClass.subscribeEvent()
+        TestEvent::class.java.subscribeEvent()
                 .subscribe {
-            Log.d("=====>","收到"+it);
+            System.out.println("=====>"+"收到"+it);
             runOnUiThread {
                         Toast.makeText(this, "收到" + it, Toast.LENGTH_SHORT).show();
                     }
         }
+        TestEvent("测试").postEvent();
         "测试".postEvent();
     }
 }
