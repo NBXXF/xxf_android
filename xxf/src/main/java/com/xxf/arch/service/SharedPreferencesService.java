@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import java.util.Map;
 import java.util.Set;
 
+import io.reactivex.rxjava3.core.Observable;
+
 /**
  * @Description: java类作用描述
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -18,10 +20,10 @@ public interface SharedPreferencesService {
     @Nullable
     String getString(String key, @Nullable String defaultValue);
 
-    void putString(String key,  @Nullable String value);
+    void putString(String key, @Nullable String value);
 
     @Nullable
-    Set<String> getStringSet(String key,@Nullable Set<String> defaultValue);
+    Set<String> getStringSet(String key, @Nullable Set<String> defaultValue);
 
     void putStringSet(String key, @Nullable Set<String> value);
 
@@ -43,8 +45,21 @@ public interface SharedPreferencesService {
 
     boolean contains(String key);
 
-    void registerOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener);
+    void remove(String key);
 
-    void unregisterOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener);
+    /**
+     * 返回对应的key
+     *
+     * @param key
+     * @return
+     */
+    Observable<String> observeChange(String key);
+
+    /**
+     * 返回对应的key
+     *
+     * @return
+     */
+    Observable<String> observeAllChange();
 
 }

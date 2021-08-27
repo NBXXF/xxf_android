@@ -35,6 +35,7 @@ import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdap
 import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.presenter.XXFPresenter;
+import com.xxf.arch.service.SpService;
 import com.xxf.arch.test.http.LoginApiService;
 import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
@@ -149,6 +150,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String key="hello";
+        SpService.INSTANCE.observeChange(key)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Throwable {
+                        System.out.println("=========>changeKey:"+s+"  v:"+SpService.INSTANCE.getString(key,""));
+                    }
+                });
+        SpService.INSTANCE.observeAllChange()
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Throwable {
+                        System.out.println("=========>changeKey2:"+s+"  v:"+SpService.INSTANCE.getString(key,""));
+                    }
+                });
+
+        SpService.INSTANCE.putString(key,"yes");
+
+        SpService.INSTANCE.putString(key,"yes");
         this.getLifecycle().addObserver(
                 new XXFLifecycleObserver() {
                 });
