@@ -1,10 +1,12 @@
 package com.xxf.rxlifecycle
 
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import autodispose2.AutoDispose
 import autodispose2.AutoDisposeConverter
 import autodispose2.android.AutoDisposeAndroidPlugins
+import autodispose2.android.ViewScopeProvider
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider
 import io.reactivex.rxjava3.functions.BooleanSupplier
 
@@ -32,5 +34,12 @@ object RxLifecycle {
     </T> */
     fun <T> bindLifecycle(lifecycleOwner: LifecycleOwner, untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY): AutoDisposeConverter<T> {
         return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner,untilEvent))
+    }
+
+    /**
+     * 绑定view的生命周期
+     */
+    fun <T>bindLifecycle(view:View):AutoDisposeConverter<T> {
+        return AutoDispose.autoDisposable(ViewScopeProvider.from(view));
     }
 }
