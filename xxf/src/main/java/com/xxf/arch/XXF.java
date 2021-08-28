@@ -10,6 +10,7 @@ import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.MainThread;
@@ -363,6 +364,18 @@ public class XXF {
     }
 
 
+    /**
+     * 自动取消
+     * 不同于截流
+     * 用法:observable.as(XXF.bindLifecycle(this))
+     *
+     * @param view 和view生命周期关联
+     * @param <T>
+     * @return
+     */
+    public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull View view) {
+        return RxLifecycle.INSTANCE.bindLifecycle(view);
+    }
 
     /**
      * 自动取消
