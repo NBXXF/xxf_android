@@ -397,6 +397,21 @@ public class SystemUtils {
                 v.requestFocus();
             }
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+        } catch (Exception e) {
+        }
+    }
+    /**
+     * 显示软键盘2
+     *
+     * @param act
+     */
+    public static void showSoftKeyBoardForce(Context act, View v) {
+        try {
+            if (v != null) {
+                v.requestFocus();
+            }
+            InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(v, InputMethodManager.SHOW_FORCED);
         } catch (Exception e) {
         }
