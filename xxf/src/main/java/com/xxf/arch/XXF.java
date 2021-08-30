@@ -96,7 +96,7 @@ public class XXF {
             }
         };
         @NonNull
-        BiConsumer<Integer,Throwable> errorHandler = new BiConsumer<Integer, Throwable>() {
+        BiConsumer<Integer, Throwable> errorHandler = new BiConsumer<Integer, Throwable>() {
             @Override
             public void accept(Integer integer, Throwable throwable) {
                 ToastUtils.showToast(throwable.getMessage(), ToastUtils.ToastType.ERROR);
@@ -170,7 +170,7 @@ public class XXF {
 
 
     public static void init(Builder builder) {
-        long start=System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         if (XXF.application == null) {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
@@ -187,7 +187,7 @@ public class XXF {
                 }
             }
         }
-        Log.d("======>take:",""+(System.currentTimeMillis()-start));
+        Log.d("======>take:", "" + (System.currentTimeMillis() - start));
     }
 
     /**
@@ -197,8 +197,8 @@ public class XXF {
         /**
          *         router 解析参数注册 只能在主线程application中
          */
-      ARouterParamsInject.INSTANCE.register(application);
-      Observable<Boolean> initRequst=Observable.fromCallable(new Callable<Boolean>() {
+        ARouterParamsInject.INSTANCE.register(application);
+        Observable<Boolean> initRequst = Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 if (logger.isLoggable()) {
@@ -211,8 +211,8 @@ public class XXF {
                 return true;
             }
         });
-        if(asyncInit) {
-            initRequst=initRequst.subscribeOn(Schedulers.io());
+        if (asyncInit) {
+            initRequst = initRequst.subscribeOn(Schedulers.io());
         }
         initRequst.subscribe();
     }
@@ -367,11 +367,13 @@ public class XXF {
      * 自动取消
      * 不同于截流
      * 用法:observable.as(XXF.bindLifecycle(this))
+     * 【过时了, kotlin 对于rxjava 对象 直接bindLifecycle】
      *
      * @param view 和view生命周期关联
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull View view) {
         return RxLifecycle.INSTANCE.bindLifecycle(view);
     }
@@ -380,29 +382,32 @@ public class XXF {
      * 自动取消
      * 不同于截流
      * 用法:observable.as(XXF.bindLifecycle(this))
+     * 【过时了, kotlin 对于rxjava 对象 直接bindLifecycle】
      *
      * @param lifecycleOwner
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull LifecycleOwner lifecycleOwner) {
-       return RxLifecycle.INSTANCE.bindLifecycle(lifecycleOwner, Lifecycle.Event.ON_DESTROY);
+        return RxLifecycle.INSTANCE.bindLifecycle(lifecycleOwner, Lifecycle.Event.ON_DESTROY);
     }
 
     /**
      * 自动取消
      * 不同于截流
      * 用法:observable.as(XXF.bindLifecycle(this,Lifecycle.Event.OnDestory))
+     * 【过时了, kotlin 对于rxjava 对象 直接bindLifecycle】
      *
      * @param lifecycleOwner
      * @param untilEvent
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> AutoDisposeConverter<T> bindLifecycle(@NonNull LifecycleOwner lifecycleOwner, Lifecycle.Event untilEvent) {
         return RxLifecycle.INSTANCE.bindLifecycle(lifecycleOwner, untilEvent);
     }
-
 
 
     /**
@@ -653,10 +658,17 @@ public class XXF {
 
     /**
      * 发送事件
+     * 请参考新用法
+     * String.javaClass.subscribeEvent()
+     * .subscribe {
+     * <p>
+     * }
+     * "测试".postEvent();
      *
      * @param event
      * @return
      */
+    @Deprecated
     public static boolean postEvent(@NonNull Object event) {
         return RxBus.INSTANCE.postEvent(event);
     }
@@ -670,24 +682,40 @@ public class XXF {
      * .observeOn(AndroidSchedulers.mainThread())
      * .as(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
      * .subscribe(new Consumer<String>() {
+     * <p>
+     * <p>
+     * 请参考新用法
+     * String.javaClass.subscribeEvent()
+     * .subscribe {
+     * <p>
+     * }
+     * "测试".postEvent();
      *
      * @param eventType
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> Observable<T> subscribeEvent(Class<T> eventType) {
-        return RxBus.INSTANCE.subscribeEvent(eventType,false);
+        return RxBus.INSTANCE.subscribeEvent(eventType, false);
     }
 
     /**
      * 订阅粘性事件
+     * 请参考新用法
+     * String.javaClass.subscribeEvent()
+     * .subscribe {
+     * <p>
+     * }
+     * "测试".postEvent();
      *
      * @param eventType
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> Observable<T> subscribeStickyEvent(Class<T> eventType) {
-        return RxBus.INSTANCE.subscribeEvent(eventType,true);
+        return RxBus.INSTANCE.subscribeEvent(eventType, true);
     }
 
 }

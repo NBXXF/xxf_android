@@ -26,6 +26,10 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "收到" + it, Toast.LENGTH_SHORT).show();
                     }
         }
+        String.javaClass.subscribeEvent()
+            .subscribe {
+
+            }
         TestEvent("测试").postEvent();
         "测试".postEvent();
     }
