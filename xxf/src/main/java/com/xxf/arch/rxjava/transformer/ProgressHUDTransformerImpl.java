@@ -33,13 +33,13 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
     public static volatile ProgressHUDTransformerImpl EMPTY = new ProgressHUDTransformerImpl((ProgressHUD) null);
 
     ProgressHUD progressHUD;
-    String loadingNotice = "loading...";
+    String loadingNotice = "";
     /**
      * 为null将会用真正的错误信息
      * 既不想用真正的错误信息 也不展示传递错误信息 可以传递 双引号""
      */
     String errorNotice = null;
-    String successNotice = "success";
+    String successNotice = "";
     long noticeDuration = 1000;
     LifecycleOwner lifecycleOwner;
     boolean dismissOnNext = true;
@@ -146,21 +146,23 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
 
     @Override
     public void onComplete() {
-        if (HandlerUtils.INSTANCE.isMainThread()) {
-            ProgressHUD safeProgressHUD = getSafeProgressHUD();
-            if (safeProgressHUD != null) {
-                safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
-            }
-        } else {
-            HandlerUtils.INSTANCE.getMainHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    ProgressHUD safeProgressHUD = getSafeProgressHUD();
-                    if (safeProgressHUD != null) {
-                        safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
-                    }
+        if (!dismissOnNext) {
+            if (HandlerUtils.INSTANCE.isMainThread()) {
+                ProgressHUD safeProgressHUD = getSafeProgressHUD();
+                if (safeProgressHUD != null) {
+                    safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
                 }
-            });
+            } else {
+                HandlerUtils.INSTANCE.getMainHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ProgressHUD safeProgressHUD = getSafeProgressHUD();
+                        if (safeProgressHUD != null) {
+                            safeProgressHUD.dismissLoadingDialogWithSuccess(successNotice, noticeDuration);
+                        }
+                    }
+                });
+            }
         }
     }
 
