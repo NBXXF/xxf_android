@@ -28,7 +28,6 @@ import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.enums.RouteType;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.tencent.mmkv.MMKV;
 import com.xxf.application.ApplicationProvider;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
@@ -48,7 +47,7 @@ import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
-import com.xxf.rxlifecycle.RxLifecycle;
+import com.xxf.rxjava.RxLifecycle;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;

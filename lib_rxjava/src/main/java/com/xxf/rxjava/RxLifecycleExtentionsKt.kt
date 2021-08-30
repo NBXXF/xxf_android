@@ -1,4 +1,4 @@
-package com.xxf.rxlifecycle
+package com.xxf.rxjava
 
 import android.view.View
 import androidx.lifecycle.Lifecycle
