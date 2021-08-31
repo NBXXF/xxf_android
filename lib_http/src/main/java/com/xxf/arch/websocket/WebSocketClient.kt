@@ -48,9 +48,12 @@ interface IWebSocketClient : Closeable {
 }
 
 open class WebSocketClient : IWebSocketClient, WebSocketListener {
-    private val bus: Subject<Any> by lazy {
-        PublishSubject.create<Any>().toSerialized();
+    companion object {
+        private val bus: Subject<Any> by lazy {
+            PublishSubject.create<Any>().toSerialized();
+        }
     }
+
     private val okHttpClient: OkHttpClient
     private val request: Request
     private val retryStep: Long
@@ -59,11 +62,24 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var currentWebSocket: WebSocket? = null;
 
-    constructor(url: String) : this(OkHttpClientBuilder().build(), Request.Builder().url(url).build())
+    constructor(url: String) : this(
+        OkHttpClientBuilder().build(),
+        Request.Builder().url(url).build()
+    )
 
-    constructor(okHttpClient: OkHttpClient, request: Request) : this(okHttpClient, request, 1, TimeUnit.SECONDS.toMillis(10))
+    constructor(okHttpClient: OkHttpClient, request: Request) : this(
+        okHttpClient,
+        request,
+        1,
+        TimeUnit.SECONDS.toMillis(10)
+    )
 
-    constructor(okHttpClient: OkHttpClient, request: Request, retryStep: Long, retryDelayTime: Long) : super() {
+    constructor(
+        okHttpClient: OkHttpClient,
+        request: Request,
+        retryStep: Long,
+        retryDelayTime: Long
+    ) : super() {
         this.okHttpClient = okHttpClient
         this.request = request
         this.retryStep = retryStep
@@ -87,11 +103,19 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         super.onFailure(webSocket, t, response)
         if (retryDelayTime > 0) {
-            if(isNetworkConnected()) {
-                reconnect(retryDelayTime * retryStep * (++retryCount), TimeUnit.MINUTES.toMillis(1), request.newBuilder().build());
-            }else {
+            if (isNetworkConnected()) {
+                reconnect(
+                    retryDelayTime * retryStep * (++retryCount),
+                    TimeUnit.MINUTES.toMillis(1),
+                    request.newBuilder().build()
+                );
+            } else {
                 //没有网络 300ms 尝试
-                reconnect(TimeUnit.MILLISECONDS.toMillis(300), TimeUnit.MINUTES.toMillis(1), request.newBuilder().build());
+                reconnect(
+                    TimeUnit.MILLISECONDS.toMillis(300),
+                    TimeUnit.MINUTES.toMillis(1),
+                    request.newBuilder().build()
+                );
             }
         }
     }
@@ -117,9 +141,9 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
      */
     fun isNetworkConnected(): Boolean {
         val mConnectivityManager = applicationContext
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val mNetworkInfo = mConnectivityManager
-                .activeNetworkInfo
+            .activeNetworkInfo
         if (mNetworkInfo != null) {
             return mNetworkInfo.isAvailable
         }
