@@ -9,7 +9,6 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 import com.xxf.utils.HandlerUtils;
 
 import org.reactivestreams.Publisher;
@@ -52,9 +51,6 @@ public class ProgressHUDTransformerImpl<T> extends UILifeTransformerImpl<T> {
         this.lifecycleOwner = lifecycleOwner;
     }
 
-    public ProgressHUDTransformerImpl(@NonNull ProgressHUDProvider progressHUDProvider) {
-        this.progressHUD = progressHUDProvider.progressHUD();
-    }
 
     public ProgressHUDTransformerImpl<T> setLoadingNotice(@Nullable String loadingNotice) {
         this.loadingNotice = loadingNotice;

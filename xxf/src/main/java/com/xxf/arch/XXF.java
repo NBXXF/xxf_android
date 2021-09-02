@@ -46,7 +46,6 @@ import com.xxf.arch.service.SpService;
 import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 import com.xxf.rxjava.RxLifecycle;
 
 import java.util.Objects;
@@ -290,6 +289,9 @@ public class XXF {
         return errorConvertFunction;
     }
 
+    public static BiConsumer<Integer, Throwable> getErrorHandler() {
+        return errorHandler;
+    }
 
     /**
      * get api
@@ -412,10 +414,11 @@ public class XXF {
 
     /**
      * 绑定loading
-     *
+     *  [请 直接用Observale 对象.bindProgressHud() ]
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud() {
         if (XXF.getActivityStackProvider().empty()) {
             return ProgressHUDTransformerImpl.EMPTY;
@@ -434,33 +437,25 @@ public class XXF {
 
     /**
      * 绑定loading
-     *
+     * [请 直接用Observale 对象.bindProgressHud() ]
      * @param lifecycleOwner
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(LifecycleOwner lifecycleOwner) {
         return new ProgressHUDTransformerImpl(lifecycleOwner);
-    }
-
-    /**
-     * 绑定loading
-     *
-     * @param progressHUDProvider
-     * @param <T>
-     * @return
-     */
-    public static <T> ProgressHUDTransformerImpl<T> bindToProgressHud(ProgressHUDProvider progressHUDProvider) {
-        return new ProgressHUDTransformerImpl(progressHUDProvider);
     }
 
 
     /**
      * 绑定错误提示
+     * [请 直接用Observale 对象.bindErrorNotice() ]
      *
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> UIErrorTransformer<T> bindToErrorNotice() {
         return new UIErrorTransformer<T>(XXF.errorHandler);
     }

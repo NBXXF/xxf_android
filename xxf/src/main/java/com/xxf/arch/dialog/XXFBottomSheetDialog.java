@@ -14,7 +14,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -27,7 +26,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  * Description: 带滑动手势的SheetDialog BottomSheetDialog
  */
 public class XXFBottomSheetDialog<R> extends BottomSheetDialog
-        implements ObservableComponent<BottomSheetDialog, R>, ProgressHUDProvider {
+        implements ObservableComponent<BottomSheetDialog, R> {
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
@@ -58,22 +57,6 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
 
     protected XXFBottomSheetDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
-    }
-
-    @Override
-    public ProgressHUD progressHUD() {
-        Context realContext = null;
-        if (this.getOwnerActivity() != null) {
-            realContext = this.getOwnerActivity();
-        } else if (this.getContext() instanceof ContextWrapper) {
-            realContext = ((ContextWrapper) this.getContext()).getBaseContext();
-        } else {
-            realContext = this.getContext();
-        }
-        if (realContext instanceof LifecycleOwner) {
-            return ProgressHUDFactory.INSTANCE.getProgressHUD((LifecycleOwner) realContext);
-        }
-        return null;
     }
 
     @NonNull

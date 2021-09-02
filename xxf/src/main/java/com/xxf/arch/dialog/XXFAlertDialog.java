@@ -2,23 +2,18 @@ package com.xxf.arch.dialog;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.DialogInterface;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.component.ObservableComponent;
-import com.xxf.arch.fragment.XXFAlertDialogFragment;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.BiConsumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
@@ -30,7 +25,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 public  class XXFAlertDialog<R>
         extends AlertDialog
-        implements ObservableComponent<AlertDialog,R>, ProgressHUDProvider {
+        implements ObservableComponent<AlertDialog,R> {
 
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
@@ -62,21 +57,5 @@ public  class XXFAlertDialog<R>
 
     protected XXFAlertDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
-    }
-
-    @Override
-    public ProgressHUD progressHUD() {
-        Context realContext = null;
-        if (this.getOwnerActivity() != null) {
-            realContext = this.getOwnerActivity();
-        } else if (this.getContext() instanceof ContextWrapper) {
-            realContext = ((ContextWrapper) this.getContext()).getBaseContext();
-        } else {
-            realContext = this.getContext();
-        }
-        if (realContext instanceof LifecycleOwner) {
-            return ProgressHUDFactory.INSTANCE.getProgressHUD((LifecycleOwner) realContext);
-        }
-        return null;
     }
 }

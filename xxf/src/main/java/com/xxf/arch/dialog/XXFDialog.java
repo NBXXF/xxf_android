@@ -3,7 +3,6 @@ package com.xxf.arch.dialog;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.DialogInterface;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
@@ -11,14 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.BiConsumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
@@ -30,7 +26,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 public class XXFDialog<R>
         extends AppCompatDialog
-        implements ObservableComponent<AppCompatDialog,R>, ProgressHUDProvider {
+        implements ObservableComponent<AppCompatDialog,R> {
 
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
     @Override
@@ -60,22 +56,5 @@ public class XXFDialog<R>
 
     protected XXFDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
-    }
-
-
-    @Override
-    public ProgressHUD progressHUD() {
-        Context realContext = null;
-        if (this.getOwnerActivity() != null) {
-            realContext = this.getOwnerActivity();
-        } else if (this.getContext() instanceof ContextWrapper) {
-            realContext = ((ContextWrapper) this.getContext()).getBaseContext();
-        } else {
-            realContext = this.getContext();
-        }
-        if (realContext instanceof LifecycleOwner) {
-            return ProgressHUDFactory.INSTANCE.getProgressHUD((LifecycleOwner) realContext);
-        }
-        return null;
     }
 }
