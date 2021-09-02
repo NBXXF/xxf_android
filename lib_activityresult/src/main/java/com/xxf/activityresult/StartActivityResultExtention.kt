@@ -1,6 +1,5 @@
 package com.xxf.activityresult
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,7 +16,7 @@ import io.reactivex.rxjava3.core.Observable
 /**
  * 等价于startActivityForResult
  */
-inline fun <reified T : FragmentActivity> T.startActivityForObservableResult(
+inline fun <reified T : FragmentActivity> T.startActivityForResultObservable(
     intent: Intent,
     requestCode: Int,
     options: Bundle? = null
@@ -30,7 +29,7 @@ inline fun <reified T : FragmentActivity> T.startActivityForObservableResult(
 /**
  * 等价于startActivityForResult
  */
-inline fun <reified T : Fragment> T.startActivityForObservableResult(
+inline fun <reified T : Fragment> T.startActivityForResultObservable(
     intent: Intent,
     requestCode: Int,
     options: Bundle? = null
