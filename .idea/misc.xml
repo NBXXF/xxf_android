@@ -24,6 +24,7 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13722826086956522" />
+        <entry key="lib_view/src/main/res/layout/xxf_adapter_item_bottom_action.xml" value="0.1" />
         <entry key="lib_view_snackbar/src/main/res/layout/xxf_snackbar_dialog_fragment.xml" value="0.22395833333333334" />
       </map>
     </option>

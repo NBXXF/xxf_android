@@ -42,6 +42,7 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.service.SpService;
 import com.xxf.arch.test.http.LoginApiService;
+import com.xxf.arch.test.http.TestKt;
 import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
@@ -401,6 +402,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        TestKt.INSTANCE.test();
                         ((TextView)view).setText("http "+System.currentTimeMillis());
                        /* XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.lastCache)

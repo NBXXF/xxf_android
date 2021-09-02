@@ -295,11 +295,13 @@ public class XXF {
 
     /**
      * get api
+     * [过时  请用内敛函数 getApiService 或者 UserApi.class.apiService]
      *
      * @param apiClazz
      * @param <T>
      * @return
      */
+    @Deprecated
     public static <T> T getApiService(Class<T> apiClazz) {
         return XXFHttp.getApiService(apiClazz);
     }
@@ -414,7 +416,8 @@ public class XXF {
 
     /**
      * 绑定loading
-     *  [请 直接用Observale 对象.bindProgressHud() ]
+     * [请 直接用Observale 对象.bindProgressHud() ]
+     *
      * @param <T>
      * @return
      */
@@ -438,6 +441,7 @@ public class XXF {
     /**
      * 绑定loading
      * [请 直接用Observale 对象.bindProgressHud() ]
+     *
      * @param lifecycleOwner
      * @param <T>
      * @return
