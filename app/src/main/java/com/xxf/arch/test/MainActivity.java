@@ -13,6 +13,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -398,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ((TextView)view).setText("http "+System.currentTimeMillis());
                        /* XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.lastCache)
                                 .subscribe(new Consumer<JsonObject>() {

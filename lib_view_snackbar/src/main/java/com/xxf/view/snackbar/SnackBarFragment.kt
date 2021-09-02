@@ -16,6 +16,14 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
 
     private val handler = Handler(Looper.getMainLooper())
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        dialog.window?.setGravity(Gravity.TOP)
+        return dialog
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.snackbar_dialog_fragment_style);
@@ -24,18 +32,15 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
     override fun onStart() {
         super.onStart()
         if (showsDialog) {
-            val window = dialog?.window
-            window?.attributes?.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-            window?.setGravity(Gravity.TOP)
-            window?.setLayout(
+            dialog?.window?.setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT
             )
+            handler.removeCallbacksAndMessages(null)
+            handler.postDelayed({
+                dismissAllowingStateLoss()
+            }, 2000)
         }
-        handler.removeCallbacksAndMessages(null)
-        handler.postDelayed({
-            dismissAllowingStateLoss()
-        }, 2000)
     }
 
     fun getDecorView(): View? {
