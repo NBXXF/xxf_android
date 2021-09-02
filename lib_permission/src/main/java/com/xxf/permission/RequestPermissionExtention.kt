@@ -1,5 +1,8 @@
 package com.xxf.permission
 
+import android.app.Activity
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -45,4 +48,24 @@ inline fun <reified T : Fragment> T.requestPermissionsObservable(
     return Observable.defer {
         RxPermissions(this).request(permission)
     }.subscribeOn(AndroidSchedulers.mainThread())
+}
+
+/**
+ * 是否授予权限
+ */
+inline fun <reified T : Activity> T.isGrantedPermission(
+    permission: String
+): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) ==
+            PackageManager.PERMISSION_GRANTED
+}
+
+/**
+ * 是否授予权限
+ */
+inline fun <reified T : Fragment> T.isGrantedPermission(
+    permission: String
+): Boolean {
+    return ContextCompat.checkSelfPermission(this.requireContext(), permission) ==
+            PackageManager.PERMISSION_GRANTED
 }

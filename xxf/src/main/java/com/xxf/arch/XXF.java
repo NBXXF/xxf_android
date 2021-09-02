@@ -620,11 +620,14 @@ public class XXF {
      * 请求权限
      * 不可用zip 等操作符
      * 注意:activity  onRequestPermissionsResult方法 必须调用   super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+     * <p>
+     * 【过时了 请用 Activity.requestPermissionObservable 或者Fragment.requestPermissionObservable】
      *
      * @param lifecycleOwner
      * @param permissions    {@link android.Manifest}
      * @return
      */
+    @Deprecated
     @MainThread
     public static Observable<Boolean> requestPermission(@NonNull final LifecycleOwner lifecycleOwner,
                                                         @NonNull final String... permissions) {
@@ -646,10 +649,12 @@ public class XXF {
 
     /**
      * 是否开启该权限
+     * 【过时了 请用 Activity.isGrantedPermission 或者Fragment.isGrantedPermission】
      *
      * @param permission
      * @return
      */
+    @Deprecated
     public static boolean isGrantedPermission(@NonNull String permission) {
         return ContextCompat.checkSelfPermission(ApplicationProvider.applicationContext, permission) ==
                 PackageManager.PERMISSION_GRANTED;
