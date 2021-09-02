@@ -29,7 +29,7 @@ object RxActivityResultCompact {
     }
 
     fun startActivityForResult(
-            fragment: Fragment, intent: Intent, requestCode: Int, options: Bundle): Observable<ActivityResult> {
+            fragment: Fragment, intent: Intent, requestCode: Int, options: Bundle?): Observable<ActivityResult> {
         return startActivityForResult(fragment.childFragmentManager, intent, requestCode, options)
     }
 
