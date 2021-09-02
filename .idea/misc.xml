@@ -19,6 +19,14 @@
     <option name="pathToUserRulesConfiguration" value="" />
     <option name="pathToJarWithRules" value="" />
   </component>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1" />
+        <entry key="lib_view_snackbar/src/main/res/layout/xxf_snackbar_dialog_fragment.xml" value="0.22395833333333334" />
+      </map>
+    </option>
+  </component>
   <component name="FindBugsConfigurable">
     <option name="make" value="true" />
     <option name="effort" value="default" />
@@ -50,7 +58,7 @@
     </option>
     <option name="myNotNulls">
       <value>
-        <list size="13">
+        <list size="14">
           <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
           <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
           <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
@@ -64,6 +72,7 @@
           <item index="10" class="java.lang.String" itemvalue="org.eclipse.jdt.annotation.NonNull" />
           <item index="11" class="java.lang.String" itemvalue="io.reactivex.annotations.NonNull" />
           <item index="12" class="java.lang.String" itemvalue="io.reactivex.rxjava3.annotations.NonNull" />
+          <item index="13" class="java.lang.String" itemvalue="lombok.NonNull" />
         </list>
       </value>
     </option>

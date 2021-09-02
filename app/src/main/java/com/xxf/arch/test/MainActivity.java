@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -146,37 +148,37 @@ public class MainActivity extends AppCompatActivity {
                     '}';
         }
     }
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String key="hello";
+        String key = "hello";
         SpService.INSTANCE.observeChange(key)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Throwable {
-                        System.out.println("=========>changeKey:"+s+"  v:"+SpService.INSTANCE.getString(key,""));
+                        System.out.println("=========>changeKey:" + s + "  v:" + SpService.INSTANCE.getString(key, ""));
                     }
                 });
         SpService.INSTANCE.observeAllChange()
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Throwable {
-                        System.out.println("=========>changeKey2:"+s+"  v:"+SpService.INSTANCE.getString(key,""));
+                        System.out.println("=========>changeKey2:" + s + "  v:" + SpService.INSTANCE.getString(key, ""));
                     }
                 });
 
-        SpService.INSTANCE.putString(key,"yes");
+        SpService.INSTANCE.putString(key, "yes");
 
-        SpService.INSTANCE.putString(key,"yes");
+        SpService.INSTANCE.putString(key, "yes");
         this.getLifecycle().addObserver(
                 new XXFLifecycleObserver() {
                 });
         this.getLifecycle().addObserver(new LifecycleEventObserver() {
             @Override
             public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                Log.d("======>test:",""+event);
+                Log.d("======>test:", "" + event);
             }
         });
         long hello = ObjectBoxUtils.INSTANCE.generateId("hello");
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d("=======>", " actionTypeEvent:" + actionTypeEvent);
         Log.d("=======>", " actionTypeEvent2:" + actionTypeEvent2);
-        
+
         XXF.subscribeEvent(String.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .to(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
@@ -260,6 +262,11 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //ToastUtils.showSnackBar(view,"hello" + System.currentTimeMillis(), ToastUtils.ToastType.ERROR);
+                        ToastUtils.showSnackBar("hello" + System.currentTimeMillis(), ToastUtils.ToastType.ERROR);
+                        if (true) {
+                            return;
+                        }
                         TestDialogFragment test = new TestDialogFragment();
                         test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
                             @Override
@@ -465,7 +472,7 @@ public class MainActivity extends AppCompatActivity {
                                     .subscribe(new Consumer<JsonObject>() {
                                         @Override
                                         public void accept(JsonObject jsonObject) throws Throwable {
-                                            XXF.getLogger().d("=====>fi:" + fi+"  "+System.currentTimeMillis());
+                                            XXF.getLogger().d("=====>fi:" + fi + "  " + System.currentTimeMillis());
                                         }
                                     });
                         }
@@ -663,8 +670,8 @@ public class MainActivity extends AppCompatActivity {
                                         ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean, ToastUtils.ToastType.ERROR);
                                     }
                                 });
-                        TestDialogFragment dialogFragment=new TestDialogFragment();
-                        dialogFragment.show(getSupportFragmentManager(),"hello");
+                        TestDialogFragment dialogFragment = new TestDialogFragment();
+                        dialogFragment.show(getSupportFragmentManager(), "hello");
                     }
                 });
 
@@ -685,13 +692,13 @@ public class MainActivity extends AppCompatActivity {
                                 .subscribe(new Consumer<String>() {
                                     @Override
                                     public void accept(String s) throws Throwable {
-                                        Log.d("=====>path",s);
+                                        Log.d("=====>path", s);
                                     }
                                 });
                         Bundle bundle = new Bundle();
                         bundle.putString("ACTIVITY_PARAM", "one");
 
-                      //  ARouter.getInstance().build("/activity/test?name=1&age=" + System.currentTimeMillis()).navigation();
+                        //  ARouter.getInstance().build("/activity/test?name=1&age=" + System.currentTimeMillis()).navigation();
                  /*       XXF.startActivityForResult("/activity/test", bundle, 1000)
                                 .compose(XXF.bindToErrorNotice())
                                 .take(1)
