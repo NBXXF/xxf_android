@@ -8,9 +8,12 @@ import androidx.annotation.CallSuper
 import com.xxf.application.applicationContext
 import com.xxf.arch.http.OkHttpClientBuilder
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 import okhttp3.*
+import okhttp3.internal.ws.RealWebSocket
 import okio.ByteString
 import java.io.Closeable
 import java.io.IOException
@@ -154,6 +157,14 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
     override fun close() {
         handler.removeCallbacksAndMessages(null)
         currentWebSocket?.cancel()
+        //异步关闭心跳task
+        if (currentWebSocket is RealWebSocket) {
+            Observable.fromCallable {
+                (currentWebSocket as RealWebSocket)?.tearDown()
+                true
+            }.subscribeOn(Schedulers.io())
+                .subscribe()
+        }
     }
 
     override fun send(text: String): Boolean {
