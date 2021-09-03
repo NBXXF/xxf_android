@@ -57,7 +57,7 @@ val allActivity: Array<Activity>
 /**
  * 重启app 仅activity
  */
-inline fun restartApp() {
+fun restartApp() {
     AndroidActivityStackProvider.restartApp()
 }
 

@@ -1,6 +1,7 @@
 package com.xxf.arch.test.http
 
 import com.xxf.arch.apiService
+import com.xxf.arch.utils.CopyUtils
 import com.xxf.utils.d
 
 /**
@@ -10,6 +11,7 @@ import com.xxf.utils.d
  */
 object TestKt {
     fun test() {
+        val copy = CopyUtils.copy(this);
         d("======>hell1334")
         LoginApiService::class.java.apiService().getCity()
             .subscribe {

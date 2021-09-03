@@ -19,7 +19,7 @@ var isLoggable: Boolean = true
 var logTag: String = "====>XXF";
 
 
-inline fun v(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
+fun v(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
     if (!isLoggable) {
         return -1
     }
@@ -29,7 +29,7 @@ inline fun v(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
     return Log.v(tag, msg, tr)
 }
 
-inline fun d(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
+fun d(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
     if (!isLoggable) {
         return -1
     }
@@ -40,7 +40,7 @@ inline fun d(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
 }
 
 
-inline fun i(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
+fun i(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
     if (!isLoggable) {
         return -1
     }
@@ -62,7 +62,7 @@ inline fun w(msg: String?, tr: Throwable? = null, tag: String = logTag): Int {
 }
 
 
-inline fun e(msg: String, tr: Throwable? = null, tag: String = logTag): Int {
+fun e(msg: String, tr: Throwable? = null, tag: String = logTag): Int {
     if (!isLoggable) {
         return -1
     }
@@ -75,7 +75,7 @@ inline fun e(msg: String, tr: Throwable? = null, tag: String = logTag): Int {
 /**
  * 获取文件行号摘要信息
  */
-inline fun getCurrentCodeLineNumberDesc(): String? {
+fun getCurrentCodeLineNumberDesc(): String? {
     val trace: Array<StackTraceElement>? = Thread.currentThread().stackTrace;
     if (trace != null && trace.size > 3) {
         if (TextUtils.isEmpty(trace[3].fileName)) {
