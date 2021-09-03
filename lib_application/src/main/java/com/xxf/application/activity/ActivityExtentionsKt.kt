@@ -1,6 +1,7 @@
 package com.xxf.application.activity
 
 import android.app.Activity
+import androidx.fragment.app.FragmentActivity
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -22,6 +23,16 @@ val ACTIVITY_PARAM by lazy { "ActivityParam" }
  */
 inline fun topActivity(): Activity? {
     return AndroidActivityStackProvider.topActivity
+}
+
+/**
+ * 栈顶 fragmentActivity
+ */
+inline fun topFragmentActivity(): FragmentActivity? {
+    if (AndroidActivityStackProvider.topActivity is FragmentActivity) {
+        return AndroidActivityStackProvider.topActivity as FragmentActivity
+    }
+    return null
 }
 
 /**

@@ -13,11 +13,11 @@ import java.lang.RuntimeException
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2021/9/2
- * Description : activity forResult 扩展
+ * Description : activity forResult 扩展   支持activity fragment LifecycleOwner 挂载对象访问
  */
 
 /**
- * 等价于startActivityForResult  可以结合topActivity()
+ * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity()
  */
 inline fun <reified T : FragmentActivity> T.startActivityForResultObservable(
     intent: Intent,
@@ -30,7 +30,7 @@ inline fun <reified T : FragmentActivity> T.startActivityForResultObservable(
 }
 
 /**
- * 等价于startActivityForResult  可以结合topActivity()
+ * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity()
  */
 inline fun <reified T : Fragment> T.startActivityForResultObservable(
     intent: Intent,
@@ -43,7 +43,7 @@ inline fun <reified T : Fragment> T.startActivityForResultObservable(
 }
 
 /**
- * 等价于startActivityForResult  可以结合topActivity()
+ * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity()
  */
 inline fun <reified T : LifecycleOwner> T.startActivityForResultObservable(
     intent: Intent,

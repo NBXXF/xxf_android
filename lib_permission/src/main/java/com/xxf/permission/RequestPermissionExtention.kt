@@ -10,29 +10,31 @@ import androidx.lifecycle.LifecycleOwner
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import java.lang.IllegalArgumentException
-import java.lang.RuntimeException
 
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2021/9/2
- * Description ://权限拓展
+ * Description ://权限拓展  支持activity fragment LifecycleOwner 挂载对象访问
  */
 
 /**
- * activity 请求权限 可以结合topActivity()
+ * activity 请求权限 可以结合内敛函数topFragmentActivity()
+ * @param permissions 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : FragmentActivity> T.requestPermissionsObservable(
     permissions: Array<String>,
     requestCode: Int = 100
 ): Observable<Boolean> {
+
     return Observable.defer {
         RxPermissions(this).request(*permissions)
     }.subscribeOn(AndroidSchedulers.mainThread())
 }
 
 /**
- * activity 请求权限  可以结合topActivity()
+ * activity 请求权限  可以结合内敛函数topFragmentActivity()
+ * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : FragmentActivity> T.requestPermissionsObservable(
     permission: String,
@@ -44,7 +46,8 @@ inline fun <reified T : FragmentActivity> T.requestPermissionsObservable(
 }
 
 /**
- * fragment 请求权限  可以结合topActivity()
+ * fragment 请求权限  可以结合内敛函数topFragmentActivity()
+ * @param permissions 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Fragment> T.requestPermissionsObservable(
     permissions: Array<String>,
@@ -57,6 +60,7 @@ inline fun <reified T : Fragment> T.requestPermissionsObservable(
 
 /**
  * fragment 请求权限
+ * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Fragment> T.requestPermissionsObservable(
     permission: String,
@@ -69,7 +73,8 @@ inline fun <reified T : Fragment> T.requestPermissionsObservable(
 
 
 /**
- * Lifecycle 请求权限   可以结合topActivity()
+ * Lifecycle 请求权限   可以结合内敛函数topFragmentActivity()
+ * @param permissions 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
     permissions: Array<String>,
@@ -86,7 +91,8 @@ inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
 }
 
 /**
- * Lifecycle 请求权限 可以结合topActivity()
+ * Lifecycle 请求权限 可以结合内敛函数topFragmentActivity()
+ * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
     permission: String,
@@ -103,7 +109,7 @@ inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
 }
 
 /**
- * Lifecycle 判断是否授予权限 可以结合topActivity()
+ * Lifecycle 判断是否授予权限 可以结合内敛函数topFragmentActivity()
  */
 inline fun <reified T : LifecycleOwner> T.isGrantedPermission(
     permission: String
@@ -119,7 +125,8 @@ inline fun <reified T : LifecycleOwner> T.isGrantedPermission(
 }
 
 /**
- * context 判断是否授予权限  可以结合topActivity()
+ * context 判断是否授予权限  可以结合内敛函数topFragmentActivity()
+ * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Context> T.isGrantedPermission(
     permission: String
@@ -129,7 +136,8 @@ inline fun <reified T : Context> T.isGrantedPermission(
 }
 
 /**
- * activity 判断是否授予权限 可以结合topActivity()
+ * activity 判断是否授予权限 可以结合内敛函数topFragmentActivity()
+ * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Activity> T.isGrantedPermission(
     permission: String
@@ -139,7 +147,8 @@ inline fun <reified T : Activity> T.isGrantedPermission(
 }
 
 /**
- * fragment 判断是否授予权限  可以结合topActivity()
+ * fragment 判断是否授予权限  可以结合内敛函数topFragmentActivity()
+ * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Fragment> T.isGrantedPermission(
     permission: String
