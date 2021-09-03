@@ -17,7 +17,7 @@ import java.lang.RuntimeException
  */
 
 /**
- * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity()
+ * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity
  */
 inline fun <reified T : FragmentActivity> T.startActivityForResultObservable(
     intent: Intent,
@@ -30,7 +30,7 @@ inline fun <reified T : FragmentActivity> T.startActivityForResultObservable(
 }
 
 /**
- * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity()
+ * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity
  */
 inline fun <reified T : Fragment> T.startActivityForResultObservable(
     intent: Intent,
@@ -43,7 +43,7 @@ inline fun <reified T : Fragment> T.startActivityForResultObservable(
 }
 
 /**
- * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity()
+ * 等价于startActivityForResult  可以结合内敛函数topFragmentActivity
  */
 inline fun <reified T : LifecycleOwner> T.startActivityForResultObservable(
     intent: Intent,

@@ -21,6 +21,7 @@ import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
+import com.xxf.arch.utils.ToastUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;

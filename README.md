@@ -43,30 +43,22 @@ val activityStack by lazy {
 /**
  * 栈顶activity
  */
-inline fun topActivity(): Activity? {
-      ...
-}
+val topActivity: Activity?
 
 /**
  * 栈顶 fragmentActivity
  */
-inline fun topFragmentActivity(): FragmentActivity? {
-      ...
-}
+val topFragmentActivity: FragmentActivity?
 
 /**
  * 根activity
  */
-inline fun rootActivity(): Activity? {
-      ...
-}
+val rootActivity: Activity?
 
 /**
  * 所有Activity
  */
-inline fun allActivity(): Array<Activity> {
-     ...
-}
+val allActivity: Array<Activity>
 
 /**
  * 重启app 仅activity
@@ -78,9 +70,7 @@ inline fun restartApp() {
 /**
  *  判断app是否在后台
  */
-inline fun isAppBackground(): Boolean {
-  ...
-}
+val isAppBackground: Boolean
 
  
  ```

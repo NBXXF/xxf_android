@@ -19,7 +19,7 @@ import java.lang.IllegalArgumentException
  */
 
 /**
- * activity 请求权限 可以结合内敛函数topFragmentActivity()
+ * activity 请求权限 可以结合内敛函数topFragmentActivity
  * @param permissions 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : FragmentActivity> T.requestPermissionsObservable(
@@ -33,7 +33,7 @@ inline fun <reified T : FragmentActivity> T.requestPermissionsObservable(
 }
 
 /**
- * activity 请求权限  可以结合内敛函数topFragmentActivity()
+ * activity 请求权限  可以结合内敛函数topFragmentActivity
  * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : FragmentActivity> T.requestPermissionsObservable(
@@ -46,7 +46,7 @@ inline fun <reified T : FragmentActivity> T.requestPermissionsObservable(
 }
 
 /**
- * fragment 请求权限  可以结合内敛函数topFragmentActivity()
+ * fragment 请求权限  可以结合内敛函数topFragmentActivity
  * @param permissions 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Fragment> T.requestPermissionsObservable(
@@ -73,7 +73,7 @@ inline fun <reified T : Fragment> T.requestPermissionsObservable(
 
 
 /**
- * Lifecycle 请求权限   可以结合内敛函数topFragmentActivity()
+ * Lifecycle 请求权限   可以结合内敛函数topFragmentActivity
  * @param permissions 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
@@ -91,7 +91,7 @@ inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
 }
 
 /**
- * Lifecycle 请求权限 可以结合内敛函数topFragmentActivity()
+ * Lifecycle 请求权限 可以结合内敛函数topFragmentActivity
  * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
@@ -109,7 +109,7 @@ inline fun <reified T : LifecycleOwner> T.requestPermissionsObservable(
 }
 
 /**
- * Lifecycle 判断是否授予权限 可以结合内敛函数topFragmentActivity()
+ * Lifecycle 判断是否授予权限 可以结合内敛函数topFragmentActivity
  */
 inline fun <reified T : LifecycleOwner> T.isGrantedPermission(
     permission: String
@@ -125,7 +125,7 @@ inline fun <reified T : LifecycleOwner> T.isGrantedPermission(
 }
 
 /**
- * context 判断是否授予权限  可以结合内敛函数topFragmentActivity()
+ * context 判断是否授予权限  可以结合内敛函数topFragmentActivity
  * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Context> T.isGrantedPermission(
@@ -136,7 +136,7 @@ inline fun <reified T : Context> T.isGrantedPermission(
 }
 
 /**
- * activity 判断是否授予权限 可以结合内敛函数topFragmentActivity()
+ * activity 判断是否授予权限 可以结合内敛函数topFragmentActivity
  * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Activity> T.isGrantedPermission(
@@ -147,7 +147,7 @@ inline fun <reified T : Activity> T.isGrantedPermission(
 }
 
 /**
- * fragment 判断是否授予权限  可以结合内敛函数topFragmentActivity()
+ * fragment 判断是否授予权限  可以结合内敛函数topFragmentActivity
  * @param permission 可以参考 {@link #android.Manifest.permission}  android.Manifest.permission
  */
 inline fun <reified T : Fragment> T.isGrantedPermission(

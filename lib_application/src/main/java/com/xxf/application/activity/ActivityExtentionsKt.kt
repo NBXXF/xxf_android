@@ -21,33 +21,38 @@ val ACTIVITY_PARAM by lazy { "ActivityParam" }
 /**
  * 栈顶activity
  */
-inline fun topActivity(): Activity? {
-    return AndroidActivityStackProvider.topActivity
-}
+
+val topActivity: Activity?
+    get() {
+        return AndroidActivityStackProvider.topActivity
+    }
 
 /**
  * 栈顶 fragmentActivity
  */
-inline fun topFragmentActivity(): FragmentActivity? {
-    if (AndroidActivityStackProvider.topActivity is FragmentActivity) {
-        return AndroidActivityStackProvider.topActivity as FragmentActivity
+val topFragmentActivity: FragmentActivity?
+    get() {
+        if (AndroidActivityStackProvider.topActivity is FragmentActivity) {
+            return AndroidActivityStackProvider.topActivity as FragmentActivity
+        }
+        return null
     }
-    return null
-}
 
 /**
  * 根activity
  */
-inline fun rootActivity(): Activity? {
-    return AndroidActivityStackProvider.rootActivity
-}
+val rootActivity: Activity?
+    get() {
+        return AndroidActivityStackProvider.rootActivity
+    }
 
 /**
  * 所有Activity
  */
-inline fun allActivity(): Array<Activity> {
-    return AndroidActivityStackProvider.allActivity
-}
+val allActivity: Array<Activity>
+    get() {
+        return AndroidActivityStackProvider.allActivity
+    }
 
 /**
  * 重启app 仅activity
@@ -59,6 +64,7 @@ inline fun restartApp() {
 /**
  *  判断app是否在后台
  */
-inline fun isAppBackground(): Boolean {
-    return AndroidActivityStackProvider.isBackground()
-}
+val isAppBackground: Boolean
+    get() {
+        return AndroidActivityStackProvider.isBackground()
+    }

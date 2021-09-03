@@ -488,6 +488,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        startActivity(new Intent(v.getContext(),KotlinTestActivity.class));
                         String fileName = "aaa.text";
                         String s = "99% FC\n" +
                                 "98% FA\n" +

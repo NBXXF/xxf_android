@@ -2,6 +2,7 @@ package com.xxf.arch
 
 import androidx.lifecycle.LifecycleOwner
 import com.xxf.application.activity.topActivity
+import com.xxf.application.activity.topFragmentActivity
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer
 import io.reactivex.rxjava3.annotations.NonNull
@@ -37,8 +38,8 @@ inline fun <reified T> Observable<T>.bindProgressHud(
     successNotice: String? = "",
     errorNotice: String? = null
 ): Observable<T> {
-    val topActivity = topActivity()
-    if (topActivity is LifecycleOwner) {
+    val topActivity = topFragmentActivity
+    if (topActivity != null) {
         var progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(topActivity)
         progressHUDTransformerImpl.setLoadingNotice(loadingNotice)
         progressHUDTransformerImpl.setSuccessNotice(successNotice)
