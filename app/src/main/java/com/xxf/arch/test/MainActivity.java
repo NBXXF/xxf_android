@@ -47,6 +47,7 @@ import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.objectbox.ObjectBoxUtils;
+import com.xxf.utils.LogKt;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
 
@@ -158,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String key = "hello";
+        LogKt.d(key,null,"================");
+        LogKt.d(key,null,"================22222");
         SpService.INSTANCE.observeChange(key)
                 .subscribe(new Consumer<String>() {
                     @Override
@@ -402,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        LogKt.d("======>hell",null,"========");
                         TestKt.INSTANCE.test();
                         ((TextView)view).setText("http "+System.currentTimeMillis());
                        /* XXF.getApiService(LoginApiService.class)

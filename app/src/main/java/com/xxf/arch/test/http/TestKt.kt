@@ -1,6 +1,7 @@
 package com.xxf.arch.test.http
 
 import com.xxf.arch.apiService
+import com.xxf.utils.d
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -9,9 +10,10 @@ import com.xxf.arch.apiService
  */
 object TestKt {
     fun test() {
+        d("======>hell1334")
         LoginApiService::class.java.apiService().getCity()
             .subscribe {
-                System.out.println("=========>test SY:" + it);
+                d("=========>test SY:" + it);
             }
     }
 }
