@@ -6,6 +6,8 @@ import com.xxf.application.activity.topFragmentActivity
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer
 import io.reactivex.rxjava3.annotations.NonNull
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 
 /**
@@ -14,6 +16,7 @@ import io.reactivex.rxjava3.core.Observable
  * Description : 增加扩展
  */
 
+//***************************Observable**************************//
 /**
  * 添加加载圈loading
  */
@@ -32,6 +35,7 @@ inline fun <reified T> Observable<T>.bindProgressHud(
 
 /**
  * 添加加载圈loading
+ * 默认绑定 topFragmentActivity
  */
 inline fun <reified T> Observable<T>.bindProgressHud(
     loadingNotice: String? = "",
@@ -49,10 +53,99 @@ inline fun <reified T> Observable<T>.bindProgressHud(
     return this
 }
 
+//***************************Flowable**************************//
+
+inline fun <reified T> Flowable<T>.bindProgressHud(
+    lifecycleOwner: LifecycleOwner,
+    loadingNotice: String? = "",
+    successNotice: String? = "",
+    errorNotice: String? = null
+): Flowable<T> {
+    val progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(lifecycleOwner)
+    progressHUDTransformerImpl.setLoadingNotice(loadingNotice)
+    progressHUDTransformerImpl.setSuccessNotice(successNotice)
+    progressHUDTransformerImpl.setErrorNotice(errorNotice)
+    return this.compose(progressHUDTransformerImpl);
+}
+
+/**
+ * 添加加载圈loading
+ * 默认绑定 topFragmentActivity
+ */
+inline fun <reified T> Flowable<T>.bindProgressHud(
+    loadingNotice: String? = "",
+    successNotice: String? = "",
+    errorNotice: String? = null
+): Flowable<T> {
+    val topActivity = topFragmentActivity
+    if (topActivity != null) {
+        var progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(topActivity)
+        progressHUDTransformerImpl.setLoadingNotice(loadingNotice)
+        progressHUDTransformerImpl.setSuccessNotice(successNotice)
+        progressHUDTransformerImpl.setErrorNotice(errorNotice)
+        return this.compose(progressHUDTransformerImpl);
+    }
+    return this
+}
+
+//***************************Flowable**************************//
+
+inline fun <reified T> Maybe<T>.bindProgressHud(
+    lifecycleOwner: LifecycleOwner,
+    loadingNotice: String? = "",
+    successNotice: String? = "",
+    errorNotice: String? = null
+): Maybe<T> {
+    val progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(lifecycleOwner)
+    progressHUDTransformerImpl.setLoadingNotice(loadingNotice)
+    progressHUDTransformerImpl.setSuccessNotice(successNotice)
+    progressHUDTransformerImpl.setErrorNotice(errorNotice)
+    return this.compose(progressHUDTransformerImpl);
+}
+
+/**
+ * 添加加载圈loading
+ * 默认绑定 topFragmentActivity
+ */
+inline fun <reified T> Maybe<T>.bindProgressHud(
+    loadingNotice: String? = "",
+    successNotice: String? = "",
+    errorNotice: String? = null
+): Maybe<T> {
+    val topActivity = topFragmentActivity
+    if (topActivity != null) {
+        var progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(topActivity)
+        progressHUDTransformerImpl.setLoadingNotice(loadingNotice)
+        progressHUDTransformerImpl.setSuccessNotice(successNotice)
+        progressHUDTransformerImpl.setErrorNotice(errorNotice)
+        return this.compose(progressHUDTransformerImpl);
+    }
+    return this
+}
+
+//***************************流错误提示toast**************************//
+
+
 /**
  * 在流发生错误的时候增加提示
  */
-inline fun <reified T> Observable<T>.bindErrorNotice(): @NonNull Observable<T>? {
+inline fun <reified T> Observable<T>.bindErrorNotice(): @NonNull Observable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler())
+    return this.compose(uiErrorTransformer);
+}
+
+/**
+ * 在流发生错误的时候增加提示
+ */
+inline fun <reified T> Flowable<T>.bindErrorNotice(): @NonNull Flowable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler())
+    return this.compose(uiErrorTransformer);
+}
+
+/**
+ * 在流发生错误的时候增加提示
+ */
+inline fun <reified T> Maybe<T>.bindErrorNotice(): @NonNull Maybe<T> {
     val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler())
     return this.compose(uiErrorTransformer);
 }
