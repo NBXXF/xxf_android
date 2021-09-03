@@ -183,7 +183,7 @@ public enum CacheType {
 2. api 请求方式,并绑定loading对话框
 
 ```
-       BackupApiService.class::class.java.apiService()
+       BackupApiService::class.java.apiService()
                 .backupUpConfigQuestionQuery()
                 .map(new ResponseDTOSimpleFunction<List<SecurityQuestionDTO>>())
                 .bindProgressHud(this))//绑定progress loadingdialog
