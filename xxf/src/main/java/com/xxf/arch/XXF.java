@@ -589,7 +589,7 @@ public class XXF {
 
     /**
      * 替代 startActivityForResult
-     *
+     * 【过时了 请用 Activity.requestPermissionObservable 或者Fragment.requestPermissionObservable】
      * @param lifecycleOwner
      * @param intent
      * @param requestCode
@@ -597,6 +597,7 @@ public class XXF {
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @MainThread
+    @Deprecated
     public static Observable<ActivityResult> startActivityForResult(
             @NonNull LifecycleOwner lifecycleOwner, @NonNull Intent intent, int requestCode) {
         return Observable
