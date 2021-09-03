@@ -216,7 +216,7 @@ public enum CacheType {
       //请求授权
         ``` 
       支持activity fragment LifecycleOwner 挂载对象访问
-      requestPermissionsObservable(MainActivity.this, Manifest.permission.CAMERA)
+      requestPermissionsObservable(Manifest.permission.CAMERA)
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
                                     public void accept(Boolean aBoolean) throws Exception {
@@ -225,7 +225,7 @@ public enum CacheType {
                                 });
                                 
       //获取是否授权                          
-      ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + XXF.isGrantedPermission(MainActivity.this, Manifest.permission.CAMERA));
+      ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + isGrantedPermission(Manifest.permission.CAMERA));
      ```
 
 ##### startActivityForResult Rx链式调用
