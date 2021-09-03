@@ -1,5 +1,7 @@
 package com.xxf.arch.test.http;
 
+import android.util.Log;
+
 import com.xxf.arch.XXF;
 import com.xxf.arch.http.interceptor.HttpExceptionFeedInterceptor;
 
@@ -15,11 +17,11 @@ public class MyLoggerInterceptor extends HttpExceptionFeedInterceptor {
 
     @Override
     protected void onFeedHttpException(String url, String method, Throwable e) {
-        XXF.getLogger().d("============>feed ex:" + e);
+        Log.d("","============>feed ex:"+ e);
     }
 
     @Override
     protected void onFeedResponseException(String url, String method, String reqBody, int code, String message, long tookMs, String resBody) {
-        XXF.getLogger().d("============>feed ex:" + url + reqBody);
+        Log.d("","============>feed ex:" + url + reqBody);
     }
 }

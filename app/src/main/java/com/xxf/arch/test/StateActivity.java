@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +67,8 @@ public class StateActivity extends AppCompatActivity {
                 //    Bitmap bitmap = getBitmap(stateBinding.recyclerView);
                 Bitmap bitmap = RecyclerViewUtils.INSTANCE.shotRecyclerViewVisibleItems(stateBinding.recyclerView);
 
-                XXF.getLogger().d("=============>bitmap:" + bitmap);
-                XXF.getLogger().d("=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
+                Log.d("","=============>bitmap:" + bitmap);
+                Log.d("","=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
                 stateBinding.preview.setImageBitmap(bitmap);
 
                 // loadData();
@@ -124,7 +125,7 @@ public class StateActivity extends AppCompatActivity {
                         .subscribe(new Consumer<DownloadTask>() {
                             @Override
                             public void accept(DownloadTask downloadTask) throws Throwable {
-                                XXF.getLogger().d("=========>task2:" + downloadTask);
+                                Log.d("","=========>task2:" + downloadTask);
                             }
                         });
 

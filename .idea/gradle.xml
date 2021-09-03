@@ -25,8 +25,7 @@
             <option value="$PROJECT_DIR$/lib_objectbox/lib_objectbox_demo" />
             <option value="$PROJECT_DIR$/lib_permission" />
             <option value="$PROJECT_DIR$/lib_rxjava" />
-            <option value="$PROJECT_DIR$/lib_rxlifecycle" />
-            <option value="$PROJECT_DIR$/lib_rxlifecycle/lib_rxlifecycledemo" />
+            <option value="$PROJECT_DIR$/lib_rxjava/lib_rxlifecycledemo" />
             <option value="$PROJECT_DIR$/lib_utils" />
             <option value="$PROJECT_DIR$/lib_view" />
             <option value="$PROJECT_DIR$/lib_view_ratio" />

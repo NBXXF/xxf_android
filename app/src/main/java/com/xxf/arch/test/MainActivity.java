@@ -206,38 +206,38 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        XXF.getLogger().d("==============>收到事件:" + s + "  thread:" + Thread.currentThread().getName());
+                        Log.d("","==============>收到事件:" + s + "  thread:" + Thread.currentThread().getName());
                     }
                 });
 
         double d = 0.0000f;
-        XXF.getLogger().d(String.format("===========>d:%s==0  %s", d, String.valueOf(d == 0)));
+        Log.d("",String.format("===========>d:%s==0  %s", d, String.valueOf(d == 0)));
 
         Integer integer = Double.valueOf("0.09111").intValue();
-        XXF.getLogger().d("===========>ssss" + integer);
+        Log.d("","===========>ssss" + integer);
 
         new XXFNetwrokPresenter(this, null) {
             @Override
             protected void onNetworkAvailable(Network network) {
-                XXF.getLogger().d("===========>net yes1:");
+                Log.d("","===========>net yes1:");
             }
 
             @Override
             protected void onNetworkLost(Network network) {
-                XXF.getLogger().d("===========>net no1:");
+                Log.d("","===========>net no1:");
             }
         };
         XXF.registerNetworkCallback(new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(Network network) {
                 super.onAvailable(network);
-                XXF.getLogger().d("===========>net yes:");
+                Log.d("","===========>net yes:");
             }
 
             @Override
             public void onLost(Network network) {
                 super.onLost(network);
-                XXF.getLogger().d("===========>net no:");
+                Log.d("","===========>net no:");
             }
         });
         setContentView(R.layout.activity_main);
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                Log.d("========>error:", Log.getStackTraceString(throwable));
+                Log.d("","========>error:", throwable);
             }
         });
 
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                         test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
                             @Override
                             public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {
-                                XXF.getLogger().d("========>订阅:" + dialogFragmentStringPair.second);
+                                Log.d("","========>订阅:" + dialogFragmentStringPair.second);
                                 dialogFragmentStringPair.first.dismissAllowingStateLoss();
                             }
                         });
@@ -302,16 +302,16 @@ public class MainActivity extends AppCompatActivity {
                                 "  }\n" +
                                 "]", new TypeToken<List<TestModel>>() {
                         }.getType());
-                        XXF.getLogger().d("===========>json:" + list);
+                        Log.d("","===========>json:" + list);
                         list = JsonUtils.toType("{\n" +
                                 "  \"p\": 10.5\n" +
                                 "}", new TypeToken<ListOrSingle<TestModel>>() {
                         }.getType());
-                        XXF.getLogger().d("===========>json2:" + list);
+                        Log.d("","===========>json2:" + list);
 
             /*            Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
-                        XXF.getLogger().d("===========>xxxx:" + parse.getPath());
-                        XXF.getLogger().d("===========>xxxx:" + parse.getPathSegments());*/
+                        Log.d("===========>xxxx:" + parse.getPath());
+                        Log.d("===========>xxxx:" + parse.getPathSegments());*/
                         Log.d("==========>yes:", "" + JsonUtils.toBean("{\"P\":\"51.2%\",\"bigDecimal\":null}", TestModel.class));
 
                      /*   ReverseFrameLayout layout = findViewById(R.id.grayLayout);
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onLost(Postcard postcard) {
                                 super.onLost(postcard);
-                                XXF.getLogger().d("=============>跳转失败" + postcard.getPath());
+                                Log.d("","=============>跳转失败" + postcard.getPath());
                             }
                         });
 
@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
                                 "  \"money\": 3456435.32674335\n" +
                                 "}";
                         FormatDemoModel testModel = JsonUtils.toBean(json, FormatDemoModel.class);
-                        XXF.getLogger().d("===============>t:" + testModel);
+                        Log.d("","===============>t:" + testModel);
                           /*   // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                         System.out.println("============>f2:" + NumberUtils.divide(10.2, 2) + "  " + (new BigDecimal(10.2).divide(new BigDecimal(2))));
@@ -413,15 +413,15 @@ public class MainActivity extends AppCompatActivity {
                                     public void accept(JsonObject jsonObject) throws Exception {
                                         if (first) {
                                             first = false;
-                                            XXF.getLogger().d("==========>retry ye first:" + jsonObject + " thread:" + Thread.currentThread().getName());
+                                            Log.d("==========>retry ye first:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                             throw new RuntimeException("xxx");
                                         }
-                                        XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
+                                        Log.d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
+                                        Log.d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
                                     }
                                 });*/
 
@@ -438,12 +438,12 @@ public class MainActivity extends AppCompatActivity {
                                             first = false;
                                             throw new RuntimeException("xxxx");
                                         }
-                                        XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
+                                        Log.d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
+                                        Log.d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
                                     }
                                 });*/
 /*
@@ -461,13 +461,13 @@ public class MainActivity extends AppCompatActivity {
                                 .subscribe(new Consumer<ListOrSingle<Weather>>() {
                                     @Override
                                     public void accept(ListOrSingle<Weather> weathers) throws Exception {
-                                        XXF.getLogger().d("=========>result:" + new ArrayList(weathers));
-                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis() / 1000);
+                                        Log.d("=========>result:" + new ArrayList(weathers));
+                                        Log.d("===========>time ui:" + System.currentTimeMillis() / 1000);
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Throwable {
-                                        XXF.getLogger().d("===========>time ui:" + System.currentTimeMillis() / 1000);
+                                        Log.d("===========>time ui:" + System.currentTimeMillis() / 1000);
                                     }
                                 });*/
 
@@ -478,7 +478,7 @@ public class MainActivity extends AppCompatActivity {
                                     .subscribe(new Consumer<JsonObject>() {
                                         @Override
                                         public void accept(JsonObject jsonObject) throws Throwable {
-                                            XXF.getLogger().d("=====>fi:" + fi + "  " + System.currentTimeMillis());
+                                            Log.d("","=====>fi:" + fi + "  " + System.currentTimeMillis());
                                         }
                                     });
                         }
@@ -619,12 +619,12 @@ public class MainActivity extends AppCompatActivity {
                                                 .subscribe();
                                         XXF.getFileService().putCacheString("bbb.txt", stringBuffer.toString(), false, false, false)
                                                 .subscribe();
-                                        XXF.getLogger().d("============>yes:" + stringBuffer.toString());
+                                        Log.d("","============>yes:" + stringBuffer.toString());
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        XXF.getLogger().d("============>no:" + throwable);
+                                        Log.d("","============>no:" + throwable);
                                     }
                                 });
                     }
@@ -783,7 +783,7 @@ public class MainActivity extends AppCompatActivity {
         }
         nf9.setMaximumFractionDigits(maxScale);
         nf9.setMinimumFractionDigits(minScale);
-        XXF.getLogger().d("========>min:" + minScale + "  " + maxScale);
+        Log.d("","========>min:" + minScale + "  " + maxScale);
         return nf9.format(number);
     }
 
@@ -797,7 +797,7 @@ public class MainActivity extends AppCompatActivity {
                 ToastUtils.showToast("testxxx", ToastUtils.ToastType.ERROR);
             }
         }, 2000);
-        XXF.getLogger().d("=============isBack stop:" + XXF.getActivityStackProvider().isBackground());
+        Log.d("","=============isBack stop:" + XXF.getActivityStackProvider().isBackground());
     }
 
     @Override
@@ -814,7 +814,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        XXF.getLogger().d("=============isBack:" + XXF.getActivityStackProvider().isBackground());
+        Log.d("","=============isBack:" + XXF.getActivityStackProvider().isBackground());
     }
 
     @Override

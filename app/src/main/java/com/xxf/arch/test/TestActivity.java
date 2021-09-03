@@ -44,7 +44,7 @@ public class TestActivity extends AppCompatActivity {
                 .map(new Function<JsonObject, JsonObject>() {
                     @Override
                     public JsonObject apply(JsonObject jsonObject) throws Exception {
-                        XXF.getLogger().d("==========>retry map thread:"+Thread.currentThread().getName());
+                        Log.d("==========>retry map thread:"+Thread.currentThread().getName());
                         return jsonObject;
                     }
                 })
@@ -53,12 +53,12 @@ public class TestActivity extends AppCompatActivity {
                 .subscribe(new Consumer<JsonObject>() {
                     @Override
                     public void accept(JsonObject jsonObject) throws Exception {
-                        XXF.getLogger().d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
+                        Log.d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        XXF.getLogger().d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
+                        Log.d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
                     }
                 });*/
        /* Observable.create(new ObservableOnSubscribe<Object>() {
@@ -76,12 +76,12 @@ public class TestActivity extends AppCompatActivity {
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
-                        XXF.getLogger().d("==========>retry ye2:" + o + " thread:" + Thread.currentThread().getName());
+                        Log.d("==========>retry ye2:" + o + " thread:" + Thread.currentThread().getName());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        XXF.getLogger().d("==========>retry no2:" + throwable + " thread:" + Thread.currentThread().getName());
+                        Log.d("==========>retry no2:" + throwable + " thread:" + Thread.currentThread().getName());
                     }
                 });*/
     }

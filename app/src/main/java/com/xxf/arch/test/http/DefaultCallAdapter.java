@@ -1,5 +1,7 @@
 package com.xxf.arch.test.http;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.xxf.arch.XXF;
@@ -28,12 +30,12 @@ public class DefaultCallAdapter implements RxJavaCallAdapterInterceptor {
             }).doOnNext(new Consumer() {
                 @Override
                 public void accept(Object o) throws Exception {
-                    //  XXF.getLogger().d("==============>全局收到结果：" + call.request().url() + o);
+                    //  Log.d("==============>全局收到结果：" + call.request().url() + o);
                 }
             }).doOnError(new Consumer<Throwable>() {
                 @Override
                 public void accept(Throwable throwable) throws Exception {
-                    XXF.getLogger().d("==============>全局收到异常：" + call.request().url() + throwable);
+                    Log.d("","==============>全局收到异常：" + call.request().url() + throwable);
                 }
             });
         }

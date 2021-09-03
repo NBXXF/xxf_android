@@ -33,7 +33,6 @@ import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
 import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.core.XXFUserInfoProvider;
-import com.xxf.arch.core.Logger;
 import com.xxf.bus.RxBus;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.activityresult.RxActivityResultCompact;
@@ -47,6 +46,7 @@ import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.rxjava.RxLifecycle;
+import com.xxf.utils.LogKt;
 
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -67,33 +67,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class XXF {
     public static class Builder {
-        @NonNull
-        Logger logger = new Logger() {
-            @Override
-            public boolean isLoggable() {
-                return true;
-            }
-
-            @Override
-            public void d(String msg) {
-                Log.d("=============>", msg);
-            }
-
-            @Override
-            public void d(String msg, Throwable tr) {
-                Log.d("=============>", msg, tr);
-            }
-
-            @Override
-            public void e(String msg) {
-                Log.e("=============>", msg);
-            }
-
-            @Override
-            public void e(String msg, Throwable tr) {
-                Log.e("=============>", msg, tr);
-            }
-        };
         @NonNull
         BiConsumer<Integer, Throwable> errorHandler = new BiConsumer<Integer, Throwable>() {
             @Override
@@ -123,6 +96,7 @@ public class XXF {
         @NonNull
         ProgressHUDFactory.ProgressHUDProvider progressHUDProvider;
         boolean asyncInit;
+        boolean isDebug = true;
 
         public Builder(@NonNull Application application,
                        @NonNull ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
@@ -135,8 +109,8 @@ public class XXF {
             return this;
         }
 
-        public Builder setLogger(@NonNull Logger logger) {
-            this.logger = logger;
+        public Builder setDebug(boolean debug) {
+            isDebug = debug;
             return this;
         }
 
@@ -162,7 +136,6 @@ public class XXF {
     private static Application application;
 
 
-    private static Logger logger;
     private static BiConsumer<Integer, Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
@@ -174,7 +147,6 @@ public class XXF {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
                     XXF.application = builder.application;
-                    XXF.logger = builder.logger;
                     XXF.errorHandler = builder.errorHandler;
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
@@ -182,7 +154,7 @@ public class XXF {
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
                     });
-                    initRouter(builder.asyncInit);
+                    initRouter(builder.asyncInit, builder.isDebug);
                 }
             }
         }
@@ -192,7 +164,7 @@ public class XXF {
     /**
      * arouter
      */
-    private static void initRouter(boolean asyncInit) {
+    private static void initRouter(boolean asyncInit, boolean isDebug) {
         /**
          *         router 解析参数注册 只能在主线程application中
          */
@@ -200,7 +172,7 @@ public class XXF {
         Observable<Boolean> initRequst = Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                if (logger.isLoggable()) {
+                if (isDebug) {
                     ARouter.openLog();
                     ARouter.openDebug();
                 }
@@ -271,16 +243,6 @@ public class XXF {
 
 
     /**
-     * 日志打印器
-     *
-     * @return
-     */
-    public static Logger getLogger() {
-        return logger;
-    }
-
-
-    /**
      * 获取异常转换器
      *
      * @return
@@ -319,11 +281,11 @@ public class XXF {
      * @param networkCallback
      * @Override public void onAvailable(Network network) {
      * super.onAvailable(network);
-     * XXF.getLogger().d("===========>yes:");
+     * Log.d("===========>yes:");
      * }
      * @Override public void onLost(Network network) {
      * super.onLost(network);
-     * XXF.getLogger().d("===========>no:");
+     * Log.d("===========>no:");
      * }
      * });
      */
@@ -349,11 +311,11 @@ public class XXF {
      * @param networkCallback
      * @Override public void onAvailable(Network network) {
      * super.onAvailable(network);
-     * XXF.getLogger().d("===========>yes:");
+     * Log.d("===========>yes:");
      * }
      * @Override public void onLost(Network network) {
      * super.onLost(network);
-     * XXF.getLogger().d("===========>no:");
+     * Log.d("===========>no:");
      * }
      * });
      */
@@ -590,6 +552,7 @@ public class XXF {
     /**
      * 替代 startActivityForResult
      * 【过时了 请用 Activity.requestPermissionObservable 或者Fragment.requestPermissionObservable】
+     *
      * @param lifecycleOwner
      * @param intent
      * @param requestCode

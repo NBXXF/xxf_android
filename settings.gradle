@@ -1,7 +1,7 @@
 include ':lib_http:httpdemo'
 include ':lib_application'
 include ':lib_utils'
-include ':lib_rxlifecycle:lib_rxlifecycledemo'
+include ':lib_rxjava:lib_rxlifecycledemo'
 include ':lib_rxjava'
 include ':lib_bus:lib_bus_demo'
 include ':room_demo'
