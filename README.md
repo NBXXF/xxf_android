@@ -215,7 +215,7 @@ public enum CacheType {
 
       //请求授权
         ``` 
-      支持activity fragment LifecycleOwner 挂载对象访问
+      支持activity fragment LifecycleOwner 挂载对象访问   如果是在其他类对象中 可以访问全局内敛函数 topFragmentActivity?.requestPermissionsObservable
       requestPermissionsObservable(Manifest.permission.CAMERA)
                                 .subscribe(new Consumer<Boolean>() {
                                     @Override
@@ -231,7 +231,7 @@ public enum CacheType {
 ##### startActivityForResult Rx链式调用
 
   ``` 
-     支持activity fragment LifecycleOwner 挂载对象访问
+     支持activity fragment LifecycleOwner 挂载对象访问 如果是在其他类对象中 可以访问全局内敛函数 topFragmentActivity?.startActivityForResultObservable
      startActivityForResultObservable(new Intent(MainActivity.this, TestActivity.class), 1001)
                                 .subscribe(new Consumer<ActivityResult>() {
                                     @Override
