@@ -17,7 +17,7 @@ import io.objectbox.annotation.Unique
 /**
  * 字符串转成objectBox id
  */
-inline fun <reified T : String> T.toObjectBoxId(): Long {
+fun String.toObjectBoxId(): Long {
     return ObjectBoxUtils.generateId(this)
 }
 
