@@ -14,6 +14,13 @@ import io.objectbox.annotation.Unique
  * object box 扩展
  */
 
+/**
+ * 字符串转成objectBox id
+ */
+inline fun <reified T : String> T.toObjectBoxId(): Long {
+    return ObjectBoxUtils.generateId(this)
+}
+
 //合并block定义
 typealias DbMergeBlock<T> = (insertData: List<T>, box: Box<T>) -> List<T>;
 
@@ -72,7 +79,10 @@ inline fun <reified T> Box<T>.replaceTable(insertData: List<T>, mergeBlock: DbMe
  * 提供合并扩展
  */
 @Throws(Throwable::class)
-inline fun <reified T : UniqueIndexMergePo<T>> Box<T>.put(insertData: List<T>, mergeBlock: DbMergeBlock<T>) {
+inline fun <reified T : UniqueIndexMergePo<T>> Box<T>.put(
+    insertData: List<T>,
+    mergeBlock: DbMergeBlock<T>
+) {
     put(mergeBlock(insertData, this));
 }
 

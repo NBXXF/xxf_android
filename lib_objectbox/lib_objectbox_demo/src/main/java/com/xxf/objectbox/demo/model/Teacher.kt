@@ -1,5 +1,6 @@
 package com.xxf.objectbox.demo.model
 
+import com.xxf.objectbox.toObjectBoxId
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 
@@ -10,9 +11,11 @@ import io.objectbox.annotation.Id
  */
 @Entity
 class Teacher(
-        @Id(assignable = true)
-        var id:Long,var name:String) {
-        override fun toString(): String {
-                return "Teacher(id=$id, name='$name')"
-        }
+    @Id(assignable = true)
+    var id: Long, var name: String
+) {
+    override fun toString(): String {
+        val toObjectBoxId = name.toObjectBoxId();
+        return "Teacher(id=$id, name='$name')"
+    }
 }
