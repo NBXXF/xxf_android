@@ -79,11 +79,12 @@ inline fun <reified T> Box<T>.replaceTable(insertData: List<T>, mergeBlock: DbMe
  * 提供合并扩展
  */
 @Throws(Throwable::class)
-inline fun <reified T : UniqueIndexMergePo<T>> Box<T>.put(
+inline fun <reified T> Box<T>.put(
     insertData: List<T>,
     mergeBlock: DbMergeBlock<T>
 ) {
     put(mergeBlock(insertData, this));
 }
+
 
 

@@ -12,6 +12,7 @@ import java.util.*
  * @Author: XGod
  * @CreateDate: 2020/7/25 22:55
  */
+@Deprecated(message = "请直接使用box 的put inline方法")
 object ObjectBoxUtils {
     /**
      * 生成id
