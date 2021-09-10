@@ -395,12 +395,21 @@ public class SystemUtils {
         try {
             if (v != null) {
                 v.requestFocus();
+                v.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (v != null) {
+                            v.requestFocus();
+                        }
+                    }
+                });
             }
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
         } catch (Exception e) {
         }
     }
+
     /**
      * 显示软键盘2
      *
@@ -410,6 +419,14 @@ public class SystemUtils {
         try {
             if (v != null) {
                 v.requestFocus();
+                v.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (v != null) {
+                            v.requestFocus();
+                        }
+                    }
+                });
             }
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(v, InputMethodManager.SHOW_FORCED);
