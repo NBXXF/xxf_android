@@ -28,11 +28,9 @@ public abstract class LengthListenFilter extends InputFilter.LengthFilter {
         return new InputFilter[]{l};
     }
 
-    int max;
 
     public LengthListenFilter(@IntRange(from = 1) int max) {
         super(max);
-        this.max = max;
     }
 
     /**
@@ -47,10 +45,24 @@ public abstract class LengthListenFilter extends InputFilter.LengthFilter {
     @CallSuper
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        if (StringUtils.length(dest) + StringUtils.length(source) > max) {
-            onInputOverLength(max);
+        int keep = getMax() - (dest.length() - (dend - dstart));
+        if (keep <= 0) {
+            onInputOverLength(getMax());
+            return "";
+        } else if (keep >= end - start) {
+            return null; // keep original
+        } else {
+            keep += start;
+            if (Character.isHighSurrogate(source.charAt(keep - 1))) {
+                --keep;
+                if (keep == start) {
+                    onInputOverLength(getMax());
+                    return "";
+                }
+            }
+            onInputOverLength(getMax());
+            return source.subSequence(start, keep);
         }
-        return super.filter(source, start, end, dest, dstart, dend);
     }
 
     /**
