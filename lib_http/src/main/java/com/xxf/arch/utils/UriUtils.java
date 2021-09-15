@@ -12,6 +12,7 @@ import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -137,13 +138,17 @@ public class UriUtils {
         } else if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
             //把文件复制到沙盒目录
             ContentResolver contentResolver = context.getContentResolver();
-            String displayName = System.currentTimeMillis() + Math.round((Math.random() + 1) * 1000)
-                    + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri));
+            String displayName = null;
 
 //            注释掉的方法可以获取到原文件的文件名，但是比较耗时
-//            Cursor cursor = contentResolver.query(uri, null, null, null, null);
-//            if (cursor.moveToFirst()) {
-//                String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));}
+            Cursor cursor = contentResolver.query(uri, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+            }
+            if (TextUtils.isEmpty(displayName)) {
+                displayName = System.currentTimeMillis() + Math.round((Math.random() + 1) * 1000)
+                        + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri));
+            }
 
             try {
                 InputStream is = contentResolver.openInputStream(uri);
