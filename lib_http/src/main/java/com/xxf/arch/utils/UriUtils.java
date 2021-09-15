@@ -35,6 +35,9 @@ import java.lang.reflect.Method;
 import static android.content.ContentResolver.SCHEME_CONTENT;
 import static android.content.Context.STORAGE_SERVICE;
 
+import com.xxf.hash.Murmur3A;
+import com.xxf.hash.PrimitiveDataChecksum;
+
 /**
  * Description
  * Company Beijing icourt
@@ -149,10 +152,16 @@ public class UriUtils {
                 displayName = System.currentTimeMillis() + Math.round((Math.random() + 1) * 1000)
                         + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri));
             }
-
+            /**
+             * 生成唯一路径
+             */
+            File folder = new File(context.getCacheDir().getAbsolutePath(), String.valueOf(generateId(uri.toString())));
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
             try {
                 InputStream is = contentResolver.openInputStream(uri);
-                File cache = new File(context.getCacheDir().getAbsolutePath(), displayName);
+                File cache = new File(folder, displayName);
                 FileOutputStream fos = new FileOutputStream(cache);
                 FileUtils.copy(is, fos);
                 file = cache;
@@ -163,6 +172,18 @@ public class UriUtils {
             }
         }
         return file;
+    }
+
+    /**
+     * 生成id
+     *
+     * @param
+     * @return
+     */
+    private static long generateId(String data) {
+        PrimitiveDataChecksum primitiveDataChecksum = new PrimitiveDataChecksum(new Murmur3A());
+        primitiveDataChecksum.updateUtf8(data);
+        return primitiveDataChecksum.getValue();
     }
 
     /**

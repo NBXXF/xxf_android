@@ -26,4 +26,5 @@ dependencies {
     api des.gson
     api des.okhttp
     implementation project(path: ':lib_application')
+    implementation project(path: ':lib_hash')
 }
