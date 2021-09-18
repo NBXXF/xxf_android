@@ -9,4 +9,8 @@ public class TimeFormatObject extends FormatObject<Long, String> {
     public TimeFormatObject(Long origin, String format) {
         super(origin, format);
     }
+
+    public TimeFormatObject(Long origin) {
+        super(origin, String.valueOf(origin));
+    }
 }

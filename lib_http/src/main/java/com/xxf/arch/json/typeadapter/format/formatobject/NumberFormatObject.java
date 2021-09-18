@@ -11,4 +11,8 @@ public class NumberFormatObject extends FormatObject<BigDecimal, String> {
     public NumberFormatObject(BigDecimal origin, String format) {
         super(origin, format);
     }
+
+    public NumberFormatObject(BigDecimal origin) {
+        super(origin, origin.toPlainString());
+    }
 }
