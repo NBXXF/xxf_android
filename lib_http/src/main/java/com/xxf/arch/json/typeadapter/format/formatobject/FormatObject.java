@@ -16,11 +16,11 @@ public class FormatObject<O, F> implements Serializable {
     /**
      * 原始数据
      */
-    private final O origin;
+    private O origin;
     /**
      * 格式化好的数据
      */
-    private final F format;
+    private F format;
 
     public FormatObject(O origin, F format) {
         this.origin = origin;
@@ -34,6 +34,14 @@ public class FormatObject<O, F> implements Serializable {
     @NonNull
     public O getOrigin() {
         return origin;
+    }
+
+    public void setOrigin(O origin) {
+        this.origin = origin;
+    }
+
+    public void setFormat(F format) {
+        this.format = format;
     }
 
     @Override
