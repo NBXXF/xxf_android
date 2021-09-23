@@ -11,7 +11,7 @@ import java.util.*
  * Date: 2/23/19 10:46 AM
  * Description: map 转换
  */
-class MapPropertyConverter : PropertyConverter<Map<String, Any>, String?> {
+open class MapPropertyConverter : PropertyConverter<Map<String, Any>, String?> {
     override fun convertToEntityProperty(databaseValue: String?): Map<String, Any> {
         return if (TextUtils.isEmpty(databaseValue)) {
             HashMap()
