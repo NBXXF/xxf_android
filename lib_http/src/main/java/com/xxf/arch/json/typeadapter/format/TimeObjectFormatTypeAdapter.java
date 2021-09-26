@@ -82,10 +82,14 @@ public abstract class TimeObjectFormatTypeAdapter extends TypeAdapter<TimeFormat
     public TimeFormatObject read(JsonReader in) throws IOException {
         Long read = longTypeAdapter.read(in);
         try {
-            return new TimeFormatObject(read, format(read));
+            return onCreateFormatObject(read, format(read));
         } catch (Exception e) {
             e.printStackTrace();
             throw new JsonSyntaxException(e);
         }
+    }
+
+    protected TimeFormatObject onCreateFormatObject(Long read, String format) {
+        return new TimeFormatObject(read, format);
     }
 }
