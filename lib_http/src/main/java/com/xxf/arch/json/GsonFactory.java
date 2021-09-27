@@ -2,10 +2,6 @@ package com.xxf.arch.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.bind.TypeAdapters;
-import com.google.gson.reflect.TypeToken;
 import com.xxf.arch.json.datastructure.IntEnum;
 import com.xxf.arch.json.datastructure.ListOrEmpty;
 import com.xxf.arch.json.datastructure.ListOrSingle;
@@ -37,28 +33,9 @@ public class GsonFactory {
                 .registerTypeAdapter(float.class, new PercentageFloatTypeAdapter())
                 .registerTypeAdapter(ListOrSingle.class, new ListOrSingle.ListOrSingleTypeAdapter())
                 .registerTypeAdapter(ListOrEmpty.class, new ListOrEmpty.ListOrEmptyTypeAdapter())
-                .registerTypeAdapterFactory(NUMBER_ENUM_FACTORY)
+                .registerTypeAdapterFactory(IntEnum.INT_ENUM_FACTORY)
+                .registerTypeAdapterFactory(LongEnum.LONG_ENUM_FACTORY)
                 .create();
     }
 
-    static TypeAdapterFactory NUMBER_ENUM_FACTORY = new TypeAdapterFactory() {
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
-            Class<? super T> rawType = typeToken.getRawType();
-            if (!Enum.class.isAssignableFrom(rawType) || rawType == Enum.class) {
-                return null;
-            }
-            if (!rawType.isEnum()) {
-                rawType = rawType.getSuperclass(); // handle anonymous subclasses
-            }
-            if (IntEnum.class.isAssignableFrom(rawType)) {
-                return (TypeAdapter<T>) new IntEnum.IntEnumTypeAdapter(rawType);
-            }
-            if (LongEnum.class.isAssignableFrom(rawType)) {
-                return (TypeAdapter<T>) new LongEnum.LongEnumTypeAdapter(rawType);
-            }
-            return TypeAdapters.ENUM_FACTORY.create(gson, typeToken);
-        }
-    };
 }

@@ -3,15 +3,15 @@ package com.xxf.http.demo
 import com.google.gson.annotations.SerializedName
 import com.xxf.arch.json.datastructure.IntEnum
 import com.xxf.arch.json.datastructure.LongEnum
+
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2021/9/26
  * Description ://TODO
  */
-class TestDTO(val name: String, val type: Type,val type2:Type2) {
+class TestDTO(val name: String, val type: Type, val type2: Type2,val gen:Gender) {
 
-   enum class Type(val v: Int) :IntEnum
-   {
+    enum class Type(val v: Int) : IntEnum {
         @SerializedName("1")
         TYPE_A(1),
 
@@ -24,7 +24,7 @@ class TestDTO(val name: String, val type: Type,val type2:Type2) {
     }
 
 
-    enum class Type2(val v: Long):LongEnum {
+    enum class Type2(val v: Long) : LongEnum {
         @SerializedName("1")
         TYPE_A2(1),
 
@@ -36,8 +36,20 @@ class TestDTO(val name: String, val type: Type,val type2:Type2) {
         }
     }
 
+    enum class Gender(val v: Int) {
+        @SerializedName("m")
+        MAIL(3),
+
+        @SerializedName("f")
+        FEMAIL(4);
+
+        override fun toString(): String {
+            return "Gender(v=$v)"
+        }
+    }
+
     override fun toString(): String {
-        return "TestDTO(name='$name', type=$type, type2=$type2)"
+        return "TestDTO(name='$name', type=$type, type2=$type2, gen=$gen)"
     }
 
 
