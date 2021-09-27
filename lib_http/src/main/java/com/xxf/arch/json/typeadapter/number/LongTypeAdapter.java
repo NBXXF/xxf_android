@@ -20,7 +20,7 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
     @Override
     public void write(JsonWriter jsonWriter, Long s) throws IOException {
         if (null == s) {
-            jsonWriter.value(0);
+            jsonWriter.nullValue();
         } else {
             jsonWriter.value(s);
         }

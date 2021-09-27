@@ -21,7 +21,7 @@ public class PercentageDoubleTypeAdapter extends TypeAdapter<Double> {
     @Override
     public void write(JsonWriter jsonWriter, Double s) throws IOException {
         if (null == s) {
-            jsonWriter.value(0);
+            jsonWriter.nullValue();
         } else {
             jsonWriter.value(s);
         }

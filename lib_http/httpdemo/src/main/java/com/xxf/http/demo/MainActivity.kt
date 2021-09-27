@@ -12,8 +12,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val toJsonString2 = JsonUtils.toJsonString(TT())
+        System.out.println("=======>Tttt:" + toJsonString2);
+
+
         val toJsonString =
-            JsonUtils.toJsonString(TestDTO("hello", TestDTO.Type.TYPE_A, TestDTO.Type2.TYPE_B2,TestDTO.Gender.FEMAIL));
+            JsonUtils.toJsonString(
+                TestDTO(
+                    "hello",
+                    TestDTO.Type.TYPE_A,
+                    TestDTO.Type2.TYPE_B2,
+                    TestDTO.Gender.FEMAIL
+                )
+            );
         System.out.println("=======>T1:" + toJsonString);
         val toBean = JsonUtils.toBean(toJsonString, TestDTO::class.java)
         System.out.println("=======>T2:" + toBean);

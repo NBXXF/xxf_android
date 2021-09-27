@@ -21,7 +21,7 @@ public class PercentageFloatTypeAdapter extends TypeAdapter<Float> {
     @Override
     public void write(JsonWriter jsonWriter, Float s) throws IOException {
         if (null == s) {
-            jsonWriter.value(0);
+            jsonWriter.nullValue();
         } else {
             jsonWriter.value(s);
         }
