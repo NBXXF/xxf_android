@@ -1,5 +1,6 @@
 package com.xxf.arch.test
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.xxf.application.activity.allActivity
@@ -18,5 +19,13 @@ class KotlinTestActivity : AppCompatActivity() {
             System.out.println("=======>act:$it")
         }
         ToastUtils.showToast("t:$topActivity")
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setResult(Activity.RESULT_OK);
+        finish()
     }
 }

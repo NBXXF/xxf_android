@@ -30,7 +30,9 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.XXF;
+import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.JsonUtils;
 import com.xxf.arch.json.datastructure.ListOrSingle;
 import com.xxf.arch.json.datastructure.QueryJsonField;
@@ -71,7 +73,7 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends XXFActivity {
     public static class User<T> {
         private T t;
 
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     '}';
         }
     }
+
 
     class Presenter extends XXFPresenter<Object> {
 
@@ -159,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String key = "hello";
-        LogKt.d(key,null,"================");
-        LogKt.d(key,null,"================22222");
+        LogKt.d(key, null, "================");
+        LogKt.d(key, null, "================22222");
         SpService.INSTANCE.observeChange(key)
                 .subscribe(new Consumer<String>() {
                     @Override
@@ -209,38 +212,38 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        Log.d("","==============>收到事件:" + s + "  thread:" + Thread.currentThread().getName());
+                        Log.d("", "==============>收到事件:" + s + "  thread:" + Thread.currentThread().getName());
                     }
                 });
 
         double d = 0.0000f;
-        Log.d("",String.format("===========>d:%s==0  %s", d, String.valueOf(d == 0)));
+        Log.d("", String.format("===========>d:%s==0  %s", d, String.valueOf(d == 0)));
 
         Integer integer = Double.valueOf("0.09111").intValue();
-        Log.d("","===========>ssss" + integer);
+        Log.d("", "===========>ssss" + integer);
 
         new XXFNetwrokPresenter(this, null) {
             @Override
             protected void onNetworkAvailable(Network network) {
-                Log.d("","===========>net yes1:");
+                Log.d("", "===========>net yes1:");
             }
 
             @Override
             protected void onNetworkLost(Network network) {
-                Log.d("","===========>net no1:");
+                Log.d("", "===========>net no1:");
             }
         };
         XXF.registerNetworkCallback(new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(Network network) {
                 super.onAvailable(network);
-                Log.d("","===========>net yes:");
+                Log.d("", "===========>net yes:");
             }
 
             @Override
             public void onLost(Network network) {
                 super.onLost(network);
-                Log.d("","===========>net no:");
+                Log.d("", "===========>net no:");
             }
         });
         setContentView(R.layout.activity_main);
@@ -253,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                Log.d("","========>error:", throwable);
+                Log.d("", "========>error:", throwable);
             }
         });
 
@@ -278,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
                         test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
                             @Override
                             public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {
-                                Log.d("","========>订阅:" + dialogFragmentStringPair.second);
+                                Log.d("", "========>订阅:" + dialogFragmentStringPair.second);
                                 dialogFragmentStringPair.first.dismissAllowingStateLoss();
                             }
                         });
@@ -305,12 +308,12 @@ public class MainActivity extends AppCompatActivity {
                                 "  }\n" +
                                 "]", new TypeToken<List<TestModel>>() {
                         }.getType());
-                        Log.d("","===========>json:" + list);
+                        Log.d("", "===========>json:" + list);
                         list = JsonUtils.toType("{\n" +
                                 "  \"p\": 10.5\n" +
                                 "}", new TypeToken<ListOrSingle<TestModel>>() {
                         }.getType());
-                        Log.d("","===========>json2:" + list);
+                        Log.d("", "===========>json2:" + list);
 
             /*            Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
                         Log.d("===========>xxxx:" + parse.getPath());
@@ -331,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onLost(Postcard postcard) {
                                 super.onLost(postcard);
-                                Log.d("","=============>跳转失败" + postcard.getPath());
+                                Log.d("", "=============>跳转失败" + postcard.getPath());
                             }
                         });
 
@@ -346,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                                 "  \"money\": 3456435.32674335\n" +
                                 "}";
                         FormatDemoModel testModel = JsonUtils.toBean(json, FormatDemoModel.class);
-                        Log.d("","===============>t:" + testModel);
+                        Log.d("", "===============>t:" + testModel);
                           /*   // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                         System.out.println("============>f2:" + NumberUtils.divide(10.2, 2) + "  " + (new BigDecimal(10.2).divide(new BigDecimal(2))));
@@ -405,9 +408,9 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        LogKt.d("======>hell",null,"========");
+                        LogKt.d("======>hell", null, "========");
                         TestKt.INSTANCE.test();
-                        ((TextView)view).setText("http "+System.currentTimeMillis());
+                        ((TextView) view).setText("http " + System.currentTimeMillis());
                        /* XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.lastCache)
                                 .subscribe(new Consumer<JsonObject>() {
@@ -482,7 +485,7 @@ public class MainActivity extends AppCompatActivity {
                                     .subscribe(new Consumer<JsonObject>() {
                                         @Override
                                         public void accept(JsonObject jsonObject) throws Throwable {
-                                            Log.d("","=====>fi:" + fi + "  " + System.currentTimeMillis());
+                                            Log.d("", "=====>fi:" + fi + "  " + System.currentTimeMillis());
                                         }
                                     });
                         }
@@ -492,7 +495,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(v.getContext(),KotlinTestActivity.class));
+                        startActivityForResult(new Intent(v.getContext(), KotlinTestActivity.class),1001);
                         String fileName = "aaa.text";
                         String s = "99% FC\n" +
                                 "98% FA\n" +
@@ -623,12 +626,12 @@ public class MainActivity extends AppCompatActivity {
                                                 .subscribe();
                                         XXF.getFileService().putCacheString("bbb.txt", stringBuffer.toString(), false, false, false)
                                                 .subscribe();
-                                        Log.d("","============>yes:" + stringBuffer.toString());
+                                        Log.d("", "============>yes:" + stringBuffer.toString());
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        Log.d("","============>no:" + throwable);
+                                        Log.d("", "============>no:" + throwable);
                                     }
                                 });
                     }
@@ -787,7 +790,7 @@ public class MainActivity extends AppCompatActivity {
         }
         nf9.setMaximumFractionDigits(maxScale);
         nf9.setMinimumFractionDigits(minScale);
-        Log.d("","========>min:" + minScale + "  " + maxScale);
+        Log.d("", "========>min:" + minScale + "  " + maxScale);
         return nf9.format(number);
     }
 
@@ -801,7 +804,7 @@ public class MainActivity extends AppCompatActivity {
                 ToastUtils.showToast("testxxx", ToastUtils.ToastType.ERROR);
             }
         }, 2000);
-        Log.d("","=============isBack stop:" + XXF.getActivityStackProvider().isBackground());
+        Log.d("", "=============isBack stop:" + XXF.getActivityStackProvider().isBackground());
     }
 
     @Override
@@ -813,16 +816,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ActivityResult activityResult = getActivityResult();
+        if (activityResult != null) {
+            Log.d("======>onActResult get result:", "" + this + "   data:" + activityResult.getResultCode() + "  " + activityResult.getRequestCode());
+        } else {
+            Log.d("======>onActResult get result:", "" + this + "   data null");
+        }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("","=============isBack:" + XXF.getActivityStackProvider().isBackground());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 }
