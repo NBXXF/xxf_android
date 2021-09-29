@@ -2,6 +2,7 @@ package com.xxf.utils
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.media.ExifInterface
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -22,23 +23,43 @@ import java.nio.ByteBuffer
 object BitmapUtils {
     /**
      * 解码 图片文件的属性
-     *
+     * 0,0 代表没有宽度高度
      * @param path
      * @return
      */
-    @CheckResult
-    fun decodeSize(path: String?): Size? {
+    fun decodeSize(path: String?): Size {
+        var decodeSize = Size(0, 0)
         try {
-            val options = BitmapFactory.Options()
-            options.inJustDecodeBounds = true //这个参数设置为true才有效，
-            val bmp = BitmapFactory.decodeFile(path, options) //这里的bitmap是个空
-            if (options.outWidth > 0 && options.outHeight > 0) {
-                return Size(options.outWidth, options.outHeight)
+            val exifInterface = ExifInterface(path);
+            val rotation = exifInterface.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            );
+            val width = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+            val height = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0);
+
+            decodeSize = Size(width, height);
+            when (rotation) {
+                ExifInterface.ORIENTATION_ROTATE_90, ExifInterface.ORIENTATION_ROTATE_270 -> {
+                    decodeSize = Size(decodeSize.height, decodeSize.width)
+                }
             }
         } catch (e: Throwable) {
             e.printStackTrace()
         }
-        return null
+        if (decodeSize.width <= 0 || decodeSize.height <= 0) {
+            try {
+                val options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true //这个参数设置为true才有效，
+                val bmp = BitmapFactory.decodeFile(path, options) //这里的bitmap是个空
+                if (options.outWidth > 0 && options.outHeight > 0) {
+                    decodeSize = Size(options.outWidth, options.outHeight)
+                }
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
+        return decodeSize
     }
 
     /**
@@ -55,13 +76,14 @@ object BitmapUtils {
                 val width = bitmap.width
                 val height = bitmap.height
                 val faceIconGreyBitmap = Bitmap
-                        .createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                    .createBitmap(width, height, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(faceIconGreyBitmap)
                 val paint = Paint()
                 val colorMatrix = ColorMatrix()
                 colorMatrix.setSaturation(0f)
                 val colorMatrixFilter = ColorMatrixColorFilter(
-                        colorMatrix)
+                    colorMatrix
+                )
                 paint.colorFilter = colorMatrixFilter
                 canvas.drawBitmap(bitmap, 0f, 0f, paint)
                 return faceIconGreyBitmap
@@ -90,8 +112,10 @@ object BitmapUtils {
             val scale_h = dst_h.toFloat() / src_h
             val matrix = Matrix()
             matrix.postScale(scale_w, scale_h)
-            return Bitmap.createBitmap(bitmap, 0, 0, src_w, src_h, matrix,
-                    true)
+            return Bitmap.createBitmap(
+                bitmap, 0, 0, src_w, src_h, matrix,
+                true
+            )
         } catch (e: Throwable) {
             e.printStackTrace()
         }
@@ -107,8 +131,10 @@ object BitmapUtils {
     @CheckResult
     fun drawableToBitmap(drawable: Drawable): Bitmap? {
         try {
-            val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight,
-                    if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565)
+            val bitmap = Bitmap.createBitmap(
+                drawable.intrinsicWidth, drawable.intrinsicHeight,
+                if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
+            )
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
             drawable.draw(canvas)
@@ -257,8 +283,10 @@ object BitmapUtils {
             return createBitmap(v)
         }
         try {
-            val bitmap = Bitmap.createBitmap(v.width, v.height,
-                    Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(
+                v.width, v.height,
+                Bitmap.Config.ARGB_8888
+            )
             val canvas = Canvas(bitmap)
             v.draw(canvas)
             return bitmap
@@ -323,8 +351,8 @@ object BitmapUtils {
             }
             h += scrollView.paddingTop + scrollView.paddingBottom
             bitmap = Bitmap.createBitmap(
-                    scrollView.width, h,
-                    Bitmap.Config.RGB_565
+                scrollView.width, h,
+                Bitmap.Config.RGB_565
             )
             val canvas = Canvas(bitmap) //把创建的bitmap放到画布中去
             scrollView.draw(canvas) //绘制canvas 画布
@@ -359,8 +387,8 @@ object BitmapUtils {
             }
             h += scrollView.paddingTop + scrollView.paddingBottom
             bitmap = Bitmap.createBitmap(
-                    scrollView.width, h,
-                    Bitmap.Config.RGB_565
+                scrollView.width, h,
+                Bitmap.Config.RGB_565
             )
             val canvas = Canvas(bitmap) //把创建的bitmap放到画布中去
             scrollView.draw(canvas) //绘制canvas 画布
@@ -380,10 +408,15 @@ object BitmapUtils {
      * @return
      */
     @CheckResult
-    fun mergeBitmapVertical(topBitmap: Bitmap?, bottomBitmap: Bitmap?, isBaseMax: Boolean): Bitmap? {
+    fun mergeBitmapVertical(
+        topBitmap: Bitmap?,
+        bottomBitmap: Bitmap?,
+        isBaseMax: Boolean
+    ): Bitmap? {
         try {
             if (topBitmap == null || topBitmap.isRecycled
-                    || bottomBitmap == null || bottomBitmap.isRecycled) {
+                || bottomBitmap == null || bottomBitmap.isRecycled
+            ) {
                 Log.d("merge", "topBitmap=$topBitmap;bottomBitmap=$bottomBitmap")
                 return null
             }
@@ -396,9 +429,19 @@ object BitmapUtils {
             var tempBitmapT: Bitmap = topBitmap
             var tempBitmapB: Bitmap = bottomBitmap
             if (topBitmap.width != width) {
-                tempBitmapT = Bitmap.createScaledBitmap(topBitmap, width, (topBitmap.height * 1f / topBitmap.width * width).toInt(), false)
+                tempBitmapT = Bitmap.createScaledBitmap(
+                    topBitmap,
+                    width,
+                    (topBitmap.height * 1f / topBitmap.width * width).toInt(),
+                    false
+                )
             } else if (bottomBitmap.width != width) {
-                tempBitmapB = Bitmap.createScaledBitmap(bottomBitmap, width, (bottomBitmap.height * 1f / bottomBitmap.width * width).toInt(), false)
+                tempBitmapB = Bitmap.createScaledBitmap(
+                    bottomBitmap,
+                    width,
+                    (bottomBitmap.height * 1f / bottomBitmap.width * width).toInt(),
+                    false
+                )
             }
             val height = tempBitmapT.height + tempBitmapB.height
             val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -430,10 +473,18 @@ object BitmapUtils {
             }
             val paint = Paint()
             paint.color = backgroundColor
-            val bitmap = Bitmap.createBitmap(orginBitmap.width,
-                    orginBitmap.height, orginBitmap.config)
+            val bitmap = Bitmap.createBitmap(
+                orginBitmap.width,
+                orginBitmap.height, orginBitmap.config
+            )
             val canvas = Canvas(bitmap)
-            canvas.drawRect(0f, 0f, orginBitmap.width.toFloat(), orginBitmap.height.toFloat(), paint)
+            canvas.drawRect(
+                0f,
+                0f,
+                orginBitmap.width.toFloat(),
+                orginBitmap.height.toFloat(),
+                paint
+            )
             canvas.drawBitmap(orginBitmap, 0f, 0f, paint)
             return bitmap
         } catch (e: Throwable) {
