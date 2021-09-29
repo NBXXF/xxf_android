@@ -22,3 +22,4 @@ include ':app',
         ':lib_view',
         ':lib_wechat',
         ':lib_arouter-api'
+include ':lib_adapter:lib_adapter_demo'

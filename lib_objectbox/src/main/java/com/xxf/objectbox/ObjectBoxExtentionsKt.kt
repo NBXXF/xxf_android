@@ -1,5 +1,6 @@
 package com.xxf.objectbox
 
+import com.xxf.hash.toMurmurHash
 import io.objectbox.Box
 import io.objectbox.Property
 import io.objectbox.annotation.Entity
@@ -18,7 +19,7 @@ import io.objectbox.annotation.Unique
  * 字符串转成objectBox id
  */
 fun String.toObjectBoxId(): Long {
-    return ObjectBoxUtils.generateId(this)
+    return this.toMurmurHash()
 }
 
 //合并block定义
