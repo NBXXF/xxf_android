@@ -6,6 +6,7 @@ import io.objectbox.Property
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.annotation.Unique
+import io.objectbox.query.Query
 
 /**
  * @Description: objectBox
@@ -72,6 +73,24 @@ inline fun <reified T> Box<T>.replaceTable(insertData: List<T>, mergeBlock: DbMe
     val mergeResult = mergeBlock(insertData, this);
     store.runInTx {
         removeAll()
+        put(mergeResult);
+    }
+}
+
+/**
+ * 替换表的全部数据行,最终保留 ->insertData
+ * @param mergeBlock 合并
+ * @param deleteList  删除的数据
+ */
+@Throws(Throwable::class)
+inline fun <reified T> Box<T>.replaceTable(
+    insertData: List<T>,
+    mergeBlock: DbMergeBlock<T>,
+    deleteList: List<T>
+) {
+    val mergeResult = mergeBlock(insertData, this);
+    store.runInTx {
+        remove(deleteList)
         put(mergeResult);
     }
 }
