@@ -9,7 +9,7 @@ import io.objectbox.converter.PropertyConverter
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2021/10/4
- * Description ://JsonObject db 转换
+ * Description ://JSONObject db 转换
  */
 open class JsonObjectPropertyConverter : PropertyConverter<JsonObject?, String?> {
 
