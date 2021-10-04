@@ -11,7 +11,7 @@ import java.lang.reflect.Type
  * Date: 2/23/19 10:50 AM
  * Description: 模型作为属性 转换
  */
-open class BeanPropertyConverter<T> : PropertyConverter<T, String?> {
+open abstract class BeanPropertyConverter<T> : PropertyConverter<T, String?> {
     override fun convertToEntityProperty(databaseValue: String?): T {
         var type: Type? = null
         type = try {
