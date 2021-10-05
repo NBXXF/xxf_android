@@ -13,8 +13,8 @@ inline fun <reified T> Observable<T>.subscribeOnIO(): Observable<T> {
     return this.subscribeOn(Schedulers.io())
 }
 
-inline fun <reified T> Observable<T>.observeOnIO(): Observable<T> {
-    return this.observeOn(Schedulers.io())
+inline fun <reified T> Observable<T>.observeOnIO(delayError:Boolean=false): Observable<T> {
+    return this.observeOn(Schedulers.io(),delayError)
 }
 
 /********** Flowable **********/
@@ -22,8 +22,8 @@ inline fun <reified T> Flowable<T>.subscribeOnIO(): Flowable<T> {
     return this.subscribeOn(Schedulers.io())
 }
 
-inline fun <reified T> Flowable<T>.observeOnIO(): Flowable<T> {
-    return this.observeOn(Schedulers.io())
+inline fun <reified T> Flowable<T>.observeOnIO(delayError:Boolean=false): Flowable<T> {
+    return this.observeOn(Schedulers.io(),delayError)
 }
 
 

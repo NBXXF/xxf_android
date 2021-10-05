@@ -22,7 +22,7 @@ dependencies {
     api des.material
     api des.rxJava
     api des.rxAndroid
-    api 'com.github.NBXXF:retrofit2:1.0.9'
+    api 'com.github.NBXXF:retrofit2:1.1.0'
     api des.gson
     api des.okhttp
     implementation project(path: ':lib_application')

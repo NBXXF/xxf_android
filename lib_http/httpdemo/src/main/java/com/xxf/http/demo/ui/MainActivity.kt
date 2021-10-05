@@ -12,6 +12,7 @@ import com.xxf.http.demo.LoginApiService
 import com.xxf.http.demo.R
 import com.xxf.http.demo.TestDTO
 import com.xxf.http.demo.Weather
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import retrofit2.CacheType
@@ -65,7 +66,8 @@ class MainActivity : AppCompatActivity() {
     private fun testhttp() {
         first = true;
         LoginApiService::class.java.apiService()
-            .getCity(CacheType.lastCache)
+            .getCity(CacheType.firstCache)
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(Consumer<ListOrSingle<Weather?>> { weathers ->
                 Log.d(
                     "==========>retry ye start:$weathers",

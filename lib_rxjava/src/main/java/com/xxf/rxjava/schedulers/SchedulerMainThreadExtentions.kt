@@ -14,8 +14,8 @@ inline fun <reified T> Observable<T>.subscribeOnMain(): Observable<T> {
     return this.subscribeOn(AndroidSchedulers.mainThread())
 }
 
-inline fun <reified T> Observable<T>.observeOnMain(): Observable<T> {
-    return this.observeOn(AndroidSchedulers.mainThread())
+inline fun <reified T> Observable<T>.observeOnMain(delayError:Boolean=false): Observable<T> {
+    return this.observeOn(AndroidSchedulers.mainThread(),delayError)
 }
 
 /********** Flowable **********/
@@ -23,8 +23,8 @@ inline fun <reified T> Flowable<T>.subscribeOnMain(): Flowable<T> {
     return this.subscribeOn(AndroidSchedulers.mainThread())
 }
 
-inline fun <reified T> Flowable<T>.observeOnMain(): Flowable<T> {
-    return this.observeOn(AndroidSchedulers.mainThread())
+inline fun <reified T> Flowable<T>.observeOnMain(delayError:Boolean=false): Flowable<T> {
+    return this.observeOn(AndroidSchedulers.mainThread(),delayError)
 }
 
 

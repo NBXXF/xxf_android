@@ -13,13 +13,13 @@ inline fun <reified T> Observable<T>.subscribeOnNewThread(): Observable<T> {
     return this.subscribeOn(Schedulers.newThread())
 }
 
-inline fun <reified T> Observable<T>.observeOnNewThread(): Observable<T> {
-    return this.observeOn(Schedulers.newThread())
+inline fun <reified T> Observable<T>.observeOnNewThread(delayError:Boolean=false): Observable<T> {
+    return this.observeOn(Schedulers.newThread(),delayError)
 }
 
 /********** Flowable **********/
-inline fun <reified T> Flowable<T>.subscribeOnNewThread(): Flowable<T> {
-    return this.subscribeOn(Schedulers.newThread())
+inline fun <reified T> Flowable<T>.subscribeOnNewThread(delayError:Boolean=false): Flowable<T> {
+    return this.subscribeOn(Schedulers.newThread(),delayError)
 }
 
 inline fun <reified T> Flowable<T>.observeOnNewThread(): Flowable<T> {
