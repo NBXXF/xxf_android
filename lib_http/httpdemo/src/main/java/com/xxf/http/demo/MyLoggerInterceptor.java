@@ -1,8 +1,7 @@
-package com.xxf.arch.test.http;
+package com.xxf.http.demo;
 
 import android.util.Log;
 
-import com.xxf.arch.XXF;
 import com.xxf.arch.http.interceptor.HttpExceptionFeedInterceptor;
 
 /**

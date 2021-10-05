@@ -1,10 +1,10 @@
-package com.xxf.arch.test.http;
+package com.xxf.http.demo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.http.cache.HttpCacheConfigProvider;
-import com.xxf.arch.test.BaseApplication;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheConfigProvi
     @NonNull
     @Override
     public String getDirectory() {
-        File file = new File(BaseApplication.getInstance().getCacheDir(), "okHttpCache4");
+        File file = new File(ApplicationProvider.applicationContext.getCacheDir(), "okHttpCache4");
         if (!file.exists()) {
             file.mkdirs();
         }

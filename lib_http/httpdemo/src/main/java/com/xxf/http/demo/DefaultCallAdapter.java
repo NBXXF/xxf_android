@@ -1,10 +1,9 @@
-package com.xxf.arch.test.http;
+package com.xxf.http.demo;
 
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.xxf.arch.XXF;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 
 import io.reactivex.rxjava3.core.Observable;

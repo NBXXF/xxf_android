@@ -1,6 +1,7 @@
 package com.xxf.arch.http.cache.transformer;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -50,6 +51,7 @@ public abstract class AbsCacheTransformer<R> implements ObservableTransformer<Re
                     @Override
                     public void accept(Response<R> rResponse) throws Exception {
                         if (rxHttpCacheConfig.isCache(rResponse.body())) {
+                           // Log.d("===============>","缓存成功");
                             RxHttpCacheFactory.getCache(rxHttpCacheConfig).putAsync(rResponse);
                         }
                     }

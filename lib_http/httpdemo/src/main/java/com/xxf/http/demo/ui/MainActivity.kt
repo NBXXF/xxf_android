@@ -1,19 +1,24 @@
-package com.xxf.http.demo
+package com.xxf.http.demo.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.google.gson.JsonObject
+import com.xxf.arch.apiService
 import com.xxf.arch.json.JsonUtils
+import com.xxf.arch.json.datastructure.ListOrSingle
 import com.xxf.arch.websocket.WebSocketClient
-import okhttp3.internal.ws.WebSocketExtensions
+import com.xxf.http.demo.LoginApiService
+import com.xxf.http.demo.R
+import com.xxf.http.demo.TestDTO
+import com.xxf.http.demo.Weather
+import io.reactivex.rxjava3.functions.Consumer
+import retrofit2.CacheType
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val toJsonString2 = JsonUtils.toJsonString(TT())
-        System.out.println("=======>Tttt:" + toJsonString2);
 
 
         val toJsonString =
@@ -46,5 +51,35 @@ class MainActivity : AppCompatActivity() {
 
 
         wsc.send(json.toString());
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        testhttp()
+    }
+
+    private fun testhttp() {
+        LoginApiService::class.java.apiService()
+            .getCity(CacheType.firstCache)
+            .subscribe(Consumer<ListOrSingle<Weather?>> { weathers ->
+                Log.d(
+                    "==========>retry ye start:$weathers",
+                    " thread:" + Thread.currentThread().name
+                )
+//                if (first) {
+//                    first = false
+//                    throw RuntimeException("xxxx")
+//                }
+                throw RuntimeException("xxxx")
+                Log.d("==========>retry ye:$weathers", " thread:" + Thread.currentThread().name)
+            },
+                Consumer<Throwable> { throwable ->
+                    Log.d(
+                        "==========>retry no:$throwable",
+                        " thread:" + Thread.currentThread().name
+                    )
+                })
     }
 }

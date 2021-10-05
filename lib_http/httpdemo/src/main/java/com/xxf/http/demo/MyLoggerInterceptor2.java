@@ -1,8 +1,7 @@
-package com.xxf.arch.test.http;
+package com.xxf.http.demo;
 
 import android.util.Log;
 
-import com.xxf.arch.XXF;
 
 import java.io.IOException;
 
@@ -19,7 +18,7 @@ public class MyLoggerInterceptor2 extends com.xxf.arch.http.interceptor.HttpLogg
 
             @Override
             public void log(String message) {
-                Log.d("http:",message);
+                Log.d("==============>http:",message);
             }
         });
         setLevel(Level.BODY);

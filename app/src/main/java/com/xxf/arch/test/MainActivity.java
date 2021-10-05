@@ -43,9 +43,6 @@ import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.service.SpService;
-import com.xxf.arch.test.http.LoginApiService;
-import com.xxf.arch.test.http.TestKt;
-import com.xxf.arch.test.http.TestQueryJsonField;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.utils.LogKt;
@@ -405,52 +402,7 @@ public class MainActivity extends XXFActivity {
                     @Override
                     public void onClick(View view) {
                         LogKt.d("======>hell", null, "========");
-                        TestKt.INSTANCE.test();
                         ((TextView) view).setText("http " + System.currentTimeMillis());
-                        XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.firstCache)
-                                .compose(XXF.bindToErrorNotice())
-                                //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
-                                .subscribe(new Consumer<ListOrSingle<Weather>>() {
-                                    @Override
-                                    public void accept(ListOrSingle<Weather> weathers) throws Throwable {
-                                        Log.d("==========>retry ye00000:" + weathers, " thread:" + Thread.currentThread().getName());
-                                        if (first) {
-                                            first = false;
-                                            throw new RuntimeException("xxxx");
-                                        }
-                                        Log.d("==========>retry ye:" + weathers, " thread:" + Thread.currentThread().getName());
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        Log.d("==========>retry no:" + throwable, " thread:" + Thread.currentThread().getName());
-                                    }
-                                });
-/*
-                        XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.onlyRemote)
-                                .map(new Function<ListOrSingle<Weather>, ListOrSingle<Weather>>() {
-                                    @Override
-                                    public ListOrSingle<Weather> apply(ListOrSingle<Weather> weathers) throws Throwable {
-                                        Thread.sleep(3000);
-                                        return weathers;
-                                    }
-                                })
-                                .compose(XXF.bindToProgressHud())
-                                //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
-                                .subscribe(new Consumer<ListOrSingle<Weather>>() {
-                                    @Override
-                                    public void accept(ListOrSingle<Weather> weathers) throws Exception {
-                                        Log.d("=========>result:" + new ArrayList(weathers));
-                                        Log.d("===========>time ui:" + System.currentTimeMillis() / 1000);
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Throwable {
-                                        Log.d("===========>time ui:" + System.currentTimeMillis() / 1000);
-                                    }
-                                });*/
                     }
                 });
         findViewById(R.id.file)
