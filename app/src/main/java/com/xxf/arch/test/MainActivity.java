@@ -70,6 +70,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import retrofit2.CacheType;
 
 
 public class MainActivity extends XXFActivity {
@@ -399,53 +400,33 @@ public class MainActivity extends XXFActivity {
                 });
         findViewById(R.id.bt_http)
                 .setOnClickListener(new View.OnClickListener() {
+                    boolean first = true;
+
                     @Override
                     public void onClick(View view) {
                         LogKt.d("======>hell", null, "========");
                         TestKt.INSTANCE.test();
                         ((TextView) view).setText("http " + System.currentTimeMillis());
-                       /* XXF.getApiService(LoginApiService.class)
-                                .getCity(CacheType.lastCache)
-                                .subscribe(new Consumer<JsonObject>() {
-                                    boolean first = true;
-
-                                    @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
-                                        if (first) {
-                                            first = false;
-                                            Log.d("==========>retry ye first:" + jsonObject + " thread:" + Thread.currentThread().getName());
-                                            throw new RuntimeException("xxx");
-                                        }
-                                        Log.d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        Log.d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
-                                    }
-                                });*/
-
-                      /*  XXF.getApiService(LoginApiService.class)
+                        XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.firstCache)
                                 .compose(XXF.bindToErrorNotice())
                                 //  .as(XXF.bindLifecycle(MainActivity.this, Lifecycle.Event.ON_DESTROY))
-                                .subscribe(new Consumer<JsonObject>() {
-                                    boolean first = true;
-
+                                .subscribe(new Consumer<ListOrSingle<Weather>>() {
                                     @Override
-                                    public void accept(JsonObject jsonObject) throws Exception {
+                                    public void accept(ListOrSingle<Weather> weathers) throws Throwable {
+                                        Log.d("==========>retry ye00000:" + weathers, " thread:" + Thread.currentThread().getName());
                                         if (first) {
                                             first = false;
                                             throw new RuntimeException("xxxx");
                                         }
-                                        Log.d("==========>retry ye:" + jsonObject + " thread:" + Thread.currentThread().getName());
+                                        Log.d("==========>retry ye:" + weathers, " thread:" + Thread.currentThread().getName());
                                     }
                                 }, new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        Log.d("==========>retry no:" + throwable + " thread:" + Thread.currentThread().getName());
+                                        Log.d("==========>retry no:" + throwable, " thread:" + Thread.currentThread().getName());
                                     }
-                                });*/
+                                });
 /*
                         XXF.getApiService(LoginApiService.class)
                                 .getCity(CacheType.onlyRemote)
@@ -470,25 +451,13 @@ public class MainActivity extends XXFActivity {
                                         Log.d("===========>time ui:" + System.currentTimeMillis() / 1000);
                                     }
                                 });*/
-
-                        for (int i = 0; i < 1000; i++) {
-                            final int fi = i;
-                            XXF.getApiService(LoginApiService.class)
-                                    .getCity(QueryJsonField.create(new TestQueryJsonField("hello&key=sss" + System.currentTimeMillis())))
-                                    .subscribe(new Consumer<JsonObject>() {
-                                        @Override
-                                        public void accept(JsonObject jsonObject) throws Throwable {
-                                            Log.d("", "=====>fi:" + fi + "  " + System.currentTimeMillis());
-                                        }
-                                    });
-                        }
                     }
                 });
         findViewById(R.id.file)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivityForResult(new Intent(v.getContext(), KotlinTestActivity.class),1001);
+                        startActivityForResult(new Intent(v.getContext(), KotlinTestActivity.class), 1001);
                         String fileName = "aaa.text";
                         String s = "99% FC\n" +
                                 "98% FA\n" +

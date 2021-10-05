@@ -27,10 +27,6 @@ public class FirstRemoteTransformer<R> extends AbsCacheTransformer<R> {
 
     @Override
     public final ObservableSource<Response<R>> apply(Observable<Response<R>> remoteObservable) {
-        /**
-         * .concatDelayError
-         * 第一次执行中断 不会影响 第二次执行
-         */
         return cacheAfter(remoteObservable)
                 .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Response<R>>>() {
                     @Override
