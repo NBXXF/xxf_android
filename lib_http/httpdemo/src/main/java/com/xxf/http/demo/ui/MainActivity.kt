@@ -13,13 +13,14 @@ import com.xxf.http.demo.R
 import com.xxf.http.demo.TestDTO
 import com.xxf.http.demo.Weather
 import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import retrofit2.CacheType
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        RxJavaPlugins.setErrorHandler { }
 
         val toJsonString =
             JsonUtils.toJsonString(
@@ -60,19 +61,20 @@ class MainActivity : AppCompatActivity() {
         testhttp()
     }
 
+    var first = true;
     private fun testhttp() {
+        first = true;
         LoginApiService::class.java.apiService()
-            .getCity(CacheType.firstCache)
+            .getCity(CacheType.lastCache)
             .subscribe(Consumer<ListOrSingle<Weather?>> { weathers ->
                 Log.d(
                     "==========>retry ye start:$weathers",
                     " thread:" + Thread.currentThread().name
                 )
-//                if (first) {
-//                    first = false
-//                    throw RuntimeException("xxxx")
-//                }
-                throw RuntimeException("xxxx")
+                if (first) {
+                    first = false
+                    //throw RuntimeException("xxxx")
+                }
                 Log.d("==========>retry ye:$weathers", " thread:" + Thread.currentThread().name)
             },
                 Consumer<Throwable> { throwable ->

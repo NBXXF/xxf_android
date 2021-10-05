@@ -18,8 +18,6 @@ import com.xxf.objectbox.demo.model.Teacher
 import com.xxf.objectbox.demo.TeacherDbService
 import com.xxf.objectbox.demo.model.User
 import com.xxf.rxjava.observeOnIO
-import com.xxf.rxjava.schedulers.concatMapEagerDelayError
-import com.xxf.rxjava.subscribeOnIO
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BooleanSupplier
 import io.reactivex.rxjava3.functions.Consumer
@@ -96,7 +94,7 @@ class MainActivity() : AppCompatActivity() {
                     }
                 }).subscribeOn(Schedulers.io())
             )
-            .concatMapEagerDelayError()
+            .concatMapEagerDelayError({ it -> it }, true)
             .doOnError(object : Consumer<Throwable> {
                 @Throws(Throwable::class)
                 override fun accept(throwable: Throwable) {
