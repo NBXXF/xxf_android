@@ -22,8 +22,8 @@ public class TestAdapter extends XXFRecyclerAdapter<AdapterTestBinding, Integer>
 
     @Override
     public void onBindHolder(XXFViewHolder<AdapterTestBinding, Integer> holder, @Nullable Integer item, int index) {
-        holder.getBinding().text.setText("item:" + item);
-        System.out.println("==========>onChildViewAttachedToWindow:AdapterPosition:" + holder.getAdapterPosition() + "  LayoutPosition:" + holder.getLayoutPosition() + "  hash:" + holder.itemView+" [[[bind]]]");
+        holder.getBinding().text.setTextKeepState("item:" + item);
+        System.out.println("==========>onChildViewAttachedToWindow:AdapterPosition:" + holder.getAdapterPosition() + "  LayoutPosition:" + holder.getLayoutPosition() + "  hash:" + holder.itemView + " [[[bind]]]");
     }
 
     @Override
