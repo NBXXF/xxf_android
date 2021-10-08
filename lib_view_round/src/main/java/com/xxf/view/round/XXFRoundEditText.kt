@@ -13,6 +13,8 @@ import androidx.appcompat.widget.AppCompatEditText
  */
 open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     protected val textWatchers = mutableListOf<TextWatcher>()
+    private var selStart: Int = -1;
+    private var selEnd: Int = -1;
 
     constructor(context: Context?) : super(context!!) {}
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
@@ -53,6 +55,31 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
         }
     }
 
+    /**
+     * 焦点改变系统函数
+     */
+    @CallSuper
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        super.onSelectionChanged(selStart, selEnd)
+        this.selStart = selStart;
+        this.selEnd = selEnd;
+    }
+
+    /**
+     * 恢复焦点选中
+     * @return 是否恢复成功（上次没有选中 不会恢复成功）
+     */
+    open fun recoverySelection(): Boolean {
+        if (this.selStart >= 0
+            && this.selStart <= (this.text?.length ?: 0)
+            && this.selEnd >= 0
+            && this.selEnd <= (this.text?.length ?: 0)
+        ) {
+            setSelection(this.selStart, this.selEnd)
+            return true
+        }
+        return false
+    }
 
     @CallSuper
     override fun addTextChangedListener(watcher: TextWatcher?) {
