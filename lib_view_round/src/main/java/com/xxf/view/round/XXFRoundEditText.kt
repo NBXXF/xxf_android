@@ -61,7 +61,7 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     @CallSuper
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
-        if (isFocused) {
+        if (isFocused && selStart >= 0 && selEnd >= 0) {
             this.focusedSelStart = selStart;
             this.focusedSelEnd = selEnd;
         }
