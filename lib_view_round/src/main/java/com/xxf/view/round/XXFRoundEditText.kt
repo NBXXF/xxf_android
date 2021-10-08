@@ -13,8 +13,8 @@ import androidx.appcompat.widget.AppCompatEditText
  */
 open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     protected val textWatchers = mutableListOf<TextWatcher>()
-    private var selStart: Int = -1;
-    private var selEnd: Int = -1;
+    private var focusedSelStart: Int = -1;
+    private var focusedSelEnd: Int = -1;
 
     constructor(context: Context?) : super(context!!) {}
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
@@ -61,8 +61,10 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     @CallSuper
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
-        this.selStart = selStart;
-        this.selEnd = selEnd;
+        if (isFocused) {
+            this.focusedSelStart = selStart;
+            this.focusedSelEnd = selEnd;
+        }
     }
 
     /**
@@ -70,12 +72,12 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
      * @return 是否恢复成功（上次没有选中 不会恢复成功）
      */
     open fun recoverySelection(): Boolean {
-        if (this.selStart >= 0
-            && this.selStart <= (this.text?.length ?: 0)
-            && this.selEnd >= 0
-            && this.selEnd <= (this.text?.length ?: 0)
+        if (this.focusedSelStart >= 0
+            && this.focusedSelStart <= (this.text?.length ?: 0)
+            && this.focusedSelEnd >= 0
+            && this.focusedSelEnd <= (this.text?.length ?: 0)
         ) {
-            setSelection(this.selStart, this.selEnd)
+            setSelection(this.focusedSelStart, this.focusedSelEnd)
             return true
         }
         return false
