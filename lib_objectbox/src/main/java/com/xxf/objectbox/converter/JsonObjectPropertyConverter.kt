@@ -15,7 +15,10 @@ open class JsonObjectPropertyConverter : PropertyConverter<JsonObject?, String?>
 
     override fun convertToEntityProperty(databaseValue: String?): JsonObject? {
         if (!TextUtils.isEmpty(databaseValue)) {
-            return Gson().fromJson(JsonPrimitive(databaseValue).asString, JsonObject::class.java)
+            return GsonUtils.gson.fromJson(
+                JsonPrimitive(databaseValue).asString,
+                JsonObject::class.java
+            )
         }
         return null
     }

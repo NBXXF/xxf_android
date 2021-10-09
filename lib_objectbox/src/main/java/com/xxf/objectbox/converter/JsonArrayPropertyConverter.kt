@@ -13,7 +13,7 @@ open class JsonArrayPropertyConverter : PropertyConverter<JsonArray?, String?> {
 
     override fun convertToEntityProperty(databaseValue: String?): JsonArray? {
         if (!TextUtils.isEmpty(databaseValue)) {
-            return Gson().fromJson(JsonPrimitive(databaseValue).asString, JsonArray::class.java)
+            return GsonUtils.gson.fromJson(JsonPrimitive(databaseValue).asString, JsonArray::class.java)
         }
         return null
     }

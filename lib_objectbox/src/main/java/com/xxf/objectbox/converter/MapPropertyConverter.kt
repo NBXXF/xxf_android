@@ -15,10 +15,13 @@ open class MapPropertyConverter : PropertyConverter<Map<String, Any>, String?> {
     override fun convertToEntityProperty(databaseValue: String?): Map<String, Any> {
         return if (TextUtils.isEmpty(databaseValue)) {
             HashMap()
-        } else Gson().fromJson(databaseValue, object : TypeToken<Map<String?, Any?>?>() {}.type)
+        } else GsonUtils.gson.fromJson(
+            databaseValue,
+            object : TypeToken<Map<String?, Any?>?>() {}.type
+        )
     }
 
     override fun convertToDatabaseValue(entityProperty: Map<String, Any>): String? {
-        return Gson().toJson(entityProperty)
+        return GsonUtils.gson.toJson(entityProperty)
     }
 }

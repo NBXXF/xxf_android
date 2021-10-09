@@ -20,10 +20,10 @@ open abstract class BeanPropertyConverter<T> : PropertyConverter<T, String?> {
             e.printStackTrace()
             throw JsonParseException("获取嵌套tClass异常")
         }
-        return Gson().fromJson(databaseValue, type)
+        return GsonUtils.gson.fromJson(databaseValue, type)
     }
 
     override fun convertToDatabaseValue(entityProperty: T): String? {
-        return Gson().toJson(entityProperty)
+        return GsonUtils.gson.toJson(entityProperty)
     }
 }
