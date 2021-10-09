@@ -1,6 +1,8 @@
 package com.xxf.view.round
 
 import android.content.Context
+import android.text.SpannableStringBuilder
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.annotation.CallSuper
@@ -44,7 +46,13 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
             }
         }
         if (keepState) {
-            this.setTextKeepState(text)
+            val oldText = getText()
+            if (oldText != null && oldText is SpannableStringBuilder) {
+                //避免输入法联想次闪烁
+                oldText.replace(0, oldText.length, text)
+            } else {
+                this.setTextKeepState(text)
+            }
         } else {
             this.setText(text)
         }
