@@ -85,7 +85,18 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     private final List<View> mHeaders = new ArrayList<View>();
     private final List<View> mFooters = new ArrayList<View>();
     private SafeObservableArrayList<T> dataList = new SafeObservableArrayList<T>();
-    protected RecyclerView attachedRecyclerView;
+    private RecyclerView attachedRecyclerView;
+
+    /**
+     * 直到adapter attatch到recyclerView 上才有 也就是先执行setAdapter
+     *
+     * @return
+     */
+    @CheckResult
+    @Nullable
+    public RecyclerView getRecyclerView() {
+        return attachedRecyclerView;
+    }
 
     public SafeObservableArrayList<T> getData() {
         return dataList;
@@ -475,7 +486,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
             return new XXFViewHolder(this, footerView, false);
         } else {
             V v = onCreateBinding(LayoutInflater.from(viewGroup.getContext()), viewGroup, viewType);
-            return onCreateItemHolder(v,viewGroup,viewType);
+            return onCreateItemHolder(v, viewGroup, viewType);
         }
     }
 
@@ -484,7 +495,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      *
      * @return
      */
-    protected XXFViewHolder<V, T> onCreateItemHolder(V v,ViewGroup viewGroup, int viewType) {
+    protected XXFViewHolder<V, T> onCreateItemHolder(V v, ViewGroup viewGroup, int viewType) {
         XXFViewHolder<V, T> viewHolder = new XXFViewHolder(this, v.getRoot(), true);
         viewHolder.setBinding(v);
         return viewHolder;
