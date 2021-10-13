@@ -40,6 +40,7 @@ import com.xxf.view.exception.FileNotMatchTypeException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -219,22 +220,29 @@ public class SystemUtils {
                                 .fromCallable(new Callable<File>() {
                                     @Override
                                     public File call() throws Exception {
-                                        File picFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), picName);
-                                        FileOutputStream fos = new FileOutputStream(picFile);
-                                        bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                                        fos.flush();
-                                        fos.close();
+                                        File appDir = new File(Environment.getExternalStorageDirectory(), "XXF");
+                                        if (!appDir.exists()) {
+                                            appDir.mkdir();
+                                        }        //文件的名称设置为 系统时间.jpg
+                                        String fileName = picName;
+                                        File file = new File(appDir, fileName);
                                         try {
-                                            MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                                                    picFile.getAbsolutePath(), picName, null);
+                                            FileOutputStream fos = new FileOutputStream(file);
+                                            bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                            fos.flush();
+                                            fos.close();
                                         } catch (FileNotFoundException e) {
                                             e.printStackTrace();
-                                        }
-                                        // 最后通知图库更新
-                                        Uri localUri = Uri.fromFile(picFile);
-                                        Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri);
-                                        context.sendBroadcast(localIntent);
-                                        return picFile;
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }        // 其次把文件插入到系统图库
+                                        ContentValues values = new ContentValues();
+                                        values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+                                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                                        Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);        // 最后通知图库更新
+                                        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+
+                                        return file;
                                     }
                                 })
                                 .subscribeOn(Schedulers.io())
