@@ -47,7 +47,7 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
         }
         if (keepState) {
             val oldText = getText()
-            if (oldText != null && oldText is SpannableStringBuilder) {
+            if (oldText != null) {
                 //避免输入法联想次闪烁
                 oldText.replace(0, oldText.length, text)
             } else {
