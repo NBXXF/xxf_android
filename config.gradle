@@ -6,8 +6,8 @@ ext {
 
             // ------------- 第三方-------------
             rxAndroid        : 'io.reactivex.rxjava3:rxandroid:3.0.0',
-            rxJava           : 'io.reactivex.rxjava3:rxjava:3.1.1',
-            gson             : "com.google.code.gson:gson:2.8.7",
+            rxJava           : 'io.reactivex.rxjava3:rxjava:3.1.2',
+            gson             : "com.google.code.gson:gson:2.8.8",
             okhttp           : "com.squareup.okhttp3:okhttp:4.9.1",
 
             router_ap        : "com.alibaba:arouter-compiler:1.2.2",
@@ -16,7 +16,7 @@ ext {
             //-----------刷新-----------
             smart_refresh    : "com.scwang.smart:refresh-layout-kernel:2.0.3",
             refresh_footer   : 'com.scwang.smart:refresh-footer-classics:2.0.3',    //经典加载
-            lottie           : "com.airbnb.android:lottie:3.4.0",
+            lottie           : "com.airbnb.android:lottie:4.1.0",
 
             mmkv             : "com.tencent:mmkv-static:1.2.10"
 
