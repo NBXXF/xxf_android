@@ -8,6 +8,7 @@ import com.xxf.objectbox.demo.model.MyObjectBox
 import com.xxf.objectbox.demo.model.User
 import com.xxf.objectbox.demo.model.User_
 import io.objectbox.Box
+import io.objectbox.query.QueryBuilder
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -79,7 +80,7 @@ object UserDbService {
     //按条件查询
     fun query(context: Context, name:String): List<User> {
         return getBox(context).query()
-                .contains(User_.name,name)
+                .contains(User_.name,name,QueryBuilder.StringOrder.CASE_INSENSITIVE)
                 .build()
                 .find();
     }

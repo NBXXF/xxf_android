@@ -45,7 +45,7 @@ dependencies {
     api des.material
     implementation project(path: ':lib_adapter')
     implementation project(path: ':lib_http')
-    implementation "com.github.NBXXF:xxf_android:4.0.0"
+   //implementation "com.github.NBXXF:xxf_android:4.0.2"
 
     def room_version = "2.3.0"
 

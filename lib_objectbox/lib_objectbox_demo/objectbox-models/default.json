@@ -24,8 +24,7 @@
         {
           "id": "3:5274328354390665968",
           "name": "age",
-          "type": 5,
-          "flags": 4
+          "type": 5
         }
       ],
       "relations": []
@@ -48,10 +47,36 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:1529201765721907217",
+      "lastPropertyId": "3:4783180318198862699",
+      "name": "Animal",
+      "properties": [
+        {
+          "id": "1:6842114824953439619",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:696173191390330481",
+          "name": "uuid",
+          "indexId": "2:8405211447221861005",
+          "type": 9,
+          "flags": 34848
+        },
+        {
+          "id": "3:4783180318198862699",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:657768832728131719",
-  "lastIndexId": "1:3875579813874784965",
+  "lastEntityId": "3:1529201765721907217",
+  "lastIndexId": "2:8405211447221861005",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

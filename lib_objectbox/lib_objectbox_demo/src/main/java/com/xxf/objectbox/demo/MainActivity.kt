@@ -1,5 +1,7 @@
 package com.xxf.objectbox.demo
 
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import com.xxf.objectbox.demo.UserDbService.clearTable
@@ -9,15 +11,17 @@ import com.xxf.objectbox.demo.UserDbService.query
 import com.xxf.objectbox.demo.TeacherDbService.add
 import com.xxf.objectbox.demo.TeacherDbService.queryAll
 import androidx.appcompat.app.AppCompatActivity
+import com.xxf.objectbox.ObjectBoxFactory
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import kotlin.Throws
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.core.ObservableSource
 import com.xxf.objectbox.demo.UserDbService
-import com.xxf.objectbox.demo.model.Teacher
 import com.xxf.objectbox.demo.TeacherDbService
-import com.xxf.objectbox.demo.model.User
+import com.xxf.objectbox.demo.model.*
 import com.xxf.rxjava.observeOnIO
+import io.objectbox.Box
+import io.objectbox.BoxStore
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BooleanSupplier
 import io.reactivex.rxjava3.functions.Consumer
@@ -41,6 +45,7 @@ class MainActivity() : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         var aLong: Long
+        testUnique()
 
         Observable.concat(Observable.fromCallable {
             Log.d(
@@ -263,5 +268,46 @@ class MainActivity() : AppCompatActivity() {
         add(this, Arrays.asList(aa))
         val teachers = TeacherDbService.queryAll(this)
         Log.d("====>teachers:", "" + teachers)
+    }
+
+    private fun getBox(context: Context): BoxStore {
+        return ObjectBoxFactory.getBoxStore(
+            context.applicationContext!! as Application,
+            MyObjectBox.builder(),
+            "test.ob"
+        )!!;
+    }
+
+    private fun testUnique() {
+
+        getBox(this).boxFor(Animal::class.java)
+            .put(
+                listOf(
+                    Animal().apply {
+                        this.name = "张三"
+                        this.uuid = "1"
+                    },
+                    Animal().apply {
+                        this.name = "李四"
+                        this.uuid = "2"
+                    })
+            )
+        val find = getBox(this).boxFor(Animal::class.java).query().build().find()
+        System.out.println("=============>query result:"+find)
+
+        getBox(this).boxFor(Animal::class.java)
+            .put(
+                listOf(
+                    Animal().apply {
+                        this.name = "张三2"
+                        this.uuid = "1"
+                    },
+                    Animal().apply {
+                        this.name = "李四2"
+                        this.uuid = "2"
+                    })
+            )
+        val find2 = getBox(this).boxFor(Animal::class.java).query().build().find()
+        System.out.println("=============>query result2:"+find2)
     }
 }
