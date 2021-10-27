@@ -1,10 +1,7 @@
 package com.xxf.objectbox.demo.model
 
 import com.xxf.hash.toMurmurHash
-import io.objectbox.annotation.ConflictStrategy
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
-import io.objectbox.annotation.Unique
+import io.objectbox.annotation.*
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -12,19 +9,20 @@ import io.objectbox.annotation.Unique
  * Description ://测试唯一索引作为主键
  */
 @Entity
-class Animal {
+class Animal2 {
     @Id(assignable = true)
     var id: Long = 0
         get() = uuid?.toMurmurHash() ?: 0L;
 
     @Unique(onConflict = ConflictStrategy.REPLACE)
+   // @Index(type = IndexType.HASH64)
     var uuid: String? = null
 
     var name: String? = null
 
 
     override fun toString(): String {
-        return "Animal(id=$id, uuid=$uuid, name=$name)"
+        return "Animal2(id=$id, uuid=$uuid, name=$name)"
     }
 
 }
