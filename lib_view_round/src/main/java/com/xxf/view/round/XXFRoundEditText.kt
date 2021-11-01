@@ -37,8 +37,8 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
      */
     open fun setText(
         text: CharSequence,
-        ignoreSetTextChange: Boolean,
-        keepState: Boolean
+        ignoreSetTextChange: Boolean = false,
+        keepState: Boolean = false
     ) {
         if (ignoreSetTextChange) {
             textWatchers.forEach {
@@ -53,9 +53,9 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
 //            } else {
 //                this.setTextKeepState(text)
 //            }
-            setTextKeepState(text)
+            this.setTextKeepState(text)
         } else {
-            setText(text)
+            this.setText(text)
         }
         if (ignoreSetTextChange) {
             textWatchers.forEach {
