@@ -1,7 +1,5 @@
 package com.xxf.view.recyclerview.adapter;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
@@ -10,10 +8,8 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.InnerViewHolder;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
-import com.xxf.view.recyclerview.touchhelper.ItemTouchHelperViewHolder;
 
 /**
  * Description
@@ -23,11 +19,10 @@ import com.xxf.view.recyclerview.touchhelper.ItemTouchHelperViewHolder;
  * version 2.1.0
  */
 public class XXFViewHolder<V extends ViewBinding, T> extends InnerViewHolder
-        implements ItemTouchHelperViewHolder, View.OnClickListener, View.OnLongClickListener {
+        implements  View.OnClickListener, View.OnLongClickListener {
     private XXFRecyclerAdapter<V, T> baseRecyclerAdapter;
     private SparseArray<View> holder = null;
     private ViewBinding binding;
-    protected Drawable lastItemBackground;
 
     @Nullable
     public V getBinding() {
@@ -163,16 +158,5 @@ public class XXFViewHolder<V extends ViewBinding, T> extends InnerViewHolder
         } else if (baseRecyclerAdapter.onItemChildClickListener != null && v.getId() != this.itemView.getId()) {
             baseRecyclerAdapter.onItemChildClickListener.onItemChildClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
         }
-    }
-
-    @Override
-    public void onItemTouchSelected() {
-        lastItemBackground = itemView.getBackground();
-        itemView.setBackgroundColor(Color.LTGRAY);
-    }
-
-    @Override
-    public void onItemTouchClear() {
-        itemView.setBackground(lastItemBackground);
     }
 }

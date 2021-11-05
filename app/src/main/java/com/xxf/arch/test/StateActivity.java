@@ -30,7 +30,6 @@ import com.xxf.utils.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.DividerDecoration;
-import com.xxf.view.recyclerview.touchhelper.SimpleItemTouchHelperCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class StateActivity extends AppCompatActivity {
         // TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
 
         stateBinding.recyclerView.setAdapter(testAdaper = new TestAdaper());
-        new ItemTouchHelper(new SimpleItemTouchHelperCallback(testAdaper)).attachToRecyclerView(stateBinding.recyclerView);
+      //  new ItemTouchHelper(new SimpleItemTouchHelperCallback(testAdaper)).attachToRecyclerView(stateBinding.recyclerView);
        // stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
         stateBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //stateBinding.recyclerView.addItemDecoration(ItemDecorationFactory.createHorizontalItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(DensityUtil.dip2px(20)).color(Color.RED)));

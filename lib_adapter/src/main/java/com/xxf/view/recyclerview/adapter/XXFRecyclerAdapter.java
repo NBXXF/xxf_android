@@ -10,17 +10,14 @@ import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableList;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.xxf.view.recyclerview.SafeObservableArrayList;
-import com.xxf.view.recyclerview.touchhelper.ItemTouchHelperAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,8 +30,7 @@ import java.util.List;
  * version
  */
 public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
-        extends RecyclerView.Adapter<XXFViewHolder<V, T>>
-        implements ItemTouchHelperAdapter {
+        extends RecyclerView.Adapter<XXFViewHolder<V, T>> {
     public static final View inflaterView(@LayoutRes int id, RecyclerView recyclerView) {
         return LayoutInflater.from(recyclerView.getContext())
                 .inflate(id, recyclerView, false);
@@ -599,48 +595,6 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     @Nullable
     public Context getContext() {
         return attachedRecyclerView != null ? attachedRecyclerView.getContext() : null;
-    }
-
-    /**
-     * 滑动消失
-     *
-     * @param position The position of the item dismissed.
-     */
-    @Override
-    public void onItemTouchDismiss(int position) {
-        dataList.remove(position);
-        //notifyItemRemoved(position);
-    }
-
-    /**
-     * 拖拽交换
-     *
-     * @param fromPosition The start position of the moved item.
-     * @param toPosition   Then resolved position of the moved item.
-     * @return
-     */
-    @Override
-    public boolean onItemTouchMove(int fromPosition, int toPosition) {
-        int fromItemViewType = getItemViewType(fromPosition);
-        int toItemViewType = getItemViewType(toPosition);
-        if (isHeader(fromItemViewType) || isHeader(toItemViewType) ||
-                isFooter(fromItemViewType) || isFooter(toItemViewType)) {
-            return false;
-        }
-        boolean autoNotify = dataList.hasRegister(dataChangeCallback);
-        if (autoNotify) {
-            dataList.removeOnListChangedCallback(dataChangeCallback);
-        }
-        //fix issues
-        try {
-            Collections.swap(dataList, fromPosition - getHeaderCount(), toPosition - getHeaderCount());
-            notifyItemMoved(fromPosition, toPosition);
-        } finally {
-            if (autoNotify) {
-                dataList.addOnListChangedCallback(dataChangeCallback);
-            }
-        }
-        return true;
     }
 }
 
