@@ -19,9 +19,9 @@ import java.math.BigDecimal;
  * date createTime：2017/8/14
  * version 2.1.0
  */
-public class LongTypeAdapter extends TypeAdapter<Long> {
+public class IntegerTypeAdapter extends TypeAdapter<Integer> {
     @Override
-    public void write(JsonWriter jsonWriter, Long s) throws IOException {
+    public void write(JsonWriter jsonWriter, Integer s) throws IOException {
         if (null == s) {
             jsonWriter.nullValue();
         } else {
@@ -30,7 +30,7 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
     }
 
     @Override
-    public Long read(JsonReader jsonReader) throws IOException {
+    public Integer read(JsonReader jsonReader) throws IOException {
         JsonToken peek = jsonReader.peek();
         jsonReader.setLenient(true);
         switch (peek) {
@@ -39,7 +39,7 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
                  * 解决 传递来的数据是其他类型 比如浮点数
                  */
                 try {
-                    return new BigDecimal(jsonReader.nextString()).longValue();
+                    return new BigDecimal(jsonReader.nextString()).intValue();
                 } catch (NumberFormatException e) {
                     throw new JsonSyntaxException(e);
                 }
@@ -48,7 +48,7 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
                 return null;
             case NUMBER:
                 try {
-                    return jsonReader.nextLong();
+                    return jsonReader.nextInt();
                 } catch (NumberFormatException e) {
                     throw new JsonSyntaxException(e);
                 }

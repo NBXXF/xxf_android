@@ -8,10 +8,7 @@ import com.xxf.arch.apiService
 import com.xxf.arch.json.JsonUtils
 import com.xxf.arch.json.datastructure.ListOrSingle
 import com.xxf.arch.websocket.WebSocketClient
-import com.xxf.http.demo.LoginApiService
-import com.xxf.http.demo.R
-import com.xxf.http.demo.TestDTO
-import com.xxf.http.demo.Weather
+import com.xxf.http.demo.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
@@ -22,6 +19,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         RxJavaPlugins.setErrorHandler { }
+
+
+        val apply = JsonObject().apply {
+            this.addProperty("age", "10.5")
+        }
+        val toBean1 = JsonUtils.toBean(apply, TestFloatDTO::class.java);
+        System.out.println("=======>TT:" + toBean1);
 
         val toJsonString =
             JsonUtils.toJsonString(
