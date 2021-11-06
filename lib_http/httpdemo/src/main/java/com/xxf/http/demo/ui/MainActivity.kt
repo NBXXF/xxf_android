@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val apply = JsonObject().apply {
-            this.addProperty("age", "10.5")
+            this.addProperty("age", 10.5)
         }
         val toBean1 = JsonUtils.toBean(apply, TestFloatDTO::class.java);
         System.out.println("=======>TT:" + toBean1);

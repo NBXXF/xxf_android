@@ -35,6 +35,7 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
         jsonReader.setLenient(true);
         switch (peek) {
             case STRING:
+            case NUMBER:
                 /**
                  * 解决 传递来的数据是其他类型 比如浮点数
                  */
@@ -46,12 +47,6 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
             case NULL:
                 jsonReader.nextNull();
                 return null;
-            case NUMBER:
-                try {
-                    return jsonReader.nextLong();
-                } catch (NumberFormatException e) {
-                    throw new JsonSyntaxException(e);
-                }
             default:
                 throw new JsonParseException("Expected long but was " + peek);
         }
