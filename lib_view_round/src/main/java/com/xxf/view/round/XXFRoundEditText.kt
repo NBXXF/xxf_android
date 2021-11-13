@@ -1,9 +1,9 @@
 package com.xxf.view.round
 
 import android.content.Context
-import android.text.SpannableStringBuilder
-import android.text.TextUtils
+import android.text.Selection
 import android.text.TextWatcher
+import android.text.style.CharacterStyle
 import android.util.AttributeSet
 import androidx.annotation.CallSuper
 import androidx.appcompat.widget.AppCompatEditText
@@ -48,8 +48,24 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
         if (keepState) {
             val oldText = getText()
             if (oldText != null) {
+                val spans = oldText?.getSpans(0, oldText.length, CharacterStyle::class.java)
+                spans?.forEach {
+                    oldText.removeSpan(it)
+                }
                 //避免输入法联想次闪烁
+                val start = selectionStart
+                val end = selectionEnd
+                val len = text.length
                 oldText.replace(0, oldText.length, text)
+                if (start >= 0 || end >= 0) {
+                    if (oldText != null) {
+                        Selection.setSelection(
+                            oldText,
+                            Math.max(0, Math.min(start, len)),
+                            Math.max(0, Math.min(end, len))
+                        )
+                    }
+                }
             } else {
                 this.setTextKeepState(text)
             }
