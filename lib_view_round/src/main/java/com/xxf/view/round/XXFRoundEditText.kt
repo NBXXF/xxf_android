@@ -18,6 +18,12 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     private var focusedSelStart: Int = -1;
     private var focusedSelEnd: Int = -1;
 
+    /**
+     * 是否可以更新 setText 是否有效
+     */
+    open var updateable: Boolean = true
+
+
     constructor(context: Context?) : super(context!!) {}
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
         CornerUtil.clipView(this, attrs)
@@ -40,42 +46,50 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
         ignoreSetTextChange: Boolean = false,
         keepState: Boolean = false
     ) {
-        if (ignoreSetTextChange) {
-            textWatchers.forEach {
-                super.removeTextChangedListener(it)
-            }
-        }
-        if (keepState) {
-            val oldText = getText()
-            if (oldText != null) {
-                val spans = oldText?.getSpans(0, oldText.length, CharacterStyle::class.java)
-                spans?.forEach {
-                    oldText.removeSpan(it)
+        if (updateable) {
+            if (ignoreSetTextChange) {
+                textWatchers.forEach {
+                    super.removeTextChangedListener(it)
                 }
-                //避免输入法联想次闪烁
-                val start = selectionStart
-                val end = selectionEnd
-                val len = text.length
-                oldText.replace(0, oldText.length, text)
-                if (start >= 0 || end >= 0) {
-                    if (oldText != null) {
-                        Selection.setSelection(
-                            oldText,
-                            Math.max(0, Math.min(start, len)),
-                            Math.max(0, Math.min(end, len))
-                        )
+            }
+            if (keepState) {
+                val oldText = getText()
+                if (oldText != null) {
+                    val spans = oldText?.getSpans(0, oldText.length, CharacterStyle::class.java)
+                    spans?.forEach {
+                        oldText.removeSpan(it)
                     }
+                    //避免输入法联想次闪烁
+                    val start = selectionStart
+                    val end = selectionEnd
+                    val len = text.length
+                    oldText.replace(0, oldText.length, text)
+                    if (start >= 0 || end >= 0) {
+                        if (oldText != null) {
+                            Selection.setSelection(
+                                oldText,
+                                Math.max(0, Math.min(start, len)),
+                                Math.max(0, Math.min(end, len))
+                            )
+                        }
+                    }
+                } else {
+                    this.setTextKeepState(text)
                 }
             } else {
-                this.setTextKeepState(text)
+                this.setText(text)
             }
-        } else {
-            this.setText(text)
+            if (ignoreSetTextChange) {
+                textWatchers.forEach {
+                    super.addTextChangedListener(it)
+                }
+            }
         }
-        if (ignoreSetTextChange) {
-            textWatchers.forEach {
-                super.addTextChangedListener(it)
-            }
+    }
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        if (updateable) {
+            super.setText(text, type)
         }
     }
 
