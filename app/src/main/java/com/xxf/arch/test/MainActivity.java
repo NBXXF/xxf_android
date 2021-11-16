@@ -46,6 +46,7 @@ import com.xxf.arch.service.SpService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.utils.LogKt;
+import com.xxf.view.round.XXFRoundImageTextView;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
 
@@ -238,6 +239,9 @@ public class MainActivity extends XXFActivity {
             }
         });
         setContentView(R.layout.activity_main);
+        XXFRoundImageTextView imageTextView=findViewById(R.id.textImage);
+        imageTextView.getTextView().setText("xxxxHGFDGHDFGHGH");
+        imageTextView.getImageView().setImageResource(R.drawable.xxf_ic_toast_success);
         StatusBarUtils.setTransparentForWindow(this);
         StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout));
 
