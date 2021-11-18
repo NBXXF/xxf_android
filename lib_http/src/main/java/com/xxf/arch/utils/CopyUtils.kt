@@ -1,5 +1,6 @@
 package com.xxf.arch.utils
 
+import com.google.gson.reflect.TypeToken
 import com.xxf.arch.json.JsonUtils
 
 /**
@@ -12,7 +13,8 @@ import com.xxf.arch.json.JsonUtils
  * 深拷贝
  */
 inline fun <reified T> T.copy(): T {
-    return CopyUtils.copy(this, T::class.java)
+    val toJsonString = JsonUtils.toJsonString(this);
+    return JsonUtils.toType(toJsonString, object : TypeToken<T>() {}.type)
 }
 
 /**
@@ -27,23 +29,10 @@ inline fun <reified T, R> T.copy(toClass: Class<R>): R {
  * 通过json方式简单粗暴
  */
 object CopyUtils {
-    inline fun <reified T> copy(t: T): T {
-        return copy(t, T::class.java)
-    }
 
     fun <T, R> copy(t: T, toClass: Class<R>): R {
         val toJsonString = JsonUtils.toJsonString(t);
         return JsonUtils.toBean(toJsonString, toClass)
-    }
-
-    inline fun <reified T> copySafe(t: T): T? {
-        try {
-            val toJsonString = JsonUtils.toJsonString(t);
-            return JsonUtils.toBean(toJsonString, T::class.java)
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-        return null
     }
 
     fun <T, R> copySafe(t: T, toClass: Class<R>): R? {

@@ -7,6 +7,8 @@ import com.google.gson.JsonObject
 import com.xxf.arch.apiService
 import com.xxf.arch.json.JsonUtils
 import com.xxf.arch.json.datastructure.ListOrSingle
+import com.xxf.arch.utils.CopyUtils
+import com.xxf.arch.utils.copy
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,8 +27,16 @@ class MainActivity : AppCompatActivity() {
             this.addProperty("age", 10.5)
         }
         val toBean1 = JsonUtils.toBean(apply, TestFloatDTO::class.java);
-        System.out.println("=======>TT:" + toBean1);
 
+        System.out.println("=======>TT:" + toBean1);
+        val copy = toBean1.copy()
+        System.out.println("=======>TT cp:" + copy);
+
+        val copy2 = toBean1.copy(TestFloatDTO::class.java)
+        System.out.println("=======>TT cp2:" + copy2);
+
+        val list = arrayListOf<TestFloatDTO>(copy2)
+        System.out.println("=======>TT cp3:" + list.copy());
         val toJsonString =
             JsonUtils.toJsonString(
                 TestDTO(
