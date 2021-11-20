@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.IntRange;
@@ -475,10 +476,18 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         if (isHeader(viewType)) {
             int whichHeader = Math.abs(viewType - HEADER_VIEW_TYPE);
             View headerView = mHeaders.get(whichHeader);
+            ViewParent parent = headerView.getParent();
+            if (parent != null && parent instanceof ViewGroup) {
+                ((ViewGroup) parent).removeView(headerView);
+            }
             return new XXFViewHolder(this, headerView, false);
         } else if (isFooter(viewType)) {
             int whichFooter = Math.abs(viewType - FOOTER_VIEW_TYPE);
             View footerView = mFooters.get(whichFooter);
+            ViewParent parent = footerView.getParent();
+            if (parent != null && parent instanceof ViewGroup) {
+                ((ViewGroup) parent).removeView(footerView);
+            }
             return new XXFViewHolder(this, footerView, false);
         } else {
             V v = onCreateBinding(LayoutInflater.from(viewGroup.getContext()), viewGroup, viewType);
