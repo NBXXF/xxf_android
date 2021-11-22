@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StatFs;
@@ -69,12 +70,12 @@ public final class FileUtils {
      * @param file The file.
      * @return {@code true}: yes<br>{@code false}: no
      */
-    public static boolean isFileExists(Context context,final File file) {
+    public static boolean isFileExists(Context context, final File file) {
         if (file == null) return false;
         if (file.exists()) {
             return true;
         }
-        return isFileExists(context,file.getAbsolutePath());
+        return isFileExists(context, file.getAbsolutePath());
     }
 
     /**
@@ -89,10 +90,10 @@ public final class FileUtils {
         if (file.exists()) {
             return true;
         }
-        return isFileExistsApi29(context,filePath);
+        return isFileExistsApi29(context, filePath);
     }
 
-    private static boolean isFileExistsApi29(Context context,String filePath) {
+    private static boolean isFileExistsApi29(Context context, String filePath) {
         if (Build.VERSION.SDK_INT >= 29) {
             try {
                 Uri uri = Uri.parse(filePath);
@@ -1152,8 +1153,8 @@ public final class FileUtils {
      * @param filePath The path of file.
      * @return the size
      */
-    public static String getSize(Context context,final String filePath) {
-        return getSize(context,getFileByPath(filePath));
+    public static String getSize(Context context, final String filePath) {
+        return getSize(context, getFileByPath(filePath));
     }
 
     /**
@@ -1162,12 +1163,12 @@ public final class FileUtils {
      * @param file The directory.
      * @return the size
      */
-    public static String getSize(Context context,final File file) {
+    public static String getSize(Context context, final File file) {
         if (file == null) return "";
         if (file.isDirectory()) {
-            return getDirSize(context,file);
+            return getDirSize(context, file);
         }
-        return getFileSize(context,file);
+        return getFileSize(context, file);
     }
 
     /**
@@ -1176,7 +1177,7 @@ public final class FileUtils {
      * @param dir The directory.
      * @return the size of directory
      */
-    private static String getDirSize(Context context,final File dir) {
+    private static String getDirSize(Context context, final File dir) {
         long len = getDirLength(dir);
         return len == -1 ? "" : Formatter.formatFileSize(context, len);
     }
@@ -1187,7 +1188,7 @@ public final class FileUtils {
      * @param file The file.
      * @return the length of file
      */
-    private static String getFileSize(Context context,final File file) {
+    private static String getFileSize(Context context, final File file) {
         long len = getFileLength(file);
         return len == -1 ? "" : Formatter.formatFileSize(context, len);
     }
@@ -1437,8 +1438,8 @@ public final class FileUtils {
      *
      * @param filePath The path of file.
      */
-    public static void notifySystemToScan(Context context,final String filePath) {
-        notifySystemToScan(context,getFileByPath(filePath));
+    public static void notifySystemToScan(Context context, final String filePath) {
+        notifySystemToScan(context, getFileByPath(filePath));
     }
 
     /**
@@ -1446,7 +1447,7 @@ public final class FileUtils {
      *
      * @param file The file.
      */
-    public static void notifySystemToScan(Context context,final File file) {
+    public static void notifySystemToScan(Context context, final File file) {
         if (file == null || !file.exists()) return;
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(Uri.parse("file://" + file.getAbsolutePath()));
@@ -1532,16 +1533,26 @@ public final class FileUtils {
     @Nullable
     @CheckResult
     public static String getMimeType(String url) {
+        String mime = null;
         try {
             String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+            if (TextUtils.isEmpty(extension)) {
+                extension = FileUtils.getFileExtension(url);
+            }
             if (extension != null) {
-                return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+            }
+            if (TextUtils.isEmpty(mime)) {
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(url);
+                mime = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE);
             }
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        return null;
+        return mime;
     }
+
 
     /**
      * Input stream to output stream.
