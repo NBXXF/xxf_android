@@ -12,6 +12,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableList;
+import androidx.recyclerview.widget.InnerViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
@@ -594,6 +595,24 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         attachedRecyclerView = null;
         super.onDetachedFromRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull XXFViewHolder<V, T> holder) {
+        super.onViewRecycled(holder);
+        holder.onViewRecycled();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull XXFViewHolder<V, T> holder) {
+        super.onViewAttachedToWindow(holder);
+        holder.onViewAttachedToWindow();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull XXFViewHolder<V, T> holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.onViewDetachedFromWindow();
     }
 
     /**

@@ -18,4 +18,13 @@ public class InnerViewHolder extends RecyclerView.ViewHolder {
     public InnerViewHolder(@NonNull View itemView) {
         super(itemView);
     }
+
+    public void onViewRecycled() {
+    }
+
+    public void onViewAttachedToWindow() {
+    }
+
+    public void onViewDetachedFromWindow() {
+    }
 }
