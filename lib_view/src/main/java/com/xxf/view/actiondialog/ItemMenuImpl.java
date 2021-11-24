@@ -7,6 +7,7 @@ import com.xxf.view.model.ItemMenu;
  * @Description
  */
 public class ItemMenuImpl<T> implements ItemMenu<T> {
+    public Object itemIcon;
     public T item;
     public CharSequence itemTitle;
     public boolean itemDisable;
@@ -16,6 +17,13 @@ public class ItemMenuImpl<T> implements ItemMenu<T> {
         this.item = item;
         this.itemTitle = itemTitle;
     }
+
+    public ItemMenuImpl(T item, Object itemIcon, CharSequence itemTitle) {
+        this.item = item;
+        this.itemIcon = itemIcon;
+        this.itemTitle = itemTitle;
+    }
+
 
     public ItemMenuImpl(T item, CharSequence itemTitle, boolean isItemSelected) {
         this.item = item;
@@ -39,6 +47,11 @@ public class ItemMenuImpl<T> implements ItemMenu<T> {
     @Override
     public CharSequence getItemTitle() {
         return itemTitle;
+    }
+
+    @Override
+    public Object getItemIcon() {
+        return itemIcon;
     }
 
     @Override

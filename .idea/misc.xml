@@ -29,6 +29,7 @@
         <entry key="lib_adapter/lib_adapter_demo/src/main/res/layout/adapter_test.xml" value="0.14855072463768115" />
         <entry key="lib_bus/lib_bus_demo/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="lib_view/src/main/res/layout/xxf_adapter_item_bottom_action.xml" value="0.1" />
+        <entry key="lib_view/src/main/res/layout/xxf_dialog_bottom_action.xml" value="0.13504273504273503" />
         <entry key="lib_view_snackbar/src/main/res/layout/xxf_snackbar_dialog_fragment.xml" value="0.22395833333333334" />
       </map>
     </option>
