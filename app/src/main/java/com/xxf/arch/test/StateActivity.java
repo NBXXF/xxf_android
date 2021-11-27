@@ -47,6 +47,7 @@ public class StateActivity extends AppCompatActivity {
 
     ActivityStateBinding stateBinding;
     TestAdaper testAdaper;
+    boolean checked;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +75,8 @@ public class StateActivity extends AppCompatActivity {
                 Log.d("", "=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
                 stateBinding.preview.setImageBitmap(bitmap);
 
-                stateBinding.grayLayout.setGrayColor(!stateBinding.grayLayout.isGrayColor());
+                stateBinding.grayLayout.setGrayColor(!checked);
+                checked=!checked;
 
                 // loadData();
             }

@@ -3,14 +3,15 @@ package com.xxf.view.round
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import android.widget.RelativeLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 
 /**
- * @Description: eg app:radius="4dp"
- * @Author: XGod
- * @CreateDate: 2018/6/25 15:43
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
+ * date createTime：2021/11/27
+ * Description ://处理圆角
+ * app:radius="4dp"
  */
-open class XXFRoundRelativeLayout : RelativeLayout, XXFRoundWidget,XXFGrayWidget {
+class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget, XXFGrayWidget {
     private val grayWidgetHelper by lazy {
         GrayWidgetHelper()
     }
