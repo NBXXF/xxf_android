@@ -36,16 +36,16 @@ import com.xxf.view.round.XXFRoundLayout
 class XXFRatioFrameLayout : XXFRoundLayout, XXFRatioWidget {
     private var mRatioLayoutDelegate: RatioLayoutDelegate<*>? = null
 
-    constructor(context: Context?) : super(context!!) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
+    constructor(context: Context) : super(context!!) {}
+    constructor(context: Context, attrs: AttributeSet?) : super(context!!, attrs) {
         mRatioLayoutDelegate = obtain(this, attrs!!)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr) {
         mRatioLayoutDelegate = obtain(this, attrs!!, defStyleAttr)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context!!, attrs, defStyleAttr, defStyleRes) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context!!, attrs, defStyleAttr, defStyleRes) {
         mRatioLayoutDelegate = obtain(this, attrs!!, defStyleAttr, defStyleRes)
     }
 

@@ -10,8 +10,8 @@ import androidx.appcompat.widget.AppCompatCheckedTextView
  * @CreateDate: 2018/6/25 15:49
  */
 open class XXFRoundCheckedTextView : AppCompatCheckedTextView, XXFRoundWidget {
-    constructor(context: Context?) : super(context!!) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
+    constructor(context: Context) : super(context) {}
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         CornerUtil.clipView(this, attrs)
     }
 

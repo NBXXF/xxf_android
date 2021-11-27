@@ -53,7 +53,7 @@ public class StateActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stateBinding = ActivityStateBinding.inflate(getLayoutInflater(), null, false);
-        stateBinding.grayLayout.setGrayColor(true);
+       //stateBinding.grayLayout.setGrayColor(true);
 
         setContentView(stateBinding.getRoot());
         // TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
