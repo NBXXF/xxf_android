@@ -34,7 +34,7 @@ dependencies {
 
     api des.lottie
     api des.smart_refresh
-
+    api project(path: ':lib_view_round')
 
 
 }

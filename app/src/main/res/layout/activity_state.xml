@@ -2,60 +2,69 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.xxf.view.view.GrayFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/grayLayout"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_test"
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="test" />
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
-
-        <Button
-            android:id="@+id/btn_load"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="load" />
-
-        <Button
-            android:id="@+id/btn_download"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="download" />
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/preview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </ScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="#FF0000" />
-
-        <com.xxf.view.loading.XXFListStateLayout
-            android:id="@+id/list_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <Button
+                android:id="@+id/btn_test"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#6cf"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="3" />
-        </com.xxf.view.loading.XXFListStateLayout>
-    </LinearLayout>
+                android:layout_height="wrap_content"
+                android:text="test" />
+
+
+            <Button
+                android:id="@+id/btn_load"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="load" />
+
+            <Button
+                android:id="@+id/btn_download"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="download" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </ScrollView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#FF0000" />
+
+            <com.xxf.view.loading.XXFListStateLayout
+                android:id="@+id/list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#6cf"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3" />
+            </com.xxf.view.loading.XXFListStateLayout>
+        </LinearLayout>
+    </com.xxf.view.view.GrayFrameLayout>
 </layout>

@@ -52,25 +52,29 @@ public class StateActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stateBinding = ActivityStateBinding.inflate(getLayoutInflater(), null, false);
+        stateBinding.grayLayout.setGrayColor(true);
+
         setContentView(stateBinding.getRoot());
         // TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
 
         stateBinding.recyclerView.setAdapter(testAdaper = new TestAdaper());
-      //  new ItemTouchHelper(new SimpleItemTouchHelperCallback(testAdaper)).attachToRecyclerView(stateBinding.recyclerView);
-       // stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
+        //  new ItemTouchHelper(new SimpleItemTouchHelperCallback(testAdaper)).attachToRecyclerView(stateBinding.recyclerView);
+        // stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
         stateBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //stateBinding.recyclerView.addItemDecoration(ItemDecorationFactory.createHorizontalItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(DensityUtil.dip2px(20)).color(Color.RED)));
-        DividerDecoration dividerItemDecoration=new DividerDecoration(this,Color.YELLOW, DensityUtil.dip2px(20));
-       stateBinding.recyclerView.addItemDecoration(dividerItemDecoration);
+        DividerDecoration dividerItemDecoration = new DividerDecoration(this, Color.YELLOW, DensityUtil.dip2px(20));
+        stateBinding.recyclerView.addItemDecoration(dividerItemDecoration);
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //    Bitmap bitmap = getBitmap(stateBinding.recyclerView);
                 Bitmap bitmap = RecyclerViewUtils.INSTANCE.shotRecyclerViewVisibleItems(stateBinding.recyclerView);
 
-                Log.d("","=============>bitmap:" + bitmap);
-                Log.d("","=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
+                Log.d("", "=============>bitmap:" + bitmap);
+                Log.d("", "=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
                 stateBinding.preview.setImageBitmap(bitmap);
+
+                stateBinding.grayLayout.setGrayColor(!stateBinding.grayLayout.isGrayColor());
 
                 // loadData();
             }
@@ -126,7 +130,7 @@ public class StateActivity extends AppCompatActivity {
                         .subscribe(new Consumer<DownloadTask>() {
                             @Override
                             public void accept(DownloadTask downloadTask) throws Throwable {
-                                Log.d("","=========>task2:" + downloadTask);
+                                Log.d("", "=========>task2:" + downloadTask);
                             }
                         });
 
