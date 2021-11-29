@@ -422,13 +422,15 @@ public class XXFStateLayout extends FrameLayout {
     /**
      * aR.id.alpha_error_view_retry_tv
      *
+     * @param retryActionText  重试按钮文字
      * @param l
      * @return
      */
-    public XXFStateLayout setErrorRetryListener(@Nullable OnClickListener l) {
+    public XXFStateLayout setErrorRetryAction(CharSequence retryActionText, @Nullable OnClickListener l) {
         if (mErrorView != null) {
             TextView viewById = mErrorView.findViewById(R.id.alpha_error_view_retry_tv);
             if (viewById != null) {
+                viewById.setText(retryActionText);
                 viewById.setOnClickListener(l);
             }
         }
