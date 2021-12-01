@@ -31,7 +31,7 @@ dependencies {
     api project(path: ':lib_utils')
     api project(path: ':xxf')
     api project(path: ':lib_application')
-
+    api des.viewbindingpropertydelegate
     api des.lottie
     api des.smart_refresh
 }
