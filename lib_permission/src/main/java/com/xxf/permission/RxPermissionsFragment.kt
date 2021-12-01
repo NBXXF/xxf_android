@@ -90,7 +90,7 @@ class RxPermissionsFragment : Fragment() {
 
     fun log(message: String?) {
         if (mLogging) {
-            Log.d(RxPermissions.TAG, message)
+            Log.d(RxPermissions.TAG, message?:"")
         }
     }
 

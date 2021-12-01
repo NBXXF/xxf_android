@@ -33,9 +33,21 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>{
+public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E> {
+    @Deprecated
     private View contentView;
+    @LayoutRes
+    private int mContentLayoutId;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
+
+    public XXFAlertDialogFragment() {
+
+    }
+
+    public XXFAlertDialogFragment(@LayoutRes int contentLayoutId) {
+        this.mContentLayoutId = contentLayoutId;
+       // super(contentLayoutId);
+    }
 
     @Override
     public Observable<Pair<DialogFragment, E>> getComponentObservable() {
@@ -62,10 +74,12 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
         super.onCreate(savedInstanceState);
     }
 
+    @Deprecated
     public final void setContentView(@LayoutRes int layoutResID) {
         this.contentView = getLayoutInflater().inflate(layoutResID, null);
     }
 
+    @Deprecated
     public final void setContentView(View view) {
         this.contentView = view;
     }
@@ -98,13 +112,17 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (this.mContentLayoutId != 0) {
+            return inflater.inflate(this.mContentLayoutId, container, false);
+        }
         if (this.contentView != null) {
             ViewGroup parent = (ViewGroup) this.contentView.getParent();
             if (parent != null) {
                 parent.removeView(this.contentView);
             }
+            return this.contentView;
         }
-        return this.contentView;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     /**

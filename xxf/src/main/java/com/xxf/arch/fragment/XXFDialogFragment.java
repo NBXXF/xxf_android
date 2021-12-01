@@ -29,15 +29,27 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>{
+public class XXFDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E> {
 
+    @Deprecated
     private View contentView;
+    @LayoutRes
+    private int mContentLayoutId;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
+
+    public XXFDialogFragment() {
+
+    }
+
+    public XXFDialogFragment(@LayoutRes int contentLayoutId) {
+        this.mContentLayoutId = contentLayoutId;
+        // super(contentLayoutId);
+    }
 
     @Override
     public Observable<Pair<DialogFragment, E>> getComponentObservable() {
@@ -56,16 +68,19 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
             componentSubject.onNext(result);
         }
     }
+
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @Deprecated
     public final void setContentView(@LayoutRes int layoutResID) {
         this.contentView = getLayoutInflater().inflate(layoutResID, null);
     }
 
+    @Deprecated
     public final void setContentView(View view) {
         this.contentView = view;
     }
@@ -97,14 +112,18 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
      */
     @Nullable
     @Override
-    public  View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (this.mContentLayoutId != 0) {
+            return inflater.inflate(this.mContentLayoutId, container, false);
+        }
         if (this.contentView != null) {
             ViewGroup parent = (ViewGroup) this.contentView.getParent();
             if (parent != null) {
                 parent.removeView(this.contentView);
             }
+            return this.contentView;
         }
-        return this.contentView;
+        return super.onCreateView(inflater,container,savedInstanceState);
     }
 
     /**

@@ -22,8 +22,8 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  * @date createTime：2018/9/7
  */
@@ -31,6 +31,14 @@ import io.reactivex.rxjava3.subjects.Subject;
 public class XXFFragment<E>
         extends Fragment implements ObservableComponent<Fragment, E> {
 
+    public XXFFragment() {
+    }
+
+    public XXFFragment(@LayoutRes int contentLayoutId) {
+        super(contentLayoutId);
+    }
+
+    @Deprecated
     private View contentView;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
@@ -51,16 +59,19 @@ public class XXFFragment<E>
             componentSubject.onNext(result);
         }
     }
+
     @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @Deprecated
     public final void setContentView(@LayoutRes int layoutResID) {
         this.contentView = getLayoutInflater().inflate(layoutResID, null);
     }
 
+    @Deprecated
     public final void setContentView(View view) {
         this.contentView = view;
     }
@@ -80,8 +91,9 @@ public class XXFFragment<E>
             if (parent != null) {
                 parent.removeView(this.contentView);
             }
+            return this.contentView;
         }
-        return this.contentView;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     /**

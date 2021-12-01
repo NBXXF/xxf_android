@@ -8,6 +8,10 @@ android {
     ndkVersion '21.3.6528147'
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
     defaultConfig {
+        configurations.all {
+            resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+        }
+
         applicationId "com.xxf.arch.test"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()

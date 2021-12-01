@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
+import androidx.annotation.ContentView;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +22,14 @@ import com.xxf.arch.lifecycle.XXFLifecycleObserver;
  */
 public class XXFActivity extends AppCompatActivity {
     private static final String KEY_ACTIVITY_RESULT = "KEY_XXF_ACTIVITY_RESULT";
+
+    public XXFActivity() {
+    }
+
+    public XXFActivity(@LayoutRes int contentLayoutId) {
+        super(contentLayoutId);
+    }
+
 
     @CallSuper
     @Override

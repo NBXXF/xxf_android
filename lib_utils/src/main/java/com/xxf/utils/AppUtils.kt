@@ -21,7 +21,7 @@ object AppUtils {
         if (TextUtils.isEmpty(pkgName)) return false
         val pm = context.applicationContext.packageManager
         return try {
-            pm.getApplicationInfo(pkgName, 0).enabled
+            pm.getApplicationInfo(pkgName?:"", 0).enabled
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }

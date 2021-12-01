@@ -30,7 +30,7 @@ object BitmapUtils {
     fun decodeSize(path: String?): Size {
         var decodeSize = Size(0, 0)
         try {
-            val exifInterface = ExifInterface(path);
+            val exifInterface = ExifInterface(path?:"");
             val rotation = exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_NORMAL

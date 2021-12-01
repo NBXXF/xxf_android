@@ -36,8 +36,20 @@ import io.reactivex.rxjava3.subjects.Subject;
 public class XXFBottomSheetDialogFragment<E>
         extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E> {
 
+    @Deprecated
     private View contentView;
+    @LayoutRes
+    private int mContentLayoutId;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
+
+    public XXFBottomSheetDialogFragment() {
+
+    }
+
+    public XXFBottomSheetDialogFragment(@LayoutRes int contentLayoutId) {
+        this.mContentLayoutId = contentLayoutId;
+        // super(contentLayoutId);
+    }
 
     @Override
     public Observable<Pair<BottomSheetDialogFragment, E>> getComponentObservable() {
@@ -63,10 +75,12 @@ public class XXFBottomSheetDialogFragment<E>
         super.onCreate(savedInstanceState);
     }
 
+    @Deprecated
     public final void setContentView(@LayoutRes int layoutResID) {
         this.contentView = getLayoutInflater().inflate(layoutResID, null);
     }
 
+    @Deprecated
     public final void setContentView(View view) {
         this.contentView = view;
     }
@@ -81,13 +95,17 @@ public class XXFBottomSheetDialogFragment<E>
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (this.mContentLayoutId != 0) {
+            return inflater.inflate(this.mContentLayoutId, container, false);
+        }
         if (this.contentView != null) {
             ViewGroup parent = (ViewGroup) this.contentView.getParent();
             if (parent != null) {
                 parent.removeView(this.contentView);
             }
+            return this.contentView;
         }
-        return this.contentView;
+        return super.onCreateView(inflater,container,savedInstanceState);
     }
 
     /**
