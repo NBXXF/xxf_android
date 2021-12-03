@@ -10,10 +10,7 @@ import android.widget.LinearLayout
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:39
  */
-open class XXFRoundLinearLayout : LinearLayout, XXFRoundWidget,XXFGrayWidget {
-    private val grayWidgetHelper by lazy {
-        GrayWidgetHelper()
-    }
+open class XXFRoundLinearLayout : LinearLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -41,17 +38,4 @@ open class XXFRoundLinearLayout : LinearLayout, XXFRoundWidget,XXFGrayWidget {
         CornerUtil.clipViewRadius(this, radius)
     }
 
-    override fun draw(canvas: Canvas?) {
-        grayWidgetHelper.draw(canvas)
-        super.draw(canvas)
-    }
-
-    override fun dispatchDraw(canvas: Canvas?) {
-        grayWidgetHelper.dispatchDraw(canvas)
-        super.dispatchDraw(canvas)
-    }
-
-    override fun setGrayColor(grayColor: Boolean) {
-        grayWidgetHelper.setGrayColor(grayColor, this)
-    }
 }

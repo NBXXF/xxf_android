@@ -74,8 +74,6 @@ public class StateActivity extends AppCompatActivity {
                 Log.d("", "=============>bitmap:" + bitmap);
                 Log.d("", "=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
                 stateBinding.preview.setImageBitmap(bitmap);
-
-                stateBinding.grayLayout.setGrayColor(!checked);
                 checked=!checked;
 
                 // loadData();

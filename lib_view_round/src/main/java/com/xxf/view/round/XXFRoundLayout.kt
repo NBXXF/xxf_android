@@ -10,10 +10,7 @@ import android.widget.FrameLayout
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:41
  */
-open class XXFRoundLayout : FrameLayout, XXFRoundWidget, XXFGrayWidget {
-    private val grayWidgetHelper by lazy {
-        GrayWidgetHelper()
-    }
+open class XXFRoundLayout : FrameLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -39,19 +36,5 @@ open class XXFRoundLayout : FrameLayout, XXFRoundWidget, XXFGrayWidget {
 
     override fun setRadius(radius: Float) {
         CornerUtil.clipViewRadius(this, radius)
-    }
-
-    override fun draw(canvas: Canvas?) {
-        grayWidgetHelper.draw(canvas)
-        super.draw(canvas)
-    }
-
-    override fun dispatchDraw(canvas: Canvas?) {
-        grayWidgetHelper.dispatchDraw(canvas)
-        super.dispatchDraw(canvas)
-    }
-
-    override fun setGrayColor(grayColor: Boolean) {
-        grayWidgetHelper.setGrayColor(grayColor, this)
     }
 }

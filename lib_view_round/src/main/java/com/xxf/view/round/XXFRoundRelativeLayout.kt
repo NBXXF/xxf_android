@@ -10,10 +10,7 @@ import android.widget.RelativeLayout
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:43
  */
-open class XXFRoundRelativeLayout : RelativeLayout, XXFRoundWidget,XXFGrayWidget {
-    private val grayWidgetHelper by lazy {
-        GrayWidgetHelper()
-    }
+open class XXFRoundRelativeLayout : RelativeLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -39,19 +36,5 @@ open class XXFRoundRelativeLayout : RelativeLayout, XXFRoundWidget,XXFGrayWidget
 
     override fun setRadius(radius: Float) {
         CornerUtil.clipViewRadius(this, radius)
-    }
-
-    override fun draw(canvas: Canvas?) {
-        grayWidgetHelper.draw(canvas)
-        super.draw(canvas)
-    }
-
-    override fun dispatchDraw(canvas: Canvas?) {
-        grayWidgetHelper.dispatchDraw(canvas)
-        super.dispatchDraw(canvas)
-    }
-
-    override fun setGrayColor(grayColor: Boolean) {
-        grayWidgetHelper.setGrayColor(grayColor, this)
     }
 }

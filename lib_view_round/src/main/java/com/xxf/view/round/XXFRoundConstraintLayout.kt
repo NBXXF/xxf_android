@@ -11,10 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
  * Description ://处理圆角
  * app:radius="4dp"
  */
-class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget, XXFGrayWidget {
-    private val grayWidgetHelper by lazy {
-        GrayWidgetHelper()
-    }
+class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget {
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -40,19 +37,5 @@ class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget, XXFGrayWidget
 
     override fun setRadius(radius: Float) {
         CornerUtil.clipViewRadius(this, radius)
-    }
-
-    override fun draw(canvas: Canvas?) {
-        grayWidgetHelper.draw(canvas)
-        super.draw(canvas)
-    }
-
-    override fun dispatchDraw(canvas: Canvas?) {
-        grayWidgetHelper.dispatchDraw(canvas)
-        super.dispatchDraw(canvas)
-    }
-
-    override fun setGrayColor(grayColor: Boolean) {
-        grayWidgetHelper.setGrayColor(grayColor, this)
     }
 }
