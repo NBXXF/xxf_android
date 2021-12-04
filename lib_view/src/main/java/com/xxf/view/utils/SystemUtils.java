@@ -726,7 +726,13 @@ public class SystemUtils {
             public ObservableSource<ActivityResult> get() throws Throwable {
                 // 必须明确使用mailto前缀来修饰邮件地址,如果使用
                 // intent.putExtra(Intent.EXTRA_EMAIL, email)，结果将匹配不到任何应用
-                Uri uri = Uri.parse("mailto:" + email);
+                String prefix = "mailto:";
+                Uri uri = null;
+                if (!TextUtils.isEmpty(email) && email.toLowerCase().startsWith(prefix)) {
+                    uri = Uri.parse(email);
+                } else {
+                    uri = Uri.parse("mailto:" + email);
+                }
                 String[] emailArr = {email};
                 Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
                 intent.putExtra(Intent.EXTRA_CC, emailArr); // 抄送人
