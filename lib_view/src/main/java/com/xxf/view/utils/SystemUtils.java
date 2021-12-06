@@ -32,6 +32,7 @@ import com.xxf.application.ApplicationProvider;
 import com.xxf.arch.XXF;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.utils.UriUtils;
+import com.xxf.fileprovider.FileProvider7;
 import com.xxf.permission.PermissionDeniedException;
 import com.xxf.permission.transformer.RxPermissionTransformer;
 import com.xxf.utils.FileUtils;
@@ -76,14 +77,9 @@ public class SystemUtils {
     @RequiresPermission(allOf = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
     public static Intent getTakePhotoIntent(File imageFile) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (Build.VERSION.SDK_INT < 24) {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
-        } else {
-            ContentValues contentValues = new ContentValues(1);
-            contentValues.put("_data", imageFile.getAbsolutePath());
-            Uri outImgUri = ApplicationProvider.applicationContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outImgUri);
-        }
+        Uri uriForFile = FileProvider7.INSTANCE.getUriForFile(XXF.getApplication(), imageFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         return intent;
     }
 
