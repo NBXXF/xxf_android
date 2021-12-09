@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import retrofit2.CacheType
 import retrofit2.Call
 import retrofit2.Response
 
@@ -26,8 +27,14 @@ open class FirstCacheTransformer<R>(call: Call<R>, rxHttpCacheConfig: HttpCacheC
             .concatDelayError(
                 listOf(
                     cacheOrEmpty
+                        .doOnNext {
+                            applyCacheConfig(it, CacheType.firstCache, true)
+                        }
                         .observeOn(AndroidSchedulers.mainThread()),
                     cacheAfter(remoteObservable)
+                        .doOnNext {
+                            applyCacheConfig(it, CacheType.firstCache, false)
+                        }
                         .observeOn(AndroidSchedulers.mainThread())
                 )
             )

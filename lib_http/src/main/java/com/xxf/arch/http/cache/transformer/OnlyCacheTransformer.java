@@ -6,6 +6,8 @@ import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Consumer;
+import retrofit2.CacheType;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -23,6 +25,11 @@ public class OnlyCacheTransformer<R> extends AbsCacheTransformer<R> {
 
     @Override
     public final ObservableSource<Response<R>> apply(Observable<Response<R>> remoteObservable) {
-        return getCacheOrEmpty();
+        return getCacheOrEmpty().doOnNext(new Consumer<Response<R>>() {
+            @Override
+            public void accept(Response<R> response) throws Throwable {
+                applyCacheConfig(response, CacheType.onlyCache,true);
+            }
+        });
     }
 }

@@ -76,28 +76,15 @@ class MainActivity : AppCompatActivity() {
         testhttp()
     }
 
-    var first = true;
     private fun testhttp() {
-        first = true;
         LoginApiService::class.java.apiService()
-            .getCity(CacheType.firstCache)
+            .getCityModel(CacheType.firstCache)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(Consumer<ListOrSingle<Weather?>> { weathers ->
-                Log.d(
-                    "==========>retry ye start:$weathers",
-                    " thread:" + Thread.currentThread().name
-                )
-                if (first) {
-                    first = false
-                    //throw RuntimeException("xxxx")
-                }
-                Log.d("==========>retry ye:$weathers", " thread:" + Thread.currentThread().name)
-            },
-                Consumer<Throwable> { throwable ->
-                    Log.d(
-                        "==========>retry no:$throwable",
-                        " thread:" + Thread.currentThread().name
-                    )
-                })
+            .doOnError {
+                Log.d("==========>retry no", "" + it)
+            }
+            .subscribe {
+                Log.d("==========>retry ye", "" + it)
+            }
     }
 }

@@ -1,10 +1,12 @@
 package com.xxf.arch.http.cache.transformer
 
 import com.xxf.arch.http.cache.HttpCacheConfigProvider
+import com.xxf.arch.http.model.BaseHttpResult
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.schedulers.Schedulers
+import retrofit2.CacheType
 import retrofit2.Call
 import retrofit2.Response
 
@@ -31,8 +33,14 @@ class LastCacheTransformer<R>(call: Call<R>, rxHttpCacheConfig: HttpCacheConfigP
             .concatDelayError(
                 listOf(
                     cacheOrEmpty
+                        .doOnNext {
+                            applyCacheConfig(it, CacheType.lastCache, true)
+                        }
                         .observeOn(AndroidSchedulers.mainThread()),
                     cacheAfter(remoteObservable)
+                        .doOnNext {
+                            applyCacheConfig(it, CacheType.lastCache, false)
+                        }
                         .observeOn(AndroidSchedulers.mainThread())
                 )
             )

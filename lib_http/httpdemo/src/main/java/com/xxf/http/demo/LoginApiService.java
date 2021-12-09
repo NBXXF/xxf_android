@@ -60,6 +60,15 @@ public interface LoginApiService {
     Observable<ListOrSingle<Weather>> getCity(@Cache CacheType cacheType);
 
     /**
+     * 在retrofit上面扩展了 @Cache 设置缓存类型
+     *
+     * @param cacheType
+     * @return
+     */
+    @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
+    Observable<BaseResponseDTO> getCityModel(@Cache CacheType cacheType);
+
+    /**
      * 缓存5s
      * 添加在方法上     @Headers("cache:5000")
      *

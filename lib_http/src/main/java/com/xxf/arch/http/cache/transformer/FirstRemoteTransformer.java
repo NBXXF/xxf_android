@@ -9,7 +9,9 @@ import java.net.SocketTimeoutException;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
+import retrofit2.CacheType;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -28,6 +30,12 @@ public class FirstRemoteTransformer<R> extends AbsCacheTransformer<R> {
     @Override
     public final ObservableSource<Response<R>> apply(Observable<Response<R>> remoteObservable) {
         return cacheAfter(remoteObservable)
+                .doOnNext(new Consumer<Response<R>>() {
+                    @Override
+                    public void accept(Response<R> response) throws Throwable {
+                        applyCacheConfig(response, CacheType.firstRemote,false);
+                    }
+                })
                 .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Response<R>>>() {
                     @Override
                     public ObservableSource<? extends Response<R>> apply(Throwable throwable) throws Exception {
@@ -35,6 +43,12 @@ public class FirstRemoteTransformer<R> extends AbsCacheTransformer<R> {
                                 || throwable instanceof ConnectException
                                 || throwable instanceof SocketTimeoutException) {
                             return getCacheOrEmpty()
+                                    .doOnNext(new Consumer<Response<R>>() {
+                                        @Override
+                                        public void accept(Response<R> response) throws Throwable {
+                                            applyCacheConfig(response, CacheType.firstRemote,true);
+                                        }
+                                    })
                                     .switchIfEmpty(Observable.<Response<R>>error(throwable));
                         }
                         return Observable.error(throwable);
