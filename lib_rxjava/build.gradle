@@ -16,6 +16,7 @@ dependencies {
     api des.material
     api des.rxJava
     api des.rxAndroid
-    implementation 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.0.0'
-    api 'com.uber.autodispose2:autodispose:2.0.0'
+    implementation 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.1.1'
+    api 'com.uber.autodispose2:autodispose:2.1.1'
+    implementation 'com.uber.autodispose2:autodispose-android:2.1.1'
 }
