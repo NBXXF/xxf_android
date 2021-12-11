@@ -86,7 +86,7 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
 
     @NonNull
     @Override
-    public final Dialog onCreateDialog(Bundle savedInstanceState) {
+    public  Dialog onCreateDialog(Bundle savedInstanceState) {
         return new TouchListenAlertDialog(getContext(), getTheme()) {
             @Override
             protected void onDialogTouchOutside(MotionEvent event) {

@@ -87,7 +87,7 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
 
     @NonNull
     @Override
-    public final Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new TouchListenDialog(getContext(), getTheme()) {
             @Override
             protected void onDialogTouchOutside(MotionEvent event) {
@@ -123,7 +123,7 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
             }
             return this.contentView;
         }
-        return super.onCreateView(inflater,container,savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     /**
