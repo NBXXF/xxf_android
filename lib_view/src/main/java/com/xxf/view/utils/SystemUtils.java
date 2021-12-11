@@ -1,5 +1,7 @@
 package com.xxf.view.utils;
 
+import static com.xxf.application.ApplicationProvider.applicationContext;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -42,6 +45,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -216,29 +220,61 @@ public class SystemUtils {
                                 .fromCallable(new Callable<File>() {
                                     @Override
                                     public File call() throws Exception {
-                                        File appDir = new File(Environment.getExternalStorageDirectory(), "XXF");
-                                        if (!appDir.exists()) {
-                                            appDir.mkdir();
-                                        }        //文件的名称设置为 系统时间.jpg
-                                        String fileName = picName;
-                                        File file = new File(appDir, fileName);
-                                        try {
-                                            FileOutputStream fos = new FileOutputStream(file);
+                                        // 其次把文件插入到系统图库
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                            ContentValues values = new ContentValues();
+                                            values.put(MediaStore.MediaColumns.DISPLAY_NAME, picName);
+                                            values.put(
+                                                    MediaStore.MediaColumns.MIME_TYPE,
+                                                    com.xxf.utils.FileUtils.getMimeType(picName)
+                                            );
+                                            values.put(
+                                                    MediaStore.MediaColumns.RELATIVE_PATH,
+                                                    Environment.DIRECTORY_DCIM
+                                            );
+                                            ContentResolver contentResolver = context.getContentResolver();
+                                            Uri uri = contentResolver.insert(
+                                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                    values
+                                            );
+                                            if (uri == null) {
+                                                throw new RuntimeException("图片保存失败");
+                                            }
+                                            OutputStream fos = contentResolver.openOutputStream(uri);
                                             bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
                                             fos.flush();
                                             fos.close();
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }        // 其次把文件插入到系统图库
-                                        ContentValues values = new ContentValues();
-                                        values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
-                                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                                        Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);        // 最后通知图库更新
-                                        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+                                            return new File(UriUtils.getPath(applicationContext, uri));
+                                        } else {
+                                            File appDir =
+                                                    applicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                                            if (!appDir.exists()) {
+                                                appDir.mkdir();
+                                            } //文件的名称设置为 系统时间.jpg
+                                            File file = new File(appDir, picName);
+                                            try {
+                                                FileOutputStream fos = new FileOutputStream(file);
+                                                bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                                                fos.flush();
+                                                fos.close();
+                                            } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            MediaScannerConnection.scanFile(
+                                                    context,
+                                                    new String[]{file.getAbsolutePath()},
+                                                    new String[]{com.xxf.utils.FileUtils.getMimeType(file.getAbsolutePath())},
+                                                    new MediaScannerConnection.OnScanCompletedListener() {
+                                                        @Override
+                                                        public void onScanCompleted(String path, Uri uri) {
 
-                                        return file;
+                                                        }
+                                                    }
+                                            );
+                                            return file;
+                                        }
                                     }
                                 })
                                 .subscribeOn(Schedulers.io())
@@ -727,7 +763,7 @@ public class SystemUtils {
                 if (!TextUtils.isEmpty(email) && email.toLowerCase().startsWith(prefix)) {
                     uri = Uri.parse(email);
                 } else {
-                    uri = Uri.parse("mailto:" + email);
+                    uri = Uri.parse(prefix + email);
                 }
                 String[] emailArr = {email};
                 Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
