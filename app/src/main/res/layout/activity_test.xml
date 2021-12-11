@@ -1,45 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.xxf.view.view.MaxOrMinLayout
+        app:maxHeightRatio="0.5"
+        app:maxWidthRatio="0.6"
+        app:minHeightRatio="0.3"
+
+        app:minWidthRatio="0.4"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:background="#6cf">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.xxf.view.view.MaxOrMinLayout
+        <EditText
+            android:id="@+id/et_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#6cf"
+            android:text="17483737" />
+    </com.xxf.view.view.MaxOrMinLayout>
 
-            app:minWidthRatio="0.4"
-            app:maxWidthRatio="0.6"
+    <Button
+        android:id="@+id/bt_setResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="setResult" />
 
-            app:minHeightRatio="0.3"
-            app:maxHeightRatio="0.5"
-            >
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
+    </androidx.viewpager.widget.ViewPager>
 
-            <EditText
-                android:id="@+id/et_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="17483737" />
-        </com.xxf.view.view.MaxOrMinLayout>
-
-        <Button
-            android:id="@+id/bt_setResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="setResult" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-        </androidx.viewpager.widget.ViewPager>
-
-    </LinearLayout>
-</layout>
+</LinearLayout>

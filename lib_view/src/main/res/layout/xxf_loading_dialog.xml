@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/alpha_progress_bg"
+    android:gravity="center"
+    android:minWidth="120dp"
+    android:minHeight="120dp"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading_iv"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        tools:src="@drawable/alpha_ic_ok" />
+
+
+    <TextView
+        android:id="@+id/msg_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:animateLayoutChanges="true"
-        android:background="@drawable/alpha_progress_bg"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
         android:gravity="center"
-        android:minWidth="120dp"
-        android:minHeight="120dp"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/loading_iv"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center_horizontal"
-            tools:src="@drawable/alpha_ic_ok" />
-
-
-        <TextView
-            android:id="@+id/msg_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxWidth="100dp"
-            android:maxLines="2"
-            android:text="loading..."
-            android:textColor="@android:color/white"
-            android:textSize="12sp" />
-    </LinearLayout>
-</layout>
+        android:maxWidth="100dp"
+        android:maxLines="2"
+        android:text="loading..."
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+</LinearLayout>

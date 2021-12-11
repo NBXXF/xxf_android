@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f2f2f2"
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f2f2f2"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:maxLines="1"
-            android:text="23245545874566754437663546543"
-            android:textColor="@android:color/holo_red_light" />
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="20sp"
-            android:text="TextView"
-            android:textColor="@android:color/holo_blue_light" />
-    </LinearLayout>
+        android:maxLines="1"
+        android:padding="10dp"
+        android:text="23245545874566754437663546543"
+        android:textColor="@android:color/holo_red_light" />
 
-</layout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="TextView"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="20sp" />
+</LinearLayout>
