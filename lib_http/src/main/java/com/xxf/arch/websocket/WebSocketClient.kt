@@ -142,7 +142,7 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
     /**
      * 判断网络是否链接
      */
-    fun isNetworkConnected(): Boolean {
+    private fun isNetworkConnected(): Boolean {
         val mConnectivityManager = applicationContext
             .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val mNetworkInfo = mConnectivityManager
