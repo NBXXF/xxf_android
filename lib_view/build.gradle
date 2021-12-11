@@ -18,7 +18,6 @@ android {
         targetCompatibility 1.8
     }
     buildFeatures {
-        //dataBinding = true
         // for view binding :
         viewBinding true
     }
