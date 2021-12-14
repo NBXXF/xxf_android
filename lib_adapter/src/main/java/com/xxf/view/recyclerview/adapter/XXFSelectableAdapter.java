@@ -43,16 +43,6 @@ public abstract class XXFSelectableAdapter<V extends ViewBinding, T extends Sele
         this.selectType = selectType;
     }
 
-    public XXFSelectableAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback, @SelectType int selectType) {
-        super(diffCallback);
-        this.selectType = selectType;
-    }
-
-    public XXFSelectableAdapter(@NonNull AsyncDifferConfig<T> config, @SelectType int selectType) {
-        super(config);
-        this.selectType = selectType;
-    }
-
 
     public int getSelectType() {
         return selectType;

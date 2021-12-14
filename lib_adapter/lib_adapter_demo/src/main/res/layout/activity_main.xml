@@ -12,35 +12,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_marginBottom="40dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="refresh" />
 
-        <Button
-            android:id="@+id/insert"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="insert" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/insertLast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="insertLast" />
+            <Button
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="refresh" />
 
-        <Button
-            android:id="@+id/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="delete" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/insert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="insert" />
+
+            <Button
+                android:id="@+id/insertLast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="insertLast" />
+
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="delete" />
+            <Button
+                android:id="@+id/loadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="loadMore" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

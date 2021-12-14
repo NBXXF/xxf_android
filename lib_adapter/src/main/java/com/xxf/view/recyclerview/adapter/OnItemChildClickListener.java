@@ -13,5 +13,5 @@ public interface OnItemChildClickListener<V extends ViewBinding, T> {
      * @param index     相对于List容器的位置
      * @param item         对应的数据项
      */
-    void onItemChildClick(XXFRecyclerAdapter<V, T> adapter, XXFViewHolder<V, T> holder, View childView, int index, T item);
+    void onItemChildClick(BaseAdapter<V, T> adapter, XXFViewHolder<V, T> holder, View childView, int index, T item);
 }

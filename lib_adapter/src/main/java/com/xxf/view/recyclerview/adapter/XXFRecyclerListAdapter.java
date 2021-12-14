@@ -9,6 +9,9 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
@@ -24,29 +27,29 @@ import java.util.List;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2015/9/10 10:05
  * version
- *
- *  * 添加header footer 参考
- *  * 实例如下:
- *  * * ConcatAdapter totalAdapter = new ConcatAdapter();
- *  * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- *  * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- *  * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- *  *
+ * * 添加header footer 参考
+ * * 实例如下:
+ * * * ConcatAdapter totalAdapter = new ConcatAdapter();
+ * * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
+ * * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
+ * * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
+ * *
  */
-public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
-        extends RecyclerView.Adapter<XXFViewHolder<V, T>> implements BaseAdapter<V, T> {
+public abstract class XXFRecyclerListAdapter<V extends ViewBinding, T>
+        extends ListAdapter<T, XXFViewHolder<V, T>> implements BaseAdapter<V, T> {
 
     private RecyclerView attachedRecyclerView;
 
-    private List<T> mList = new ArrayList<>();
+    public XXFRecyclerListAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
+        super(diffCallback);
+    }
+
+    public XXFRecyclerListAdapter(@NonNull AsyncDifferConfig<T> config) {
+        super(config);
+    }
 
     public List<T> getData() {
         return getCurrentList();
-    }
-
-    @Override
-    public List<T> getCurrentList() {
-        return mList;
     }
 
     public int getDataSize() {
@@ -59,15 +62,14 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
 
     public boolean bindData(boolean isRefresh, @NonNull List<T> datas) {
         if (isRefresh) {//下拉刷新
-            getData().clear();
-            getData().addAll(datas);
-            notifyDataSetChanged();
+            submitList(datas);
             return true;
         } else {
             //上拉加载 不能为空
             if (checkList(datas)) {
-                getData().addAll(datas);
-                notifyDataSetChanged();
+                ArrayList<T> totalList = new ArrayList<T>(getCurrentList());
+                totalList.addAll(datas);
+                submitList(totalList);
                 return true;
             }
         }
@@ -77,8 +79,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
 
     public void clearData() {
         if (!isDataEmpty()) {
-            getData().clear();
-            notifyDataSetChanged();
+            submitList(new ArrayList<>());
         }
     }
 
@@ -108,7 +109,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     public T getItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
-            return getData().get(index);
+            return super.getItem(index);
         }
         return null;
     }
@@ -130,8 +131,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     public boolean addItem(@IntRange(from = 0) int index, @NonNull T t) {
         if (checkIndex(index)) {
-            getData().add(index, t);
-            notifyDataSetChanged();
+            ArrayList<T> ts = new ArrayList<>(getCurrentList());
+            ts.add(index, t);
+            submitList(ts);
             return true;
         }
         return false;
@@ -140,16 +142,20 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean addItems(@IntRange(from = 0) int index, @NonNull List<? extends T> datas) {
         if (checkList(datas)
                 && checkIndex(index)) {
-            getData().addAll(index, datas);
-            notifyDataSetChanged();
+            ArrayList<T> ts = new ArrayList<>(getCurrentList());
+            if (ts.addAll(index, datas)) {
+                submitList(ts);
+                return true;
+            }
         }
         return false;
     }
 
     public boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)) {
-            if (getData().addAll(datas)) {
-                notifyDataSetChanged();
+            ArrayList<T> ts = new ArrayList<>(getCurrentList());
+            if (ts.addAll(datas)) {
+                submitList(ts);
                 return true;
             }
         }
@@ -157,8 +163,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     }
 
     public boolean addItem(@NonNull T t) {
-        if (getData().add(t)) {
-            notifyDataSetChanged();
+        ArrayList<T> ts = new ArrayList<>(getCurrentList());
+        if (ts.add(t)) {
+            submitList(ts);
             return true;
         }
         return false;
@@ -171,10 +178,11 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      * @return
      */
     public boolean updateItem(@NonNull T t) {
-        int i = getData().indexOf(t);
+        ArrayList<T> ts = new ArrayList<>(getCurrentList());
+        int i = ts.indexOf(t);
         if (i >= 0) {
-            getData().set(i, t);
-            notifyItemChanged(i);
+            ts.set(i, t);
+            submitList(ts);
             return true;
         }
         return false;
@@ -188,8 +196,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     public boolean updateItem(int index, @NonNull T t) {
         if (checkIndex(index)) {
-            getData().set(index, t);
-            notifyItemRemoved(index);
+            ArrayList<T> ts = new ArrayList<>(getCurrentList());
+            ts.set(index, t);
+            submitList(ts);
             return true;
         }
         return false;
@@ -201,8 +210,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     public boolean removeItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
-            if (getData().remove(index) != null) {
-                notifyItemRemoved(index);
+            ArrayList<T> ts = new ArrayList<>(getCurrentList());
+            if (ts.remove(index) != null) {
+                submitList(ts);
                 return true;
             }
         }
@@ -379,11 +389,6 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     @Override
     public boolean callOnItemChildLongClick(XXFViewHolder<V, T> holder, View childView, int index) {
         return this.onItemChildLongClickListener != null && this.onItemChildLongClickListener.onItemChildLongClick(this, holder, childView, index, getItem(index));
-    }
-
-    @Override
-    public int getItemCount() {
-        return getDataSize();
     }
 }
 

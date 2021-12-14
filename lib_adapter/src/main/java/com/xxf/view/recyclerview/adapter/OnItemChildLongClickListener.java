@@ -13,5 +13,5 @@ public interface OnItemChildLongClickListener<V extends  ViewBinding, T> {
      * @param item        对应的数据项
      * @return
      */
-    boolean onItemChildLongClick(XXFRecyclerAdapter<V, T> adapter, XXFViewHolder<V, T> holder, View childView, int index, T item);
+    boolean onItemChildLongClick(BaseAdapter<V, T> adapter, XXFViewHolder<V, T> holder, View childView, int index, T item);
 }

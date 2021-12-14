@@ -26,6 +26,7 @@ import com.xxf.view.config.AdapterStyle;
 import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
 import com.xxf.view.databinding.XxfDialogBottomActionBinding;
 import com.xxf.view.model.ItemMenu;
+import com.xxf.view.recyclerview.adapter.BaseAdapter;
 import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
@@ -162,8 +163,8 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
 
         actionItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(XXFRecyclerAdapter adapter, XXFViewHolder holder, View itemView, int index, Object o) {
-                ItemMenu<T> itemMenu = (ItemMenu) o;
+            public void onItemClick(BaseAdapter adapter, XXFViewHolder holder, View itemView, int index, Object item) {
+                ItemMenu<T> itemMenu = (ItemMenu) item;
                 setComponentResult(itemMenu);
             }
         });
@@ -225,6 +226,11 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
         @Override
         public void onBindHolder(XXFViewHolder<XxfAdapterItemBottomActionBinding, T> holder, @Nullable T t, int index) {
             ActionSheetDialog.this.onBindHolder(holder, holder.getBinding(), t, index);
+        }
+
+        @Override
+        public int getItemCount() {
+            return 0;
         }
     }
 }

@@ -22,14 +22,6 @@ public abstract class MultiRecyclerAdapter<V extends ViewBinding, T extends Mult
     public MultiRecyclerAdapter() {
     }
 
-    public MultiRecyclerAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
-        super(diffCallback);
-    }
-
-    public MultiRecyclerAdapter(@NonNull AsyncDifferConfig<T> config) {
-        super(config);
-    }
-
     @Override
     public int getItemViewType(int position) {
         T item = getItem(position);

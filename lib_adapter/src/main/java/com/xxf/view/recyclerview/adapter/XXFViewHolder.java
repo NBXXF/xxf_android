@@ -19,8 +19,8 @@ import androidx.viewbinding.ViewBinding;
  * version 2.1.0
  */
 public class XXFViewHolder<V extends ViewBinding, T> extends InnerViewHolder
-        implements  View.OnClickListener, View.OnLongClickListener {
-    private XXFRecyclerAdapter<V, T> baseRecyclerAdapter;
+        implements View.OnClickListener, View.OnLongClickListener {
+    private BaseAdapter<V, T> baseAdapter;
     private SparseArray<View> holder = null;
     private ViewBinding binding;
 
@@ -34,30 +34,32 @@ public class XXFViewHolder<V extends ViewBinding, T> extends InnerViewHolder
     }
 
 
-    public XXFRecyclerAdapter<V, T> getRecyclerAdapter() {
-        return this.baseRecyclerAdapter;
+    public BaseAdapter<V, T> getRecyclerAdapter() {
+        return this.baseAdapter;
     }
 
     /**
      * 绑定的构造方法
-     * @param baseRecyclerAdapter
+     *
+     * @param baseAdapter
      * @param binding
      * @param bindItemClick
      */
-    public XXFViewHolder(XXFRecyclerAdapter<V, T> baseRecyclerAdapter, V binding, boolean bindItemClick) {
-        this(baseRecyclerAdapter,binding.getRoot(),bindItemClick);
+    public XXFViewHolder(BaseAdapter<V, T> baseAdapter, V binding, boolean bindItemClick) {
+        this(baseAdapter, binding.getRoot(), bindItemClick);
         this.setBinding(binding);
     }
 
     /**
      * 普通view的构造方法
-     * @param baseRecyclerAdapter
+     *
+     * @param baseAdapter
      * @param itemView
      * @param bindItemClick
      */
-    public XXFViewHolder(XXFRecyclerAdapter<V, T> baseRecyclerAdapter, View itemView, boolean bindItemClick) {
+    public XXFViewHolder(BaseAdapter<V, T> baseAdapter, View itemView, boolean bindItemClick) {
         super(itemView);
-        this.baseRecyclerAdapter = baseRecyclerAdapter;
+        this.baseAdapter = baseAdapter;
         if (bindItemClick) {
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -143,20 +145,20 @@ public class XXFViewHolder<V extends ViewBinding, T> extends InnerViewHolder
 
     @Override
     public boolean onLongClick(View v) {
-        if (baseRecyclerAdapter.onItemLongClickListener != null && v.getId() == this.itemView.getId()) {
-            return baseRecyclerAdapter.onItemLongClickListener.onItemLongClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
-        } else if (baseRecyclerAdapter.onItemChildLongClickListener != null && v.getId() != this.itemView.getId()) {
-            return baseRecyclerAdapter.onItemChildLongClickListener.onItemChildLongClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
+        if (v.getId() == this.itemView.getId()) {
+            return baseAdapter.callOnItemLongClick(this, v, getIndex());
+        } else if (v.getId() != this.itemView.getId()) {
+            return baseAdapter.callOnItemChildLongClick(this, v, getIndex());
         }
         return false;
     }
 
     @Override
     public void onClick(View v) {
-        if (baseRecyclerAdapter.onItemClickListener != null && v.getId() == this.itemView.getId()) {
-            baseRecyclerAdapter.onItemClickListener.onItemClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
-        } else if (baseRecyclerAdapter.onItemChildClickListener != null && v.getId() != this.itemView.getId()) {
-            baseRecyclerAdapter.onItemChildClickListener.onItemChildClick(baseRecyclerAdapter, this, v, getIndex(), baseRecyclerAdapter.getItem(getIndex()));
+        if (v.getId() == this.itemView.getId()) {
+            baseAdapter.callOnItemClick(this, v, getIndex());
+        } else if (v.getId() != this.itemView.getId()) {
+            baseAdapter.callOnItemChildClick(this, v, getIndex());
         }
     }
 }

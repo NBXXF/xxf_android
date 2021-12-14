@@ -3,10 +3,13 @@ package com.xxf.adapter.demo;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 
 import com.xxf.adapter.demo.databinding.AdapterTestBinding;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
+import com.xxf.view.recyclerview.adapter.XXFRecyclerListAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 
 /**
@@ -14,7 +17,21 @@ import com.xxf.view.recyclerview.adapter.XXFViewHolder;
  * date createTime：2021/9/29
  * Description ://TODO
  */
-public class TestAdapter extends XXFRecyclerAdapter<AdapterTestBinding, String> {
+public class TestAdapter extends XXFRecyclerListAdapter<AdapterTestBinding, String> {
+    public TestAdapter() {
+        super(new DiffUtil.ItemCallback<String>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                return oldItem.equals(newItem);
+            }
+
+            @Override
+            public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                return false;
+            }
+        });
+    }
+
     @Override
     protected AdapterTestBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
         return AdapterTestBinding.inflate(inflater, viewGroup, false);

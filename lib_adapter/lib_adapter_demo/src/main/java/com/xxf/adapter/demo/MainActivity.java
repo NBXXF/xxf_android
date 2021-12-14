@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.xxf.adapter.demo.databinding.ActivityMainBinding;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         System.out.println("==========>onChildViewAttachedToWindow  init");
-        adapter.setHasStableIds(true);
+        //adapter.setHasStableIds(true);
         binding.recyclerView.setAdapter(adapter);
         //删除-> 改变焦点（上一个)  后删除当前
         // binding.recyclerView.find
@@ -47,20 +48,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         List<String> list = new ArrayList<>();
-        int count = new Random().nextInt(100);
+        int count = new Random().nextInt(50);
         for (int i = 0; i < count; i++) {
-            list.add("i" + new Random().nextInt(100));
+         //   list.add("i" + new Random().nextInt(100));
+            list.add("i" +i);
         }
         adapter.bindData(true, list);
         binding.refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<String> list = new ArrayList<>();
-                int count = new Random().nextInt(100);
+                int count = new Random().nextInt(50);
                 for (int i = 0; i < count; i++) {
-                    list.add("i" + new Random().nextInt(100));
+                  //  list.add("i" + new Random().nextInt(100));
+                    list.add("i" + i);
                 }
                 adapter.bindData(true, list);
+                Log.d("=======>list:",""+list);
             }
         });
 
@@ -82,7 +86,18 @@ public class MainActivity extends AppCompatActivity {
                 adapter.removeItem(0);
             }
         });
-
+        binding.loadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> list = new ArrayList<>();
+                int count = new Random().nextInt(50);
+                for (int i = 0; i < count; i++) {
+                    //  list.add("i" + new Random().nextInt(100));
+                    list.add("i" + i);
+                }
+                adapter.addItems(list);
+            }
+        });
 
     }
 }
