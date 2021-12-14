@@ -4,12 +4,9 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.ObservableArrayList;
-import androidx.databinding.ViewDataBinding;
 import androidx.viewbinding.ViewBinding;
 
 import com.xxf.view.model.SelectableEntity;
-import com.xxf.view.recyclerview.SafeObservableArrayList;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -44,7 +41,7 @@ public abstract class XXFSelectableAdapter<V extends ViewBinding, T extends Sele
         this.selectType = selectType;
     }
 
-    public XXFSelectableAdapter(@SelectType int selectType, @NonNull SafeObservableArrayList<T> data) {
+    public XXFSelectableAdapter(@SelectType int selectType, @NonNull ArrayList<T> data) {
         super(data);
         this.selectType = selectType;
     }

@@ -4,14 +4,12 @@ import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
-import androidx.databinding.ViewDataBinding
 import androidx.viewbinding.ViewBinding
 
 @Deprecated("有局限性,请使用by viewBinding", replaceWith = ReplaceWith("viewBinding"))
 fun <VB : ViewBinding> ComponentActivity.binding(inflate: (LayoutInflater) -> VB) = lazy {
     inflate(layoutInflater).also {
         setContentView(it.root)
-        if (this is ViewDataBinding) lifecycleOwner = this@binding
     }
 }
 

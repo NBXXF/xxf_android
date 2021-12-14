@@ -2,7 +2,6 @@ package com.xxf.view.recyclerview.adapter;
 
 import android.view.View;
 
-import androidx.databinding.ViewDataBinding;
 import androidx.viewbinding.ViewBinding;
 
 public interface OnItemChildLongClickListener<V extends  ViewBinding, T> {

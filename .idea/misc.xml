@@ -35,6 +35,8 @@
         <entry key="lib_bus/lib_bus_demo/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="lib_view/src/main/res/layout/xxf_adapter_item_bottom_action.xml" value="0.1" />
         <entry key="lib_view/src/main/res/layout/xxf_dialog_bottom_action.xml" value="0.13504273504273503" />
+        <entry key="lib_view/src/main/res/layout/xxf_empty_view.xml" value="0.10739614994934144" />
+        <entry key="lib_view/src/main/res/layout/xxf_error_view.xml" value="0.10739614994934144" />
         <entry key="lib_view/src/main/res/layout/xxf_jump_refresh_footer.xml" value="0.1078125" />
         <entry key="lib_view/src/main/res/layout/xxf_jump_refresh_header.xml" value="0.1078125" />
         <entry key="lib_view/src/main/res/layout/xxf_loading_dialog.xml" value="0.1078125" />

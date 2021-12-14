@@ -1,11 +1,10 @@
 package com.xxf.view.recyclerview.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableArrayList;
-import androidx.databinding.ViewDataBinding;
 import androidx.viewbinding.ViewBinding;
 
-import com.xxf.view.recyclerview.SafeObservableArrayList;
+import java.util.ArrayList;
+
 
 /**
  * Description 多布局的适配器
@@ -14,11 +13,11 @@ import com.xxf.view.recyclerview.SafeObservableArrayList;
  * date createTime：2017/10/4
  * version 2.1.0
  */
-public abstract class MultiRecyclerAdapter<V extends ViewDataBinding & ViewBinding,T extends MultiViewEntity> extends XXFRecyclerAdapter<V,T> {
+public abstract class MultiRecyclerAdapter<V extends ViewBinding,T extends MultiViewEntity> extends XXFRecyclerAdapter<V,T> {
     public MultiRecyclerAdapter() {
     }
 
-    public MultiRecyclerAdapter(@NonNull SafeObservableArrayList<T> data) {
+    public MultiRecyclerAdapter(@NonNull ArrayList<T> data) {
         super(data);
     }
 

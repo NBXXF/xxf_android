@@ -11,12 +11,8 @@ import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.ObservableList;
-import androidx.recyclerview.widget.InnerViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
-
-import com.xxf.view.recyclerview.SafeObservableArrayList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,51 +34,11 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
                 .inflate(id, recyclerView, false);
     }
 
-    /**
-     * 【数据】发生改变的监听 不包括header/footer
-     */
-    protected final ObservableList.OnListChangedCallback<ObservableList<T>> dataChangeCallback = new ObservableList.OnListChangedCallback<ObservableList<T>>() {
-        @Override
-        public void onChanged(ObservableList<T> sender) {
-            int start = getHeaderCount();
-            notifyItemRangeChanged(start, getDataSize());
-        }
-
-        @Override
-        public void onItemRangeChanged(ObservableList<T> sender, int positionStart, int itemCount) {
-            int start = getHeaderCount() + positionStart;
-            notifyItemRangeChanged(start, itemCount);
-        }
-
-        @Override
-        public void onItemRangeInserted(ObservableList<T> sender, int positionStart, int itemCount) {
-            int start = getHeaderCount() + positionStart;
-            notifyItemRangeInserted(start, itemCount);
-        }
-
-        @Override
-        public void onItemRangeMoved(ObservableList<T> sender, int fromPosition, int toPosition, int itemCount) {
-            int start = getHeaderCount() + fromPosition;
-            int to = getHeaderCount() + toPosition;
-            if (itemCount == 1) {//刷新单个item
-                notifyItemMoved(start, to);
-            } else {// 全部数据刷新
-                notifyItemRangeChanged(start, getDataSize());
-            }
-        }
-
-        @Override
-        public void onItemRangeRemoved(ObservableList<T> sender, int positionStart, int itemCount) {
-            int start = getHeaderCount() + positionStart;
-            notifyItemRangeRemoved(start, itemCount);
-        }
-    };
-
     private static final int HEADER_VIEW_TYPE = -10000;
     private static final int FOOTER_VIEW_TYPE = -20000;
     private final List<View> mHeaders = new ArrayList<View>();
     private final List<View> mFooters = new ArrayList<View>();
-    private SafeObservableArrayList<T> dataList = new SafeObservableArrayList<T>();
+    private ArrayList<T> dataList = new ArrayList<T>();
     private RecyclerView attachedRecyclerView;
 
     /**
@@ -96,7 +52,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return attachedRecyclerView;
     }
 
-    public SafeObservableArrayList<T> getData() {
+    public ArrayList<T> getData() {
         return dataList;
     }
 
@@ -117,14 +73,12 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return mFooters.size();
     }
 
-    public XXFRecyclerAdapter(@NonNull SafeObservableArrayList<T> data) {
-        this.dataList = (data == null ? new SafeObservableArrayList<T>() : data);
-        this.dataList.removeOnListChangedCallback(dataChangeCallback);
-        this.dataList.addOnListChangedCallback(dataChangeCallback);
+    public XXFRecyclerAdapter(@NonNull ArrayList<T> data) {
+        this.dataList = (data == null ? new ArrayList<T>() : data);
     }
 
     public XXFRecyclerAdapter() {
-        this(new SafeObservableArrayList<T>());
+        this(new ArrayList<T>());
     }
 
     @Nullable
@@ -246,19 +200,16 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      */
     public boolean bindData(boolean isRefresh, @NonNull List<T> datas) {
         if (isRefresh) {//下拉刷新
-            /**
-             * 避免动画闪屏
-             */
-            getData().removeOnListChangedCallback(dataChangeCallback);
             getData().clear();
+            boolean result = getData().addAll(datas);
             notifyDataSetChanged();
-            getData().addOnListChangedCallback(dataChangeCallback);
-            return getData().addAll(datas);
+            return result;
         } else {
             //上拉加载 不能为空,并且不包含
             if (checkList(datas)
                     && !getData().containsAll(datas)) {
                 getData().addAll(datas);
+                notifyDataSetChanged();
                 return true;
             }
         }
@@ -268,6 +219,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public void clearData() {
         if (!isDataEmpty()) {
             getData().clear();
+            notifyDataSetChanged();
         }
     }
 
@@ -360,6 +312,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
                 && checkItem(t)
                 && !getData().contains(t)) {
             getData().add(index, t);
+            notifyItemInserted(index + getHeaderCount());
             return true;
         }
         return false;
@@ -370,6 +323,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
                 && checkAddIndex(index)
                 && !getData().containsAll(datas)) {
             if (getData().addAll(index, datas)) {
+                notifyItemRangeInserted(getHeaderCount() + index, datas.size());
                 return true;
             }
         }
@@ -379,7 +333,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)
                 && !getData().containsAll(datas)) {
+            int start = getDataSize() + getHeaderCount();
             if (getData().addAll(datas)) {
+                notifyItemRangeInserted(start, datas.size());
                 return true;
             }
         }
@@ -389,7 +345,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean addItem(@NonNull T t) {
         if (checkItem(t)
                 && !getData().contains(t)) {
+            int start = getDataSize() + getHeaderCount();
             if (getData().add(t)) {
+                notifyItemInserted(start);
                 return true;
             }
         }
@@ -405,8 +363,10 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean updateItem(@NonNull T t) {
         if (checkItem(t)) {
             int index = getIndex(t);
+            int start = index + getHeaderCount();
             if (index >= 0) {
                 getData().set(index, t);
+                notifyItemChanged(start);
                 return true;
             }
         }
@@ -422,7 +382,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean updateItem(int index, @NonNull T t) {
         if (checkItem(t)) {
             if (index >= 0) {
+                int start = index + getHeaderCount();
                 getData().set(index, t);
+                notifyItemChanged(start);
                 return true;
             }
         }
@@ -436,6 +398,8 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean removeItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
             getData().remove(index);
+            int start = index + getHeaderCount();
+            notifyItemRemoved(start);
             return true;
         }
         return false;
@@ -587,13 +551,13 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        attachedRecyclerView = recyclerView;
+        this.attachedRecyclerView = recyclerView;
         super.onAttachedToRecyclerView(recyclerView);
     }
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        attachedRecyclerView = null;
+        this.attachedRecyclerView = null;
         super.onDetachedFromRecyclerView(recyclerView);
     }
 

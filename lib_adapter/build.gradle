@@ -20,10 +20,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        // for view binding :
+        viewBinding true
+    }
 }
 
 dependencies {
     api des.material
     api project(path: ':lib_utils')
-    api des.databinding_runtime
 }
