@@ -14,21 +14,15 @@ import com.xxf.view.recyclerview.adapter.XXFViewHolder;
  * date createTime：2021/9/29
  * Description ://TODO
  */
-public class TestAdapter extends XXFRecyclerAdapter<AdapterTestBinding, Integer> {
+public class TestAdapter extends XXFRecyclerAdapter<AdapterTestBinding, String> {
     @Override
     protected AdapterTestBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
         return AdapterTestBinding.inflate(inflater, viewGroup, false);
     }
 
     @Override
-    public void onBindHolder(XXFViewHolder<AdapterTestBinding, Integer> holder, @Nullable Integer item, int index) {
+    public void onBindHolder(XXFViewHolder<AdapterTestBinding, String> holder, @Nullable String item, int index) {
         holder.getBinding().text.setTextKeepState("item:" + item);
         System.out.println("==========>onChildViewAttachedToWindow:AdapterPosition:" + holder.getAdapterPosition() + "  LayoutPosition:" + holder.getLayoutPosition() + "  hash:" + holder.itemView + " [[[bind]]]");
-    }
-
-    @Override
-    public long getItemId(int position) {
-        // type uuid
-        return getItem(position);
     }
 }

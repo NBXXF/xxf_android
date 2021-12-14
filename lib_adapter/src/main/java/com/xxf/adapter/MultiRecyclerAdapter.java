@@ -1,7 +1,12 @@
-package com.xxf.view.recyclerview.adapter;
+package com.xxf.adapter;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.viewbinding.ViewBinding;
+
+import com.xxf.view.recyclerview.adapter.MultiViewEntity;
+import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -17,8 +22,12 @@ public abstract class MultiRecyclerAdapter<V extends ViewBinding, T extends Mult
     public MultiRecyclerAdapter() {
     }
 
-    public MultiRecyclerAdapter(@NonNull ArrayList<T> data) {
-        super(data);
+    public MultiRecyclerAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback) {
+        super(diffCallback);
+    }
+
+    public MultiRecyclerAdapter(@NonNull AsyncDifferConfig<T> config) {
+        super(config);
     }
 
     @Override

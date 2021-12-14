@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setHasStableIds(true);
         binding.recyclerView.setAdapter(adapter);
         //删除-> 改变焦点（上一个)  后删除当前
-       // binding.recyclerView.find
+        // binding.recyclerView.find
         //创建第五条
         binding.recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
@@ -46,16 +46,40 @@ public class MainActivity extends AppCompatActivity {
             public void onChildViewDetachedFromWindow(@NonNull View view) {
             }
         });
-        List<Integer> list = new ArrayList<>();
-        int count = new Random().nextInt(100) + 2000;
+        List<String> list = new ArrayList<>();
+        int count = new Random().nextInt(100);
         for (int i = 0; i < count; i++) {
-            list.add(i);
+            list.add("i" + new Random().nextInt(100));
         }
         adapter.bindData(true, list);
         binding.refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.notifyDataSetChanged();
+                List<String> list = new ArrayList<>();
+                int count = new Random().nextInt(100);
+                for (int i = 0; i < count; i++) {
+                    list.add("i" + new Random().nextInt(100));
+                }
+                adapter.bindData(true, list);
+            }
+        });
+
+        binding.insert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.addItem(0, "hello");
+            }
+        });
+        binding.insertLast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.addItem("hello foo");
+            }
+        });
+        binding.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.removeItem(0);
             }
         });
 

@@ -28,13 +28,19 @@
             android:id="@+id/insert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="refresh" />
+            android:text="insert" />
+
+        <Button
+            android:id="@+id/insertLast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="insertLast" />
 
         <Button
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="refresh" />
+            android:text="delete" />
     </LinearLayout>
 
 </LinearLayout>

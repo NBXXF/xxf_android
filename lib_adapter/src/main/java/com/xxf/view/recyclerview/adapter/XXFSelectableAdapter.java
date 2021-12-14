@@ -4,6 +4,8 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.viewbinding.ViewBinding;
 
 import com.xxf.view.model.SelectableEntity;
@@ -41,10 +43,16 @@ public abstract class XXFSelectableAdapter<V extends ViewBinding, T extends Sele
         this.selectType = selectType;
     }
 
-    public XXFSelectableAdapter(@SelectType int selectType, @NonNull ArrayList<T> data) {
-        super(data);
+    public XXFSelectableAdapter(@NonNull DiffUtil.ItemCallback<T> diffCallback, @SelectType int selectType) {
+        super(diffCallback);
         this.selectType = selectType;
     }
+
+    public XXFSelectableAdapter(@NonNull AsyncDifferConfig<T> config, @SelectType int selectType) {
+        super(config);
+        this.selectType = selectType;
+    }
+
 
     public int getSelectType() {
         return selectType;
