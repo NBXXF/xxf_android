@@ -2,13 +2,10 @@ package com.xxf.view.recyclerview.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.IntRange;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,15 +26,7 @@ import java.util.List;
  */
 public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         extends RecyclerView.Adapter<XXFViewHolder<V, T>> {
-    public static final View inflaterView(@LayoutRes int id, RecyclerView recyclerView) {
-        return LayoutInflater.from(recyclerView.getContext())
-                .inflate(id, recyclerView, false);
-    }
 
-    private static final int HEADER_VIEW_TYPE = -10000;
-    private static final int FOOTER_VIEW_TYPE = -20000;
-    private final List<View> mHeaders = new ArrayList<View>();
-    private final List<View> mFooters = new ArrayList<View>();
     private ArrayList<T> dataList = new ArrayList<T>();
     private RecyclerView attachedRecyclerView;
 
@@ -64,15 +53,6 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return getDataSize() <= 0;
     }
 
-    public int getHeaderCount() {
-        return mHeaders.size();
-    }
-
-
-    public int getFooterCount() {
-        return mFooters.size();
-    }
-
     public XXFRecyclerAdapter(@NonNull ArrayList<T> data) {
         this.dataList = (data == null ? new ArrayList<T>() : data);
     }
@@ -81,117 +61,6 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         this(new ArrayList<T>());
     }
 
-    @Nullable
-    @CheckResult
-    public View addHeader(@NonNull View view) {
-        if (view == null) {
-            throw new IllegalArgumentException("You can't have a null header!");
-        }
-        mHeaders.add(view);
-        notifyDataSetChanged();
-        return view;
-    }
-
-    @Nullable
-    @CheckResult
-    public View addHeader(@LayoutRes int id, @NonNull RecyclerView recyclerView) {
-        return addHeader(inflaterView(id, recyclerView));
-    }
-
-    @Nullable
-    @CheckResult
-    public View addFooter(@NonNull View view) {
-        if (view == null) {
-            throw new IllegalArgumentException("You can't have a null footer!");
-        }
-        mFooters.add(view);
-        notifyDataSetChanged();
-        return view;
-    }
-
-    @Nullable
-    @CheckResult
-    public View addFooter(@LayoutRes int id, @NonNull RecyclerView recyclerView) {
-        return addFooter(inflaterView(id, recyclerView));
-    }
-
-    @Nullable
-    @CheckResult
-    public View getHeader(int index) {
-        return index < mHeaders.size() ? mHeaders.get(index) : null;
-    }
-
-    @Nullable
-    @CheckResult
-    public View getFooter(int index) {
-        return index < mFooters.size() ? mFooters.get(index) : null;
-    }
-
-    public boolean isHeader(int viewType) {
-        return viewType >= HEADER_VIEW_TYPE && viewType < (HEADER_VIEW_TYPE + mHeaders.size());
-    }
-
-    public boolean isHeader(View view) {
-        return mHeaders.contains(view);
-    }
-
-    public boolean removeHeader(View view) {
-        if (getHeaderCount() > 0) {
-            if (mHeaders.contains(view)) {
-                boolean remove = mHeaders.remove(view);
-                notifyDataSetChanged();
-                return remove;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 移除所有Header
-     *
-     * @return
-     */
-    public boolean removeHeaders() {
-        if (mHeaders != null && !mHeaders.isEmpty()) {
-            mHeaders.clear();
-            notifyDataSetChanged();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeFooter(View view) {
-        if (getFooterCount() > 0) {
-            if (mFooters.contains(view)) {
-                boolean remove = mFooters.remove(view);
-                notifyDataSetChanged();
-                return remove;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 移除所有footer
-     *
-     * @return
-     */
-    public boolean removeFooters() {
-        if (mFooters != null && !mFooters.isEmpty()) {
-            mFooters.clear();
-            notifyDataSetChanged();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isFooter(int viewType) {
-        return viewType >= FOOTER_VIEW_TYPE && viewType < (FOOTER_VIEW_TYPE + mFooters.size());
-    }
-
-    public boolean isFooter(View view) {
-        return mFooters.contains(view);
-    }
 
     /**
      * @param isRefresh 是否下拉刷新
@@ -312,7 +181,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
                 && checkItem(t)
                 && !getData().contains(t)) {
             getData().add(index, t);
-            notifyItemInserted(index + getHeaderCount());
+            notifyItemInserted(index);
             return true;
         }
         return false;
@@ -323,7 +192,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
                 && checkAddIndex(index)
                 && !getData().containsAll(datas)) {
             if (getData().addAll(index, datas)) {
-                notifyItemRangeInserted(getHeaderCount() + index, datas.size());
+                notifyItemRangeInserted(index, datas.size());
                 return true;
             }
         }
@@ -333,7 +202,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)
                 && !getData().containsAll(datas)) {
-            int start = getDataSize() + getHeaderCount();
+            int start = getDataSize();
             if (getData().addAll(datas)) {
                 notifyItemRangeInserted(start, datas.size());
                 return true;
@@ -345,7 +214,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean addItem(@NonNull T t) {
         if (checkItem(t)
                 && !getData().contains(t)) {
-            int start = getDataSize() + getHeaderCount();
+            int start = getDataSize();
             if (getData().add(t)) {
                 notifyItemInserted(start);
                 return true;
@@ -363,7 +232,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean updateItem(@NonNull T t) {
         if (checkItem(t)) {
             int index = getIndex(t);
-            int start = index + getHeaderCount();
+            int start = index;
             if (index >= 0) {
                 getData().set(index, t);
                 notifyItemChanged(start);
@@ -382,7 +251,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean updateItem(int index, @NonNull T t) {
         if (checkItem(t)) {
             if (index >= 0) {
-                int start = index + getHeaderCount();
+                int start = index;
                 getData().set(index, t);
                 notifyItemChanged(start);
                 return true;
@@ -398,7 +267,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean removeItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
             getData().remove(index);
-            int start = index + getHeaderCount();
+            int start = index;
             notifyItemRemoved(start);
             return true;
         }
@@ -438,26 +307,8 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
 
     @Override
     public final XXFViewHolder<V, T> onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        if (isHeader(viewType)) {
-            int whichHeader = Math.abs(viewType - HEADER_VIEW_TYPE);
-            View headerView = mHeaders.get(whichHeader);
-            ViewParent parent = headerView.getParent();
-            if (parent != null && parent instanceof ViewGroup) {
-                ((ViewGroup) parent).removeView(headerView);
-            }
-            return new XXFViewHolder(this, headerView, false);
-        } else if (isFooter(viewType)) {
-            int whichFooter = Math.abs(viewType - FOOTER_VIEW_TYPE);
-            View footerView = mFooters.get(whichFooter);
-            ViewParent parent = footerView.getParent();
-            if (parent != null && parent instanceof ViewGroup) {
-                ((ViewGroup) parent).removeView(footerView);
-            }
-            return new XXFViewHolder(this, footerView, false);
-        } else {
-            V v = onCreateBinding(LayoutInflater.from(viewGroup.getContext()), viewGroup, viewType);
-            return onCreateItemHolder(v, viewGroup, viewType);
-        }
+        V v = onCreateBinding(LayoutInflater.from(viewGroup.getContext()), viewGroup, viewType);
+        return onCreateItemHolder(v, viewGroup, viewType);
     }
 
     /**
@@ -472,38 +323,14 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     }
 
 
-    /**
-     * 每条布局的type
-     *
-     * @param index 相对于List的位置
-     * @return
-     */
-    public int getViewType(int index) {
-        return 0;
-    }
-
-    @Override
-    public final int getItemViewType(int position) {
-        if (position < getHeaderCount()) {
-            return HEADER_VIEW_TYPE + position;
-        } else if (position < (getHeaderCount() + getData().size())) {
-            return getViewType(position - getHeaderCount());
-        } else {
-            return FOOTER_VIEW_TYPE + position - getHeaderCount() - getData().size();
-        }
-    }
-
     @Override
     public int getItemCount() {
-        return getHeaderCount() + getData().size() + getFooterCount();
+        return getData().size();
     }
 
     @Override
     public final void onBindViewHolder(XXFViewHolder<V, T> holder, int position) {
-        if (position >= getHeaderCount() && position < getHeaderCount() + getData().size()) {
-            int index = position - getHeaderCount();
-            onBindHolder(holder, getItem(index), index);
-        }
+        onBindHolder(holder, getItem(position), position);
     }
 
 

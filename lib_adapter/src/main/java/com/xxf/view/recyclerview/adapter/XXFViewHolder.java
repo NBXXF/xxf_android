@@ -68,7 +68,7 @@ public class XXFViewHolder<V extends ViewBinding, T> extends InnerViewHolder
      * @return 相对于List容器的位置
      */
     public int getIndex() {
-        return getAdapterPosition() - baseRecyclerAdapter.getHeaderCount();
+        return getAdapterPosition();
     }
 
     /**

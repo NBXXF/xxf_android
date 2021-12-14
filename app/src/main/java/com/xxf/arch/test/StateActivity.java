@@ -181,11 +181,11 @@ public class StateActivity extends AppCompatActivity {
 
 
         @Override
-        public int getViewType(int index) {
-            if (getItem(index).intValue() % 2 == 0) {
+        public int getItemViewType(int position) {
+            if (getItem(position).intValue() % 2 == 0) {
                 return 1;
             }
-            return super.getViewType(index);
+            return super.getItemViewType(position);
         }
 
         @Override
