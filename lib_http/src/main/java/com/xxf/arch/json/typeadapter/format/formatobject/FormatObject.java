@@ -51,4 +51,11 @@ public class FormatObject<O, F> implements Serializable {
                 ", format=" + format +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        int result = origin != null ? origin.hashCode() : 0;
+        result = 31 * result + (format != null ? format.hashCode() : 0);
+        return result;
+    }
 }
