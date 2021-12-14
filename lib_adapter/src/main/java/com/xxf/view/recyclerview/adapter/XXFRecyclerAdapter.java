@@ -131,7 +131,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean addItem(@IntRange(from = 0) int index, @NonNull T t) {
         if (checkIndex(index)) {
             getData().add(index, t);
-            notifyDataSetChanged();
+            notifyItemInserted(index);
             return true;
         }
         return false;
@@ -141,15 +141,16 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         if (checkList(datas)
                 && checkIndex(index)) {
             getData().addAll(index, datas);
-            notifyDataSetChanged();
+            notifyItemRangeInserted(index,datas.size());
         }
         return false;
     }
 
     public boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)) {
+            int start=getDataSize();
             if (getData().addAll(datas)) {
-                notifyDataSetChanged();
+                notifyItemRangeInserted(start,datas.size());
                 return true;
             }
         }
@@ -157,8 +158,9 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     }
 
     public boolean addItem(@NonNull T t) {
+        int start=getDataSize();
         if (getData().add(t)) {
-            notifyDataSetChanged();
+            notifyItemInserted(start);
             return true;
         }
         return false;
@@ -189,7 +191,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public boolean updateItem(int index, @NonNull T t) {
         if (checkIndex(index)) {
             getData().set(index, t);
-            notifyItemRemoved(index);
+            notifyItemChanged(index);
             return true;
         }
         return false;

@@ -1,13 +1,13 @@
 package com.xxf.adapter.demo;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.adapter.demo.databinding.ActivityMainBinding;
 
@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class NormalRecyclerViewActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    TestAdapter adapter = new TestAdapter();
+    TestNormalAdapter adapter = new TestNormalAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        binding.change.setText("normal");
+        binding.change.setText("diff");
         binding.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(),NormalRecyclerViewActivity.class));
+                startActivity(new Intent(v.getContext(), MainActivity.class));
             }
         });
         setContentView(binding.getRoot());
@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         List<String> list = new ArrayList<>();
         int count = new Random().nextInt(50);
         for (int i = 0; i < count; i++) {
-         //   list.add("i" + new Random().nextInt(100));
-            list.add("i" +i);
+            //   list.add("i" + new Random().nextInt(100));
+            list.add("i" + i);
         }
         adapter.bindData(true, list);
         binding.refresh.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 List<String> list = new ArrayList<>();
                 int count = new Random().nextInt(50);
                 for (int i = 0; i < count; i++) {
-                  //  list.add("i" + new Random().nextInt(100));
+                    //  list.add("i" + new Random().nextInt(100));
                     list.add("i" + i);
                 }
                 adapter.bindData(true, list);
-                Log.d("=======>list:",""+list);
+                Log.d("=======>list:", "" + list);
             }
         });
 
