@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         binding.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(),NormalRecyclerViewActivity.class));
+                startActivity(new Intent(v.getContext(),NormalRecyclerViewActivity.class).putExtra("xx","77463"));
             }
         });
         setContentView(binding.getRoot());

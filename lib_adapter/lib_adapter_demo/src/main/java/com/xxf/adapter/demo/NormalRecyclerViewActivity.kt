@@ -1,111 +1,83 @@
-package com.xxf.adapter.demo;
+package com.xxf.adapter.demo
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import androidx.appcompat.app.AppCompatActivity
+import com.xxf.adapter.demo.TestNormalAdapter
+import android.os.Bundle
+import android.content.Intent
+import android.util.Log
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import com.xxf.adapter.demo.databinding.ActivityMainBinding
+import com.xxf.application.activity.bindExtra
+import java.util.*
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
+open class NormalRecyclerViewActivity : AppCompatActivity() {
+    val uuid:String by bindExtra("xx","default")
+    var binding: ActivityMainBinding? = null
+    var adapter = TestNormalAdapter()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-import com.xxf.adapter.demo.databinding.ActivityMainBinding;
+        println("==========>get param:"+uuid);
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-public class NormalRecyclerViewActivity extends AppCompatActivity {
-
-    ActivityMainBinding binding;
-    TestNormalAdapter adapter = new TestNormalAdapter();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        binding.change.setText("diff");
-        binding.change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), MainActivity.class));
-            }
-        });
-        setContentView(binding.getRoot());
-        System.out.println("==========>onChildViewAttachedToWindow  init");
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding!!.change.text = "diff"
+        binding!!.change.setOnClickListener { v ->
+            startActivity(
+                Intent(
+                    v.context,
+                    MainActivity::class.java
+                )
+            )
+        }
+        setContentView(binding!!.root)
+        println("==========>onChildViewAttachedToWindow  init")
         //adapter.setHasStableIds(true);
-        binding.recyclerView.setAdapter(adapter);
+        binding!!.recyclerView.adapter = adapter
         //删除-> 改变焦点（上一个)  后删除当前
         // binding.recyclerView.find
         //创建第五条
-        binding.recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
-            @Override
-            public void onChildViewAttachedToWindow(@NonNull View view) {
-                RecyclerView.ViewHolder containingViewHolder = binding.recyclerView.findContainingViewHolder(view);
-                if (containingViewHolder.getAdapterPosition() == 5) {
+        binding!!.recyclerView.addOnChildAttachStateChangeListener(object :
+            RecyclerView.OnChildAttachStateChangeListener {
+            override fun onChildViewAttachedToWindow(view: View) {
+                val containingViewHolder = binding!!.recyclerView.findContainingViewHolder(view)
+                if (containingViewHolder!!.adapterPosition == 5) {
                     //requestfoucs
-                    binding.recyclerView.removeOnChildAttachStateChangeListener(this);
+                    binding!!.recyclerView.removeOnChildAttachStateChangeListener(this)
                 }
-                System.out.println("==========>onChildViewAttachedToWindow:AdapterPosition:" + containingViewHolder.getAdapterPosition() + "  LayoutPosition:" + containingViewHolder.getLayoutPosition() + "  hash:" + containingViewHolder.itemView);
+                println("==========>onChildViewAttachedToWindow:AdapterPosition:" + containingViewHolder.adapterPosition + "  LayoutPosition:" + containingViewHolder.layoutPosition + "  hash:" + containingViewHolder.itemView)
             }
 
-            @Override
-            public void onChildViewDetachedFromWindow(@NonNull View view) {
-            }
-        });
-        List<String> list = new ArrayList<>();
-        int count = new Random().nextInt(50);
-        for (int i = 0; i < count; i++) {
+            override fun onChildViewDetachedFromWindow(view: View) {}
+        })
+        val list: MutableList<String> = ArrayList()
+        val count = Random().nextInt(50)
+        for (i in 0 until count) {
             //   list.add("i" + new Random().nextInt(100));
-            list.add("i" + i);
+            list.add("i$i")
         }
-        adapter.bindData(true, list);
-        binding.refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<String> list = new ArrayList<>();
-                int count = new Random().nextInt(50);
-                for (int i = 0; i < count; i++) {
-                    //  list.add("i" + new Random().nextInt(100));
-                    list.add("i" + i);
-                }
-                adapter.bindData(true, list);
-                Log.d("=======>list:", "" + list);
+        adapter.bindData(true, list)
+        binding!!.refresh.setOnClickListener {
+            val list: MutableList<String> = ArrayList()
+            val count = Random().nextInt(50)
+            for (i in 0 until count) {
+                //  list.add("i" + new Random().nextInt(100));
+                list.add("i$i")
             }
-        });
-
-        binding.insert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.addItem(0, "hello");
+            adapter.bindData(true, list)
+            Log.d("=======>list:", "" + list)
+        }
+        binding!!.insert.setOnClickListener { adapter.addItem(0, "hello") }
+        binding!!.insertLast.setOnClickListener { adapter.addItem("hello foo") }
+        binding!!.delete.setOnClickListener { adapter.removeItem(0) }
+        binding!!.loadMore.setOnClickListener {
+            val list: MutableList<String> = ArrayList()
+            val count = Random().nextInt(50)
+            for (i in 0 until count) {
+                //  list.add("i" + new Random().nextInt(100));
+                list.add("i$i")
             }
-        });
-        binding.insertLast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.addItem("hello foo");
-            }
-        });
-        binding.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.removeItem(0);
-            }
-        });
-        binding.loadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<String> list = new ArrayList<>();
-                int count = new Random().nextInt(50);
-                for (int i = 0; i < count; i++) {
-                    //  list.add("i" + new Random().nextInt(100));
-                    list.add("i" + i);
-                }
-                adapter.addItems(list);
-            }
-        });
-
+            adapter.addItems(list)
+        }
     }
 }
