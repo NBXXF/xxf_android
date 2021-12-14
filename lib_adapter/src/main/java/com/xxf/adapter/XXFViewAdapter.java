@@ -26,6 +26,7 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
 
     @NonNull
     public View itemView;
+    private long itemId;
 
     /**
      * 注意 必须 LayoutInflater 指定parent为对应的recyclerview
@@ -33,7 +34,12 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
      * @param itemView
      */
     public XXFViewAdapter(@NonNull View itemView) {
+        this(itemView, RecyclerView.NO_ID);
+    }
+
+    public XXFViewAdapter(@NonNull View itemView, long itemId) {
         this.itemView = itemView;
+        this.itemId = itemId;
     }
 
     public XXFViewAdapter(@LayoutRes int id, RecyclerView recyclerView) {
@@ -44,7 +50,7 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
     @NonNull
     @Override
     public InnerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (itemView.getParent() != null) {
+        if (itemView.getParent() != null && itemView.getParent() instanceof ViewGroup) {
             ((ViewGroup) itemView.getParent()).removeView(itemView);
         }
         return new InnerViewHolder(itemView);
@@ -57,7 +63,7 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
 
     @Override
     public long getItemId(int position) {
-        return Objects.hash(itemView);
+        return this.itemId;
     }
 
     @Override
