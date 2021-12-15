@@ -28,9 +28,13 @@ class ExtrasDelegate<out T>(private val key: String, private val defaultValue: T
     operator fun setValue(thisRef: Fragment, property: KProperty<*>, value: Any) {
         this.extra = value as T
         if (thisRef.arguments == null) {
-            thisRef.arguments = Bundle()
+            try {
+                thisRef.arguments = Bundle()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
         }
-        thisRef.arguments!!.putExtras(key to value)
+        thisRef.arguments?.putExtras(key to value)
     }
 
     operator fun setValue(thisRef: Activity, property: KProperty<*>, value: Any) {
@@ -78,7 +82,7 @@ fun Fragment.putExtra(key: String, value: Any): Bundle {
  *          "Key4" to arrayOf("4", "5", "6")
  *      )
  */
-fun <T> Fragment.putExtras(vararg params: Pair<String, T>):Bundle {
+fun <T> Fragment.putExtras(vararg params: Pair<String, T>): Bundle {
     if (arguments == null) {
         arguments = Bundle()
     }
