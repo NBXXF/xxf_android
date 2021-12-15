@@ -619,12 +619,14 @@ public class SystemUtils {
         public CropIntentBuilder outputUri(Uri outputImgUri) {
             this.mCropIntent.putExtra("return-data", false);
             this.mCropIntent.putExtra("output", outputImgUri);
+            this.mCropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return this;
         }
 
         public CropIntentBuilder outputFile(File outputImgFile) {
             this.mCropIntent.putExtra("return-data", false);
             this.mCropIntent.putExtra("output", queryMediaImageUri(outputImgFile));
+            this.mCropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return this;
         }
 
