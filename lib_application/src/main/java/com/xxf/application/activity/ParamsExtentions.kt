@@ -11,17 +11,17 @@ import kotlin.reflect.KProperty
 /**
  * 处理参数获取 简化
  */
-class ExtrasDelegate<out T>(private val extraName: String, private val defaultValue: T) {
+class ExtrasDelegate<out T>(private val key: String, private val defaultValue: T) {
 
     private var extra: T? = null
 
     operator fun getValue(thisRef: Activity, property: KProperty<*>): T {
-        extra = getExtra(extra, extraName, thisRef)
+        extra = getExtra(extra, key, thisRef)
         return extra ?: defaultValue
     }
 
     operator fun getValue(thisRef: Fragment, property: KProperty<*>): T {
-        extra = getExtra(extra, extraName, thisRef)
+        extra = getExtra(extra, key, thisRef)
         return extra ?: defaultValue
     }
 
@@ -30,13 +30,13 @@ class ExtrasDelegate<out T>(private val extraName: String, private val defaultVa
         if (thisRef.arguments == null) {
             thisRef.arguments = Bundle()
         }
-        thisRef.arguments!!.putExtras(extraName to value)
+        thisRef.arguments!!.putExtras(key to value)
     }
 
     operator fun setValue(thisRef: Activity, property: KProperty<*>, value: Any) {
         extra = value as T
         if (thisRef.intent != null) {
-            thisRef.intent!!.putExtras(extraName to value)
+            thisRef.intent!!.putExtras(key to value)
         }
     }
 }
@@ -44,22 +44,30 @@ class ExtrasDelegate<out T>(private val extraName: String, private val defaultVa
 /**
  * 绑定获取参数
  */
-fun <T> bindExtra(extra: String = KEY_COMPAT_PARAM, default: T) = ExtrasDelegate(extra, default)
+fun <T> bindExtra(key: String = KEY_COMPAT_PARAM, default: T) = ExtrasDelegate(key, default)
 
 /**
  * 绑定获取参数
  */
-fun bindExtra(extra: String = KEY_COMPAT_PARAM) = bindExtra(extra, null)
+fun bindExtra(key: String = KEY_COMPAT_PARAM) = bindExtra(key, null)
 
 
 /**
+ * 默认key KEY_COMPAT_PARAM
  * putExtras("11")
  */
-fun Fragment.putExtra(extra: String = KEY_COMPAT_PARAM, value: Any) {
+fun Fragment.putExtra(value: Any): Bundle {
+    return putExtra(KEY_COMPAT_PARAM, value)
+}
+
+/**
+ * key value
+ */
+fun Fragment.putExtra(key: String, value: Any): Bundle {
     if (arguments == null) {
         arguments = Bundle()
     }
-    arguments?.putExtras(extra to value)
+    return arguments!!.putExtras(key to value)
 }
 
 /**
@@ -70,11 +78,11 @@ fun Fragment.putExtra(extra: String = KEY_COMPAT_PARAM, value: Any) {
  *          "Key4" to arrayOf("4", "5", "6")
  *      )
  */
-fun <T> Fragment.putExtra(vararg params: Pair<String, T>) {
+fun <T> Fragment.putExtras(vararg params: Pair<String, T>):Bundle {
     if (arguments == null) {
         arguments = Bundle()
     }
-    arguments?.putExtras(*params)
+    return arguments!!.putExtras(*params)
 }
 
 /**
