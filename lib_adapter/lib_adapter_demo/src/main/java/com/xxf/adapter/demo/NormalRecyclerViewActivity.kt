@@ -12,7 +12,12 @@ import com.xxf.application.activity.bindExtra
 import java.util.*
 
 open class NormalRecyclerViewActivity : AppCompatActivity() {
-    val uuid:String by bindExtra("xx","default")
+    val uuid:String by bindExtra(default = "defaultXXX")
+
+    val uuid2:String by bindExtra("KEY",default = "defaultXXX")
+
+    val uuid3:String? by bindExtra("KEY")
+
     var binding: ActivityMainBinding? = null
     var adapter = TestNormalAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {

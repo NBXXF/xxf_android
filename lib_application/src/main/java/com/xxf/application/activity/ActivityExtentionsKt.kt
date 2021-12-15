@@ -11,12 +11,13 @@ import androidx.fragment.app.FragmentActivity
 /**
  * 统一返回结果(一般情况只有一个返回值)
  */
-val ACTIVITY_RESULT by lazy { "ActivityResult" }
+val KEY_ACTIVITY_RESULT by lazy { "ActivityResult" }
 
 /**
  * 统一参数(一般情况一个参数)
  */
-val ACTIVITY_PARAM by lazy { "ActivityParam" }
+val KEY_COMPAT_PARAM by lazy { "CompatParam" }
+
 
 /**
  * 栈顶activity
