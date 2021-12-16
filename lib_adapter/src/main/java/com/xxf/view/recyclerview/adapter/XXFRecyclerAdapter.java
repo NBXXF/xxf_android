@@ -374,7 +374,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     @Override
     public void callOnItemChildClick(XXFViewHolder<V, T> holder, View childView, int index) {
         if (this.onItemChildClickListener != null) {
-            this.onItemChildLongClickListener.onItemChildLongClick(this, holder, childView, index, getItem(index));
+            this.onItemChildClickListener.onItemChildClick(this, holder, childView, index, getItem(index));
         }
     }
 
