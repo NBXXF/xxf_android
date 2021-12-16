@@ -18,9 +18,9 @@ import java.util.Objects;
  * <p>
  * 实例如下:
  * ConcatAdapter totalAdapter = new ConcatAdapter();
- * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
+ * totalAdapter.addAdapter(new XXFViewAdapter(headerView))
+ * totalAdapter.addAdapter(new XXFViewAdapter(headerView))
+ * totalAdapter.addAdapter(new XXFViewAdapter(footerView))
  */
 public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
 
