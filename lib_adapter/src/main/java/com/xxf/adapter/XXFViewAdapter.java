@@ -37,14 +37,28 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
         this(itemView, RecyclerView.NO_ID);
     }
 
+    /**
+     * @param itemView
+     * @param itemId   结合 setHasStableIds() 避免重复创建view
+     */
     public XXFViewAdapter(@NonNull View itemView, long itemId) {
         this.itemView = itemView;
         this.itemId = itemId;
     }
 
     public XXFViewAdapter(@LayoutRes int id, RecyclerView recyclerView) {
+        this(id, recyclerView, RecyclerView.NO_ID);
+    }
+
+    /**
+     * @param id
+     * @param recyclerView
+     * @param itemId       结合 setHasStableIds() 避免重复创建view
+     */
+    public XXFViewAdapter(@LayoutRes int id, RecyclerView recyclerView, long itemId) {
         this.itemView = LayoutInflater.from(recyclerView.getContext())
                 .inflate(id, recyclerView, false);
+        this.itemId = itemId;
     }
 
     @NonNull
