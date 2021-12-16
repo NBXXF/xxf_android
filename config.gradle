@@ -27,7 +27,7 @@ ext {
 
 
             /**
-             * databinding 数据结构类
+             * databinding 数据Z结构类
              *  如xxfadapter 用到了ObservableList
              */
             databinding_runtime        : "androidx.databinding:databinding-runtime:7.0.4"

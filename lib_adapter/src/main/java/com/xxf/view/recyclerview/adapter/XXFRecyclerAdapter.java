@@ -387,5 +387,24 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     public int getItemCount() {
         return getDataSize();
     }
+
+
+    /**
+     * 原始adapter 不支持了
+     * @return
+     */
+    @Deprecated
+    public int getHeaderCount() {
+        return 0;
+    }
+
+    /**
+     * 原始adapter 不支持了
+     * @return
+     */
+    @Deprecated
+    public int getFooterCount() {
+        return 0;
+    }
 }
 
