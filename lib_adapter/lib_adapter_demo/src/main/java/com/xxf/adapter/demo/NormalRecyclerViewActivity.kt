@@ -18,6 +18,8 @@ open class NormalRecyclerViewActivity : AppCompatActivity() {
 
     val uuid3:String? by bindExtra("KEY")
 
+    var uuid4:String? by bindExtra("KEY")
+
     var binding: ActivityMainBinding? = null
     var adapter = TestNormalAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {

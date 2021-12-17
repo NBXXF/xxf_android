@@ -25,7 +25,7 @@ class ExtrasDelegate<out T>(private val key: String, private val defaultValue: T
         return extra ?: defaultValue
     }
 
-    operator fun setValue(thisRef: Fragment, property: KProperty<*>, value: Any) {
+    operator fun setValue(thisRef: Fragment, property: KProperty<*>, value: Any?) {
         this.extra = value as T
         if (thisRef.arguments == null) {
             try {
@@ -37,7 +37,7 @@ class ExtrasDelegate<out T>(private val key: String, private val defaultValue: T
         thisRef.arguments?.putExtras(key to value)
     }
 
-    operator fun setValue(thisRef: Activity, property: KProperty<*>, value: Any) {
+    operator fun setValue(thisRef: Activity, property: KProperty<*>, value: Any?) {
         extra = value as T
         if (thisRef.intent != null) {
             thisRef.intent!!.putExtras(key to value)
