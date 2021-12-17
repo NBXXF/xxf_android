@@ -3,10 +3,10 @@ package com.xxf.view.round
 import android.content.Context
 import android.text.Editable
 import android.text.Selection
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.util.AttributeSet
-import android.widget.TextView.BufferType
 import androidx.annotation.CallSuper
 import androidx.appcompat.widget.AppCompatEditText
 
@@ -145,11 +145,6 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
      * fix 锤子手机8.0崩溃
      */
     override fun getText(): Editable? {
-        val text = super.getText()
-        if (text == null) {
-            super.setText("", BufferType.EDITABLE)
-            return super.getText()
-        }
-        return text
+        return super.getText() ?: return SpannableStringBuilder()
     }
 }
