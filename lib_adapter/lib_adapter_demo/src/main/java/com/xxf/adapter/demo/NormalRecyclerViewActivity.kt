@@ -25,6 +25,8 @@ open class NormalRecyclerViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        uuid4=null;
+
         println("==========>get param:"+uuid);
 
         binding = ActivityMainBinding.inflate(layoutInflater)
