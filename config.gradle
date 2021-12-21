@@ -10,9 +10,6 @@ ext {
             gson                       : "com.google.code.gson:gson:2.8.8",
             okhttp                     : "com.squareup.okhttp3:okhttp:4.9.1",
 
-            router_ap                  : "com.alibaba:arouter-compiler:1.2.2",
-            router_annotation          : 'com.alibaba:arouter-annotation:1.0.6',
-
             //-----------刷新-----------
             smart_refresh              : "com.scwang.smart:refresh-layout-kernel:2.0.3",
             refresh_footer             : 'com.scwang.smart:refresh-footer-classics:2.0.3',    //经典加载

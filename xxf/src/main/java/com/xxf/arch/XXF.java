@@ -8,8 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkRequest;
 import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.CheckResult;
@@ -23,15 +21,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.alibaba.android.arouter.core.ARouterTab;
-import com.alibaba.android.arouter.core.LogisticsCenter;
-import com.alibaba.android.arouter.facade.Postcard;
-import com.alibaba.android.arouter.facade.enums.RouteType;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxf.application.ApplicationProvider;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
-import com.xxf.arch.arouter.ARouterParamsInject;
 import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.bus.RxBus;
 import com.xxf.activityresult.ActivityResult;
@@ -46,10 +38,8 @@ import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.rxjava.RxLifecycle;
-import com.xxf.utils.LogKt;
 
 import java.util.Objects;
-import java.util.concurrent.Callable;
 
 import autodispose2.AutoDisposeConverter;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -58,7 +48,6 @@ import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.BiConsumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.functions.Supplier;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -85,11 +74,6 @@ public class XXF {
             @Override
             public String getUserId() {
                 return "";
-            }
-
-            @Override
-            public void init(Context context) {
-
             }
         };
         Application application;
@@ -142,7 +126,6 @@ public class XXF {
 
 
     public static void init(Builder builder) {
-        long start = System.currentTimeMillis();
         if (XXF.application == null) {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
@@ -154,38 +137,9 @@ public class XXF {
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
                     });
-                    initRouter(builder.asyncInit, builder.isDebug);
                 }
             }
         }
-        Log.d("======>take:", "" + (System.currentTimeMillis() - start));
-    }
-
-    /**
-     * arouter
-     */
-    private static void initRouter(boolean asyncInit, boolean isDebug) {
-        /**
-         *         router 解析参数注册 只能在主线程application中
-         */
-        ARouterParamsInject.INSTANCE.register(application);
-        Observable<Boolean> initRequst = Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                if (isDebug) {
-                    ARouter.openLog();
-                    ARouter.openDebug();
-                }
-                ARouter.init(application);
-                //一次性加载到表中
-                ARouterTab.____initLoad();
-                return true;
-            }
-        });
-        if (asyncInit) {
-            initRequst = initRequst.subscribeOn(Schedulers.io());
-        }
-        initRequst.subscribe();
     }
 
 
@@ -426,127 +380,6 @@ public class XXF {
         return new UIErrorTransformer<T>(XXF.errorHandler);
     }
 
-    /**
-     * 通过路由获取Activity class对象
-     *
-     * @param activityRouterPath
-     * @return
-     */
-    public static Observable<Class<Activity>> getActivityClassByRouter(@NonNull final String activityRouterPath) {
-        return Observable.defer(new Supplier<ObservableSource<? extends Class<Activity>>>() {
-            @Override
-            public ObservableSource<? extends Class<Activity>> get() throws Throwable {
-                Objects.requireNonNull(activityRouterPath);
-                return getPostcardByRouter(activityRouterPath)
-                        .map(new Function<Postcard, Class<Activity>>() {
-                            @Override
-                            public Class<Activity> apply(Postcard build) throws Exception {
-                                if (build.getType() != RouteType.ACTIVITY) {
-                                    throw new IllegalArgumentException(String.format("% is not activity", activityRouterPath));
-                                }
-                                return (Class<Activity>) build.getDestination();
-                            }
-                        });
-            }
-        });
-    }
-
-    /**
-     * 通过路由获取导航 对象
-     *
-     * @param routerPath
-     * @return
-     */
-    public static Observable<Postcard> getPostcardByRouter(@NonNull final String routerPath) {
-        return Observable.fromCallable(new Callable<Postcard>() {
-            @Override
-            public Postcard call() throws Exception {
-                Objects.requireNonNull(routerPath);
-                Postcard build = ARouter.getInstance().build(routerPath);
-                LogisticsCenter.completion(build);
-                if (build == null) {
-                    throw new NullPointerException(String.format("% not found", routerPath));
-                }
-                return build;
-            }
-        });
-    }
-
-    /**
-     * 通过路由获取CLASS 对象
-     *
-     * @param routerPath
-     * @return
-     */
-    public static Observable<Class<?>> getClassByRouter(@NonNull final String routerPath) {
-        return getPostcardByRouter(routerPath)
-                .map(new Function<Postcard, Class<?>>() {
-                    @Override
-                    public Class<?> apply(Postcard postcard) throws Exception {
-                        return postcard.getDestination();
-                    }
-                });
-    }
-
-    /**
-     * 替代 startActivityForResult
-     * activity栈顶Activity必须是 FragmentActivity,否则会报错
-     * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
-     *
-     * @param targetActivityRouterPath 目标Activity路由
-     * @param params
-     * @param requestCode
-     * @return
-     */
-    @MainThread
-    public static Observable<ActivityResult> startActivityForResult(@NonNull final String targetActivityRouterPath,
-                                                                    @NonNull final Bundle params,
-                                                                    final int requestCode) {
-        return getActivityClassByRouter(targetActivityRouterPath)
-                .flatMap(new Function<Class<Activity>, ObservableSource<ActivityResult>>() {
-                    @Override
-                    public ObservableSource<ActivityResult> apply(Class<Activity> activityClass) throws Exception {
-                        return startActivityForResult(activityClass, params, requestCode);
-                    }
-                });
-    }
-
-    /**
-     * 替代 startActivityForResult
-     * activity栈顶Activity必须是 FragmentActivity,否则会报错
-     * 注意:activity  onActivityResult方法 必须调用 super.onActivityResult(requestCode, resultCode, data);
-     *
-     * @param targetActivityClazz 目标Activity
-     * @param params
-     * @param requestCode
-     * @return
-     */
-    @MainThread
-    public static Observable<ActivityResult> startActivityForResult(
-            @NonNull final Class<? extends Activity> targetActivityClazz,
-            @NonNull final Bundle params,
-            final int requestCode) {
-        return Observable
-                .fromCallable(new Callable<FragmentActivity>() {
-                    @Override
-                    public FragmentActivity call() throws Exception {
-                        Activity topActivity = getActivityStackProvider().getTopActivity();
-                        if (topActivity instanceof FragmentActivity) {
-                            return (FragmentActivity) topActivity;
-                        }
-                        throw new RuntimeException("stack top activity must FragmentActivity!");
-                    }
-                })
-                .flatMap(new Function<FragmentActivity, ObservableSource<ActivityResult>>() {
-                    @Override
-                    public ObservableSource<ActivityResult> apply(FragmentActivity fragmentActivity) throws Exception {
-                        return startActivityForResult(fragmentActivity,
-                                new Intent(fragmentActivity, targetActivityClazz)
-                                        .putExtras(params),
-                                requestCode);
-                    }
-                });
-    }
 
 
     /**

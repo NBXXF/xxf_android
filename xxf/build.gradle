@@ -25,7 +25,6 @@ dependencies {
     api project(path: ':lib_utils')
     api project(path: ':lib_rxjava')
     api project(path: ':lib_view_snackbar')
-    api project(path: ':lib_arouter-api')
     api project(path: ':lib_permission')
     api project(path: ':lib_activityresult')
     api project(path: ':lib_bus')

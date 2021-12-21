@@ -24,9 +24,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.alibaba.android.arouter.facade.Postcard;
-import com.alibaba.android.arouter.facade.callback.NavCallback;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
@@ -320,18 +317,6 @@ public class MainActivity extends XXFActivity {
 
                         *//*    String url = "qweqwe";*/
                         String url = "/activity/test";
-                        ARouter.getInstance().build(url).navigation(view.getContext(), new NavCallback() {
-                            @Override
-                            public void onArrival(Postcard postcard) {
-
-                            }
-
-                            @Override
-                            public void onLost(Postcard postcard) {
-                                super.onLost(postcard);
-                                Log.d("", "=============>跳转失败" + postcard.getPath());
-                            }
-                        });
 
                         String json = "{\n" +
                                 "  \"num\": \"1948367743.1273676543\",\n" +
@@ -734,12 +719,6 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ActivityResult activityResult = getActivityResult();
-        if (activityResult != null) {
-            Log.d("======>onActResult get result:", "" + this + "   data:" + activityResult.getResultCode() + "  " + activityResult.getRequestCode());
-        } else {
-            Log.d("======>onActResult get result:", "" + this + "   data null");
-        }
     }
 
 }

@@ -20,6 +20,5 @@ include ':app',
         ':lib_http',
         ':xxf',
         ':lib_view',
-        ':lib_wechat',
-        ':lib_arouter-api'
+        ':lib_wechat'
 include ':lib_adapter:lib_adapter_demo'

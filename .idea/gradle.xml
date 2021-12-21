@@ -15,7 +15,6 @@
             <option value="$PROJECT_DIR$/lib_adapter" />
             <option value="$PROJECT_DIR$/lib_adapter/lib_adapter_demo" />
             <option value="$PROJECT_DIR$/lib_application" />
-            <option value="$PROJECT_DIR$/lib_arouter-api" />
             <option value="$PROJECT_DIR$/lib_bus" />
             <option value="$PROJECT_DIR$/lib_bus/lib_bus_demo" />
             <option value="$PROJECT_DIR$/lib_fileprovider" />

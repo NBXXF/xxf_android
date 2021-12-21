@@ -49,7 +49,4 @@ dependencies {
     implementation project(':xxf')
     implementation project(':lib_view')
     implementation project(':lib_view_round')
-
-
-    annotationProcessor des.router_ap
 }
