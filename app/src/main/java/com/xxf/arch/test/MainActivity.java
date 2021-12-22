@@ -237,8 +237,9 @@ public class MainActivity extends XXFActivity {
         });
         setContentView(R.layout.activity_main);
         XXFRoundImageTextView imageTextView=findViewById(R.id.textImage);
-        imageTextView.getTextView().setText("xxxxHGFDGHDFGHGH");
-        imageTextView.getImageView().setImageResource(R.drawable.xxf_ic_toast_success);
+//        imageTextView.getTextView().setText("xxxxHGFDGHDFGHGH");
+//        imageTextView.getImageView().setImageResource(R.drawable.xxf_ic_toast_success);
+
         StatusBarUtils.setTransparentForWindow(this);
         StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout));
 

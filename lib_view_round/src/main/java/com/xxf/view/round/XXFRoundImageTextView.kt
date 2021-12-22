@@ -28,32 +28,31 @@ open class XXFRoundImageTextView : XXFRoundLayout {
     ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     val imageView by lazy {
-        XXFRoundImageView(context)
+        XXFRoundImageView(context).apply {
+            this@XXFRoundImageTextView.addView(
+                this,
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    Gravity.CENTER
+                )
+            )
+        }
     }
     val textView by lazy {
         XXFRoundTextView(context).apply {
             setTextColor(Color.BLACK)
+            this@XXFRoundImageTextView.addView(
+                this,
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    Gravity.CENTER
+                )
+            )
         }
     }
 
-    init {
-        addView(
-            imageView,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER
-            )
-        )
-        addView(
-            textView,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER
-            )
-        )
-    }
 
     override fun setRadius(radius: Float) {
         super.setRadius(radius)
