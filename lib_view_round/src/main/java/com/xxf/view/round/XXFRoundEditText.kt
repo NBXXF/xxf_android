@@ -1,6 +1,7 @@
 package com.xxf.view.round
 
 import android.content.Context
+import android.os.Build
 import android.text.Editable
 import android.text.Selection
 import android.text.SpannableStringBuilder
@@ -26,7 +27,9 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     open var updateable: Boolean = true
 
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context) {
+    }
+
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         CornerUtil.clipView(this, attrs)
     }
@@ -145,6 +148,20 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
      * fix 锤子手机8.0崩溃
      */
     override fun getText(): Editable? {
-        return super.getText() ?: return SpannableStringBuilder()
+        val text = super.getText()
+        if (Build.VERSION.SDK_INT < 28 && text == null) {
+            textWatchers.forEach {
+                super.removeTextChangedListener(it)
+            }
+            try {
+                setText("")
+                return super.getText()
+            } finally {
+                textWatchers.forEach {
+                    super.addTextChangedListener(it)
+                }
+            }
+        }
+        return text
     }
 }
