@@ -27,9 +27,7 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     open var updateable: Boolean = true
 
 
-    constructor(context: Context) : super(context) {
-    }
-
+    constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         CornerUtil.clipView(this, attrs)
     }
