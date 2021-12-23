@@ -6,10 +6,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 import androidx.recyclerview.widget.InnerViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Objects;
+import com.xxf.view.recyclerview.adapter.IEdgeEffectViewHolder;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
@@ -67,7 +72,7 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
         if (itemView.getParent() != null && itemView.getParent() instanceof ViewGroup) {
             ((ViewGroup) itemView.getParent()).removeView(itemView);
         }
-        return new InnerViewHolder(itemView);
+        return new SpringInnerViewHolder(itemView);
     }
 
     @Override
@@ -83,5 +88,29 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
     @Override
     public int getItemCount() {
         return 1;
+    }
+
+    public static class SpringInnerViewHolder extends InnerViewHolder implements IEdgeEffectViewHolder<SpringAnimation> {
+
+        public SpringInnerViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
+        private SpringAnimation translationY = null;
+
+        @NotNull
+        @Override
+        public DynamicAnimation<SpringAnimation> getEdgeEffectAnimation() {
+            if (translationY == null) {
+                translationY = new SpringAnimation(itemView, SpringAnimation.TRANSLATION_Y)
+                        .setSpring(
+                                new SpringForce()
+                                        .setFinalPosition(0f)
+                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                                        .setStiffness(SpringForce.STIFFNESS_LOW)
+                        );
+            }
+            return translationY;
+        }
     }
 }
