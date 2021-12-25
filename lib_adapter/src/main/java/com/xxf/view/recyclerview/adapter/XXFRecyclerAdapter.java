@@ -24,14 +24,14 @@ import java.util.List;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2015/9/10 10:05
  * version
- *
- *  * 添加header footer 参考
- *  * 实例如下:
- *  * * ConcatAdapter totalAdapter = new ConcatAdapter();
- *  * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- *  * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- *  * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
- *  *
+ * <p>
+ * * 添加header footer 参考
+ * * 实例如下:
+ * * * ConcatAdapter totalAdapter = new ConcatAdapter();
+ * * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
+ * * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
+ * * * totalAdapter.addAdapter(new XXFViewAdapter(new TextView(null)))
+ * *
  */
 public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         extends RecyclerView.Adapter<XXFViewHolder<V, T>> implements BaseAdapter<V, T> {
@@ -129,7 +129,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      * @return
      */
     public boolean addItem(@IntRange(from = 0) int index, @NonNull T t) {
-        if (checkIndex(index)) {
+        if (checkIndex(index)||index==0) {
             getData().add(index, t);
             notifyItemInserted(index);
             return true;
@@ -139,18 +139,18 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
 
     public boolean addItems(@IntRange(from = 0) int index, @NonNull List<? extends T> datas) {
         if (checkList(datas)
-                && checkIndex(index)) {
+                && (checkIndex(index) || index == 0)) {
             getData().addAll(index, datas);
-            notifyItemRangeInserted(index,datas.size());
+            notifyItemRangeInserted(index, datas.size());
         }
         return false;
     }
 
     public boolean addItems(@NonNull Collection<? extends T> datas) {
         if (checkList(datas)) {
-            int start=getDataSize();
+            int start = getDataSize();
             if (getData().addAll(datas)) {
-                notifyItemRangeInserted(start,datas.size());
+                notifyItemRangeInserted(start, datas.size());
                 return true;
             }
         }
@@ -158,7 +158,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
     }
 
     public boolean addItem(@NonNull T t) {
-        int start=getDataSize();
+        int start = getDataSize();
         if (getData().add(t)) {
             notifyItemInserted(start);
             return true;
@@ -391,6 +391,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
 
     /**
      * 原始adapter 不支持了
+     *
      * @return
      */
     @Deprecated
@@ -400,6 +401,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
 
     /**
      * 原始adapter 不支持了
+     *
      * @return
      */
     @Deprecated
