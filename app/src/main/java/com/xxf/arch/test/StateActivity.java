@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import com.ezydev.bigscreenshot.BigScreenshot;
 import com.xxf.arch.XXF;
 import com.xxf.arch.model.DownloadTask;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -25,11 +26,13 @@ import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.utils.BitmapUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.DividerDecoration;
+import com.xxf.view.utils.SystemUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,17 +46,36 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class StateActivity extends AppCompatActivity {
+public class StateActivity extends AppCompatActivity implements BigScreenshot.ProcessScreenshot {
 
     ActivityStateBinding stateBinding;
     TestAdaper testAdaper;
     boolean checked;
 
+    public Bitmap takeScreenShotOfView(View v) {
+        // return   BitmapUtils.INSTANCE.createBitmap(v);
+        return BitmapUtils.INSTANCE.createBitmap(v, 0, 0);
+//        v.setDrawingCacheEnabled(true);
+//        v.buildDrawingCache(true);
+//
+//        // creates immutable clone
+//        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+//        v.setDrawingCacheEnabled(false); // clear drawing cache
+//        return b;
+    }
+
+    public Bitmap takeScreenShotOfJustView(View v) {
+//        v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+//                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+        return BitmapUtils.INSTANCE.createBitmap(v, 0, 0);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stateBinding = ActivityStateBinding.inflate(getLayoutInflater(), null, false);
-       //stateBinding.grayLayout.setGrayColor(true);
+        //stateBinding.grayLayout.setGrayColor(true);
 
         setContentView(stateBinding.getRoot());
         // TestViewModel viewModel = XXF.getViewModel(this, TestViewModel.class);
@@ -74,7 +96,7 @@ public class StateActivity extends AppCompatActivity {
                 Log.d("", "=============>bitmap:" + bitmap);
                 Log.d("", "=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
                 stateBinding.preview.setImageBitmap(bitmap);
-                checked=!checked;
+                checked = !checked;
 
                 // loadData();
             }
@@ -86,9 +108,19 @@ public class StateActivity extends AppCompatActivity {
                         "com.instagram.android")
                         .subscribe();*/
 
+                Bitmap bitmap = takeScreenShotOfJustView(stateBinding.recyclerView);
+                SystemUtils.saveImageToAlbum(StateActivity.this, "" + System.currentTimeMillis() + ".png", bitmap)
+                        .subscribe(new Consumer<File>() {
+                            @Override
+                            public void accept(File file) throws Throwable {
+                                Log.d("=========>", "====>bitmap2:" + file);
+                            }
+                        });
+           /*     BigScreenshot longScreenshot = new BigScreenshot(StateActivity.this, stateBinding.listItem, stateBinding.recyclerView);
+                longScreenshot.startScreenshot();*/
 
-                loadData();
-                sharedToIns();
+//                loadData();
+//                sharedToIns();
             }
         });
         testAdaper.bindData(true, new ArrayList<>());
@@ -156,23 +188,40 @@ public class StateActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        Observable.fromCallable(new Callable<List<Integer>>() {
-            @Override
-            public List<Integer> call() throws Exception {
-                List<Integer> strings = new ArrayList<>();
-                int i1 = new Random().nextInt(200);
-                for (int i = 0; i < i1; i++) {
-                    strings.add(i);
-                }
-                return strings;
-            }
-        }).subscribeOn(Schedulers.io())
+        Observable
+                .fromCallable(new Callable<List<Integer>>() {
+                    @Override
+                    public List<Integer> call() throws Exception {
+                        List<Integer> strings = new ArrayList<>();
+                        //   int i1 = new Random().nextInt(205);
+                        int i1 = 20;
+                        for (int i = 0; i < i1; i++) {
+                            strings.add(i);
+                        }
+                        return strings;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .to(XXF.bindLifecycle(this))
                 .subscribe(new Consumer<List<Integer>>() {
                     @Override
                     public void accept(List<Integer> strings) throws Exception {
                         testAdaper.bindData(true, strings);
+                    }
+                });
+    }
+
+    @Override
+    public void getScreenshot(Bitmap bitmap) {
+
+        ToastUtils.showToast("xxxx");
+        Log.d("=========>", "====>bitmap:" + bitmap);
+        SystemUtils.saveImageToAlbum(this, "" + System.currentTimeMillis() + ".png", bitmap)
+                .subscribe(new Consumer<File>() {
+                    @Override
+                    public void accept(File file) throws Throwable {
+                        Log.d("=========>", "====>bitmap2:" + file);
                     }
                 });
     }

@@ -30,7 +30,7 @@ object BitmapUtils {
     fun decodeSize(path: String?): Size {
         var decodeSize = Size(0, 0)
         try {
-            val exifInterface = ExifInterface(path?:"");
+            val exifInterface = ExifInterface(path ?: "");
             val rotation = exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_NORMAL
@@ -230,17 +230,27 @@ object BitmapUtils {
      * 适合未显示在UI界面上了的View
      *
      * @param view
-     * @param width
-     * @param height
+     * @param width  不知道 可以传0 自动测量
+     * @param height 不知道 可以传0 自动测量
      * @return
      */
     @CheckResult
     fun createBitmap(view: View, width: Int, height: Int): Bitmap? {
         try {
-            val measuredWidth = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
-            val measuredHeight = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-            view.measure(measuredWidth, measuredHeight)
-            view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+            if (width <= 0 && height <= 0) {
+                view.measure(
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                )
+                view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+            } else {
+                val measuredWidth =
+                    View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
+                val measuredHeight =
+                    View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+                view.measure(measuredWidth, measuredHeight)
+                view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+            }
             val bmp = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
             val c = Canvas(bmp)
             view.draw(c)
