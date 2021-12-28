@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.xxf.adapter.demo.databinding.ActivityMainBinding;
+import com.xxf.view.recyclerview.adapter.EdgeSpringEffectFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         binding.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(),NormalRecyclerViewActivity.class).putExtra("xx","77463"));
+                startActivity(new Intent(v.getContext(), NormalRecyclerViewActivity.class).putExtra("xx", "77463"));
             }
         });
         setContentView(binding.getRoot());
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         //删除-> 改变焦点（上一个)  后删除当前
         // binding.recyclerView.find
         //创建第五条
+        binding.recyclerView.setEdgeEffectFactory(new EdgeSpringEffectFactory(0.5f, 0.5f));
         binding.recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             @Override
             public void onChildViewAttachedToWindow(@NonNull View view) {
@@ -58,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
         List<String> list = new ArrayList<>();
         int count = new Random().nextInt(50);
         for (int i = 0; i < count; i++) {
-         //   list.add("i" + new Random().nextInt(100));
-            list.add("i" +i);
+            //   list.add("i" + new Random().nextInt(100));
+            list.add("i" + i);
         }
         adapter.bindData(true, list);
         binding.refresh.setOnClickListener(new View.OnClickListener() {
@@ -68,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 List<String> list = new ArrayList<>();
                 int count = new Random().nextInt(50);
                 for (int i = 0; i < count; i++) {
-                  //  list.add("i" + new Random().nextInt(100));
+                    //  list.add("i" + new Random().nextInt(100));
                     list.add("i" + i);
                 }
                 adapter.bindData(true, list);
-                Log.d("=======>list:",""+list);
+                Log.d("=======>list:", "" + list);
             }
         });
 

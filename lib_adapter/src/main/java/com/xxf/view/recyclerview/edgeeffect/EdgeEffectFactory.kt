@@ -5,6 +5,7 @@ import android.widget.EdgeEffect
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
@@ -40,8 +41,17 @@ open class EdgeSpringEffectViewHolder<V : ViewBinding, T> : XXFViewHolder<V, T>,
         bindItemClick
     )
 
-    private val translationY: SpringAnimation by lazy {
+    private val mTranslationEdgeAnimY: SpringAnimation by lazy {
         SpringAnimation(itemView, SpringAnimation.TRANSLATION_Y)
+            .setSpring(
+                SpringForce()
+                    .setFinalPosition(0f)
+                    .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                    .setStiffness(SpringForce.STIFFNESS_LOW)
+            )
+    }
+    private val mTranslationEdgeAnimX: SpringAnimation by lazy {
+        SpringAnimation(itemView, SpringAnimation.TRANSLATION_X)
             .setSpring(
                 SpringForce()
                     .setFinalPosition(0f)
@@ -51,7 +61,15 @@ open class EdgeSpringEffectViewHolder<V : ViewBinding, T> : XXFViewHolder<V, T>,
     }
 
     override fun getEdgeEffectAnimation(): DynamicAnimation<SpringAnimation> {
-        return translationY
+        val layoutManager = recyclerView.layoutManager
+        if (layoutManager is LinearLayoutManager) {
+            return when (layoutManager.orientation) {
+                RecyclerView.HORIZONTAL -> mTranslationEdgeAnimX
+                else -> mTranslationEdgeAnimY
+            }
+        } else {
+            return mTranslationEdgeAnimY
+        }
     }
 }
 
@@ -74,29 +92,43 @@ open class EdgeSpringEffectFactory : RecyclerView.EdgeEffectFactory {
     override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
         return object : EdgeEffect(view.context) {
             override fun onPull(deltaDistance: Float) {
-                super.onPull(deltaDistance)
+                //去掉边界颜色
+                //super.onPull(deltaDistance)
                 handlePull(deltaDistance)
             }
 
             override fun onPull(deltaDistance: Float, displacement: Float) {
-                super.onPull(deltaDistance, displacement)
+                // 去掉边界颜色
+                // super.onPull(deltaDistance, displacement)
                 handlePull(deltaDistance)
             }
 
             private fun handlePull(deltaDistance: Float) {
-                val sign = if (direction == DIRECTION_BOTTOM) -1 else 1
-                val translationYDelta =
-                    sign * view.height * deltaDistance * overscrollTranslationMagnitude
-                view.forEachVisibleHolder { holder: RecyclerView.ViewHolder ->
-                    if (holder is IEdgeEffectViewHolder<*>) {
-                        holder.getEdgeEffectAnimation().cancel()
-                        holder.itemView.translationY += translationYDelta
+                if (direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT) {
+                    val sign = if (direction == DIRECTION_RIGHT) -1 else 1
+                    val translationXDelta =
+                        sign * view.width * deltaDistance * overscrollTranslationMagnitude
+                    view.forEachVisibleHolder { holder: RecyclerView.ViewHolder ->
+                        if (holder is IEdgeEffectViewHolder<*>) {
+                            holder.getEdgeEffectAnimation().cancel()
+                            holder.itemView.translationX += translationXDelta
+                        }
+                    }
+                } else {
+                    val sign = if (direction == DIRECTION_BOTTOM) -1 else 1
+                    val translationYDelta =
+                        sign * view.height * deltaDistance * overscrollTranslationMagnitude
+                    view.forEachVisibleHolder { holder: RecyclerView.ViewHolder ->
+                        if (holder is IEdgeEffectViewHolder<*>) {
+                            holder.getEdgeEffectAnimation().cancel()
+                            holder.itemView.translationY += translationYDelta
+                        }
                     }
                 }
             }
 
             override fun onRelease() {
-                super.onRelease()
+                //  super.onRelease()
                 view.forEachVisibleHolder { holder: RecyclerView.ViewHolder ->
                     if (holder is IEdgeEffectViewHolder<*>) {
                         holder.getEdgeEffectAnimation().start()
@@ -105,7 +137,7 @@ open class EdgeSpringEffectFactory : RecyclerView.EdgeEffectFactory {
             }
 
             override fun onAbsorb(velocity: Int) {
-                super.onAbsorb(velocity)
+                //   super.onAbsorb(velocity)
                 val sign = if (direction == DIRECTION_BOTTOM) -1 else 1
                 val translationVelocity = sign * velocity * flingTranslationMagnitude
                 view.forEachVisibleHolder { holder: RecyclerView.ViewHolder ->

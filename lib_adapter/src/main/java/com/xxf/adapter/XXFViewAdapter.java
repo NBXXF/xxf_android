@@ -10,6 +10,7 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.recyclerview.widget.InnerViewHolder;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.view.recyclerview.adapter.IEdgeEffectViewHolder;
@@ -97,20 +98,35 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
         }
 
         private SpringAnimation translationY = null;
+        private SpringAnimation translationX = null;
 
         @NotNull
         @Override
         public DynamicAnimation<SpringAnimation> getEdgeEffectAnimation() {
-            if (translationY == null) {
-                translationY = new SpringAnimation(itemView, SpringAnimation.TRANSLATION_Y)
-                        .setSpring(
-                                new SpringForce()
-                                        .setFinalPosition(0f)
-                                        .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
-                                        .setStiffness(SpringForce.STIFFNESS_LOW)
-                        );
+            if (getRecyclerView().getLayoutManager() instanceof LinearLayoutManager
+                    && ((LinearLayoutManager) getRecyclerView().getLayoutManager()).getOrientation() == RecyclerView.HORIZONTAL) {
+                if (translationX == null) {
+                    translationX = new SpringAnimation(itemView, SpringAnimation.TRANSLATION_X)
+                            .setSpring(
+                                    new SpringForce()
+                                            .setFinalPosition(0f)
+                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                                            .setStiffness(SpringForce.STIFFNESS_LOW)
+                            );
+                }
+                return translationX;
+            } else {
+                if (translationY == null) {
+                    translationY = new SpringAnimation(itemView, SpringAnimation.TRANSLATION_Y)
+                            .setSpring(
+                                    new SpringForce()
+                                            .setFinalPosition(0f)
+                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                                            .setStiffness(SpringForce.STIFFNESS_LOW)
+                            );
+                }
+                return translationY;
             }
-            return translationY;
         }
     }
 }

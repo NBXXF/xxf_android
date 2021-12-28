@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.xxf.adapter.demo.databinding.AdapterTestBinding;
+import com.xxf.view.recyclerview.adapter.EdgeSpringEffectViewHolder;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerListAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
@@ -35,6 +36,11 @@ public class TestAdapter extends XXFRecyclerListAdapter<AdapterTestBinding, Stri
     @Override
     protected AdapterTestBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
         return AdapterTestBinding.inflate(inflater, viewGroup, false);
+    }
+
+    @Override
+    protected XXFViewHolder<AdapterTestBinding, String> onCreateItemHolder(AdapterTestBinding adapterTestBinding, ViewGroup viewGroup, int viewType) {
+        return new EdgeSpringEffectViewHolder(this,adapterTestBinding,true);
     }
 
     @Override
