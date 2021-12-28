@@ -226,6 +226,22 @@ object BitmapUtils {
     }
 
     /**
+     * 自动测量 适合recyclerView这种组件
+     */
+    fun makeMeasureJustView(view: View, maxWidth: Int, maxHeight: Int) {
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        view.layout(
+            0,
+            0,
+            Math.min(view.getMeasuredWidth(), maxWidth),
+            Math.min(view.getMeasuredHeight(), maxHeight)
+        )
+    }
+
+    /**
      * 创建bitmap
      * 适合未显示在UI界面上了的View
      *
@@ -237,20 +253,12 @@ object BitmapUtils {
     @CheckResult
     fun createBitmap(view: View, width: Int, height: Int): Bitmap? {
         try {
-            if (width <= 0 && height <= 0) {
-                view.measure(
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                )
-                view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-            } else {
-                val measuredWidth =
-                    View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
-                val measuredHeight =
-                    View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-                view.measure(measuredWidth, measuredHeight)
-                view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-            }
+            val measuredWidth =
+                View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
+            val measuredHeight =
+                View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+            view.measure(measuredWidth, measuredHeight)
+            view.layout(0, 0, view.measuredWidth, view.measuredHeight)
             val bmp = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
             val c = Canvas(bmp)
             view.draw(c)
@@ -265,37 +273,15 @@ object BitmapUtils {
      * 创建bitmap
      * 适合已经显示在UI界面上了的View
      *
-     *
-     * 支持 显示在界面上的任意非滚动布局
-     *
-     *
-     * 支持滚动布局支持如下:
-     * RecyclerView
-     * WebView
-     * NestedScrollView
-     * ScrollView
-     *
-     *
-     * 注意:recyclerView 截取是在缓存中的item拼接的图片
-     *
      * @param v
      * @return
      */
     @CheckResult
     fun createBitmap(v: View): Bitmap? {
-        if (v is WebView) {
-            return createBitmap(v)
-        } else if (v is RecyclerView) {
-            return RecyclerViewUtils.shotRecyclerViewVisibleItems(v)
-        } else if (v is NestedScrollView) {
-            return createBitmap(v)
-        } else if (v is ScrollView) {
-            return createBitmap(v)
-        }
         try {
             val bitmap = Bitmap.createBitmap(
                 v.width, v.height,
-                Bitmap.Config.ARGB_8888
+                Bitmap.Config.RGB_565
             )
             val canvas = Canvas(bitmap)
             v.draw(canvas)
@@ -325,7 +311,7 @@ object BitmapUtils {
             //创建缓存
             webView.buildDrawingCache()
             //根据webView宽高创建bitmap
-            val bm = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444)
+            val bm = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
             //创建画布
             val bigCanvas = Canvas(bm)
             //绘制内容
