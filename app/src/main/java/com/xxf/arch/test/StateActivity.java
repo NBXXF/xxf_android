@@ -10,12 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.ezydev.bigscreenshot.BigScreenshot;
@@ -26,7 +23,6 @@ import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.utils.BitmapUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
@@ -34,10 +30,11 @@ import com.xxf.view.recyclerview.adapter.XXFViewHolder;
 import com.xxf.view.recyclerview.itemdecorations.DividerDecoration;
 import com.xxf.view.utils.SystemUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -52,24 +49,6 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
     TestAdaper testAdaper;
     boolean checked;
 
-    public Bitmap takeScreenShotOfView(View v) {
-        // return   BitmapUtils.INSTANCE.createBitmap(v);
-        return BitmapUtils.INSTANCE.createBitmap(v, 0, 0);
-//        v.setDrawingCacheEnabled(true);
-//        v.buildDrawingCache(true);
-//
-//        // creates immutable clone
-//        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
-//        v.setDrawingCacheEnabled(false); // clear drawing cache
-//        return b;
-    }
-
-    public Bitmap takeScreenShotOfJustView(View v) {
-//        v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-//                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-//        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
-        return BitmapUtils.INSTANCE.createBitmap(v, 0, 0);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,34 +69,51 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //    Bitmap bitmap = getBitmap(stateBinding.recyclerView);
-                Bitmap bitmap = RecyclerViewUtils.INSTANCE.shotRecyclerViewVisibleItems(stateBinding.recyclerView);
-
-                Log.d("", "=============>bitmap:" + bitmap);
-                Log.d("", "=============>H:" + stateBinding.recyclerView.getHeight() + "  " + stateBinding.recyclerView.getMeasuredHeight());
-                stateBinding.preview.setImageBitmap(bitmap);
-                checked = !checked;
-
-                // loadData();
+                new RecyclerViewUtils.ScrollShotting(stateBinding.recyclerView, 200) {
+                    @Override
+                    public void onShot(@NotNull Bitmap bitmap) {
+                        SystemUtils.saveImageToAlbum(StateActivity.this, "test_scroll.png", bitmap)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .doOnError(new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Throwable {
+                                        ToastUtils.showToast("保存失败");
+                                    }
+                                })
+                                .subscribe(new Consumer<File>() {
+                                    @Override
+                                    public void accept(File file) throws Throwable {
+                                        ToastUtils.showToast("保存成功");
+                                    }
+                                });
+                    }
+                }.start();
             }
         });
         stateBinding.btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  SystemUtils.shareText(StateActivity.this, "XXX http://www.baidu.com",
-                        "com.instagram.android")
-                        .subscribe();*/
+//                RecyclerViewUtils.INSTANCE.scrollShot(stateBinding.recyclerView, new RecyclerViewUtils.OnShotListener() {
+//                    @Override
+//                    public void onShot(@NotNull Bitmap bitmap) {
+//                        SystemUtils.saveImageToAlbum(StateActivity.this, "test.png", bitmap)
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .doOnError(new Consumer<Throwable>() {
+//                                    @Override
+//                                    public void accept(Throwable throwable) throws Throwable {
+//                                        ToastUtils.showToast("保存失败");
+//                                    }
+//                                })
+//                                .subscribe(new Consumer<File>() {
+//                                    @Override
+//                                    public void accept(File file) throws Throwable {
+//                                        ToastUtils.showToast("保存成功");
+//                                    }
+//                                });
+//                    }
+//                });
 
-                Bitmap bitmap = takeScreenShotOfJustView(stateBinding.recyclerView);
-                SystemUtils.saveImageToAlbum(StateActivity.this, "" + System.currentTimeMillis() + ".png", bitmap)
-                        .subscribe(new Consumer<File>() {
-                            @Override
-                            public void accept(File file) throws Throwable {
-                                Log.d("=========>", "====>bitmap2:" + file);
-                            }
-                        });
-           /*     BigScreenshot longScreenshot = new BigScreenshot(StateActivity.this, stateBinding.listItem, stateBinding.recyclerView);
-                longScreenshot.startScreenshot();*/
+                /*  */
 
 //                loadData();
 //                sharedToIns();

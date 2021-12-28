@@ -51,6 +51,7 @@
             android:id="@+id/list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="30dp"
             android:layout_weight="1">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -58,8 +59,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#6cf"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3" />
         </com.xxf.view.loading.XXFListStateLayout>
