@@ -10,6 +10,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.webkit.WebView
 import android.widget.ScrollView
 import androidx.annotation.CheckResult
+import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
@@ -76,7 +77,7 @@ object BitmapUtils {
                 val width = bitmap.width
                 val height = bitmap.height
                 val faceIconGreyBitmap = Bitmap
-                    .createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                    .createBitmap(width, height, Bitmap.Config.RGB_565)
                 val canvas = Canvas(faceIconGreyBitmap)
                 val paint = Paint()
                 val colorMatrix = ColorMatrix()
@@ -246,12 +247,18 @@ object BitmapUtils {
      * 适合未显示在UI界面上了的View
      *
      * @param view
-     * @param width  不知道 可以传0 自动测量
-     * @param height 不知道 可以传0 自动测量
+     * @param backgroundColor
+     * @param width  具体值
+     * @param height 具体值
      * @return
      */
     @CheckResult
-    fun createBitmap(view: View, width: Int, height: Int): Bitmap? {
+    fun createBitmap(
+        view: View,
+        width: Int,
+        height: Int,
+        backgroundColor: Int = Color.TRANSPARENT
+    ): Bitmap? {
         try {
             val measuredWidth =
                 View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
@@ -261,6 +268,9 @@ object BitmapUtils {
             view.layout(0, 0, view.measuredWidth, view.measuredHeight)
             val bmp = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
             val c = Canvas(bmp)
+            if (backgroundColor != Color.TRANSPARENT) {
+                c.drawColor(backgroundColor)
+            }
             view.draw(c)
             return bmp
         } catch (e: Throwable) {
@@ -277,13 +287,16 @@ object BitmapUtils {
      * @return
      */
     @CheckResult
-    fun createBitmap(v: View): Bitmap? {
+    fun createBitmap(v: View, backgroundColor: Int = Color.TRANSPARENT): Bitmap? {
         try {
             val bitmap = Bitmap.createBitmap(
                 v.width, v.height,
                 Bitmap.Config.RGB_565
             )
             val canvas = Canvas(bitmap)
+            if (backgroundColor != Color.TRANSPARENT) {
+                canvas.drawColor(backgroundColor)
+            }
             v.draw(canvas)
             return bitmap
         } catch (e: Throwable) {
@@ -299,7 +312,7 @@ object BitmapUtils {
      * @return
      */
     @CheckResult
-    fun createBitmap(webView: WebView): Bitmap? {
+    fun createBitmap(webView: WebView, backgroundColor: Int = Color.TRANSPARENT): Bitmap? {
         try {
             //指定测量规则
             webView.measure(0, 0)
@@ -314,6 +327,10 @@ object BitmapUtils {
             val bm = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
             //创建画布
             val bigCanvas = Canvas(bm)
+            if (backgroundColor != Color.TRANSPARENT) {
+                bigCanvas.drawColor(backgroundColor)
+            }
+
             //绘制内容
             webView.draw(bigCanvas)
             return bm
@@ -330,7 +347,7 @@ object BitmapUtils {
      * @return
      */
     @CheckResult
-    fun createBitmap(scrollView: ScrollView): Bitmap? {
+    fun createBitmap(scrollView: ScrollView, backgroundColor: Int = Color.TRANSPARENT): Bitmap? {
         try {
             var h = 0
             var bitmap: Bitmap? = null
@@ -351,6 +368,9 @@ object BitmapUtils {
                 Bitmap.Config.RGB_565
             )
             val canvas = Canvas(bitmap) //把创建的bitmap放到画布中去
+            if (backgroundColor != Color.TRANSPARENT) {
+                canvas.drawColor(backgroundColor)
+            }
             scrollView.draw(canvas) //绘制canvas 画布
             return bitmap
         } catch (e: Exception) {
@@ -366,7 +386,7 @@ object BitmapUtils {
      * @return
      */
     @CheckResult
-    fun createBitmap(scrollView: NestedScrollView): Bitmap? {
+    fun createBitmap(scrollView: NestedScrollView,backgroundColor: Int = Color.TRANSPARENT): Bitmap? {
         try {
             var h = 0
             var bitmap: Bitmap? = null
@@ -387,6 +407,9 @@ object BitmapUtils {
                 Bitmap.Config.RGB_565
             )
             val canvas = Canvas(bitmap) //把创建的bitmap放到画布中去
+            if (backgroundColor != Color.TRANSPARENT) {
+                canvas.drawColor(backgroundColor)
+            }
             scrollView.draw(canvas) //绘制canvas 画布
             return bitmap
         } catch (e: Exception) {
@@ -440,7 +463,7 @@ object BitmapUtils {
                 )
             }
             val height = tempBitmapT.height + tempBitmapB.height
-            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
             val canvas = Canvas(bitmap)
             val topRect = Rect(0, 0, tempBitmapT.width, tempBitmapT.height)
             val bottomRect = Rect(0, 0, tempBitmapB.width, tempBitmapB.height)
