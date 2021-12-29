@@ -53,6 +53,34 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        List<Observable<Boolean>> datas = new ArrayList<>();
+        datas.add(Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                throw new RuntimeException("xxx");
+            }
+        }));
+        datas.add(Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return true;
+            }
+        }));
+        Observable.concatDelayError(datas)
+                .observeOn(AndroidSchedulers.mainThread(),true)
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("=======>data error:", "" + throwable);
+                    }
+                })
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Throwable {
+                        Log.d("=======>data:", "" + aBoolean);
+                    }
+                });
         stateBinding = ActivityStateBinding.inflate(getLayoutInflater(), null, false);
         //stateBinding.grayLayout.setGrayColor(true);
 
@@ -93,6 +121,26 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
         stateBinding.btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new ScrollShotting(stateBinding.recyclerView,200,Color.WHITE){
+
+                    @Override
+                    public void onShot(@NotNull Bitmap bitmap) {
+                        SystemUtils.saveImageToAlbum(StateActivity.this, "test.png", bitmap)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .doOnError(new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Throwable {
+                                        ToastUtils.showToast("保存失败");
+                                    }
+                                })
+                                .subscribe(new Consumer<File>() {
+                                    @Override
+                                    public void accept(File file) throws Throwable {
+                                        ToastUtils.showToast("保存成功");
+                                    }
+                                });
+                    }
+                }.start();
 //                RecyclerViewUtils.INSTANCE.scrollShot(stateBinding.recyclerView, new RecyclerViewUtils.OnShotListener() {
 //                    @Override
 //                    public void onShot(@NotNull Bitmap bitmap) {
