@@ -14,6 +14,8 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
+import java.io.File
+import java.io.FileOutputStream
 import java.nio.ByteBuffer
 
 /**
@@ -386,7 +388,10 @@ object BitmapUtils {
      * @return
      */
     @CheckResult
-    fun createBitmap(scrollView: NestedScrollView,backgroundColor: Int = Color.TRANSPARENT): Bitmap? {
+    fun createBitmap(
+        scrollView: NestedScrollView,
+        backgroundColor: Int = Color.TRANSPARENT
+    ): Bitmap? {
         try {
             var h = 0
             var bitmap: Bitmap? = null
@@ -510,5 +515,21 @@ object BitmapUtils {
             e.printStackTrace()
         }
         return null
+    }
+
+    /**
+     * 保存图片
+     */
+    fun bitmapToFile(bitmap: Bitmap, file: File): Boolean {
+        try {
+            val fos = FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+            return true
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+        return false
     }
 }
