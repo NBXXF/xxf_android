@@ -43,8 +43,12 @@ public abstract class UILifeTransformerImpl<T>
 
     @Override
     public Publisher<T> apply(Flowable<T> upstream) {
+        /**
+         * https://github.com/ReactiveX/RxJava/issues/3908
+         * delayError=true
+         */
         return upstream
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(),true)
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
@@ -109,8 +113,12 @@ public abstract class UILifeTransformerImpl<T>
 
     @Override
     public ObservableSource<T> apply(Observable<T> upstream) {
+        /**
+         * https://github.com/ReactiveX/RxJava/issues/3908
+         * delayError=true
+         */
         return upstream
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread(),true)
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override

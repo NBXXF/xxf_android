@@ -9,25 +9,30 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.xxf.adapter.demo.databinding.ActivityMainBinding
 import com.xxf.application.activity.bindExtra
+import io.reactivex.rxjava3.core.Observable
+import java.lang.RuntimeException
 import java.util.*
 
 open class NormalRecyclerViewActivity : AppCompatActivity() {
-    val uuid:String by bindExtra(default = "defaultXXX")
+    val uuid: String by bindExtra(default = "defaultXXX")
 
-    val uuid2:String by bindExtra("KEY",default = "defaultXXX")
+    val uuid2: String by bindExtra("KEY", default = "defaultXXX")
 
-    val uuid3:String? by bindExtra("KEY")
+    val uuid3: String? by bindExtra("KEY")
 
-    var uuid4:String? by bindExtra("KEY")
+    var uuid4: String? by bindExtra("KEY")
 
     var binding: ActivityMainBinding? = null
     var adapter = TestNormalAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        uuid4=null;
 
-        println("==========>get param:"+uuid);
+
+
+        uuid4 = null;
+
+        println("==========>get param:" + uuid);
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding!!.change.text = "diff"
