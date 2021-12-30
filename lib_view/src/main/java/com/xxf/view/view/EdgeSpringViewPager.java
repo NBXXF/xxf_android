@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 
 import androidx.core.view.MotionEventCompat;
@@ -85,8 +85,8 @@ public class EdgeSpringViewPager extends ViewPager {
 
         private void startAnimation(final float target) {
             mAnimator = ObjectAnimator.ofFloat(this, "pull", mOverscroll, target);
-            // mAnimator.setInterpolator(new DecelerateInterpolator());
-            mAnimator.setInterpolator(new BounceInterpolator());
+            mAnimator.setInterpolator(new DecelerateInterpolator());
+            // mAnimator.setInterpolator(new BounceInterpolator());
             final float scale = Math.abs(target - mOverscroll);
             mAnimator.setDuration((long) (mOverscrollAnimationDuration * scale));
             mAnimator.start();
