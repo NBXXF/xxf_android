@@ -2,10 +2,14 @@ package com.xxf.view.overscroll
 
 import android.view.View
 import android.widget.*
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.xxf.view.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
+import me.everything.android.ui.overscroll.adapters.ScrollViewOverScrollDecorAdapter
 
 
 /**
@@ -48,4 +52,9 @@ fun View.setUpOverScroll(orientation: Int): IOverScrollDecor {
 
 fun ViewPager.setUpOverScroll(): IOverScrollDecor {
     return OverScrollDecoratorHelper.setUpOverScroll(this)
+}
+
+
+fun NestedScrollView.setUpOverScroll(): IOverScrollDecor {
+    return VerticalOverScrollBounceEffectDecorator(NestedScrollViewOverScrollDecorAdapter(this))
 }

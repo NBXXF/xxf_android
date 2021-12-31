@@ -36,6 +36,7 @@
         <entry key="lib_adapter/lib_adapter_demo/src/main/res/layout/activity_main.xml" value="0.14855072463768115" />
         <entry key="lib_adapter/lib_adapter_demo/src/main/res/layout/adapter_test.xml" value="0.14855072463768115" />
         <entry key="lib_bus/lib_bus_demo/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="lib_overscroll/ovserscroll_demo/src/main/res/layout/nested_scrollview_demo.xml" value="0.22083333333333333" />
         <entry key="lib_overscroll/ovserscroll_demo/src/main/res/menu/activity_overscroll_demo_drawer_items.xml" value="0.22083333333333333" />
         <entry key="lib_view/src/main/res/layout/xxf_adapter_item_bottom_action.xml" value="0.1" />
         <entry key="lib_view/src/main/res/layout/xxf_dialog_bottom_action.xml" value="0.13504273504273503" />
