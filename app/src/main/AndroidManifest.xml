@@ -32,6 +32,8 @@
         <activity android:name=".TestActivity"/>
         <activity android:name=".StateActivity"/>
         <activity android:name=".KotlinTestActivity"/>
+        <activity android:name=".PdfViewActivity"/>
+        <activity android:name=".PdfMainActivity"/>
     </application>
 
 </manifest>

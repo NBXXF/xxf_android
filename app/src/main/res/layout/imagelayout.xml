@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imagelayout"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"/>
+
+
+            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/prevbtn"
+                android:src="@drawable/prevbtn"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                app:fabSize="mini"
+                android:backgroundTint="@android:color/white" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/nextbtn"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:fabSize="mini"
+                android:src="@drawable/nextbtn"
+                android:backgroundTint="@android:color/white" />
+-->
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

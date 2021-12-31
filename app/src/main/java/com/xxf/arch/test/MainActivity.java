@@ -399,7 +399,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivityForResult(new Intent(v.getContext(), KotlinTestActivity.class), 1001);
+                        startActivityForResult(new Intent(v.getContext(), PdfMainActivity.class), 1001);
                         String fileName = "aaa.text";
                         String s = "99% FC\n" +
                                 "98% FA\n" +
