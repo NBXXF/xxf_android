@@ -11,6 +11,12 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 /**
 拓展  文档参考:https://github.com/EverythingMe/overscroll-decor
  */
+
+/**
+ * @param orientation
+ * [androidx.recyclerview.widget.RecyclerView.HORIZONTAL]
+ * [androidx.recyclerview.widget.RecyclerView.VERTICAL]
+ */
 fun RecyclerView.setUpOverScroll(orientation: Int): IOverScrollDecor {
     return OverScrollDecoratorHelper.setUpOverScroll(this, orientation)
 }
@@ -27,10 +33,15 @@ fun ScrollView.setUpOverScroll(): IOverScrollDecor {
     return OverScrollDecoratorHelper.setUpOverScroll(this)
 }
 
-fun HorizontalScrollView.setUpOverScroll(): IOverScrollDecor? {
+fun HorizontalScrollView.setUpOverScroll(): IOverScrollDecor {
     return OverScrollDecoratorHelper.setUpOverScroll(this)
 }
 
+/**
+ * @param orientation 等价:android.widget.LinearLayout.OrientationMode
+ * [android.widget.LinearLayout.HORIZONTAL]
+ * [android.widget.LinearLayout.VERTICAL]
+ */
 fun View.setUpOverScroll(orientation: Int): IOverScrollDecor {
     return OverScrollDecoratorHelper.setUpStaticOverScroll(this, orientation);
 }
