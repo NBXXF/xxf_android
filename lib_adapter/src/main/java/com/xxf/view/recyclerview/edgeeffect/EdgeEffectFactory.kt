@@ -46,7 +46,7 @@ open class EdgeSpringEffectViewHolder<V : ViewBinding, T> : XXFViewHolder<V, T>,
             .setSpring(
                 SpringForce()
                     .setFinalPosition(0f)
-                    .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                    .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
                     .setStiffness(SpringForce.STIFFNESS_LOW)
             )
     }
@@ -55,7 +55,7 @@ open class EdgeSpringEffectViewHolder<V : ViewBinding, T> : XXFViewHolder<V, T>,
             .setSpring(
                 SpringForce()
                     .setFinalPosition(0f)
-                    .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                    .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
                     .setStiffness(SpringForce.STIFFNESS_LOW)
             )
     }

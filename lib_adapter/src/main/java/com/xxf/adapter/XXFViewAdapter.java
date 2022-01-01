@@ -110,7 +110,7 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
                             .setSpring(
                                     new SpringForce()
                                             .setFinalPosition(0f)
-                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                                            .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
                                             .setStiffness(SpringForce.STIFFNESS_LOW)
                             );
                 }
@@ -121,7 +121,7 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
                             .setSpring(
                                     new SpringForce()
                                             .setFinalPosition(0f)
-                                            .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                                            .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
                                             .setStiffness(SpringForce.STIFFNESS_LOW)
                             );
                 }
