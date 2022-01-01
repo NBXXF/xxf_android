@@ -1,13 +1,17 @@
 package me.everything.overscrolldemo;
 
 import androidx.fragment.app.Fragment;
+
 import android.os.Bundle;
+
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 
 import me.everything.overscrolldemo.view.GridViewDemoFragment;
@@ -18,6 +22,7 @@ import me.everything.overscrolldemo.view.RecyclerViewDemoFragment;
 import me.everything.overscrolldemo.view.RecyclerViewStaggeredGridDemoFragment;
 import me.everything.overscrolldemo.view.ScrollViewDemoFragment;
 import me.everything.overscrolldemo.view.ViewPagerDemoFragment;
+import me.everything.overscrolldemo.view.WebviewDemoFragment;
 
 public class OverScrollDemoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,13 +85,16 @@ public class OverScrollDemoActivity extends AppCompatActivity
                 replaceMainFragment(new ScrollViewDemoFragment(), R.string.scroll_view_demo_title);
                 break;
             case R.id.drawer_item_viewpager_demo:
-                replaceMainFragment(new ViewPagerDemoFragment(),R.string.viewpager_demo_title);
+                replaceMainFragment(new ViewPagerDemoFragment(), R.string.viewpager_demo_title);
                 break;
             case R.id.drawer_item_nested_scrollview_demo:
                 replaceMainFragment(new NestedScrollViewDemoFragment(), R.string.nested_scrollview_demo_title);
                 break;
             case R.id.drawer_item_misc_demo:
                 replaceMainFragment(new MiscViewsDemoFragment(), R.string.misc_views_demo_title);
+                break;
+            case R.id.drawer_item_web_demo:
+                replaceMainFragment(new WebviewDemoFragment(), R.string.webview_views_demo_title);
                 break;
         }
 

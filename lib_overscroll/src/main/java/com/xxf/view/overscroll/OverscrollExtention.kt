@@ -1,16 +1,24 @@
 package com.xxf.view.overscroll
 
 import android.view.View
+import android.webkit.WebView
 import android.widget.*
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.xxf.view.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter
+import com.xxf.view.overscroll.myadapter.WebViewOverScrollDecorAdapter
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
 import me.everything.android.ui.overscroll.adapters.ScrollViewOverScrollDecorAdapter
 
+
+/**
+ * @Description: objectBox
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
+ * @CreateDate: 2021/11/30 17:34
+ */
 
 /**
 拓展  文档参考:https://github.com/EverythingMe/overscroll-decor
@@ -57,4 +65,8 @@ fun ViewPager.setUpOverScroll(): IOverScrollDecor {
 
 fun NestedScrollView.setUpOverScroll(): IOverScrollDecor {
     return VerticalOverScrollBounceEffectDecorator(NestedScrollViewOverScrollDecorAdapter(this))
+}
+
+fun WebView.setUpOverScroll(): IOverScrollDecor {
+    return VerticalOverScrollBounceEffectDecorator(WebViewOverScrollDecorAdapter(this))
 }

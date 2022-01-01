@@ -44,6 +44,11 @@
             android:icon="@drawable/ic_misc"
             android:title="Misc-Views Demo"
             />
+        <item
+            android:id="@+id/drawer_item_web_demo"
+            android:icon="@drawable/ic_misc"
+            android:title="WebViw Demo"
+            />
 
     </group>
 
