@@ -21,9 +21,12 @@ import me.everything.android.ui.overscroll.adapters.ScrollViewOverScrollDecorAda
  */
 
 /**
+ * ios 反弹效果
 拓展  文档参考:https://github.com/EverythingMe/overscroll-decor
 
 边缘拉伸效果:
+https://github.com/EverythingMe/overscroll-decor/pull/47
+
 参考[com.xxf.view.overscroll.decorator.HorizontalOverScrollScaleEffectDecorator]
 [com.xxf.view.overscroll.decorator.VerticalOverScrollScaleEffectDecorator]
  */
