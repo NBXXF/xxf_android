@@ -6,12 +6,14 @@ import android.widget.*
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.xxf.view.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter
 import com.xxf.view.overscroll.myadapter.WebViewOverScrollDecorAdapter
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
 import me.everything.android.ui.overscroll.adapters.ScrollViewOverScrollDecorAdapter
+import java.lang.RuntimeException
 
 
 /**
@@ -76,4 +78,18 @@ fun NestedScrollView.setUpOverScroll(): IOverScrollDecor {
 
 fun WebView.setUpOverScroll(): IOverScrollDecor {
     return VerticalOverScrollBounceEffectDecorator(WebViewOverScrollDecorAdapter(this))
+}
+
+/**
+ * @param orientation
+ * [androidx.recyclerview.widget.RecyclerView.HORIZONTAL]
+ * [androidx.recyclerview.widget.RecyclerView.VERTICAL]
+ */
+fun ViewPager2.setUpOverScroll(orientation: Int): IOverScrollDecor {
+    val firstChild = this.getChildAt(0)
+    if (firstChild is RecyclerView) {
+        return firstChild.setUpOverScroll(orientation)
+    } else {
+        throw RuntimeException("ViewPager has not RecyclerView")
+    }
 }
