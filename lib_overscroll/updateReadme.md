@@ -1,0 +1,4 @@
+# 修改
+
+me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_VERTICAL
+me.everything.android.ui.overscroll.OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL

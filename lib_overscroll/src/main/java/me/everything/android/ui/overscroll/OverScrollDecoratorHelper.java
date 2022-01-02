@@ -5,9 +5,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.view.View;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
@@ -20,8 +22,11 @@ import me.everything.android.ui.overscroll.adapters.ViewPagerOverScrollDecorAdap
 
 public class OverScrollDecoratorHelper {
 
-    public static final int ORIENTATION_VERTICAL = 0;
-    public static final int ORIENTATION_HORIZONTAL = 1;
+    /**
+     * by xxf 修改方向
+     */
+    public static final int ORIENTATION_VERTICAL = LinearLayout.VERTICAL;
+    public static final int ORIENTATION_HORIZONTAL = LinearLayout.HORIZONTAL;
 
     /**
      * Set up the over-scroll effect over a specified {@link RecyclerView} view.
@@ -30,8 +35,7 @@ public class OverScrollDecoratorHelper {
      * by this convenience method.
      *
      * @param recyclerView The view.
-     * @param orientation Either {@link #ORIENTATION_HORIZONTAL} or {@link #ORIENTATION_VERTICAL}.
-     *
+     * @param orientation  Either {@link #ORIENTATION_HORIZONTAL} or {@link #ORIENTATION_VERTICAL}.
      * @return The over-scroll effect 'decorator', enabling further effect configuration.
      */
     public static IOverScrollDecor setUpOverScroll(RecyclerView recyclerView, int orientation) {
@@ -65,9 +69,8 @@ public class OverScrollDecoratorHelper {
      * Set up the over-scroll over a generic view, assumed to always be over-scroll ready (e.g.
      * a plain text field, image view).
      *
-     * @param view The view.
+     * @param view        The view.
      * @param orientation One of {@link #ORIENTATION_HORIZONTAL} or {@link #ORIENTATION_VERTICAL}.
-     *
      * @return The over-scroll effect 'decorator', enabling further effect configuration.
      */
     public static IOverScrollDecor setUpStaticOverScroll(View view, int orientation) {
