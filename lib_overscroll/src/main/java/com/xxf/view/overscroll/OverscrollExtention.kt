@@ -90,6 +90,6 @@ fun ViewPager2.setUpOverScroll(orientation: Int): IOverScrollDecor {
     if (firstChild is RecyclerView) {
         return firstChild.setUpOverScroll(orientation)
     } else {
-        throw RuntimeException("ViewPager has not RecyclerView")
+        throw RuntimeException("ViewPager2 has not RecyclerView")
     }
 }
