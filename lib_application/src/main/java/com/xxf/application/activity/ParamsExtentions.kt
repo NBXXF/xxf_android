@@ -16,12 +16,12 @@ class ExtrasDelegate<out T>(private val key: String?, private val defaultValue: 
     private var extra: T? = null
 
     operator fun getValue(thisRef: Activity, property: KProperty<*>): T {
-        extra = getExtra(extra, key?:property.name, thisRef)
+        extra = getExtra(extra, key ?: property.name, thisRef)
         return extra ?: defaultValue
     }
 
     operator fun getValue(thisRef: Fragment, property: KProperty<*>): T {
-        extra = getExtra(extra, key?:property.name, thisRef)
+        extra = getExtra(extra, key ?: property.name, thisRef)
         return extra ?: defaultValue
     }
 
@@ -34,13 +34,13 @@ class ExtrasDelegate<out T>(private val key: String?, private val defaultValue: 
                 e.printStackTrace()
             }
         }
-        thisRef.arguments?.putExtras((key?:property.name) to value)
+        thisRef.arguments?.putExtras((key ?: property.name) to value)
     }
 
     operator fun setValue(thisRef: Activity, property: KProperty<*>, value: Any?) {
         extra = value as T
         if (thisRef.intent != null) {
-            thisRef.intent!!.putExtras((key?:property.name) to value)
+            thisRef.intent!!.putExtras((key ?: property.name) to value)
         }
     }
 }
@@ -54,15 +54,6 @@ fun <T> bindExtra(key: String? = null, defaultValue: T) = ExtrasDelegate(key, de
  * 绑定获取参数
  */
 fun bindExtra(key: String? = null) = bindExtra(key, null)
-
-
-/**
- * 默认key KEY_COMPAT_PARAM
- * putExtras("11")
- */
-fun Fragment.putExtra(value: Any): Bundle {
-    return putExtra(KEY_COMPAT_PARAM, value)
-}
 
 /**
  * key value
