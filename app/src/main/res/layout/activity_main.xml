@@ -139,7 +139,12 @@
                     android:onClick="jumpState"
                     android:padding="10dp"
                     android:text="state" />
-
+                <Button
+                    android:id="@+id/bt_sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="sp service" />
 
                 <FrameLayout
                     android:id="@+id/contentPanel"

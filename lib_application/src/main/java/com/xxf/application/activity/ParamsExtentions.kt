@@ -11,17 +11,17 @@ import kotlin.reflect.KProperty
 /**
  * 处理参数获取 简化
  */
-class ExtrasDelegate<out T>(private val key: String, private val defaultValue: T) {
+class ExtrasDelegate<out T>(private val key: String?, private val defaultValue: T) {
 
     private var extra: T? = null
 
     operator fun getValue(thisRef: Activity, property: KProperty<*>): T {
-        extra = getExtra(extra, key, thisRef)
+        extra = getExtra(extra, key?:property.name, thisRef)
         return extra ?: defaultValue
     }
 
     operator fun getValue(thisRef: Fragment, property: KProperty<*>): T {
-        extra = getExtra(extra, key, thisRef)
+        extra = getExtra(extra, key?:property.name, thisRef)
         return extra ?: defaultValue
     }
 
@@ -34,13 +34,13 @@ class ExtrasDelegate<out T>(private val key: String, private val defaultValue: T
                 e.printStackTrace()
             }
         }
-        thisRef.arguments?.putExtras(key to value)
+        thisRef.arguments?.putExtras((key?:property.name) to value)
     }
 
     operator fun setValue(thisRef: Activity, property: KProperty<*>, value: Any?) {
         extra = value as T
         if (thisRef.intent != null) {
-            thisRef.intent!!.putExtras(key to value)
+            thisRef.intent!!.putExtras((key?:property.name) to value)
         }
     }
 }
@@ -48,12 +48,12 @@ class ExtrasDelegate<out T>(private val key: String, private val defaultValue: T
 /**
  * 绑定获取参数
  */
-fun <T> bindExtra(key: String = KEY_COMPAT_PARAM, default: T) = ExtrasDelegate(key, default)
+fun <T> bindExtra(key: String? = null, defaultValue: T) = ExtrasDelegate(key, defaultValue)
 
 /**
  * 绑定获取参数
  */
-fun bindExtra(key: String = KEY_COMPAT_PARAM) = bindExtra(key, null)
+fun bindExtra(key: String? = null) = bindExtra(key, null)
 
 
 /**
@@ -107,7 +107,7 @@ fun <T> Intent.putExtras(vararg params: Pair<String, T>): Intent {
     if (params.isEmpty()) return this
     params.forEach { (key, value) ->
         if (value == null) {
-            val nullString:String?=null
+            val nullString: String? = null
             putExtra(key, nullString)
         } else {
             when (value) {

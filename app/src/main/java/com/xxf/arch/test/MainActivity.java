@@ -156,27 +156,7 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String key = "hello";
-        LogKt.d(key, null, "================");
-        LogKt.d(key, null, "================22222");
-        SpService.INSTANCE.observeChange(key)
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Throwable {
-                        System.out.println("=========>changeKey:" + s + "  v:" + SpService.INSTANCE.getString(key, ""));
-                    }
-                });
-        SpService.INSTANCE.observeAllChange()
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Throwable {
-                        System.out.println("=========>changeKey2:" + s + "  v:" + SpService.INSTANCE.getString(key, ""));
-                    }
-                });
 
-        SpService.INSTANCE.putString(key, "yes");
-
-        SpService.INSTANCE.putString(key, "yes");
         this.getLifecycle().addObserver(
                 new XXFLifecycleObserver() {
                 });
@@ -236,7 +216,7 @@ public class MainActivity extends XXFActivity {
             }
         });
         setContentView(R.layout.activity_main);
-        XXFRoundImageTextView imageTextView=findViewById(R.id.textImage);
+        XXFRoundImageTextView imageTextView = findViewById(R.id.textImage);
 //        imageTextView.getTextView().setText("xxxxHGFDGHDFGHGH");
 //        imageTextView.getImageView().setImageResource(R.drawable.xxf_ic_toast_success);
 
@@ -629,6 +609,13 @@ public class MainActivity extends XXFActivity {
                     }
                 });
         //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
+
+        findViewById(R.id.bt_sp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), SpActivity.class));
+            }
+        });
     }
 
     public void jumpState(View v) {

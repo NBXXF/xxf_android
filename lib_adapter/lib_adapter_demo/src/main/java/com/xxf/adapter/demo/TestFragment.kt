@@ -5,17 +5,16 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.xxf.application.activity.bindExtra
-import com.xxf.application.activity.putExtra
 
 class TestFragment : Fragment {
     constructor() : super(R.layout.adapter_test) {
       //  putExtra("xx23");
     }
 
-    private val param by bindExtra(default = "默认值啊")
+    private val param by bindExtra(defaultValue = "默认值啊")
     private val param2:String? by bindExtra()
 
-    private var param3:String by bindExtra(default = "xx")
+    private var param3:String by bindExtra(defaultValue = "xx")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("=======>ex", "" + param);

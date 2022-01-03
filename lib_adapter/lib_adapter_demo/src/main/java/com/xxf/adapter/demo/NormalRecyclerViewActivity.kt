@@ -1,7 +1,6 @@
 package com.xxf.adapter.demo
 
 import androidx.appcompat.app.AppCompatActivity
-import com.xxf.adapter.demo.TestNormalAdapter
 import android.os.Bundle
 import android.content.Intent
 import android.util.Log
@@ -9,14 +8,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.xxf.adapter.demo.databinding.ActivityMainBinding
 import com.xxf.application.activity.bindExtra
-import io.reactivex.rxjava3.core.Observable
-import java.lang.RuntimeException
 import java.util.*
 
 open class NormalRecyclerViewActivity : AppCompatActivity() {
-    val uuid: String by bindExtra(default = "defaultXXX")
+    val uuid: String by bindExtra(defaultValue = "defaultXXX")
 
-    val uuid2: String by bindExtra("KEY", default = "defaultXXX")
+    val uuid2: String by bindExtra("KEY", defaultValue = "defaultXXX")
 
     val uuid3: String? by bindExtra("KEY")
 
