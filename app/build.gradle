@@ -52,4 +52,5 @@ dependencies {
     implementation 'com.github.peter1492:LongScreenshot:1.0'
     //To runtime Permission
     implementation 'com.karumi:dexter:5.0.0'
+    api project(path: ':lib_fileprovider')
 }

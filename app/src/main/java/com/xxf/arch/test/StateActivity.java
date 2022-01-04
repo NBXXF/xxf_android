@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.fileprovider.FileProvider7;
+import com.xxf.utils.BitmapUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RecyclerViewUtils;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
@@ -68,7 +71,7 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
             }
         }));
         Observable.concatDelayError(datas)
-                .observeOn(AndroidSchedulers.mainThread(),true)
+                .observeOn(AndroidSchedulers.mainThread(), true)
                 .doOnError(new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
@@ -121,24 +124,34 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
         stateBinding.btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ScrollShotting(stateBinding.recyclerView,200,Color.WHITE){
+                new ScrollShotting(stateBinding.recyclerView, 200, Color.WHITE) {
 
                     @Override
                     public void onShot(@NotNull Bitmap bitmap) {
-                        SystemUtils.saveImageToAlbum(StateActivity.this, "test.png", bitmap)
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .doOnError(new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Throwable {
-                                        ToastUtils.showToast("保存失败");
-                                    }
-                                })
-                                .subscribe(new Consumer<File>() {
-                                    @Override
-                                    public void accept(File file) throws Throwable {
-                                        ToastUtils.showToast("保存成功");
-                                    }
-                                });
+                        File my_images = new File(getApplication().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image");
+                        my_images.mkdirs();
+                        File file = new File(new File(getApplication().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image"), "default_image2.jpg");
+                        boolean b = BitmapUtils.INSTANCE.bitmapToFile(bitmap, file);
+                        ToastUtils.showToast("设置:"+b);
+                        SystemUtils.shareFile(
+                                StateActivity.this,
+                                file.getAbsolutePath(),
+                                FileProvider7.INSTANCE.getAuthority(getApplication()), null)
+                                .subscribe();
+//                        SystemUtils.saveImageToAlbum(StateActivity.this, "test.png", bitmap)
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .doOnError(new Consumer<Throwable>() {
+//                                    @Override
+//                                    public void accept(Throwable throwable) throws Throwable {
+//                                        ToastUtils.showToast("保存失败");
+//                                    }
+//                                })
+//                                .subscribe(new Consumer<File>() {
+//                                    @Override
+//                                    public void accept(File file) throws Throwable {
+//                                        ToastUtils.showToast("保存成功");
+//                                    }
+//                                });
                     }
                 }.start();
 //                RecyclerViewUtils.INSTANCE.scrollShot(stateBinding.recyclerView, new RecyclerViewUtils.OnShotListener() {

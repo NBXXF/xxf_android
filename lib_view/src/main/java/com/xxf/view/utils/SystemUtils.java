@@ -11,6 +11,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -49,6 +51,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -722,6 +725,7 @@ public class SystemUtils {
                 if (!TextUtils.isEmpty(packageName)) {
                     intent.setPackage(packageName);
                 }
+                applyProviderPermission(context, intent, uri);
                 Intent chooser = Intent.createChooser(intent, file.getName());
                 if (context instanceof LifecycleOwner) {
                     return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
@@ -737,6 +741,26 @@ public class SystemUtils {
                 }
             }
         });
+    }
+
+    /**
+     * 赋予保留服务权限
+     *
+     * @param context
+     * @param intent
+     * @param uri
+     */
+    public static void applyProviderPermission(Context context, Intent intent, Uri uri) {
+        List<ResolveInfo> resInfoList = context.getPackageManager()
+                .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            context.grantUriPermission(
+                    packageName,
+                    uri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION
+            );
+        }
     }
 
     /**
