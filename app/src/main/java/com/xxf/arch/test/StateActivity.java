@@ -128,16 +128,21 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
 
                     @Override
                     public void onShot(@NotNull Bitmap bitmap) {
-                        File my_images = new File(getApplication().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image");
-                        my_images.mkdirs();
-                        File file = new File(new File(getApplication().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image"), "default_image2.jpg");
-                        boolean b = BitmapUtils.INSTANCE.bitmapToFile(bitmap, file);
-                        ToastUtils.showToast("设置:"+b);
-                        SystemUtils.shareFile(
+                        SystemUtils.shareText(
                                 StateActivity.this,
-                                file.getAbsolutePath(),
-                                FileProvider7.INSTANCE.getAuthority(getApplication()), null)
+                               "s  http://www.baidu.com",null)
                                 .subscribe();
+
+//                        File my_images = new File(getApplication().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image");
+//                        my_images.mkdirs();
+//                        File file = new File(new File(getApplication().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "image"), "default_image2.jpg");
+//                        boolean b = BitmapUtils.INSTANCE.bitmapToFile(bitmap, file);
+//                        ToastUtils.showToast("设置:"+b);
+//                        SystemUtils.shareFile(
+//                                StateActivity.this,
+//                                file.getAbsolutePath(),
+//                                FileProvider7.INSTANCE.getAuthority(getApplication()), null)
+//                                .subscribe();
 //                        SystemUtils.saveImageToAlbum(StateActivity.this, "test.png", bitmap)
 //                                .observeOn(AndroidSchedulers.mainThread())
 //                                .doOnError(new Consumer<Throwable>() {

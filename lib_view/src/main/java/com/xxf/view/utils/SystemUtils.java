@@ -665,7 +665,11 @@ public class SystemUtils {
         if (!TextUtils.isEmpty(packageName)) {
             sendIntent.setPackage(packageName);
         }
-        Intent chooser = Intent.createChooser(sendIntent, "share text");
+        //微信必须支持这个
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "share");
+        //这种方式 qq 会蹦
+        //  Intent chooser = Intent.createChooser(sendIntent, "share text");
+        Intent chooser = sendIntent;
         if (context instanceof LifecycleOwner) {
             return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
         } else {
