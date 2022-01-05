@@ -684,7 +684,7 @@ public class SystemUtils {
             sendIntent.setType("text/plain");
         }
         //微信必须支持这个
-        sendIntent.putExtra(Intent.EXTRA_TITLE, "share");
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "");
         sendIntent.putExtra("Kdescription", !TextUtils.isEmpty(text) ? text : "");
 
         Intent chooser = sendIntent;
