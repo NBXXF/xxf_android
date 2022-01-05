@@ -5,16 +5,20 @@ import static com.xxf.application.ApplicationProvider.applicationContext;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -40,6 +44,7 @@ import com.xxf.arch.utils.UriUtils;
 import com.xxf.fileprovider.FileProvider7;
 import com.xxf.permission.PermissionDeniedException;
 import com.xxf.permission.transformer.RxPermissionTransformer;
+import com.xxf.utils.BitmapUtils;
 import com.xxf.utils.FileUtils;
 import com.xxf.view.exception.FileNotMatchTypeException;
 
@@ -74,6 +79,22 @@ public class SystemUtils {
     public static final int REQUEST_CODE_SHARE = 59996;
     public static final int REQUEST_CODE_CROP = 59995;
 
+
+    /**
+     * 常见分享组件
+     */
+    public static final ComponentName SHARE_QQ_FRIEND_COMPONENT = new ComponentName("com.tencent.mobileqq", "com.tencent.mobileqq.activity.JumpActivity");
+
+
+    /**
+     * 注意微信朋友圈不支持纯文本
+     */
+    public static final ComponentName SHARE_WECHAT_FRIEND_COMPONENT = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI");
+    public static final ComponentName SHARE_WECHAT_CIRCLE_COMPONENT = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
+
+
+    public static final ComponentName SHARE_WEIBO_FRIEND_COMPONENT = new ComponentName("com.sina.weibo", "com.sina.weibo.weiyou.share.WeiyouShareDispatcher");
+    public static final ComponentName SHARE_WEIBO_CIRCLE_COMPONENT = new ComponentName("com.sina.weibo", "com.sina.weibo.composerinde.ComposerDispatchActivity");
 
     /**
      * 获取拍照意图
@@ -642,11 +663,11 @@ public class SystemUtils {
      * 分享文本 或者链接
      *
      * @param context
-     * @param text        分享文本
-     * @param packageName 指定 包名 空 会调用系统选择面板,否则调用指定的app
+     * @param text          分享文本
+     * @param componentName 指定 包名 空 会调用系统选择面板,否则调用指定的app
      * @return
      */
-    public static Observable<ActivityResult> shareText(Context context, String text, @Nullable String packageName) {
+    public static Observable<ActivityResult> shareText(Context context, String text, @Nullable ComponentName componentName) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, text);
@@ -662,22 +683,38 @@ public class SystemUtils {
             e.printStackTrace();
             sendIntent.setType("text/plain");
         }
-        if (!TextUtils.isEmpty(packageName)) {
-            sendIntent.setPackage(packageName);
-        }
         //微信必须支持这个
         sendIntent.putExtra(Intent.EXTRA_TITLE, "share");
-        //这种方式 qq 会蹦
-        //  Intent chooser = Intent.createChooser(sendIntent, "share text");
+        sendIntent.putExtra("Kdescription", !TextUtils.isEmpty(text) ? text : "");
+
         Intent chooser = sendIntent;
+        if (componentName != null) {
+            if (!isInstallApp(context, componentName.getPackageName())) {
+                return Observable.error(new ActivityNotFoundException(componentName.getPackageName() + "_" + componentName.getClassName()));
+            }
+            //微信朋友圈 只支持图片
+//            if (componentName.equals(SHARE_WECHAT_CIRCLE_COMPONENT)) {
+//                PackageInfo installAppInfo = getInstallAppInfo(context, componentName.getPackageName());
+//                Drawable drawable = installAppInfo.applicationInfo.loadIcon(context.getPackageManager());
+//                File file = new File(context.getFilesDir(), "launcher.png");
+//                BitmapUtils.INSTANCE.bitmapToFile(BitmapUtils.INSTANCE.drawableToBitmap(drawable), file);
+//                Uri uriForFile = FileProvider7.INSTANCE.getUriForFile(context, file);
+//                sendIntent.putExtra(Intent.EXTRA_STREAM, uriForFile);
+//            }
+            sendIntent.setComponent(componentName);
+            chooser = sendIntent;
+        } else {
+            chooser = Intent.createChooser(sendIntent, "share text");
+        }
         if (context instanceof LifecycleOwner) {
             return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
         } else {
+            Intent finalChooser = chooser;
             return Observable
                     .fromCallable(new Callable<ActivityResult>() {
                         @Override
                         public ActivityResult call() throws Exception {
-                            context.startActivity(chooser);
+                            context.startActivity(finalChooser);
                             return new ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, new Intent());
                         }
                     });
@@ -688,18 +725,18 @@ public class SystemUtils {
      * 分享文件
      *
      * @param context
-     * @param filePath    文件
-     * @param authority   如果文件是私有目录一定要传递  authority 或者 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-     *                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-     *                    StrictMode.setVmPolicy(builder.build());
-     *                    }
-     * @param packageName 指定 包名 空 会调用系统选择面板,否则调用指定的app
+     * @param filePath      文件
+     * @param authority     如果文件是私有目录一定要传递  authority 或者 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+     *                      StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+     *                      StrictMode.setVmPolicy(builder.build());
+     *                      }
+     * @param componentName 指定 包名 空 会调用系统选择面板,否则调用指定的app
      * @return
      */
     public static Observable<ActivityResult> shareFile(Context context,
                                                        String filePath,
                                                        @Nullable String authority,
-                                                       @Nullable String packageName) {
+                                                       @Nullable ComponentName componentName) {
         return Observable.defer(new Supplier<ObservableSource<ActivityResult>>() {
             @Override
             public ObservableSource<ActivityResult> get() throws Throwable {
@@ -726,19 +763,26 @@ public class SystemUtils {
                     fileType = "file/*";
                 }
                 intent.setDataAndType(uri, fileType);
-                if (!TextUtils.isEmpty(packageName)) {
-                    intent.setPackage(packageName);
+                Intent chooser = intent;
+                if (componentName != null) {
+                    if (!isInstallApp(context, componentName.getPackageName())) {
+                        return Observable.error(new ActivityNotFoundException(componentName.getPackageName() + "_" + componentName.getClassName()));
+                    }
+                    intent.setComponent(componentName);
+                    chooser = intent;
+                } else {
+                    chooser = Intent.createChooser(intent, "share text");
                 }
                 applyProviderPermission(context, intent, uri);
-                Intent chooser = Intent.createChooser(intent, file.getName());
                 if (context instanceof LifecycleOwner) {
                     return XXF.startActivityForResult((LifecycleOwner) context, chooser, REQUEST_CODE_SHARE);
                 } else {
+                    Intent finalChooser = chooser;
                     return Observable
                             .fromCallable(new Callable<ActivityResult>() {
                                 @Override
                                 public ActivityResult call() throws Exception {
-                                    context.startActivity(chooser);
+                                    context.startActivity(finalChooser);
                                     return new ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, new Intent());
                                 }
                             });
@@ -765,6 +809,38 @@ public class SystemUtils {
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION
             );
         }
+    }
+
+    // 判断是否安装指定app
+    public static boolean isInstallApp(Context context, String app_package) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pInfo = packageManager.getInstalledPackages(0);
+        if (pInfo != null) {
+            for (int i = 0; i < pInfo.size(); i++) {
+                String pn = pInfo.get(i).packageName;
+                if (app_package.equals(pn)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    @Nullable
+    public static PackageInfo getInstallAppInfo(Context context, String app_package) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> pInfo = packageManager.getInstalledPackages(0);
+        if (pInfo != null) {
+            for (int i = 0; i < pInfo.size(); i++) {
+                PackageInfo packageInfo = pInfo.get(i);
+                String pn = packageInfo.packageName;
+                if (app_package.equals(pn)) {
+                    return packageInfo;
+                }
+            }
+        }
+        return null;
     }
 
     /**
