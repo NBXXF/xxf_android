@@ -92,14 +92,12 @@ open class EdgeSpringEffectFactory : RecyclerView.EdgeEffectFactory {
     override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
         return object : EdgeEffect(view.context) {
             override fun onPull(deltaDistance: Float) {
-                //去掉边界颜色
-                //super.onPull(deltaDistance)
+                super.onPull(deltaDistance)
                 handlePull(deltaDistance)
             }
 
             override fun onPull(deltaDistance: Float, displacement: Float) {
-                // 去掉边界颜色
-                // super.onPull(deltaDistance, displacement)
+                super.onPull(deltaDistance, displacement)
                 handlePull(deltaDistance)
             }
 
@@ -128,7 +126,7 @@ open class EdgeSpringEffectFactory : RecyclerView.EdgeEffectFactory {
             }
 
             override fun onRelease() {
-                //  super.onRelease()
+                super.onRelease()
                 view.forEachVisibleHolder { holder: RecyclerView.ViewHolder ->
                     if (holder is IEdgeEffectViewHolder<*>) {
                         holder.getEdgeEffectAnimation().start()
@@ -137,7 +135,7 @@ open class EdgeSpringEffectFactory : RecyclerView.EdgeEffectFactory {
             }
 
             override fun onAbsorb(velocity: Int) {
-                //   super.onAbsorb(velocity)
+                super.onAbsorb(velocity)
                 val sign = if (direction == DIRECTION_BOTTOM) -1 else 1
                 val translationVelocity = sign * velocity * flingTranslationMagnitude
                 view.forEachVisibleHolder { holder: RecyclerView.ViewHolder ->
