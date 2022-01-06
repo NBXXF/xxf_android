@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
@@ -32,6 +33,8 @@ public interface BaseAdapter<V extends ViewBinding, T> {
     boolean isDataEmpty();
 
     boolean bindData(boolean isRefresh, @NonNull List<T> datas);
+
+    boolean bindData(boolean isRefresh, @NonNull List<T> datas, @Nullable final Runnable commitCallback);
 
     void clearData();
 

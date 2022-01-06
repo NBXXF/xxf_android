@@ -74,6 +74,14 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
         return false;
     }
 
+    @Override
+    public boolean bindData(boolean isRefresh, @NonNull List<T> datas, @Nullable Runnable commitCallback) {
+        boolean result = this.bindData(isRefresh, datas);
+        if (result) {
+            commitCallback.run();
+        }
+        return result;
+    }
 
     public void clearData() {
         if (!isDataEmpty()) {
@@ -129,7 +137,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      * @return
      */
     public boolean addItem(@IntRange(from = 0) int index, @NonNull T t) {
-        if (checkIndex(index)||index==0) {
+        if (checkIndex(index) || index == 0) {
             getData().add(index, t);
             notifyItemInserted(index);
             return true;

@@ -61,21 +61,25 @@ public abstract class XXFRecyclerListAdapter<V extends ViewBinding, T>
     }
 
     public boolean bindData(boolean isRefresh, @NonNull List<T> datas) {
+        return this.bindData(isRefresh, datas, null);
+    }
+
+    @Override
+    public boolean bindData(boolean isRefresh, @NonNull List<T> datas, @Nullable Runnable commitCallback) {
         if (isRefresh) {//下拉刷新
-            submitList(datas);
+            submitList(datas, commitCallback);
             return true;
         } else {
             //上拉加载 不能为空
             if (checkList(datas)) {
                 ArrayList<T> totalList = new ArrayList<T>(getCurrentList());
                 totalList.addAll(datas);
-                submitList(totalList);
+                submitList(totalList, commitCallback);
                 return true;
             }
         }
         return false;
     }
-
 
     public void clearData() {
         if (!isDataEmpty()) {
