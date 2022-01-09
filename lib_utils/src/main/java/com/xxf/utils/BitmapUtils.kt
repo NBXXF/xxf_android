@@ -79,7 +79,7 @@ object BitmapUtils {
                 val width = bitmap.width
                 val height = bitmap.height
                 val faceIconGreyBitmap = Bitmap
-                    .createBitmap(width, height, Bitmap.Config.RGB_565)
+                    .createBitmap(width, height, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(faceIconGreyBitmap)
                 val paint = Paint()
                 val colorMatrix = ColorMatrix()
@@ -293,7 +293,7 @@ object BitmapUtils {
         try {
             val bitmap = Bitmap.createBitmap(
                 v.width, v.height,
-                Bitmap.Config.RGB_565
+                Bitmap.Config.ARGB_8888
             )
             val canvas = Canvas(bitmap)
             if (backgroundColor != Color.TRANSPARENT) {
@@ -326,7 +326,7 @@ object BitmapUtils {
             //创建缓存
             webView.buildDrawingCache()
             //根据webView宽高创建bitmap
-            val bm = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            val bm = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             //创建画布
             val bigCanvas = Canvas(bm)
             if (backgroundColor != Color.TRANSPARENT) {
@@ -367,7 +367,7 @@ object BitmapUtils {
             h += scrollView.paddingTop + scrollView.paddingBottom
             bitmap = Bitmap.createBitmap(
                 scrollView.width, h,
-                Bitmap.Config.RGB_565
+                Bitmap.Config.ARGB_8888
             )
             val canvas = Canvas(bitmap) //把创建的bitmap放到画布中去
             if (backgroundColor != Color.TRANSPARENT) {
@@ -409,7 +409,7 @@ object BitmapUtils {
             h += scrollView.paddingTop + scrollView.paddingBottom
             bitmap = Bitmap.createBitmap(
                 scrollView.width, h,
-                Bitmap.Config.RGB_565
+                Bitmap.Config.ARGB_8888
             )
             val canvas = Canvas(bitmap) //把创建的bitmap放到画布中去
             if (backgroundColor != Color.TRANSPARENT) {
@@ -468,7 +468,7 @@ object BitmapUtils {
                 )
             }
             val height = tempBitmapT.height + tempBitmapB.height
-            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
             val topRect = Rect(0, 0, tempBitmapT.width, tempBitmapT.height)
             val bottomRect = Rect(0, 0, tempBitmapB.width, tempBitmapB.height)
