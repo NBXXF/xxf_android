@@ -134,7 +134,7 @@ public abstract class XXFRecyclerListAdapter<V extends ViewBinding, T>
      * @return
      */
     public boolean addItem(@IntRange(from = 0) int index, @NonNull T t) {
-        if (checkIndex(index) || index == 0) {
+        if (checkIndex(index) || index <= getDataSize()) {
             ArrayList<T> ts = new ArrayList<>(getCurrentList());
             ts.add(index, t);
             submitList(ts);
@@ -145,7 +145,7 @@ public abstract class XXFRecyclerListAdapter<V extends ViewBinding, T>
 
     public boolean addItems(@IntRange(from = 0) int index, @NonNull List<? extends T> datas) {
         if (checkList(datas)
-                && checkIndex(index) || index == 0) {
+                && (checkIndex(index) || index <= getDataSize())) {
             ArrayList<T> ts = new ArrayList<>(getCurrentList());
             if (ts.addAll(index, datas)) {
                 submitList(ts);
