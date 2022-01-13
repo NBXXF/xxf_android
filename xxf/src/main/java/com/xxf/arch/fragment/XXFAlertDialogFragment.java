@@ -18,9 +18,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenAlertDialog;
+import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -34,6 +37,8 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @date createTime：2018/9/7
  */
 public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E> {
+    private final String TAG_PREFIX = "show_rau_";
+
     @Deprecated
     private View contentView;
     @LayoutRes
@@ -46,7 +51,7 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
 
     public XXFAlertDialogFragment(@LayoutRes int contentLayoutId) {
         this.mContentLayoutId = contentLayoutId;
-       // super(contentLayoutId);
+        // super(contentLayoutId);
     }
 
     @Override
@@ -86,7 +91,7 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
 
     @NonNull
     @Override
-    public  Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new TouchListenAlertDialog(getContext(), getTheme()) {
             @Override
             protected void onDialogTouchOutside(MotionEvent event) {
@@ -239,4 +244,25 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
         }
     }
 
+    @Override
+    public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            return super.show(transaction, tag);
+        }
+        return -1;
+    }
+
+    @Override
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.show(manager, tag);
+        }
+    }
+
+    @Override
+    public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.showNow(manager, tag);
+        }
+    }
 }

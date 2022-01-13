@@ -19,9 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
+import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -35,7 +38,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @date createTime：2018/9/7
  */
 public class XXFDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E> {
-
+    private final String TAG_PREFIX = "show_rau_";
     @Deprecated
     private View contentView;
     @LayoutRes
@@ -237,6 +240,28 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
         Window dialogWidow = getDialogWidow();
         if (dialogWidow != null) {
             dialogWidow.setWindowAnimations(resId);
+        }
+    }
+
+    @Override
+    public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            return super.show(transaction, tag);
+        }
+        return -1;
+    }
+
+    @Override
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.show(manager, tag);
+        }
+    }
+
+    @Override
+    public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.showNow(manager, tag);
         }
     }
 }

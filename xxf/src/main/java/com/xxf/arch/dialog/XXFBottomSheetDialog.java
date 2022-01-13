@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
+import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -27,6 +28,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 public class XXFBottomSheetDialog<R> extends BottomSheetDialog
         implements ObservableComponent<BottomSheetDialog, R> {
+    private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
@@ -63,5 +65,13 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
     @Override
     public BottomSheetBehavior<FrameLayout> getBehavior() {
         return super.getBehavior();
+    }
+
+
+    @Override
+    public void show() {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.show();
+        }
     }
 }

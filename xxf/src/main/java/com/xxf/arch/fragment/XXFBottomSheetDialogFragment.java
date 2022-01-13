@@ -15,11 +15,14 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.xxf.arch.component.ObservableComponent;
+import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -35,7 +38,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 
 public class XXFBottomSheetDialogFragment<E>
         extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E> {
-
+    private final String TAG_PREFIX = "show_rau_";
     @Deprecated
     private View contentView;
     @LayoutRes
@@ -237,5 +240,27 @@ public class XXFBottomSheetDialogFragment<E>
             return ((BottomSheetDialog) getDialog()).getBehavior();
         }
         return null;
+    }
+
+    @Override
+    public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            return super.show(transaction, tag);
+        }
+        return -1;
+    }
+
+    @Override
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.show(manager, tag);
+        }
+    }
+
+    @Override
+    public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.showNow(manager, tag);
+        }
     }
 }

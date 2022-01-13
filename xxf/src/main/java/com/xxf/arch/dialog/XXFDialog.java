@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
+import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -26,15 +27,16 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 public class XXFDialog<R>
         extends AppCompatDialog
-        implements ObservableComponent<AppCompatDialog,R> {
-
+        implements ObservableComponent<AppCompatDialog, R> {
+    private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
+
     @Override
     public Observable<Pair<AppCompatDialog, R>> getComponentObservable() {
         return componentSubject.ofType(Object.class)
-                .map(new Function<Object, Pair<AppCompatDialog,  R>>() {
+                .map(new Function<Object, Pair<AppCompatDialog, R>>() {
                     @Override
-                    public Pair<AppCompatDialog,  R> apply(Object o) throws Throwable {
+                    public Pair<AppCompatDialog, R> apply(Object o) throws Throwable {
                         return Pair.create(XXFDialog.this, (R) o);
                     }
                 });
@@ -46,6 +48,7 @@ public class XXFDialog<R>
             componentSubject.onNext(result);
         }
     }
+
     protected XXFDialog(@NonNull Context context) {
         super(context);
     }
@@ -56,5 +59,12 @@ public class XXFDialog<R>
 
     protected XXFDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+    }
+
+    @Override
+    public void show() {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.show();
+        }
     }
 }

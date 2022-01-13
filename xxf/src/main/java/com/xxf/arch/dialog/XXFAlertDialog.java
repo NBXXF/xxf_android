@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
+import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -26,7 +27,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 public  class XXFAlertDialog<R>
         extends AlertDialog
         implements ObservableComponent<AlertDialog,R> {
-
+    private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
@@ -57,5 +58,12 @@ public  class XXFAlertDialog<R>
 
     protected XXFAlertDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+    }
+
+    @Override
+    public void show() {
+        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+            super.show();
+        }
     }
 }
