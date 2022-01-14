@@ -1,5 +1,7 @@
 package com.xxf.arch.rxjava.transformer;
 
+import android.view.Gravity;
+
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 
 import io.reactivex.rxjava3.functions.BiConsumer;
@@ -9,21 +11,16 @@ import io.reactivex.rxjava3.functions.BiConsumer;
  * @Description
  */
 public class UIErrorTransformer<T> extends UILifeTransformerImpl<T> {
-    /**
-     * 忽略网络错误的标记位,默认值
-     */
-    public static final int FLAG_IGNORE_NET_ERROR = Integer.MIN_VALUE;
-
     BiConsumer<Integer, ? super Throwable> consumer;
-    int flag = FLAG_IGNORE_NET_ERROR;
+    int toastFlag = Gravity.CENTER;
 
     public UIErrorTransformer(BiConsumer<Integer, ? super Throwable> consumer) {
         this.consumer = consumer;
     }
 
-    public UIErrorTransformer(BiConsumer<Integer, ? super Throwable> consumer, int flag) {
+    public UIErrorTransformer(BiConsumer<Integer, ? super Throwable> consumer, int toastFlag) {
         this.consumer = consumer;
-        this.flag = flag;
+        this.toastFlag = toastFlag;
     }
 
     @Override
@@ -45,7 +42,7 @@ public class UIErrorTransformer<T> extends UILifeTransformerImpl<T> {
     public final void onError(Throwable throwable) {
         if (consumer != null) {
             try {
-                consumer.accept(flag, throwable);
+                consumer.accept(toastFlag, throwable);
             } catch (Throwable e) {
                 e.printStackTrace();
             }

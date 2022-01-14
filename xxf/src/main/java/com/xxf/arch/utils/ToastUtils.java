@@ -67,7 +67,7 @@ public class ToastUtils {
          * @param applicationContext
          * @param flag               任意类型的整形 可以标记toast业务类型 比如位置,也可以根据后端返回的状态码进行颜色 着重文字提示
          *                           默认Gravity.CENTER
-         *                           XXF.bindToErrorNotice 是Integer.MIN_VALUE
+         *                           XXF.bindToErrorNotice 是Gravity.CENTER
          *                           flag的定值 可以参考【Gravity】类的枚举值
          *                           <p>
          *                           flag 等价于ErrorHandler 返回的flag  XXF.init().setErrorHandler(new BiConsumer<Integer, Throwable>() {

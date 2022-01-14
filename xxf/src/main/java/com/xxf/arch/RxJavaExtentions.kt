@@ -1,7 +1,7 @@
 package com.xxf.arch
 
+import android.view.Gravity
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.application.activity.topActivity
 import com.xxf.application.activity.topFragmentActivity
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer
@@ -128,27 +128,27 @@ inline fun <reified T> Maybe<T>.bindProgressHud(
 
 /**
  * 在流发生错误的时候增加提示
- * @param flag 业务约定
+ * @param toastFlag 对应toast的类型
  */
-inline fun <reified T> Observable<T>.bindErrorNotice(flag: Int = UIErrorTransformer.FLAG_IGNORE_NET_ERROR): @NonNull Observable<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), flag)
+inline fun <reified T> Observable<T>.bindErrorNotice(toastFlag: Int = Gravity.CENTER): @NonNull Observable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag)
     return this.compose(uiErrorTransformer);
 }
 
 /**
  * 在流发生错误的时候增加提示
- * @param flag 业务约定
+ * @param toastFlag  对应toast的类型
  */
-inline fun <reified T> Flowable<T>.bindErrorNotice(flag: Int = UIErrorTransformer.FLAG_IGNORE_NET_ERROR): @NonNull Flowable<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), flag)
+inline fun <reified T> Flowable<T>.bindErrorNotice(toastFlag: Int = Gravity.CENTER): @NonNull Flowable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag)
     return this.compose(uiErrorTransformer);
 }
 
 /**
  * 在流发生错误的时候增加提示
- * @param flag 业务约定
+ * @param toastFlag 对应toast的类型
  */
-inline fun <reified T> Maybe<T>.bindErrorNotice(flag: Int = UIErrorTransformer.FLAG_IGNORE_NET_ERROR): @NonNull Maybe<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), flag)
+inline fun <reified T> Maybe<T>.bindErrorNotice(toastFlag: Int = Gravity.CENTER): @NonNull Maybe<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag)
     return this.compose(uiErrorTransformer);
 }
