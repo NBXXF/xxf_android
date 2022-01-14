@@ -5,10 +5,12 @@ import androidx.lifecycle.LifecycleOwner
 import com.xxf.application.activity.topFragmentActivity
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer
+import com.xxf.arch.rxjava.transformer.filter.ErrorNoFilter
 import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.functions.Predicate
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -128,27 +130,39 @@ inline fun <reified T> Maybe<T>.bindProgressHud(
 
 /**
  * 在流发生错误的时候增加提示
+ * @param filter 错过过滤 哪些不提示
  * @param toastFlag 对应toast的类型
  */
-inline fun <reified T> Observable<T>.bindErrorNotice(toastFlag: Int = Gravity.CENTER): @NonNull Observable<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag)
+inline fun <reified T> Observable<T>.bindErrorNotice(
+    filter: Predicate<Throwable> = ErrorNoFilter,
+    toastFlag: Int = Gravity.CENTER
+): @NonNull Observable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag, filter)
     return this.compose(uiErrorTransformer);
 }
 
 /**
  * 在流发生错误的时候增加提示
+ * @param filter 错过过滤 哪些不提示
  * @param toastFlag  对应toast的类型
  */
-inline fun <reified T> Flowable<T>.bindErrorNotice(toastFlag: Int = Gravity.CENTER): @NonNull Flowable<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag)
+inline fun <reified T> Flowable<T>.bindErrorNotice(
+    filter: Predicate<Throwable> = ErrorNoFilter,
+    toastFlag: Int = Gravity.CENTER
+): @NonNull Flowable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag, filter)
     return this.compose(uiErrorTransformer);
 }
 
 /**
  * 在流发生错误的时候增加提示
+ * @param filter 错过过滤 哪些不提示
  * @param toastFlag 对应toast的类型
  */
-inline fun <reified T> Maybe<T>.bindErrorNotice(toastFlag: Int = Gravity.CENTER): @NonNull Maybe<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag)
+inline fun <reified T> Maybe<T>.bindErrorNotice(
+    filter: Predicate<Throwable> = ErrorNoFilter,
+    toastFlag: Int = Gravity.CENTER
+): @NonNull Maybe<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag, filter)
     return this.compose(uiErrorTransformer);
 }
