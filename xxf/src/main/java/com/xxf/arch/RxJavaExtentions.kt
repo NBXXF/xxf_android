@@ -130,7 +130,7 @@ inline fun <reified T> Maybe<T>.bindProgressHud(
 
 /**
  * 在流发生错误的时候增加提示
- * @param filter 错过过滤 哪些不提示
+ * @param filter 错过过滤 哪些不提示 内置ErrorNoFilter  ErrorIgnoreNetFilter
  * @param toastFlag 对应toast的类型
  */
 inline fun <reified T> Observable<T>.bindErrorNotice(
@@ -143,7 +143,7 @@ inline fun <reified T> Observable<T>.bindErrorNotice(
 
 /**
  * 在流发生错误的时候增加提示
- * @param filter 错过过滤 哪些不提示
+ * @param filter 错过过滤 哪些不提示   内置ErrorNoFilter  ErrorIgnoreNetFilter
  * @param toastFlag  对应toast的类型
  */
 inline fun <reified T> Flowable<T>.bindErrorNotice(
@@ -156,7 +156,7 @@ inline fun <reified T> Flowable<T>.bindErrorNotice(
 
 /**
  * 在流发生错误的时候增加提示
- * @param filter 错过过滤 哪些不提示
+ * @param filter 错过过滤 哪些不提示   内置ErrorNoFilter  ErrorIgnoreNetFilter
  * @param toastFlag 对应toast的类型
  */
 inline fun <reified T> Maybe<T>.bindErrorNotice(
