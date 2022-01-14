@@ -128,24 +128,27 @@ inline fun <reified T> Maybe<T>.bindProgressHud(
 
 /**
  * 在流发生错误的时候增加提示
+ * @param flag 业务约定
  */
-inline fun <reified T> Observable<T>.bindErrorNotice(): @NonNull Observable<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler())
+inline fun <reified T> Observable<T>.bindErrorNotice(flag: Int = UIErrorTransformer.FLAG_IGNORE_NET_ERROR): @NonNull Observable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), flag)
     return this.compose(uiErrorTransformer);
 }
 
 /**
  * 在流发生错误的时候增加提示
+ * @param flag 业务约定
  */
-inline fun <reified T> Flowable<T>.bindErrorNotice(): @NonNull Flowable<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler())
+inline fun <reified T> Flowable<T>.bindErrorNotice(flag: Int = UIErrorTransformer.FLAG_IGNORE_NET_ERROR): @NonNull Flowable<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), flag)
     return this.compose(uiErrorTransformer);
 }
 
 /**
  * 在流发生错误的时候增加提示
+ * @param flag 业务约定
  */
-inline fun <reified T> Maybe<T>.bindErrorNotice(): @NonNull Maybe<T> {
-    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler())
+inline fun <reified T> Maybe<T>.bindErrorNotice(flag: Int = UIErrorTransformer.FLAG_IGNORE_NET_ERROR): @NonNull Maybe<T> {
+    val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), flag)
     return this.compose(uiErrorTransformer);
 }
