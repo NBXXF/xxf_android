@@ -1,5 +1,6 @@
 package com.xxf.arch.rxjava.transformer.filter
 
+import android.system.ErrnoException
 import io.reactivex.rxjava3.functions.Predicate
 import okhttp3.internal.connection.RouteException
 import okhttp3.internal.http2.ConnectionShutdownException
@@ -58,6 +59,15 @@ object ErrorIgnoreNetFilter : Predicate<Throwable> {
             return false
         }
         if (t is SSLPeerUnverifiedException) {
+            return false
+        }
+        /**
+         * #8002 android.system.ErrnoException
+        connect failed: ENETUNREACH (Network is unreachable)
+        #9008 android.system.ErrnoException
+        isConnected failed: ECONNREFUSED (Connection refused)
+         */
+        if (t is ErrnoException) {
             return false
         }
         return true
