@@ -23,8 +23,8 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  * @date createTime：2018/9/7
  */
@@ -38,9 +38,9 @@ public class OkHttpClientBuilder {
             .sslSocketFactory(createSSLSocketFactory(), new TrustAllManager())
             .hostnameVerifier(new TrustAllHostnameVerifier())
             .retryOnConnectionFailure(true)
-            .writeTimeout(1, TimeUnit.MINUTES)
+            .writeTimeout(20, TimeUnit.SECONDS)
             .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(20, TimeUnit.SECONDS)
             .connectionPool(CONNECTION_POOL);
 
     public OkHttpClientBuilder addInterceptor(Interceptor interceptor) {

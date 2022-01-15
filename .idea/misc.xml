@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/layout/item_test.xml" value="0.1078125" />
         <entry key="app/src/main/res/layout/item_test2.xml" value="0.1078125" />
         <entry key="app/src/main/res/layout/pdf_activity_main.xml" value="0.1640625" />
+        <entry key="app/src/main/res/xml/shortcuts.xml" value="0.19375" />
         <entry key="lib_adapter/lib_adapter_demo/src/main/res/layout/activity_main.xml" value="0.14855072463768115" />
         <entry key="lib_adapter/lib_adapter_demo/src/main/res/layout/adapter_test.xml" value="0.14855072463768115" />
         <entry key="lib_bus/lib_bus_demo/src/main/res/layout/activity_main.xml" value="0.1" />
