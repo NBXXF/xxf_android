@@ -25,7 +25,7 @@ import kotlin.reflect.KProperty
  */
 object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     private val mSharedPreferences: SharedPreferences by lazy {
-        MMKV.defaultMMKV();
+        MMKV.defaultMMKV(MMKV.MULTI_PROCESS_MODE, null);
     }
     private val bus: Subject<Any> by lazy {
         PublishSubject.create<Any>().toSerialized();
