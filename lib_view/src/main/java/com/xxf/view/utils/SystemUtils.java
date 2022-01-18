@@ -384,7 +384,12 @@ public class SystemUtils {
         try {
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm.isActive()) {
-                imm.hideSoftInputFromWindow(act.getCurrentFocus().getWindowToken(), 0);
+                View view = act.getCurrentFocus();
+                if (view == null) {
+                    //dialogfragment 直接使用有问题
+                    view = act.getWindow().peekDecorView();
+                }
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (Exception e) {
         }
@@ -399,7 +404,11 @@ public class SystemUtils {
         try {
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm.isActive()) {
-                View view = act.getWindow().peekDecorView();
+                View view = act.getCurrentFocus();
+                if (view == null) {
+                    //dialogfragment 直接使用有问题
+                    view = act.getWindow().peekDecorView();
+                }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
             if (clearFocus) {
