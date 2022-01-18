@@ -383,7 +383,9 @@ public class SystemUtils {
     public static void hideSoftKeyBoard(Activity act) {
         try {
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(act.getCurrentFocus().getWindowToken(), 0);
+            if (imm.isActive()) {
+                imm.hideSoftInputFromWindow(act.getCurrentFocus().getWindowToken(), 0);
+            }
         } catch (Exception e) {
         }
     }
@@ -393,16 +395,19 @@ public class SystemUtils {
      *
      * @param act
      */
-    public static void hideSoftKeyBoard(Activity act, boolean clearFouces) {
+    public static void hideSoftKeyBoard(Activity act, boolean clearFocus) {
         try {
-            if (clearFouces) {
+            InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm.isActive()) {
+                View view = act.getWindow().peekDecorView();
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            if (clearFocus) {
                 View currentFocus = act.getCurrentFocus();
                 if (currentFocus != null) {
                     currentFocus.clearFocus();
                 }
             }
-            InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(act.getCurrentFocus().getWindowToken(), 0);
         } catch (Exception e) {
         }
     }
@@ -415,7 +420,9 @@ public class SystemUtils {
     public static void hideSoftKeyBoard(Context act, View v) {
         try {
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            if (imm.isActive()) {
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
         } catch (Exception e) {
         }
     }
@@ -425,9 +432,9 @@ public class SystemUtils {
      *
      * @param act
      */
-    public static void hideSoftKeyBoard(Context act, View v, boolean clearFouces) {
+    public static void hideSoftKeyBoard(Context act, View v, boolean clearFocus) {
         try {
-            if (v != null && clearFouces) {
+            if (v != null && clearFocus) {
                 v.clearFocus();
             }
             InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);

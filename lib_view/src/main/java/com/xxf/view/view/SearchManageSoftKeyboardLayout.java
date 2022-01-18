@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.xxf.view.utils.SystemUtils;
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.2.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 搜索页面  键盘关闭的时机:1:点击 2:滚动, 默认会清除焦点
  * @date createTime：2017/11/21
  */
@@ -52,6 +53,7 @@ public class SearchManageSoftKeyboardLayout extends SoftKeyboardSizeWatchLayout 
 
                 @Override
                 public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                    Log.d("==========>", "onScroll");
                     closeSoftKeyboardLayout();
                     return false;
                 }
