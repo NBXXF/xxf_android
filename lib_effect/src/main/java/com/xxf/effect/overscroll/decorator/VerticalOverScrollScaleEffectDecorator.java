@@ -1,4 +1,4 @@
-package com.xxf.view.overscroll.decorator;
+package com.xxf.effect.overscroll.decorator;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -7,15 +7,15 @@ import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase;
 import me.everything.android.ui.overscroll.adapters.IOverScrollDecoratorAdapter;
 
 /**
- * A concrete implementation of {@link OverScrollBounceEffectDecoratorBase} for a horizontal orientation.
+ * A concrete implementation of {@link OverScrollBounceEffectDecoratorBase} for a vertical orientation.
  *
  * @author amit
  */
-public class HorizontalOverScrollScaleEffectDecorator extends OverScrollScaleEffectDecoratorBase {
+public class VerticalOverScrollScaleEffectDecorator extends OverScrollScaleEffectDecoratorBase {
 
     private float mDamping = 1;
 
-    protected class MotionAttributesHorizontal extends MotionAttributes {
+    protected class MotionAttributesVertical extends MotionAttributes {
 
         public boolean init(View view, MotionEvent event) {
 
@@ -28,31 +28,32 @@ public class HorizontalOverScrollScaleEffectDecorator extends OverScrollScaleEff
             // Allow for counter-orientation-direction operations (e.g. item swiping) to run fluently.
             final float dy = event.getY(0) - event.getHistoricalY(0, 0);
             final float dx = event.getX(0) - event.getHistoricalX(0, 0);
-            if (Math.abs(dx) < Math.abs(dy)) {
+            if (Math.abs(dx) > Math.abs(dy)) {
                 return false;
             }
-            if (dx > 0) {
-                mAbsOffset = (view.getScaleX() - 1) * mDamping * 1000;
+
+            if (dy > 0) {
+                mAbsOffset = (view.getScaleY() - 1) * mDamping * 1000;
             } else {
-                mAbsOffset = -(view.getScaleX() - 1) * mDamping * 1000;
+                mAbsOffset = -(view.getScaleY() - 1) * mDamping * 1000;
             }
-            mDeltaOffset = dx;
+            mDeltaOffset = dy;
             mDir = mDeltaOffset > 0;
 
             return true;
         }
     }
 
-    protected class AnimationAttributesHorizontal extends AnimationAttributes {
+    protected class AnimationAttributesVertical extends AnimationAttributes {
 
-        public AnimationAttributesHorizontal() {
-            mProperty = View.SCALE_X;
+        public AnimationAttributesVertical() {
+            mProperty = View.SCALE_Y;
         }
 
         @Override
         protected void init(View view) {
-            mAbsOffset = (view.getScaleX() - 1) * mDamping * 1000;
-            mMaxOffset = view.getWidth();
+            mAbsOffset = (view.getScaleY() - 1) * mDamping * 1000;
+            mMaxOffset = view.getHeight();
         }
     }
 
@@ -63,8 +64,9 @@ public class HorizontalOverScrollScaleEffectDecorator extends OverScrollScaleEff
      * <br/>Deceleration factor (for the bounce-back effect) will be set to DEFAULT_DECELERATE_FACTOR.
      *
      * @param viewAdapter The view's encapsulation.
+     * @param damping     the damping of scaling
      */
-    public HorizontalOverScrollScaleEffectDecorator(IOverScrollDecoratorAdapter viewAdapter, float damping) {
+    public VerticalOverScrollScaleEffectDecorator(IOverScrollDecoratorAdapter viewAdapter, float damping) {
         this(viewAdapter, DEFAULT_TOUCH_DRAG_MOVE_RATIO_FWD, DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK, DEFAULT_DECELERATE_FACTOR);
         this.mDamping = damping;
     }
@@ -79,43 +81,43 @@ public class HorizontalOverScrollScaleEffectDecorator extends OverScrollScaleEff
      * @param decelerateFactor  Deceleration factor used when decelerating the motion to create the
      *                          bounce-back effect.
      */
-    public HorizontalOverScrollScaleEffectDecorator(IOverScrollDecoratorAdapter viewAdapter,
-                                                    float touchDragRatioFwd, float touchDragRatioBck, float decelerateFactor) {
+    public VerticalOverScrollScaleEffectDecorator(IOverScrollDecoratorAdapter viewAdapter,
+                                                  float touchDragRatioFwd, float touchDragRatioBck, float decelerateFactor) {
         super(viewAdapter, decelerateFactor, touchDragRatioFwd, touchDragRatioBck);
     }
 
     @Override
     protected MotionAttributes createMotionAttributes() {
-        return new MotionAttributesHorizontal();
+        return new MotionAttributesVertical();
     }
 
     @Override
     protected AnimationAttributes createAnimationAttributes() {
-        return new AnimationAttributesHorizontal();
+        return new AnimationAttributesVertical();
     }
 
     @Override
     protected void scaleView(View view, float offset) {
         if (offset > 0) {
-            view.setPivotY(view.getHeight() / 2);
-            view.setPivotX(0);
+            view.setPivotX(view.getWidth() / 2);
+            view.setPivotY(0);
         } else {
-            view.setPivotY(view.getHeight() / 2);
-            view.setPivotX(view.getWidth());
+            view.setPivotX(view.getWidth() / 2);
+            view.setPivotY(view.getHeight());
         }
-        view.setScaleX(1 + Math.abs(offset * 1.0f / (mDamping * 1000)));
+        view.setScaleY(1 + Math.abs(offset * 1.0f / (mDamping * 1000)));
     }
 
     @Override
     protected void scaleViewAndEvent(View view, float offset, MotionEvent event) {
         if (offset > 0) {
-            view.setPivotY(view.getHeight() / 2);
-            view.setPivotX(0);
+            view.setPivotX(view.getWidth() / 2);
+            view.setPivotY(0);
         } else {
-            view.setPivotY(view.getHeight() / 2);
-            view.setPivotX(view.getWidth());
+            view.setPivotX(view.getWidth() / 2);
+            view.setPivotY(view.getHeight());
         }
-        view.setScaleX(1 + Math.abs(offset * 1.0f / (mDamping * 1000)));
-        event.offsetLocation(offset - event.getX(0), 0f);
+        view.setScaleY(1 + Math.abs(offset * 1.0f / (mDamping * 1000)));
+        event.offsetLocation(offset - event.getY(0), 0f);
     }
 }

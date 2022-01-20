@@ -9,8 +9,8 @@ import android.webkit.WebView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
-import com.xxf.view.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter;
-import com.xxf.view.overscroll.myadapter.WebViewOverScrollDecorAdapter;
+import com.xxf.effect.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter;
+import com.xxf.effect.overscroll.myadapter.WebViewOverScrollDecorAdapter;
 
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
 import me.everything.overscrolldemo.R;

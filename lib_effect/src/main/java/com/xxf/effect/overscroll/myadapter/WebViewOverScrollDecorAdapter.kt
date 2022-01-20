@@ -1,8 +1,7 @@
-package com.xxf.view.overscroll.myadapter
+package com.xxf.effect.overscroll.myadapter
 
 import android.view.View
 import android.webkit.WebView
-import androidx.core.widget.NestedScrollView
 import me.everything.android.ui.overscroll.adapters.IOverScrollDecoratorAdapter
 
 /**

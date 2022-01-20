@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-import com.xxf.view.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter;
+import com.xxf.effect.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;

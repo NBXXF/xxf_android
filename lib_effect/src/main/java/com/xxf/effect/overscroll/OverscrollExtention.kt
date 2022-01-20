@@ -1,4 +1,4 @@
-package com.xxf.view.overscroll
+package com.xxf.effect.overscroll
 
 import android.view.View
 import android.webkit.WebView
@@ -7,12 +7,11 @@ import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.xxf.view.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter
-import com.xxf.view.overscroll.myadapter.WebViewOverScrollDecorAdapter
+import com.xxf.effect.overscroll.myadapter.NestedScrollViewOverScrollDecorAdapter
+import com.xxf.effect.overscroll.myadapter.WebViewOverScrollDecorAdapter
 import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
-import me.everything.android.ui.overscroll.adapters.ScrollViewOverScrollDecorAdapter
 import java.lang.RuntimeException
 
 

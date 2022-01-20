@@ -16,7 +16,7 @@ include ':lib_bus'
 include ':lib_activityresult'
 include ':lib_permission'
 include ':lib_view_snackbar'
-include ':lib_overscroll'
+include ':lib_effect'
 include ':lib_overscroll:ovserscroll_demo'
 include ':app',
         ':lib_http',

@@ -1,4 +1,4 @@
-package com.xxf.view.overscroll.decorator;
+package com.xxf.effect.overscroll.decorator;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

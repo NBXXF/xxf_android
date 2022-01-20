@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-    implementation project(':lib_overscroll')
+    implementation project(':lib_effect')
 //    implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 }

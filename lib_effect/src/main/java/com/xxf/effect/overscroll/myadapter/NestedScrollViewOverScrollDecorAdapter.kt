@@ -1,4 +1,4 @@
-package com.xxf.view.overscroll.myadapter
+package com.xxf.effect.overscroll.myadapter
 
 import me.everything.android.ui.overscroll.adapters.IOverScrollDecoratorAdapter
 import android.view.View
