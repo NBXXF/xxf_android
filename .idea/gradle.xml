@@ -18,14 +18,14 @@
             <option value="$PROJECT_DIR$/lib_bus" />
             <option value="$PROJECT_DIR$/lib_bus/lib_bus_demo" />
             <option value="$PROJECT_DIR$/lib_effect" />
+            <option value="$PROJECT_DIR$/lib_effect/layout_anim_demo" />
+            <option value="$PROJECT_DIR$/lib_effect/ovserscroll_demo" />
             <option value="$PROJECT_DIR$/lib_fileprovider" />
             <option value="$PROJECT_DIR$/lib_hash" />
             <option value="$PROJECT_DIR$/lib_http" />
             <option value="$PROJECT_DIR$/lib_http/httpdemo" />
             <option value="$PROJECT_DIR$/lib_objectbox" />
             <option value="$PROJECT_DIR$/lib_objectbox/lib_objectbox_demo" />
-            <option value="$PROJECT_DIR$/lib_overscroll" />
-            <option value="$PROJECT_DIR$/lib_overscroll/ovserscroll_demo" />
             <option value="$PROJECT_DIR$/lib_permission" />
             <option value="$PROJECT_DIR$/lib_rxjava" />
             <option value="$PROJECT_DIR$/lib_rxjava/lib_rxlifecycledemo" />

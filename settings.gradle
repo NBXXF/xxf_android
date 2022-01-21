@@ -17,10 +17,11 @@ include ':lib_activityresult'
 include ':lib_permission'
 include ':lib_view_snackbar'
 include ':lib_effect'
-include ':lib_overscroll:ovserscroll_demo'
+include ':lib_effect:ovserscroll_demo'
 include ':app',
         ':lib_http',
         ':xxf',
         ':lib_view',
         ':lib_wechat'
 include ':lib_adapter:lib_adapter_demo'
+include ':lib_effect:layout_anim_demo'
