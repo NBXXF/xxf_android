@@ -73,4 +73,14 @@ public class ItemMenuImpl<T> implements ItemMenu<T> {
     public void toggleItemSelect() {
         this.isItemSelected = !this.isItemSelected;
     }
+
+    @Override
+    public int hashCode() {
+        int result = itemIcon != null ? itemIcon.hashCode() : 0;
+        result = 31 * result + (item != null ? item.hashCode() : 0);
+        result = 31 * result + (itemTitle != null ? itemTitle.hashCode() : 0);
+        result = 31 * result + (itemDisable ? 1 : 0);
+        result = 31 * result + (isItemSelected ? 1 : 0);
+        return result;
+    }
 }
