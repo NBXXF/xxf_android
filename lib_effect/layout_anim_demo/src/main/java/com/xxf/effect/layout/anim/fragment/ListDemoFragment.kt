@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xxf.effect.layout.anim.model.Model
 import com.xxf.effect.layout.anim.recyclerview.CardAdapter
 import com.xxf.effect.layout.anim.demo.R
+import com.xxf.effect.transition.LINEAR_OUT_SLOW_IN
 
 class ListDemoFragment : Fragment(R.layout.fragment_list) {
 
@@ -77,7 +78,7 @@ class ListDemoFragment : Fragment(R.layout.fragment_list) {
 
     private fun runLayoutAnimation(model: Model) = recyclerView.apply {
         layoutAnimation = AnimationUtils.loadLayoutAnimation(context, model.resourceId)
-        //adapter?.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
         scheduleLayoutAnimation()
 
         if (hasHeader) {
