@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
+import com.xxf.arch.dialog.WindowExtentionKtKt;
 import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -262,6 +263,14 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
     public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
             super.showNow(manager, tag);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(getShowsDialog()){
+            WindowExtentionKtKt.runAlphaDimAnimation(getDialogWidow());
         }
     }
 }

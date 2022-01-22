@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.xxf.arch.component.ObservableComponent;
+import com.xxf.arch.dialog.WindowExtentionKtKt;
 import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -261,6 +262,14 @@ public class XXFBottomSheetDialogFragment<E>
     public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
             super.showNow(manager, tag);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(getShowsDialog()){
+            WindowExtentionKtKt.runAlphaDimAnimation(getDialogWidow());
         }
     }
 }
