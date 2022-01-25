@@ -5,21 +5,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.xxf.adapter.demo.databinding.ActivityMainBinding;
+import com.xxf.utils.DensityUtil;
 import com.xxf.view.recyclerview.adapter.EdgeSpringEffectFactory;
+import com.xxf.view.recyclerview.itemdecorations.section.SectionItemDecoration;
+import com.xxf.view.recyclerview.itemdecorations.section.SectionProvider;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     TestAdapter adapter = new TestAdapter();
+
+    TreeMap<Integer, String> sectionMap = new TreeMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,24 @@ public class MainActivity extends AppCompatActivity {
             public void onChildViewDetachedFromWindow(@NonNull View view) {
             }
         });
+        sectionMap.clear();
+        sectionMap.put(0, "第一个分组");
+        sectionMap.put(3, "第2个分组");
+        Paint paint = new Paint();
+        paint.setTextSize(DensityUtil.sp2px(13));
+        paint.setColor(Color.RED);
+        paint.setAntiAlias(true);
+
+        Paint background = new Paint();
+        background.setColor(Color.WHITE);
+        binding.recyclerView.addItemDecoration(new SectionItemDecoration(new SectionProvider() {
+            @NotNull
+            @Override
+            public TreeMap<Integer, String> onProvideSection() {
+                return sectionMap;
+            }
+        }, paint, background, DensityUtil.sp2px(30), DensityUtil.sp2px(16)));
+
         List<String> list = new ArrayList<>();
         int count = new Random().nextInt(50);
         for (int i = 0; i < count; i++) {
