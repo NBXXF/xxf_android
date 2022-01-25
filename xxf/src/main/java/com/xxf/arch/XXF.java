@@ -79,8 +79,8 @@ public class XXF {
         Application application;
         @NonNull
         ProgressHUDFactory.ProgressHUDProvider progressHUDProvider;
-        boolean asyncInit;
         boolean isDebug = true;
+        String sharedPreferencesName = "xxfSpService";
 
         public Builder(@NonNull Application application,
                        @NonNull ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
@@ -88,10 +88,6 @@ public class XXF {
             this.progressHUDProvider = Objects.requireNonNull(progressHUDProvider);
         }
 
-        public Builder setAsyncInit(boolean asyncInit) {
-            this.asyncInit = asyncInit;
-            return this;
-        }
 
         public Builder setDebug(boolean debug) {
             isDebug = debug;
@@ -112,6 +108,11 @@ public class XXF {
             this.userInfoProvider = Objects.requireNonNull(userInfoProvider);
             return this;
         }
+
+        public Builder setSharedPreferencesName(String sharedPreferencesName) {
+            this.sharedPreferencesName = sharedPreferencesName;
+            return this;
+        }
     }
 
     private XXF() {
@@ -123,6 +124,7 @@ public class XXF {
     private static BiConsumer<Integer, Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
+    private static String sharedPreferencesName;
 
 
     public static void init(Builder builder) {
@@ -133,6 +135,7 @@ public class XXF {
                     XXF.errorHandler = builder.errorHandler;
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
+                    XXF.sharedPreferencesName = builder.sharedPreferencesName;
                     ProgressHUDFactory.INSTANCE.setProgressHUDProvider(builder.progressHUDProvider);
                     RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
                         return true; // Use whatever heuristics you prefer.
@@ -164,6 +167,10 @@ public class XXF {
         return AndroidActivityStackProvider.INSTANCE;
     }
 
+    public static String getSharedPreferencesName() {
+        return sharedPreferencesName;
+    }
+
     /**
      * 获取用户信息
      *
@@ -184,17 +191,6 @@ public class XXF {
     public static XXFFileService getFileService() {
         return XXFFileService.getDefault();
     }
-
-    /**
-     * 获取sp文件服务
-     *
-     * @return
-     */
-    @NonNull
-    public static SharedPreferencesService getSpService() {
-        return SpService.INSTANCE;
-    }
-
 
     /**
      * 获取异常转换器
@@ -379,7 +375,6 @@ public class XXF {
     public static <T> UIErrorTransformer<T> bindToErrorNotice() {
         return new UIErrorTransformer<T>(XXF.errorHandler);
     }
-
 
 
     /**

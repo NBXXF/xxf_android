@@ -14,8 +14,6 @@ ext {
             smart_refresh              : "com.scwang.smart:refresh-layout-kernel:2.0.3",
             refresh_footer             : 'com.scwang.smart:refresh-footer-classics:2.0.3',    //经典加载
             lottie                     : "com.airbnb.android:lottie:4.1.0",
-
-            mmkv                       : "com.tencent:mmkv:1.2.12",
             /**
              * viewbinding 代理类
              */

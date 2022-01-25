@@ -1,12 +1,13 @@
 package com.xxf.arch.service
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.text.TextUtils
 import com.google.gson.JsonPrimitive
 import com.google.gson.reflect.TypeToken
-import com.tencent.mmkv.MMKV
 import com.xxf.application.applicationContext
+import com.xxf.arch.XXF
 import com.xxf.arch.json.JsonUtils
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -25,18 +26,17 @@ import kotlin.reflect.KProperty
  */
 object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     private val mSharedPreferences: SharedPreferences by lazy {
-        MMKV.defaultMMKV(MMKV.MULTI_PROCESS_MODE, null);
-    }
-    private val bus: Subject<Any> by lazy {
-        PublishSubject.create<Any>().toSerialized();
+        applicationContext.getSharedPreferences(
+            XXF.getSharedPreferencesName(),
+            Context.MODE_PRIVATE
+        )
+            .apply {
+                this.registerOnSharedPreferenceChangeListener(this@SpService);
+            }
     }
 
-    init {
-        //初始化
-        val rootDir = MMKV.initialize(applicationContext)
-        if (mSharedPreferences !is MMKV) {
-            mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        }
+    private val bus: Subject<Any> by lazy {
+        PublishSubject.create<Any>().toSerialized();
     }
 
     override fun getAll(): Map<String, *>? {
@@ -48,10 +48,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     }
 
     override fun putString(key: String, value: String?) {
-        mSharedPreferences.edit().putString(key, value).commit().apply {
-            fixMMKVListen(key)
-        }
-
+        mSharedPreferences.edit().putString(key, value).commit()
     }
 
     override fun getStringSet(key: String, defaultValue: Set<String>?): Set<String>? {
@@ -59,9 +56,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     }
 
     override fun putStringSet(key: String, value: Set<String>?) {
-        mSharedPreferences.edit().putStringSet(key, value).commit().apply {
-            fixMMKVListen(key)
-        }
+        mSharedPreferences.edit().putStringSet(key, value).commit()
     }
 
     override fun getInt(key: String, defaultValue: Int): Int {
@@ -69,9 +64,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     }
 
     override fun putInt(key: String, value: Int?) {
-        mSharedPreferences.edit().putInt(key, value!!).commit().apply {
-            fixMMKVListen(key)
-        }
+        mSharedPreferences.edit().putInt(key, value!!).commit()
     }
 
     override fun getLong(key: String, defaultValue: Long): Long {
@@ -79,9 +72,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     }
 
     override fun putLong(key: String, value: Long?) {
-        mSharedPreferences.edit().putLong(key, value!!).commit().apply {
-            fixMMKVListen(key)
-        }
+        mSharedPreferences.edit().putLong(key, value!!).commit()
     }
 
     override fun getFloat(key: String, defaultValue: Float): Float {
@@ -89,9 +80,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     }
 
     override fun putFloat(key: String, value: Float?) {
-        mSharedPreferences.edit().putFloat(key, value!!).commit().apply {
-            fixMMKVListen(key)
-        }
+        mSharedPreferences.edit().putFloat(key, value!!).commit()
     }
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
@@ -99,9 +88,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     }
 
     override fun putBoolean(key: String, value: Boolean?) {
-        mSharedPreferences.edit().putBoolean(key, value!!).commit().apply {
-            fixMMKVListen(key)
-        }
+        mSharedPreferences.edit().putBoolean(key, value!!).commit()
     }
 
     override fun putObject(key: String, value: Any?) {
@@ -124,9 +111,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     }
 
     override fun remove(key: String) {
-        mSharedPreferences.edit().remove(key).commit().apply {
-            fixMMKVListen(key)
-        }
+        mSharedPreferences.edit().remove(key).commit()
     }
 
     override fun observeChange(key: String): Observable<String> {
@@ -140,14 +125,6 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
         return bus.ofType(String::class.java)
     }
 
-    /**
-     * NMKV 没有监听 主动发一下
-     */
-    private fun fixMMKVListen(key: String) {
-        if (key != null && (mSharedPreferences is MMKV)) {
-            bus.onNext(key);
-        }
-    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key != null) {

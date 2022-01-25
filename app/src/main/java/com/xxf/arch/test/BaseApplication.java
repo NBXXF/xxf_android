@@ -51,8 +51,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("====>app","app:"+ ApplicationProvider.applicationContext);
-        Toast.makeText(this,"yes:"+ApplicationProvider.applicationContext,Toast.LENGTH_LONG).show();
+        Log.d("====>app", "app:" + ApplicationProvider.applicationContext);
+        Toast.makeText(this, "yes:" + ApplicationProvider.applicationContext, Toast.LENGTH_LONG).show();
         INSTANCE = this;
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
@@ -76,11 +76,11 @@ public class BaseApplication extends Application {
                 }
                 return null;
             }
-        }).setAsyncInit(true)
+        })
                 .setErrorHandler(new BiConsumer<Integer, Throwable>() {
                     @Override
                     public void accept(Integer flag, Throwable throwable) throws Throwable {
-                        ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR,flag);
+                        ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR, flag);
                     }
                 }));
         //可做本module 相关sdk初始化
