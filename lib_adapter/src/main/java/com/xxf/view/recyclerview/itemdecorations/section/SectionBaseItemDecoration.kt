@@ -1,15 +1,11 @@
-package com.xxf.view.recyclerview.itemdecorations.section;
+package com.xxf.view.recyclerview.itemdecorations.section
 
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
-import java.util.TreeMap;
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 /**
  * Description  分组选择
@@ -18,30 +14,22 @@ import java.util.TreeMap;
  * version 1.0.0
  * 只支持线性布局
  */
-public abstract class SectionBaseItemDecoration extends RecyclerView.ItemDecoration {
-
-    SectionProvider provider;
-
-    public SectionBaseItemDecoration(SectionProvider provider) {
-        this.provider = provider;
-    }
-
-
-    @Override
-    public final void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDraw(c, parent, state);
-        TreeMap<Integer, String> groupMap = provider.onProvideSection();
-        if (parent.getLayoutManager() instanceof LinearLayoutManager) {
-            final int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) parent.getChildAt(i)
-                        .getLayoutParams();
+abstract class SectionBaseItemDecoration(var provider: SectionProvider) :
+    RecyclerView.ItemDecoration() {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        super.onDraw(c, parent, state)
+        val groupMap: TreeMap<Int, String> = provider.onProvideSection()
+        if (parent.layoutManager is LinearLayoutManager) {
+            val childCount = parent.childCount
+            for (i in 0 until childCount) {
+                val params = parent.getChildAt(i)
+                    .layoutParams as RecyclerView.LayoutParams
                 //int position = params.getViewLayoutPosition();
-                int adapterPosition = params.getViewAdapterPosition();
+                val adapterPosition = params.viewAdapterPosition
                 if (groupMap.containsKey(adapterPosition)) {
-                    final View child = parent.getChildAt(i);
-                    String tag = groupMap.get(adapterPosition);
-                    onDrawSection(c, parent, state, tag, child);
+                    val child = parent.getChildAt(i)
+                    val tag = groupMap[adapterPosition]
+                    onDrawSection(c, parent, state, tag, child)
                 }
             }
         }
@@ -56,26 +44,32 @@ public abstract class SectionBaseItemDecoration extends RecyclerView.ItemDecorat
      * @param section
      * @param child
      */
-    abstract void onDrawSection(Canvas c, RecyclerView parent, RecyclerView.State state, String section, View child);
+    abstract fun onDrawSection(
+        c: Canvas?,
+        parent: RecyclerView?,
+        state: RecyclerView.State?,
+        section: String?,
+        child: View?
+    )
 
-    @Override
-    public final void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-        super.onDrawOver(c, parent, state);
-        if (parent.getLayoutManager() instanceof LinearLayoutManager) {
-            TreeMap<Integer, String> groupMap = provider.onProvideSection();
-            if (parent.getLayoutManager() instanceof LinearLayoutManager) {
-                int position = ((LinearLayoutManager) parent.getLayoutManager()).findFirstVisibleItemPosition();
-                ArrayList<Integer> groupIndexList = new ArrayList<Integer>(groupMap.keySet());
-                int groupIndex = -1;
-                for (int i : groupIndexList) {
+    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        super.onDrawOver(c, parent, state)
+        if (parent.layoutManager is LinearLayoutManager) {
+            val groupMap: TreeMap<Int, String> = provider.onProvideSection()
+            if (parent.layoutManager is LinearLayoutManager) {
+                val position =
+                    (parent.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
+                val groupIndexList = ArrayList(groupMap.keys)
+                var groupIndex = -1
+                for (i in groupIndexList) {
                     if (i > position) {
-                        break;
+                        break
                     }
-                    groupIndex = i;
+                    groupIndex = i
                 }
                 if (groupMap.containsKey(groupIndex)) {
-                    String tag = groupMap.get(groupIndex);
-                    onDrawSectionOver(c, parent, state, tag);
+                    val tag = groupMap[groupIndex]
+                    onDrawSectionOver(c, parent, state, tag)
                 }
             }
         }
@@ -89,17 +83,24 @@ public abstract class SectionBaseItemDecoration extends RecyclerView.ItemDecorat
      * @param state
      * @param section
      */
-    abstract void onDrawSectionOver(@NonNull Canvas c, @NonNull RecyclerView
-            parent, @NonNull RecyclerView.State state, String section);
+    abstract fun onDrawSectionOver(
+        c: Canvas,
+        parent: RecyclerView,
+        state: RecyclerView.State,
+        section: String?
+    )
 
-    @Override
-    public final void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State
-            state) {
-        super.getItemOffsets(outRect, view, parent, state);
-        final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
-        int adapterPosition = params.getViewAdapterPosition();
-        TreeMap<Integer, String> groupMap = provider.onProvideSection();
-        getItemOffsets(outRect, view, parent, state, groupMap.containsKey(adapterPosition));
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        super.getItemOffsets(outRect, view, parent, state)
+        val params = view.layoutParams as RecyclerView.LayoutParams
+        val adapterPosition = params.viewAdapterPosition
+        val groupMap: TreeMap<Int, String> = provider.onProvideSection()
+        getItemOffsets(outRect, view, parent, state, groupMap.containsKey(adapterPosition))
     }
 
     /**
@@ -111,6 +112,11 @@ public abstract class SectionBaseItemDecoration extends RecyclerView.ItemDecorat
      * @param state
      * @param isSection
      */
-    abstract void getItemOffsets(Rect outRect, View view, RecyclerView
-            parent, RecyclerView.State state, boolean isSection);
+    abstract fun getItemOffsets(
+        outRect: Rect?,
+        view: View?,
+        parent: RecyclerView?,
+        state: RecyclerView.State?,
+        isSection: Boolean
+    )
 }

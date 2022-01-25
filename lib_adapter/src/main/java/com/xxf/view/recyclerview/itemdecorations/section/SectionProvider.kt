@@ -7,5 +7,5 @@ interface SectionProvider {
      * key 位置 相对于adapter
      * value 分组标题
      */
-    fun onProvideSection(): TreeMap<Integer, String>
+    fun onProvideSection(): TreeMap<Int, String>
 }
