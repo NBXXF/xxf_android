@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         RxJavaPlugins.setErrorHandler { }
 
 
+
+
+
         val apply = JsonObject().apply {
             this.addProperty("age", 10.5)
         }
@@ -74,6 +77,22 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         testhttp()
+
+
+        Thread(Runnable {
+            val test = TestModel()
+            test.ext = mutableMapOf<String, Any>().apply {
+                put("name", "张三")
+                put("age", 20)
+                put("other", InnerDto().apply {
+                    name="儿子"
+                    des="好好学习"
+                })
+            }
+            val json = JsonUtils.toJsonString(test)
+            val toBean = JsonUtils.toBean(json, TestModel::class.java)
+            System.out.println("===========>toBean:"+toBean)
+        }).start()
     }
 
     private fun testhttp() {

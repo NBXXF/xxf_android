@@ -1,6 +1,7 @@
 package com.xxf.rxjava
 
 import android.view.View
+import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import autodispose2.AutoDispose
@@ -16,13 +17,6 @@ import io.reactivex.rxjava3.functions.BooleanSupplier
  * Description ://重构
  */
 object RxLifecycle {
-
-    /**
-     * 绑定生命周期的时候 设置是否检查线程（框架默认是检查了主线程） 可以通过返回为true 来设置不检查线程
-     */
-    fun setOnCheckMainThread(s: BooleanSupplier) {
-        AutoDisposeAndroidPlugins.setOnCheckMainThread (s);
-    }
     /**
      * 自动取消
      * 不同于截流
@@ -32,13 +26,16 @@ object RxLifecycle {
      * @param <T>
      * @return
     </T> */
+    @MainThread
     fun <T> bindLifecycle(lifecycleOwner: LifecycleOwner, untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY): AutoDisposeConverter<T> {
         return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner,untilEvent))
     }
 
     /**
      * 绑定view的生命周期
+     * 注意 必须是view aattached
      */
+    @MainThread
     fun <T>bindLifecycle(view:View):AutoDisposeConverter<T> {
         return AutoDispose.autoDisposable(ViewScopeProvider.from(view));
     }

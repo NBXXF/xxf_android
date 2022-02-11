@@ -32,8 +32,6 @@ import com.xxf.permission.RxPermissions;
 import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer;
-import com.xxf.arch.service.SharedPreferencesService;
-import com.xxf.arch.service.SpService;
 import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
@@ -137,9 +135,6 @@ public class XXF {
                     XXF.userInfoProvider = builder.userInfoProvider;
                     XXF.sharedPreferencesName = builder.sharedPreferencesName;
                     ProgressHUDFactory.INSTANCE.setProgressHUDProvider(builder.progressHUDProvider);
-                    RxLifecycle.INSTANCE.setOnCheckMainThread(() -> {
-                        return true; // Use whatever heuristics you prefer.
-                    });
                 }
             }
         }

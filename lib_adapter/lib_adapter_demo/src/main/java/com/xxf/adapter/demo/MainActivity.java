@@ -24,6 +24,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.functions.Supplier;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
@@ -31,11 +39,50 @@ public class MainActivity extends AppCompatActivity {
 
     TreeMap<Integer, String> sectionMap = new TreeMap<>();
 
+    int pageIndex = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Throwable {
 
+            }
+        });
+
+        Observable.defer(new Supplier<ObservableSource<Integer>>() {
+            @Override
+            public ObservableSource<Integer> get() throws Throwable {
+                Log.d("========>测试 开始执行重试:", "" + pageIndex);
+                return Observable.just(pageIndex).map(new Function<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer integer) throws Throwable {
+                        if (integer < 3) {
+                            Log.d("========>测试 异常:", "" + integer);
+                            throw new RuntimeException("");
+                        }
+                        return integer;
+                    }
+                });
+            }
+        }).retry(3, new Predicate<Throwable>() {
+            @Override
+            public boolean test(Throwable throwable) throws Throwable {
+                if (throwable instanceof RuntimeException) {
+                    Log.d("========>测试  重试:", "" + System.currentTimeMillis());
+                    pageIndex += 1;
+                    return true;
+                }
+                return false;
+            }
+        }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Throwable {
+                Log.d("========>测试 结果:", "" + integer);
+            }
+        });
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         binding.change.setText("normal");
         binding.change.setOnClickListener(new View.OnClickListener() {
