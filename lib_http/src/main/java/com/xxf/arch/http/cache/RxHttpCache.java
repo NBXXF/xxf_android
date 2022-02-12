@@ -195,7 +195,7 @@ public class RxHttpCache {
                 try {
                     diskLruCache.put(key, JsonUtils.toJsonString(response.body()));
                     recordCacheTime(key);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (requestMethod.equals("POST")) {
@@ -213,7 +213,7 @@ public class RxHttpCache {
                         try {
                             diskLruCache.put(key, JsonUtils.toJsonString(response.body()));
                             recordCacheTime(key);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
