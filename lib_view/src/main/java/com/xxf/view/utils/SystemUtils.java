@@ -299,7 +299,7 @@ public class SystemUtils {
                                             );
                                             //锤子8.1 必须下面这种扫描方式
                                             MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), picName, null);
-                                            applicationContext.sendBroadcast(
+                                            context.sendBroadcast(
                                                     new Intent(
                                                             Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                                                             Uri.fromFile(file)
