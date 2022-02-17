@@ -11,8 +11,8 @@ ext {
             okhttp                     : "com.squareup.okhttp3:okhttp:4.9.1",
 
             //-----------刷新-----------
-            smart_refresh              : "com.scwang.smart:refresh-layout-kernel:2.0.3",
-            refresh_footer             : 'com.scwang.smart:refresh-footer-classics:2.0.3',    //经典加载
+            smart_refresh              : "io.github.scwang90:refresh-layout-kernel:2.0.5",
+            refresh_footer             : 'io.github.scwang90:refresh-footer-classics:2.0.5',    //经典加载
             lottie                     : "com.airbnb.android:lottie:4.1.0",
             /**
              * viewbinding 代理类
