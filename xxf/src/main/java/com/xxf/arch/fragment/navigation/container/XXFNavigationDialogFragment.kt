@@ -22,7 +22,12 @@ import com.xxf.arch.fragment.navigation.NavigationOwner
 open class XXFNavigationDialogFragment(var defaultNavHost: (() -> Fragment)? = null) :
     XXFDialogFragment<Unit>(R.layout.xxf_fragment_container), NavigationOwner {
 
-    private val navController: INavigationController by lazy { NavController(this.childFragmentManager) }
+    private val navController: INavigationController by lazy {
+        NavController(
+            this,
+            this.childFragmentManager
+        )
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : BottomSheetDialog(requireContext(), theme) {

@@ -30,7 +30,9 @@ class SecondFragment : XXFFragment<Unit>(R.layout.fragment_second) {
         binding.back.setOnClickListener {
             if (isInNavController()) {
                 //在导航控制器中
-                findNavController().navigationUp()
+               // findNavController().navigationUp()
+
+                findNavController().navigationUp(Int.MIN_VALUE)
             } else {
                 //不在导航控制器中 比如activity 嵌套了一个此fragment 业务自己处理
             }

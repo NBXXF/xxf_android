@@ -22,6 +22,7 @@ interface INavigationController {
     /**
      * 上一个 只有一个的时候返回false
      *  @param flag 用于业务标记栈 考虑为activity的 flag 作用
+     *  Int.min 整个栈退出 既dialogfragment 或者bootomdialogfragment等 直接关闭
      */
     fun navigationUp(flag: Int = -1): Boolean
 

@@ -24,7 +24,12 @@ open class XXFBottomSheetNavigationDialogFragment(var defaultNavHost: (() -> Fra
         const val TAG_DEFAULT_NAV_HOST = "xxf_NavHostFragment_defaultNavHost"
     }
 
-    private val navController: INavigationController by lazy { NavController(this.childFragmentManager) }
+    private val navController: INavigationController by lazy {
+        NavController(
+            this,
+            this.childFragmentManager
+        )
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : BottomSheetDialog(requireContext(), theme) {

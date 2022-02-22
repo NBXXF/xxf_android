@@ -1,8 +1,12 @@
 package com.xxf.arch.fragment.navigation
 
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.xxf.arch.R
 
 /**
@@ -11,7 +15,8 @@ import com.xxf.arch.R
  * @Description
  * @date createTime：2022/2/22
  */
-class NavController(val fragmentManager: FragmentManager) : INavigationController {
+class NavController(val lifecycle: LifecycleOwner, val fragmentManager: FragmentManager) :
+    INavigationController {
     override fun navigation(destination: Fragment, anim: Boolean, tag: String?, flag: Int) {
         fragmentManager.beginTransaction()
             .apply {
@@ -35,11 +40,23 @@ class NavController(val fragmentManager: FragmentManager) : INavigationControlle
     }
 
     override fun navigationUp(flag: Int): Boolean {
-        if (fragmentManager.backStackEntryCount > 1) {
-            fragmentManager.popBackStack()
-            return true
-        } else {
+        if (flag == Int.MIN_VALUE) {
+            if (lifecycle is DialogFragment) {
+                lifecycle.dismissAllowingStateLoss()
+                return true
+            }
+            if (lifecycle is BottomSheetDialogFragment) {
+                lifecycle.dismissAllowingStateLoss()
+                return true
+            }
             return false
+        } else {
+            if (fragmentManager.backStackEntryCount > 1) {
+                fragmentManager.popBackStack()
+                return true
+            } else {
+                return false
+            }
         }
     }
 }
