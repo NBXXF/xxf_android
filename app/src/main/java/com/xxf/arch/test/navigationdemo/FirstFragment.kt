@@ -21,6 +21,9 @@ class FirstFragment : XXFFragment<Unit>(R.layout.fragment_first) {
                 bindData(true, list)
             }
 
+        binding.back.setOnClickListener {
+            findNavController().navigationUp()
+        }
         binding.jump.setOnClickListener {
             //跳转到下一个fragment中
             findNavController().navigation(SecondFragment())

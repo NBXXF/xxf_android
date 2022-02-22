@@ -1,5 +1,6 @@
 package com.xxf.arch.fragment.navigation
 
+import android.app.Activity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -40,7 +41,10 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
     }
 
     override fun navigationUp(flag: Int): Boolean {
-        if (flag == Int.MIN_VALUE) {
+        if (fragmentManager.backStackEntryCount > 1) {
+            fragmentManager.popBackStack()
+            return true
+        } else {
             if (lifecycle is DialogFragment) {
                 lifecycle.dismissAllowingStateLoss()
                 return true
@@ -48,15 +52,11 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
             if (lifecycle is BottomSheetDialogFragment) {
                 lifecycle.dismissAllowingStateLoss()
                 return true
+            } else if (lifecycle is Activity) {
+                lifecycle.onBackPressed()
+                return true
             }
             return false
-        } else {
-            if (fragmentManager.backStackEntryCount > 1) {
-                fragmentManager.popBackStack()
-                return true
-            } else {
-                return false
-            }
         }
     }
 }
