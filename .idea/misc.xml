@@ -24,10 +24,12 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.13722826086956522" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_pdf_view.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/activity_state.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.21041666666666667" />
+        <entry key="app/src/main/res/layout/fragment_second.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1078125" />
         <entry key="app/src/main/res/layout/imagelayout.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/item_test.xml" value="0.1078125" />
@@ -59,6 +61,7 @@
         <entry key="lib_view/src/main/res/layout/xxf_jump_refresh_header.xml" value="0.1078125" />
         <entry key="lib_view/src/main/res/layout/xxf_loading_dialog.xml" value="0.1078125" />
         <entry key="lib_view_snackbar/src/main/res/layout/xxf_snackbar_dialog_fragment.xml" value="0.22395833333333334" />
+        <entry key="xxf/src/main/res/layout/xxf_fragment_container.xml" value="0.24010416666666667" />
       </map>
     </option>
   </component>

@@ -15,11 +15,16 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    buildFeatures {
+        // for view binding :
+        viewBinding = true
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api des.material
+    api des.viewbindingpropertydelegate
     api project(path: ':lib_application')
     api project(path: ':lib_http')
     api project(path: ':lib_utils')

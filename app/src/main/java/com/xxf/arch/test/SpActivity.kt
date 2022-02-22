@@ -2,18 +2,20 @@ package com.xxf.arch.test
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment
 import com.xxf.arch.service.*
 import com.xxf.arch.service.SpService.getString
 import com.xxf.arch.service.SpService.observeAllChange
 import com.xxf.arch.service.SpService.observeChange
 import com.xxf.arch.service.SpService.putString
+import com.xxf.arch.test.navigationdemo.FirstFragment
 import com.xxf.utils.d
 
 class SpActivity : AppCompatActivity() {
     class MySpervice : SpServiceDelegate() {
-        var id2: String by bindString(key = "xx",defaultValue = "xx")
+        var id2: String by bindString(key = "xx", defaultValue = "xx")
 
-        var age2:Int by bindInt()
+        var age2: Int by bindInt()
 
         var bean2: TestBean? by bindObject()
 
@@ -27,6 +29,13 @@ class SpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_test)
+
+
+        //显示一个包含导航控制器的的bottomsheet
+        XXFBottomSheetNavigationDialogFragment { FirstFragment() }
+            .show(supportFragmentManager, "xxx")
+
 
         val key = "hello"
         d(key, null, "================")
