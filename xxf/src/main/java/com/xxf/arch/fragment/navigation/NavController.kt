@@ -5,6 +5,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import com.xxf.arch.R
 
+/**
+ * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
+ * @Description
+ * @date createTime：2022/2/22
+ */
 class NavController(val fragmentManager: FragmentManager) : INavigationController {
     override fun navigation(destination: Fragment, anim: Boolean, tag: String?, flag: Int) {
         fragmentManager.beginTransaction()

@@ -61,6 +61,7 @@
         <entry key="lib_view/src/main/res/layout/xxf_jump_refresh_header.xml" value="0.1078125" />
         <entry key="lib_view/src/main/res/layout/xxf_loading_dialog.xml" value="0.1078125" />
         <entry key="lib_view_snackbar/src/main/res/layout/xxf_snackbar_dialog_fragment.xml" value="0.22395833333333334" />
+        <entry key="xxf/src/main/res/layout/design_bottom_sheet_dialog.xml" value="0.12604166666666666" />
         <entry key="xxf/src/main/res/layout/xxf_fragment_container.xml" value="0.24010416666666667" />
       </map>
     </option>

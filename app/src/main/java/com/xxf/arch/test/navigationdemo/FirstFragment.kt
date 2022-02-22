@@ -12,6 +12,15 @@ class FirstFragment : XXFFragment<Unit>(R.layout.fragment_first) {
     val binding by viewBinding(FragmentFirstBinding::bind)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.recyclerView.adapter = TestAdapter()
+            .apply {
+                val list = arrayListOf<String>()
+                for (i in 0..100) {
+                    list.add("" + i)
+                }
+                bindData(true, list)
+            }
+
         binding.jump.setOnClickListener {
             //跳转到下一个fragment中
             findNavController().navigation(SecondFragment())
