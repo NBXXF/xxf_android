@@ -315,6 +315,40 @@ public class SystemUtils {
                 });
     }
 
+
+    /**
+     * 获取文件的uri 但是不是真实的文件路径
+     * 建议 UriUtils.getPath(activity, uri); 但是对于android 10 大文件拷贝较慢  2G==3s拷贝时间
+     *
+     * @param activity
+     * @param mimeTypes
+     * @return
+     */
+    public static Observable<Uri> selectFileUri(final FragmentActivity activity, String[] mimeTypes) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        return XXF.requestPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(new RxPermissionTransformer(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .flatMap(new Function<Boolean, ObservableSource<Uri>>() {
+                    @Override
+                    public ObservableSource<Uri> apply(Boolean aBoolean) throws Throwable {
+                        return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
+                                .flatMap(new Function<ActivityResult, ObservableSource<Uri>>() {
+                                    @Override
+                                    public ObservableSource<Uri> apply(ActivityResult activityResult) throws Throwable {
+                                        if (!activityResult.isOk()) {
+                                            return Observable.empty();
+                                        }
+                                        return Observable.just(activityResult.getData().getData());
+                                    }
+                                })
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
     public static Observable<String> selectFile(final FragmentActivity activity) {
         return selectFile(activity, new String[]{"*/*"});
     }
@@ -329,58 +363,39 @@ public class SystemUtils {
      * @return
      */
     public static Observable<String> selectFile(final FragmentActivity activity, String[] mimeTypes) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        return XXF.requestPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .compose(new RxPermissionTransformer(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                .flatMap(new Function<Boolean, ObservableSource<String>>() {
+        return selectFileUri(activity, mimeTypes)
+                .map(new Function<Uri, String>() {
                     @Override
-                    public ObservableSource<String> apply(Boolean aBoolean) throws Throwable {
-                        return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
-                                .flatMap(new Function<ActivityResult, ObservableSource<String>>() {
-                                    @Override
-                                    public ObservableSource<String> apply(ActivityResult activityResult) throws Throwable {
-                                        if (!activityResult.isOk()) {
-                                            return Observable.empty();
-                                        }
-                                        return Observable.fromCallable(new Callable<String>() {
-                                            @Override
-                                            public String call() throws Exception {
-                                                return UriUtils.getPath(activity, activityResult.getData().getData());
-                                            }
-                                        }).map(new Function<String, String>() {
-                                            @Override
-                                            public String apply(String s) throws Throwable {
-                                                /**
-                                                 * fix:华为手机【【Intent.ACTION_GET_CONTENT 】 还能跳转到文件管理器选择其他类型的文件
-                                                 */
-                                                HashMap<String, HashSet<String>> mimeTypeMap = new HashMap<>();
-                                                for (String mimeType : mimeTypes) {
-                                                    String[] split = mimeType.split("/");
-                                                    if (mimeTypeMap.get(split[0]) == null) {
-                                                        mimeTypeMap.put(split[0], new HashSet<>());
-                                                    }
-                                                    mimeTypeMap.get(split[0]).add(split[1]);
-                                                }
-                                                if (mimeTypeMap.get("*") != null) {
-                                                    return s;
-                                                }
-                                                String fileMimeType = FileUtils.getMimeType(s);
-                                                String[] fileMimeTypeArray = fileMimeType.split("/");
-                                                HashSet<String> supportTypes = mimeTypeMap.get(fileMimeTypeArray[0]);
-                                                if (supportTypes != null && (supportTypes.contains("*") || supportTypes.contains(fileMimeTypeArray[1]))) {
-                                                    return s;
-                                                }
-                                                throw new FileNotMatchTypeException("file not match type " + Arrays.toString(mimeTypes));
-                                            }
-                                        }).subscribeOn(Schedulers.io());
-                                    }
-                                })
-                                .observeOn(AndroidSchedulers.mainThread());
+                    public String apply(Uri uri) throws Throwable {
+                        return UriUtils.getPath(activity, uri);
                     }
-                });
+                }).map(new Function<String, String>() {
+                    @Override
+                    public String apply(String s) throws Throwable {
+                        /**
+                         * fix:华为手机【【Intent.ACTION_GET_CONTENT 】 还能跳转到文件管理器选择其他类型的文件
+                         */
+                        HashMap<String, HashSet<String>> mimeTypeMap = new HashMap<>();
+                        for (String mimeType : mimeTypes) {
+                            String[] split = mimeType.split("/");
+                            if (mimeTypeMap.get(split[0]) == null) {
+                                mimeTypeMap.put(split[0], new HashSet<>());
+                            }
+                            mimeTypeMap.get(split[0]).add(split[1]);
+                        }
+                        if (mimeTypeMap.get("*") != null) {
+                            return s;
+                        }
+                        String fileMimeType = FileUtils.getMimeType(s);
+                        String[] fileMimeTypeArray = fileMimeType.split("/");
+                        HashSet<String> supportTypes = mimeTypeMap.get(fileMimeTypeArray[0]);
+                        if (supportTypes != null && (supportTypes.contains("*") || supportTypes.contains(fileMimeTypeArray[1]))) {
+                            return s;
+                        }
+                        throw new FileNotMatchTypeException("file not match type " + Arrays.toString(mimeTypes));
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**
