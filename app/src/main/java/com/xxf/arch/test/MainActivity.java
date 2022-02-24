@@ -586,11 +586,19 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        SystemUtils.selectFile(MainActivity.this)
+//                        SystemUtils.selectFile(MainActivity.this)
+//                                .subscribe(new Consumer<String>() {
+//                                    @Override
+//                                    public void accept(String s) throws Throwable {
+//                                        Log.d("=====>path", s);
+//                                    }
+//                                });
+
+                        SystemUtils.takeVideo(MainActivity.this, new Bundle())
                                 .subscribe(new Consumer<String>() {
                                     @Override
                                     public void accept(String s) throws Throwable {
-                                        Log.d("=====>path", s);
+                                        Log.d("=====>video path", s);
                                     }
                                 });
                         Bundle bundle = new Bundle();

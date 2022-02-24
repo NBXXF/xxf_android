@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -58,6 +59,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -74,6 +76,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SystemUtils {
 
     public static final int REQUEST_CODE_CAMERA = 59999;
+    public static final int REQUEST_CODE_CAMERA_VIDEO = 59994;
     public static final int REQUEST_CODE_ALBUM = 59998;
     public static final int REQUEST_CODE_DOCUMENT = 59997;
     public static final int REQUEST_CODE_SHARE = 59996;
@@ -122,6 +125,62 @@ public class SystemUtils {
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         return intent;
     }
+
+    /**
+     * 拍摄视频
+     *
+     * @param context
+     * @param bundle  控制市场 和质量 默认 0.5 时长10分钟
+     *                MediaStore.EXTRA_VIDEO_QUALITY  表示录制视频的质量，从 0-1，越大表示质量越好，同时视频也越大
+     *                MediaStore.EXTRA_DURATION_LIMIT  单位ms
+     * @return
+     */
+    public static Observable<Uri> takeVideoUri(final FragmentActivity context, Bundle bundle) {
+        return XXF.requestPermission(context, Manifest.permission.CAMERA)
+                .compose(new RxPermissionTransformer(context, Manifest.permission.CAMERA))
+                .flatMap(new Function<Boolean, ObservableSource<Uri>>() {
+                    @Override
+                    public ObservableSource<Uri> apply(Boolean aBoolean) throws Throwable {
+                        Intent mIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                        //画质0.5
+                        mIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0.5);
+                        //设置时长
+                        mIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, TimeUnit.MINUTES.toMillis(10));
+                        mIntent.putExtras(bundle);
+                        return XXF.startActivityForResult(context, mIntent, REQUEST_CODE_CAMERA_VIDEO)
+                                .flatMap(new Function<ActivityResult, ObservableSource<Uri>>() {
+                                    @Override
+                                    public ObservableSource<Uri> apply(ActivityResult activityResult) throws Throwable {
+                                        if (!activityResult.isOk()) {
+                                            return Observable.empty();
+                                        }
+                                        return Observable.just(activityResult.getData().getData());
+                                    }
+                                });
+                    }
+                });
+    }
+
+    /**
+     * 拍摄视频
+     *
+     * @param context
+     * @param bundle  控制市场 和质量
+     *                MediaStore.EXTRA_VIDEO_QUALITY  表示录制视频的质量，从 0-1，越大表示质量越好，同时视频也越大
+     *                MediaStore.EXTRA_DURATION_LIMIT  单位ms
+     * @return
+     */
+    public static Observable<String> takeVideo(final FragmentActivity context, Bundle bundle) {
+        return takeVideoUri(context, bundle)
+                .observeOn(Schedulers.io())
+                .map(new Function<Uri, String>() {
+                    @Override
+                    public String apply(Uri uri) throws Throwable {
+                        return UriUtils.getPath(context, uri);
+                    }
+                }).observeOn(AndroidSchedulers.mainThread());
+    }
+
 
     /**
      * 调用系统拍照
