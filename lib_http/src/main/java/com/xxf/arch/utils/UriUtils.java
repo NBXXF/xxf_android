@@ -22,6 +22,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.WorkerThread;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,6 +53,7 @@ public class UriUtils {
      * 专为Android4.4设计的从Uri获取文件绝对路径，以前的方法已不好使
      * 注意先 获取文件读写权限
      */
+    @WorkerThread
     public static String getPath(final Context context, final Uri uri) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -132,6 +134,7 @@ public class UriUtils {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.Q)
+    @WorkerThread
     public static File uriToFileApiQ(Uri uri, Context context) {
         File file = null;
         if (uri == null) return file;

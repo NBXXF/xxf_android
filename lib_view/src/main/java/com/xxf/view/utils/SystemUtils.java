@@ -364,6 +364,7 @@ public class SystemUtils {
      */
     public static Observable<String> selectFile(final FragmentActivity activity, String[] mimeTypes) {
         return selectFileUri(activity, mimeTypes)
+                .observeOn(Schedulers.io())
                 .map(new Function<Uri, String>() {
                     @Override
                     public String apply(Uri uri) throws Throwable {
@@ -394,7 +395,7 @@ public class SystemUtils {
                         }
                         throw new FileNotMatchTypeException("file not match type " + Arrays.toString(mimeTypes));
                     }
-                }).subscribeOn(Schedulers.io())
+                })
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
