@@ -79,4 +79,15 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
     override fun getNavigationLifecycleOwner(): LifecycleOwner {
         return lifecycle
     }
+
+    override fun finishNavigation(): Boolean {
+        if (lifecycle is DialogFragment) {
+            lifecycle.dismissAllowingStateLoss()
+            return true
+        } else if (lifecycle is Activity) {
+            lifecycle.onBackPressed()
+            return true
+        }
+        return false
+    }
 }

@@ -8,32 +8,41 @@ import java.lang.IllegalStateException
  * 是否在导航控制器中
  */
 fun Fragment.isInNavController(): Boolean {
-    var findFragment: Fragment? = this
-    while (findFragment != null) {
-        if (findFragment is NavigationOwner) {
-            return true
-        }
-        findFragment = findFragment.parentFragment
+    return try {
+        findNavContainer()
+        true
+    } catch (e: Throwable) {
+        false
     }
-    return false
 }
 
 
 /**
- * 深度向上查找到第一个导航控制器
+ * 获取导航控制器容器
  */
-fun Fragment.findNavController(): INavigationController {
+fun Fragment.findNavContainer(): NavigationContainer {
     var findFragment: Fragment? = this
     while (findFragment != null) {
-        if (findFragment is NavigationOwner) {
-            return findFragment.getNavigation()
+        if (findFragment is NavigationContainer) {
+            return findFragment
         }
         findFragment = findFragment.parentFragment
+    }
+    val act = this.activity
+    if (act is NavigationContainer) {
+        return act
     }
     throw IllegalStateException(
         "Fragment " + this
                 + " does not have a NavController set"
     )
+}
+
+/**
+ * 深度向上查找到第一个导航控制器
+ */
+fun Fragment.findNavController(): INavigationController {
+    return findNavContainer().getNavigationController()
 }
 
 /**

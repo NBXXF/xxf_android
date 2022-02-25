@@ -31,7 +31,7 @@ interface INavigationController {
     /**
      * 获取导页面数量
      * 理论>=1
-     * 常用于控制 子页面的标题是取消 还是返回
+     * 常用于控制 子页面的标题是取消 还是返回 onResume处理
      */
     fun getNavigationCount(): Int
 
@@ -42,8 +42,13 @@ interface INavigationController {
 
     /**
      * 获取导航控制器容器
-     * 可以dialogfragment fragmentactivity
+     * 可以dialogFragment fragmentActivity
      */
     fun getNavigationLifecycleOwner(): LifecycleOwner
+
+    /**
+     * 结束所有导航 容器 dialogFragment fragmentActivity 关闭
+     */
+    fun finishNavigation(): Boolean
 
 }

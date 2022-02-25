@@ -9,7 +9,7 @@ import com.xxf.arch.R
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.navigation.INavigationController
 import com.xxf.arch.fragment.navigation.NavController
-import com.xxf.arch.fragment.navigation.NavigationOwner
+import com.xxf.arch.fragment.navigation.NavigationContainer
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -19,7 +19,7 @@ import com.xxf.arch.fragment.navigation.NavigationOwner
  * @param defaultNavHost 默认fragment
  */
 open class XXFBottomSheetNavigationDialogFragment(var defaultNavHost: (() -> Fragment)? = null) :
-    XXFBottomSheetDialogFragment<Unit>(R.layout.xxf_fragment_container), NavigationOwner {
+    XXFBottomSheetDialogFragment<Unit>(R.layout.xxf_fragment_container), NavigationContainer {
     companion object {
         const val TAG_DEFAULT_NAV_HOST = "xxf_NavHostFragment_defaultNavHost"
     }
@@ -49,7 +49,7 @@ open class XXFBottomSheetNavigationDialogFragment(var defaultNavHost: (() -> Fra
         }
     }
 
-    override fun getNavigation(): INavigationController {
+    override fun getNavigationController(): INavigationController {
         return navController
     }
 }
