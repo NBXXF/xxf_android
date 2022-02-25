@@ -67,4 +67,16 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
             }
         }
     }
+
+    override fun getNavigationCount(): Int {
+        return fragmentManager.backStackEntryCount
+    }
+
+    override fun getNavigationFragmentManager(): FragmentManager {
+        return fragmentManager
+    }
+
+    override fun getNavigationLifecycleOwner(): LifecycleOwner {
+        return lifecycle
+    }
 }
