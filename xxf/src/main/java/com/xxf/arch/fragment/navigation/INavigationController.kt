@@ -22,6 +22,7 @@ interface INavigationController {
     /**
      * 上一个 只有一个的时候返回false
      *  @param flag 用于业务标记栈 考虑为activity的 flag 作用
+     *    Intent.FLAG_ACTIVITY_CLEAR_TASK 为关闭整个导航路径 在dialog dialogfragment 中为直接关闭弹窗,activity 为直接关闭activity
      */
     fun navigationUp(flag: Int = -1): Boolean
 
