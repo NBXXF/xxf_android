@@ -145,36 +145,85 @@ public class UriUtils {
             //把文件复制到沙盒目录
             ContentResolver contentResolver = context.getContentResolver();
             String displayName = null;
+            long size = 0;
 
 //            注释掉的方法可以获取到原文件的文件名，但是比较耗时
             Cursor cursor = contentResolver.query(uri, null, null, null, null);
             if (cursor.moveToFirst()) {
                 displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                size = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE));
             }
             if (TextUtils.isEmpty(displayName)) {
                 displayName = System.currentTimeMillis() + Math.round((Math.random() + 1) * 1000)
                         + "." + MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri));
             }
+
+            //防止文件大小发生变化 doc 文件内容可变
+            String hashStr = String.valueOf(generateId(uri.toString() + size));
+
             /**
              * 生成唯一路径
+             * 要完整保留 文件名 不变化
              */
-            File folder = new File(context.getCacheDir().getAbsolutePath(), String.valueOf(generateId(uri.toString())));
-            if (!folder.exists()) {
-                folder.mkdirs();
+            File dstDir = new File(getUriCopyTempDir(context), hashStr);
+            if (!dstDir.exists()) {
+                dstDir.mkdirs();
             }
-            try {
-                InputStream is = contentResolver.openInputStream(uri);
-                File cache = new File(folder, displayName);
-                FileOutputStream fos = new FileOutputStream(cache);
-                FileUtils.copy(is, fos);
-                file = cache;
-                fos.close();
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            file = new File(dstDir, displayName);
+            //避免重复拷贝
+            if (size <= 0 || !file.exists() || file.length() <= 0) {
+                try {
+                    InputStream is = contentResolver.openInputStream(uri);
+                    FileOutputStream fos = new FileOutputStream(file);
+                    FileUtils.copy(is, fos);
+                    fos.close();
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return file;
+    }
+
+    /**
+     * 获取uri copy的临时文件夹
+     * 适配android 10 是将uri 的二进制拷贝进来
+     *
+     * @return
+     */
+    public static File getUriCopyTempDir(Context context) {
+        File dir = new File(context.getCacheDir(), "xxf_uri_copy_temp_dir");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir;
+    }
+
+    /**
+     * 清理 临时文件 默认阀门2G
+     *
+     * @param context
+     * @return
+     */
+    @WorkerThread
+    public static boolean clearUriCopyTempDir(Context context) {
+        return clearUriCopyTempDir(context, 2 * 1024 * 1024 * 1024);
+    }
+
+    /**
+     * @param context
+     * @param thresholdSize 阀值 超过多少删除
+     * @return
+     */
+    @WorkerThread
+    public static boolean clearUriCopyTempDir(Context context, long thresholdSize) {
+        File uriCopyTempDir = getUriCopyTempDir(context);
+        long fileLength = com.xxf.utils.FileUtils.getFileLength(uriCopyTempDir.getAbsolutePath());
+        if (fileLength >= thresholdSize) {
+            return com.xxf.utils.FileUtils.delete(uriCopyTempDir);
+        }
+        return false;
     }
 
     /**

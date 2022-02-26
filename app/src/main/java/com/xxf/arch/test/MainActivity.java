@@ -41,6 +41,7 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.service.SpService;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.arch.utils.UriUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.utils.LogKt;
 import com.xxf.view.round.XXFRoundImageTextView;
@@ -156,6 +157,8 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UriUtils.clearUriCopyTempDir(this);
 
         this.getLifecycle().addObserver(
                 new XXFLifecycleObserver() {
@@ -586,21 +589,21 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-//                        SystemUtils.selectFile(MainActivity.this)
-//                                .subscribe(new Consumer<String>() {
-//                                    @Override
-//                                    public void accept(String s) throws Throwable {
-//                                        Log.d("=====>path", s);
-//                                    }
-//                                });
-
-                        SystemUtils.takeVideo(MainActivity.this, new Bundle())
+                        SystemUtils.selectFile(MainActivity.this)
                                 .subscribe(new Consumer<String>() {
                                     @Override
                                     public void accept(String s) throws Throwable {
-                                        Log.d("=====>video path", s);
+                                        Log.d("=====>path", s);
                                     }
                                 });
+
+//                        SystemUtils.takeVideo(MainActivity.this, new Bundle())
+//                                .subscribe(new Consumer<String>() {
+//                                    @Override
+//                                    public void accept(String s) throws Throwable {
+//                                        Log.d("=====>video path", s);
+//                                    }
+//                                });
                         Bundle bundle = new Bundle();
                         bundle.putString("ACTIVITY_PARAM", "one");
 

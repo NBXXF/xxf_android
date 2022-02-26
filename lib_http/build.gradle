@@ -27,4 +27,5 @@ dependencies {
     api des.okhttp
     implementation project(path: ':lib_application')
     implementation project(path: ':lib_hash')
+    implementation project(path: ':lib_utils')
 }
