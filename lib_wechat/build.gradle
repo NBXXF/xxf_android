@@ -16,4 +16,6 @@ dependencies {
     api des.material
     api des.rxJava
     compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    implementation project(path: ':lib_application')
+    implementation project(path: ':lib_utils')
 }

@@ -1,10 +1,10 @@
 package com.xxf.wechat
 
-import android.content.Context
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import com.xxf.application.applicationContext
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
@@ -16,15 +16,19 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 微信授权与分享
  */
-class WeChatObservable(var context: Context, var clientId: String, var baseReq: BaseReq) : Observable<BaseResp?>() {
+/**
+ * @param appId 对应开放平台注册的appId
+ * @param baseReq 参考[com.xxf.wechat.WeChatUtils]
+ */
+class WeChatObservable(var appId: String, var baseReq: BaseReq) : Observable<BaseResp>() {
     private abstract class EventHandler : IWXAPIEventHandler, Disposable
 
     var terminated = false
-    override fun subscribeActual(observer: Observer<in BaseResp?>) {
+    override fun subscribeActual(observer: Observer<in BaseResp>) {
         var eventHandler: EventHandler?
-        WXEntryDispatcher.eventHandler=(object : EventHandler() {
+        WXEntryDispatcher.eventHandler = (object : EventHandler() {
             override fun dispose() {
-                WXEntryDispatcher.eventHandler=(null)
+                WXEntryDispatcher.eventHandler = (null)
             }
 
             override fun isDisposed(): Boolean {
@@ -74,8 +78,8 @@ class WeChatObservable(var context: Context, var clientId: String, var baseReq: 
             }
         }.also { eventHandler = it })
         observer.onSubscribe(eventHandler)
-        val wxApi = WXAPIFactory.createWXAPI(context.applicationContext, clientId)
-        wxApi.registerApp(clientId)
+        val wxApi = WXAPIFactory.createWXAPI(applicationContext, appId)
+        wxApi.registerApp(appId)
         wxApi.sendReq(baseReq)
     }
 }
