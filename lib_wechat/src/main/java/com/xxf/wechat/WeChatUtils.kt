@@ -2,7 +2,6 @@ package com.xxf.wechat
 
 import android.graphics.Bitmap
 import com.tencent.mm.opensdk.modelmsg.*
-import com.xxf.utils.BitmapUtils
 
 /**
  * @Description: 微信工具类
@@ -27,9 +26,7 @@ object WeChatUtils {
         wxMediaMessage.title = title
         wxMediaMessage.description = description
         if (thumbBitmap != null) {
-            val scale = BitmapUtils.scale(thumbBitmap, 150, 150)
-            wxMediaMessage.thumbData = BitmapUtils.toByte(scale)
-            BitmapUtils.recycle(scale)
+            wxMediaMessage.setThumbImage(thumbBitmap)
         }
         val req: SendMessageToWX.Req = SendMessageToWX.Req()
         req.transaction = buildTransaction("webpage")
@@ -42,12 +39,17 @@ object WeChatUtils {
     /**
      * 分享图片
      */
-    fun buildShareImageReq(image: Bitmap, scene: Int = SendMessageToWX.Req.WXSceneSession) {
+    fun buildShareImageReq(
+        image: Bitmap,
+        thumbBitmap: Bitmap?,
+        scene: Int = SendMessageToWX.Req.WXSceneSession
+    ) {
         val wxImageObject = WXImageObject(image)
         val wxMediaMessage = WXMediaMessage()
         wxMediaMessage.mediaObject = wxImageObject
-        val scale = BitmapUtils.scale(image, 150, 150)
-        wxMediaMessage.thumbData = BitmapUtils.toByte(scale)
+        if (thumbBitmap != null) {
+            wxMediaMessage.setThumbImage(thumbBitmap)
+        }
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("image")
         req.message = wxMediaMessage
@@ -65,14 +67,14 @@ object WeChatUtils {
         val textObj = WXTextObject()
         textObj.text = text
         //用WXTextObject对象初始化一个WXMediaMessage对象
-        val msg = WXMediaMessage()
-        msg.mediaObject = textObj
-        msg.description = text
+        val wxMediaMessage = WXMediaMessage()
+        wxMediaMessage.mediaObject = textObj
+        wxMediaMessage.description = text
         //构造一个Req
         val req = SendMessageToWX.Req()
         //transaction字段用于唯一标识一个请求
         req.transaction = buildTransaction("text")
-        req.message = msg
+        req.message = wxMediaMessage
         //发送的目标场景， 可以选择发送到会话 WXSceneSession 或者朋友圈 WXSceneTimeline。 默认发送到会话。
         req.scene = scene
         return req;
@@ -99,9 +101,7 @@ object WeChatUtils {
          * 一般情况下缩略图超出比较常见。Title、description都是文本，一般不会超过。
          */
         if (thumbBitmap != null) {
-            val scale = BitmapUtils.scale(thumbBitmap, 150, 150)
-            wxMediaMessage.thumbData = BitmapUtils.toByte(scale)
-            BitmapUtils.recycle(scale)
+            wxMediaMessage.setThumbImage(thumbBitmap)
         }
         val req = SendMessageToWX.Req()
         req.transaction = buildTransaction("video")
