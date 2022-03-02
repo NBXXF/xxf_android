@@ -21,9 +21,12 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.xxf.arch.R;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.WindowExtentionKtKt;
+import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RAUtils;
+import com.xxf.view.round.CornerUtil;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -109,7 +112,7 @@ public class XXFBottomSheetDialogFragment<E>
             }
             return this.contentView;
         }
-        return super.onCreateView(inflater,container,savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     /**
@@ -118,9 +121,22 @@ public class XXFBottomSheetDialogFragment<E>
      * @param view
      * @param savedInstanceState
      */
+    @CallSuper
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        /**
+         * 设置默认10dp圆角
+         */
+        if (getShowsDialog()) {
+            View dialogDecorView = getDialogDecorView();
+            if (dialogDecorView != null) {
+                View design_bottom_sheet = dialogDecorView.findViewById(R.id.design_bottom_sheet);
+                if (design_bottom_sheet != null) {
+                    CornerUtil.INSTANCE.clipViewRadius(design_bottom_sheet, DensityUtil.dip2px(10));
+                }
+            }
+        }
     }
 
     /**
@@ -268,7 +284,7 @@ public class XXFBottomSheetDialogFragment<E>
     @Override
     public void onStart() {
         super.onStart();
-        if(getShowsDialog()){
+        if (getShowsDialog()) {
             WindowExtentionKtKt.runAlphaDimAnimation(getDialogWidow());
         }
     }
