@@ -61,12 +61,6 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
         super(context, cancelable, cancelListener);
     }
 
-    @NonNull
-    @Override
-    public BottomSheetBehavior<FrameLayout> getBehavior() {
-        return super.getBehavior();
-    }
-
 
     @Override
     public void show() {

@@ -256,7 +256,9 @@ public class XXFBottomSheetDialogFragment<E>
         if (getDialog() instanceof BottomSheetDialog) {
             return ((BottomSheetDialog) getDialog()).getBehavior();
         }
-        return null;
+        //避免复写dialog
+        FrameLayout bottomSheetInternal = (FrameLayout) getDialogDecorView().findViewById(R.id.design_bottom_sheet);
+        return BottomSheetBehavior.from(bottomSheetInternal);
     }
 
     @Override
