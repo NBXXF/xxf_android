@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.bottomsheet.InnerBottomSheetDialog;
 import com.xxf.arch.R;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.WindowExtentionKtKt;
@@ -256,9 +257,18 @@ public class XXFBottomSheetDialogFragment<E>
         if (getDialog() instanceof BottomSheetDialog) {
             return ((BottomSheetDialog) getDialog()).getBehavior();
         }
+        if (getDialog() instanceof InnerBottomSheetDialog) {
+            return ((InnerBottomSheetDialog) getDialog()).getBehavior();
+        }
         //避免复写dialog
-        FrameLayout bottomSheetInternal = (FrameLayout) getDialogDecorView().findViewById(R.id.design_bottom_sheet);
-        return BottomSheetBehavior.from(bottomSheetInternal);
+        View dec = getDialogDecorView();
+        if (dec != null) {
+            View bottomSheetInternal = getDialogDecorView().findViewById(R.id.design_bottom_sheet);
+            if (bottomSheetInternal != null && bottomSheetInternal instanceof FrameLayout) {
+                return BottomSheetBehavior.from((FrameLayout) bottomSheetInternal);
+            }
+        }
+        return null;
     }
 
     @Override
