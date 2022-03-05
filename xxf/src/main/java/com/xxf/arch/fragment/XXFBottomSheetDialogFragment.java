@@ -263,7 +263,7 @@ public class XXFBottomSheetDialogFragment<E>
         //避免复写dialog
         View dec = getDialogDecorView();
         if (dec != null) {
-            View bottomSheetInternal = getDialogDecorView().findViewById(R.id.design_bottom_sheet);
+            View bottomSheetInternal = dec.findViewById(R.id.design_bottom_sheet);
             if (bottomSheetInternal != null && bottomSheetInternal instanceof FrameLayout) {
                 return BottomSheetBehavior.from((FrameLayout) bottomSheetInternal);
             }
