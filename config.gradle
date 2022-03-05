@@ -7,7 +7,7 @@ ext {
             // ------------- 第三方-------------
             rxAndroid                  : 'io.reactivex.rxjava3:rxandroid:3.0.0',
             rxJava                     : 'io.reactivex.rxjava3:rxjava:3.1.2',
-            gson                       : "com.google.code.gson:gson:2.8.8",
+            gson                       : "com.google.code.gson:gson:2.9.0",
             okhttp                     : "com.squareup.okhttp3:okhttp:4.9.1",
 
             //-----------刷新-----------
