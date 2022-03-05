@@ -2,9 +2,6 @@ package com.xxf.arch.utils
 
 import com.google.gson.reflect.TypeToken
 import com.xxf.arch.json.GsonFactory
-import com.xxf.arch.json.JsonUtils
-import com.xxf.arch.json.exclusionstrategy.ExposeDeserializeExclusionStrategy
-import com.xxf.arch.json.exclusionstrategy.ExposeSerializeExclusionStrategy
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -21,17 +18,7 @@ inline fun <reified T> T.copy(
     excludeUnSerializableField: Boolean = false,
     excludeUnDeserializableField: Boolean = false
 ): T {
-    var newBuilder = GsonFactory.createGson()
-        .newBuilder()
-    if (excludeUnSerializableField) {
-        newBuilder =
-            newBuilder.addSerializationExclusionStrategy(ExposeSerializeExclusionStrategy())
-    }
-    if (excludeUnDeserializableField) {
-        newBuilder =
-            newBuilder.addSerializationExclusionStrategy(ExposeDeserializeExclusionStrategy())
-    }
-    val gson = newBuilder.create()
+    val gson = GsonFactory.createGson(excludeUnSerializableField, excludeUnDeserializableField)
     val toJson = gson.toJson(this)
     return gson.fromJson<T>(toJson, object : TypeToken<T>() {}.type)
 }
@@ -47,17 +34,7 @@ inline fun <reified T, R> T.copy(
     excludeUnSerializableField: Boolean = false,
     excludeUnDeserializableField: Boolean = false
 ): R {
-    var newBuilder = GsonFactory.createGson()
-        .newBuilder()
-    if (excludeUnSerializableField) {
-        newBuilder =
-            newBuilder.addSerializationExclusionStrategy(ExposeSerializeExclusionStrategy())
-    }
-    if (excludeUnDeserializableField) {
-        newBuilder =
-            newBuilder.addSerializationExclusionStrategy(ExposeDeserializeExclusionStrategy())
-    }
-    val gson = newBuilder.create()
+    val gson = GsonFactory.createGson(excludeUnSerializableField, excludeUnDeserializableField)
     val toJson = gson.toJson(this)
     return gson.fromJson(toJson, toClass)
 }

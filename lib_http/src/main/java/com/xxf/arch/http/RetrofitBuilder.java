@@ -58,12 +58,8 @@ public class RetrofitBuilder {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(
                         GsonConverterFactory.create(
-                                GsonFactory.createGson()
-                                        .newBuilder()
-                                        //网络层一定要去除 expose  serialize  = false  或者deserialize  = false 的情况
-                                        .addSerializationExclusionStrategy(new ExposeSerializeExclusionStrategy())
-                                        .addDeserializationExclusionStrategy(new ExposeDeserializeExclusionStrategy())
-                                        .create())
+                                //网络层一定要去除 expose  serialize  = false  或者deserialize  = false 的情况
+                                GsonFactory.createGson(true, true))
                 )
                 .addConverterFactory(JsonConverterFactory.create())
                 .addCallAdapterFactory(new RxJava2CallAdapterFactory(null, true, rxHttpCache, interceptor));

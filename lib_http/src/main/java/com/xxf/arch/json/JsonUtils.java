@@ -30,7 +30,7 @@ public class JsonUtils {
     private static Gson gson = null;
 
     static {
-        gson = GsonFactory.createGson();
+        gson = GsonFactory.createGson(false, false);
     }
 
 
