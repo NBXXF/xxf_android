@@ -193,7 +193,7 @@ public class RxHttpCache {
             if (TextUtils.equals(requestMethod, "GET")) {
                 String key = key(request.url());
                 try {
-                    diskLruCache.put(key, JsonUtils.toJsonString(response.body()));
+                    diskLruCache.put(key, JsonUtils.toJsonString(response.body(),true));
                     recordCacheTime(key);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -211,7 +211,7 @@ public class RxHttpCache {
                     if (HttpLoggingInterceptor.isPlaintext(buffer)) {
                         String key = key(request.url() + buffer.clone().readString(charset));
                         try {
-                            diskLruCache.put(key, JsonUtils.toJsonString(response.body()));
+                            diskLruCache.put(key, JsonUtils.toJsonString(response.body(),true));
                             recordCacheTime(key);
                         } catch (Exception e) {
                             e.printStackTrace();

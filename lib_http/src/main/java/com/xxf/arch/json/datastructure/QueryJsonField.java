@@ -42,6 +42,6 @@ public final class QueryJsonField<T> {
         /**
          * 专门为 @Query xxBean 提供的模型 因为Query 是走的toString 方式
          */
-        return JsonUtils.toJsonString(target);
+        return JsonUtils.toJsonString(target,true);
     }
 }

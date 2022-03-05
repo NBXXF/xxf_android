@@ -25,7 +25,7 @@ public abstract class PersistentCookieJar implements CookieJar {
         for (Cookie cookie : cookies) {
             list.add(cookie.toString());
         }
-        String cookieStr = JsonUtils.toJsonString(list);
+        String cookieStr = JsonUtils.toJsonString(list,false);
         saveCookie(url.host(), cookieStr);
     }
 
@@ -35,7 +35,7 @@ public abstract class PersistentCookieJar implements CookieJar {
         String cookieStr = loadCookie(url.host());
         if (cookieStr != null && cookieStr.length() > 0) {
             try {
-                List<String> cookieList = JsonUtils.toBeanList(cookieStr, String.class);
+                List<String> cookieList = JsonUtils.toBeanList(cookieStr, String.class,false);
                 for (String aCookieStr : cookieList) {
                     //将字符串解析成 Cookie 对象
                     try {
