@@ -12,6 +12,7 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
+
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,6 +36,7 @@
             android:soundEffectsEnabled="false"
             tools:ignore="UnusedAttribute" />
 
+        <!-- 修改behavior-->
         <FrameLayout
             android:id="@+id/design_bottom_sheet"
             style="?attr/bottomSheetStyle"
