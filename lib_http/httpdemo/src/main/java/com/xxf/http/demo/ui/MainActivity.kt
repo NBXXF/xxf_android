@@ -6,13 +6,10 @@ import android.util.Log
 import com.google.gson.JsonObject
 import com.xxf.arch.apiService
 import com.xxf.arch.json.JsonUtils
-import com.xxf.arch.json.datastructure.ListOrSingle
-import com.xxf.arch.utils.CopyUtils
 import com.xxf.arch.utils.copy
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import retrofit2.CacheType
 
@@ -23,7 +20,17 @@ class MainActivity : AppCompatActivity() {
         RxJavaPlugins.setErrorHandler { }
 
 
+        val testModel = ExposeTestModel().apply {
+            this.name = "hello"
+            this.des = "x:" + System.currentTimeMillis()
+        }
+        System.out.println("==========>expose serlize:" + JsonUtils.toJsonString(testModel))
 
+        val copy_1 = testModel.copy()
+        System.out.println("==========>expose copy:" + copy_1)
+
+        val copy_2 = testModel.copy(excludeUnSerializableField = true, excludeUnDeserializableField = true)
+        System.out.println("==========>expose copy2:" + copy_2)
 
 
         val apply = JsonObject().apply {
@@ -85,13 +92,13 @@ class MainActivity : AppCompatActivity() {
                 put("name", "张三")
                 put("age", 20)
                 put("other", InnerDto().apply {
-                    name="儿子"
-                    des="好好学习"
+                    name = "儿子"
+                    des = "好好学习"
                 })
             }
             val json = JsonUtils.toJsonString(test)
             val toBean = JsonUtils.toBean(json, TestModel::class.java)
-            System.out.println("===========>toBean:"+toBean)
+            System.out.println("===========>toBean:" + toBean)
         }).start()
     }
 

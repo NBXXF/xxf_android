@@ -10,6 +10,8 @@ import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.http.converter.json.JsonConverterFactory;
 import com.xxf.arch.http.converter.string.ScalarsConverterFactory;
 import com.xxf.arch.json.GsonFactory;
+import com.xxf.arch.json.exclusionstrategy.ExposeDeserializeExclusionStrategy;
+import com.xxf.arch.json.exclusionstrategy.ExposeSerializeExclusionStrategy;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -28,8 +30,8 @@ import retrofit2.Retrofit;
  */
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
  * @date createTime：2018/9/7
  */
@@ -54,9 +56,17 @@ public class RetrofitBuilder {
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(GsonFactory.createGson()))
+                .addConverterFactory(
+                        GsonConverterFactory.create(
+                                GsonFactory.createGson()
+                                        .newBuilder()
+                                        //网络层一定要去除 expose  serialize  = false  或者deserialize  = false 的情况
+                                        .addSerializationExclusionStrategy(new ExposeSerializeExclusionStrategy())
+                                        .addDeserializationExclusionStrategy(new ExposeDeserializeExclusionStrategy())
+                                        .create())
+                )
                 .addConverterFactory(JsonConverterFactory.create())
-                .addCallAdapterFactory(new RxJava2CallAdapterFactory(null,true,rxHttpCache,interceptor));
+                .addCallAdapterFactory(new RxJava2CallAdapterFactory(null, true, rxHttpCache, interceptor));
     }
 
 
