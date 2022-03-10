@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.xxf.arch.R
-import java.lang.IllegalStateException
 
 /**
  * @version 2.3.1
@@ -19,7 +18,6 @@ import java.lang.IllegalStateException
 class NavController(val lifecycle: LifecycleOwner, val fragmentManager: FragmentManager) :
     INavigationController {
     override fun navigation(destination: Fragment, anim: Boolean, tag: String?, flag: Int) {
-        checkFragment(destination)
         fragmentManager.beginTransaction()
             .apply {
                 if (anim) {
@@ -41,18 +39,6 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
             .commitAllowingStateLoss()
     }
 
-    /**
-     * 检查childFragment
-     * 子集是 BottomSheetDialogFragment 会导致整体滚动问题
-     */
-    private fun checkFragment(fragment: Fragment) {
-        if (fragment is BottomSheetDialogFragment) {
-            throw IllegalStateException(
-                "Fragment " + this
-                        + " does not be  BottomSheetDialogFragment"
-            )
-        }
-    }
 
     override fun navigationUp(flag: Int): Boolean {
         if (flag == Intent.FLAG_ACTIVITY_CLEAR_TASK) {
