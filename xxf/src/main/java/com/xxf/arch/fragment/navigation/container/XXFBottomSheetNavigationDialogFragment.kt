@@ -61,7 +61,7 @@ open class XXFBottomSheetNavigationDialogFragment(var defaultNavHost: (() -> Fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         defaultNavHost?.invoke()?.apply {
-            navController.navigation(this, false, TAG_DEFAULT_NAV_HOST)
+            navController.navigation(this, null, TAG_DEFAULT_NAV_HOST)
         }
     }
 

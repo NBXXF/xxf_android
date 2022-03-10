@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- activity动画-->
+    <style name="xxf_activity_animation_base_style" parent="@android:style/Animation.Activity">
+        <!--
+        当我们从 A1 启动 A2 时，A1 从屏幕上消失，这个动画叫做 android:activityOpenExitAnimation
+当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation
+当我们从 A2 退出回到 A1 时，A2 从屏幕上消失，这个叫做 android:activityCloseExitAnimation
+当我们从 A2 退出回到 A1 时，A1 出现在屏幕上，这个叫做 android:activityCloseEnterAnimation
+ -->
+        <item name="android:activityOpenEnterAnimation">@anim/navigation_horizontal_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/navigation_horizontal_open_exit</item>
+        <item name="android:activityCloseExitAnimation">@anim/navigation_horizontal_close_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/navigation_horizontal_close_enter</item>
+    </style>
+</resources>

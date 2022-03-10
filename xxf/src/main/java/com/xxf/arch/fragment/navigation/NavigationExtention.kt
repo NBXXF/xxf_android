@@ -54,7 +54,7 @@ fun Fragment.navigation(
     tag: String? = null,
     flag: Int = -1
 ) {
-    findNavController().navigation(destination, anim, tag, flag)
+    findNavController().navigation(destination, null, tag, flag)
 }
 
 /**

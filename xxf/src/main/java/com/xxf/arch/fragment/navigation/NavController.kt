@@ -17,15 +17,15 @@ import com.xxf.arch.R
  */
 class NavController(val lifecycle: LifecycleOwner, val fragmentManager: FragmentManager) :
     INavigationController {
-    override fun navigation(destination: Fragment, anim: Boolean, tag: String?, flag: Int) {
+    override fun navigation(destination: Fragment, anim: AnimBuilder?, tag: String?, flag: Int) {
         fragmentManager.beginTransaction()
             .apply {
-                if (anim) {
+                if (anim != null) {
                     setCustomAnimations(
-                        R.anim.xxf_activity_open_enter,
-                        R.anim.xxf_activity_open_exit,
-                        R.anim.xxf_activity_close_enter,
-                        R.anim.xxf_activity_close_exit
+                        anim.enter,
+                        anim.exit,
+                        anim.popEnter,
+                        anim.popExit
                     )
                 }
                 fragmentManager.fragments.forEach { f ->
