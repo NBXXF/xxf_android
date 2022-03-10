@@ -272,34 +272,6 @@ public class MainActivity extends XXFActivity {
                             }
                         }).start();
 
-                        List<TestModel> list = JsonUtils.toType("[\n" +
-                                "  {\n" +
-                                "    \"p\": 100000.5\n" +
-                                "  },\n" +
-                                "  {\n" +
-                                "    \"p\": 10.6\n" +
-                                "  },\n" +
-                                "  {\n" +
-                                "    \"p\": 10.7\n" +
-                                "  }\n" +
-                                "]", new TypeToken<List<TestModel>>() {
-                        }.getType());
-                        Log.d("", "===========>json:" + list);
-                        list = JsonUtils.toType("{\n" +
-                                "  \"p\": 10.5\n" +
-                                "}", new TypeToken<ListOrSingle<TestModel>>() {
-                        }.getType());
-                        Log.d("", "===========>json2:" + list);
-
-            /*            Uri parse = Uri.parse("https://www.bkex.io/cms/cms/news/app/detail.html?id=371&lang=zh");
-                        Log.d("===========>xxxx:" + parse.getPath());
-                        Log.d("===========>xxxx:" + parse.getPathSegments());*/
-                        Log.d("==========>yes:", "" + JsonUtils.toBean("{\"P\":\"51.2%\",\"bigDecimal\":null}", TestModel.class));
-
-                     /*   ReverseFrameLayout layout = findViewById(R.id.grayLayout);
-                        layout.toggleColor();
-
-                        *//*    String url = "qweqwe";*/
                         String url = "/activity/test";
 
                         String json = "{\n" +
@@ -312,8 +284,6 @@ public class MainActivity extends XXFActivity {
                                 "  \"time\": \"2020-12-05T07:35:57\",\n" +
                                 "  \"money\": 3456435.32674335\n" +
                                 "}";
-                        FormatDemoModel testModel = JsonUtils.toBean(json, FormatDemoModel.class);
-                        Log.d("", "===============>t:" + testModel);
                           /*   // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                         System.out.println("============>f2:" + NumberUtils.divide(10.2, 2) + "  " + (new BigDecimal(10.2).divide(new BigDecimal(2))));
