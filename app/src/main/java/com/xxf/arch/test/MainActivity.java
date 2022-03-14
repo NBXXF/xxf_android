@@ -158,6 +158,7 @@ public class MainActivity extends XXFActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         this.getLifecycle().addObserver(
                 new XXFLifecycleObserver() {
                 });

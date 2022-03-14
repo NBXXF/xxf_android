@@ -25,4 +25,5 @@ android {
 
 dependencies {
     api des.material
+    api des.startup
 }

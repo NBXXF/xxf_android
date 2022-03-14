@@ -2,6 +2,7 @@ package com.xxf.arch.test
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.xxf.application.ApplicationInitializer
 import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment
 import com.xxf.arch.service.*
 import com.xxf.arch.service.SpService.getString
@@ -30,6 +31,8 @@ class SpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
+
+        System.out.println("================>context:"+ApplicationInitializer.applicationContext)
 
 
         //显示一个包含导航控制器的的bottomsheet

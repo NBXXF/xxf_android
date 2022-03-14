@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.xxf.application">
+
     <application>
         <provider
-            android:name="com.xxf.application.ApplicationProvider"
-            android:authorities="${applicationId}.ApplicationProvider"
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            android:multiprocess="true" />
+            tools:node="merge">
+            <meta-data
+                android:name="com.xxf.application.ApplicationInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 
 </manifest>

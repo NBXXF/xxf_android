@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import com.xxf.application.ApplicationProvider
+import com.xxf.application.ApplicationInitializer
 import java.util.*
 
 /**
@@ -137,11 +137,11 @@ object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), Activi
             e.printStackTrace()
         }
         try {
-            val packageManager = ApplicationProvider.applicationContext.packageManager ?: return
-            val intent = packageManager.getLaunchIntentForPackage(ApplicationProvider.applicationContext.packageName)
+            val packageManager = ApplicationInitializer.applicationContext.packageManager ?: return
+            val intent = packageManager.getLaunchIntentForPackage(ApplicationInitializer.applicationContext.packageName)
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                ApplicationProvider.applicationContext.startActivity(intent)
+                ApplicationInitializer.applicationContext.startActivity(intent)
             }
         } catch (e: Throwable) {
             e.printStackTrace()

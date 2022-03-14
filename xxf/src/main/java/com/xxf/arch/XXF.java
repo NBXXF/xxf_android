@@ -21,7 +21,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.application.ApplicationProvider;
+import com.xxf.application.ApplicationInitializer;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
 import com.xxf.arch.core.XXFUserInfoProvider;
@@ -130,6 +130,8 @@ public class XXF {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
                     XXF.application = builder.application;
+                    //Initializer 跨进程不会初始化
+                    ApplicationInitializer.applicationContext = builder.application;
                     XXF.errorHandler = builder.errorHandler;
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
@@ -442,7 +444,7 @@ public class XXF {
      */
     @Deprecated
     public static boolean isGrantedPermission(@NonNull String permission) {
-        return ContextCompat.checkSelfPermission(ApplicationProvider.applicationContext, permission) ==
+        return ContextCompat.checkSelfPermission(ApplicationInitializer.applicationContext, permission) ==
                 PackageManager.PERMISSION_GRANTED;
     }
 

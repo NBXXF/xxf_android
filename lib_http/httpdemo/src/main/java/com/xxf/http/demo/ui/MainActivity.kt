@@ -3,9 +3,11 @@ package com.xxf.http.demo.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.google.gson.JsonObject
+import com.google.gson.*
+import com.google.gson.annotations.JsonAdapter
 import com.xxf.arch.apiService
 import com.xxf.arch.json.JsonUtils
+import com.xxf.arch.json.typeadapter.NullableSerializerTypeAdapterFactory
 import com.xxf.arch.utils.copy
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
@@ -14,11 +16,71 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import retrofit2.CacheType
 
 class MainActivity : AppCompatActivity() {
+    class Demo {
+        @JsonAdapter(NullableSerializerTypeAdapterFactory::class, nullSafe = false)
+        var name: String? = null
+
+//        class Jsonadapter : TypeAdapter<String?>() {
+//
+//            override fun write(out: JsonWriter?, value: String?) {
+//                System.out.println("=============>ser src:" + value)
+//                out?.value(value)
+//            }
+//
+//            override fun read(`in`: JsonReader?): String? {
+//                return `in`?.nextString()
+//            }
+//        }
+    }
+
+    class Demo2 {
+        @JsonAdapter(NullableSerializerTypeAdapterFactory::class, nullSafe = false)
+        var name: String? = "xxx"
+        override fun toString(): String {
+            return "Demo2(name=$name)"
+        }
+
+//        class Jsonadapter : TypeAdapter<String?>() {
+//
+//            override fun write(out: JsonWriter?, value: String?) {
+//                System.out.println("=============>ser src:" + value)
+//                out?.value(value)
+//            }
+//
+//            override fun read(`in`: JsonReader?): String? {
+//                return `in`?.nextString()
+//            }
+//        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         RxJavaPlugins.setErrorHandler { }
 
+        val map = mutableMapOf<String, Any?>()
+        map.put("xxx", "r");
+        map.put("xxx2", JsonNull.INSTANCE)
+        map.put("xxx3", Demo().apply {
+            // this.name="xxx"
+        })
+        System.out.println("==========>ser:" + JsonUtils.toJsonElement(map))
+        System.out.println("==========>ser11:" + JsonUtils.toJsonElement(Demo().apply {
+            // this.name="xxx"
+        }))
+        System.out.println(
+            "==========>ser2:" + Gson()
+                .newBuilder()
+                .serializeNulls()
+                .create().toJson(map)
+        )
+        System.out.println(
+            "==========>ser3:" + Gson()
+                .newBuilder()
+                .serializeNulls()
+                .create().toJsonTree(map)
+        )
 
         val testModel = ExposeTestModel().apply {
             this.name = "hello"
@@ -29,7 +91,8 @@ class MainActivity : AppCompatActivity() {
         val copy_1 = testModel.copy()
         System.out.println("==========>expose copy:" + copy_1)
 
-        val copy_2 = testModel.copy(excludeUnSerializableField = true, excludeUnDeserializableField = true)
+        val copy_2 =
+            testModel.copy(excludeUnSerializableField = true, excludeUnDeserializableField = true)
         System.out.println("==========>expose copy2:" + copy_2)
 
 
@@ -81,9 +144,47 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun test() {
+        val map = mutableMapOf<String, Any?>()
+        map.put("xxx", "r");
+        map.put("xxx2", JsonNull.INSTANCE)
+        map.put("xxx3", Demo().apply {
+            // this.name="xxx"
+        })
+        System.out.println("==========>ser:" + JsonUtils.toJsonElement(map))
+        System.out.println("==========>ser11:" + JsonUtils.toJsonElement(Demo().apply {
+            // this.name="xxx"
+        }, excludeUnSerializableField = true))
+        System.out.println(
+            "==========>ser2:" + Gson()
+                .newBuilder()
+                .serializeNulls()
+                .create().toJson(map)
+        )
+        System.out.println(
+            "==========>ser3:" + Gson()
+                .newBuilder()
+                .serializeNulls()
+                .create().toJsonTree(map)
+        )
+
+
+        val toJsonString = JsonUtils.toJsonString(Demo2().apply {
+            this.name = null
+        }, excludeUnSerializableField = false)
+        System.out.println("===========>ser4 json:" + toJsonString)
+        val toBean = JsonUtils.toBean(
+            toJsonString,
+            Demo2::class.java,
+            excludeUnDeserializableField = false
+        )
+        System.out.println("===========>ser4:" + toBean)
+    }
+
     override fun onResume() {
         super.onResume()
         testhttp()
+        test()
 
 
         Thread(Runnable {

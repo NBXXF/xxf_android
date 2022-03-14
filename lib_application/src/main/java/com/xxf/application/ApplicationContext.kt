@@ -14,7 +14,7 @@ import com.xxf.application.activity.AndroidActivityStackProvider
  * 全局上下文
  */
 val applicationContext by lazy {
-    ApplicationProvider.applicationContext
+    ApplicationInitializer.applicationContext
 }
 
 /**

@@ -3,6 +3,7 @@ ext {
     dependencies = [
             //主要依赖库
             material                   : "com.google.android.material:material:1.4.0",
+            startup                    : "androidx.startup:startup-runtime:1.1.0",
 
             // ------------- 第三方-------------
             rxAndroid                  : 'io.reactivex.rxjava3:rxandroid:3.0.0',
