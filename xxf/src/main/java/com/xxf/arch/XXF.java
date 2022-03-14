@@ -131,7 +131,7 @@ public class XXF {
                 if (XXF.application == null) {
                     XXF.application = builder.application;
                     //Initializer 跨进程不会初始化
-                    ApplicationInitializer.applicationContext = builder.application;
+                    ApplicationInitializer.Companion.init(builder.application);
                     XXF.errorHandler = builder.errorHandler;
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;

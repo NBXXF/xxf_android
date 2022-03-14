@@ -14,11 +14,20 @@ import com.xxf.application.activity.AndroidActivityStackProvider
 class ApplicationInitializer : Initializer<Unit> {
     companion object {
         lateinit var applicationContext: Context
+
+        fun init(app: Application): Boolean {
+            return if (!this::applicationContext.isInitialized) {
+                applicationContext = app
+                AndroidActivityStackProvider.register(app)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     override fun create(context: Context) {
-        applicationContext = context.applicationContext
-        AndroidActivityStackProvider.register((context.applicationContext as Application))
+        init(context.applicationContext as Application)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {
