@@ -22,6 +22,7 @@ import com.xxf.objectbox.demo.model.*
 import com.xxf.rxjava.observeOnIO
 import io.objectbox.Box
 import io.objectbox.BoxStore
+import io.objectbox.Property
 import io.objectbox.query.QueryBuilder
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.BooleanSupplier
@@ -45,9 +46,9 @@ class MainActivity() : AppCompatActivity() {
     var subscribe: Disposable? = null
     override fun onResume() {
         super.onResume()
+        testNoEquals()
         var aLong: Long
-       // testUnique()
-        testSpeed()
+        // testUnique()
         Observable.concat(Observable.fromCallable {
             Log.d(
                 "====>",
@@ -246,6 +247,39 @@ class MainActivity() : AppCompatActivity() {
         test2()
     }
 
+
+    private fun testNoEquals() {
+        Thread(Runnable {
+            val boxFor = getBox(this).boxFor(Animal::class.java)
+            val cunt = 100000;
+            for (index in 1..cunt) {
+                val put = boxFor.put(Animal().apply {
+                    this.uuid = "x_$index"
+                    this.name = "name_" + index
+                })
+            }
+            var start = System.currentTimeMillis()
+            var query = boxFor.query()
+            for (index in 1..cunt - 25) {
+                val name = "name_" + index
+                query = query.notEqual(Animal_.name, name, QueryBuilder.StringOrder.CASE_SENSITIVE)
+            }
+            System.out.println("=================>query take1:" + (System.currentTimeMillis() - start))
+
+
+            System.out.println("=================>query take1:" + (System.currentTimeMillis() - start))
+            System.out.println(
+                "=================>query:" + query
+                    .order(Animal_.name)
+                    .build().find().apply {
+                        System.out.println("================>query size:" + this.size)
+                    }
+            )
+        })
+            .start()
+
+    }
+
     private fun test() {
         Thread(object : Runnable {
             override fun run() {
@@ -312,40 +346,4 @@ class MainActivity() : AppCompatActivity() {
         System.out.println("=============>query result2:" + find2)
     }
 
-    private fun testSpeed() {
-        Thread(Runnable {
-            getBox(this).removeAllObjects()
-            System.out.println("=============>take 开始11:")
-            for (i in 0..100000) {
-                getBox(this).boxFor(Animal::class.java)
-                    .put(Animal().apply {
-                        this.name = "张三"
-                        this.uuid = "${i}"
-                    })
-                getBox(this).boxFor(Animal2::class.java)
-                    .put(Animal2().apply {
-                        this.name = "张三"
-                        this.uuid = "${i}"
-                    })
-            }
-            System.out.println("=============>take 开始:")
-            val idList = mutableListOf<String>("1", "5", "60", "76", "10", "17", "36", "35", "47","99977")
-            val start = System.currentTimeMillis()
-            getBox(this).boxFor(Animal::class.java)
-                .query()
-                .`in`(Animal_.uuid, idList.toTypedArray(), QueryBuilder.StringOrder.CASE_SENSITIVE)
-                .build()
-                .find()
-            System.out.println("=============>take 有唯一索引:" + (System.currentTimeMillis() - start))
-
-            val start2 = System.currentTimeMillis()
-            getBox(this).boxFor(Animal2::class.java)
-                .query()
-                .`in`(Animal2_.uuid, idList.toTypedArray(), QueryBuilder.StringOrder.CASE_SENSITIVE)
-                .build()
-                .find()
-            System.out.println("=============>take 无唯一索引:" + (System.currentTimeMillis() - start2))
-
-        }).start()
-    }
 }

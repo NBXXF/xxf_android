@@ -73,32 +73,6 @@
         }
       ],
       "relations": []
-    },
-    {
-      "id": "4:6243185011710265902",
-      "lastPropertyId": "3:1328442583887812499",
-      "name": "Animal2",
-      "properties": [
-        {
-          "id": "1:4760596766991590146",
-          "name": "id",
-          "type": 6,
-          "flags": 129
-        },
-        {
-          "id": "2:2593341175013267538",
-          "name": "uuid",
-          "indexId": "3:1332847236638928634",
-          "type": 9,
-          "flags": 34848
-        },
-        {
-          "id": "3:1328442583887812499",
-          "name": "name",
-          "type": 9
-        }
-      ],
-      "relations": []
     }
   ],
   "lastEntityId": "4:6243185011710265902",
@@ -107,9 +81,17 @@
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredEntityUids": [
+    6243185011710265902
+  ],
+  "retiredIndexUids": [
+    1332847236638928634
+  ],
+  "retiredPropertyUids": [
+    4760596766991590146,
+    2593341175013267538,
+    1328442583887812499
+  ],
   "retiredRelationUids": [],
   "version": 1
 }
