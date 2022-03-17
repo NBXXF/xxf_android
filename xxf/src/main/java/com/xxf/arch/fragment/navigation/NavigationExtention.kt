@@ -19,6 +19,7 @@ fun Fragment.isInNavController(): Boolean {
 
 /**
  * 获取导航控制器容器
+ * 不在导航控制器中会报错
  */
 fun Fragment.findNavContainer(): NavigationContainer {
     var findFragment: Fragment? = this
@@ -40,25 +41,41 @@ fun Fragment.findNavContainer(): NavigationContainer {
 
 /**
  * 深度向上查找到第一个导航控制器
+ * 不在导航控制器中会报错
  */
 fun Fragment.findNavController(): INavigationController {
     return findNavContainer().getNavigationController()
 }
 
 /**
+ * 安全 深度向上查找到第一个导航控制器
+ */
+fun Fragment.findSafeNavController(): INavigationController? {
+    if (this.isInNavController()) {
+        try {
+            return this.findNavController()
+        } catch (e: Throwable) {
+        }
+    }
+    return null
+}
+
+/**
  * 导航
+ * 不在导航控制器中会报错
  */
 fun Fragment.navigation(
     destination: Fragment,
-    anim: Boolean = true,
+    anim: AnimBuilder? = null,
     tag: String? = null,
     flag: Int = -1
 ) {
-    findNavController().navigation(destination, null, tag, flag)
+    findNavController().navigation(destination, anim, tag, flag)
 }
 
 /**
  * 后退
+ * 不在导航控制器中会报错
  */
 fun Fragment.navigationUp(flag: Int = -1) {
     findNavController().navigationUp(flag)

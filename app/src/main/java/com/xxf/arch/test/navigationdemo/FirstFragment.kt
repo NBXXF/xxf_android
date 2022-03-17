@@ -5,6 +5,7 @@ import android.view.View
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.xxf.arch.fragment.XXFFragment
 import com.xxf.arch.fragment.navigation.findNavController
+import com.xxf.arch.fragment.navigation.findSafeNavController
 import com.xxf.arch.test.R
 import com.xxf.arch.test.databinding.FragmentFirstBinding
 
@@ -26,7 +27,8 @@ class FirstFragment : XXFFragment<Unit>(R.layout.fragment_first) {
         }
         binding.jump.setOnClickListener {
             //跳转到下一个fragment中
-            findNavController().navigation(SecondFragment())
+            findSafeNavController()?.navigation(SecondFragment())
+          //  findNavController().navigation(SecondFragment())
         }
     }
 }
