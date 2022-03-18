@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.xxf.arch.R
 
 /**
@@ -18,6 +19,7 @@ import com.xxf.arch.R
 class NavController(val lifecycle: LifecycleOwner, val fragmentManager: FragmentManager) :
     INavigationController {
     override fun navigation(destination: Fragment, anim: AnimBuilder?, tag: String?, flag: Int) {
+        checkFragment(destination)
         fragmentManager.beginTransaction()
             .apply {
                 if (anim != null) {
@@ -39,6 +41,19 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
             .commitAllowingStateLoss()
     }
 
+    /**
+     * 检查childFragment
+     * 子集是 BottomDialogFragment 会导致整体滚动问题
+     * 子集是 DialogFragment 调用自身的dismissXxx方法 会导致白屏
+     */
+    private fun checkFragment(fragment: Fragment) {
+        if (fragment is DialogFragment) {
+            throw IllegalStateException(
+                "Fragment " + this
+                        + " does not be DialogFragment"
+            )
+        }
+    }
 
     override fun navigationUp(flag: Int): Boolean {
         if (flag == Intent.FLAG_ACTIVITY_CLEAR_TASK) {
