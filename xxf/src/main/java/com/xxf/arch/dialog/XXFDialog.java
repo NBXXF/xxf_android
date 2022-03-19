@@ -24,7 +24,9 @@ import io.reactivex.rxjava3.subjects.Subject;
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 推荐使用setResult
+ * 建议是dialogFragment
  */
+@Deprecated
 public class XXFDialog<R>
         extends AppCompatDialog
         implements ObservableComponent<AppCompatDialog, R> {

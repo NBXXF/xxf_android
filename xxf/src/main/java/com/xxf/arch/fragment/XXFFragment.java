@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.component.ObservableComponent;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -38,8 +39,7 @@ public class XXFFragment<E>
         super(contentLayoutId);
     }
 
-    @Deprecated
-    private View contentView;
+
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
@@ -66,16 +66,6 @@ public class XXFFragment<E>
         super.onCreate(savedInstanceState);
     }
 
-    @Deprecated
-    public final void setContentView(@LayoutRes int layoutResID) {
-        this.contentView = getLayoutInflater().inflate(layoutResID, null);
-    }
-
-    @Deprecated
-    public final void setContentView(View view) {
-        this.contentView = view;
-    }
-
     /***
      * 禁止复写
      * @param inflater
@@ -86,13 +76,6 @@ public class XXFFragment<E>
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (this.contentView != null) {
-            ViewGroup parent = (ViewGroup) this.contentView.getParent();
-            if (parent != null) {
-                parent.removeView(this.contentView);
-            }
-            return this.contentView;
-        }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -102,9 +85,11 @@ public class XXFFragment<E>
      * @param view
      * @param savedInstanceState
      */
+    @CallSuper
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ViewLifecycleOwner.set(view,this);
     }
 
     /**

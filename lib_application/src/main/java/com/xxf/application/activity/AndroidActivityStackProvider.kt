@@ -60,7 +60,7 @@ interface ActivityStackProvider {
 /**
  * 单例
  */
-object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), ActivityStackProvider {
+internal object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), ActivityStackProvider {
     private val activityStack = Stack<Activity>()
 
     /**

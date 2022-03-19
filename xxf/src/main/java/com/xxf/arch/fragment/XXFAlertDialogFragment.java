@@ -21,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.TouchListenAlertDialog;
 import com.xxf.arch.dialog.WindowExtentionKtKt;
@@ -40,8 +41,6 @@ import io.reactivex.rxjava3.subjects.Subject;
 public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E> {
     private final String TAG_PREFIX = "show_rau_";
 
-    @Deprecated
-    private View contentView;
     @LayoutRes
     private int mContentLayoutId;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
@@ -80,15 +79,6 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
         super.onCreate(savedInstanceState);
     }
 
-    @Deprecated
-    public final void setContentView(@LayoutRes int layoutResID) {
-        this.contentView = getLayoutInflater().inflate(layoutResID, null);
-    }
-
-    @Deprecated
-    public final void setContentView(View view) {
-        this.contentView = view;
-    }
 
     @NonNull
     @Override
@@ -121,13 +111,6 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
         if (this.mContentLayoutId != 0) {
             return inflater.inflate(this.mContentLayoutId, container, false);
         }
-        if (this.contentView != null) {
-            ViewGroup parent = (ViewGroup) this.contentView.getParent();
-            if (parent != null) {
-                parent.removeView(this.contentView);
-            }
-            return this.contentView;
-        }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -137,9 +120,11 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
      * @param view
      * @param savedInstanceState
      */
+    @CallSuper
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ViewLifecycleOwner.set(view, this);
     }
 
     /**
@@ -270,7 +255,7 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
     @Override
     public void onStart() {
         super.onStart();
-        if(getShowsDialog()){
+        if (getShowsDialog()) {
             WindowExtentionKtKt.runAlphaDimAnimation(getDialogWidow());
         }
     }
