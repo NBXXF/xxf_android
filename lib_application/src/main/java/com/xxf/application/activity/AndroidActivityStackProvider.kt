@@ -3,8 +3,14 @@ package com.xxf.application.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.xxf.application.ApplicationInitializer
+import com.xxf.application.lifecycle.ViewLifecycleOwner
 import java.util.*
 
 /**
@@ -55,12 +61,12 @@ interface ActivityStackProvider {
  * 单例
  */
 object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), ActivityStackProvider {
-    val activityStack = Stack<Activity>()
+    private val activityStack = Stack<Activity>()
 
     /**
      * 并不是所有activity都是FragmentActivity,可能不是LifecyclerOwner的子类,比如sdk里面的页面
      */
-    val activityLifecycle: MutableMap<Activity, Lifecycle.Event> = LinkedHashMap()
+    private val activityLifecycle: MutableMap<Activity, Lifecycle.Event> = LinkedHashMap()
     override val topActivity: Activity?
         get() {
             try {
@@ -95,6 +101,26 @@ object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), Activi
         super.onActivityCreated(activity, savedInstanceState)
         activityLifecycle[activity] = Lifecycle.Event.ON_CREATE
         activityStack.push(activity)
+        /**
+         * 关联lifecycle
+         */
+        if (activity is LifecycleOwner) {
+            ViewLifecycleOwner.set(activity.window.decorView, activity)
+        }
+        if (activity is FragmentActivity) {
+            activity.supportFragmentManager.registerFragmentLifecycleCallbacks(object :
+                FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentViewCreated(
+                    fm: FragmentManager,
+                    f: Fragment,
+                    v: View,
+                    savedInstanceState: Bundle?
+                ) {
+                    super.onFragmentViewCreated(fm, f, v, savedInstanceState)
+                    ViewLifecycleOwner.set(v, f)
+                }
+            }, true)
+        }
     }
 
     override fun onActivityStarted(activity: Activity) {

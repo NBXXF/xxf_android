@@ -2,7 +2,9 @@ package com.xxf.arch.test.navigationdemo
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.xxf.application.lifecycle.findViewLifecycleOwner
 import com.xxf.arch.fragment.XXFFragment
 import com.xxf.arch.fragment.navigation.findNavController
 import com.xxf.arch.fragment.navigation.findSafeNavController
@@ -26,6 +28,7 @@ class FirstFragment : XXFFragment<Unit>(R.layout.fragment_first) {
             findNavController().navigationUp()
         }
         binding.jump.setOnClickListener {
+            Toast.makeText(it.context,"xx:"+it.findViewLifecycleOwner(),Toast.LENGTH_LONG).show()
             //跳转到下一个fragment中
             findSafeNavController()?.navigation(SecondFragment())
           //  findNavController().navigation(SecondFragment())
