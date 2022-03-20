@@ -10,7 +10,7 @@ import com.xxf.arch.service.SpService.observeAllChange
 import com.xxf.arch.service.SpService.observeChange
 import com.xxf.arch.service.SpService.putString
 import com.xxf.arch.test.navigationdemo.FirstFragment
-import com.xxf.utils.d
+
 
 class SpActivity : AppCompatActivity() {
     class MySpervice : SpServiceDelegate() {
@@ -41,8 +41,6 @@ class SpActivity : AppCompatActivity() {
 
 
         val key = "hello"
-        d(key, null, "================")
-        d(key, null, "================22222")
         observeChange(key)
             .subscribe { s -> println("=========>changeKey:" + s + "  v:" + getString(key, "")) }
         observeAllChange()
@@ -54,13 +52,11 @@ class SpActivity : AppCompatActivity() {
 
 
         val service = MySpervice()
-        d("==========>sp id:" + service.id2)
         service.id2 = "hello_" + System.currentTimeMillis()
-        d("==========>sp  saved id:" + service.id2)
 
 
-        d("==========>sp bean:" + service.bean2)
+
         service.bean2 = TestBean("" + System.currentTimeMillis(), "张三")
-        d("==========>sp  saved bean:" + service.bean2)
+
     }
 }

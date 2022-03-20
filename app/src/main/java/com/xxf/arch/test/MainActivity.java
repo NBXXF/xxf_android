@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -24,6 +25,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.apache.commons.lang3.time.FastDateFormat;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
@@ -43,10 +45,11 @@ import com.xxf.arch.service.SpService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.utils.UriUtils;
 import com.xxf.bus.ActionTypeEvent;
-import com.xxf.utils.LogKt;
+import com.xxf.utils.DateUtils;
 import com.xxf.view.round.XXFRoundImageTextView;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
+
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -60,9 +63,12 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -158,6 +164,34 @@ public class MainActivity extends XXFActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Throwable {
+                emitter.onNext(1);//第一次不发送
+                emitter.onNext(-1);//第一次不发送
+                Thread.sleep(400);
+                emitter.onNext(2);
+                emitter.onNext(200);
+                Thread.sleep(400);
+                emitter.onNext(3);
+                Thread.sleep(900);
+                emitter.onNext(4);
+                Thread.sleep(400);
+                emitter.onNext(5);
+                Thread.sleep(700);
+                emitter.onNext(6);
+                Thread.sleep(900);
+                emitter.onNext(7);
+
+            }
+        }).debounce(1000, TimeUnit.MILLISECONDS).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Throwable {
+                Log.e("--------rxjava", integer.toString());
+            }
+        });
         this.getLifecycle().addObserver(
                 new XXFLifecycleObserver() {
                 });
@@ -342,7 +376,7 @@ public class MainActivity extends XXFActivity {
 
                     @Override
                     public void onClick(View view) {
-                        LogKt.d("======>hell", null, "========");
+                        Log.d("======>hell", "========");
                         ((TextView) view).setText("http " + System.currentTimeMillis());
                     }
                 });
@@ -686,6 +720,25 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long start = System.currentTimeMillis();
+                for (int i = 0; i < 100000; i++) {
+                    long time = System.currentTimeMillis();
+                    String s = DateFormat.format("yyyy-M-d H:mm", time).toString();
+                }
+                System.out.println("=============>java DateFormat:" + (System.currentTimeMillis() - start));
+
+                start = System.currentTimeMillis();
+                for (int i = 0; i < 100000; i++) {
+                    long time = System.currentTimeMillis();
+                    String format = DateUtils.INSTANCE.format(time,"YYYY-M-d H:mm");
+                }
+                System.out.println("=============>java FastDateFormat:" + (System.currentTimeMillis() - start));
+            }
+        }).start();
     }
 
 }
