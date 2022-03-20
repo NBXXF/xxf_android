@@ -165,7 +165,6 @@ public class MainActivity extends XXFActivity {
         super.onCreate(savedInstanceState);
 
 
-
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
             public void subscribe(ObservableEmitter<Integer> emitter) throws Throwable {
@@ -734,7 +733,7 @@ public class MainActivity extends XXFActivity {
                 start = System.currentTimeMillis();
                 for (int i = 0; i < 100000; i++) {
                     long time = System.currentTimeMillis();
-                    String format = DateUtils.INSTANCE.format(time,"YYYY-M-d H:mm");
+                    String format = DateUtils.INSTANCE.format("YYYY-M-d H:mm", time);
                 }
                 System.out.println("=============>java FastDateFormat:" + (System.currentTimeMillis() - start));
             }
