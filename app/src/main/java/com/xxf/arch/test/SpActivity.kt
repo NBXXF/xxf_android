@@ -13,7 +13,6 @@ import com.xxf.arch.service.SpService.putString
 import com.xxf.arch.test.navigationdemo.FirstFragment
 import com.xxf.rxjava.bindLifecycle
 import com.xxf.rxjava.filterWhen
-import com.xxf.utils.d
 import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit
 
