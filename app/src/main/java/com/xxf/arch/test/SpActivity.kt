@@ -2,6 +2,7 @@ package com.xxf.arch.test
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import com.xxf.application.ApplicationInitializer
 import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment
 import com.xxf.arch.service.*
@@ -10,7 +11,11 @@ import com.xxf.arch.service.SpService.observeAllChange
 import com.xxf.arch.service.SpService.observeChange
 import com.xxf.arch.service.SpService.putString
 import com.xxf.arch.test.navigationdemo.FirstFragment
-
+import com.xxf.rxjava.bindLifecycle
+import com.xxf.rxjava.filterWhen
+import com.xxf.utils.d
+import io.reactivex.rxjava3.core.Observable
+import java.util.concurrent.TimeUnit
 
 class SpActivity : AppCompatActivity() {
     class MySpervice : SpServiceDelegate() {
@@ -32,7 +37,24 @@ class SpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
-        System.out.println("================>context:"+ApplicationInitializer.applicationContext)
+        mutableListOf<String>()
+        Observable.interval(1, TimeUnit.SECONDS)
+            .filterWhen(this, Lifecycle.State.RESUMED)
+            .doOnDispose {
+                System.out.println("================>截流:取消了")
+            }
+            .doOnError {
+                System.out.println("================>截流异常:" + it)
+            }
+            .doOnComplete {
+                System.out.println("================>截流:完成")
+            }
+            .bindLifecycle(this)
+            .subscribe {
+                System.out.println("================>截流:" + it)
+            }
+
+        System.out.println("================>context:" + ApplicationInitializer.applicationContext)
 
 
         //显示一个包含导航控制器的的bottomsheet
