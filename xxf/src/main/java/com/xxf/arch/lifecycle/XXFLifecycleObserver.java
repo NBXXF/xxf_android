@@ -2,7 +2,6 @@
 package com.xxf.arch.lifecycle;
 
 
-import android.util.Log;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -13,7 +12,12 @@ import androidx.lifecycle.OnLifecycleEvent;
  * @version 2.3.1
  * @Description lifecycle观察
  * @date createTime：2018/9/7
+ * Deprecated
+ * This annotation required the usage of code generation or reflection, which should be avoided. Use DefaultLifecycleObserver or LifecycleEventObserver instead.
+ *
+ *  DefaultLifecycleObserver  LifecycleEventObserver
  */
+@Deprecated
 public interface XXFLifecycleObserver extends LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

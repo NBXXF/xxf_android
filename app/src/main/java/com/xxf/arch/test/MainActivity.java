@@ -12,38 +12,24 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.apache.commons.lang3.time.FastDateFormat;
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.reflect.TypeToken;
-import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
-import com.xxf.arch.json.JsonUtils;
-import com.xxf.arch.json.datastructure.ListOrSingle;
-import com.xxf.arch.json.datastructure.QueryJsonField;
-import com.xxf.arch.json.typeadapter.format.FormatDemoModel;
 import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
 import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
 import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.presenter.XXFPresenter;
-import com.xxf.arch.service.SpService;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.arch.utils.UriUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.utils.DateUtils;
 import com.xxf.view.round.XXFRoundImageTextView;
@@ -163,7 +149,22 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getLifecycle().addObserver(new DefaultLifecycleObserver() {
+            @Override
+            public void onCreate(@NonNull LifecycleOwner owner) {
 
+            }
+
+            @Override
+            public void onResume(@NonNull LifecycleOwner owner) {
+                Log.d("TAG", "onResume: "+owner);
+            }
+
+            @Override
+            public void onPause(@NonNull LifecycleOwner owner) {
+                Log.d("TAG", "onPause: "+owner);
+            }
+        });
 
         Observable.create(new ObservableOnSubscribe<Integer>() {
             @Override
