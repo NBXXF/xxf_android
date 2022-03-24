@@ -8,3 +8,11 @@ fun String.toMurmurHash(): Long {
     primitiveDataChecksum.updateUtf8(this);
     return primitiveDataChecksum.value;
 }
+
+/**
+ * city hash
+ */
+fun String.toCityHash(): Long {
+    val toByteArray = this.toByteArray()
+    return CityHash.cityHash64(toByteArray, 0, toByteArray.size)
+}
