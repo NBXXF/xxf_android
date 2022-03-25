@@ -47,6 +47,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -145,10 +146,43 @@ public class MainActivity extends XXFActivity {
         }
     }
 
+    public static long getTimeOfWeekStart() {
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.HOUR_OF_DAY, 0);
+        ca.clear(Calendar.MINUTE);
+        ca.clear(Calendar.SECOND);
+        ca.clear(Calendar.MILLISECOND);
+        ca.set(Calendar.DAY_OF_WEEK, ca.getFirstDayOfWeek());
+        return ca.getTimeInMillis();
+    }
+
+    private static long getTimes() {
+        // 获取指定日期所在周的第一天(周一)
+        Calendar calendar = Calendar.getInstance();
+// 设置周一是第一天, getFirstDayOfWeek获取的默认是周日
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+        return calendar.getTimeInMillis();
+    }
+
+    private static long getTimes3() {
+        Calendar weekStart = Calendar.getInstance();
+        weekStart.setFirstDayOfWeek(Calendar.MONDAY);
+        weekStart.set(Calendar.HOUR_OF_DAY, 0);
+        weekStart.set(Calendar.MINUTE, 0);
+        weekStart.set(Calendar.SECOND, 0);
+        weekStart.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return weekStart.getTimeInMillis();
+    }
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        System.out.println("============>time:" + DateUtils.INSTANCE.format("yyyy-MM-dd", getTimeOfWeekStart()));
+        System.out.println("============>time2:" + DateUtils.INSTANCE.format("yyyy-MM-dd", getTimes()));
+        System.out.println("============>time3:" + DateUtils.INSTANCE.format("yyyy-MM-dd", getTimes3()));
         this.getLifecycle().addObserver(new DefaultLifecycleObserver() {
             @Override
             public void onCreate(@NonNull LifecycleOwner owner) {
@@ -157,12 +191,12 @@ public class MainActivity extends XXFActivity {
 
             @Override
             public void onResume(@NonNull LifecycleOwner owner) {
-                Log.d("TAG", "onResume: "+owner);
+                Log.d("TAG", "onResume: " + owner);
             }
 
             @Override
             public void onPause(@NonNull LifecycleOwner owner) {
-                Log.d("TAG", "onPause: "+owner);
+                Log.d("TAG", "onPause: " + owner);
             }
         });
 

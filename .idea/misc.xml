@@ -49,6 +49,7 @@
         <entry key="lib_effect/layout_anim_demo/src/main/res/layout/row_spinner_item.xml" value="0.1703125" />
         <entry key="lib_effect/layout_anim_demo/src/main/res/menu/menu_main.xml" value="0.103125" />
         <entry key="lib_hash/lib_hash_demo/src/main/res/layout/activity_main.xml" value="0.11197916666666667" />
+        <entry key="lib_http/httpdemo/src/main/res/layout/activity_main.xml" value="0.15" />
         <entry key="lib_overscroll/ovserscroll_demo/src/main/res/layout/activity_overscroll_demo.xml" value="0.13489583333333333" />
         <entry key="lib_overscroll/ovserscroll_demo/src/main/res/layout/misc_overscroll_demo.xml" value="0.13489583333333333" />
         <entry key="lib_overscroll/ovserscroll_demo/src/main/res/layout/nested_scrollview_demo.xml" value="0.22083333333333333" />

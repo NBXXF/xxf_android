@@ -2,7 +2,13 @@ package com.xxf.http.demo.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.ArrowKeyMovementMethod
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Switch
+import android.widget.TextView
 import com.google.gson.*
 import com.google.gson.annotations.JsonAdapter
 import com.xxf.arch.apiService
@@ -58,6 +64,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         RxJavaPlugins.setErrorHandler { }
+
+
+        val editText = findViewById<MyEditText>(R.id.edit_text)
+        val findViewById = findViewById<Switch>(R.id.btn_test)
+        findViewById.setOnCheckedChangeListener { buttonView, isChecked ->
+            editText.isRead = isChecked
+        }
+
 
         val map = mutableMapOf<String, Any?>()
         map.put("xxx", "r");

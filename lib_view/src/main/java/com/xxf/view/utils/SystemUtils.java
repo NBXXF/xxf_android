@@ -716,7 +716,7 @@ public class SystemUtils {
         }
 
         public CropIntentBuilder inputImgFile(File inImgFile) {
-            Uri inImgUri = queryMediaImageUri(inImgFile);
+            Uri inImgUri =  FileProvider7.INSTANCE.getUriForFile(applicationContext,inImgFile);
             this.mCropIntent.setDataAndType(inImgUri, "image/*");
             return this;
         }
