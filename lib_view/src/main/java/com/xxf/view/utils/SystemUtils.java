@@ -660,22 +660,6 @@ public class SystemUtils {
     }
 
 
-    private static Uri queryMediaImageUri(File imageFile) {
-        String filePath = imageFile.getAbsolutePath();
-        Cursor cursor = ApplicationInitializer.applicationContext.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{"_id"}, "_data=? ", new String[]{filePath}, (String) null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndex("_id"));
-            Uri baseUri = Uri.parse("content://media/external/images/media");
-            return Uri.withAppendedPath(baseUri, "" + id);
-        } else if (imageFile.exists()) {
-            ContentValues values = new ContentValues();
-            values.put("_data", filePath);
-            return ApplicationInitializer.applicationContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        } else {
-            return null;
-        }
-    }
-
     public static class PathCropIntentBuilder extends CropIntentBuilder {
         public String outPutPath;
 
@@ -716,7 +700,7 @@ public class SystemUtils {
         }
 
         public CropIntentBuilder inputImgFile(File inImgFile) {
-            Uri inImgUri =  FileProvider7.INSTANCE.getUriForFile(applicationContext,inImgFile);
+            Uri inImgUri = FileProvider7.INSTANCE.getUriForFile(applicationContext, inImgFile);
             this.mCropIntent.setDataAndType(inImgUri, "image/*");
             return this;
         }
@@ -747,7 +731,8 @@ public class SystemUtils {
 
         public CropIntentBuilder outputFile(File outputImgFile) {
             this.mCropIntent.putExtra("return-data", false);
-            this.mCropIntent.putExtra("output", queryMediaImageUri(outputImgFile));
+            Uri outImgUri = FileProvider7.INSTANCE.getUriForFile(applicationContext, outputImgFile);
+            this.mCropIntent.putExtra("output", outImgUri);
             this.mCropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return this;
         }
