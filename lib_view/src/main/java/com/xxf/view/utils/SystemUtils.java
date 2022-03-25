@@ -725,6 +725,7 @@ public class SystemUtils {
         public CropIntentBuilder outputUri(Uri outputImgUri) {
             this.mCropIntent.putExtra("return-data", false);
             this.mCropIntent.putExtra("output", outputImgUri);
+            this.mCropIntent.setClipData(ClipData.newRawUri(null, outputImgUri));
             this.mCropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return this;
         }
@@ -733,6 +734,7 @@ public class SystemUtils {
             this.mCropIntent.putExtra("return-data", false);
             Uri outImgUri = FileProvider7.INSTANCE.getUriForFile(applicationContext, outputImgFile);
             this.mCropIntent.putExtra("output", outImgUri);
+            this.mCropIntent.setClipData(ClipData.newRawUri(null, outImgUri));
             this.mCropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             return this;
         }
