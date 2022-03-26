@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.Toast
 import com.xxf.objectbox.demo.UserDbService.clearTable
 import com.xxf.objectbox.demo.UserDbService.addAll
 import com.xxf.objectbox.demo.UserDbService.queryAll
@@ -19,7 +21,11 @@ import io.reactivex.rxjava3.core.ObservableSource
 import com.xxf.objectbox.demo.UserDbService
 import com.xxf.objectbox.demo.TeacherDbService
 import com.xxf.objectbox.demo.model.*
+import com.xxf.objectbox.observable
+import com.xxf.objectbox.observableChange
+import com.xxf.rxjava.bindLifecycle
 import com.xxf.rxjava.observeOnIO
+import com.xxf.rxjava.observeOnMain
 import io.objectbox.Box
 import io.objectbox.BoxStore
 import io.objectbox.Property
@@ -34,6 +40,7 @@ import java.lang.Exception
 import java.lang.RuntimeException
 import java.util.*
 import java.util.concurrent.Callable
+import kotlin.random.Random
 
 class MainActivity() : AppCompatActivity() {
     var i: Long = 0
@@ -41,141 +48,34 @@ class MainActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         RxJavaPlugins.setErrorHandler { }
+
+        val box = getBox(this)
+        val findViewById = findViewById<Button>(R.id.test)
+        findViewById.setOnClickListener {
+            val nextInt = Random.nextInt(100)
+            box
+                .boxFor(Teacher::class.java)
+                .put(Teacher(System.currentTimeMillis(), "t_" + System.currentTimeMillis(), age =nextInt))
+            System.out.println("====================>insert :${nextInt}")
+            Toast.makeText(it.context, "插入了", Toast.LENGTH_SHORT).show()
+        }
+        box
+            .boxFor(Teacher::class.java)
+            .query()
+            .lessOrEqual(Teacher_.age,20)
+            .build()
+            .observableChange()
+            .observeOnMain()
+            .bindLifecycle(this)
+            .subscribe {
+                System.out.println("====================>it:${it.size}")
+            }
     }
 
     var subscribe: Disposable? = null
     override fun onResume() {
         super.onResume()
         testNoEquals()
-        var aLong: Long
-        // testUnique()
-        Observable.concat(Observable.fromCallable {
-            Log.d(
-                "====>",
-                "=============>result 发送:1" + Thread.currentThread().name
-            )
-            1
-        }, Observable.fromCallable {
-            Log.d(
-                "====>",
-                "=============>result 发送:2" + Thread.currentThread().name
-            )
-            2
-        })
-            .take(2)
-            .observeOnIO()
-            .take(1)
-            .subscribe {
-                Log.d(
-                    "====>",
-                    "=============>result:" + it + Thread.currentThread().name
-                )
-            }
-        Observable
-            .fromArray(
-                Observable.defer(
-                    Supplier<ObservableSource<Long>> { Observable.empty() }),
-                Observable.fromCallable(object : Callable<Long> {
-                    @Throws(Exception::class)
-                    override fun call(): Long {
-                        Log.d(
-                            "====>",
-                            "=============>call:1023 start:" + Thread.currentThread().name
-                        )
-                        Thread.sleep(1000)
-                        Log.d("====>", "=============>call:1023 end:" + Thread.currentThread().name)
-                        return 1023L
-                    }
-                }).subscribeOn(Schedulers.io()),
-                Observable.fromCallable(object : Callable<Long> {
-                    @Throws(Exception::class)
-                    override fun call(): Long {
-                        Log.d(
-                            "====>",
-                            "=============>call:1024 start:" + Thread.currentThread().name
-                        )
-                        //    Thread.sleep(4000)
-                        throw  RuntimeException("xxxx");
-//                        Log.d("====>", "=============>call:1024 end:" + Thread.currentThread().name)
-//                        return 1024L
-                    }
-                }).subscribeOn(Schedulers.io())
-            )
-            .concatMapEagerDelayError({ it -> it }, true)
-            .doOnError(object : Consumer<Throwable> {
-                @Throws(Throwable::class)
-                override fun accept(throwable: Throwable) {
-                    Log.d(
-                        "====>",
-                        "=============>call:error:" + throwable + "  t:" + Thread.currentThread().name
-                    )
-                }
-            })
-            .subscribe(object : Consumer<Long> {
-                @Throws(Throwable::class)
-                override fun accept(integer: Long) {
-                    Log.d(
-                        "====>",
-                        "=============>call:recive:" + integer + "  t:" + Thread.currentThread().name
-                    )
-                    Thread.sleep(2000)
-                    //throw RuntimeException("xxxxhgfdfgh")
-                }
-            })
-        //        Observable.concatEagerDelayError(
-//                Arrays.asList(Observable.fromCallable(new Callable<Long>() {
-//                            @Override
-//                            public Long call() throws Exception {
-//                                Thread.sleep(1000);
-//                                Log.d("====>", "=============>call:1023:" + Thread.currentThread().getName());
-//                                return 1023l;
-//                            }
-//                        }).subscribeOn(Schedulers.io())
-//                        , Observable.fromCallable(new Callable<Long>() {
-//                            @Override
-//                            public Long call() throws Exception {
-//                                Thread.sleep(100);
-//                                // throw new RuntimeException("xxxx");
-//                                Log.d("====>", "=============>call:1024" + Thread.currentThread().getName());
-//                                return 1024l;
-//                            }
-//                        }).subscribeOn(Schedulers.io())
-//                ))
-//                .subscribeOn(Schedulers.single())
-//                .observeOn(Schedulers.newThread())
-//                .doOnError(new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) throws Throwable {
-//                        Log.d("====>", "=============>call  错误:" + throwable);
-//                    }
-//                })
-//                .subscribe(new Consumer<Long>() {
-//                    @Override
-//                    public void accept(Long aLong) throws Throwable {
-//                        Log.d("====>", "=============>call  收到:" + aLong);
-//                    }
-//                });
-//
-//        aLong = Observable.fromCallable(new Callable<Long>() {
-//            @Override
-//            public Long call() throws Exception {
-//                i++;
-//                if (i < 8) {
-//                    throw new RuntimeException("XXX");
-//                }
-//                return i;
-//            }
-//        }).retry(10)
-//                .onErrorComplete()
-//                .doOnError(new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) throws Throwable {
-//                        Log.d("====>", "=============>主线程 ex:");
-//                    }
-//                })
-//                .blockingFirst();
-
-        //  Log.d("====>", "=============>主线程:" + aLong);
         i = 0
         Observable
             .fromCallable(object : Callable<Long> {

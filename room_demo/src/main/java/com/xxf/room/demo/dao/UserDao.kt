@@ -1,5 +1,6 @@
 package com.xxf.room.demo.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.xxf.room.demo.model.User
 import io.reactivex.rxjava3.core.Observable
@@ -21,11 +22,23 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE id IN (:ids)")
     fun loadAllById(vararg ids: Int): List<User>
 
+    /**
+     * 监听指定的id
+     */
+    @Query("SELECT * FROM user WHERE id IN (:ids)")
+    fun loadAllById2(vararg ids: String): Observable<List<User>>
+
+    /**
+     * 监听指定的id
+     */
+    @Query("SELECT * FROM user WHERE id IN (:ids)")
+    fun loadAllById3(vararg ids: String): LiveData<List<User>>
+
     @Query("SELECT * FROM user WHERE name LIKE '%' || (:name) || '%' ")
-    fun loadByName(name:String): List<User>
+    fun loadByName(name: String): List<User>
 
     @Query("SELECT * FROM user WHERE name MATCH (:name)")
-    fun loadByName2(name:String): List<User>
+    fun loadByName2(name: String): List<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg users: User);

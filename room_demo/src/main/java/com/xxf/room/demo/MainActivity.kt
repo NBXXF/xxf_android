@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import com.xxf.arch.json.JsonUtils
 import com.xxf.room.demo.dao.UserDao
@@ -54,10 +55,11 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val user = User();
-            user.id = "aaa_"+System.currentTimeMillis();
+            user.id = System.currentTimeMillis().toString();
             user.name = binding.etInput.text.toString();
             user.releaseYear = 1970;
             db.userDao().insertAll(user);
+            Log.d("=====>insert by rx2:", "" + user.id);
             Toast.makeText(this, "插入成功", Toast.LENGTH_SHORT).show();
         }
         binding.btnDeleteAll.setOnClickListener {
@@ -83,14 +85,32 @@ class MainActivity : AppCompatActivity() {
             val loadByName = db.userDao().loadByName(binding.etInput.text.toString());
             adapter.bindData(true, loadByName);
         }
+        val list= mutableListOf<String>()
+        for(i in 0..5)
+        {
+            list.add(""+i);
+            val user = User();
+            user.id = ""+i;
+            user.name = binding.etInput.text.toString();
+            user.releaseYear = 1970;
+            db.userDao().insertAll(user);
+        }
 
         //监听数据库变化
-        db.userDao().loadRxAll()
+        db.userDao().loadAllById2(*list.toTypedArray())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     adapter.bindData(true, it);
                     Log.d("=====>data by rx", "" + it);
                 }
+
+        //监听数据库变化
+        db.userDao().loadAllById3(*list.toTypedArray())
+            .observe(this,object: Observer<List<User>> {
+                override fun onChanged(t: List<User>?) {
+                    Log.d("=====>data by rx2:", "" + t);
+                }
+            })
     }
 
     private fun yc(dao: UserDao) {
