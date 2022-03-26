@@ -3,11 +3,13 @@ package com.xxf.arch.http;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
 import com.xxf.arch.http.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.http.converter.json.JsonConverterFactory;
+import com.xxf.arch.http.converter.json.JsonStringConverterFactory;
 import com.xxf.arch.http.converter.string.ScalarsConverterFactory;
 import com.xxf.arch.json.GsonFactory;
 import com.xxf.arch.json.exclusionstrategy.ExposeDeserializeExclusionStrategy;
@@ -53,15 +55,15 @@ public class RetrofitBuilder {
     protected Retrofit.Builder builder;
 
     public RetrofitBuilder(RxJavaCallAdapterInterceptor interceptor, HttpCacheConfigProvider rxHttpCache) {
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(
+                //网络层一定要去除 expose  serialize  = false  或者deserialize  = false 的情况
+                GsonFactory.createGson(true, true));
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(
-                        GsonConverterFactory.create(
-                                //网络层一定要去除 expose  serialize  = false  或者deserialize  = false 的情况
-                                GsonFactory.createGson(true, true))
-                )
+                .addConverterFactory(gsonConverterFactory)
                 .addConverterFactory(JsonConverterFactory.create())
+                .addConverterFactory(new JsonStringConverterFactory(gsonConverterFactory))
                 .addCallAdapterFactory(new RxJava2CallAdapterFactory(null, true, rxHttpCache, interceptor));
     }
 

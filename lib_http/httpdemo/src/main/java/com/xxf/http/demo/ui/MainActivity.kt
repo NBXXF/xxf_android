@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun testhttp() {
         LoginApiService::class.java.apiService()
-            .getCityModel(CacheType.firstCache)
+            .getCity(TestQueryJsonField("xxx"))
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError {
                 Log.d("==========>retry no", "" + it)
