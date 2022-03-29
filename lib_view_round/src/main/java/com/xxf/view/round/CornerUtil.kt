@@ -58,3 +58,12 @@ object CornerUtil {
         return (dpValue * scale + 0.5f).toInt()
     }
 }
+
+/**
+ * 拓展 设置圆角
+ * 360.dp 为圆角
+ * 其他为圆角矩形
+ */
+fun View.setRadius(radius: Float) {
+    CornerUtil.clipViewRadius(this, radius)
+}
