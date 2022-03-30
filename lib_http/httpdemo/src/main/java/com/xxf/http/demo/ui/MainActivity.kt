@@ -20,6 +20,7 @@ import com.xxf.http.demo.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import retrofit2.CacheType
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     class Demo {
@@ -199,6 +200,36 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         testhttp()
         test()
+
+        Thread(Runnable {
+            val list = mutableListOf<StringClass>()
+            for (i in 0..100000) {
+                list.add(StringClass().apply {
+                    this.type = "" + Random.nextInt(20)
+                })
+            }
+            val toJsonString = JsonUtils.toJsonString(list)
+            var start = System.currentTimeMillis()
+            val toBeanList2 = JsonUtils.toBeanList(toJsonString, StringClass::class.java)
+            System.out.println("=============>take enum string:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            val toBeanList = JsonUtils.toBeanList(toJsonString, EnumClass::class.java)
+            System.out.println("=============>take enum:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            for (i in 0..100) {
+                JsonUtils.toBeanList(toJsonString, StringClass::class.java)
+            }
+            System.out.println("=============>take enum string(100000):" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            for (i in 0..100) {
+                JsonUtils.toBeanList(toJsonString, EnumClass::class.java)
+            }
+            System.out.println("=============>take enum(100000):" + (System.currentTimeMillis() - start))
+
+        }).start()
 
 
         Thread(Runnable {
