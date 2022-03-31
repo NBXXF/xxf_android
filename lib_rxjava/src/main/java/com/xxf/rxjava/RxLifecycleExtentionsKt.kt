@@ -1,7 +1,6 @@
 package com.xxf.rxjava
 
 import android.view.View
-import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import autodispose2.*
@@ -19,16 +18,17 @@ import io.reactivex.rxjava3.parallel.ParallelFlowable
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Observable<T>.bindLifecycle(
+fun <T> Observable<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): ObservableSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable<T>(
-            AndroidLifecycleScopeProvider.from(
-                lifecycleOwner,
-                untilEvent
+            ScopesFactory.completableOf(
+                AndroidLifecycleScopeProvider.from(
+                    lifecycleOwner,
+                    untilEvent
+                )
             )
         )
     );
@@ -37,16 +37,17 @@ inline fun <reified T> Observable<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Flowable<T>.bindLifecycle(
+fun <T> Flowable<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): FlowableSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable<T>(
-            AndroidLifecycleScopeProvider.from(
-                lifecycleOwner,
-                untilEvent
+            ScopesFactory.completableOf(
+                AndroidLifecycleScopeProvider.from(
+                    lifecycleOwner,
+                    untilEvent
+                )
             )
         )
     );
@@ -55,16 +56,17 @@ inline fun <reified T> Flowable<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> ParallelFlowable<T>.bindLifecycle(
+fun <T> ParallelFlowable<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): ParallelFlowableSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable<T>(
-            AndroidLifecycleScopeProvider.from(
-                lifecycleOwner,
-                untilEvent
+            ScopesFactory.completableOf(
+                AndroidLifecycleScopeProvider.from(
+                    lifecycleOwner,
+                    untilEvent
+                )
             )
         )
     );
@@ -73,16 +75,17 @@ inline fun <reified T> ParallelFlowable<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Maybe<T>.bindLifecycle(
+fun <T> Maybe<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): MaybeSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable<T>(
-            AndroidLifecycleScopeProvider.from(
-                lifecycleOwner,
-                untilEvent
+            ScopesFactory.completableOf(
+                AndroidLifecycleScopeProvider.from(
+                    lifecycleOwner,
+                    untilEvent
+                )
             )
         )
     );
@@ -91,16 +94,17 @@ inline fun <reified T> Maybe<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Completable.bindLifecycle(
+fun <T> Completable.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): CompletableSubscribeProxy {
     return this.to(
         AutoDispose.autoDisposable<T>(
-            AndroidLifecycleScopeProvider.from(
-                lifecycleOwner,
-                untilEvent
+            ScopesFactory.completableOf(
+                AndroidLifecycleScopeProvider.from(
+                    lifecycleOwner,
+                    untilEvent
+                )
             )
         )
     );
@@ -109,16 +113,17 @@ inline fun <reified T> Completable.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Single<T>.bindLifecycle(
+fun <T> Single<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): SingleSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable<T>(
-            AndroidLifecycleScopeProvider.from(
-                lifecycleOwner,
-                untilEvent
+            ScopesFactory.completableOf(
+                AndroidLifecycleScopeProvider.from(
+                    lifecycleOwner,
+                    untilEvent
+                )
             )
         )
     );
@@ -128,47 +133,89 @@ inline fun <reified T> Single<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Observable<T>.bindLifecycle(view: View): ObservableSubscribeProxy<T> {
-    return this.to(AutoDispose.autoDisposable(ViewScopeProvider.from(view)));
+fun <T> Observable<T>.bindLifecycle(view: View): ObservableSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                ViewScopeProvider.from(
+                    view
+                )
+            )
+        )
+    );
 }
 
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Flowable<T>.bindLifecycle(view: View): FlowableSubscribeProxy<T> {
-    return this.to(AutoDispose.autoDisposable(ViewScopeProvider.from(view)));
+fun <T> Flowable<T>.bindLifecycle(view: View): FlowableSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                ViewScopeProvider.from(
+                    view
+                )
+            )
+        )
+    );
 }
 
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> ParallelFlowable<T>.bindLifecycle(view: View): ParallelFlowableSubscribeProxy<T> {
-    return this.to(AutoDispose.autoDisposable(ViewScopeProvider.from(view)));
+fun <T> ParallelFlowable<T>.bindLifecycle(view: View): ParallelFlowableSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                ViewScopeProvider.from(
+                    view
+                )
+            )
+        )
+    );
 }
 
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Maybe<T>.bindLifecycle(view: View): MaybeSubscribeProxy<T> {
-    return this.to(AutoDispose.autoDisposable(ViewScopeProvider.from(view)));
+fun <T> Maybe<T>.bindLifecycle(view: View): MaybeSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                ViewScopeProvider.from(
+                    view
+                )
+            )
+        )
+    );
 }
 
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Completable.bindLifecycle(view: View): CompletableSubscribeProxy {
-    return this.to(AutoDispose.autoDisposable<T>(ViewScopeProvider.from(view)));
+fun <T> Completable.bindLifecycle(view: View): CompletableSubscribeProxy {
+    return this.to(
+        AutoDispose.autoDisposable<T>(
+            ScopesFactory.completableOf(
+                ViewScopeProvider.from(
+                    view
+                )
+            )
+        )
+    );
 }
 
 /**
  * 绑定rxjava 生命周期
  */
-@MainThread
-inline fun <reified T> Single<T>.bindLifecycle(view: View): SingleSubscribeProxy<T> {
-    return this.to(AutoDispose.autoDisposable(ViewScopeProvider.from(view)));
+fun <T> Single<T>.bindLifecycle(view: View): SingleSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                ViewScopeProvider.from(
+                    view
+                )
+            )
+        )
+    );
 }

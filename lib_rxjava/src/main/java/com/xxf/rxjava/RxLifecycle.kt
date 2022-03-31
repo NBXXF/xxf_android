@@ -6,10 +6,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import autodispose2.AutoDispose
 import autodispose2.AutoDisposeConverter
-import autodispose2.android.AutoDisposeAndroidPlugins
 import autodispose2.android.ViewScopeProvider
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider
-import io.reactivex.rxjava3.functions.BooleanSupplier
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -26,17 +24,15 @@ object RxLifecycle {
      * @param <T>
      * @return
     </T> */
-    @MainThread
     fun <T> bindLifecycle(lifecycleOwner: LifecycleOwner, untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY): AutoDisposeConverter<T> {
-        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(lifecycleOwner,untilEvent))
+        return AutoDispose.autoDisposable(ScopesFactory.completableOf(AndroidLifecycleScopeProvider.from(lifecycleOwner,untilEvent)))
     }
 
     /**
      * 绑定view的生命周期
      * 注意 必须是view aattached
      */
-    @MainThread
     fun <T>bindLifecycle(view:View):AutoDisposeConverter<T> {
-        return AutoDispose.autoDisposable(ViewScopeProvider.from(view));
+        return AutoDispose.autoDisposable(ScopesFactory.completableOf(ViewScopeProvider.from(view)));
     }
 }

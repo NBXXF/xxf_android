@@ -2,7 +2,6 @@ package com.xxf.http.demo.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.method.ArrowKeyMovementMethod
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -11,15 +10,21 @@ import android.widget.Switch
 import android.widget.TextView
 import com.google.gson.*
 import com.google.gson.annotations.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.xxf.arch.apiService
 import com.xxf.arch.json.JsonUtils
+import com.xxf.arch.json.ListTypeToken
 import com.xxf.arch.json.typeadapter.NullableSerializerTypeAdapterFactory
 import com.xxf.arch.utils.copy
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import retrofit2.CacheType
+import java.lang.reflect.Type
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -200,7 +205,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         testhttp()
         test()
+        testJsonSpeed()
 
+        testJson2()
         Thread(Runnable {
             val list = mutableListOf<StringClass>()
             for (i in 0..100000) {
@@ -258,5 +265,96 @@ class MainActivity : AppCompatActivity() {
             .subscribe {
                 Log.d("==========>retry ye", "" + it)
             }
+    }
+
+
+
+    private fun testJsonSpeed() {
+        Thread(Runnable {
+            val moshi: Moshi = Moshi.Builder()
+                .addLast(KotlinJsonAdapterFactory())
+                .build()
+            val gson = Gson()
+
+            val list = mutableListOf<InnerDto2>()
+            for (i in 0..100000) {
+                list.add(InnerDto2().apply {
+                    name = "" + i;
+                    des = "" + i;
+                })
+            }
+            var start = System.currentTimeMillis()
+            val gsonStr = gson.toJson(list)
+            System.out.println("=============>j gson ser take:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            val type: Type = Types.newParameterizedType(
+                MutableList::class.java,
+                InnerDto2::class.java
+            )
+            val adapter: com.squareup.moshi.JsonAdapter<List<InnerDto2>> =
+                moshi.adapter<List<InnerDto2>>(type)
+            val moshiStr = adapter.toJson(list)
+            System.out.println("=============>j moshi ser take:" + (System.currentTimeMillis() - start))
+
+
+            start = System.currentTimeMillis()
+            val fromJson = gson.fromJson<List<InnerDto2>>(gsonStr, ListTypeToken<InnerDto2>().type)
+            System.out.println("=============>j gson deser take:" + (System.currentTimeMillis() - start))
+
+
+            start = System.currentTimeMillis()
+            val deserializerMoshi: com.squareup.moshi.JsonAdapter<List<InnerDto2>> =
+                moshi.adapter<List<InnerDto2>>(
+                    Types.newParameterizedType(
+                        List::class.java,
+                        InnerDto2::class.java
+                    )
+                )
+            val fromMoshi = deserializerMoshi.fromJson(moshiStr)
+            System.out.println("=============>j moshi deser take:" + (System.currentTimeMillis() - start))
+
+        }).start()
+    }
+
+    fun testJson2() {
+        val moshi: Moshi = Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+        val gson = Gson()
+
+        val apply = InnerDto2().apply {
+            name = "xxxxxx";
+            des = "ehgfggds";
+        }
+        var start = System.currentTimeMillis()
+        for (i in 0..100000) {
+            val gsonStr = gson.toJson(apply)
+        }
+        System.out.println("=============>j2 gson ser take:" + (System.currentTimeMillis() - start))
+
+        start = System.currentTimeMillis()
+        val adapter: com.squareup.moshi.JsonAdapter<InnerDto2> =
+            moshi.adapter<InnerDto2>(InnerDto2::class.java)
+        for (i in 0..100000) {
+            val moshiStr = adapter.toJson(apply)
+        }
+        System.out.println("=============>j2 moshi ser take:" + (System.currentTimeMillis() - start))
+
+
+        val gsonStr = gson.toJson(apply)
+        start = System.currentTimeMillis()
+        for (i in 0..100000) {
+            val fromJson = gson.fromJson<InnerDto2>(gsonStr, InnerDto2::class.java)
+        }
+        System.out.println("=============>j2 gson deser take:" + (System.currentTimeMillis() - start))
+
+
+        start = System.currentTimeMillis()
+        for (i in 0..100000) {
+            val fromJson = adapter.fromJson(gsonStr)
+        }
+        System.out.println("=============>j2 moshi deser take:" + (System.currentTimeMillis() - start))
+
     }
 }
