@@ -22,10 +22,21 @@ import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
+import io.reactivex.rxjava3.subjects.Subject
+import kotlinx.serialization.*
+import kotlinx.serialization.cbor.Cbor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
 import retrofit2.CacheType
 import java.lang.reflect.Type
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
+import kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf
 
 class MainActivity : AppCompatActivity() {
     class Demo {
@@ -207,7 +218,7 @@ class MainActivity : AppCompatActivity() {
         test()
         testJsonSpeed()
 
-        testJson2()
+        //testJson2()
         Thread(Runnable {
             val list = mutableListOf<StringClass>()
             for (i in 0..100000) {
@@ -267,9 +278,31 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-
-
     private fun testJsonSpeed() {
+//        Observable.create<Long> {
+//            Thread.sleep(5001)
+//            it.onNext(1)
+//            Thread.sleep(5000)
+//
+//            it.onNext(2)
+//            Thread.sleep(300)
+//            it.onNext(3)
+//            Thread.sleep(300)
+//
+//            it.onNext(4)
+//            Thread.sleep(5000)
+//            it.onNext(5)
+//            it.onComplete()
+//        }
+        Observable.interval(5,TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .sample(5, TimeUnit.SECONDS,true)
+            .doOnComplete {
+                System.out.println("===================>next complete:")
+            }
+            .subscribe {
+                System.out.println("===================>next:" + it)
+            }
         Thread(Runnable {
             val moshi: Moshi = Moshi.Builder()
                 .addLast(KotlinJsonAdapterFactory())
@@ -281,6 +314,10 @@ class MainActivity : AppCompatActivity() {
                 list.add(InnerDto2().apply {
                     name = "" + i;
                     des = "" + i;
+                    this.mp = mutableMapOf<String, String>().apply {
+                        put("xx", "21")
+                        put("24", "xx")
+                    }
                 })
             }
             var start = System.currentTimeMillis()
@@ -296,6 +333,27 @@ class MainActivity : AppCompatActivity() {
                 moshi.adapter<List<InnerDto2>>(type)
             val moshiStr = adapter.toJson(list)
             System.out.println("=============>j moshi ser take:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            val kotlinJson = Json.encodeToString(list)
+            System.out.println("=============>j kotlin json ser take:" + (System.currentTimeMillis() - start))
+
+
+            start = System.currentTimeMillis()
+            val protobufData = kotlinx.serialization.protobuf.ProtoBuf.encodeToByteArray(list)
+            System.out.println("=============>j kotlin protobuf ser take:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            val hexData = kotlinx.serialization.protobuf.ProtoBuf.encodeToHexString(list)
+            System.out.println("=============>j kotlin hex ser take:" + (System.currentTimeMillis() - start))
+
+
+
+            start = System.currentTimeMillis()
+            val cborSerlized = Cbor.encodeToByteArray(list)
+            System.out.println("=============>j kotlin cbor ser take:" + (System.currentTimeMillis() - start))
+
+
 
 
             start = System.currentTimeMillis()
@@ -313,6 +371,29 @@ class MainActivity : AppCompatActivity() {
                 )
             val fromMoshi = deserializerMoshi.fromJson(moshiStr)
             System.out.println("=============>j moshi deser take:" + (System.currentTimeMillis() - start))
+
+
+            start = System.currentTimeMillis()
+            val fromKotlin = Json.decodeFromString<List<InnerDto2>>(kotlinJson)
+            System.out.println("=============>j kotlin json deser take:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            val decodeProto =
+                kotlinx.serialization.protobuf.ProtoBuf.decodeFromByteArray<List<InnerDto2>>(
+                    protobufData
+                )
+            System.out.println("=============>j kotlin protobuf deser take:" + (System.currentTimeMillis() - start))
+
+
+            start = System.currentTimeMillis()
+            val decodeHex =
+                kotlinx.serialization.protobuf.ProtoBuf.decodeFromHexString<List<InnerDto2>>(hexData)
+            System.out.println("=============>j kotlin hex deser take:" + (System.currentTimeMillis() - start))
+
+
+            start = System.currentTimeMillis()
+            val decodeCbor = Cbor.decodeFromByteArray<List<InnerDto2>>(cborSerlized)
+            System.out.println("=============>j kotlin cbor deser take:" + (System.currentTimeMillis() - start))
 
         }).start()
     }

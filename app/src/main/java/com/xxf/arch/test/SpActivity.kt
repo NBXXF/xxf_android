@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.xxf.application.ApplicationInitializer
 import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment
 import com.xxf.arch.service.*
@@ -12,6 +13,7 @@ import com.xxf.arch.service.SpService.getString
 import com.xxf.arch.service.SpService.observeAllChange
 import com.xxf.arch.service.SpService.observeChange
 import com.xxf.arch.service.SpService.putString
+import com.xxf.arch.test.databinding.ActivityMainBinding
 import com.xxf.arch.test.navigationdemo.FirstFragment
 import com.xxf.rxjava.bindLifecycle
 import com.xxf.rxjava.filterWhen
@@ -38,6 +40,7 @@ class SpActivity : AppCompatActivity() {
         }
     }
 
+    val binding by viewBinding(ActivityMainBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

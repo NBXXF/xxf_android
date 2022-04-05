@@ -57,7 +57,7 @@ public class BaseApplication extends Application {
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                Log.e("=============>", "", throwable);
+                Log.e("=============>", "t:"+Thread.currentThread().getName(), throwable);
             }
         });
         XXF.init(new XXF.Builder(this, new ProgressHUDFactory.ProgressHUDProvider() {

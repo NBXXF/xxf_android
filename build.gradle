@@ -1,8 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply from: "config.gradle"
 buildscript {
-    ext.kotlin_version = '1.5.20'
-
+    //  ext.kotlin_version = '1.5.20'
+    ext.kotlin_version = '1.6.10'
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
@@ -13,7 +13,8 @@ buildscript {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
         classpath "io.objectbox:objectbox-gradle-plugin:3.1.2"
-       // classpath 'com.dipien:bye-bye-jetifier:1.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        //classpath 'com.dipien:bye-bye-jetifier:1.2.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

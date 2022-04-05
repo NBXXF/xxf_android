@@ -51,6 +51,7 @@ class MainActivity() : AppCompatActivity() {
 
         val box = getBox(this)
         val findViewById = findViewById<Button>(R.id.test)
+        box.closeThreadResources()
         findViewById.setOnClickListener {
             val nextInt = Random.nextInt(100)
             box
