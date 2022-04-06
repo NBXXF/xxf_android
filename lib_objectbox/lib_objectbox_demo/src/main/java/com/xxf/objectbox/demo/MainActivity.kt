@@ -23,9 +23,7 @@ import com.xxf.objectbox.demo.TeacherDbService
 import com.xxf.objectbox.demo.model.*
 import com.xxf.objectbox.observable
 import com.xxf.objectbox.observableChange
-import com.xxf.rxjava.bindLifecycle
-import com.xxf.rxjava.observeOnIO
-import com.xxf.rxjava.observeOnMain
+import com.xxf.rxjava.*
 import io.objectbox.Box
 import io.objectbox.BoxStore
 import io.objectbox.Property
@@ -40,6 +38,7 @@ import java.lang.Exception
 import java.lang.RuntimeException
 import java.util.*
 import java.util.concurrent.Callable
+import java.util.concurrent.Executors
 import kotlin.random.Random
 
 class MainActivity() : AppCompatActivity() {
@@ -51,19 +50,24 @@ class MainActivity() : AppCompatActivity() {
 
         val box = getBox(this)
         val findViewById = findViewById<Button>(R.id.test)
-        box.closeThreadResources()
         findViewById.setOnClickListener {
             val nextInt = Random.nextInt(100)
             box
                 .boxFor(Teacher::class.java)
-                .put(Teacher(System.currentTimeMillis(), "t_" + System.currentTimeMillis(), age =nextInt))
+                .put(
+                    Teacher(
+                        System.currentTimeMillis(),
+                        "t_" + System.currentTimeMillis(),
+                        age = nextInt
+                    )
+                )
             System.out.println("====================>insert :${nextInt}")
             Toast.makeText(it.context, "插入了", Toast.LENGTH_SHORT).show()
         }
         box
             .boxFor(Teacher::class.java)
             .query()
-            .lessOrEqual(Teacher_.age,20)
+            .lessOrEqual(Teacher_.age, 20)
             .build()
             .observableChange()
             .observeOnMain()
@@ -76,76 +80,11 @@ class MainActivity() : AppCompatActivity() {
     var subscribe: Disposable? = null
     override fun onResume() {
         super.onResume()
-        testNoEquals()
         i = 0
-        Observable
-            .fromCallable(object : Callable<Long> {
-                @Throws(Exception::class)
-                override fun call(): Long {
-                    Thread.sleep(1000)
-                    i++
-                    Log.d("====>", "=============>发送成功:$i")
-                    //                        if (i >= 16) {
-//                            throw new RuntimeException("xxxx");
-//                        }
-                    return i
-                }
-            })
-            .subscribeOn(Schedulers.io())
-            .repeatUntil(object : BooleanSupplier {
-                @Throws(Throwable::class)
-                override fun getAsBoolean(): Boolean {
-                    return false
-                }
-            })
-            .onErrorComplete()
-            .subscribeOn(Schedulers.io())
-            .flatMap(object : Function<Long?, ObservableSource<Long>?> {
-                @Throws(Throwable::class)
-                override fun apply(aLong: Long?): ObservableSource<Long>? {
-                    return null
-                }
-            })
-            .map(object : Function<Long, Long> {
-                @Throws(Throwable::class)
-                override fun apply(o: Long): Long {
-                    Log.d("====>", "=============>查询成功:$o")
-                    Thread.sleep(1000)
-                    if (o > 10) {
-                        throw RuntimeException("XXX")
-                    }
-                    return o
-                }
-            })
-            .doOnError(object : Consumer<Throwable?> {
-                @Throws(Throwable::class)
-                override fun accept(throwable: Throwable?) {
-                    Log.d("====>", "=============>重试失败")
-                }
-            }).subscribeOn(Schedulers.io())
-            .subscribe(object : Consumer<Long?> {
-                @Throws(Throwable::class)
-                override fun accept(aLong: Long?) {
-                    //Log.d("====>", "=============>查询成功2:" + aLong);
-                }
-            })
-        try {
-            clearTable(this)
-            addAll(
-                this, Arrays.asList(
-                    User(0, "张三", 10),
-                    User(0, "李四", 10),
-                    User(0, "王五", 10),
-                    User(0, "甲6", 10)
-                )
-            )
-            val users: List<User> = UserDbService.queryAll(this)
-            Log.d("=======>", "query:$users")
-        } catch (e: Throwable) {
-            Log.d("=======>", "error:$e")
-        }
-        test()
-        test2()
+        // test()
+
+        insert()
+        testSpeed()
     }
 
 
@@ -182,19 +121,36 @@ class MainActivity() : AppCompatActivity() {
     }
 
     private fun test() {
-        Thread(object : Runnable {
-            override fun run() {
-                clearTable(this@MainActivity)
-                val users: MutableList<User> = ArrayList()
-                for (i in 0..9999) {
-                    users.add(User(0, "李四:$i", i))
+        for (i in 0..100) {
+            val box = getBox(this)
+            Observable.just(1)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    Thread.sleep(Random.nextLong(10000))
+                    val all = box.boxFor(Teacher::class.java).query().build().find()
+
+                    System.out.println("===========>测试一个线程:" + all.size + "  " + Thread.currentThread().name)
+                    val find = box.boxFor(Teacher::class.java).query().build().find(0, 1)
+                    System.out.println("===========>测试一个线程2:" + find.size + "  " + Thread.currentThread().name)
+                    true
+                }.doOnError {
+                    System.out.println("===========>测试一个线程:异常了:" + it + "  " + Thread.currentThread().name)
                 }
-                addAll(this@MainActivity, users)
-                val start = System.currentTimeMillis()
-                query(this@MainActivity, "李")
-                Log.d("====> objectbox:", "" + (System.currentTimeMillis() - start))
-            }
-        }).start()
+                .subscribe()
+        }
+//        Thread(object : Runnable {
+//            override fun run() {
+//                //clearTable(this@MainActivity)
+//                val users: MutableList<User> = ArrayList()
+//                for (i in 0..9999) {
+//                    users.add(User(0, "李四:$i", i))
+//                }
+//                addAll(this@MainActivity, users)
+//                val start = System.currentTimeMillis()
+//                query(this@MainActivity, "李")
+//                Log.d("====> objectbox:", "" + (System.currentTimeMillis() - start))
+//            }
+//        }).start()
     }
 
     private fun test2() {
@@ -209,9 +165,51 @@ class MainActivity() : AppCompatActivity() {
     private fun getBox(context: Context): BoxStore {
         return ObjectBoxFactory.getBoxStore(
             context.applicationContext!! as Application,
-            MyObjectBox.builder(),
+            MyObjectBox.builder().maxReaders(256)
+                //.noReaderThreadLocals()
+                .queryAttempts(4),
             "test3.ob"
         )!!;
+    }
+
+    private fun getBox4(context: Context): BoxStore {
+        return ObjectBoxFactory.getBoxStore(
+            context.applicationContext!! as Application,
+            MyObjectBox.builder().maxReaders(256)
+                .noReaderThreadLocals()
+                .queryAttempts(4),
+            "test4.ob"
+        )!!;
+    }
+
+    private fun insert() {
+//        Thread(Runnable {
+//            for (i in 1..10000L) {
+//                getBox(this).boxFor(Teacher::class.java).put(
+//                    Teacher(i, "NAME")
+//                )
+//                getBox4(this).boxFor(Teacher::class.java).put(
+//                    Teacher(i, "NAME")
+//                )
+//            }
+//        }).start()
+    }
+
+    private fun testSpeed() {
+        Thread(Runnable {
+            var start = System.currentTimeMillis()
+            val box = getBox(this)
+            start = System.currentTimeMillis()
+            val find = box.boxFor(Teacher::class.java).query().build().find()
+            System.out.println("================>take:" + (System.currentTimeMillis() - start) + "  size:" + find.size)
+
+            val box4 = getBox4(this)
+            start = System.currentTimeMillis()
+            val find1 = box4.boxFor(Teacher::class.java).query().build().find()
+            System.out.println("================>take2:" + (System.currentTimeMillis() - start) + "  size:" + find1.size)
+
+
+        }).start()
     }
 
     private fun testUnique() {

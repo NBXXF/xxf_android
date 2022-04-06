@@ -4,8 +4,9 @@ import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import autodispose2.*
-import autodispose2.android.ViewScopeProvider
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider
+import com.xxf.rxjava.auto.dispose.ScopesFactory
+import com.xxf.rxjava.auto.dispose.XXFViewScopeProvider
 import io.reactivex.rxjava3.core.*
 import io.reactivex.rxjava3.parallel.ParallelFlowable
 
@@ -133,12 +134,73 @@ fun <T> Single<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Observable<T>.bindLifecycle(view: View): ObservableSubscribeProxy<T> {
+fun <T> Observable<T>.bindLifecycle(
+    view: View,
+    checkAttached: Boolean = true
+): ObservableSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable(
             ScopesFactory.completableOf(
-                ViewScopeProvider.from(
-                    view
+                XXFViewScopeProvider.from(
+                    view,
+                    checkAttached
+                )
+            )
+        )
+    );
+}
+
+/**
+ * 绑定rxjava 生命周期
+ *  * @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
+ */
+fun <T> Flowable<T>.bindLifecycle(
+    view: View,
+    checkAttached: Boolean = true
+): FlowableSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                XXFViewScopeProvider.from(
+                    view,
+                    checkAttached
+                )
+            )
+        )
+    );
+}
+
+/**
+ * 绑定rxjava 生命周期
+ *  @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
+ */
+fun <T> ParallelFlowable<T>.bindLifecycle(
+    view: View,
+    checkAttached: Boolean = true
+): ParallelFlowableSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                XXFViewScopeProvider.from(
+                    view,
+                    checkAttached
+                )
+            )
+        )
+    );
+}
+
+/**
+ * 绑定rxjava 生命周期
+ * @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
+ */
+fun <T> Maybe<T>.bindLifecycle(view: View, checkAttached: Boolean = true): MaybeSubscribeProxy<T> {
+    return this.to(
+        AutoDispose.autoDisposable(
+            ScopesFactory.completableOf(
+                XXFViewScopeProvider.from(
+                    view,
+                    checkAttached
                 )
             )
         )
@@ -148,57 +210,16 @@ fun <T> Observable<T>.bindLifecycle(view: View): ObservableSubscribeProxy<T> {
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Flowable<T>.bindLifecycle(view: View): FlowableSubscribeProxy<T> {
-    return this.to(
-        AutoDispose.autoDisposable(
-            ScopesFactory.completableOf(
-                ViewScopeProvider.from(
-                    view
-                )
-            )
-        )
-    );
-}
-
-/**
- * 绑定rxjava 生命周期
- */
-fun <T> ParallelFlowable<T>.bindLifecycle(view: View): ParallelFlowableSubscribeProxy<T> {
-    return this.to(
-        AutoDispose.autoDisposable(
-            ScopesFactory.completableOf(
-                ViewScopeProvider.from(
-                    view
-                )
-            )
-        )
-    );
-}
-
-/**
- * 绑定rxjava 生命周期
- */
-fun <T> Maybe<T>.bindLifecycle(view: View): MaybeSubscribeProxy<T> {
-    return this.to(
-        AutoDispose.autoDisposable(
-            ScopesFactory.completableOf(
-                ViewScopeProvider.from(
-                    view
-                )
-            )
-        )
-    );
-}
-
-/**
- * 绑定rxjava 生命周期
- */
-fun <T> Completable.bindLifecycle(view: View): CompletableSubscribeProxy {
+fun <T> Completable.bindLifecycle(
+    view: View,
+    checkAttached: Boolean = true
+): CompletableSubscribeProxy {
     return this.to(
         AutoDispose.autoDisposable<T>(
             ScopesFactory.completableOf(
-                ViewScopeProvider.from(
-                    view
+                XXFViewScopeProvider.from(
+                    view,
+                    checkAttached
                 )
             )
         )
@@ -207,13 +228,18 @@ fun <T> Completable.bindLifecycle(view: View): CompletableSubscribeProxy {
 
 /**
  * 绑定rxjava 生命周期
+ * @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
  */
-fun <T> Single<T>.bindLifecycle(view: View): SingleSubscribeProxy<T> {
+fun <T> Single<T>.bindLifecycle(
+    view: View,
+    checkAttached: Boolean = true
+): SingleSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable(
             ScopesFactory.completableOf(
-                ViewScopeProvider.from(
-                    view
+                XXFViewScopeProvider.from(
+                    view,
+                    checkAttached
                 )
             )
         )

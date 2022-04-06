@@ -1,13 +1,13 @@
 package com.xxf.rxjava
 
 import android.view.View
-import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import autodispose2.AutoDispose
 import autodispose2.AutoDisposeConverter
 import autodispose2.android.ViewScopeProvider
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider
+import com.xxf.rxjava.auto.dispose.ScopesFactory
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq

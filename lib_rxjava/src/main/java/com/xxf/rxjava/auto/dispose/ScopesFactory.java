@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xxf.rxjava;
+package com.xxf.rxjava.auto.dispose;
 
 import autodispose2.AutoDisposePlugins;
 import autodispose2.OutsideScopeException;
