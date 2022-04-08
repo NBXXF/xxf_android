@@ -6,39 +6,21 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import com.xxf.objectbox.demo.UserDbService.clearTable
-import com.xxf.objectbox.demo.UserDbService.addAll
-import com.xxf.objectbox.demo.UserDbService.queryAll
-import com.xxf.objectbox.demo.UserDbService.query
 import com.xxf.objectbox.demo.TeacherDbService.add
-import com.xxf.objectbox.demo.TeacherDbService.queryAll
 import androidx.appcompat.app.AppCompatActivity
 import com.xxf.objectbox.ObjectBoxFactory
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
-import kotlin.Throws
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.core.ObservableSource
-import com.xxf.objectbox.demo.UserDbService
-import com.xxf.objectbox.demo.TeacherDbService
 import com.xxf.objectbox.demo.model.*
-import com.xxf.objectbox.observable
+import com.xxf.objectbox.toKeySortList
 import com.xxf.objectbox.observableChange
+import com.xxf.objectbox.toKeySortMap
 import com.xxf.rxjava.*
-import io.objectbox.Box
 import io.objectbox.BoxStore
-import io.objectbox.Property
 import io.objectbox.query.QueryBuilder
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.functions.BooleanSupplier
-import io.reactivex.rxjava3.functions.Consumer
-import io.reactivex.rxjava3.functions.Function
-import io.reactivex.rxjava3.functions.Supplier
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.lang.Exception
-import java.lang.RuntimeException
 import java.util.*
-import java.util.concurrent.Callable
-import java.util.concurrent.Executors
 import kotlin.random.Random
 
 class MainActivity() : AppCompatActivity() {
@@ -183,16 +165,31 @@ class MainActivity() : AppCompatActivity() {
     }
 
     private fun insert() {
-//        Thread(Runnable {
-//            for (i in 1..10000L) {
-//                getBox(this).boxFor(Teacher::class.java).put(
-//                    Teacher(i, "NAME")
-//                )
-//                getBox4(this).boxFor(Teacher::class.java).put(
-//                    Teacher(i, "NAME")
-//                )
-//            }
-//        }).start()
+        val box = getBox(this)
+        for (i in 0..20L) {
+            try {
+                box.boxFor(Teacher::class.java).put(
+                    Teacher(i, "" + i)
+                )
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
+        val list = longArrayOf(4, 2, 2, 5)
+        val find = box.boxFor(Teacher::class.java).query().`in`(Teacher_.id, list).build().find()
+        System.out.println("===============>find:" + find.map { it.id })
+
+        val listName = arrayOf<String>("4", "2", "5")
+        val find2 = box.boxFor(Teacher::class.java).query().`in`(Teacher_.name, listName,QueryBuilder.StringOrder.CASE_SENSITIVE).build().find()
+            .toKeySortList(listName,{
+            it.name
+        })
+        System.out.println("===============>find2:" + find2.map { it.name })
+        val find3 = box.boxFor(Teacher::class.java).query().`in`(Teacher_.name, listName,QueryBuilder.StringOrder.CASE_SENSITIVE).build().find()
+            .toKeySortMap(listName,{
+                it.name
+            })
+        System.out.println("===============>find3:" + find3.map { it.value })
     }
 
     private fun testSpeed() {
