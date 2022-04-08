@@ -8,7 +8,7 @@ package com.xxf.objectbox
 fun <T> List<T>.toKeySortMap(
     keySortList: Array<String>,
     keySelector: (T) -> String
-): Map<String, T> {
+): LinkedHashMap<String, T> {
     //无序的
     val results = this
     val resultsMap = results.associateBy(keySelector)
@@ -26,11 +26,14 @@ fun <T> List<T>.toKeySortMap(
  *  * 尤其是在sql in [2,4,5,6] 场景
  *   @param keySortList 指定key的顺序
  */
-fun <T> List<T>.toKeySortList(keySortList: Array<String>, keySelector: (T) -> String): List<T> {
+fun <T> List<T>.toKeySortList(
+    keySortList: Array<String>,
+    keySelector: (T) -> String
+): ArrayList<T> {
     //无序的
     val results = this
     val resultsMap = results.associateBy(keySelector)
     return keySortList.mapNotNull {
         resultsMap.get(it)
-    }
+    } as ArrayList<T>
 }
