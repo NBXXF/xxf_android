@@ -774,9 +774,6 @@ public class SystemUtils {
 
         Intent chooser = sendIntent;
         if (componentName != null) {
-            if (!isInstallApp(context, componentName.getPackageName())) {
-                return Observable.error(new ActivityNotFoundException(componentName.getPackageName() + "_" + componentName.getClassName()));
-            }
             //微信朋友圈 只支持图片
 //            if (componentName.equals(SHARE_WECHAT_CIRCLE_COMPONENT)) {
 //                PackageInfo installAppInfo = getInstallAppInfo(context, componentName.getPackageName());
@@ -850,9 +847,6 @@ public class SystemUtils {
                 intent.setDataAndType(uri, fileType);
                 Intent chooser = intent;
                 if (componentName != null) {
-                    if (!isInstallApp(context, componentName.getPackageName())) {
-                        return Observable.error(new ActivityNotFoundException(componentName.getPackageName() + "_" + componentName.getClassName()));
-                    }
                     intent.setComponent(componentName);
                     chooser = intent;
                 } else {

@@ -103,8 +103,9 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
                 SystemUtils.shareText(
                         StateActivity.this,
                         "xxxx",
-                        null
+                        //null
                         //SystemUtils.SHARE_WEIBO_CIRCLE_COMPONENT
+                        SystemUtils.SHARE_QQ_FRIEND_COMPONENT
                 ).compose(XXF.bindToErrorNotice())
                         .subscribe();
             }

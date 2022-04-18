@@ -10,6 +10,7 @@ import android.widget.Switch
 import android.widget.TextView
 import com.google.gson.*
 import com.google.gson.annotations.JsonAdapter
+import com.google.gson.reflect.TypeToken
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -20,6 +21,9 @@ import com.xxf.arch.json.typeadapter.NullableSerializerTypeAdapterFactory
 import com.xxf.arch.utils.copy
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
+import com.xxf.http.demo.ui.test.Animal
+import com.xxf.http.demo.ui.test.IBase
+import com.xxf.http.demo.ui.test.Person
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Scheduler
@@ -82,6 +86,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         RxJavaPlugins.setErrorHandler { }
 
+
+        val apply1 = JsonObject().apply {
+            addProperty("name", "张三")
+            addProperty("desc", "我是个人")
+            addProperty("bite", "我不咬人")
+        }
+
+
+
+        val bean = JsonUtils.toBean(apply1, Animal::class.java,true)
+        System.out.println("=============>bean:"+bean)
+
+        val bean2 = JsonUtils.toBean(apply1, Person::class.java,true)
+        bean2.name="xx"
+        System.out.println("=============>bean2:"+bean2)
 
         val editText = findViewById<MyEditText>(R.id.edit_text)
         val findViewById = findViewById<Switch>(R.id.btn_test)
