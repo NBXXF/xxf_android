@@ -32,6 +32,7 @@ import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.utils.DateUtils;
+import com.xxf.utils.FileUtils;
 import com.xxf.view.round.XXFRoundImageTextView;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
@@ -179,6 +180,12 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String fileName="x/x/xdgg\\ds..png";
+       // String fileName="usgfgdf.pdf";
+        String format= FileUtils.formatFileName(fileName);
+      //  String format= TestUtils.INSTANCE.format(fileName);
+        System.out.println("===============>format:"+format+"   "+fileName+"  "+FileUtils.isLegalFileName(fileName));
 
         System.out.println("============>time:" + DateUtils.INSTANCE.format("yyyy-MM-dd", getTimeOfWeekStart()));
         System.out.println("============>time2:" + DateUtils.INSTANCE.format("yyyy-MM-dd", getTimes()));

@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -1522,6 +1523,40 @@ public final class FileUtils {
             return EncryptUtils.encryptMD5ToString(url) + "." + fileExtension;
         }
         return null;
+    }
+
+    /**
+     * 文件名是否合法
+     *
+     * @param fileName
+     * @return
+     */
+    public static boolean isLegalFileName(String fileName) {
+        return TextUtils.equals(formatFileName(fileName), fileName);
+    }
+
+    /**
+     * 格式化文件名字
+     * 特殊符号在android 系统无法打开或者存储失败
+     *
+     * @return
+     */
+    public static String formatFileName(String fileName) {
+        try {
+            if (TextUtils.isEmpty(fileName)) {
+                return fileName;
+            }
+            String fileExtension = getFileExtension(fileName);
+            String fileNameNoExtension = getFileNameNoExtension(fileName);
+            if (TextUtils.isEmpty(fileExtension)) {
+                return fileNameNoExtension.replaceAll("[<>|:\"*?/.\\\\]", "");
+            } else {
+                return fileNameNoExtension.replaceAll("[<>|:\"*?/.\\\\]", "") + "." + fileExtension;
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return fileName;
     }
 
     /**
