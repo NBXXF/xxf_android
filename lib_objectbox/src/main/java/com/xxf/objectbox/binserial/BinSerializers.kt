@@ -19,9 +19,6 @@ import java.util.LinkedHashMap
  * Description :二进制序列化工具
  */
 object BinSerializers {
-    var LIST_SERIALIZER = getListSerializer(CoreSerializers.STRING)
-    var MAP_SERIALIZER = getMapSerializer(CoreSerializers.STRING, CoreSerializers.STRING)
-
     /**
      * @param itemSerializer of the `T`
      * @param <T>            the object in the list.

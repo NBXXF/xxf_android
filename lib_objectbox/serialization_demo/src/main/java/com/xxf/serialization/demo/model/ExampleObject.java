@@ -1,13 +1,12 @@
 package com.xxf.serialization.demo.model;
 
-import com.twitter.serial.serializer.CollectionSerializers;
 import com.twitter.serial.serializer.CoreSerializers;
 import com.twitter.serial.serializer.ObjectSerializer;
 import com.twitter.serial.serializer.SerializationContext;
 import com.twitter.serial.serializer.Serializer;
 import com.twitter.serial.stream.SerializerInput;
 import com.twitter.serial.stream.SerializerOutput;
-import com.xxf.serialization.demo.CollectionSerializers2;
+import com.xxf.objectbox.binserial.BinSerializers;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,8 +16,8 @@ import java.util.Map;
 
 public class ExampleObject {
     public static final ObjectSerializer<ExampleObject> SERIALIZER = new ExampleObjectSerializer();
-    public static Serializer<List<String>> listSerializer = CollectionSerializers2.getListSerializer(CoreSerializers.STRING);
-    public static Serializer<Map<String, String>> mapSerializer = CollectionSerializers2.getMapSerializer(CoreSerializers.STRING, CoreSerializers.STRING);
+    public static Serializer<List<String>> listSerializer = BinSerializers.INSTANCE.getListSerializer(CoreSerializers.STRING);
+    public static Serializer<Map<String, String>> mapSerializer = BinSerializers.INSTANCE.getMapSerializer(CoreSerializers.STRING, CoreSerializers.STRING);
 
     public int age;
     public String name;

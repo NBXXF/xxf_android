@@ -46,7 +46,6 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    implementation 'com.twitter.serial:serial:0.1.6'
+    implementation project(path: ':lib_objectbox')
     api 'com.google.code.gson:gson:2.9.0'
 }
