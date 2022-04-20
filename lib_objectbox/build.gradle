@@ -23,4 +23,5 @@ dependencies {
     api des.material
     api des.gson
     api project(path: ':lib_hash')
+    api des.twitter_serial
 }

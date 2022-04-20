@@ -15,6 +15,8 @@ ext {
             smart_refresh              : "io.github.scwang90:refresh-layout-kernel:2.0.5",
             refresh_footer             : 'io.github.scwang90:refresh-footer-classics:2.0.5',    //经典加载
             lottie                     : "com.airbnb.android:lottie:4.1.0",
+
+            twitter_serial             : "com.twitter.serial:serial:0.1.6",//二进制序列化工具
             /**
              * viewbinding 代理类
              */
