@@ -56,7 +56,7 @@ class FirstFragment : Fragment() {
     }
 
     val retry_time = 10000
-    val subnodes_size = 50
+    val subnodes_size = 5
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -111,9 +111,9 @@ class FirstFragment : Fragment() {
             val gson = Gson()
             var start = System.currentTimeMillis()
             var byt: String = ""
-            val list = mutableListOf<User>()
+            val list = mutableListOf<ExampleObject>()
             for (i in 0..retry_time) {
-                list.add(User().apply {
+                list.add(ExampleObject().apply {
                     this.name = "xx${i}"
                     this.age = i;
                     val subnodes = mutableListOf<String>()
@@ -131,9 +131,9 @@ class FirstFragment : Fragment() {
             System.out.println("=============>take gson ser:${System.currentTimeMillis() - start}")
 
             start = System.currentTimeMillis()
-            var stu2: List<User>? = gson.fromJson(byt, object : TypeToken<List<User>>() {}.type)
+            var stu2: List<ExampleObject>? = gson.fromJson(byt, object : TypeToken<List<ExampleObject>>() {}.type)
             val take = System.currentTimeMillis() - start
-            System.out.println("=============>take gson der:${take}} ${stu2}")
+            System.out.println("=============>take gson der:${take} ${stu2}")
 
         }).start()
     }
@@ -144,23 +144,23 @@ class FirstFragment : Fragment() {
             var serializedData: ByteArray = byteArrayOf()
             val list = mutableListOf<ExampleObject>()
             for (i in 0..retry_time) {
-//                list.add(ExampleObject(10, "xxxx", listOf(), mapOf()).apply {
-//                    this.name = "xx${i}"
-//                    this.age = i;
-//                    val subnodes = mutableListOf<String>()
-//                    val mapTets = mutableMapOf<String, String>()
-//                    for (j in 0..subnodes_size) {
-//                        subnodes.add("${j}")
-//                        mapTets.put("${j}", "${j}")
-//                    }
-//                    this.subNodes = subnodes
-//                    this.map = mapTets
-//                })
-
-                list.add(ExampleObject(10, "xxxx", null, null).apply {
+                list.add(ExampleObject().apply {
                     this.name = "xx${i}"
                     this.age = i;
+                    val subnodes = mutableListOf<String>()
+                    val mapTets = mutableMapOf<String, String>()
+                    for (j in 0..subnodes_size) {
+                        subnodes.add("${j}")
+                        mapTets.put("${j}", "${j}")
+                    }
+                    this.subNodes = subnodes
+                    this.map = mapTets
                 })
+//
+//                list.add(ExampleObject().apply {
+//                    this.name = "xx${i}"
+//                    this.age = i;
+//                })
             }
 
             val serial = ByteBufferSerial();
@@ -168,14 +168,14 @@ class FirstFragment : Fragment() {
             serializedData =
                 serial.toByteArray(
                     list,
-                    CollectionSerializers.getListSerializer(ExampleObject.SERIALIZER)
+                    CollectionSerializers.getListSerializer(ExampleObject.BIN_SERIALIZER)
                 )
             System.out.println("=============>take Serial  ser:${System.currentTimeMillis() - start}")
 
             start = System.currentTimeMillis()
             var serialDerResult: List<ExampleObject>? = serial.fromByteArray(
                 serializedData,
-                CollectionSerializers.getListSerializer(ExampleObject.SERIALIZER)
+                CollectionSerializers.getListSerializer(ExampleObject.BIN_SERIALIZER)
             )
             val take = System.currentTimeMillis() - start
             System.out.println("=============>take Serial  der:${take}   ${serialDerResult}")

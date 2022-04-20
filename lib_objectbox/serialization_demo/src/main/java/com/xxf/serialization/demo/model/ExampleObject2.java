@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class ExampleObject {
-    public static final ObjectSerializer<ExampleObject> SERIALIZER = new ExampleObjectSerializer();
+public class ExampleObject2 {
+    public static final ObjectSerializer<ExampleObject2> SERIALIZER = new ExampleObjectSerializer();
     public static Serializer<List<String>> listSerializer = BinSerializers.INSTANCE.getListSerializer(CoreSerializers.STRING);
     public static Serializer<Map<String, String>> mapSerializer = BinSerializers.INSTANCE.getMapSerializer(CoreSerializers.STRING, CoreSerializers.STRING);
 
@@ -41,7 +41,7 @@ public class ExampleObject {
     public Map<String, String> map;
 
 
-    public ExampleObject(int age, String name, List<String> subNodes, Map<String, String> map) {
+    public ExampleObject2(int age, String name, List<String> subNodes, Map<String, String> map) {
         this.age = age;
         this.name = name;
         this.subNodes = subNodes;
@@ -58,10 +58,10 @@ public class ExampleObject {
                 '}';
     }
 
-    private static final class ExampleObjectSerializer extends ObjectSerializer<ExampleObject> {
+    private static final class ExampleObjectSerializer extends ObjectSerializer<ExampleObject2> {
         @Override
         protected void serializeObject(@NotNull SerializationContext context, @NotNull SerializerOutput output,
-                                       @NotNull ExampleObject object) throws IOException {
+                                       @NotNull ExampleObject2 object) throws IOException {
             output
                     .writeInt(object.age) // first field
                     .writeString(object.name)
@@ -84,8 +84,8 @@ public class ExampleObject {
 
         @Override
         @NotNull
-        protected ExampleObject deserializeObject(@NotNull SerializationContext context, @NotNull SerializerInput input,
-                                                  int versionNumber) throws IOException, ClassNotFoundException {
+        protected ExampleObject2 deserializeObject(@NotNull SerializationContext context, @NotNull SerializerInput input,
+                                                   int versionNumber) throws IOException, ClassNotFoundException {
             final int num = input.readInt(); // first field
             final String obj = input.readString(); // second field
             final int int1=input.readInt();
@@ -105,7 +105,7 @@ public class ExampleObject {
 
             List<String> strings = input.readObject(context, listSerializer);
             Map<String, String> stringStringMap = input.readObject(context, mapSerializer);
-            ExampleObject exampleObject = new ExampleObject(num, obj, strings, stringStringMap);
+            ExampleObject2 exampleObject = new ExampleObject2(num, obj, strings, stringStringMap);
             exampleObject.int1=int1;
             exampleObject.int2=int2;
             exampleObject.int3=int3;
