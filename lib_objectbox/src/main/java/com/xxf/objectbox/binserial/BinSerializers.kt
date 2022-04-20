@@ -16,6 +16,7 @@ import java.util.LinkedHashMap
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2018/7/16 17:34
  * Description :二进制序列化工具
+ * 文档地址参考:https://github.com/twitter/Serial/blob/master/README-CHINESE.rst
  */
 object BinSerializers {
     /**
