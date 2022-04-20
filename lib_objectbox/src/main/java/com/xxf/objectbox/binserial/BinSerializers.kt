@@ -1,6 +1,5 @@
 package com.xxf.objectbox.binserial
 
-import com.twitter.serial.serializer.CoreSerializers
 import com.twitter.serial.serializer.ObjectSerializer
 import kotlin.Throws
 import com.twitter.serial.serializer.SerializationContext
@@ -91,8 +90,8 @@ object BinSerializers {
     fun <K, V> getMapSerializer(
         keySerializer: Serializer<K>,
         valueSerializer: Serializer<V>
-    ): Serializer<MutableMap<K, V>?> {
-        return object : ObjectSerializer<MutableMap<K, V>?>() {
+    ): Serializer<MutableMap<K, V>> {
+        return object : ObjectSerializer<MutableMap<K, V>>() {
             @Throws(IOException::class)
             override fun serializeObject(
                 context: SerializationContext,
@@ -101,20 +100,13 @@ object BinSerializers {
             ) {
                 serializeMap(context, output, map, keySerializer, valueSerializer)
             }
-//            @Throws(IOException::class)
-//            override fun serializeObject(
-//                context: SerializationContext,
-//                output: SerializerOutput<*>, map: MutableMap<K, V>?
-//            ) {
-//                serializeMap(context, output, map, keySerializer, valueSerializer)
-//            }
 
             @Throws(IOException::class, ClassNotFoundException::class)
             override fun deserializeObject(
                 context: SerializationContext,
                 input: SerializerInput,
                 versionNumber: Int
-            ): MutableMap<K, V>? {
+            ): MutableMap<K, V> {
                 return InternalSerialUtils.checkIsNotNull(deserializeMap(context, input, keySerializer, valueSerializer))
             }
         }
@@ -123,7 +115,7 @@ object BinSerializers {
     @Throws(IOException::class)
     private fun <K, V> serializeMap(
         context: SerializationContext,
-        output: SerializerOutput<*>, map: MutableMap<K, V>?,
+        output: SerializerOutput<*>, map: MutableMap<K, V>,
         keySerializer: Serializer<K>, valueSerializer: Serializer<V>
     ) {
         if (!SerializationUtils.writeNullIndicator(output, map)) {

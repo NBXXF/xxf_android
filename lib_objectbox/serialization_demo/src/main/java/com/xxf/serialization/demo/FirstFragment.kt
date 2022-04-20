@@ -144,17 +144,22 @@ class FirstFragment : Fragment() {
             var serializedData: ByteArray = byteArrayOf()
             val list = mutableListOf<ExampleObject>()
             for (i in 0..retry_time) {
-                list.add(ExampleObject(10, "xxxx", listOf(), mapOf()).apply {
+//                list.add(ExampleObject(10, "xxxx", listOf(), mapOf()).apply {
+//                    this.name = "xx${i}"
+//                    this.age = i;
+//                    val subnodes = mutableListOf<String>()
+//                    val mapTets = mutableMapOf<String, String>()
+//                    for (j in 0..subnodes_size) {
+//                        subnodes.add("${j}")
+//                        mapTets.put("${j}", "${j}")
+//                    }
+//                    this.subNodes = subnodes
+//                    this.map = mapTets
+//                })
+
+                list.add(ExampleObject(10, "xxxx", null, null).apply {
                     this.name = "xx${i}"
                     this.age = i;
-                    val subnodes = mutableListOf<String>()
-                    val mapTets = mutableMapOf<String, String>()
-                    for (j in 0..subnodes_size) {
-                        subnodes.add("${j}")
-                        mapTets.put("${j}", "${j}")
-                    }
-                    this.subNodes = subnodes
-                    this.map = mapTets
                 })
             }
 
