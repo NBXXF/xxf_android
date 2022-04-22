@@ -1,7 +1,6 @@
 package com.xxf.serialization.demo
 
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +21,12 @@ import java.io.ObjectInputStream
 import com.esotericsoftware.kryo.Kryo
 import com.esotericsoftware.kryo.io.Input
 import com.esotericsoftware.kryo.io.Output
+import com.xxf.serialization.demo.model.cryo.SimpleModel
+import com.xxf.serialization.demo.model.cryo.UserSchema
+import io.protostuff.Schema
+import io.protostuff.runtime.RuntimeSchema
+import io.protostuff.LinkedBuffer
+import io.protostuff.ProtostuffIOUtil
 
 
 /**
@@ -59,10 +64,15 @@ class FirstFragment : Fragment() {
         test2()
         test3()
         test4()
+//        testSimpleModelByGson()
+//        testSimpleModelByKryo()
+//        testSimpleModelByParcelable()
+//        testSimpleModelByProtostuff()
+        //testUserModelByProtostuff()
     }
 
     val list_size = 10
-    val subnodes_size = 5000
+    val subnodes_size = 50000
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -130,7 +140,7 @@ class FirstFragment : Fragment() {
                         mapTets.put("${j}", "${j}")
                     }
                     this.subNodes = subnodes
-                   // this.map = mapTets
+                    // this.map = mapTets
                 })
             }
             start = System.currentTimeMillis()
@@ -138,7 +148,8 @@ class FirstFragment : Fragment() {
             System.out.println("=============>take gson ser:${System.currentTimeMillis() - start}")
 
             start = System.currentTimeMillis()
-            var stu2: List<ExampleObject>? = gson.fromJson(byt, object : TypeToken<List<ExampleObject>>() {}.type)
+            var stu2: List<ExampleObject>? =
+                gson.fromJson(byt, object : TypeToken<List<ExampleObject>>() {}.type)
             val take = System.currentTimeMillis() - start
             System.out.println("=============>take gson der:${take} ${stu2}")
 
@@ -162,7 +173,7 @@ class FirstFragment : Fragment() {
                         mapTets.put("${j}", "${j}")
                     }
                     this.subNodes = subnodes
-                   // this.map = mapTets
+                    // this.map = mapTets
                 })
 //
 //                list.add(ExampleObject().apply {
@@ -195,7 +206,7 @@ class FirstFragment : Fragment() {
             Thread.sleep(1500)
             var start = System.currentTimeMillis()
             var serializedData: ByteArray = byteArrayOf()
-            val list:MutableList<ExampleObject3> = mutableListOf<ExampleObject3>()
+            val list: MutableList<ExampleObject3> = mutableListOf<ExampleObject3>()
             for (i in 0..list_size) {
                 list.add(ExampleObject3().apply {
                     this.name = "xx${i}"
@@ -207,7 +218,7 @@ class FirstFragment : Fragment() {
                         mapTets.put("${j}", "${j}")
                     }
                     this.subNodes = subnodes
-                   // this.map = mapTets
+                    // this.map = mapTets
                 })
 //
 //                list.add(ExampleObject().apply {
@@ -217,52 +228,187 @@ class FirstFragment : Fragment() {
             }
 
             start = System.currentTimeMillis()
-            serializedData =ParcelableUtil.marshall(list)
+            serializedData = ParcelableUtil.marshall(list)
             System.out.println("=============>take Parcelize  ser:${System.currentTimeMillis() - start}")
 
             start = System.currentTimeMillis()
-            var serialDerResult: List<ExampleObject3>? = ParcelableUtil.unmarshallList(serializedData)
+            var serialDerResult: List<ExampleObject3>? =
+                ParcelableUtil.unmarshallList(serializedData)
             val take = System.currentTimeMillis() - start
             System.out.println("=============>take Parcelize  der:${take}   ${serialDerResult}")
         }).start()
     }
-//    private fun test5() {
-//        Thread(Runnable {
-//            Thread.sleep(2500)
-//            val kryo = Kryo()
-//            kryo.register(ExampleObject3::class.java)
-//            var start = System.currentTimeMillis()
-//            var byt: ByteArrayOutputStream? = null
-//            val list:MutableList<ExampleObject3> = mutableListOf<ExampleObject3>()
-//            for (i in 0..list_size) {
-//                val obj=ExampleObject3().apply {
-//                    this.name = "xx${i}"
-//                    this.age = i;
-//                    val subnodes = mutableListOf<String>()
-//                    val mapTets = mutableMapOf<String, String>()
-//                    for (j in 0..subnodes_size) {
-//                        subnodes.add("${j}")
-//                        mapTets.put("${j}", "${j}")
-//                    }
-//                    this.subNodes = subnodes
-//                    // this.map = mapTets
-//                }
-//
-//            }
-//
-//            start = System.currentTimeMillis()
-//
-//            byt= ByteArrayOutputStream()
-//            val output = Output(byt)
-//            kryo.writeObject(output, list)
-//            output.close()
-//            System.out.println("=============>take Parcelize  ser:${System.currentTimeMillis() - start}")
-//
-//            start = System.currentTimeMillis()
-//            val input = Input(byt.toByteArray())
-//            var serialDerResult: List<ExampleObject3>? =kryo.readObject(input, List<ExampleObject3>::class.java)
-//            val take = System.currentTimeMillis() - start
-//            System.out.println("=============>take Parcelize  der:${take}   ${serialDerResult}")
-//        }).start()
-//    }
+
+    private fun testSimpleModelByKryo() {
+        Thread(Runnable {
+            //Thread.sleep(2500)
+            val kryo = Kryo()
+            kryo.register(SimpleModel::class.java)
+            kryo.register(java.util.ArrayList::class.java)
+            kryo.register(SimpleModel.Type::class.java)
+
+            var start = System.currentTimeMillis()
+            var byt: ByteArray? = null
+            start = System.currentTimeMillis()
+
+
+            for (i in 0..list_size) {
+                val output = Output(1024,-1)
+                kryo.writeObject(output, SimpleModel().apply {
+                    this.name = "name_${i}"
+                    this.age = i
+                    val mutableListOf = mutableListOf<String>()
+                    for (j in 0..subnodes_size) {
+                      mutableListOf.add("${j}")
+                    }
+                    this.subNode =mutableListOf
+                })
+                byt=output.buffer
+                output.close()
+            }
+            System.out.println("=============>take simple Kryo  ser:${System.currentTimeMillis() - start}")
+
+            start = System.currentTimeMillis()
+            var serialDerResult: SimpleModel? = null
+            for (i in 0..list_size) {
+                val input = Input(byt)
+                serialDerResult = kryo.readObject(input, SimpleModel::class.java)
+            }
+            val take = System.currentTimeMillis() - start
+            System.out.println("=============>take simple Kryo  der:${take}   ${serialDerResult}")
+        }).start()
+    }
+
+    private fun testSimpleModelByGson() {
+        Thread(Runnable {
+            Thread.sleep(500)
+            val gson = Gson()
+            var start = System.currentTimeMillis()
+            var byt: String? = null
+            start = System.currentTimeMillis()
+
+
+            for (i in 0..list_size) {
+                byt = gson.toJson(SimpleModel().apply {
+                    this.name = "name_${i}"
+                    this.age = i
+                    val mutableListOf = mutableListOf<String>()
+                    for (j in 0..subnodes_size) {
+                        mutableListOf.add("${j}")
+                    }
+                    this.subNode =mutableListOf
+                })
+            }
+            System.out.println("=============>take simple gson  ser:${System.currentTimeMillis() - start}")
+
+            start = System.currentTimeMillis()
+            var serialDerResult: SimpleModel? = null
+            for (i in 0..list_size) {
+                serialDerResult = gson.fromJson(byt, SimpleModel::class.java)
+            }
+            val take = System.currentTimeMillis() - start
+            System.out.println("=============>take simple gson  der:${take}   ${serialDerResult}")
+        }).start()
+    }
+
+    private fun testSimpleModelByParcelable() {
+        Thread(Runnable {
+            Thread.sleep(1000)
+            var start = System.currentTimeMillis()
+            var byt: ByteArray? = null
+            start = System.currentTimeMillis()
+
+
+            for (i in 0..list_size) {
+                byt = ParcelableUtil.marshall(SimpleModel().apply {
+                    this.name = "name_${i}"
+                    this.age = i
+                    val mutableListOf = mutableListOf<String>()
+                    for (j in 0..subnodes_size) {
+                        mutableListOf.add("${j}")
+                    }
+                    this.subNode =mutableListOf
+                })
+            }
+            System.out.println("=============>take simple Parcelable  ser:${System.currentTimeMillis() - start}")
+
+            start = System.currentTimeMillis()
+            var serialDerResult: SimpleModel? = null
+            for (i in 0..list_size) {
+                serialDerResult = ParcelableUtil.unmarshall(byt, SimpleModel.CREATOR)
+            }
+            val take = System.currentTimeMillis() - start
+            System.out.println("=============>take simple Parcelable  der:${take}   ${serialDerResult}")
+        }).start()
+    }
+    private fun testSimpleModelByProtostuff() {
+        Thread(Runnable {
+            Thread.sleep(1500)
+            val schema: Schema<SimpleModel> = RuntimeSchema.getSchema(SimpleModel::class.java)
+
+            var start = System.currentTimeMillis()
+            var byt: ByteArray? = null
+            start = System.currentTimeMillis()
+
+
+            for (i in 0..list_size) {
+                val buffer = LinkedBuffer.allocate(512)
+                byt = ProtostuffIOUtil.toByteArray(SimpleModel().apply {
+                    this.name = "name_${i}"
+                    this.age = i
+                    val mutableListOf = mutableListOf<String>()
+                    for (j in 0..subnodes_size) {
+                        mutableListOf.add("${j}")
+                    }
+                    this.subNode =mutableListOf
+                }, schema, buffer);
+                buffer.clear()
+            }
+            System.out.println("=============>take simple Protostuff  ser:${System.currentTimeMillis() - start}")
+
+            start = System.currentTimeMillis()
+            var serialDerResult: SimpleModel? = schema.newMessage()
+            for (i in 0..list_size) {
+                ProtostuffIOUtil.mergeFrom(byt, serialDerResult, schema);
+            }
+            val take = System.currentTimeMillis() - start
+            System.out.println("=============>take simple Protostuff  der:${take}   ${serialDerResult}")
+        }).start()
+    }
+
+    private fun testUserModelByProtostuff() {
+        Thread(Runnable {
+            Thread.sleep(1800)
+            val schema: UserSchema = UserSchema()
+
+            var start = System.currentTimeMillis()
+            var byt: ByteArray? = null
+            start = System.currentTimeMillis()
+
+
+            for (i in 0..list_size) {
+                val buffer = LinkedBuffer.allocate(512)
+                byt = ProtostuffIOUtil.toByteArray(com.xxf.serialization.demo.model.cryo.User().apply {
+                    this.firstName = "name_${i}"
+                    this.lastName = i.toString()
+                    this.email=i.toString()
+                    val mutableListOf = mutableListOf<String>()
+                    for (j in 0..subnodes_size) {
+                        mutableListOf.add("${j}")
+                    }
+                    this.subNode =mutableListOf
+                }, schema, buffer);
+                buffer.clear()
+            }
+            System.out.println("=============>take simple Protostuff2  ser:${System.currentTimeMillis() - start}")
+
+            start = System.currentTimeMillis()
+            var serialDerResult: com.xxf.serialization.demo.model.cryo.User? = schema.newMessage()
+            for (i in 0..list_size) {
+                ProtostuffIOUtil.mergeFrom(byt, serialDerResult, schema);
+            }
+            val take = System.currentTimeMillis() - start
+            System.out.println("=============>take simple Protostuff2  der:${take}   ${serialDerResult}")
+        }).start()
+    }
 }

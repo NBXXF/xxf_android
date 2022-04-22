@@ -39,7 +39,8 @@ class MainActivity() : AppCompatActivity() {
                     Teacher(
                         System.currentTimeMillis(),
                         "t_" + System.currentTimeMillis(),
-                        age = nextInt
+                        age = nextInt,
+                        user = Teacher.Student()
                     )
                 )
             System.out.println("====================>insert :${nextInt}")
@@ -135,7 +136,7 @@ class MainActivity() : AppCompatActivity() {
     }
 
     private fun test2() {
-        val aa = Teacher(1001, "aa")
+        val aa = Teacher(1001, "aa", user = Teacher.Student())
         add(this, Arrays.asList(aa))
         aa.id = 1002
         add(this, Arrays.asList(aa))
@@ -147,14 +148,14 @@ class MainActivity() : AppCompatActivity() {
         return MyObjectBox.builder().maxReaders(256)
             //.noReaderThreadLocals()
             .queryAttempts(4)
-            .buildSingle( "test3.ob",allowMainThreadOperation = true)
+            .buildSingle( "test33.ob",allowMainThreadOperation = true)
     }
 
     private fun getBox4(context: Context): BoxStore {
             return MyObjectBox.builder().maxReaders(256)
                 //.noReaderThreadLocals()
                 .queryAttempts(4)
-                .buildSingle( "test4.ob",allowMainThreadOperation = true)
+                .buildSingle( "test44.ob",allowMainThreadOperation = true)
     }
 
     private fun insert() {
@@ -162,7 +163,7 @@ class MainActivity() : AppCompatActivity() {
         for (i in 0..20L) {
             try {
                 box.boxFor(Teacher::class.java).put(
-                    Teacher(i, "" + i)
+                    Teacher(System.currentTimeMillis(), "" + i,user=Teacher.Student())
                 )
             } catch (e: Throwable) {
                 e.printStackTrace()

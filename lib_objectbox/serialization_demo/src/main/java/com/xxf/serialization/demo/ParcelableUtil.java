@@ -13,7 +13,7 @@ import java.util.List;
  * 潘正炼创建于 2022/4/20 20:01
  */
 public class ParcelableUtil {
-    public static byte[] marshall(Parcelable parceable) {
+    public static <T extends Parcelable> byte[]  marshall(T parceable) {
         Parcel parcel = Parcel.obtain();
         parceable.writeToParcel(parcel, 0);
         byte[] bytes = parcel.marshall();
