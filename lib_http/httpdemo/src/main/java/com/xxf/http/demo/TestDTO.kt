@@ -1,7 +1,6 @@
 package com.xxf.http.demo
 
 import com.google.gson.annotations.SerializedName
-import com.xxf.arch.json.datastructure.IntEnum
 import com.xxf.arch.json.datastructure.LongEnum
 
 /**
@@ -11,7 +10,7 @@ import com.xxf.arch.json.datastructure.LongEnum
  */
 class TestDTO(val name: String, val type: Type, val type2: Type2,val gen:Gender) {
 
-    enum class Type(val v: Int) : IntEnum {
+    enum class Type(val v: Int) {
         @SerializedName("1")
         TYPE_A(1),
 
@@ -24,16 +23,12 @@ class TestDTO(val name: String, val type: Type, val type2: Type2,val gen:Gender)
     }
 
 
-    enum class Type2(val v: Long) : LongEnum {
+    enum class Type2(override val value: Long) : LongEnum {
         @SerializedName("1")
         TYPE_A2(1),
 
         @SerializedName("2")
         TYPE_B2(2);
-
-        override fun toString(): String {
-            return "Type2(v=$v)"
-        }
     }
 
     enum class Gender(val v: Int) {

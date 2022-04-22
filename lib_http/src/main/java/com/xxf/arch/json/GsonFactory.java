@@ -2,12 +2,11 @@ package com.xxf.arch.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.xxf.arch.json.datastructure.IntEnum;
 import com.xxf.arch.json.datastructure.ListOrEmpty;
 import com.xxf.arch.json.datastructure.ListOrSingle;
-import com.xxf.arch.json.datastructure.LongEnum;
 import com.xxf.arch.json.exclusionstrategy.ExposeDeserializeExclusionStrategy;
 import com.xxf.arch.json.exclusionstrategy.ExposeSerializeExclusionStrategy;
+import com.xxf.arch.json.typeadapter.TypeAdapters;
 import com.xxf.arch.json.typeadapter.bool.BooleanTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.IntegerTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.LongTypeAdapter;
@@ -42,8 +41,7 @@ public class GsonFactory {
                 .registerTypeAdapter(float.class, new PercentageFloatTypeAdapter())
                 .registerTypeAdapter(ListOrSingle.class, new ListOrSingle.ListOrSingleTypeAdapter())
                 .registerTypeAdapter(ListOrEmpty.class, new ListOrEmpty.ListOrEmptyTypeAdapter())
-                .registerTypeAdapterFactory(IntEnum.INT_ENUM_FACTORY)
-                .registerTypeAdapterFactory(LongEnum.LONG_ENUM_FACTORY);
+                .registerTypeAdapterFactory(TypeAdapters.LONG_ENUM_FACTORY);
         if (excludeUnSerializableField) {
             newBuilder.addSerializationExclusionStrategy(new ExposeSerializeExclusionStrategy());
         }
