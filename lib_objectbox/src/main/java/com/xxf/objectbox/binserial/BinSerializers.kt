@@ -75,7 +75,7 @@ object BinSerializers {
             return null
         }
         val size = input.readInt()
-        val list: MutableList<T> = ArrayList((size / 0.75).toInt() + 1)
+        val list: MutableList<T> = ArrayList()
         for (i in 0 until size) {
             list.add(serializer.deserialize(context, input) as T)
         }

@@ -1,6 +1,5 @@
 package com.xxf.objectbox.demo
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +7,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.xxf.objectbox.demo.TeacherDbService.add
 import androidx.appcompat.app.AppCompatActivity
-import com.xxf.objectbox.ObjectBoxFactory
+import com.xxf.objectbox.buildSingle
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.disposables.Disposable
 import com.xxf.objectbox.demo.model.*
@@ -145,23 +144,17 @@ class MainActivity() : AppCompatActivity() {
     }
 
     private fun getBox(context: Context): BoxStore {
-        return ObjectBoxFactory.getBoxStore(
-            context.applicationContext!! as Application,
-            MyObjectBox.builder().maxReaders(256)
-                //.noReaderThreadLocals()
-                .queryAttempts(4),
-            "test3.ob"
-        )!!;
+        return MyObjectBox.builder().maxReaders(256)
+            //.noReaderThreadLocals()
+            .queryAttempts(4)
+            .buildSingle( "test3.ob",allowMainThreadOperation = true)
     }
 
     private fun getBox4(context: Context): BoxStore {
-        return ObjectBoxFactory.getBoxStore(
-            context.applicationContext!! as Application,
-            MyObjectBox.builder().maxReaders(256)
-                .noReaderThreadLocals()
-                .queryAttempts(4),
-            "test4.ob"
-        )!!;
+            return MyObjectBox.builder().maxReaders(256)
+                //.noReaderThreadLocals()
+                .queryAttempts(4)
+                .buildSingle( "test4.ob",allowMainThreadOperation = true)
     }
 
     private fun insert() {

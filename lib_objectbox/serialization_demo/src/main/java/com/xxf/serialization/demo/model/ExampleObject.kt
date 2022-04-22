@@ -37,10 +37,70 @@ class ExampleObject() {
     var bool2 = true
     var bool3 = true
     var bool4 = true
+    var type:Type=Type.A27
+    var type2:Type=Type.A27
+    var type3:Type=Type.A27
+
+    enum class Type(val value:String)
+    {
+        A("a"),
+        B("b"),
+        C("c"),
+        D("d"),
+        E("e"),
+        F("f"),
+        G("g"),
+        H("h"),
+        K("k"),
+        L("l"),
+        M("m"),
+        N("n"),
+        O("o"),
+        P("p"),
+        Q("q"),
+        R("r"),
+        S("s"),
+        T("t"),
+        U("u"),
+        V("v"),
+        W("w"),
+        X("x"),
+        Y("y"),
+        Z("z"),
+        A1("A1"),
+        A2("A2"),
+        A3("A3"),
+        A4("A4"),
+        A5("A5"),
+        A6("A6"),
+        A7("A7"),
+        A8("A8"),
+        A9("A9"),
+        A10("A10"),
+        A11("A11"),
+        A12("A12"),
+        A13("A13"),
+        A14("A14"),
+        A15("A15"),
+        A16("A16"),
+        A17("A17"),
+        A18("A18"),
+        A19("A19"),
+        A20("A20"),
+        A21("A21"),
+        A22("A22"),
+        A23("A23"),
+        A24("A24"),
+        A25("A25"),
+        A26("A26"),
+        A27("A27")
+    }
+
     override fun toString(): String {
         return "ExampleObject{" +
                 "age=" + age +
                 ", name='" + name + '\'' +
+                ",type="+type+
                 ", subNodes=" + subNodes +
                 ", map=" + map +
                 '}'
@@ -69,6 +129,9 @@ class ExampleObject() {
                 .writeBoolean(obj.bool2)
                 .writeBoolean(obj.bool3)
                 .writeBoolean(obj.bool4)
+                output.writeObject(context,obj.type,CoreSerializers.getEnumSerializer(Type::class.java))
+            output.writeObject(context,obj.type2,CoreSerializers.getEnumSerializer(Type::class.java))
+            output.writeObject(context,obj.type3,CoreSerializers.getEnumSerializer(Type::class.java))
         }
 
 
@@ -95,6 +158,9 @@ class ExampleObject() {
             val bool2 = input.readBoolean()
             val bool3 = input.readBoolean()
             val bool4 = input.readBoolean()
+            val type=input.readObject(context,CoreSerializers.getEnumSerializer(Type::class.java))
+            val type2=input.readObject(context,CoreSerializers.getEnumSerializer(Type::class.java))
+            val type3=input.readObject(context,CoreSerializers.getEnumSerializer(Type::class.java))
 
             exampleObject.age = age
             exampleObject.name = obj
@@ -113,6 +179,9 @@ class ExampleObject() {
             exampleObject.bool2 = bool2
             exampleObject.bool3 = bool3
             exampleObject.bool4 = bool4
+            exampleObject.type=type?:Type.A27
+            exampleObject.type2=type?:Type.A27
+            exampleObject.type3=type?:Type.A27
             return exampleObject
         }
     }

@@ -1,11 +1,12 @@
 package com.xxf.http.demo.ui
 
 import com.google.gson.annotations.SerializedName
+import com.xxf.arch.json.datastructure.IntEnum
 
 class EnumClass {
     var type: Type? = null
 
-    enum class Type {
+    enum class Type:IntEnum {
         @SerializedName("1")
         TYPE_1,
 

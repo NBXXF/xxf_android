@@ -1,6 +1,7 @@
 package com.xxf.serialization.demo
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,15 @@ import com.twitter.serial.serializer.CollectionSerializers
 import com.twitter.serial.stream.bytebuffer.ByteBufferSerial
 import com.xxf.serialization.demo.databinding.FragmentFirstBinding
 import com.xxf.serialization.demo.model.ExampleObject
+import com.xxf.serialization.demo.model.ExampleObject3
 import com.xxf.serialization.demo.model.User
 import java.io.ByteArrayOutputStream
 import java.io.ObjectOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
+import com.esotericsoftware.kryo.Kryo
+import com.esotericsoftware.kryo.io.Input
+import com.esotericsoftware.kryo.io.Output
 
 
 /**
@@ -53,10 +58,11 @@ class FirstFragment : Fragment() {
         //test()
         test2()
         test3()
+        test4()
     }
 
-    val retry_time = 10000
-    val subnodes_size = 5
+    val list_size = 10
+    val subnodes_size = 5000
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -67,7 +73,7 @@ class FirstFragment : Fragment() {
 
             var start = System.currentTimeMillis()
             val byt = ByteArrayOutputStream()
-            for (i in 0..retry_time) {
+            for (i in 0..list_size) {
                 try {
                     val oos = ObjectOutputStream(byt);
                     oos.writeObject(User().apply {
@@ -91,7 +97,7 @@ class FirstFragment : Fragment() {
 
             start = System.currentTimeMillis()
             var stu2: User? = null
-            for (i in 0..retry_time) {
+            for (i in 0..list_size) {
                 try {
                     val byteInt = ByteArrayInputStream(byt.toByteArray())
                     val objInt = ObjectInputStream(byteInt)
@@ -108,11 +114,12 @@ class FirstFragment : Fragment() {
 
     private fun test2() {
         Thread(Runnable {
+            Thread.sleep(500)
             val gson = Gson()
             var start = System.currentTimeMillis()
             var byt: String = ""
             val list = mutableListOf<ExampleObject>()
-            for (i in 0..retry_time) {
+            for (i in 0..list_size) {
                 list.add(ExampleObject().apply {
                     this.name = "xx${i}"
                     this.age = i;
@@ -123,7 +130,7 @@ class FirstFragment : Fragment() {
                         mapTets.put("${j}", "${j}")
                     }
                     this.subNodes = subnodes
-                    this.map = mapTets
+                   // this.map = mapTets
                 })
             }
             start = System.currentTimeMillis()
@@ -140,10 +147,11 @@ class FirstFragment : Fragment() {
 
     private fun test3() {
         Thread(Runnable {
+            Thread.sleep(1000)
             var start = System.currentTimeMillis()
             var serializedData: ByteArray = byteArrayOf()
             val list = mutableListOf<ExampleObject>()
-            for (i in 0..retry_time) {
+            for (i in 0..list_size) {
                 list.add(ExampleObject().apply {
                     this.name = "xx${i}"
                     this.age = i;
@@ -154,7 +162,7 @@ class FirstFragment : Fragment() {
                         mapTets.put("${j}", "${j}")
                     }
                     this.subNodes = subnodes
-                    this.map = mapTets
+                   // this.map = mapTets
                 })
 //
 //                list.add(ExampleObject().apply {
@@ -181,4 +189,80 @@ class FirstFragment : Fragment() {
             System.out.println("=============>take Serial  der:${take}   ${serialDerResult}")
         }).start()
     }
+
+    private fun test4() {
+        Thread(Runnable {
+            Thread.sleep(1500)
+            var start = System.currentTimeMillis()
+            var serializedData: ByteArray = byteArrayOf()
+            val list:MutableList<ExampleObject3> = mutableListOf<ExampleObject3>()
+            for (i in 0..list_size) {
+                list.add(ExampleObject3().apply {
+                    this.name = "xx${i}"
+                    this.age = i;
+                    val subnodes = mutableListOf<String>()
+                    val mapTets = mutableMapOf<String, String>()
+                    for (j in 0..subnodes_size) {
+                        subnodes.add("${j}")
+                        mapTets.put("${j}", "${j}")
+                    }
+                    this.subNodes = subnodes
+                   // this.map = mapTets
+                })
+//
+//                list.add(ExampleObject().apply {
+//                    this.name = "xx${i}"
+//                    this.age = i;
+//                })
+            }
+
+            start = System.currentTimeMillis()
+            serializedData =ParcelableUtil.marshall(list)
+            System.out.println("=============>take Parcelize  ser:${System.currentTimeMillis() - start}")
+
+            start = System.currentTimeMillis()
+            var serialDerResult: List<ExampleObject3>? = ParcelableUtil.unmarshallList(serializedData)
+            val take = System.currentTimeMillis() - start
+            System.out.println("=============>take Parcelize  der:${take}   ${serialDerResult}")
+        }).start()
+    }
+//    private fun test5() {
+//        Thread(Runnable {
+//            Thread.sleep(2500)
+//            val kryo = Kryo()
+//            kryo.register(ExampleObject3::class.java)
+//            var start = System.currentTimeMillis()
+//            var byt: ByteArrayOutputStream? = null
+//            val list:MutableList<ExampleObject3> = mutableListOf<ExampleObject3>()
+//            for (i in 0..list_size) {
+//                val obj=ExampleObject3().apply {
+//                    this.name = "xx${i}"
+//                    this.age = i;
+//                    val subnodes = mutableListOf<String>()
+//                    val mapTets = mutableMapOf<String, String>()
+//                    for (j in 0..subnodes_size) {
+//                        subnodes.add("${j}")
+//                        mapTets.put("${j}", "${j}")
+//                    }
+//                    this.subNodes = subnodes
+//                    // this.map = mapTets
+//                }
+//
+//            }
+//
+//            start = System.currentTimeMillis()
+//
+//            byt= ByteArrayOutputStream()
+//            val output = Output(byt)
+//            kryo.writeObject(output, list)
+//            output.close()
+//            System.out.println("=============>take Parcelize  ser:${System.currentTimeMillis() - start}")
+//
+//            start = System.currentTimeMillis()
+//            val input = Input(byt.toByteArray())
+//            var serialDerResult: List<ExampleObject3>? =kryo.readObject(input, List<ExampleObject3>::class.java)
+//            val take = System.currentTimeMillis() - start
+//            System.out.println("=============>take Parcelize  der:${take}   ${serialDerResult}")
+//        }).start()
+//    }
 }

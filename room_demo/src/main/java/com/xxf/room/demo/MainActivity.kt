@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val db by lazy {
         Room.databaseBuilder(applicationContext, UserDatabase::class.java, "test_db7")
+            .allowMainThreadQueries()
                 .allowMainThreadQueries()
                 .build()
     }

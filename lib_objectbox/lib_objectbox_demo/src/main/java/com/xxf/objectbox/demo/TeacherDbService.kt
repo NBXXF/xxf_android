@@ -1,8 +1,7 @@
 package com.xxf.objectbox.demo
 
-import android.app.Application
 import android.content.Context
-import com.xxf.objectbox.ObjectBoxFactory
+import com.xxf.objectbox.buildSingle
 import com.xxf.objectbox.demo.model.MyObjectBox
 import com.xxf.objectbox.demo.model.Teacher
 import com.xxf.objectbox.demo.model.User
@@ -15,15 +14,17 @@ import io.objectbox.Box
  */
 object TeacherDbService {
     private fun getBox(context: Context): Box<Teacher> {
-        return ObjectBoxFactory.getBoxStore(context.applicationContext!! as Application, MyObjectBox.builder(), User::class.simpleName)!!.boxFor(Teacher::class.java);
+        return MyObjectBox.builder()
+            .buildSingle(User::class.simpleName!!,allowMainThreadOperation = true)
+            .boxFor(Teacher::class.java);
     }
 
 
-    fun add(context: Context,teachers:List<Teacher>) {
+    fun add(context: Context, teachers: List<Teacher>) {
         getBox(context).put(teachers);
     }
 
-    fun queryAll(context: Context):List<Teacher> {
-       return getBox(context).all;
+    fun queryAll(context: Context): List<Teacher> {
+        return getBox(context).all;
     }
 }
