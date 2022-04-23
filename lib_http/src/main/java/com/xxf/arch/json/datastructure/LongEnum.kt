@@ -9,5 +9,9 @@ package com.xxf.arch.json.datastructure
  * 配合      @SerializedName("1")  自动序列化成整数[框架默认序列化成字符串]
  */
 interface LongEnum{
+
+    /**
+     * 注意 需要和 @SerializedName("1") 参数对应"1"
+     */
     val value:Long
 }

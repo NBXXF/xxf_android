@@ -94,13 +94,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val bean = JsonUtils.toBean(apply1, Animal::class.java, true)
+        System.out.println("=============>bean:" + bean)
 
-        val bean = JsonUtils.toBean(apply1, Animal::class.java,true)
-        System.out.println("=============>bean:"+bean)
-
-        val bean2 = JsonUtils.toBean(apply1, Person::class.java,true)
-        bean2.name="xx"
-        System.out.println("=============>bean2:"+bean2)
+        val bean2 = JsonUtils.toBean(apply1, Person::class.java, true)
+        bean2.name = "xx"
+        System.out.println("=============>bean2:" + bean2)
 
         val editText = findViewById<MyEditText>(R.id.edit_text)
         val findViewById = findViewById<Switch>(R.id.btn_test)
@@ -234,39 +233,39 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         testhttp()
-        test()
-        testJsonSpeed()
+        //   test()
+        // testJsonSpeed()
 
-        //testJson2()
-        Thread(Runnable {
-            val list = mutableListOf<StringClass>()
-            for (i in 0..100000) {
-                list.add(StringClass().apply {
-                    this.type = "" + Random.nextInt(20)
-                })
-            }
-            val toJsonString = JsonUtils.toJsonString(list)
-            var start = System.currentTimeMillis()
-            val toBeanList2 = JsonUtils.toBeanList(toJsonString, StringClass::class.java)
-            System.out.println("=============>take enum string:" + (System.currentTimeMillis() - start))
-
-            start = System.currentTimeMillis()
-            val toBeanList = JsonUtils.toBeanList(toJsonString, EnumClass::class.java)
-            System.out.println("=============>take enum:" + (System.currentTimeMillis() - start))
-
-            start = System.currentTimeMillis()
-            for (i in 0..100) {
-                JsonUtils.toBeanList(toJsonString, StringClass::class.java)
-            }
-            System.out.println("=============>take enum string(100000):" + (System.currentTimeMillis() - start))
-
-            start = System.currentTimeMillis()
-            for (i in 0..100) {
-                JsonUtils.toBeanList(toJsonString, EnumClass::class.java)
-            }
-            System.out.println("=============>take enum(100000):" + (System.currentTimeMillis() - start))
-
-        }).start()
+        testJson2()
+//        Thread(Runnable {
+//            val list = mutableListOf<StringClass>()
+//            for (i in 0..100000) {
+//                list.add(StringClass().apply {
+//                    this.type = "" + Random.nextInt(20)
+//                })
+//            }
+//            val toJsonString = JsonUtils.toJsonString(list)
+//            var start = System.currentTimeMillis()
+//            val toBeanList2 = JsonUtils.toBeanList(toJsonString, StringClass::class.java)
+//            System.out.println("=============>take enum string:" + (System.currentTimeMillis() - start))
+//
+//            start = System.currentTimeMillis()
+//            val toBeanList = JsonUtils.toBeanList(toJsonString, EnumClass::class.java)
+//            System.out.println("=============>take enum:" + (System.currentTimeMillis() - start))
+//
+//            start = System.currentTimeMillis()
+//            for (i in 0..100) {
+//                JsonUtils.toBeanList(toJsonString, StringClass::class.java)
+//            }
+//            System.out.println("=============>take enum string(100000):" + (System.currentTimeMillis() - start))
+//
+//            start = System.currentTimeMillis()
+//            for (i in 0..100) {
+//                JsonUtils.toBeanList(toJsonString, EnumClass::class.java)
+//            }
+//            System.out.println("=============>take enum(100000):" + (System.currentTimeMillis() - start))
+//
+//        }).start()
 
 
         Thread(Runnable {
@@ -313,9 +312,9 @@ class MainActivity : AppCompatActivity() {
 //            it.onNext(5)
 //            it.onComplete()
 //        }
-        Observable.interval(5,TimeUnit.SECONDS)
+        Observable.interval(5, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
-            .sample(5, TimeUnit.SECONDS,true)
+            .sample(5, TimeUnit.SECONDS, true)
             .doOnComplete {
                 System.out.println("===================>next complete:")
             }
@@ -333,10 +332,10 @@ class MainActivity : AppCompatActivity() {
                 list.add(InnerDto2().apply {
                     name = "" + i;
                     des = "" + i;
-                    this.mp = mutableMapOf<String, String>().apply {
-                        put("xx", "21")
-                        put("24", "xx")
-                    }
+//                    this.mp = mutableMapOf<String, String>().apply {
+//                        put("xx", "21")
+//                        put("24", "xx")
+//                    }
                 })
             }
             var start = System.currentTimeMillis()
@@ -380,7 +379,6 @@ class MainActivity : AppCompatActivity() {
             System.out.println("=============>j gson deser take:" + (System.currentTimeMillis() - start))
 
 
-            start = System.currentTimeMillis()
             val deserializerMoshi: com.squareup.moshi.JsonAdapter<List<InnerDto2>> =
                 moshi.adapter<List<InnerDto2>>(
                     Types.newParameterizedType(
@@ -388,6 +386,7 @@ class MainActivity : AppCompatActivity() {
                         InnerDto2::class.java
                     )
                 )
+            start = System.currentTimeMillis()
             val fromMoshi = deserializerMoshi.fromJson(moshiStr)
             System.out.println("=============>j moshi deser take:" + (System.currentTimeMillis() - start))
 
@@ -418,43 +417,60 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun testJson2() {
-        val moshi: Moshi = Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
-        val gson = Gson()
+        Thread(Runnable {
+            val moshi: Moshi = Moshi.Builder()
+                .addLast(KotlinJsonAdapterFactory())
+                .build()
+            val gson = Gson()
+            val count = 1000;
+            val childCount = 0;
 
-        val apply = InnerDto2().apply {
-            name = "xxxxxx";
-            des = "ehgfggds";
-        }
-        var start = System.currentTimeMillis()
-        for (i in 0..100000) {
+            val apply = InnerDto2().apply {
+                name = "xxxxxx";
+                des = "ehgfggds";
+//                this.subNodes = mutableListOf<String>().apply {
+//                    for (i in 0..childCount) {
+//                        this.add("${i}")
+//                    }
+//                }
+//                this.mp = mutableMapOf<String,String>().apply {
+//                    for (i in 0..childCount) {
+//                        this.put("${i}","${i}")
+//                    }
+//                }
+            }
+
+            var start = System.currentTimeMillis()
+            for (i in 0..count) {
+                val gsonStr = gson.toJson(apply)
+            }
+            System.out.println("=============>j2 gson ser take:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            val adapter: com.squareup.moshi.JsonAdapter<InnerDto2> =
+                moshi.adapter<InnerDto2>(InnerDto2::class.java)
+            for (i in 0..count) {
+                val moshiStr = adapter.toJson(apply)
+            }
+            System.out.println("=============>j2 moshi ser take:" + (System.currentTimeMillis() - start))
+
+
             val gsonStr = gson.toJson(apply)
-        }
-        System.out.println("=============>j2 gson ser take:" + (System.currentTimeMillis() - start))
-
-        start = System.currentTimeMillis()
-        val adapter: com.squareup.moshi.JsonAdapter<InnerDto2> =
-            moshi.adapter<InnerDto2>(InnerDto2::class.java)
-        for (i in 0..100000) {
-            val moshiStr = adapter.toJson(apply)
-        }
-        System.out.println("=============>j2 moshi ser take:" + (System.currentTimeMillis() - start))
+            start = System.currentTimeMillis()
+            for (i in 0..count) {
+                val fromJson = gson.fromJson<InnerDto2>(gsonStr, InnerDto2::class.java)
+            }
+            System.out.println("=============>j2 gson deser take:" + (System.currentTimeMillis() - start))
 
 
-        val gsonStr = gson.toJson(apply)
-        start = System.currentTimeMillis()
-        for (i in 0..100000) {
-            val fromJson = gson.fromJson<InnerDto2>(gsonStr, InnerDto2::class.java)
-        }
-        System.out.println("=============>j2 gson deser take:" + (System.currentTimeMillis() - start))
+            start = System.currentTimeMillis()
+            for (i in 0..count) {
+                val fromJson = adapter.fromJson(gsonStr)
+            }
+            System.out.println("=============>j2 moshi deser take:" + (System.currentTimeMillis() - start))
 
-
-        start = System.currentTimeMillis()
-        for (i in 0..100000) {
-            val fromJson = adapter.fromJson(gsonStr)
-        }
-        System.out.println("=============>j2 moshi deser take:" + (System.currentTimeMillis() - start))
+        })
+            .start()
 
     }
 }

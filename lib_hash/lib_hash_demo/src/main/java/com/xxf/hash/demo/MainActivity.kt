@@ -31,5 +31,42 @@ class MainActivity : AppCompatActivity() {
             }
             System.out.println("================>take2:" + (System.currentTimeMillis() - start))
         }).start()
+        testHash()
+    }
+    private fun testHash()
+    {
+        Thread(Runnable {
+            val id = "SYNC_REFERENCE"
+            var start = System.currentTimeMillis()
+            val count=100000
+            for (i in 0..count) {
+                val item="${id} $i"
+                val toByteArray = item.toByteArray()
+                val toMurmurHash =  com.xxf.hash.demo.CityHash
+                    .cityHash64(toByteArray, 0, toByteArray.size)
+            }
+            System.out.println("================>take seed:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            for (i in 0..count) {
+                val item="${id} $i"
+                item.hashCode()
+            }
+            System.out.println("================>take seed2:" + (System.currentTimeMillis() - start))
+
+            start = System.currentTimeMillis()
+            for (i in 0..count) {
+                val item="${id} $i"
+                System.identityHashCode(item)
+            }
+            System.out.println("================>take seed2:" + (System.currentTimeMillis() - start))
+
+
+            start = System.currentTimeMillis()
+            for (i in 0..count) {
+                val toMurmurHash = "${id} $i".toMurmurHash()
+            }
+            System.out.println("================>take seed3:" + (System.currentTimeMillis() - start))
+        }).start()
     }
 }
