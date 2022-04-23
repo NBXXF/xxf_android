@@ -1,12 +1,20 @@
 package com.xxf.serialization.demo.model.cryo;
 
+import com.bluelinelabs.logansquare.annotation.JsonField;
+import com.bluelinelabs.logansquare.annotation.JsonObject;
+
 import java.util.List;
 
+@JsonObject
 public final class User
 {
+    @JsonField
     String firstName;
+    @JsonField
     String lastName;
+    @JsonField
     String email;
+    @JsonField
     List<String> subNode;
 
     public User() {}

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.bluelinelabs.logansquare.LoganSquare
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.twitter.serial.serializer.CollectionSerializers
@@ -64,15 +65,16 @@ class FirstFragment : Fragment() {
         test2()
         test3()
         test4()
-//        testSimpleModelByGson()
-//        testSimpleModelByKryo()
-//        testSimpleModelByParcelable()
-//        testSimpleModelByProtostuff()
-        //testUserModelByProtostuff()
+        testSimpleModelByGson()
+        testSimpleModelByKryo()
+        testSimpleModelByParcelable()
+        testSimpleModelByProtostuff()
+        testUserModelByProtostuff()
+        testUserModelByLoganSquare()
     }
 
-    val list_size = 10
-    val subnodes_size = 50000
+    val list_size = 1000
+    val subnodes_size = 500
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -409,6 +411,40 @@ class FirstFragment : Fragment() {
             }
             val take = System.currentTimeMillis() - start
             System.out.println("=============>take simple Protostuff2  der:${take}   ${serialDerResult}")
+        }).start()
+    }
+
+    private fun testUserModelByLoganSquare() {
+        Thread(Runnable {
+            Thread.sleep(2000)
+            var start = System.currentTimeMillis()
+            var byt: String? = null
+            start = System.currentTimeMillis()
+
+
+            for (i in 0..list_size) {
+                byt =
+                    LoganSquare.serialize(com.xxf.serialization.demo.model.cryo.User().apply {
+                        this.firstName = "name_${i}"
+                        this.lastName = i.toString()
+                        this.email = i.toString()
+                        val mutableListOf = mutableListOf<String>()
+                        for (j in 0..subnodes_size) {
+                            mutableListOf.add("${j}")
+                        }
+                        this.subNode = mutableListOf
+                    })
+            }
+            System.out.println("=============>take simple LoganSquare  ser:${System.currentTimeMillis() - start}")
+
+            start = System.currentTimeMillis()
+
+            var serialDerResult: com.xxf.serialization.demo.model.cryo.User?=null
+            for (i in 0..list_size) {
+               serialDerResult= LoganSquare.parse(byt,com.xxf.serialization.demo.model.cryo.User::class.java)
+            }
+            val take = System.currentTimeMillis() - start
+            System.out.println("=============>take simple LoganSquare  der:${take}   ${serialDerResult}")
         }).start()
     }
 }
