@@ -21,7 +21,7 @@ android {
 dependencies {
     api des.rxJava
     api des.gson
-    api project(path: ':lib_hash')
+    api project(path: ':lib_speed')
     api project(path: ':lib_application')
     api des.twitter_serial
 }

@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.xxf.arch.json.datastructure.LongEnum;
-import com.xxf.hash.collections.LongHashMap;
+import com.xxf.speed.collections.LongHashMap;
 
 import java.io.IOException;
 import java.lang.reflect.AccessibleObject;

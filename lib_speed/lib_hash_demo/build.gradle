@@ -30,6 +30,6 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':lib_hash')
+    implementation project(path: ':lib_efficient')
     api des.material
 }

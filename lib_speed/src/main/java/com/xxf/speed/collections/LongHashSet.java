@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package com.xxf.hash.collections;
+package com.xxf.speed.collections;
 
 import java.util.Arrays;
 
 /**
- * An minimalistic hash map optimized for long keys. The default implementation is not thread-safe, but you can get a
+ * An minimalistic hash set optimized for long values. The default implementation is not thread-safe, but you can get a
  * synchronized variant using one of the static createSynchronized methods.
  *
- * @param <T> The value class to store.
  * @author Markus
  */
-public class LongHashMap<T> {
+public class LongHashSet {
+
     protected static final int DEFAULT_CAPACITY = 16;
 
-    public final static class Entry<T> {
-        public final long key;
-        public T value;
-        Entry<T> next;
+    final static class Entry {
+        final long key;
+        Entry next;
 
-        Entry(long key, T value, Entry<T> next) {
+        Entry(long key, Entry next) {
             this.key = key;
-            this.value = value;
             this.next = next;
         }
     }
@@ -43,37 +41,38 @@ public class LongHashMap<T> {
     /**
      * Creates a synchronized (thread-safe) LongHashSet.
      */
-    public static <T> LongHashMap<T> createSynchronized() {
-        return new Synchronized<>(DEFAULT_CAPACITY);
+    public static LongHashSet createSynchronized() {
+        return new Synchronized(DEFAULT_CAPACITY);
     }
 
     /**
      * Creates a synchronized (thread-safe) LongHashSet using the given initial capacity.
      */
-    public static <T> LongHashMap<T> createSynchronized(int capacity) {
-        return new Synchronized<>(capacity);
+    public static LongHashSet createSynchronized(int capacity) {
+        return new Synchronized(capacity);
     }
 
-    private Entry<T>[] table;
+    private Entry[] table;
     private int capacity;
     private int threshold;
     private volatile int size;
+    private volatile float loadFactor = 1.3f;
 
-    public LongHashMap() {
-        this(16);
+    public LongHashSet() {
+        this(DEFAULT_CAPACITY);
     }
 
     @SuppressWarnings("unchecked")
-    public LongHashMap(int capacity) {
+    public LongHashSet(int capacity) {
         this.capacity = capacity;
-        this.threshold = capacity * 4 / 3;
+        this.threshold = (int) (capacity * loadFactor + 0.5f);
         this.table = new Entry[capacity];
     }
 
-    public boolean containsKey(long key) {
+    public boolean contains(long key) {
         final int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % capacity;
 
-        for (Entry<T> entry = table[index]; entry != null; entry = entry.next) {
+        for (Entry entry = table[index]; entry != null; entry = entry.next) {
             if (entry.key == key) {
                 return true;
             }
@@ -81,40 +80,38 @@ public class LongHashMap<T> {
         return false;
     }
 
-    public T get(long key) {
+    /**
+     * Adds the given value to the set.
+     *
+     * @return true if the value was actually new
+     */
+    public boolean add(long key) {
         final int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % capacity;
-        for (Entry<T> entry = table[index]; entry != null; entry = entry.next) {
+        final Entry entryOriginal = table[index];
+        for (Entry entry = entryOriginal; entry != null; entry = entry.next) {
             if (entry.key == key) {
-                return entry.value;
+                return false;
             }
         }
-        return null;
-    }
-
-    public T put(long key, T value) {
-        final int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % capacity;
-        final Entry<T> entryOriginal = table[index];
-        for (Entry<T> entry = entryOriginal; entry != null; entry = entry.next) {
-            if (entry.key == key) {
-                T oldValue = entry.value;
-                entry.value = value;
-                return oldValue;
-            }
-        }
-        table[index] = new Entry<>(key, value, entryOriginal);
+        table[index] = new Entry(key, entryOriginal);
         size++;
         if (size > threshold) {
             setCapacity(2 * capacity);
         }
-        return null;
+        return true;
     }
 
-    public T remove(long key) {
+    /**
+     * Removes the given value to the set.
+     *
+     * @return true if the value was actually removed
+     */
+    public boolean remove(long key) {
         int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % capacity;
-        Entry<T> previous = null;
-        Entry<T> entry = table[index];
+        Entry previous = null;
+        Entry entry = table[index];
         while (entry != null) {
-            Entry<T> next = entry.next;
+            Entry next = entry.next;
             if (entry.key == key) {
                 if (previous == null) {
                     table[index] = next;
@@ -122,12 +119,12 @@ public class LongHashMap<T> {
                     previous.next = next;
                 }
                 size--;
-                return entry.value;
+                return true;
             }
             previous = entry;
             entry = next;
         }
-        return null;
+        return false;
     }
 
     /**
@@ -145,22 +142,6 @@ public class LongHashMap<T> {
         return values;
     }
 
-    /**
-     * Returns all entries in no particular order.
-     */
-    public Entry<T>[] entries() {
-        @SuppressWarnings("unchecked")
-        Entry<T>[] entries = new Entry[size];
-        int idx = 0;
-        for (Entry entry : table) {
-            while (entry != null) {
-                entries[idx++] = entry;
-                entry = entry.next;
-            }
-        }
-        return entries;
-    }
-
     public void clear() {
         size = 0;
         Arrays.fill(table, null);
@@ -172,14 +153,14 @@ public class LongHashMap<T> {
 
     public void setCapacity(int newCapacity) {
         @SuppressWarnings("unchecked")
-        Entry<T>[] newTable = new Entry[newCapacity];
-        for (Entry<T> tEntry : table) {
-            Entry<T> entry = tEntry;
+        Entry[] newTable = new Entry[newCapacity];
+        for (Entry value : table) {
+            Entry entry = value;
             while (entry != null) {
                 long key = entry.key;
                 int index = ((((int) (key >>> 32)) ^ ((int) (key))) & 0x7fffffff) % newCapacity;
 
-                Entry<T> originalNext = entry.next;
+                Entry originalNext = entry.next;
                 entry.next = newTable[index];
                 newTable[index] = entry;
                 entry = originalNext;
@@ -187,47 +168,41 @@ public class LongHashMap<T> {
         }
         table = newTable;
         capacity = newCapacity;
-        threshold = newCapacity * 4 / 3;
+        threshold = (int) (newCapacity * loadFactor + 0.5f);
+    }
+
+    public void setLoadFactor(float loadFactor) {
+        this.loadFactor = loadFactor;
     }
 
     /** Target load: 0,6 */
     public void reserveRoom(int entryCount) {
-        setCapacity(entryCount * 5 / 3);
+        setCapacity((int) (entryCount * loadFactor * 1.3f + 0.5f));
     }
 
-    protected static class Synchronized<T> extends LongHashMap<T> {
+    protected static class Synchronized extends LongHashSet {
         public Synchronized(int capacity) {
             super(capacity);
         }
 
         @Override
-        public synchronized boolean containsKey(long key) {
-            return super.containsKey(key);
+        public synchronized boolean contains(long key) {
+            return super.contains(key);
         }
 
         @Override
-        public synchronized T get(long key) {
-            return super.get(key);
+        public synchronized boolean add(long key) {
+            return super.add(key);
         }
 
         @Override
-        public synchronized T put(long key, T value) {
-            return super.put(key, value);
-        }
-
-        @Override
-        public synchronized T remove(long key) {
+        public synchronized boolean remove(long key) {
             return super.remove(key);
         }
 
         @Override
         public synchronized long[] keys() {
             return super.keys();
-        }
-
-        @Override
-        public synchronized Entry<T>[] entries() {
-            return super.entries();
         }
 
         @Override
@@ -246,6 +221,5 @@ public class LongHashMap<T> {
         }
 
     }
-
 
 }

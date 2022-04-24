@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xxf.hash.collections;
+package com.xxf.speed.collections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
