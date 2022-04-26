@@ -2,9 +2,7 @@ package com.xxf.objectbox.demo.model
 
 import com.google.gson.Gson
 import com.xxf.objectbox.toObjectBoxId
-import io.objectbox.annotation.Convert
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
+import io.objectbox.annotation.*
 import io.objectbox.converter.PropertyConverter
 
 /**

@@ -2,18 +2,18 @@ package com.xxf.objectbox.demo
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.xxf.objectbox.demo.TeacherDbService.add
 import androidx.appcompat.app.AppCompatActivity
-import com.xxf.objectbox.buildSingle
+import com.xxf.objectbox.*
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.disposables.Disposable
 import com.xxf.objectbox.demo.model.*
-import com.xxf.objectbox.toKeySortList
-import com.xxf.objectbox.observableChange
-import com.xxf.objectbox.toKeySortMap
 import com.xxf.rxjava.*
 import io.objectbox.BoxStore
 import io.objectbox.query.QueryBuilder
@@ -24,10 +24,12 @@ import kotlin.random.Random
 
 class MainActivity() : AppCompatActivity() {
     var i: Long = 0
+    var tv: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         RxJavaPlugins.setErrorHandler { }
+        tv = findViewById(R.id.test2)
 
         val box = getBox(this)
         val findViewById = findViewById<Button>(R.id.test)
@@ -65,7 +67,7 @@ class MainActivity() : AppCompatActivity() {
         i = 0
         // test()
 
-        insert()
+        // insert()
         testSpeed()
     }
 
@@ -148,14 +150,14 @@ class MainActivity() : AppCompatActivity() {
         return MyObjectBox.builder().maxReaders(256)
             //.noReaderThreadLocals()
             .queryAttempts(4)
-            .buildSingle( "test33.ob",allowMainThreadOperation = true)
+            .buildSingle("test33.ob", allowMainThreadOperation = true)
     }
 
     private fun getBox4(context: Context): BoxStore {
-            return MyObjectBox.builder().maxReaders(256)
-                //.noReaderThreadLocals()
-                .queryAttempts(4)
-                .buildSingle( "test44.ob",allowMainThreadOperation = true)
+        return MyObjectBox.builder().maxReaders(256)
+            //.noReaderThreadLocals()
+            .queryAttempts(4)
+            .buildSingle("test44.ob", allowMainThreadOperation = true)
     }
 
     private fun insert() {
@@ -163,7 +165,7 @@ class MainActivity() : AppCompatActivity() {
         for (i in 0..20L) {
             try {
                 box.boxFor(Teacher::class.java).put(
-                    Teacher(System.currentTimeMillis(), "" + i,user=Teacher.Student())
+                    Teacher(System.currentTimeMillis(), "" + i, user = Teacher.Student())
                 )
             } catch (e: Throwable) {
                 e.printStackTrace()
@@ -174,33 +176,63 @@ class MainActivity() : AppCompatActivity() {
         System.out.println("===============>find:" + find.map { it.id })
 
         val listName = arrayOf<String>("4", "2", "5")
-        val find2 = box.boxFor(Teacher::class.java).query().`in`(Teacher_.name, listName,QueryBuilder.StringOrder.CASE_SENSITIVE).build().find()
-            .toKeySortList(listName,{
-            it.name
-        })
+        val find2 = box.boxFor(Teacher::class.java).query()
+            .`in`(Teacher_.name, listName, QueryBuilder.StringOrder.CASE_SENSITIVE).build().find()
+            .toKeySortList(listName, {
+                it.name
+            })
         System.out.println("===============>find2:" + find2.map { it.name })
-        val find3 = box.boxFor(Teacher::class.java).query().`in`(Teacher_.name, listName,QueryBuilder.StringOrder.CASE_SENSITIVE).build().find()
-            .toKeySortMap(listName,{
+        val find3 = box.boxFor(Teacher::class.java).query()
+            .`in`(Teacher_.name, listName, QueryBuilder.StringOrder.CASE_SENSITIVE).build().find()
+            .toKeySortMap(listName, {
                 it.name
             })
         System.out.println("===============>find3:" + find3.map { it.value })
     }
 
     private fun testSpeed() {
-        Thread(Runnable {
+        Observable.fromCallable {
             var start = System.currentTimeMillis()
             val box = getBox(this)
+//            for (i in 1..1000) {
+//                box.boxFor(Teacher::class.java).put(
+//                    Teacher(i.toLong(), "" + i, user = Teacher.Student())
+//                )
+//            }
+            val list = mutableListOf<Long>()
+            for (i in 1..100L) {
+                list.add(i)
+            }
+            val boxFor = box.boxFor(Teacher::class.java)
             start = System.currentTimeMillis()
-            val find = box.boxFor(Teacher::class.java).query().build().find()
-            System.out.println("================>take:" + (System.currentTimeMillis() - start) + "  size:" + find.size)
+            for (i in 0..10000) {
+                val get2 = boxFor.getSafe(list.first())
+            }
+            val take2 = System.currentTimeMillis() - start
 
-            val box4 = getBox4(this)
+
             start = System.currentTimeMillis()
-            val find1 = box4.boxFor(Teacher::class.java).query().build().find()
-            System.out.println("================>take2:" + (System.currentTimeMillis() - start) + "  size:" + find1.size)
+            for (i in 0..10000) {
+                val get = boxFor.get(list.first())
+            }
+            val take1 = System.currentTimeMillis() - start
+
+            start = System.currentTimeMillis()
+            for (i in 0..10000) {
+                val get = boxFor.get(list.first())
+            }
+            val take3 = System.currentTimeMillis() - start
+
+            val thread=Thread.currentThread().name
 
 
-        }).start()
+            Handler(Looper.getMainLooper()).post {
+                tv?.text = "${take1}  ${take2} ${take3}  ${thread}"
+            }
+            true
+        }.repeat(100)
+            .subscribeOnIO()
+            .subscribe()
     }
 
     private fun testUnique() {

@@ -55,5 +55,6 @@ dependencies {
 
     api des.rxJava
     api des.rxAndroid
+    implementation("com.ibm.icu:icu4j:71.1")
 
 }

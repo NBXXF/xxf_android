@@ -1,6 +1,7 @@
 package com.xxf.room.demo
 
 import android.graphics.Color
+import android.icu.util.ULocale
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -16,6 +17,8 @@ import com.xxf.room.demo.database.UserDatabase
 import com.xxf.room.demo.databinding.ActivityMainBinding
 import com.xxf.room.demo.model.User
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import java.text.Collator
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,6 +41,50 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initView()
+
+        val list = listOf(
+            "你",
+            "我",
+            "三",
+            "他",
+            "一",
+            "二",
+            "安",
+            "播",
+            "飞",
+            "犇",
+            "麤",
+            "毳",
+        )
+       // val list= listOf("张三", "李四", "王五", "赵六", "JAVA", "123", "$%$#", "哈哈A","1哈哈A", "1哈哈b", "1哈哈a", "哈哈", "哈", "怡情")
+
+
+        println("sorted = ${list.sorted()}")
+        println(
+            "===========>sortedWith = ${
+                list.sortedWith { o1, o2 ->
+                    Collator.getInstance(Locale.CHINA).compare(o1, o2)
+                }
+            }")
+        println(
+            "============>sortedWith2 = ${
+                list.sortedWith { o1, o2 ->
+                    Collator.getInstance(Locale.SIMPLIFIED_CHINESE).compare(o1, o2)
+                }
+            }")
+        println(
+            "============>sortedWith3 = ${
+                list.sortedWith { o1, o2 ->
+                    Collator.getInstance(ULocale.CHINA.toLocale()).compare(o1, o2)
+                }
+            }")
+
+        println(
+            "============>sortedWith4 = ${
+                list.sortedWith { o1, o2 ->
+                    com.ibm.icu.text.Collator.getInstance(com.ibm.icu.util.ULocale.CHINA).compare(o1, o2)
+                }
+            }")
 
         val testModel=TestColorModel("#80E5E5E5", 0x80E5E5E5.toInt());
         val toJsonString = JsonUtils.toJsonString(testModel);
