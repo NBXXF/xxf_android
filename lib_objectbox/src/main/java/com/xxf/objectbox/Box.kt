@@ -21,7 +21,7 @@ fun <T> Box<T>.getSafe(id: Long): T? {
  *
  * @return null if not found
  */
-fun <T> Box<T>.getSafe(ids: Iterable<Long?>?): List<T> {
+fun <T> Box<T>.getSafe(ids: Iterable<Long?>?): MutableList<T> {
     this.closeThreadResources()
     return try {
         this.get(ids)
@@ -36,7 +36,7 @@ fun <T> Box<T>.getSafe(ids: Iterable<Long?>?): List<T> {
  *
  * @return null if not found
  */
-fun <T> Box<T>.getSafe(ids: LongArray): List<T> {
+fun <T> Box<T>.getSafe(ids: LongArray): MutableList<T> {
     return try {
         this.get(ids)
     }  catch (e:IllegalStateException){
@@ -51,7 +51,7 @@ fun <T> Box<T>.getSafe(ids: LongArray): List<T> {
  *
  * @return null if not found
  */
-fun <T> Box<T>.getMapSafe(ids: Iterable<Long>?): Map<Long, T> {
+fun <T> Box<T>.getMapSafe(ids: Iterable<Long>?): MutableMap<Long, T> {
     return try {
         this.getMap(ids)
     } catch (e:IllegalStateException){
