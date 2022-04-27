@@ -86,7 +86,7 @@ fun <T> Box<T>.isEmptySafe(): Boolean {
  * Returns all stored Objects in this Box.
  * @return since 2.4 the returned list is always mutable (before an empty result list was immutable)
  */
-fun <T> Box<T>.getAllSafe(): List<T> {
+fun <T> Box<T>.getAllSafe(): MutableList<T> {
     return try {
         this.getAll()
     } catch (e:IllegalStateException){
