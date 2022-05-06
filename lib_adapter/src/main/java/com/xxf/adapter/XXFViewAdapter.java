@@ -73,7 +73,7 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
         if (itemView.getParent() != null && itemView.getParent() instanceof ViewGroup) {
             ((ViewGroup) itemView.getParent()).removeView(itemView);
         }
-        return new SpringInnerViewHolder(itemView);
+        return new InnerViewHolder(itemView);
     }
 
     @Override
@@ -89,44 +89,5 @@ public class XXFViewAdapter extends RecyclerView.Adapter<InnerViewHolder> {
     @Override
     public int getItemCount() {
         return 1;
-    }
-
-    public static class SpringInnerViewHolder extends InnerViewHolder implements IEdgeEffectViewHolder<SpringAnimation> {
-
-        public SpringInnerViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-
-        private SpringAnimation translationY = null;
-        private SpringAnimation translationX = null;
-
-        @NotNull
-        @Override
-        public DynamicAnimation<SpringAnimation> getEdgeEffectAnimation() {
-            if (getRecyclerView().getLayoutManager() instanceof LinearLayoutManager
-                    && ((LinearLayoutManager) getRecyclerView().getLayoutManager()).getOrientation() == RecyclerView.HORIZONTAL) {
-                if (translationX == null) {
-                    translationX = new SpringAnimation(itemView, SpringAnimation.TRANSLATION_X)
-                            .setSpring(
-                                    new SpringForce()
-                                            .setFinalPosition(0f)
-                                            .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
-                                            .setStiffness(SpringForce.STIFFNESS_LOW)
-                            );
-                }
-                return translationX;
-            } else {
-                if (translationY == null) {
-                    translationY = new SpringAnimation(itemView, SpringAnimation.TRANSLATION_Y)
-                            .setSpring(
-                                    new SpringForce()
-                                            .setFinalPosition(0f)
-                                            .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
-                                            .setStiffness(SpringForce.STIFFNESS_LOW)
-                            );
-                }
-                return translationY;
-            }
-        }
     }
 }
