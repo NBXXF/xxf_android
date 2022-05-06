@@ -24,23 +24,30 @@ object ObjectBoxFactory {
      * @return
      */
     @Synchronized
-    fun getBoxStore(boxStoreBuilder: BoxStoreBuilder,
-                    objectStoreDirectory: File): BoxStore? {
+    fun getBoxStore(
+        boxStoreBuilder: BoxStoreBuilder,
+        objectStoreDirectory: File
+    ): BoxStore? {
         var boxStore: BoxStore? = null
         try {
             boxStore = boxStoreMap[objectStoreDirectory.absolutePath]
             if (boxStore == null) {
-                boxStoreMap[objectStoreDirectory.absolutePath] = buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
+                boxStoreMap[objectStoreDirectory.absolutePath] =
+                    buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
             }
         } catch (e: Exception) {
+            e.printStackTrace()
+            println("=============>box init fail:$e")
             try {
                 /**
                  * fix https://github.com/objectbox/objectbox-java/issues/610
                  */
                 BoxStore.deleteAllFiles(objectStoreDirectory)
-                boxStoreMap[objectStoreDirectory.absolutePath] = buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
+                boxStoreMap[objectStoreDirectory.absolutePath] =
+                    buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
             } catch (retryEx: Exception) {
                 retryEx.printStackTrace()
+                println("=============>box init retry fail:$e")
             }
         }
         return boxStore
@@ -55,9 +62,11 @@ object ObjectBoxFactory {
      * @return
      */
     @Synchronized
-    fun getBoxStore(application: Application,
-                    boxStoreBuilder: BoxStoreBuilder,
-                    dbName: String?): BoxStore? {
+    fun getBoxStore(
+        application: Application,
+        boxStoreBuilder: BoxStoreBuilder,
+        dbName: String?
+    ): BoxStore? {
         return getBoxStore(boxStoreBuilder, File(application.cacheDir, dbName))
     }
 

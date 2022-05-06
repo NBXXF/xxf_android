@@ -80,9 +80,9 @@ class SimpleModel() : Parcelable {
         return 0
     }
 
-    override fun toString(): String {
-        return "SimpleModel(name=$name, age=$age, subNode=$subNode)"
-    }
+//    override fun toString(): String {
+//        return "SimpleModel(name=$name, age=$age, subNode=$subNode)"
+//    }
 
     companion object CREATOR : Parcelable.Creator<SimpleModel> {
         override fun createFromParcel(parcel: Parcel): SimpleModel {
