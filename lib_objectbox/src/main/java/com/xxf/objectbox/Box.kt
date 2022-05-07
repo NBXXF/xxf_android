@@ -8,9 +8,13 @@ import io.objectbox.Box
  * @return null if not found
  */
 fun <T> Box<T>.getSafe(id: Long): T? {
+    if (id == 0L) {
+        //0 查询是会报错的
+        return null
+    }
     return try {
         this.get(id)
-    }  catch (e:IllegalStateException){
+    } catch (e: IllegalStateException) {
         this.closeThreadResources()
         this.get(id)
     }
@@ -22,10 +26,9 @@ fun <T> Box<T>.getSafe(id: Long): T? {
  * @return null if not found
  */
 fun <T> Box<T>.getSafe(ids: Iterable<Long?>?): MutableList<T> {
-    this.closeThreadResources()
     return try {
         this.get(ids)
-    }  catch (e:IllegalStateException){
+    } catch (e: IllegalStateException) {
         this.closeThreadResources()
         this.get(ids)
     }
@@ -39,7 +42,7 @@ fun <T> Box<T>.getSafe(ids: Iterable<Long?>?): MutableList<T> {
 fun <T> Box<T>.getSafe(ids: LongArray): MutableList<T> {
     return try {
         this.get(ids)
-    }  catch (e:IllegalStateException){
+    } catch (e: IllegalStateException) {
         this.closeThreadResources()
         this.get(ids)
     }
@@ -54,7 +57,7 @@ fun <T> Box<T>.getSafe(ids: LongArray): MutableList<T> {
 fun <T> Box<T>.getMapSafe(ids: Iterable<Long>?): MutableMap<Long, T> {
     return try {
         this.getMap(ids)
-    } catch (e:IllegalStateException){
+    } catch (e: IllegalStateException) {
         this.closeThreadResources()
         this.getMap(ids)
     }
@@ -71,7 +74,7 @@ fun <T> Box<T>.getMapSafe(ids: Iterable<Long>?): MutableMap<Long, T> {
 fun <T> Box<T>.countSafe(maxCount: Long = 0): Long {
     return try {
         this.count(maxCount)
-    }catch (e:IllegalStateException){
+    } catch (e: IllegalStateException) {
         this.closeThreadResources()
         this.count(maxCount)
     }
@@ -89,7 +92,7 @@ fun <T> Box<T>.isEmptySafe(): Boolean {
 fun <T> Box<T>.getAllSafe(): MutableList<T> {
     return try {
         this.getAll()
-    } catch (e:IllegalStateException){
+    } catch (e: IllegalStateException) {
         this.closeThreadResources()
         this.getAll()
     }
@@ -104,7 +107,7 @@ fun <T> Box<T>.getAllSafe(): MutableList<T> {
 fun <T> Box<T>.containsSafe(id: Long): Boolean {
     return try {
         this.contains(id)
-    }  catch (e:IllegalStateException){
+    } catch (e: IllegalStateException) {
         this.closeThreadResources()
         this.contains(id)
     }
