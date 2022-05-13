@@ -67,7 +67,7 @@ object ObjectBoxFactory {
         boxStoreBuilder: BoxStoreBuilder,
         dbName: String?
     ): BoxStore? {
-        return getBoxStore(boxStoreBuilder, File(application.cacheDir, dbName))
+        return getBoxStore(boxStoreBuilder, File(application.filesDir, dbName))
     }
 
     /**
