@@ -51,3 +51,39 @@ fun mapCapacity(expectedSize: Int): Int = when {
 }
 
 private const val INT_MAX_POWER_OF_TWO: Int = 1 shl (Int.SIZE_BITS - 2)
+
+
+/**
+ * 智能判断不会是不是对应的类型
+ */
+fun <K, V> MutableMap<K, V>.toMapOrCast(): Map<K, V> {
+    return this
+}
+
+/**
+ * 智能判断不会是不是对应的类型
+ */
+fun <K, V> Map<K, V>.toMutableMapOrCast(): MutableMap<K, V> {
+    if (this is MutableMap) {
+        return this
+    }
+    return this.toMutableMap()
+}
+
+
+/**
+ * 智能判断不会是不是对应的类型
+ */
+fun <T> Set<T>.toMutableSetOrCast(): MutableSet<T> {
+    if (this is MutableSet) {
+        return this
+    }
+    return this.toMutableSet()
+}
+/**
+ * 智能判断不会是不是对应的类型
+ */
+fun <T> MutableSet<T>.toSetOrCast(): Set<T> {
+    return this
+}
+

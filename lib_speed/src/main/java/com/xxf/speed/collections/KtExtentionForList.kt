@@ -22,3 +22,23 @@ fun <T> mutableListOfExpectedSize(expectedSize: Int): MutableList<T> = ArrayList
  * @return ArrayList
  */
 fun <T> arrayListOfExpectedSize(expectedSize: Int): ArrayList<T> = ArrayList(expectedSize)
+
+
+/**
+ * 智能判断不会是不是对应的类型
+ * toMutableList 本身会创建一个新的
+ */
+fun <T> List<T>.toMutableListOrCast(): MutableList<T> {
+    if (this is MutableList) {
+        return this
+    }
+    return this.toMutableList()
+}
+
+/**
+ * 智能判断不会是不是对应的类型
+ */
+fun <T> MutableList<T>.toListOrCast(): List<T> {
+    return this
+}
+
