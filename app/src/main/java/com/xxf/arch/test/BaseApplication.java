@@ -18,6 +18,7 @@ import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.xxf.application.ApplicationInitializer;
 import com.xxf.arch.XXF;
+import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.arch.service.SpService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
@@ -57,7 +58,7 @@ public class BaseApplication extends Application {
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                Log.e("=============>", "t:"+Thread.currentThread().getName(), throwable);
+                Log.e("=============>", "t:" + Thread.currentThread().getName(), throwable);
             }
         });
         XXF.init(new XXF.Builder(this, new ProgressHUDFactory.ProgressHUDProvider() {
@@ -75,6 +76,11 @@ public class BaseApplication extends Application {
                     return new XXFLoadingDialog(((Fragment) lifecycleOwner).getContext());
                 }
                 return null;
+            }
+        }).setUserInfoProvider(new XXFUserInfoProvider() {
+            @Override
+            public String getUserId() {
+                return "xxx_7764";
             }
         })
                 .setErrorHandler(new BiConsumer<Integer, Throwable>() {

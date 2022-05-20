@@ -10,26 +10,89 @@ import java.lang.reflect.Type
  */
 interface SharedPreferencesService {
     fun getAll(): Map<String, *>?
-    fun getString(key: String, defaultValue: String?): String?
-    fun putString(key: String, value: String?)
-    fun getStringSet(key: String, defaultValue: Set<String>?): Set<String>?
-    fun putStringSet(key: String, value: Set<String>?)
-    fun getInt(key: String, defaultValue: Int): Int
-    fun putInt(key: String, value: Int?)
-    fun getLong(key: String, defaultValue: Long): Long
-    fun putLong(key: String, value: Long?)
-    fun getFloat(key: String, defaultValue: Float): Float
-    fun putFloat(key: String, value: Float?)
-    fun getBoolean(key: String, defaultValue: Boolean): Boolean
-    fun putBoolean(key: String, value: Boolean?)
+
+    /**
+     * 这个key 是否区分了user
+     */
+    fun isDifferUser(key: String):Boolean
+
+    /**
+     * 生成key
+     */
+    fun generateKey(key: String,differUser: Boolean = false):String
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun getString(key: String, defaultValue: String?, differUser: Boolean = false): String?
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun putString(key: String, value: String?, differUser: Boolean = false)
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun getStringSet(
+        key: String,
+        defaultValue: Set<String>?,
+        differUser: Boolean = false
+    ): Set<String>?
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun putStringSet(key: String, value: Set<String>?, differUser: Boolean = false)
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun getInt(key: String, defaultValue: Int, differUser: Boolean = false): Int
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun putInt(key: String, value: Int?, differUser: Boolean = false)
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun getLong(key: String, defaultValue: Long, differUser: Boolean = false): Long
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun putLong(key: String, value: Long?, differUser: Boolean = false)
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun getFloat(key: String, defaultValue: Float, differUser: Boolean = false): Float
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun putFloat(key: String, value: Float?, differUser: Boolean = false)
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun getBoolean(key: String, defaultValue: Boolean, differUser: Boolean = false): Boolean
+
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun putBoolean(key: String, value: Boolean?, differUser: Boolean = false)
 
     /**
      * 以json 存储对象
      *
      * @param key
      * @param value
+     * @param differUser 是否区分用户
      */
-    fun putObject(key: String, value: Any?)
+    fun putObject(key: String, value: Any?, differUser: Boolean = false)
 
     /**
      * 将存储的json 转换成对应的模型
@@ -37,22 +100,30 @@ interface SharedPreferencesService {
      * @param key
      * @param typeOfT
      * @param defaultValue
+     * @param differUser 是否区分用户
      * @param <T>
      * @return
     </T> */
-    fun <T> getObject(key: String, typeOfT: Type, defaultValue: T?): T?
+    fun <T> getObject(key: String, typeOfT: Type, defaultValue: T?, differUser: Boolean = false): T?
 
-    operator fun contains(key: String): Boolean
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun contains(key: String, differUser: Boolean = false): Boolean
 
-    fun remove(key: String)
+    /**
+     * @param differUser 是否区分用户
+     */
+    fun remove(key: String, differUser: Boolean = false)
 
     /**
      * 返回对应的key
      *
      * @param key
+     * @param differUser 是否区分用户
      * @return
      */
-    fun observeChange(key: String): Observable<String>
+    fun observeChange(key: String, differUser: Boolean = false): Observable<String>
 
     /**
      * 返回对应的key

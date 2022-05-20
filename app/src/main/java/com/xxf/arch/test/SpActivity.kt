@@ -2,25 +2,18 @@ package com.xxf.arch.test
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleRegistry
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.xxf.application.ApplicationInitializer
-import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment
 import com.xxf.arch.service.*
 import com.xxf.arch.service.SpService.getString
 import com.xxf.arch.service.SpService.observeAllChange
 import com.xxf.arch.service.SpService.observeChange
 import com.xxf.arch.service.SpService.putString
 import com.xxf.arch.test.databinding.ActivityMainBinding
-import com.xxf.arch.test.navigationdemo.FirstFragment
 import com.xxf.rxjava.bindLifecycle
 import com.xxf.rxjava.filterWhen
-import com.xxf.rxjava.observeOnIO
-import com.xxf.rxjava.subscribeOnIO
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
@@ -32,6 +25,8 @@ class SpActivity : AppCompatActivity() {
 
         var bean2: TestBean? by bindObject()
 
+        var finishDiffer: Boolean by bindBoolean(differUser = true)
+        var finish: Boolean by bindBoolean(differUser = false)
     }
 
     class TestBean(val id: String, val name: String) {
@@ -72,10 +67,12 @@ class SpActivity : AppCompatActivity() {
 
 
         val key = "hello"
+        println("===============>all:"+SpService.getAll())
         observeChange(key)
             .subscribe { s -> println("=========>changeKey:" + s + "  v:" + getString(key, "")) }
         observeAllChange()
             .subscribe { s -> println("=========>changeKey2:" + s + "  v:" + getString(key, "")) }
+
 
         putString(key, "yes")
 
@@ -83,6 +80,11 @@ class SpActivity : AppCompatActivity() {
 
 
         val service = MySpervice()
+        println("=========>differ_user:"+service.finishDiffer);
+        println("=========>differ:"+service.finish);
+
+        service.finishDiffer=true
+        service.finish=false
         service.id2 = "hello_" + System.currentTimeMillis()
 
 
