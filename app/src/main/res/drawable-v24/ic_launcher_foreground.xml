@@ -10,7 +10,7 @@
         android:strokeColor="#00000000"
         android:strokeWidth="1">
         <aapt:attr name="android:fillColor">
-            <gradient
+            <com.xxf.view.gradient
                 android:endX="78.5885"
                 android:endY="90.9159"
                 android:startX="48.7653"
@@ -22,7 +22,7 @@
                 <item
                     android:color="#00000000"
                     android:offset="1.0" />
-            </gradient>
+            </com.xxf.view.gradient>
         </aapt:attr>
     </path>
     <path

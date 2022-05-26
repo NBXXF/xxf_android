@@ -34,6 +34,7 @@
             <option value="$PROJECT_DIR$/lib_speed" />
             <option value="$PROJECT_DIR$/lib_utils" />
             <option value="$PROJECT_DIR$/lib_view" />
+            <option value="$PROJECT_DIR$/lib_view_gradient" />
             <option value="$PROJECT_DIR$/lib_view_ratio" />
             <option value="$PROJECT_DIR$/lib_view_round" />
             <option value="$PROJECT_DIR$/lib_view_snackbar" />
