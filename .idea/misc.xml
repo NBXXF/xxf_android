@@ -28,6 +28,7 @@
         <entry key="app/src/main/res/layout/activity_pdf_view.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/activity_state.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_fragment_test.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1078125" />
@@ -35,7 +36,9 @@
         <entry key="app/src/main/res/layout/item_test.xml" value="0.1078125" />
         <entry key="app/src/main/res/layout/item_test2.xml" value="0.1078125" />
         <entry key="app/src/main/res/layout/pdf_activity_main.xml" value="0.1640625" />
+        <entry key="app/src/main/res/layout/test_fragment.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/xml/shortcuts.xml" value="0.19375" />
+        <entry key="ds_bridge/src/main/res/layout/activity_main.xml" value="0.18229166666666666" />
         <entry key="lib_adapter/lib_adapter_demo/src/main/res/layout/activity_main.xml" value="0.14855072463768115" />
         <entry key="lib_adapter/lib_adapter_demo/src/main/res/layout/adapter_test.xml" value="0.14855072463768115" />
         <entry key="lib_bus/lib_bus_demo/src/main/res/layout/activity_main.xml" value="0.1" />

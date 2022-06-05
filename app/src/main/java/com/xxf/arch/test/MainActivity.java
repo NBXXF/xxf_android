@@ -180,6 +180,7 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TestNumber.INSTANCE.test();
 
         String fileName="x/x/xdgg\\ds..png";
        // String fileName="usgfgdf.pdf";
@@ -323,10 +324,13 @@ public class MainActivity extends XXFActivity {
                     public void onClick(View view) {
                         //ToastUtils.showSnackBar(view,"hello" + System.currentTimeMillis(), ToastUtils.ToastType.ERROR);
                         ToastUtils.showSnackBar("hello" + System.currentTimeMillis(), ToastUtils.ToastType.ERROR);
-                        if (true) {
-                            return;
-                        }
-                        TestDialogFragment test = new TestDialogFragment();
+                        TestDialogFragment test = TestDialogFragment.newInstance(new OnCallDataListener() {
+                            @Override
+                            public boolean test() {
+                                System.out.println("===========>test 发送:"+true+"  "+this.hashCode());
+                                return  true;
+                            }
+                        });
                         test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
                             @Override
                             public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {

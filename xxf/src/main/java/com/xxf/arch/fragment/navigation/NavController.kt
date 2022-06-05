@@ -74,7 +74,7 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
                     lifecycle.dismissAllowingStateLoss()
                     return true
                 } else if (lifecycle is Activity) {
-                    lifecycle.onBackPressed()
+                    lifecycle.finish()
                     return true
                 }
                 return false
@@ -99,7 +99,7 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
             lifecycle.dismissAllowingStateLoss()
             return true
         } else if (lifecycle is Activity) {
-            lifecycle.onBackPressed()
+            lifecycle.finish()
             return true
         }
         return false

@@ -56,5 +56,7 @@ dependencies {
     implementation 'com.karumi:dexter:5.0.0'
     api project(path: ':lib_fileprovider')
 
+    implementation  'com.github.wendux:DSBridge-Android:3.0-SNAPSHOT'
+
     //implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
