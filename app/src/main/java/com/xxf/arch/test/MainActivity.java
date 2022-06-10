@@ -182,6 +182,8 @@ public class MainActivity extends XXFActivity {
         super.onCreate(savedInstanceState);
         TestNumber.INSTANCE.test();
 
+        TestUtils.INSTANCE.test();
+
         String fileName="x/x/xdgg\\ds..png";
        // String fileName="usgfgdf.pdf";
         String format= FileUtils.formatFileName(fileName);

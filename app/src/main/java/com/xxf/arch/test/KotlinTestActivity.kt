@@ -8,6 +8,7 @@ import com.xxf.application.activity.allActivity
 import com.xxf.application.activity.topActivity
 import com.xxf.arch.bindErrorNotice
 import com.xxf.arch.utils.ToastUtils
+import com.xxf.rxjava.combineLatestDelayError
 import io.reactivex.rxjava3.core.Observable
 import java.lang.RuntimeException
 
@@ -24,6 +25,10 @@ class KotlinTestActivity : AppCompatActivity() {
         }
 //        ToastUtils.showToast("t:$topActivity")
 //
+        Observable.just(1).combineLatestDelayError(Observable.just(2),::Pair)
+            .subscribe {
+
+            }
 
     }
 
