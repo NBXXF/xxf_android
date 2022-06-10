@@ -11,9 +11,11 @@ object TestUtils {
 
     fun test() {
         Observable.interval(1, TimeUnit.SECONDS)
-            .combineLatestDelayError(Observable.interval(2, TimeUnit.SECONDS), ::Pair)
+            .combineLatestDelayError(Observable.interval(2, TimeUnit.SECONDS),Observable.interval(3, TimeUnit.SECONDS)){t,t1,t2->
+                Triple(t,t1,t2)
+            }
             .subscribe {
-                println("================>out:${it.first}-${it.second}")
+                println("================>out:${it.first}-${it.second}-${it.third}")
             }
     }
 }
