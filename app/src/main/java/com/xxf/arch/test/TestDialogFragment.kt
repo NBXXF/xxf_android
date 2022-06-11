@@ -27,6 +27,7 @@ class TestDialogFragment : XXFDialogFragment<String?>(R.layout.test_fragment) {
     val binding by viewBinding(TestFragmentBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
        // val listener = arguments?.getSerializable("call") as OnCallDataListener?
         //println("===========>test  收到:" + listener!!.test() + "  " + listener.hashCode())
 
@@ -115,6 +116,7 @@ class TestDialogFragment : XXFDialogFragment<String?>(R.layout.test_fragment) {
 //        window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 //        setComponentResult("TestDialogFragment yes event:" + System.currentTimeMillis())
 //    }
+
 
     companion object {
         @JvmStatic

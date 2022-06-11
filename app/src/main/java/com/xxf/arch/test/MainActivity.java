@@ -11,7 +11,12 @@ import android.os.Handler;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -788,4 +793,52 @@ public class MainActivity extends XXFActivity {
         }).start();
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        System.out.println("=============>touch:" + (System.currentTimeMillis()));
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        System.out.println("=============>touch2:" + (System.currentTimeMillis()));
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
+        System.out.println("=============>touch3:" + (System.currentTimeMillis()));
+        return super.onKeyMultiple(keyCode, repeatCount, event);
+    }
+
+    @Override
+    public boolean dispatchGenericMotionEvent(MotionEvent ev) {
+        System.out.println("=============>touch5:" + (System.currentTimeMillis()));
+        return super.dispatchGenericMotionEvent(ev);
+    }
+
+    @Override
+    public boolean dispatchKeyShortcutEvent(KeyEvent event) {
+        System.out.println("=============>touch6:" + (System.currentTimeMillis()));
+        return super.dispatchKeyShortcutEvent(event);
+    }
+
+    @Override
+    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
+        System.out.println("=============>touch7:" + (System.currentTimeMillis()));
+        return super.dispatchPopulateAccessibilityEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTrackballEvent(MotionEvent ev) {
+        System.out.println("=============>touch8:" + (System.currentTimeMillis()));
+        return super.dispatchTrackballEvent(ev);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+
+        System.out.println("=============>touch4:" + (System.currentTimeMillis()));
+        return super.dispatchKeyEvent(event);
+    }
 }

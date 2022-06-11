@@ -1,14 +1,28 @@
 package com.xxf.arch.test;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.hardware.input.InputManager;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentOnAttachListener;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -116,6 +130,88 @@ public class BaseApplication extends Application {
 
         setVmPolicy();
 
+        this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityPreCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+                FrameLayout frameLayout = new FrameLayout(activity);
+                frameLayout.setBackgroundColor(Color.TRANSPARENT);
+
+                ViewGroup viewGroup = (ViewGroup) activity.getWindow().getDecorView();
+                frameLayout.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        Toast.makeText(BaseApplication.this, "点击了", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                });
+                viewGroup.addView(frameLayout, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            }
+
+            @Override
+            public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+                if (activity instanceof FragmentActivity) {
+                    ((FragmentActivity) activity).getSupportFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
+
+                        @Override
+                        public void onFragmentViewCreated(@NonNull FragmentManager fm, @NonNull Fragment fragment, @NonNull View v, @Nullable Bundle savedInstanceState) {
+                            super.onFragmentViewCreated(fm, fragment, v, savedInstanceState);
+                            if (fragment instanceof DialogFragment) {
+                                Toast.makeText(activity, "fragment dialog", Toast.LENGTH_SHORT).show();
+
+                                DialogFragment dialogFragment = (DialogFragment) fragment;
+                                ViewGroup viewGroup = (ViewGroup) dialogFragment.getDialog().getWindow().getDecorView();
+                                FrameLayout frameLayout = new FrameLayout(activity);
+                                frameLayout.setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View v, MotionEvent event) {
+                                        Toast.makeText(BaseApplication.this, "点击了", Toast.LENGTH_SHORT).show();
+                                        return false;
+                                    }
+                                });
+                                viewGroup.addView(frameLayout,new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                            }
+                        }
+                    }, true);
+                }
+            }
+
+            @Override
+            public void onActivityStarted(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(@NonNull Activity activity) {
+                activity.getWindow().getDecorView().setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        Toast.makeText(v.getContext(), "xxxxx", Toast.LENGTH_SHORT).show();
+                        System.out.println("====================>touch le");
+                        return false;
+                    }
+                });
+            }
+
+            @Override
+            public void onActivityPaused(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(@NonNull Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(@NonNull Activity activity) {
+
+            }
+        });
     }
 
     @Override
