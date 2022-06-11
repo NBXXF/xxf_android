@@ -2,6 +2,7 @@ package com.xxf.arch.test;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.xxf.application.ApplicationInitializer;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.XXFUserInfoProvider;
+import com.xxf.arch.model.AppBackgroundEvent;
 import com.xxf.arch.service.SpService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
@@ -113,6 +115,17 @@ public class BaseApplication extends Application {
         //  ResourcesUtil.checkResources(ignores);
 
         setVmPolicy();
+
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
     }
 
     //虚拟机策略检测

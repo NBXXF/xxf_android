@@ -24,6 +24,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.xxf.application.ApplicationInitializer;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
+import com.xxf.arch.app.AppBackgroundLifecycleCallbacks;
 import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.bus.RxBus;
 import com.xxf.activityresult.ActivityResult;
@@ -130,6 +131,7 @@ public class XXF {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
                     XXF.application = builder.application;
+                    AppBackgroundLifecycleCallbacks.INSTANCE.register(builder.application);
                     //Initializer 跨进程不会初始化
                     ApplicationInitializer.Companion.init(builder.application);
                     XXF.errorHandler = builder.errorHandler;

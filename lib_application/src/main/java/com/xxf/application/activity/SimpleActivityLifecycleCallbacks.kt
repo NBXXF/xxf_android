@@ -13,7 +13,7 @@ import java.util.*
  * @date createTime：2018/9/7
  */
 open class SimpleActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
-    fun register(application: Application) {
+    open fun register(application: Application) {
         Objects.requireNonNull(application)
         application.unregisterActivityLifecycleCallbacks(this)
         application.registerActivityLifecycleCallbacks(this)

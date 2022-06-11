@@ -1,5 +1,7 @@
 package com.xxf.arch.test
 
+import com.xxf.arch.model.AppBackgroundEvent
+import com.xxf.bus.subscribeEvent
 import com.xxf.rxjava.combineLatestDelayError
 import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit
@@ -16,6 +18,11 @@ object TestUtils {
             }
             .subscribe {
                 println("================>out:${it.first}-${it.second}-${it.third}")
+            }
+
+        AppBackgroundEvent::class.java.subscribeEvent(false)
+            .subscribe {
+                System.out.println("=================>app is background:"+it.isBackground)
             }
     }
 }
