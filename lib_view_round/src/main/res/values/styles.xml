@@ -4,5 +4,10 @@
         <attr name="radius" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="xxf_round_image_text_view">
+        <attr name="android:textSize" />
+        <attr name="android:textColor" />
+        <attr name="android:textStyle" />
+    </declare-styleable>
 
 </resources>

@@ -1,10 +1,15 @@
 package com.xxf.view.round
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
+import androidx.core.widget.TextViewCompat
 
 /**
  * @Description: eg app:radius="4dp"
@@ -12,20 +17,31 @@ import android.widget.FrameLayout
  * @CreateDate: 2018/6/25 15:32
  */
 open class XXFRoundImageTextView : XXFRoundLayout {
+    enum class Mode {
+        TEXT, IMAGE, ALL
+    }
+
     constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(attrs)
+    }
+
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
-    )
+    ) {
+        init(attrs)
+    }
 
     constructor(
         context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int,
         defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
+    ) : super(context, attrs, defStyleAttr, defStyleRes) {
+        init(attrs)
+    }
 
     val imageView by lazy {
         XXFRoundImageView(context).apply {
@@ -39,9 +55,47 @@ open class XXFRoundImageTextView : XXFRoundLayout {
             )
         }
     }
+
+    /**
+     * 初始化子组件
+     */
+    @SuppressLint("RestrictedApi")
+    private fun init(attrs: AttributeSet?) {
+        if (attrs != null) {
+            val array = context.obtainStyledAttributes(attrs, R.styleable.xxf_round_image_text_view)
+            if (array.hasValue(R.styleable.xxf_round_image_text_view_android_textSize)) {
+                textView.setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_NONE)
+                val textSize =
+                    array.getDimension(R.styleable.xxf_round_image_text_view_android_textSize, 0f)
+                textView.textSize = textSize
+            }
+            if (array.hasValue(R.styleable.xxf_round_image_text_view_android_textColor)) {
+                val textColor =
+                    array.getColor(
+                        R.styleable.xxf_round_image_text_view_android_textColor,
+                        Color.WHITE
+                    )
+                textView.setTextColor(textColor)
+            } else {
+                textView.setTextColor(Color.WHITE)
+            }
+            if (array.hasValue(R.styleable.xxf_round_image_text_view_android_textStyle)) {
+                val textStyle =
+                    array.getInt(
+                        R.styleable.xxf_round_image_text_view_android_textStyle,
+                        Typeface.NORMAL
+                    )
+                textView.setTypeface(null, textStyle)
+            }
+            array.recycle()
+        }
+    }
+
     val textView by lazy {
         XXFRoundTextView(context).apply {
-            setTextColor(Color.BLACK)
+            this.gravity = Gravity.CENTER
+            this.includeFontPadding = false
+            this.setTextColor(Color.BLACK)
             this@XXFRoundImageTextView.addView(
                 this,
                 FrameLayout.LayoutParams(
@@ -50,6 +104,26 @@ open class XXFRoundImageTextView : XXFRoundLayout {
                     Gravity.CENTER
                 )
             )
+        }
+    }
+
+    /**
+     * 设置显示模式
+     */
+    open fun setMode(mode: Mode) {
+        when (mode) {
+            Mode.TEXT -> {
+                textView.visibility = View.VISIBLE
+                imageView.visibility = View.GONE
+            }
+            Mode.IMAGE -> {
+                textView.visibility = View.GONE
+                imageView.visibility = View.VISIBLE
+            }
+            Mode.ALL -> {
+                textView.visibility = View.VISIBLE
+                imageView.visibility = View.VISIBLE
+            }
         }
     }
 
