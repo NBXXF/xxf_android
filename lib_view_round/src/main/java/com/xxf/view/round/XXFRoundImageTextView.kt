@@ -5,10 +5,10 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.core.widget.TextViewCompat
 
 /**
@@ -67,7 +67,7 @@ open class XXFRoundImageTextView : XXFRoundLayout {
                 textView.setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_NONE)
                 val textSize =
                     array.getDimension(R.styleable.xxf_round_image_text_view_android_textSize, 0f)
-                textView.textSize = textSize
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize)
             }
             if (array.hasValue(R.styleable.xxf_round_image_text_view_android_textColor)) {
                 val textColor =
