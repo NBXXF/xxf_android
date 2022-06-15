@@ -79,7 +79,7 @@ public class XXF {
         @NonNull
         ProgressHUDFactory.ProgressHUDProvider progressHUDProvider;
         boolean isDebug = true;
-        String sharedPreferencesName = "xxfSpService";
+        String sharedPreferencesName = "flow_us_sp_release";
 
         public Builder(@NonNull Application application,
                        @NonNull ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
@@ -123,7 +123,7 @@ public class XXF {
     private static BiConsumer<Integer, Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
-    private static String sharedPreferencesName;
+    private static String sharedPreferencesName="flow_us_sp_release";
 
 
     public static void init(Builder builder) {
