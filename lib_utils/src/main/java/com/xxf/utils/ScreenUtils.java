@@ -54,18 +54,20 @@ public final class ScreenUtils {
 
     /**
      * 格子布局
+     *
+     * @param parentWidth      父容器宽度
      * @param gridExpectedSize 最小格子宽度 px
      * @return
      */
-    public static int spanCount(int gridExpectedSize) {
-        int screenWidth = getScreenWidth();
-        float expected = (float) screenWidth / (float) gridExpectedSize;
-        int spanCount = Math.round(expected);
-        if (spanCount == 0) {
+    public static int spanCount(int parentWidth, int gridExpectedSize) {
+        int screenWidth = parentWidth;
+        int spanCount = screenWidth / gridExpectedSize;
+        if (spanCount <= 0) {
             spanCount = 1;
         }
         return spanCount;
     }
+
     /**
      * 判断是否是pad
      * 业务决定sw600 还是 sw700"
