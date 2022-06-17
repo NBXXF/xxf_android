@@ -338,13 +338,13 @@ public class MainActivity extends XXFActivity {
                                 return  true;
                             }
                         });
-                        test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
-                            @Override
-                            public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {
-                                Log.d("", "========>订阅:" + dialogFragmentStringPair.second);
-                                dialogFragmentStringPair.first.dismissAllowingStateLoss();
-                            }
-                        });
+//                        test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
+//                            @Override
+//                            public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {
+//                                Log.d("", "========>订阅:" + dialogFragmentStringPair.second);
+//                                dialogFragmentStringPair.first.dismissAllowingStateLoss();
+//                            }
+//                        });
                         test.show(getSupportFragmentManager(), TestDialogFragment.class.getName());
                         if (true) {
                             return;

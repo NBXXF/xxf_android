@@ -117,7 +117,7 @@ public class XXFBottomSheetDialogFragment<E>
             if (dialogDecorView != null) {
                 View design_bottom_sheet = dialogDecorView.findViewById(R.id.design_bottom_sheet);
                 if (design_bottom_sheet != null) {
-                    CornerUtil.INSTANCE.clipViewRadius(design_bottom_sheet, DensityUtil.dip2px(10));
+                    //CornerUtil.INSTANCE.clipViewRadius(design_bottom_sheet, DensityUtil.dip2px(10));
                 }
             }
         }

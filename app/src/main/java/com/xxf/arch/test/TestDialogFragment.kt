@@ -7,6 +7,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.gson.JsonObject
+import com.xxf.arch.dialog.XXFBottomSheetDialog
+import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.XXFDialogFragment
 import com.xxf.arch.json.JsonUtils
 import com.xxf.arch.test.databinding.TestFragmentBinding
@@ -23,7 +25,7 @@ interface OnCallDataListener : Serializable {
     fun test(): Boolean
 }
 
-class TestDialogFragment : XXFDialogFragment<String?>(R.layout.test_fragment) {
+class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_fragment) {
     val binding by viewBinding(TestFragmentBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

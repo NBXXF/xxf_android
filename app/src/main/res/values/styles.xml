@@ -1,11 +1,48 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@style/xxf_activity_animation_base_style</item>
+        <!-- bottom sheet 统一样式-->
+        <item name="bottomSheetStyle">@style/AppStandardBottomSheet</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog.cflow</item>
+
     </style>
+    <style name="AppStandardBottomSheet">
+        <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:elevation">8dp</item>
+        <item name="behavior_hideable">true</item>
+        <item name="behavior_draggable">true</item>
+        <item name="behavior_skipCollapsed">false</item>
+        <item name="behavior_peekHeight">200dp</item>
+        <item name="behavior_fitToContents">false</item>
+        <item name="behavior_halfExpandedRatio">0.5</item>
+        <item name="behavior_expandedOffset">0dp</item>
+        <item name="enableEdgeToEdge">false</item>
+        <item name="android:backgroundDimAmount">0.2</item>
+        <item name="dialogCornerRadius">10dp</item>
+
+    </style>
+
+    <style name="BottomSheetDialog.cflow" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetModal.cflow</item>
+        <item name="enableEdgeToEdge">false</item>
+        <item name="android:backgroundDimAmount">0.2</item>
+        <item name="dialogCornerRadius">10dp</item>
+    </style>
+
+    <style name="BottomSheetModal.cflow" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">stateHidden|adjustResize</item>
+        <item name="enableEdgeToEdge">false</item>
+        <item name="dialogCornerRadius">10dp</item>
+    </style>
+
 </resources>
