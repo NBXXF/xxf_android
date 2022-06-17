@@ -53,10 +53,26 @@ public final class ScreenUtils {
     }
 
     /**
+     * 格子布局
+     * @param gridExpectedSize 最小格子宽度 px
+     * @return
+     */
+    public static int spanCount(int gridExpectedSize) {
+        int screenWidth = getScreenWidth();
+        float expected = (float) screenWidth / (float) gridExpectedSize;
+        int spanCount = Math.round(expected);
+        if (spanCount == 0) {
+            spanCount = 1;
+        }
+        return spanCount;
+    }
+    /**
      * 判断是否是pad
+     * 业务决定sw600 还是 sw700"
      *
      * @return
      */
+    @Deprecated()
     public static boolean isPad() {
         return (ApplicationInitializer.applicationContext.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
