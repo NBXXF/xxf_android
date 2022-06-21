@@ -44,9 +44,7 @@ open class HttpExceptionFeedInterceptor : Interceptor {
         tookMs: Long
     ) {
         if (throwable != null || (response != null && !response.isSuccessful)) {
-            val sb = StringBuilder("http fail")
-            sb.append("\n")
-            sb.append("requestUrl:[${request.method}] - ${request.url} - (${tookMs}ms)")
+            val sb = StringBuilder("requestUrl:[${request.method}] - ${request.url} - (${tookMs}ms)")
             sb.append("\n")
             sb.append("requestHeaders:\n${request.headers}")
             if (request.body != null) {
