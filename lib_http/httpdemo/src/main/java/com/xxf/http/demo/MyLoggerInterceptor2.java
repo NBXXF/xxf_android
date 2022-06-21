@@ -3,6 +3,8 @@ package com.xxf.http.demo;
 import android.util.Log;
 
 
+import com.xxf.arch.http.interceptor.HttpLoggingInterceptor;
+
 import java.io.IOException;
 
 import okhttp3.Response;
@@ -12,7 +14,7 @@ import okhttp3.Response;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/16 17:37
  */
-public class MyLoggerInterceptor2 extends com.xxf.arch.http.interceptor.HttpLoggingInterceptor {
+public class MyLoggerInterceptor2 extends HttpLoggingInterceptor {
     public MyLoggerInterceptor2() {
         super(new Logger() {
 

@@ -94,6 +94,7 @@ public interface LoginApiService {
     Observable<JsonObject> getCityOnlyCache();
 
 
+    @Headers(value ="XXX:476745")
     @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
     Observable<JsonObject> getCity(@JsonString @Query("test") TestQueryJsonField queryJsonField);
 

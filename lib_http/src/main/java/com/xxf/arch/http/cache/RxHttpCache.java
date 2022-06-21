@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.http.cache.disklrucache.SimpleDiskLruCache;
-import com.xxf.arch.http.interceptor.HttpLoggingInterceptor;
+import com.xxf.arch.http.interceptor.internal.Utf8Kt;
 import com.xxf.arch.json.JsonUtils;
 
 import java.io.File;
@@ -78,7 +78,7 @@ public class RxHttpCache {
                 if (reqContentType != null) {
                     charset = reqContentType.charset(StandardCharsets.UTF_8);
                 }
-                if (HttpLoggingInterceptor.isPlaintext(buffer)) {
+                if (Utf8Kt.isProbablyUtf8(buffer)) {
                     String key = key(request.url() + buffer.clone().readString(charset));
                     if (checkCache(key, cacheTime)) {
                         return getResponseByKey(key, responseConverter);
@@ -208,7 +208,7 @@ public class RxHttpCache {
                     if (reqContentType != null) {
                         charset = reqContentType.charset(StandardCharsets.UTF_8);
                     }
-                    if (HttpLoggingInterceptor.isPlaintext(buffer)) {
+                    if (Utf8Kt.isProbablyUtf8(buffer)) {
                         String key = key(request.url() + buffer.clone().readString(charset));
                         try {
                             diskLruCache.put(key, JsonUtils.toJsonString(response.body(),true));
