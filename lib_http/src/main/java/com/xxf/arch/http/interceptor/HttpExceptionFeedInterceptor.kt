@@ -59,11 +59,11 @@ open class HttpExceptionFeedInterceptor : Interceptor {
             sb.append("responseBody:\n${response?.let { logResponseBody(it) }}")
             sb.append("\n")
             sb.append("throwable:${Log.getStackTraceString(throwable)}")
-            onFeedHttpException(sb.toString())
+            onFeedHttpException(request,sb.toString())
         }
     }
 
-    open fun onFeedHttpException(string: String) {
+    open fun onFeedHttpException(request: Request, string: String) {
 
     }
 
