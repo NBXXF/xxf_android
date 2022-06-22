@@ -20,13 +20,17 @@ import com.google.gson.JsonIOException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+import com.xxf.arch.http.converter.OnGsonConvertFailListener;
 
 import java.io.IOException;
-
+import java.io.StringReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
+    static OnGsonConvertFailListener onConvertFailListener;
     private final Gson gson;
     private final TypeAdapter<T> adapter;
 
@@ -37,7 +41,12 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        JsonReader jsonReader = gson.newJsonReader(value.charStream());
+        Charset charSet=StandardCharsets.UTF_8;
+        if(value.contentType()!=null) {
+            charSet=value.contentType().charset(StandardCharsets.UTF_8);
+        }
+        String jsonStr = value.source().readString(charSet);
+        JsonReader jsonReader = gson.newJsonReader(new StringReader(jsonStr));
         //宽容解析
         jsonReader.setLenient(true);
         try {
@@ -46,8 +55,21 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                 throw new JsonIOException("JSON document was not fully consumed.");
             }
             return result;
+        } catch (Throwable e) {
+            /**
+             * 全局监听 解析错误
+             */
+            if (onConvertFailListener != null) {
+                try {
+                    onConvertFailListener.onResponseConvertFail(gson, adapter, jsonStr, e);
+                } catch (Throwable ex) {
+                    ex.printStackTrace();
+                }
+            }
+            throw e;
         } finally {
             value.close();
         }
     }
+
 }

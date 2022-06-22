@@ -10,11 +10,13 @@ import android.widget.Switch
 import android.widget.TextView
 import com.google.gson.*
 import com.google.gson.annotations.JsonAdapter
+import com.google.gson.internal.Streams
 import com.google.gson.reflect.TypeToken
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.xxf.arch.apiService
+import com.xxf.arch.http.converter.gson.GsonConverterFactory
 import com.xxf.arch.json.JsonUtils
 import com.xxf.arch.json.ListTypeToken
 import com.xxf.arch.json.typeadapter.NullableSerializerTypeAdapterFactory
@@ -84,7 +86,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         RxJavaPlugins.setErrorHandler { }
+        GsonConverterFactory.setOnGsonConvertFailListener { gson, adapter, json, e ->
+            println("=================>gson解析异常了$e  json: ${json}")
+        }
 
 
         val apply1 = JsonObject().apply {
@@ -292,7 +298,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("==========>retry no", "" + it)
             }
             .subscribe {
-                Log.d("==========>retry ye", "" + it)
+                Log.d("================>gson xxxx", "" + it)
             }
     }
 

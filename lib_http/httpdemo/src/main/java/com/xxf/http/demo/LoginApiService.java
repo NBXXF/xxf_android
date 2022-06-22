@@ -1,5 +1,6 @@
 package com.xxf.http.demo;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.Dispatcher;
@@ -96,6 +97,6 @@ public interface LoginApiService {
 
     @Headers(value ="XXX:476745")
     @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
-    Observable<JsonObject> getCity(@JsonString @Query("test") TestQueryJsonField queryJsonField);
+    Observable<JsonArray> getCity(@JsonString @Query("test") TestQueryJsonField queryJsonField);
 
 }
