@@ -54,6 +54,8 @@ open class HttpExceptionFeedInterceptor : Interceptor {
             }
             sb.append("\n")
             sb.append("responseHeaders:\n${response?.headers}")
+            sb.append("\nresponseCode:${response?.code?:Int.MIN_VALUE}")
+            sb.append("\nresponseMessage:${response?.message}")
             sb.append("responseBody:\n${response?.let { logResponseBody(it) }}")
             sb.append("\n")
             sb.append("throwable:${Log.getStackTraceString(throwable)}")
