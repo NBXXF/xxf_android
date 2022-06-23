@@ -79,7 +79,6 @@ public class XXF {
         @NonNull
         ProgressHUDFactory.ProgressHUDProvider progressHUDProvider;
         boolean isDebug = true;
-        String sharedPreferencesName = "flow_us_sp_release";
 
         public Builder(@NonNull Application application,
                        @NonNull ProgressHUDFactory.ProgressHUDProvider progressHUDProvider) {
@@ -107,11 +106,6 @@ public class XXF {
             this.userInfoProvider = Objects.requireNonNull(userInfoProvider);
             return this;
         }
-
-        public Builder setSharedPreferencesName(String sharedPreferencesName) {
-            this.sharedPreferencesName = sharedPreferencesName;
-            return this;
-        }
     }
 
     private XXF() {
@@ -137,7 +131,6 @@ public class XXF {
                     XXF.errorHandler = builder.errorHandler;
                     XXF.errorConvertFunction = builder.errorConvertFunction;
                     XXF.userInfoProvider = builder.userInfoProvider;
-                    XXF.sharedPreferencesName = builder.sharedPreferencesName;
                     ProgressHUDFactory.INSTANCE.setProgressHUDProvider(builder.progressHUDProvider);
                 }
             }
