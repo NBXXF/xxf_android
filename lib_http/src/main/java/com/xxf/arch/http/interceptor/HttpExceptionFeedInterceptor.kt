@@ -35,6 +35,17 @@ open class HttpExceptionFeedInterceptor : Interceptor {
     }
 
     /**
+     * 是否应该上报异常
+     */
+    open fun shouldFeedHttpException(
+        request: Request,
+        response: Response?,
+        throwable: Throwable?
+    ): Boolean {
+        return (throwable != null || (response != null && !response.isSuccessful))
+    }
+
+    /**
      * 发现异常
      */
     open fun onFeedHttpException(
@@ -43,8 +54,9 @@ open class HttpExceptionFeedInterceptor : Interceptor {
         throwable: Throwable?,
         tookMs: Long
     ) {
-        if (throwable != null || (response != null && !response.isSuccessful)) {
-            val sb = StringBuilder("requestUrl:[${request.method}] - ${request.url} - (${tookMs}ms)")
+        if (shouldFeedHttpException(request, response, throwable)) {
+            val sb =
+                StringBuilder("requestUrl:[${request.method}] - ${request.url} - (${tookMs}ms)")
             sb.append("\n")
             sb.append("requestHeaders:\n${request.headers}")
             if (request.body != null) {
@@ -54,17 +66,22 @@ open class HttpExceptionFeedInterceptor : Interceptor {
             }
             sb.append("\n")
             sb.append("responseHeaders:\n${response?.headers}")
-            sb.append("\nresponseCode:${response?.code?:Int.MIN_VALUE}")
+            sb.append("\nresponseCode:${response?.code ?: Int.MIN_VALUE}")
             sb.append("\nresponseMessage:${response?.message}")
             sb.append("responseBody:\n${response?.let { logResponseBody(it) }}")
             sb.append("\n")
             sb.append("throwable:${Log.getStackTraceString(throwable)}")
-            onFeedHttpException(request,sb.toString())
+            onFeedHttpException(request, response, throwable, tookMs, sb.toString())
         }
     }
 
-    open fun onFeedHttpException(request: Request, string: String) {
-
+    open fun onFeedHttpException(
+        request: Request,
+        response: Response?,
+        throwable: Throwable?,
+        tookMs: Long,
+        resultLog: String
+    ) {
     }
 
     private fun logRequestBody(request: Request): String {

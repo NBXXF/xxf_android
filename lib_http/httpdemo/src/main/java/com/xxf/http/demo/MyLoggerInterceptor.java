@@ -5,8 +5,10 @@ import android.util.Log;
 import com.xxf.arch.http.interceptor.HttpExceptionFeedInterceptor;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * @Description: java类作用描述
@@ -19,9 +21,9 @@ public class MyLoggerInterceptor extends HttpExceptionFeedInterceptor {
     }
 
     @Override
-    public void onFeedHttpException(@NotNull Request request, @NotNull String string) {
-        super.onFeedHttpException(request, string);
-        System.out.println("============>feed ex2:"+ string);
-        Log.d("","============>feed ex:"+ string);
+    public void onFeedHttpException(@NotNull Request request, @Nullable Response response, @Nullable Throwable throwable, long tookMs, @NotNull String resultLog) {
+        super.onFeedHttpException(request, response, throwable, tookMs, resultLog);
+        System.out.println("============>feed ex2:"+ resultLog);
+        Log.d("","============>feed ex:"+ resultLog);
     }
 }
