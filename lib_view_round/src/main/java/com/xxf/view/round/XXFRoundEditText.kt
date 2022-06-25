@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.text.Editable
 import android.text.Selection
-import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.util.AttributeSet
@@ -17,27 +16,26 @@ import androidx.appcompat.widget.AppCompatEditText
  * @CreateDate: 2018/6/25 15:37
  */
 open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
-    protected val textWatchers = mutableListOf<TextWatcher>()
+    protected val textWatchers: MutableList<TextWatcher>?
     private var focusedSelStart: Int = -1;
     private var focusedSelEnd: Int = -1;
 
     /**
      * 是否可以更新 setText 是否有效
      */
-    open var updateable: Boolean = true
+    var updateable: Boolean? = true
 
 
-    constructor(context: Context) : super(context) {}
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, R.attr.editTextStyle)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr) {
         CornerUtil.clipView(this, attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        CornerUtil.clipView(this, attrs)
+    init {
+        textWatchers = mutableListOf()
     }
 
     /**
@@ -49,9 +47,9 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
         ignoreSetTextChange: Boolean = false,
         keepState: Boolean = false
     ) {
-        if (updateable) {
+        if (updateable != false) {
             if (ignoreSetTextChange) {
-                textWatchers.forEach {
+                textWatchers?.forEach {
                     super.removeTextChangedListener(it)
                 }
             }
@@ -83,7 +81,7 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
                 this.setText(text)
             }
             if (ignoreSetTextChange) {
-                textWatchers.forEach {
+                textWatchers?.forEach {
                     super.addTextChangedListener(it)
                 }
             }
@@ -91,7 +89,7 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
-        if (updateable) {
+        if (updateable != false) {
             super.setText(text, type)
         }
     }
@@ -126,13 +124,13 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
 
     @CallSuper
     override fun addTextChangedListener(watcher: TextWatcher?) {
-        watcher?.let { textWatchers.add(it) }
+        watcher?.let { textWatchers?.add(it) }
         super.addTextChangedListener(watcher)
     }
 
     @CallSuper
     override fun removeTextChangedListener(watcher: TextWatcher?) {
-        watcher?.let { textWatchers.remove(watcher) }
+        watcher?.let { textWatchers?.remove(watcher) }
         super.removeTextChangedListener(watcher)
     }
 
@@ -148,14 +146,14 @@ open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
     override fun getText(): Editable? {
         val text = super.getText()
         if (Build.VERSION.SDK_INT < 28 && text == null) {
-            textWatchers.forEach {
+            textWatchers?.forEach {
                 super.removeTextChangedListener(it)
             }
             try {
                 setText("")
                 return super.getText()
             } finally {
-                textWatchers.forEach {
+                textWatchers?.forEach {
                     super.addTextChangedListener(it)
                 }
             }
