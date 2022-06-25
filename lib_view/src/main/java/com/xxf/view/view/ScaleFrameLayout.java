@@ -14,13 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.xxf.view.R;
+import com.xxf.view.round.XXFRoundLayout;
 
 /**
  * @Description: 等比例缩放子组件
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/11/19 19:33
  */
-public class ScaleFrameLayout extends FrameLayout {
+public class ScaleFrameLayout extends XXFRoundLayout {
     public ScaleFrameLayout(@NonNull Context context) {
         super(context);
     }
@@ -33,9 +34,9 @@ public class ScaleFrameLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public ScaleFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+//    public ScaleFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//    }
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs,
