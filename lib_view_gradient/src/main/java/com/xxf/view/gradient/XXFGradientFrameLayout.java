@@ -49,8 +49,8 @@ public class XXFGradientFrameLayout extends XXFRoundLayout {
         GradientUtils.setGradientBackground(context, this, attrs);
     }
 
-    public XXFGradientFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        GradientUtils.setGradientBackground(context, this, attrs);
-    }
+//    public XXFGradientFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//        GradientUtils.setGradientBackground(context, this, attrs);
+//    }
 }

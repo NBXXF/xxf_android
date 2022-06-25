@@ -4,13 +4,10 @@ import android.content.Context
 import android.os.Build
 import android.text.Editable
 import android.text.Selection
-import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.CharacterStyle
 import android.util.AttributeSet
 import androidx.annotation.CallSuper
-import androidx.appcompat.R
-import androidx.appcompat.widget.AppCompatEditText
 import skin.support.widget.SkinCompatEditText
 
 /**

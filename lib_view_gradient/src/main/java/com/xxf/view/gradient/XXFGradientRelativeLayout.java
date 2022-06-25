@@ -45,8 +45,8 @@ public class XXFGradientRelativeLayout extends XXFRoundRelativeLayout {
         GradientUtils.setGradientBackground(context, this, attrs);
     }
 
-    public XXFGradientRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        GradientUtils.setGradientBackground(context, this, attrs);
-    }
+//    public XXFGradientRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//        GradientUtils.setGradientBackground(context, this, attrs);
+//    }
 }
