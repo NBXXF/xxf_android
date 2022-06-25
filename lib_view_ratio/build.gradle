@@ -26,7 +26,4 @@ android {
 
 dependencies {
     implementation project(path: ':lib_view_round')
-    api des.skin_support
-    api des.skin_support_appcompat
-    api des.skin_support_constraint_layout
 }
