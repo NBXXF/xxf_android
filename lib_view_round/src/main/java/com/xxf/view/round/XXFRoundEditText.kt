@@ -26,8 +26,12 @@ open class XXFRoundEditText : SkinCompatEditText, XXFRoundWidget {
     var updateable: Boolean? = true
 
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, R.attr.editTextStyle)
+    constructor(context: Context) : super(context) {
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        CornerUtil.clipView(this, attrs)
+    }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr) {

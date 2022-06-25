@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
+import com.xxf.view.round.XXFRoundRelativeLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2016/9/23 20:19
  */
-public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
+public class SoftKeyboardSizeWatchLayout extends XXFRoundRelativeLayout {
 
     private Context mContext;
     private int mOldh = -1;
