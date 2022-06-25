@@ -28,7 +28,12 @@ ext {
              * databinding 数据Z结构类
              *  如xxfadapter 用到了ObservableList
              */
-            databinding_runtime        : "androidx.databinding:databinding-runtime:7.0.4"
+            databinding_runtime        : "androidx.databinding:databinding-runtime:7.0.4",
+
+            skin_support                  : "skin.support:skin-support:4.0.5",
+            skin_support_appcompat        : "skin.support:skin-support-appcompat:4.0.5",
+            skin_support_constraint_layout: "skin.support:skin-support-constraint-layout:4.0.5"
+
     ]
 
 }

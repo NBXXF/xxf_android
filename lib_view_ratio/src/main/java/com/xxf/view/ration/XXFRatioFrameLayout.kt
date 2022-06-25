@@ -45,9 +45,9 @@ class XXFRatioFrameLayout : XXFRoundLayout, XXFRatioWidget {
         mRatioLayoutDelegate = obtain(this, attrs!!, defStyleAttr)
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context!!, attrs, defStyleAttr, defStyleRes) {
-        mRatioLayoutDelegate = obtain(this, attrs!!, defStyleAttr, defStyleRes)
-    }
+//    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context!!, attrs, defStyleAttr, defStyleRes) {
+//        mRatioLayoutDelegate = obtain(this, attrs!!, defStyleAttr, defStyleRes)
+//    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var widthMeasureSpec = widthMeasureSpec

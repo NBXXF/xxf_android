@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
+import skin.support.constraint.SkinCompatConstraintLayout
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -11,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
  * Description ://处理圆角
  * app:radius="4dp"
  */
-class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget {
+class XXFRoundConstraintLayout : SkinCompatConstraintLayout, XXFRoundWidget {
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -26,14 +27,14 @@ class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget {
         CornerUtil.clipView(this, attrs)
     }
 
-    constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int,
-        defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes) {
-        CornerUtil.clipView(this, attrs)
-    }
+//    constructor(
+//        context: Context,
+//        attrs: AttributeSet?,
+//        defStyleAttr: Int,
+//        defStyleRes: Int
+//    ) : super(context, attrs, defStyleAttr, defStyleRes) {
+//        CornerUtil.clipView(this, attrs)
+//    }
 
     override fun setRadius(radius: Float) {
         CornerUtil.clipViewRadius(this, radius)

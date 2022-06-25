@@ -47,8 +47,8 @@ public class XXFGradientLinearLayout extends XXFRoundLinearLayout {
         GradientUtils.setGradientBackground(context, this, attrs);
     }
 
-    public XXFGradientLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        GradientUtils.setGradientBackground(context, this, attrs);
-    }
+//    public XXFGradientLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//        GradientUtils.setGradientBackground(context, this, attrs);
+//    }
 }
