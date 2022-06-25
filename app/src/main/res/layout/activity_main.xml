@@ -14,7 +14,6 @@
         <com.xxf.view.round.XXFRoundImageTextView
             android:id="@+id/textImage"
             android:layout_width="40dp"
-            app:radius="4dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
             android:background="#6cf" />
