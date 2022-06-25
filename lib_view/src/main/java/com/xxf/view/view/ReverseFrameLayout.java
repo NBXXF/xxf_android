@@ -10,15 +10,13 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.xxf.view.round.XXFRoundLayout;
-
 /**
  * @Description: 反转颜色
  *  如果用了WebView，请加上webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/9/23 20:19
  */
-public class ReverseFrameLayout extends XXFRoundLayout {
+public class ReverseFrameLayout extends FrameLayout {
     private Paint mPaint = new Paint();
     float[] reverseColorMatrix = new float[]{
             -1, 0, 0, 1, 1,
@@ -41,9 +39,9 @@ public class ReverseFrameLayout extends XXFRoundLayout {
         super(context, attrs, defStyleAttr);
     }
 
-//    public ReverseFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//    }
+    public ReverseFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
 
     public void toggleColor() {
         setReverseColor(!this.reverseColor);

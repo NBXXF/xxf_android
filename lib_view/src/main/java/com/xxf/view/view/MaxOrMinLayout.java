@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.FloatRange;
 
 import com.xxf.view.R;
-import com.xxf.view.round.XXFRoundLayout;
 
 /**
  * 先判断是否设定了maxHeight，如果设定了maxHeight，则直接使用maxHeight的值，
@@ -99,7 +98,7 @@ interface IMaxOrMinLayout {
     void setMaximumWidthRatio(@FloatRange(from = 0.0f, to = 1.0f) float ratio);
 }
 
-public class MaxOrMinLayout extends XXFRoundLayout implements IMaxOrMinLayout {
+public class MaxOrMinLayout extends FrameLayout implements IMaxOrMinLayout {
 
 
     private int mMaxHeight;
