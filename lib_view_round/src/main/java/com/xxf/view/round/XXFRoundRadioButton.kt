@@ -3,13 +3,14 @@ package com.xxf.view.round
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatRadioButton
+import skin.support.widget.SkinCompatRadioButton
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:39
  */
-open class XXFRoundRadioButton : AppCompatRadioButton, XXFRoundWidget {
+open class XXFRoundRadioButton : SkinCompatRadioButton, XXFRoundWidget {
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         CornerUtil.clipView(this, attrs)

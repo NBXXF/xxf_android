@@ -3,13 +3,14 @@ package com.xxf.view.round
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatButton
+import skin.support.widget.SkinCompatButton
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:32
  */
-open class XXFRoundButton : AppCompatButton, XXFRoundWidget {
+open class XXFRoundButton : SkinCompatButton, XXFRoundWidget {
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context!!, attrs) {
         CornerUtil.clipView(this, attrs)

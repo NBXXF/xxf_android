@@ -4,13 +4,14 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import skin.support.widget.SkinCompatLinearLayout
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:39
  */
-open class XXFRoundLinearLayout : LinearLayout, XXFRoundWidget{
+open class XXFRoundLinearLayout : SkinCompatLinearLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -25,14 +26,14 @@ open class XXFRoundLinearLayout : LinearLayout, XXFRoundWidget{
         CornerUtil.clipView(this, attrs)
     }
 
-    constructor(
+  /*  constructor(
         context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int,
         defStyleRes: Int
     ) : super(context, attrs, defStyleAttr, defStyleRes) {
         CornerUtil.clipView(this, attrs)
-    }
+    }*/
 
     override fun setRadius(radius: Float) {
         CornerUtil.clipViewRadius(this, radius)

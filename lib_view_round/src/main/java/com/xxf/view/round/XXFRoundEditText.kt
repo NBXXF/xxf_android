@@ -10,13 +10,14 @@ import android.text.style.CharacterStyle
 import android.util.AttributeSet
 import androidx.annotation.CallSuper
 import androidx.appcompat.widget.AppCompatEditText
+import skin.support.widget.SkinCompatEditText
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:37
  */
-open class XXFRoundEditText : AppCompatEditText, XXFRoundWidget {
+open class XXFRoundEditText : SkinCompatEditText, XXFRoundWidget {
     protected val textWatchers = mutableListOf<TextWatcher>()
     private var focusedSelStart: Int = -1;
     private var focusedSelEnd: Int = -1;
