@@ -12,6 +12,7 @@ import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.navigation.INavigationController
 import com.xxf.arch.fragment.navigation.NavController
 import com.xxf.arch.fragment.navigation.NavigationContainer
+import java.util.concurrent.Callable
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -20,8 +21,19 @@ import com.xxf.arch.fragment.navigation.NavigationContainer
  * 有默认布局
  * @param defaultNavHost 默认fragment
  */
-open class XXFBottomSheetNavigationDialogFragment(var defaultNavHost: (() -> Fragment)? = null) :
-    XXFBottomSheetDialogFragment<Unit>(R.layout.xxf_fragment_container), NavigationContainer {
+open class XXFBottomSheetNavigationDialogFragment :
+    XXFBottomSheetDialogFragment<Unit>, NavigationContainer {
+
+    constructor() : super(R.layout.xxf_fragment_container)
+
+    constructor(contentLayoutId: Int) : super(contentLayoutId)
+
+    private var defaultNavHost: Callable<Fragment?> = Callable<Fragment?> { null }
+
+    constructor(defaultNavHost: Callable<Fragment?>) : super(R.layout.xxf_fragment_container) {
+        this.defaultNavHost = defaultNavHost
+    }
+
     companion object {
         const val TAG_DEFAULT_NAV_HOST = "xxf_NavHostFragment_defaultNavHost"
     }
@@ -60,8 +72,17 @@ open class XXFBottomSheetNavigationDialogFragment(var defaultNavHost: (() -> Fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        defaultNavHost?.invoke()?.apply {
-            navController.navigation(this, null, TAG_DEFAULT_NAV_HOST)
+        try {
+            val call = defaultNavHost.call()
+            if (call == null) {
+                dismissAllowingStateLoss()
+                return
+            } else {
+                navController.navigation(call, null, TAG_DEFAULT_NAV_HOST)
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            dismissAllowingStateLoss()
         }
     }
 
