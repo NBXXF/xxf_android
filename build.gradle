@@ -58,5 +58,5 @@ task clean(type: Delete) {
 }
 ext {
     xxfVersion = "4.9.5.7_theme"
-    xxfGroup = "com.github.NBXXF"
+    xxfGroup = "next.space.NBXXF"
 }
