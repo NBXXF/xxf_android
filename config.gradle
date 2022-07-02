@@ -30,11 +30,11 @@ ext {
              */
             databinding_runtime           : "androidx.databinding:databinding-runtime:7.0.4",
 
-            skin_support                  : "com.github.NBXXF.Android-skin-support:skin-support:1.0.3",
-            skin_support_appcompat        : "com.github.NBXXF.Android-skin-support:skin-support-appcompat:1.0.3",
-            skin_support_constraint_layout: "com.github.NBXXF.Android-skin-support:skin-support-constraint-layout:1.0.3",
-            skin_support_cardview         : "com.github.NBXXF.Android-skin-support:skin-support-cardview:1.0.3",
-            skin_support_design           : "com.github.NBXXF.Android-skin-support:skin-support-design:1.0.3",
+            skin_support                  : "next.space.lib:skin-support:4.0.8",
+            skin_support_appcompat        : "next.space.lib:skin-support-appcompat:4.0.8",
+            skin_support_constraint_layout: "next.space.lib:skin-support-constraint-layout:4.0.8",
+            skin_support_cardview         : "next.space.lib:skin-support-cardview:4.0.8",
+            skin_support_design           : "next.space.lib:skin-support-design:4.0.8",
            // skin_support_circleimageview  : "com.github.NBXXF.Android-skin-support:circleimageview:1.0.2",
             //skin_support_flycotablayout   : "com.github.NBXXF.Android-skin-support:flycotablayout:1.0.2"
 
