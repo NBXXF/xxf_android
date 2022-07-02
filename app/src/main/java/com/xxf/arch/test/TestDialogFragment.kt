@@ -29,8 +29,11 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
     val binding by viewBinding(TestFragmentBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-       // val listener = arguments?.getSerializable("call") as OnCallDataListener?
+
+        val context = context
+        println("==========>${context}")
+
+        // val listener = arguments?.getSerializable("call") as OnCallDataListener?
         //println("===========>test  收到:" + listener!!.test() + "  " + listener.hashCode())
 
 //        System.out.println("========>hello3:"+this);
