@@ -2,37 +2,41 @@ ext {
 
     dependencies = [
             //主要依赖库
-            material                   : "com.google.android.material:material:1.4.0",
-            startup                    : "androidx.startup:startup-runtime:1.1.0",
+            material                      : "com.google.android.material:material:1.4.0",
+            startup                       : "androidx.startup:startup-runtime:1.1.0",
 
             // ------------- 第三方-------------
-            rxAndroid                  : 'io.reactivex.rxjava3:rxandroid:3.0.0',
-            rxJava                     : 'io.reactivex.rxjava3:rxjava:3.1.2',
-            gson                       : "com.google.code.gson:gson:2.9.0",
-            okhttp                     : "com.squareup.okhttp3:okhttp:4.9.1",
+            rxAndroid                     : 'io.reactivex.rxjava3:rxandroid:3.0.0',
+            rxJava                        : 'io.reactivex.rxjava3:rxjava:3.1.2',
+            gson                          : "com.google.code.gson:gson:2.9.0",
+            okhttp                        : "com.squareup.okhttp3:okhttp:4.9.1",
 
             //-----------刷新-----------
-            smart_refresh              : "io.github.scwang90:refresh-layout-kernel:2.0.5",
-            refresh_footer             : 'io.github.scwang90:refresh-footer-classics:2.0.5',    //经典加载
-            lottie                     : "com.airbnb.android:lottie:4.1.0",
+            smart_refresh                 : "io.github.scwang90:refresh-layout-kernel:2.0.5",
+            refresh_footer                : 'io.github.scwang90:refresh-footer-classics:2.0.5',    //经典加载
+            lottie                        : "com.airbnb.android:lottie:4.1.0",
 
-            twitter_serial             : "com.twitter.serial:serial:0.1.6",//二进制序列化工具
+            twitter_serial                : "com.twitter.serial:serial:0.1.6",//二进制序列化工具
             /**
              * viewbinding 代理类
              */
-            viewbindingpropertydelegate: 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3',
-            core_ktx                   : 'androidx.core:core-ktx:1.6.0',
+            viewbindingpropertydelegate   : 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3',
+            core_ktx                      : 'androidx.core:core-ktx:1.6.0',
 
 
             /**
              * databinding 数据Z结构类
              *  如xxfadapter 用到了ObservableList
              */
-            databinding_runtime        : "androidx.databinding:databinding-runtime:7.0.4",
+            databinding_runtime           : "androidx.databinding:databinding-runtime:7.0.4",
 
-            skin_support                  : "skin.support:skin-support:4.0.5",
-            skin_support_appcompat        : "skin.support:skin-support-appcompat:4.0.5",
-            skin_support_constraint_layout: "skin.support:skin-support-constraint-layout:4.0.5"
+            skin_support                  : "com.github.NBXXF.Android-skin-support:skin-support:1.0.0",
+            skin_support_appcompat        : "com.github.NBXXF.Android-skin-support:skin-support-appcompat:1.0.0",
+            skin_support_constraint_layout: "com.github.NBXXF.Android-skin-support:skin-support-constraint-layout:1.0.0",
+            skin_support_cardview: "com.github.NBXXF.Android-skin-support:skin-support-cardview:1.0.0",
+            skin_support_circleimageview  : "com.github.NBXXF.Android-skin-support:circleimageview:1.0.0",
+            skin_support_design           : "com.github.NBXXF.Android-skin-support:skin-support-design:1.0.0",
+            skin_support_flycotablayout   : "com.github.NBXXF.Android-skin-support:flycotablayout:1.0.0"
 
     ]
 

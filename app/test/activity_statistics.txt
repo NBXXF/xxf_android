@@ -1,0 +1,7 @@
+com.next.space.cflow.user.ui.activity.GuideActivity
+com.huawei.android.launcher.unihome.UniHomeLauncher
+com.huawei.android.launcher.HomeMoreSettings
+com.huawei.systemmanager.mainscreen.MainScreenActivity
+com.next.space.cflow.arch.activity.WebViewActivity
+com.next.space.cflow.user.ui.activity.LoginActivity
+com.next.space.cflow.user.ui.activity.LoginPhoneActivity
