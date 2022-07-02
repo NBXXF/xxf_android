@@ -27,3 +27,11 @@ dependencies {
     api des.material
     api des.startup
 }
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_application'
+    descContent = 'lib_application'
+}
+
+apply from: '../publish_maven.gradle'

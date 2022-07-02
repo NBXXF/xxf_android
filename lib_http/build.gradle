@@ -29,3 +29,12 @@ dependencies {
     implementation project(path: ':lib_speed')
     implementation project(path: ':lib_utils')
 }
+
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_http'
+    descContent = 'lib_http'
+}
+
+apply from: '../publish_maven.gradle'

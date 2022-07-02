@@ -24,3 +24,12 @@ dependencies {
     api 'com.uber.autodispose2:autodispose:2.1.1'
     implementation 'com.uber.autodispose2:autodispose-android:2.1.1'
 }
+
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_rxjava'
+    descContent = 'lib_rxjava'
+}
+
+apply from: '../publish_maven.gradle'

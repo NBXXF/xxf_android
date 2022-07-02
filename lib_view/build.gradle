@@ -34,3 +34,11 @@ dependencies {
     api des.lottie
     api des.smart_refresh
 }
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_view'
+    descContent = 'lib_view'
+}
+
+apply from: '../publish_maven.gradle'
