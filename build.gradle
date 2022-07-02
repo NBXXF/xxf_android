@@ -41,6 +41,6 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    xxfVersion = "4.9.5.6"
-    xxfGroup = "com.xxf.android"
+    xxfVersion = "4.9.5.7"
+    xxfGroup = "com.github.NBXXF"
 }
