@@ -27,3 +27,11 @@ android {
 dependencies {
     api des.material
 }
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_fileprovider'
+    descContent = 'lib_fileprovider'
+}
+
+apply from: '../publish_maven.gradle'

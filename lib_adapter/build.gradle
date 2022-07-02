@@ -32,3 +32,11 @@ dependencies {
     api des.material
     api project(path: ':lib_utils')
 }
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_adapter'
+    descContent = 'lib_adapter'
+}
+
+apply from: '../publish_maven.gradle'

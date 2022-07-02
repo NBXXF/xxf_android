@@ -30,3 +30,12 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_view_round'
+    descContent = 'lib_view_round'
+}
+
+apply from: '../publish_maven.gradle'
