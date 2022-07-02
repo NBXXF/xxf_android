@@ -21,17 +21,7 @@ buildscript {
     }
 }
 def getPublishPassword() {
-    File file = file("./local.properties")
-    if (file.exists()) {
-        Properties properties = new Properties()
-        properties.load(new FileInputStream(file))
-        def p=properties["publishPassword"] ?: ""
-        println("=========>获取阿里云Maven密码:$p")
-        return p
-    } else {
-        println("=========>获取阿里云Maven密码失败")
-        return ""
-    }
+    return "pOd(1GjVXgO-"
 }
 allprojects {
     repositories {
@@ -40,14 +30,14 @@ allprojects {
         mavenCentral()
         maven {
             credentials {
-                username '5fd58578ece168490ccb1f32'
+                username '62ab0fd729d72730d90c029a'
                 password getPublishPassword()
             }
             url 'https://packages.aliyun.com/maven/repository/2241957-release-sl5HmI/'
         }
         maven {
             credentials {
-                username '5fd58578ece168490ccb1f32'
+                username '62ab0fd729d72730d90c029a'
                 password getPublishPassword()
             }
             url 'https://packages.aliyun.com/maven/repository/2241957-snapshot-RhSWX2/'
