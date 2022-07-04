@@ -185,7 +185,7 @@ public class BaseApplication extends Application {
                 activity.getWindow().getDecorView().setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        Toast.makeText(v.getContext(), "xxxxx", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(v.getContext(), "xxxxx", Toast.LENGTH_SHORT).show();
                         System.out.println("====================>touch le");
                         return false;
                     }

@@ -1,5 +1,6 @@
 package com.xxf.arch.test;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -7,12 +8,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ContentInfoCompat;
+import androidx.core.view.OnReceiveContentListener;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewbinding.ViewBinding;
 
@@ -84,6 +91,7 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
                     }
                 });
         stateBinding = ActivityStateBinding.inflate(getLayoutInflater(), null, false);
+
         //stateBinding.grayLayout.setGrayColor(true);
 
         setContentView(stateBinding.getRoot());
@@ -99,15 +107,16 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(v.getContext(),ReciveContentActivity.class));
                 //  ShareUtil.shareQQ(StateActivity.this, "xxxx");
-                SystemUtils.shareText(
-                        StateActivity.this,
-                        "xxxx",
-                        //null
-                        //SystemUtils.SHARE_WEIBO_CIRCLE_COMPONENT
-                        SystemUtils.SHARE_QQ_FRIEND_COMPONENT
-                ).compose(XXF.bindToErrorNotice())
-                        .subscribe();
+//                SystemUtils.shareText(
+//                        StateActivity.this,
+//                        "xxxx",
+//                        //null
+//                        //SystemUtils.SHARE_WEIBO_CIRCLE_COMPONENT
+//                        SystemUtils.SHARE_QQ_FRIEND_COMPONENT
+//                ).compose(XXF.bindToErrorNotice())
+//                        .subscribe();
             }
         });
         stateBinding.btnLoad.setOnClickListener(new View.OnClickListener() {
