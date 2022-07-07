@@ -40,20 +40,38 @@ class ReciveContentActivity : AppCompatActivity(R.layout.activity_recive) {
     private val binding by viewBinding(ActivityReciveBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ViewCompat.setOnReceiveContentListener(
-            binding.view,
-            MIME_TYPES,
-            MyReceiver()
-        )
-        ViewCompat.setOnReceiveContentListener(
-            binding.view2,
-            MIME_TYPES,
-            MyReceiver()
-        )
+//        ViewCompat.setOnReceiveContentListener(
+//            binding.view,
+//            MIME_TYPES,
+//            MyReceiver()
+//        )
+//        ViewCompat.setOnReceiveContentListener(
+//            binding.view2,
+//            MIME_TYPES,
+//            MyReceiver()
+//        )
 
         binding.view2.setOnDragListener(View.OnDragListener { view, event ->
             when (event.action) {
-                DragEvent.ACTION_DROP -> binding.text.text = "" + (event.clipData.getItemAt(0).uri)
+                DragEvent.ACTION_DROP -> {
+                    binding.text.text = "v2:" + (event.clipData.getItemAt(0).uri)
+                    println("=========>re:v2");
+                }
+
+                else -> {}
+            }
+            true
+        })
+
+
+        binding.view.setOnDragListener(View.OnDragListener { view, event ->
+            println("=========>event:${event.action}");
+            when (event.action) {
+                DragEvent.ACTION_DROP -> {
+                    binding.text.text =
+                        "rootxx:" + (event.clipData.getItemAt(0).uri)
+                    println("=========>re:root");
+                }
                 else -> {}
             }
             true
