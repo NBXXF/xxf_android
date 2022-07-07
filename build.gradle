@@ -21,7 +21,7 @@ buildscript {
     }
 }
 def getPublishPassword() {
-    return "pOd(1GjVXgO-"
+    return "OEYRVbb6)nPD"
 }
 allprojects {
     repositories {
