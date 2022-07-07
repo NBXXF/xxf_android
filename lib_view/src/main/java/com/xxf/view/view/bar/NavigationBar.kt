@@ -27,7 +27,7 @@ open class NavigationBar : NavigationBarPlaceHolder {
             return 0
         }
         val findActivity = context.findActivity()
-        if (findActivity != null && !BarUtils.isStatusBarVisible(findActivity)) {
+        if (findActivity != null && !BarUtils.isNavBarVisible(findActivity)) {
             return 0
         }
         return super.getBarHeight()
