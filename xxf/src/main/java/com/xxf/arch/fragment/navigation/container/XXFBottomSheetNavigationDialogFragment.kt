@@ -76,7 +76,7 @@ open class XXFBottomSheetNavigationDialogFragment :
         /**
          * 检查是否是这个dialog
          */
-        if (showsDialog && dialog is NavigationBottomSheetDialog) {
+        if (showsDialog && dialog !is NavigationBottomSheetDialog) {
             throw RuntimeException("dialog must extends from NavigationBottomSheetDialog")
         }
         try {
