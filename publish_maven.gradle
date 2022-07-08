@@ -39,8 +39,8 @@ afterEvaluate {
 //            }
             maven {
                 credentials {
-                    username '5fd58578ece168490ccb1f32'
-                    password 'yY8tHLaEPFH6'
+                    username '62ab0fd729d72730d90c029a'
+                    password 'OEYRVbb6)nPD'
                 }
                 url 'https://packages.aliyun.com/maven/repository/2241957-release-sl5HmI/'
             }
