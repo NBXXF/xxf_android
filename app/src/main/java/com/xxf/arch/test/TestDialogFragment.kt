@@ -1,19 +1,17 @@
 package com.xxf.arch.test
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.gson.JsonObject
-import com.xxf.arch.dialog.XXFBottomSheetDialog
+import com.xxf.activityresult.startActivityForResultObservable
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
-import com.xxf.arch.fragment.XXFDialogFragment
 import com.xxf.arch.json.JsonUtils
 import com.xxf.arch.test.databinding.TestFragmentBinding
 import com.xxf.utils.DensityUtil
@@ -35,6 +33,11 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        startActivityForResultObservable(Intent(requireContext(),TestActivity::class.java),1000)
+            .subscribe {
+
+            }
         val context = context
         println("==========>${context}")
 
@@ -56,7 +59,7 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
         super.onViewCreated(view, savedInstanceState)
 
        getBehavior()?.state=BottomSheetBehavior.STATE_EXPANDED
-        setSize(ViewGroup.LayoutParams.MATCH_PARENT,DensityUtil.dip2px(300.0f))
+        setWindowSize(ViewGroup.LayoutParams.MATCH_PARENT,DensityUtil.dip2px(300.0f))
 //        val toJsonString = JsonUtils.toJsonString(Test().apply {
 //            d = BigDecimal("8.8")
 //        })

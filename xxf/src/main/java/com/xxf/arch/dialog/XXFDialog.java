@@ -4,6 +4,7 @@ package com.xxf.arch.dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.util.Pair;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.arch.component.ObservableComponent;
+import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.utils.RAUtils;
@@ -28,7 +30,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 public class XXFDialog<R>
         extends AppCompatDialog
-        implements ObservableComponent<AppCompatDialog, R> {
+        implements ObservableComponent<AppCompatDialog, R>, WindowComponent {
     private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
@@ -67,5 +69,27 @@ public class XXFDialog<R>
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
             super.show();
         }
+    }
+
+    @Override
+    public void setWindowSize(int width, int height) {
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.width = width;
+        attributes.height = height;
+        getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public void setWindowWidth(int width) {
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.width = width;
+        getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public void setWindowHeight(int height) {
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.height = height;
+        getWindow().setAttributes(attributes);
     }
 }

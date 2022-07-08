@@ -185,6 +185,9 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        new TestDialog(this).show();
+
         TestNumber.INSTANCE.test();
 
         TestUtils.INSTANCE.test();

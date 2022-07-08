@@ -15,18 +15,14 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.bottomsheet.InnerBottomSheetDialog;
 import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetComponent;
-import com.xxf.arch.component.ContainerComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.WindowExtentionKtKt;
 import com.xxf.utils.DensityUtil;
@@ -290,7 +286,7 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
     @Override
-    public void setSize(int width, int height) {
+    public void setWindowSize(int width, int height) {
         View bottomSheet = getBottomSheetView();
         if (bottomSheet == null) {
             return;
@@ -304,7 +300,7 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
     @Override
-    public void setWidth(int width) {
+    public void setWindowWidth(int width) {
         View bottomSheet = getBottomSheetView();
         if (bottomSheet == null) {
             return;
@@ -317,7 +313,7 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
     @Override
-    public void setHeight(int height) {
+    public void setWindowHeight(int height) {
         View bottomSheet = getBottomSheetView();
         if (bottomSheet == null) {
             return;
@@ -327,5 +323,11 @@ public class XXFBottomSheetDialogFragment<E>
             layoutParams.height = height;
             bottomSheet.requestLayout();
         }
+    }
+
+    @Nullable
+    @Override
+    public Window getWindow() {
+        return getDialog() != null ? getDialog().getWindow() : null;
     }
 }

@@ -1,10 +1,9 @@
 package com.xxf.arch.component
 
-import android.view.View
 import android.widget.FrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-interface BottomSheetComponent : ContainerComponent {
+interface BottomSheetComponent : WindowComponent {
 
     fun getBottomSheetView(): FrameLayout?
 
