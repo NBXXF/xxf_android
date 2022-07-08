@@ -15,6 +15,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,6 +25,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.bottomsheet.InnerBottomSheetDialog;
 import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.R;
+import com.xxf.arch.component.BottomSheetComponent;
+import com.xxf.arch.component.ContainerComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.dialog.WindowExtentionKtKt;
 import com.xxf.utils.DensityUtil;
@@ -43,7 +46,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 
 public class XXFBottomSheetDialogFragment<E>
-        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E> {
+        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E>, BottomSheetComponent {
     private final String TAG_PREFIX = "show_rau_";
     @LayoutRes
     private int mContentLayoutId;
@@ -108,7 +111,7 @@ public class XXFBottomSheetDialogFragment<E>
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewLifecycleOwner.set(view,this);
+        ViewLifecycleOwner.set(view, this);
         /**
          * 设置默认10dp圆角
          */
@@ -281,6 +284,57 @@ public class XXFBottomSheetDialogFragment<E>
         super.onStart();
         if (getShowsDialog()) {
             WindowExtentionKtKt.runAlphaDimAnimation(getDialogWidow());
+        }
+    }
+
+
+    @Nullable
+    @Override
+    public FrameLayout getBottomSheetView() {
+        View dec = getDialogDecorView();
+        if (dec != null) {
+            return dec.findViewById(R.id.design_bottom_sheet);
+        }
+        return null;
+    }
+
+    @Override
+    public void setSize(int width, int height) {
+        View bottomSheet = getBottomSheetView();
+        if (bottomSheet == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        if (layoutParams.width != height || layoutParams.height != height) {
+            layoutParams.height = height;
+            layoutParams.width = width;
+            bottomSheet.requestLayout();
+        }
+    }
+
+    @Override
+    public void setWidth(int width) {
+        View bottomSheet = getBottomSheetView();
+        if (bottomSheet == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        if (layoutParams.width != width) {
+            layoutParams.width = width;
+            bottomSheet.requestLayout();
+        }
+    }
+
+    @Override
+    public void setHeight(int height) {
+        View bottomSheet = getBottomSheetView();
+        if (bottomSheet == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        if (layoutParams.height != height) {
+            layoutParams.width = height;
+            bottomSheet.requestLayout();
         }
     }
 }

@@ -23,13 +23,13 @@
     android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator"
+        android:id="@id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
         <View
-            android:id="@+id/touch_outside"
+            android:id="@id/touch_outside"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:importantForAccessibility="no"
@@ -38,7 +38,7 @@
 
         <!-- 修改behavior-->
         <FrameLayout
-            android:id="@+id/design_bottom_sheet"
+            android:id="@id/design_bottom_sheet"
             style="?attr/bottomSheetStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

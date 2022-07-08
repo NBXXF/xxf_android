@@ -3,15 +3,20 @@ package com.xxf.arch.test
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.gson.JsonObject
 import com.xxf.arch.dialog.XXFBottomSheetDialog
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.XXFDialogFragment
 import com.xxf.arch.json.JsonUtils
 import com.xxf.arch.test.databinding.TestFragmentBinding
+import com.xxf.utils.DensityUtil
 import java.io.Serializable
 import java.math.BigDecimal
 
@@ -50,6 +55,8 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+       getBehavior()?.state=BottomSheetBehavior.STATE_EXPANDED
+        setSize(ViewGroup.LayoutParams.MATCH_PARENT,DensityUtil.dip2px(300.0f))
 //        val toJsonString = JsonUtils.toJsonString(Test().apply {
 //            d = BigDecimal("8.8")
 //        })

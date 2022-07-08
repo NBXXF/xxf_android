@@ -12,6 +12,7 @@ import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.navigation.INavigationController
 import com.xxf.arch.fragment.navigation.NavController
 import com.xxf.arch.fragment.navigation.NavigationContainer
+import java.lang.RuntimeException
 import java.util.concurrent.Callable
 
 /**
@@ -45,7 +46,7 @@ open class XXFBottomSheetNavigationDialogFragment :
         )
     }
 
-    open inner class NavigationBottomSheetDialog : InnerBottomSheetDialog {
+    open class NavigationBottomSheetDialog : InnerBottomSheetDialog {
         constructor(context: Context) : super(context)
         constructor(context: Context, theme: Int) : super(context, theme)
         constructor(
@@ -72,6 +73,12 @@ open class XXFBottomSheetNavigationDialogFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /**
+         * 检查是否是这个dialog
+         */
+        if (showsDialog && dialog is NavigationBottomSheetDialog) {
+            throw RuntimeException("dialog must extends from NavigationBottomSheetDialog")
+        }
         try {
             val call = defaultNavHost.call()
             if (call == null) {
