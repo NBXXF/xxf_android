@@ -229,34 +229,6 @@ public class XXFBottomSheetDialogFragment<E>
         }
     }
 
-    /**
-     * 调用时机:oncreateView之后
-     * 1.onViewCreated
-     * 2.onStart
-     * 3.onResume
-     * 都可以
-     *
-     * @return
-     */
-    @Nullable
-    public BottomSheetBehavior<FrameLayout> getBehavior() {
-        if (getDialog() instanceof BottomSheetDialog) {
-            return ((BottomSheetDialog) getDialog()).getBehavior();
-        }
-        if (getDialog() instanceof InnerBottomSheetDialog) {
-            return ((InnerBottomSheetDialog) getDialog()).getBehavior();
-        }
-        //避免复写dialog
-        View dec = getDialogDecorView();
-        if (dec != null) {
-            View bottomSheetInternal = dec.findViewById(R.id.design_bottom_sheet);
-            if (bottomSheetInternal != null && bottomSheetInternal instanceof FrameLayout) {
-                return BottomSheetBehavior.from((FrameLayout) bottomSheetInternal);
-            }
-        }
-        return null;
-    }
-
     @Override
     public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
@@ -298,6 +270,25 @@ public class XXFBottomSheetDialogFragment<E>
         return null;
     }
 
+
+    /**
+     * 调用时机:oncreateView之后
+     * 1.onViewCreated
+     * 2.onStart
+     * 3.onResume
+     * 都可以
+     *
+     * @return
+     */
+    @Nullable
+    public BottomSheetBehavior<FrameLayout> getBehavior() {
+        FrameLayout bottomSheetView = getBottomSheetView();
+        if (bottomSheetView != null) {
+            return BottomSheetBehavior.from(bottomSheetView);
+        }
+        return null;
+    }
+
     @Override
     public void setSize(int width, int height) {
         View bottomSheet = getBottomSheetView();
@@ -333,7 +324,7 @@ public class XXFBottomSheetDialogFragment<E>
         }
         ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
         if (layoutParams.height != height) {
-            layoutParams.width = height;
+            layoutParams.height = height;
             bottomSheet.requestLayout();
         }
     }
