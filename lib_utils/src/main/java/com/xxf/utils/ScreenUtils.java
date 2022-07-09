@@ -69,19 +69,6 @@ public final class ScreenUtils {
     }
 
     /**
-     * 判断是否是pad
-     * 业务决定sw600 还是 sw700"
-     *
-     * @return
-     */
-    @Deprecated()
-    public static boolean isPad() {
-        return (ApplicationInitializer.applicationContext.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-    }
-
-    /**
      * Return the width of screen, in pixel.
      *
      * @return the width of screen, in pixel
