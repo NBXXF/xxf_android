@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.utils.DateUtils;
+import com.xxf.utils.DensityUtil;
 import com.xxf.utils.FileUtils;
 import com.xxf.view.round.XXFRoundImageTextView;
 import com.xxf.view.utils.StatusBarUtils;
@@ -186,6 +188,8 @@ public class MainActivity extends XXFActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setWindowSize((int)(DensityUtil.getScreenWidthPx()*0.5),(int)(DensityUtil.getScreenHeightPx()*0.5));
+
         new TestDialog(this).show();
 
         TestNumber.INSTANCE.test();
@@ -271,9 +275,6 @@ public class MainActivity extends XXFActivity {
                         Log.d("", "==============>收到事件:" + s + "  thread:" + Thread.currentThread().getName());
                     }
                 });
-
-        double d = 0.0000f;
-        Log.d("", String.format("===========>d:%s==0  %s", d, String.valueOf(d == 0)));
 
         Integer integer = Double.valueOf("0.09111").intValue();
         Log.d("", "===========>ssss" + integer);

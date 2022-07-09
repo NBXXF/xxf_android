@@ -3,6 +3,7 @@ package com.xxf.arch.activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.xxf.activityresult.ActivityResult;
+import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 
 /**
@@ -20,7 +22,7 @@ import com.xxf.arch.lifecycle.XXFLifecycleObserver;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFActivity extends AppCompatActivity {
+public class XXFActivity extends AppCompatActivity implements WindowComponent {
     private static final String KEY_ACTIVITY_RESULT = "KEY_XXF_ACTIVITY_RESULT";
 
     public XXFActivity() {
@@ -66,5 +68,27 @@ public class XXFActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         getIntent().putExtra(KEY_ACTIVITY_RESULT, new ActivityResult(requestCode, resultCode, data));
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void setWindowSize(int width, int height) {
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.width = width;
+        attributes.height = height;
+        getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public void setWindowWidth(int width) {
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.width = width;
+        getWindow().setAttributes(attributes);
+    }
+
+    @Override
+    public void setWindowHeight(int height) {
+        WindowManager.LayoutParams attributes = getWindow().getAttributes();
+        attributes.height = height;
+        getWindow().setAttributes(attributes);
     }
 }
