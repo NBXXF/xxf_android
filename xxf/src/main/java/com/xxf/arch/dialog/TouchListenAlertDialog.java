@@ -21,30 +21,10 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @Description 监听dialog外部点击事件
  * @date createTime：2018/1/4
  */
-public abstract class TouchListenAlertDialog<E> extends AlertDialog implements ObservableComponent<AlertDialog,E> {
+public abstract class TouchListenAlertDialog<E> extends XXFAlertDialog<E> implements ObservableComponent<AlertDialog,E> {
     public TouchListenAlertDialog(Context context) {
         super(context);
     }
-    private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
-
-    @Override
-    public Observable<Pair<AlertDialog, E>> getComponentObservable() {
-        return componentSubject.ofType(Object.class)
-                .map(new Function<Object, Pair<AlertDialog,   E>>() {
-                    @Override
-                    public Pair<AlertDialog,   E> apply(Object o) throws Throwable {
-                        return Pair.create(TouchListenAlertDialog.this, ( E) o);
-                    }
-                });
-    }
-
-    @Override
-    public void setComponentResult(E result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
-    }
-
     public TouchListenAlertDialog(Context context, int theme) {
         super(context, theme);
     }
