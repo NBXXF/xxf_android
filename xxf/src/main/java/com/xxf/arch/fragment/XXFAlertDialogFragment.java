@@ -27,7 +27,6 @@ import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.TouchListenAlertDialog;
-import com.xxf.arch.dialog.WindowExtentionKtKt;
 import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -248,5 +247,20 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
             return (FrameLayout) window.findViewById(android.R.id.content);
         }
         return null;
+    }
+
+    @Override
+    public void setDimAmount(float amount) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setDimAmount(amount);
+        }
+    }
+    @Override
+    public void setGravity(int gravity) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setGravity(gravity);
+        }
     }
 }

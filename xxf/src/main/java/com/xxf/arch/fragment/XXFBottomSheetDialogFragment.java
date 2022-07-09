@@ -3,6 +3,7 @@ package com.xxf.arch.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.xxf.arch.component.ObservableComponent;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RAUtils;
 import com.xxf.view.round.CornerUtil;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
@@ -274,4 +276,21 @@ public class XXFBottomSheetDialogFragment<E>
         }
         return null;
     }
+
+    @Override
+    public void setDimAmount(float amount) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setDimAmount(amount);
+        }
+    }
+
+    @Override
+    public void setGravity(int gravity) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setGravity(gravity);
+        }
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.xxf.arch.activity;
 
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
@@ -9,7 +8,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
-import androidx.annotation.ContentView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -122,5 +120,21 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
             return (FrameLayout) window.findViewById(android.R.id.content);
         }
         return null;
+    }
+
+    @Override
+    public void setDimAmount(float amount) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setDimAmount(amount);
+        }
+    }
+
+    @Override
+    public void setGravity(int gravity) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setGravity(gravity);
+        }
     }
 }

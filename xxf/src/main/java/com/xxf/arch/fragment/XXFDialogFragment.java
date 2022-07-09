@@ -246,4 +246,19 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
         }
         return null;
     }
+
+    @Override
+    public void setDimAmount(float amount) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setDimAmount(amount);
+        }
+    }
+    @Override
+    public void setGravity(int gravity) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setGravity(gravity);
+        }
+    }
 }

@@ -10,15 +10,11 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetComponent;
 import com.xxf.arch.component.ObservableComponent;
-import com.xxf.arch.widget.progresshud.ProgressHUD;
-import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -167,5 +163,20 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
             return (FrameLayout) window.findViewById(android.R.id.content);
         }
         return null;
+    }
+
+    @Override
+    public void setDimAmount(float amount) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setDimAmount(amount);
+        }
+    }
+    @Override
+    public void setGravity(int gravity) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setGravity(gravity);
+        }
     }
 }

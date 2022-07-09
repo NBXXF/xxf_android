@@ -1,5 +1,6 @@
 package com.xxf.arch.component
 
+import android.view.Gravity
 import android.view.Window
 import android.widget.FrameLayout
 
@@ -49,4 +50,14 @@ interface WindowComponent {
      * bottomsheetdialogxxx 是MATCH_PARENT (内部是全屏的window 业务需要控制根view)
      */
     fun setWindowHeight(height: Int)
+
+    /**
+     * @param amount The new dim amount, from 0 for no dim to 1 for full dim.
+     */
+    fun setDimAmount(amount:Float)
+
+    /**
+     * 设置位置
+     */
+    fun setGravity(gravity: Int)
 }
