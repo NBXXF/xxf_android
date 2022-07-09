@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
+import by.kirich1409.viewbindingdelegate.internal.getRootView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.JsonObject
@@ -32,7 +33,6 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
     val binding by viewBinding(TestFragmentBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         startActivityForResultObservable(Intent(requireContext(),TestActivity::class.java),1000)
             .subscribe {

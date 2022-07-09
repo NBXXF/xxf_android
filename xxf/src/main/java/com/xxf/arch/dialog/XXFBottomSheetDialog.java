@@ -3,6 +3,9 @@ package com.xxf.arch.dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.util.Pair;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,8 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.xxf.arch.R;
+import com.xxf.arch.component.BottomSheetComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
@@ -27,7 +32,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  * Description: 带滑动手势的SheetDialog BottomSheetDialog
  */
 public class XXFBottomSheetDialog<R> extends BottomSheetDialog
-        implements ObservableComponent<BottomSheetDialog, R> {
+        implements ObservableComponent<BottomSheetDialog, R>, BottomSheetComponent {
     private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
@@ -61,17 +66,106 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
         super(context, cancelable, cancelListener);
     }
 
-    @NonNull
-    @Override
-    public BottomSheetBehavior<FrameLayout> getBehavior() {
-        return super.getBehavior();
-    }
-
-
     @Override
     public void show() {
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
             super.show();
         }
+    }
+
+
+    @Nullable
+    @Override
+    public FrameLayout getBottomSheetView() {
+        View dec = getDecorView();
+        if (dec != null) {
+            return dec.findViewById(com.xxf.arch.R.id.design_bottom_sheet);
+        }
+        return null;
+    }
+
+
+    /**
+     * 调用时机:oncreateView之后
+     * 1.onViewCreated
+     * 2.onStart
+     * 3.onResume
+     * 都可以
+     *
+     * @return
+     */
+    @Nullable
+    public BottomSheetBehavior<FrameLayout> getBehavior() {
+        FrameLayout bottomSheetView = getBottomSheetView();
+        if (bottomSheetView != null) {
+            return BottomSheetBehavior.from(bottomSheetView);
+        }
+        return null;
+    }
+
+    @Override
+    public void setWindowSize(int width, int height) {
+        View bottomSheet = getBottomSheetView();
+        if (bottomSheet == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        if (layoutParams.width != height || layoutParams.height != height) {
+            layoutParams.height = height;
+            layoutParams.width = width;
+            bottomSheet.requestLayout();
+        }
+    }
+
+    @Override
+    public void setWindowWidth(int width) {
+        View bottomSheet = getBottomSheetView();
+        if (bottomSheet == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        if (layoutParams.width != width) {
+            layoutParams.width = width;
+            bottomSheet.requestLayout();
+        }
+    }
+
+    @Override
+    public void setWindowHeight(int height) {
+        View bottomSheet = getBottomSheetView();
+        if (bottomSheet == null) {
+            return;
+        }
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        if (layoutParams.height != height) {
+            layoutParams.height = height;
+            bottomSheet.requestLayout();
+        }
+    }
+
+    @Nullable
+    @Override
+    public Window getWindow() {
+        return super.getWindow();
+    }
+
+    @Nullable
+    @Override
+    public FrameLayout getDecorView() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.getDecorView();
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public FrameLayout getContentParent() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.findViewById(android.R.id.content);
+        }
+        return null;
     }
 }

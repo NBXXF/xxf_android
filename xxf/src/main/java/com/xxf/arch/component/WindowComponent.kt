@@ -1,6 +1,7 @@
 package com.xxf.arch.component
 
 import android.view.Window
+import android.widget.FrameLayout
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -13,6 +14,17 @@ interface WindowComponent {
      * 获取创建的window
      */
     fun getWindow(): Window?
+
+    /**
+     * 获取窗口内置的 DecorView
+     */
+    fun getDecorView(): FrameLayout?
+
+    /**
+     * 获取窗口内置 contentView
+     * 避免和activity#setContentView api冲突
+     */
+    fun getContentParent(): FrameLayout?
 
     /**
      * 设置容器大小

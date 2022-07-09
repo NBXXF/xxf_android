@@ -3,7 +3,9 @@ package com.xxf.arch.activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
@@ -72,23 +74,53 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
 
     @Override
     public void setWindowSize(int width, int height) {
-        WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.width = width;
-        attributes.height = height;
-        getWindow().setAttributes(attributes);
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.width = width;
+            attributes.height = height;
+            window.setAttributes(attributes);
+        }
     }
 
     @Override
     public void setWindowWidth(int width) {
-        WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.width = width;
-        getWindow().setAttributes(attributes);
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.width = width;
+            window.setAttributes(attributes);
+        }
     }
 
     @Override
     public void setWindowHeight(int height) {
-        WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.height = height;
-        getWindow().setAttributes(attributes);
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.height = height;
+            window.setAttributes(attributes);
+        }
+    }
+
+
+    @Nullable
+    @Override
+    public FrameLayout getDecorView() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.getDecorView();
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public FrameLayout getContentParent() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.findViewById(android.R.id.content);
+        }
+        return null;
     }
 }

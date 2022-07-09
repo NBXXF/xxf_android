@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
@@ -24,8 +26,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.component.ObservableComponent;
+import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
-import com.xxf.arch.dialog.WindowExtentionKtKt;
 import com.xxf.utils.RAUtils;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -39,7 +41,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E> {
+public class XXFDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>, WindowComponent {
     private final String TAG_PREFIX = "show_rau_";
     @LayoutRes
     private int mContentLayoutId;
@@ -166,68 +168,6 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
     }
 
 
-    /**
-     * 获取dialog的窗体
-     *
-     * @return
-     */
-    @CheckResult
-    @Nullable
-    public Window getDialogWidow() {
-        return getDialog() != null ? getDialog().getWindow() : null;
-    }
-
-    /**
-     * 获取dialog的DecorView
-     *
-     * @return
-     */
-    @CheckResult
-    @Nullable
-    public View getDialogDecorView() {
-        Window dialogWidow = getDialogWidow();
-        return dialogWidow != null ? dialogWidow.getDecorView() : null;
-    }
-
-    /**
-     * 设置边距
-     *
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
-     */
-    public void setDialogPadding(int left, int top, int right, int bottom) {
-        View dialogDecorView = getDialogDecorView();
-        if (dialogDecorView != null) {
-            dialogDecorView.setPadding(left, top, right, bottom);
-        }
-    }
-
-    /**
-     * 设置对话框的位置
-     *
-     * @param gravity
-     */
-    public void setDialogGravity(int gravity) {
-        Window dialogWidow = getDialogWidow();
-        if (dialogWidow != null) {
-            dialogWidow.setGravity(gravity);
-        }
-    }
-
-    /**
-     * 设置动画
-     *
-     * @param resId
-     */
-    public void setDialogAnimations(@StyleRes int resId) {
-        Window dialogWidow = getDialogWidow();
-        if (dialogWidow != null) {
-            dialogWidow.setWindowAnimations(resId);
-        }
-    }
-
     @Override
     public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
@@ -251,10 +191,59 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if(getShowsDialog()){
-            WindowExtentionKtKt.runAlphaDimAnimation(getDialogWidow());
+    public void setWindowSize(int width, int height) {
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.width = width;
+            attributes.height = height;
+            window.setAttributes(attributes);
         }
+    }
+
+    @Override
+    public void setWindowWidth(int width) {
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.width = width;
+            window.setAttributes(attributes);
+        }
+    }
+
+    @Override
+    public void setWindowHeight(int height) {
+        Window window = getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.height = height;
+            window.setAttributes(attributes);
+        }
+    }
+
+    @Nullable
+    @Override
+    public Window getWindow() {
+        return getDialog() != null ? getDialog().getWindow() : null;
+    }
+
+    @Nullable
+    @Override
+    public FrameLayout getDecorView() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.getDecorView();
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public FrameLayout getContentParent() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.findViewById(android.R.id.content);
+        }
+        return null;
     }
 }

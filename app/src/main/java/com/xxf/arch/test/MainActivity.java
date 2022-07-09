@@ -188,6 +188,7 @@ public class MainActivity extends XXFActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setWindowSize((int)(DensityUtil.getScreenWidthPx()*0.5),(int)(DensityUtil.getScreenHeightPx()*0.5));
 
         new TestDialog(this).show();

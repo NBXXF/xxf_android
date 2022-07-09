@@ -45,4 +45,9 @@
         <item name="dialogCornerRadius">10dp</item>
     </style>
 
+    <style name="Test">
+        <item name="android:background">@android:color/holo_green_dark</item>
+        <item name="colorOnBackground">@android:color/holo_orange_dark</item>
+    </style>
+
 </resources>

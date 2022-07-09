@@ -14,7 +14,6 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,11 +23,9 @@ import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetComponent;
 import com.xxf.arch.component.ObservableComponent;
-import com.xxf.arch.dialog.WindowExtentionKtKt;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RAUtils;
 import com.xxf.view.round.CornerUtil;
-
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
@@ -112,12 +109,9 @@ public class XXFBottomSheetDialogFragment<E>
          * 设置默认10dp圆角
          */
         if (getShowsDialog()) {
-            View dialogDecorView = getDialogDecorView();
-            if (dialogDecorView != null) {
-                View design_bottom_sheet = dialogDecorView.findViewById(R.id.design_bottom_sheet);
-                if (design_bottom_sheet != null) {
-                    CornerUtil.INSTANCE.clipViewRadius(design_bottom_sheet, DensityUtil.dip2px(10));
-                }
+            View design_bottom_sheet = getBottomSheetView();
+            if (design_bottom_sheet != null) {
+                CornerUtil.INSTANCE.clipViewRadius(design_bottom_sheet, DensityUtil.dip2px(10));
             }
         }
     }
@@ -163,68 +157,6 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
 
-    /**
-     * 获取dialog的窗体
-     *
-     * @return
-     */
-    @CheckResult
-    @Nullable
-    public Window getDialogWidow() {
-        return getDialog() != null ? getDialog().getWindow() : null;
-    }
-
-    /**
-     * 获取dialog的DecorView
-     *
-     * @return
-     */
-    @CheckResult
-    @Nullable
-    public View getDialogDecorView() {
-        Window dialogWidow = getDialogWidow();
-        return dialogWidow != null ? dialogWidow.getDecorView() : null;
-    }
-
-    /**
-     * 设置边距
-     *
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
-     */
-    public void setDialogPadding(int left, int top, int right, int bottom) {
-        View dialogDecorView = getDialogDecorView();
-        if (dialogDecorView != null) {
-            dialogDecorView.setPadding(left, top, right, bottom);
-        }
-    }
-
-    /**
-     * 设置对话框的位置
-     *
-     * @param gravity
-     */
-    public void setDialogGravity(int gravity) {
-        Window dialogWidow = getDialogWidow();
-        if (dialogWidow != null) {
-            dialogWidow.setGravity(gravity);
-        }
-    }
-
-    /**
-     * 设置动画
-     *
-     * @param resId
-     */
-    public void setDialogAnimations(@StyleRes int resId) {
-        Window dialogWidow = getDialogWidow();
-        if (dialogWidow != null) {
-            dialogWidow.setWindowAnimations(resId);
-        }
-    }
-
     @Override
     public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
@@ -247,19 +179,11 @@ public class XXFBottomSheetDialogFragment<E>
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getShowsDialog()) {
-            WindowExtentionKtKt.runAlphaDimAnimation(getDialogWidow());
-        }
-    }
-
 
     @Nullable
     @Override
     public FrameLayout getBottomSheetView() {
-        View dec = getDialogDecorView();
+        View dec = getDecorView();
         if (dec != null) {
             return dec.findViewById(R.id.design_bottom_sheet);
         }
@@ -329,5 +253,25 @@ public class XXFBottomSheetDialogFragment<E>
     @Override
     public Window getWindow() {
         return getDialog() != null ? getDialog().getWindow() : null;
+    }
+
+    @Nullable
+    @Override
+    public FrameLayout getDecorView() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.getDecorView();
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public FrameLayout getContentParent() {
+        Window window = getWindow();
+        if (window != null) {
+            return (FrameLayout) window.findViewById(android.R.id.content);
+        }
+        return null;
     }
 }
