@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
+import java.lang.IllegalArgumentException
+import java.lang.ref.WeakReference
 
 /**
  * @version 2.3.1
@@ -21,6 +23,9 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
      * 这里倒着遍历 寻找最后一个nest child
      */
     override fun findScrollingChild(view: View?): View? {
+        if (view == null) {
+            return null
+        }
         if (ViewCompat.isNestedScrollingEnabled(view!!)) {
             return view
         }
@@ -36,5 +41,31 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
             }
         }
         return null
+    }
+
+    /**
+     * 重置可以滚动的组件
+     */
+    fun resetScrollingChild(): View? {
+        val get = viewRef?.get()
+        if (get != null) {
+            nestedScrollingChildRef = WeakReference(findScrollingChild(get))
+        }
+        return nestedScrollingChildRef?.get()
+    }
+
+    /**
+     * 支持自己来设置setNestScrollingChild
+     */
+    fun setNestScrollingChild(child: View?) {
+        if (child != null) {
+            if (ViewCompat.isNestedScrollingEnabled(child)) {
+                nestedScrollingChildRef = WeakReference(child)
+            } else {
+                throw IllegalArgumentException("child not isNestedScrollingEnabled")
+            }
+        } else {
+            nestedScrollingChildRef = WeakReference(null)
+        }
     }
 }
