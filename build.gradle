@@ -41,6 +41,6 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    xxfVersion = "4.9.5.7"
+    xxfVersion = "4.9.5.8"
     xxfGroup = "com.github.NBXXF"
 }
