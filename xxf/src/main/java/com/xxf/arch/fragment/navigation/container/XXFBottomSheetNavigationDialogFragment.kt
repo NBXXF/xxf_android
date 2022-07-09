@@ -10,8 +10,8 @@ import com.google.android.material.bottomsheet.InnerBottomSheetDialog
 import com.xxf.arch.R
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.navigation.INavigationController
-import com.xxf.arch.fragment.navigation.NavController
 import com.xxf.arch.fragment.navigation.NavigationContainer
+import com.xxf.arch.fragment.navigation.impl.FragmentNavController
 import java.lang.RuntimeException
 import java.util.concurrent.Callable
 
@@ -40,10 +40,7 @@ open class XXFBottomSheetNavigationDialogFragment :
     }
 
     private val navController: INavigationController by lazy {
-        NavController(
-            this,
-            this.childFragmentManager
-        )
+        FragmentNavController(this)
     }
 
     open class NavigationBottomSheetDialog : InnerBottomSheetDialog {

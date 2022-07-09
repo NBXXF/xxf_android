@@ -9,8 +9,8 @@ import com.xxf.arch.R
 import com.xxf.arch.fragment.XXFDialogFragment
 import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment.Companion.TAG_DEFAULT_NAV_HOST
 import com.xxf.arch.fragment.navigation.INavigationController
-import com.xxf.arch.fragment.navigation.NavController
 import com.xxf.arch.fragment.navigation.NavigationContainer
+import com.xxf.arch.fragment.navigation.impl.FragmentNavController
 import java.util.concurrent.Callable
 
 /**
@@ -32,10 +32,7 @@ open class XXFNavigationDialogFragment :
     }
 
     private val navController: INavigationController by lazy {
-        NavController(
-            this,
-            this.childFragmentManager
-        )
+        FragmentNavController(this)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

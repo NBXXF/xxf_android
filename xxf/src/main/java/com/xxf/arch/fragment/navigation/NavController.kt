@@ -16,7 +16,7 @@ import com.xxf.arch.R
  * @Description
  * @date createTime：2022/2/22
  */
-class NavController(val lifecycle: LifecycleOwner, val fragmentManager: FragmentManager) :
+abstract class NavController(val lifecycle: LifecycleOwner, val fragmentManager: FragmentManager) :
     INavigationController {
     override fun navigation(destination: Fragment, anim: AnimBuilder?, tag: String?, flag: Int) {
         checkFragment(destination)
@@ -92,16 +92,5 @@ class NavController(val lifecycle: LifecycleOwner, val fragmentManager: Fragment
 
     override fun getNavigationLifecycleOwner(): LifecycleOwner {
         return lifecycle
-    }
-
-    override fun finishNavigation(): Boolean {
-        if (lifecycle is DialogFragment) {
-            lifecycle.dismissAllowingStateLoss()
-            return true
-        } else if (lifecycle is Activity) {
-            lifecycle.finish()
-            return true
-        }
-        return false
     }
 }
