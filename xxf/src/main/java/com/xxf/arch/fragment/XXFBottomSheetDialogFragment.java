@@ -1,17 +1,18 @@
 package com.xxf.arch.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,11 +23,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.R;
-import com.xxf.arch.component.BottomSheetComponent;
+import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RAUtils;
 import com.xxf.view.round.CornerUtil;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -41,7 +44,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  */
 
 public class XXFBottomSheetDialogFragment<E>
-        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E>, BottomSheetComponent {
+        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E>, BottomSheetWindowComponent {
     private final String TAG_PREFIX = "show_rau_";
     @LayoutRes
     private int mContentLayoutId;
@@ -278,7 +281,7 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
     @Override
-    public void setDimAmount(float amount) {
+    public void setWindowDimAmount(float amount) {
         Window window = getWindow();
         if (window != null) {
             window.setDimAmount(amount);
@@ -286,10 +289,38 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
     @Override
-    public void setGravity(int gravity) {
+    public void setWindowGravity(int gravity) {
         Window window = getWindow();
         if (window != null) {
             window.setGravity(gravity);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(@NotNull Drawable drawable) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(drawable);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(int color) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(color));
+        }
+    }
+
+    @Override
+    public void setWindowBackgroundDimEnabled(boolean enabled) {
+        Window window = getWindow();
+        if (window != null) {
+            if (enabled) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
         }
     }
 

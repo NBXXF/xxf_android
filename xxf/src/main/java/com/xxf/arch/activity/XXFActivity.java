@@ -1,6 +1,8 @@
 package com.xxf.arch.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.lifecycle.XXFLifecycleObserver;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @version 2.3.1
@@ -123,18 +127,51 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
     }
 
     @Override
-    public void setDimAmount(float amount) {
+    public void setWindowDimAmount(float amount) {
         Window window = getWindow();
         if (window != null) {
+            /**
+             * activity 需要强制设置 主题默认是false
+             * R.styleable.Window_backgroundDimEnabled
+             */
+            setWindowBackgroundDimEnabled(amount>0);
             window.setDimAmount(amount);
         }
     }
 
     @Override
-    public void setGravity(int gravity) {
+    public void setWindowGravity(int gravity) {
         Window window = getWindow();
         if (window != null) {
             window.setGravity(gravity);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(@NotNull Drawable drawable) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(drawable);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(int color) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(color));
+        }
+    }
+
+    @Override
+    public void setWindowBackgroundDimEnabled(boolean enabled) {
+        Window window = getWindow();
+        if (window != null) {
+            if (enabled) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
         }
     }
 }

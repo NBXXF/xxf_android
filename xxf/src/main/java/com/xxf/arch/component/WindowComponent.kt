@@ -1,8 +1,9 @@
 package com.xxf.arch.component
 
-import android.view.Gravity
+import android.graphics.drawable.Drawable
 import android.view.Window
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -54,10 +55,28 @@ interface WindowComponent {
     /**
      * @param amount The new dim amount, from 0 for no dim to 1 for full dim.
      */
-    fun setDimAmount(amount:Float)
+    fun setWindowDimAmount(amount: Float)
 
     /**
      * 设置位置
      */
-    fun setGravity(gravity: Int)
+    fun setWindowGravity(gravity: Int)
+
+    /**
+     * 设置背景
+     */
+    fun setWindowBackground(drawable: Drawable)
+
+
+    /**
+     * 设置背景
+     */
+    fun setWindowBackground(@ColorInt color: Int)
+
+
+    /**
+     * 是在是否允许dim 模糊
+     * activity 默认是false ,dialogXX默认是true
+     */
+    fun setWindowBackgroundDimEnabled(enabled: Boolean);
 }

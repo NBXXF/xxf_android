@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import com.xxf.bus.ActionTypeEvent;
 import com.xxf.utils.DateUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.FileUtils;
+import com.xxf.utils.HandlerUtils;
 import com.xxf.view.round.XXFRoundImageTextView;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
@@ -183,10 +185,12 @@ public class MainActivity extends XXFActivity {
         return weekStart.getTimeInMillis();
     }
 
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         setWindowSize((int)(DensityUtil.getScreenWidthPx()*0.5),(int)(DensityUtil.getScreenHeightPx()*0.5));
@@ -778,6 +782,13 @@ public class MainActivity extends XXFActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        HandlerUtils.INSTANCE.getMainHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setWindowBackground(Color.RED);
+            }
+        },400);
+
 
         new Thread(new Runnable() {
             @Override

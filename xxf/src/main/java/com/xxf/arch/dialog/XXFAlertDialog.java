@@ -2,6 +2,8 @@ package com.xxf.arch.dialog;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Pair;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,6 +17,8 @@ import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.utils.RAUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.subjects.PublishSubject;
@@ -25,18 +29,18 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 推荐使用setResult
  */
-public  class XXFAlertDialog<R>
+public class XXFAlertDialog<R>
         extends AlertDialog
-        implements ObservableComponent<AlertDialog,R>, WindowComponent {
+        implements ObservableComponent<AlertDialog, R>, WindowComponent {
     private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
     public Observable<Pair<AlertDialog, R>> getComponentObservable() {
         return componentSubject.ofType(Object.class)
-                .map(new Function<Object, Pair<AlertDialog,  R>>() {
+                .map(new Function<Object, Pair<AlertDialog, R>>() {
                     @Override
-                    public Pair<AlertDialog,  R> apply(Object o) throws Throwable {
+                    public Pair<AlertDialog, R> apply(Object o) throws Throwable {
                         return Pair.create(XXFAlertDialog.this, (R) o);
                     }
                 });
@@ -71,7 +75,7 @@ public  class XXFAlertDialog<R>
     @Override
     public void setWindowSize(int width, int height) {
         Window window = getWindow();
-        if(window!=null) {
+        if (window != null) {
             WindowManager.LayoutParams attributes = window.getAttributes();
             attributes.width = width;
             attributes.height = height;
@@ -82,7 +86,7 @@ public  class XXFAlertDialog<R>
     @Override
     public void setWindowWidth(int width) {
         Window window = getWindow();
-        if(window!=null) {
+        if (window != null) {
             WindowManager.LayoutParams attributes = window.getAttributes();
             attributes.width = width;
             window.setAttributes(attributes);
@@ -92,7 +96,7 @@ public  class XXFAlertDialog<R>
     @Override
     public void setWindowHeight(int height) {
         Window window = getWindow();
-        if(window!=null) {
+        if (window != null) {
             WindowManager.LayoutParams attributes = window.getAttributes();
             attributes.height = height;
             window.setAttributes(attributes);
@@ -104,7 +108,7 @@ public  class XXFAlertDialog<R>
     @Override
     public FrameLayout getDecorView() {
         Window window = getWindow();
-        if(window!=null){
+        if (window != null) {
             return (FrameLayout) window.getDecorView();
         }
         return null;
@@ -114,14 +118,14 @@ public  class XXFAlertDialog<R>
     @Override
     public FrameLayout getContentParent() {
         Window window = getWindow();
-        if(window!=null){
+        if (window != null) {
             return (FrameLayout) window.findViewById(android.R.id.content);
         }
         return null;
     }
 
     @Override
-    public void setDimAmount(float amount) {
+    public void setWindowDimAmount(float amount) {
         Window window = getWindow();
         if (window != null) {
             window.setDimAmount(amount);
@@ -129,10 +133,38 @@ public  class XXFAlertDialog<R>
     }
 
     @Override
-    public void setGravity(int gravity) {
+    public void setWindowGravity(int gravity) {
         Window window = getWindow();
         if (window != null) {
             window.setGravity(gravity);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(@NotNull Drawable drawable) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(drawable);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(int color) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(color));
+        }
+    }
+
+    @Override
+    public void setWindowBackgroundDimEnabled(boolean enabled) {
+        Window window = getWindow();
+        if (window != null) {
+            if (enabled) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
         }
     }
 }

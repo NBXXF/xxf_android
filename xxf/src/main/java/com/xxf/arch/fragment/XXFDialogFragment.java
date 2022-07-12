@@ -3,6 +3,8 @@ package com.xxf.arch.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -29,6 +31,8 @@ import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
 import com.xxf.utils.RAUtils;
+
+import org.jetbrains.annotations.NotNull;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
@@ -248,17 +252,45 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
     }
 
     @Override
-    public void setDimAmount(float amount) {
+    public void setWindowDimAmount(float amount) {
         Window window = getWindow();
         if (window != null) {
             window.setDimAmount(amount);
         }
     }
     @Override
-    public void setGravity(int gravity) {
+    public void setWindowGravity(int gravity) {
         Window window = getWindow();
         if (window != null) {
             window.setGravity(gravity);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(@NotNull Drawable drawable) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(drawable);
+        }
+    }
+
+    @Override
+    public void setWindowBackground(int color) {
+        Window window = getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(color));
+        }
+    }
+
+    @Override
+    public void setWindowBackgroundDimEnabled(boolean enabled) {
+        Window window = getWindow();
+        if (window != null) {
+            if (enabled) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
         }
     }
 }
