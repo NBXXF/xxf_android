@@ -260,6 +260,7 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
             window.setDimAmount(amount);
         }
     }
+
     @Override
     public void setWindowGravity(int gravity) {
         Window window = getWindow();
@@ -293,6 +294,14 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
+        }
+    }
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(cancel);
         }
     }
 }

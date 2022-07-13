@@ -174,4 +174,10 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
             }
         }
     }
+
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        this.setFinishOnTouchOutside(cancel);
+    }
 }

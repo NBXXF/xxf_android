@@ -1,5 +1,6 @@
 package com.xxf.arch.fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -321,6 +322,13 @@ public class XXFBottomSheetDialogFragment<E>
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
+        }
+    }
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(cancel);
         }
     }
 

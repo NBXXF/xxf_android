@@ -293,4 +293,12 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
             }
         }
     }
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(cancel);
+        }
+    }
 }

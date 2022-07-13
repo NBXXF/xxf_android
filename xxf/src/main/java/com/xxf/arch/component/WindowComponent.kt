@@ -78,5 +78,13 @@ interface WindowComponent {
      * 是在是否允许dim 模糊
      * activity 默认是false ,dialogXX默认是true
      */
-    fun setWindowBackgroundDimEnabled(enabled: Boolean);
+    fun setWindowBackgroundDimEnabled(enabled: Boolean)
+
+
+    /**
+     * 点击外部是否可以取消
+     * 包装了activity的api是setFinishOnTouchOutside
+     *
+     */
+    fun setCanceledOnTouchOutside(cancel: Boolean)
 }
