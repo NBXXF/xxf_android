@@ -24,8 +24,7 @@ abstract class SectionBaseItemDecoration(var provider: SectionProvider) :
             for (i in 0 until childCount) {
                 val params = parent.getChildAt(i)
                     .layoutParams as RecyclerView.LayoutParams
-                //int position = params.getViewLayoutPosition();
-                val adapterPosition = params.viewAdapterPosition
+                val adapterPosition = getRealPosition(params)
                 if (groupMap.containsKey(adapterPosition)) {
                     val child = parent.getChildAt(i)
                     val tag = groupMap[adapterPosition]
@@ -34,6 +33,10 @@ abstract class SectionBaseItemDecoration(var provider: SectionProvider) :
             }
         }
     }
+
+   open fun getRealPosition(layoutParams:RecyclerView.LayoutParams): Int {
+       return layoutParams.bindingAdapterPosition
+   }
 
     /**
      * 会走section分组
@@ -98,7 +101,7 @@ abstract class SectionBaseItemDecoration(var provider: SectionProvider) :
     ) {
         super.getItemOffsets(outRect, view, parent, state)
         val params = view.layoutParams as RecyclerView.LayoutParams
-        val adapterPosition = params.viewAdapterPosition
+        val adapterPosition = getRealPosition(params)
         val groupMap: TreeMap<Int, String> = provider.onProvideSection()
         getItemOffsets(outRect, view, parent, state, groupMap.containsKey(adapterPosition))
     }

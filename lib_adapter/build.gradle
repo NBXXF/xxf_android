@@ -31,6 +31,7 @@ android {
 dependencies {
     api des.material
     api project(path: ':lib_utils')
+    api "androidx.recyclerview:recyclerview:1.2.1"
 }
 ext {
     publishVersion = rootProject.xxfVersion
