@@ -26,9 +26,7 @@ import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
-import com.xxf.utils.DensityUtil;
 import com.xxf.utils.RAUtils;
-import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -111,15 +109,6 @@ public class XXFBottomSheetDialogFragment<E>
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewLifecycleOwner.set(view, this);
-        /**
-         * 设置默认10dp圆角
-         */
-        if (getShowsDialog()) {
-            View design_bottom_sheet = getBottomSheetView();
-            if (design_bottom_sheet != null) {
-                CornerUtil.INSTANCE.clipViewRadius(design_bottom_sheet, DensityUtil.dip2px(10));
-            }
-        }
     }
 
     /**
