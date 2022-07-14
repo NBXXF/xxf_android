@@ -14,7 +14,7 @@ import com.xxf.view.recyclerview.itemdecorations.section.SectionBaseItemDecorati
  * date createTime：2017/4/29
  * version 1.0.0
  */
-class SectionItemDecoration(
+open class SectionItemDecoration(
     provider: SectionProvider?,
     sectionTextPaint: Paint,
     sectionBackgroundPaint: Paint,
