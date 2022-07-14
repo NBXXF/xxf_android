@@ -27,6 +27,7 @@ import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.utils.RAUtils;
+import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -318,6 +319,14 @@ public class XXFBottomSheetDialogFragment<E>
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.setCanceledOnTouchOutside(cancel);
+        }
+    }
+
+    @Override
+    public void setWindowRadius(float radius) {
+        FrameLayout bottomSheetView = getBottomSheetView();
+        if (bottomSheetView != null) {
+            CornerUtil.INSTANCE.clipViewRadius(bottomSheetView,radius);
         }
     }
 

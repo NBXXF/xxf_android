@@ -30,6 +30,7 @@ import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.TouchListenAlertDialog;
 import com.xxf.utils.RAUtils;
+import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -302,6 +303,14 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.setCanceledOnTouchOutside(cancel);
+        }
+    }
+
+    @Override
+    public void setWindowRadius(float radius) {
+        FrameLayout decorView = getDecorView();
+        if (decorView != null) {
+            CornerUtil.INSTANCE.clipViewRadius(decorView,radius);
         }
     }
 }

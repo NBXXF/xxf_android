@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.utils.RAUtils;
+import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -167,6 +168,14 @@ public class XXFDialog<R>
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
+        }
+    }
+
+    @Override
+    public void setWindowRadius(float radius) {
+        FrameLayout decorView = getDecorView();
+        if (decorView != null) {
+            CornerUtil.INSTANCE.clipViewRadius(decorView,radius);
         }
     }
 }

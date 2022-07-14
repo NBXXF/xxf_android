@@ -80,6 +80,11 @@ interface WindowComponent {
      */
     fun setWindowBackgroundDimEnabled(enabled: Boolean)
 
+    /**
+     * 设置窗口圆角
+     * BottomSheet 不一样 是需要设置BottomSheetView
+     */
+    fun setWindowRadius(radius:Float)
 
     /**
      * 点击外部是否可以取消
@@ -87,4 +92,5 @@ interface WindowComponent {
      *
      */
     fun setCanceledOnTouchOutside(cancel: Boolean)
+
 }

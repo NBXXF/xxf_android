@@ -18,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.utils.RAUtils;
+import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -209,6 +210,14 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             }
+        }
+    }
+
+    @Override
+    public void setWindowRadius(float radius) {
+        FrameLayout bottomSheetView = getBottomSheetView();
+        if (bottomSheetView != null) {
+            CornerUtil.INSTANCE.clipViewRadius(bottomSheetView,radius);
         }
     }
 }

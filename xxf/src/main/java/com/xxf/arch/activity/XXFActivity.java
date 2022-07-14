@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.lifecycle.XXFLifecycleObserver;
+import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -134,7 +135,7 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
              * activity 需要强制设置 主题默认是false
              * R.styleable.Window_backgroundDimEnabled
              */
-            setWindowBackgroundDimEnabled(amount>0);
+            setWindowBackgroundDimEnabled(amount > 0);
             window.setDimAmount(amount);
         }
     }
@@ -179,5 +180,13 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
     @Override
     public void setCanceledOnTouchOutside(boolean cancel) {
         this.setFinishOnTouchOutside(cancel);
+    }
+
+    @Override
+    public void setWindowRadius(float radius) {
+        FrameLayout decorView = getDecorView();
+        if (decorView != null) {
+            CornerUtil.INSTANCE.clipViewRadius(decorView,radius);
+        }
     }
 }
