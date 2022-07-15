@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class XXFActivity extends AppCompatActivity implements WindowComponent {
     private static final String KEY_ACTIVITY_RESULT = "KEY_XXF_ACTIVITY_RESULT";
+    private boolean mCancelable = true;
 
     public XXFActivity() {
     }
@@ -176,17 +177,35 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
         }
     }
 
-
-    @Override
-    public void setCanceledOnTouchOutside(boolean cancel) {
-        this.setFinishOnTouchOutside(cancel);
-    }
-
     @Override
     public void setWindowRadius(float radius) {
         FrameLayout decorView = getDecorView();
         if (decorView != null) {
-            CornerUtil.INSTANCE.clipViewRadius(decorView,radius);
+            CornerUtil.INSTANCE.clipViewRadius(decorView, radius);
+        }
+    }
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        if (cancel && !mCancelable) {
+            mCancelable = true;
+        }
+        this.setFinishOnTouchOutside(cancel);
+    }
+
+
+    @Override
+    public void setCancelable(boolean flag) {
+        mCancelable = flag;
+    }
+
+    /**
+     * activity 内部的是否能返回请用 OnBackPressedDispatcher
+     */
+    @Override
+    public void onBackPressed() {
+        if (mCancelable) {
+            super.onBackPressed();
         }
     }
 }

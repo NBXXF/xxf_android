@@ -1,6 +1,7 @@
 package com.xxf.arch.component
 
 import android.graphics.drawable.Drawable
+import android.view.KeyEvent
 import android.view.Window
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
@@ -92,5 +93,11 @@ interface WindowComponent {
      *
      */
     fun setCanceledOnTouchOutside(cancel: Boolean)
+
+    /**
+     * Sets whether this window is cancelable with the
+     * [BACK][KeyEvent.KEYCODE_BACK] key.
+     */
+    fun setCancelable(flag: Boolean)
 
 }
