@@ -329,15 +329,22 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        SystemUtils.selectMultipleFile(MainActivity.this)
+                                .subscribe(new Consumer<List<String>>() {
+                                    @Override
+                                    public void accept(List<String> strings) throws Throwable {
+                                        System.out.println("===========>文件:"+strings);
+                                    }
+                                });
                         //ToastUtils.showSnackBar(view,"hello" + System.currentTimeMillis(), ToastUtils.ToastType.ERROR);
-                        ToastUtils.showSnackBar("hello" + System.currentTimeMillis(), ToastUtils.ToastType.ERROR);
-                        TestDialogFragment test = TestDialogFragment.newInstance(new OnCallDataListener() {
-                            @Override
-                            public boolean test() {
-                                System.out.println("===========>test 发送:"+true+"  "+this.hashCode());
-                                return  true;
-                            }
-                        });
+//                        ToastUtils.showSnackBar("hello" + System.currentTimeMillis(), ToastUtils.ToastType.ERROR);
+//                        TestDialogFragment test = TestDialogFragment.newInstance(new OnCallDataListener() {
+//                            @Override
+//                            public boolean test() {
+//                                System.out.println("===========>test 发送:"+true+"  "+this.hashCode());
+//                                return  true;
+//                            }
+//                        });
 //                        test.getComponentObservable().subscribe(new Consumer<Pair<DialogFragment, String>>() {
 //                            @Override
 //                            public void accept(Pair<DialogFragment, String> dialogFragmentStringPair) throws Throwable {
@@ -345,29 +352,29 @@ public class MainActivity extends XXFActivity {
 //                                dialogFragmentStringPair.first.dismissAllowingStateLoss();
 //                            }
 //                        });
-                        test.show(getSupportFragmentManager(), TestDialogFragment.class.getName());
-                        if (true) {
-                            return;
-                        }
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                XXF.postEvent("发送:" + System.currentTimeMillis());
-                            }
-                        }).start();
-
-                        String url = "/activity/test";
-
-                        String json = "{\n" +
-                                "  \"num\": \"1948367743.1273676543\",\n" +
-                                "  \"num1\": 1948367743.1273676543,\n" +
-                                "  \"percent\": \"0.1273676543\",\n" +
-                                "  \"percent2\": 15.1273676543,\n" +
-                                "  \"percent3\": -35.1273676543,\n" +
-                                "  \"percent4\": 71.1273676543,\n" +
-                                "  \"time\": \"2020-12-05T07:35:57\",\n" +
-                                "  \"money\": 3456435.32674335\n" +
-                                "}";
+//                        test.show(getSupportFragmentManager(), TestDialogFragment.class.getName());
+//                        if (true) {
+//                            return;
+//                        }
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                XXF.postEvent("发送:" + System.currentTimeMillis());
+//                            }
+//                        }).start();
+//
+//                        String url = "/activity/test";
+//
+//                        String json = "{\n" +
+//                                "  \"num\": \"1948367743.1273676543\",\n" +
+//                                "  \"num1\": 1948367743.1273676543,\n" +
+//                                "  \"percent\": \"0.1273676543\",\n" +
+//                                "  \"percent2\": 15.1273676543,\n" +
+//                                "  \"percent3\": -35.1273676543,\n" +
+//                                "  \"percent4\": 71.1273676543,\n" +
+//                                "  \"time\": \"2020-12-05T07:35:57\",\n" +
+//                                "  \"money\": 3456435.32674335\n" +
+//                                "}";
                           /*   // startActivity(new Intent(view.getContext(), StateActivity.class));
                         //ToastUtils.showToast("hello" + System.currentTimeMillis(), ToastUtils.ToastType.SUCCESS);
                         System.out.println("============>f2:" + NumberUtils.divide(10.2, 2) + "  " + (new BigDecimal(10.2).divide(new BigDecimal(2))));
