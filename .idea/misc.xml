@@ -26,11 +26,9 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_pdf_view.xml" value="0.1640625" />
-        <entry key="app/src/main/res/layout/activity_recive.xml" value="0.26024590163934425" />
         <entry key="app/src/main/res/layout/activity_state.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_test.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_fragment_test.xml" value="0.26666666666666666" />
-        <entry key="app/src/main/res/layout/dialog_test.xml" value="0.1393758016246259" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1078125" />
@@ -72,6 +70,7 @@
         <entry key="xxf/src/main/res/layout/design_bottom_sheet_dialog.xml" value="0.12604166666666666" />
         <entry key="xxf/src/main/res/layout/xxf_fragment_container.xml" value="0.24010416666666667" />
         <entry key="xxf/src/main/res/layout/xxf_navigation_design_bottom_sheet_dialog.xml" value="0.18333333333333332" />
+        <entry key="xxf/src/main/res/layout/xxf_not_focusable_design_bottom_sheet_dialog.xml" value="0.18298418127404875" />
       </map>
     </option>
   </component>

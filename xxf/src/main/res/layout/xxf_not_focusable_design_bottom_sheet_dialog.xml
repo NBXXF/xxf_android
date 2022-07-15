@@ -22,16 +22,18 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <!-- 这里高度自适应 -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
+        <!-- 不要背景 需要穿透 这里设置高度为0 -->
         <View
             android:id="@id/touch_outside"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:importantForAccessibility="no"
             android:soundEffectsEnabled="false"
             tools:ignore="UnusedAttribute" />
