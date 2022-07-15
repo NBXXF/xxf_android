@@ -53,6 +53,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -456,6 +457,76 @@ public class SystemUtils {
                 })
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
+    /**
+     * 批量选择文件
+     *
+     * @param activity
+     * @return
+     */
+    public static Observable<List<Uri>> selectMultipleFileUri(final FragmentActivity activity) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);//意图：文件浏览器
+        intent.setType("*/*");//无类型限制
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);//关键！多选参数
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        return XXF.requestPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .compose(new RxPermissionTransformer(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .flatMap(new Function<Boolean, ObservableSource<List<Uri>>>() {
+                    @Override
+                    public ObservableSource<List<Uri>> apply(Boolean aBoolean) throws Throwable {
+                        return XXF.startActivityForResult(activity, intent, REQUEST_CODE_DOCUMENT)
+                                .flatMap(new Function<ActivityResult, ObservableSource<List<Uri>>>() {
+                                    @Override
+                                    public ObservableSource<List<Uri>> apply(ActivityResult activityResult) throws Throwable {
+                                        if (!activityResult.isOk()) {
+                                            return Observable.empty();
+                                        }
+                                        if (activityResult.getData().getData() != null) {
+                                            //单次点击未使用多选的情况
+                                            ArrayList<Uri> uris = new ArrayList<Uri>();
+                                            uris.add(activityResult.getData().getData());
+                                            return Observable.just(uris);
+                                        }
+                                        //长按使用多选的情况
+                                        ClipData clipData = activityResult.getData().getClipData();
+                                        ArrayList<Uri> uris = new ArrayList<Uri>();
+                                        if (clipData != null) {
+                                            for (int i = 0; i < clipData.getItemCount(); i++) {
+                                                ClipData.Item itemAt = clipData.getItemAt(i);
+                                                if (itemAt != null && itemAt.getUri() != null) {
+                                                    uris.add(itemAt.getUri());
+                                                }
+                                            }
+                                        }
+                                        return Observable.just(uris);
+                                    }
+                                })
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                });
+    }
+
+    /**
+     * 批量选择文件
+     * @param activity
+     * @return
+     */
+    public static Observable<List<String>> selectMultipleFile(final FragmentActivity activity) {
+        return selectMultipleFileUri(activity)
+                .observeOn(Schedulers.io())
+                .map(new Function<List<Uri>, List<String>>() {
+                    @Override
+                    public List<String> apply(List<Uri> uris) throws Throwable {
+                        List<String> paths = new ArrayList<>();
+                        for (int i = 0; i < uris.size(); i++) {
+                            paths.add(UriUtils.getPath(activity, uris.get(i)));
+                        }
+                        return paths;
+                    }
+                });
+    }
+
 
     /**
      * 隐藏软键盘
