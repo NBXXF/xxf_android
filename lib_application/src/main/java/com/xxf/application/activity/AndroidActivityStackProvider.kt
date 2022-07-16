@@ -3,10 +3,7 @@ package com.xxf.application.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.xxf.application.ApplicationInitializer
@@ -108,18 +105,7 @@ internal object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(
             ViewLifecycleOwner.set(activity.window.decorView, activity)
         }
         if (activity is FragmentActivity) {
-            activity.supportFragmentManager.registerFragmentLifecycleCallbacks(object :
-                FragmentManager.FragmentLifecycleCallbacks() {
-                override fun onFragmentViewCreated(
-                    fm: FragmentManager,
-                    f: Fragment,
-                    v: View,
-                    savedInstanceState: Bundle?
-                ) {
-                    super.onFragmentViewCreated(fm, f, v, savedInstanceState)
-                    ViewLifecycleOwner.set(v, f)
-                }
-            }, true)
+            activity.supportFragmentManager.registerFragmentLifecycleCallbacks(InnerFragmentLifecycleCallbacks, true)
         }
     }
 
