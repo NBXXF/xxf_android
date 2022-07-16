@@ -3,6 +3,7 @@ package com.xxf.utils
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.media.ExifInterface
+import android.media.MediaMetadataRetriever
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -32,34 +33,60 @@ object BitmapUtils {
      */
     fun decodeSize(path: String?): Size {
         var decodeSize = Size(0, 0)
-        try {
-            val exifInterface = ExifInterface(path ?: "");
-            val rotation = exifInterface.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
-            );
-            val width = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
-            val height = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0);
-
-            decodeSize = Size(width, height);
-            when (rotation) {
-                ExifInterface.ORIENTATION_ROTATE_90, ExifInterface.ORIENTATION_ROTATE_270 -> {
-                    decodeSize = Size(decodeSize.height, decodeSize.width)
-                }
-            }
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-        if (decodeSize.width <= 0 || decodeSize.height <= 0) {
+        val mimeType = FileUtils.getMimeType(path)
+        if (mimeType?.startsWith("video") == true) {
             try {
-                val options = BitmapFactory.Options()
-                options.inJustDecodeBounds = true //这个参数设置为true才有效，
-                val bmp = BitmapFactory.decodeFile(path, options) //这里的bitmap是个空
-                if (options.outWidth > 0 && options.outHeight > 0) {
-                    decodeSize = Size(options.outWidth, options.outHeight)
+                val retriever = MediaMetadataRetriever()
+                retriever.setDataSource(path)
+                val width =
+                    retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH) //宽
+
+                val height =
+                    retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT) //高
+
+                val rotation =
+                    retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION) //视频的方向角度
+                retriever.close()
+
+                return if (rotation == "90" || rotation == "270") {
+                    Size(height?.toIntOrNull() ?: 0, width?.toIntOrNull() ?: 0)
+                } else {
+                    Size(width?.toIntOrNull() ?: 0, height?.toIntOrNull() ?: 0)
+                }
+                //vivo x20 8.1 aused by: java.lang.NoSuchMethodError: No virtual method close()V in class Landroid/media/MediaMetadataRetriever
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        } else {
+            try {
+                val exifInterface = ExifInterface(path ?: "");
+                val rotation = exifInterface.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL
+                );
+                val width = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0);
+                val height = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0);
+
+                decodeSize = Size(width, height);
+                when (rotation) {
+                    ExifInterface.ORIENTATION_ROTATE_90, ExifInterface.ORIENTATION_ROTATE_270 -> {
+                        decodeSize = Size(decodeSize.height, decodeSize.width)
+                    }
                 }
             } catch (e: Throwable) {
                 e.printStackTrace()
+            }
+            if (decodeSize.width <= 0 || decodeSize.height <= 0) {
+                try {
+                    val options = BitmapFactory.Options()
+                    options.inJustDecodeBounds = true //这个参数设置为true才有效，
+                    val bmp = BitmapFactory.decodeFile(path, options) //这里的bitmap是个空
+                    if (options.outWidth > 0 && options.outHeight > 0) {
+                        decodeSize = Size(options.outWidth, options.outHeight)
+                    }
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
             }
         }
         return decodeSize
