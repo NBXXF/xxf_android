@@ -1,7 +1,7 @@
 package com.xxf.utils
 
 import android.util.TypedValue
-import com.xxf.application.ApplicationInitializer.Companion.applicationContext
+import com.xxf.application.applicationContext
 
 /**
  * Description 单位换算工具
@@ -38,15 +38,6 @@ val Int.sp
     ).toInt()
 
 object DensityUtil {
-    @JvmStatic
-    fun getScreenHeightPx(): Int {
-        return applicationContext.resources.displayMetrics.heightPixels
-    }
-
-    @JvmStatic
-    fun getScreenWidthPx(): Int {
-        return applicationContext.resources.displayMetrics.widthPixels
-    }
 
     @JvmStatic
     fun dip2px(dpValue: Float): Int {

@@ -14,6 +14,7 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
+import android.util.Size;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
@@ -68,21 +69,25 @@ public final class ScreenUtils {
         return spanCount;
     }
 
-    /**
-     * Return the width of screen, in pixel.
-     *
-     * @return the width of screen, in pixel
-     */
-    public static int getScreenWidth() {
+    public static Point getScreenSize() {
         WindowManager wm = (WindowManager) ApplicationInitializer.applicationContext.getSystemService(Context.WINDOW_SERVICE);
-        if (wm == null) return -1;
+        if (wm == null) return new Point(-1,-1);
         Point point = new Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             wm.getDefaultDisplay().getRealSize(point);
         } else {
             wm.getDefaultDisplay().getSize(point);
         }
-        return point.x;
+        return point;
+    }
+
+    /**
+     * Return the width of screen, in pixel.
+     *
+     * @return the width of screen, in pixel
+     */
+    public static int getScreenWidth() {
+        return getScreenSize().x;
     }
 
     /**
@@ -91,15 +96,7 @@ public final class ScreenUtils {
      * @return the height of screen, in pixel
      */
     public static int getScreenHeight() {
-        WindowManager wm = (WindowManager) ApplicationInitializer.applicationContext.getSystemService(Context.WINDOW_SERVICE);
-        if (wm == null) return -1;
-        Point point = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            wm.getDefaultDisplay().getRealSize(point);
-        } else {
-            wm.getDefaultDisplay().getSize(point);
-        }
-        return point.y;
+        return getScreenSize().y;
     }
 
     /**

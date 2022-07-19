@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.xxf.arch.XXF;
 import com.xxf.arch.dialog.XXFDialog;
 import com.xxf.utils.DensityUtil;
+import com.xxf.utils.ScreenUtils;
 import com.xxf.view.R;
 import com.xxf.view.config.AdapterStyle;
 import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
@@ -94,7 +95,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
 
 
         public ActionSheetDialog<String> build() {
-            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, DensityUtil.getScreenHeightPx() / 2);
+            return new ActionSheetDialog<String>(context, mTitle, cancelText, adapterStyle, mItems, ScreenUtils.getScreenHeight() / 2);
         }
     }
 
@@ -102,7 +103,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
                              @Nullable CharSequence title,
                              @NonNull AdapterStyle adapterStyle,
                              @NonNull List<ItemMenu<T>> actionItems) {
-        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, DensityUtil.getScreenHeightPx() / 2);
+        this(context, title, ActionSheetDialog.CANCEL_BTN_TEXT, adapterStyle, actionItems, ScreenUtils.getScreenHeight() / 2);
     }
 
     /**

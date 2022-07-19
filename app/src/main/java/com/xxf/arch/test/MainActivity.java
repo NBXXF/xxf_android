@@ -42,6 +42,7 @@ import com.xxf.utils.DateUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.FileUtils;
 import com.xxf.utils.HandlerUtils;
+import com.xxf.utils.ScreenUtils;
 import com.xxf.view.round.XXFRoundImageTextView;
 import com.xxf.view.utils.StatusBarUtils;
 import com.xxf.view.utils.SystemUtils;
@@ -193,7 +194,7 @@ public class MainActivity extends XXFActivity {
 
 
 
-        setWindowSize((int)(DensityUtil.getScreenWidthPx()*0.5),(int)(DensityUtil.getScreenHeightPx()*0.5));
+        setWindowSize((int)(ScreenUtils.getScreenWidth()*0.5),(int)(ScreenUtils.getScreenWidth() *0.5));
 
         new TestDialog(this).show();
 
