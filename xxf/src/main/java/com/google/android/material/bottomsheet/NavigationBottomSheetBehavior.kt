@@ -68,4 +68,12 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
             nestedScrollingChildRef = WeakReference(null)
         }
     }
+
+    /**
+     * 支持自己来设置setNestScrollingChild
+     */
+    fun setNestScrollingChildFromParent(parent: View?) {
+        val findScrollingChild = findScrollingChild(parent)
+        setNestScrollingChild(findScrollingChild)
+    }
 }
