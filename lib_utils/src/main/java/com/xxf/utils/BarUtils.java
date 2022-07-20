@@ -104,6 +104,17 @@ public final class BarUtils {
     }
 
     /**
+     * Return whether the status bar is visible.
+     *
+     * @param window  window.
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isStatusBarVisible(@NonNull final Window window) {
+        int flags = window.getAttributes().flags;
+        return (flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == 0;
+    }
+
+    /**
      * Set the status bar's light mode.
      *
      * @param activity    The activity.
