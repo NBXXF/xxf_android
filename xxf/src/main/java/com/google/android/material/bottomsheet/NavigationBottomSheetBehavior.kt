@@ -5,7 +5,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
-import java.lang.IllegalArgumentException
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import java.lang.ref.WeakReference
 
 /**
@@ -29,7 +30,22 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
         if (ViewCompat.isNestedScrollingEnabled(view!!)) {
             return view
         }
-        if (view is ViewGroup) {
+        if (view is ViewPager) {
+            val currentViewPagerChild: View = ViewPagerUtils.getCurrentView(view)
+                ?: return null
+            val scrollingChild = findScrollingChild(currentViewPagerChild)
+            if (scrollingChild != null) {
+                return scrollingChild
+            }
+        } else if (view is ViewPager2) {
+            val currentViewPagerChild: View = ViewPagerUtils.getCurrentView(view)
+                ?: return null
+            val scrollingChild = findScrollingChild(currentViewPagerChild)
+            if (scrollingChild != null) {
+                return scrollingChild
+            }
+        }
+        else if (view is ViewGroup) {
             val group = view
             var i = group.childCount - 1
             while (i >= 0) {
@@ -46,7 +62,7 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
     /**
      * 重置可以滚动的组件
      */
-    fun resetScrollingChild(): View? {
+    fun invalidateScrollingChild(): View? {
         val get = viewRef?.get()
         if (get != null) {
             nestedScrollingChildRef = WeakReference(findScrollingChild(get))
