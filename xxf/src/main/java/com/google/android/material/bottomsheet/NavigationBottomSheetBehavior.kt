@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager.widget.ViewPagerUtils
 import java.lang.ref.WeakReference
 
 /**
