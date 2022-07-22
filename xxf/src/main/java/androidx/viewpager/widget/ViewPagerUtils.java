@@ -32,7 +32,7 @@ public class ViewPagerUtils {
         final int currentItem = viewPager.getCurrentItem();
         RecyclerView recyclerView = findRecyclerView(viewPager);
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            View child = viewPager.getChildAt(currentItem);
+            View child = recyclerView.getChildAt(currentItem);
             if (child != null) {
                 if (recyclerView.getChildLayoutPosition(child) == currentItem) {
                     return child;
