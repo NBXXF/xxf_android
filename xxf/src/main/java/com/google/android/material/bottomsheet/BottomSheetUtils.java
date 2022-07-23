@@ -85,11 +85,11 @@ public final class BottomSheetUtils {
 
     private static class BottomSheetViewPagerListener extends ViewPager.SimpleOnPageChangeListener {
         private final ViewPager viewPager;
-        private final NavigationBottomSheetBehavior<View> behavior;
+        private final AndroidBottomSheetBehavior<View> behavior;
 
         private BottomSheetViewPagerListener(ViewPager viewPager, View bottomSheetParent) {
             this.viewPager = viewPager;
-            this.behavior = (NavigationBottomSheetBehavior<View>) NavigationBottomSheetBehavior.from(bottomSheetParent);
+            this.behavior = (AndroidBottomSheetBehavior<View>) AndroidBottomSheetBehavior.from(bottomSheetParent);
         }
 
         @Override
@@ -100,11 +100,11 @@ public final class BottomSheetUtils {
 
     private static class BottomSheetViewPager2Listener extends ViewPager2.OnPageChangeCallback {
         private final ViewPager2 viewPager;
-        private final NavigationBottomSheetBehavior<View> behavior;
+        private final AndroidBottomSheetBehavior<View> behavior;
 
         private BottomSheetViewPager2Listener(ViewPager2 viewPager, View bottomSheetParent) {
             this.viewPager = viewPager;
-            this.behavior = (NavigationBottomSheetBehavior<View>) NavigationBottomSheetBehavior.from(bottomSheetParent);
+            this.behavior = (AndroidBottomSheetBehavior<View>) AndroidBottomSheetBehavior.from(bottomSheetParent);
         }
 
         @Override
@@ -117,7 +117,7 @@ public final class BottomSheetUtils {
         View current = view;
         while (current != null) {
             final ViewGroup.LayoutParams params = current.getLayoutParams();
-            if (params instanceof CoordinatorLayout.LayoutParams && ((CoordinatorLayout.LayoutParams) params).getBehavior() instanceof NavigationBottomSheetBehavior) {
+            if (params instanceof CoordinatorLayout.LayoutParams && ((CoordinatorLayout.LayoutParams) params).getBehavior() instanceof AndroidBottomSheetBehavior) {
                 return current;
             }
             final ViewParent parent = current.getParent();

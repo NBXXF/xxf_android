@@ -1,13 +1,11 @@
 package com.xxf.arch.fragment.navigation.container
 
 import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.InnerBottomSheetDialog
 import com.xxf.arch.R
+import com.xxf.arch.dialog.XXFBottomSheetDialog
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.navigation.INavigationController
 import com.xxf.arch.fragment.navigation.NavigationContainer
@@ -43,22 +41,9 @@ open class XXFBottomSheetNavigationDialogFragment :
         FragmentNavController(this)
     }
 
-    open class NavigationBottomSheetDialog : InnerBottomSheetDialog {
-        constructor(context: Context) : super(context)
-        constructor(context: Context, theme: Int) : super(context, theme)
-        constructor(
-            context: Context,
-            cancelable: Boolean,
-            cancelListener: DialogInterface.OnCancelListener?
-        ) : super(context, cancelable, cancelListener)
-
-        override fun getContainerId(): Int {
-            return R.layout.xxf_navigation_design_bottom_sheet_dialog
-        }
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return object : NavigationBottomSheetDialog(requireContext(), theme) {
+        return object : XXFBottomSheetDialog<Any>(requireContext(), theme) {
             override fun onBackPressed() {
                 //拦截返回事件
                 if (!navController.navigationUp()) {
@@ -73,8 +58,8 @@ open class XXFBottomSheetNavigationDialogFragment :
         /**
          * 检查是否是这个dialog
          */
-        if (showsDialog && dialog !is NavigationBottomSheetDialog) {
-            throw RuntimeException("dialog must extends from NavigationBottomSheetDialog")
+        if (showsDialog && dialog !is XXFBottomSheetDialog<*>) {
+            throw RuntimeException("dialog must extends from XXFBottomSheetDialog")
         }
         try {
             val call = defaultNavHost.call()

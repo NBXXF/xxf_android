@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference
  * @Description
  * @date createTime：2022/2/22
  */
-class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
+class AndroidBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
     constructor() : super()
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 

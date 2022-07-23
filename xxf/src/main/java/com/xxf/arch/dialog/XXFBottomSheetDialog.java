@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.AndroidBottomSheetDialog;
 import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.utils.RAUtils;
@@ -32,20 +32,25 @@ import io.reactivex.rxjava3.subjects.Subject;
  * Date: 1/6/21 7:22 PM
  * Description: 带滑动手势的SheetDialog BottomSheetDialog
  */
-public class XXFBottomSheetDialog<R> extends BottomSheetDialog
-        implements ObservableComponent<BottomSheetDialog, R>, BottomSheetWindowComponent {
+public class XXFBottomSheetDialog<R> extends AndroidBottomSheetDialog
+        implements ObservableComponent<AndroidBottomSheetDialog, R>, BottomSheetWindowComponent {
     private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
-    public Observable<Pair<BottomSheetDialog, R>> getComponentObservable() {
+    public Observable<Pair<AndroidBottomSheetDialog, R>> getComponentObservable() {
         return componentSubject.ofType(Object.class)
-                .map(new Function<Object, Pair<BottomSheetDialog, R>>() {
+                .map(new Function<Object, Pair<AndroidBottomSheetDialog, R>>() {
                     @Override
-                    public Pair<BottomSheetDialog, R> apply(Object o) throws Throwable {
+                    public Pair<AndroidBottomSheetDialog, R> apply(Object o) throws Throwable {
                         return Pair.create(XXFBottomSheetDialog.this, (R) o);
                     }
                 });
+    }
+
+    @Override
+    protected int getContainerId() {
+        return com.xxf.arch.R.layout.xxf_navigation_design_bottom_sheet_dialog;
     }
 
     @Override
@@ -80,7 +85,7 @@ public class XXFBottomSheetDialog<R> extends BottomSheetDialog
     public FrameLayout getBottomSheetView() {
         View dec = getDecorView();
         if (dec != null) {
-            return dec.findViewById(com.xxf.arch.R.id.design_bottom_sheet);
+            return dec.findViewById(com.google.android.material.R.id.design_bottom_sheet);
         }
         return null;
     }

@@ -24,6 +24,7 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-2/files-2.1/b3e84edcf5fa8bf044a190df8d6ebc8f/material-1.5.0/res/layout/design_bottom_sheet_dialog.xml" value="0.13125267208208635" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_pdf_view.xml" value="0.1640625" />
         <entry key="app/src/main/res/layout/activity_state.xml" value="0.125" />

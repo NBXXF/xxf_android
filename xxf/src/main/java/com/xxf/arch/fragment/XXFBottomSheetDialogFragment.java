@@ -181,7 +181,7 @@ public class XXFBottomSheetDialogFragment<E>
     public FrameLayout getBottomSheetView() {
         View dec = getDecorView();
         if (dec != null) {
-            return dec.findViewById(R.id.design_bottom_sheet);
+            return dec.findViewById(com.google.android.material.R.id.design_bottom_sheet);
         }
         return null;
     }

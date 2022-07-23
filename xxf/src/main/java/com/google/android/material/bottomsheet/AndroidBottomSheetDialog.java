@@ -69,7 +69,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * `paddingBottomSystemWindowInsets`, `paddingLeftSystemWindowInsets`, or
  * `paddingRightSystemWindowInsets` are set to true in the style.
  */
-public class InnerBottomSheetDialog extends AppCompatDialog {
+public class AndroidBottomSheetDialog extends AppCompatDialog {
 
     private BottomSheetBehavior<FrameLayout> behavior;
 
@@ -85,7 +85,7 @@ public class InnerBottomSheetDialog extends AppCompatDialog {
     private BottomSheetCallback edgeToEdgeCallback;
     private boolean edgeToEdgeEnabled;
 
-    public InnerBottomSheetDialog(@NonNull Context context) {
+    public AndroidBottomSheetDialog(@NonNull Context context) {
         this(context, 0);
 
         edgeToEdgeEnabled =
@@ -95,7 +95,7 @@ public class InnerBottomSheetDialog extends AppCompatDialog {
                         .getBoolean(0, false);
     }
 
-    public InnerBottomSheetDialog(@NonNull Context context, @StyleRes int theme) {
+    public AndroidBottomSheetDialog(@NonNull Context context, @StyleRes int theme) {
         super(context, getThemeResId(context, theme));
         // We hide the title bar for any style configuration. Otherwise, there will be a gap
         // above the bottom sheet when it is expanded.
@@ -108,7 +108,7 @@ public class InnerBottomSheetDialog extends AppCompatDialog {
                         .getBoolean(0, false);
     }
 
-    protected InnerBottomSheetDialog(
+    protected AndroidBottomSheetDialog(
             @NonNull Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
