@@ -60,15 +60,15 @@ public class XXFBottomSheetDialog<R> extends AndroidBottomSheetDialog
         }
     }
 
-    protected XXFBottomSheetDialog(@NonNull Context context) {
+    public XXFBottomSheetDialog(@NonNull Context context) {
         super(context);
     }
 
-    protected XXFBottomSheetDialog(@NonNull Context context, int themeResId) {
+    public XXFBottomSheetDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
     }
 
-    protected XXFBottomSheetDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
+    public XXFBottomSheetDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 

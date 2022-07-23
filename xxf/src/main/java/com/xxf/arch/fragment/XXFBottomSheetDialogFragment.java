@@ -26,6 +26,7 @@ import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
+import com.xxf.arch.dialog.XXFBottomSheetDialog;
 import com.xxf.utils.RAUtils;
 import com.xxf.view.round.CornerUtil;
 
@@ -81,6 +82,12 @@ public class XXFBottomSheetDialogFragment<E>
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return new XXFBottomSheetDialog(getContext(),getTheme());
     }
 
     /***
