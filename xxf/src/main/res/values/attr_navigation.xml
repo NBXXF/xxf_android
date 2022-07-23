@@ -2,4 +2,5 @@
 <resources>
     <item name="navigation_fragment_container" type="id" />
     <item name="navigation_page_bottom_sheet_listener" type="id"/>
+    <item name="navigation_page_bottom_sheet_attach_state_listener" type="id"/>
 </resources>

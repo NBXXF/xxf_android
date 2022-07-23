@@ -20,31 +20,65 @@ import com.xxf.arch.R;
 public final class BottomSheetUtils {
 
     public static void setupViewPager(ViewPager viewPager) {
-        final View bottomSheetParent = findBottomSheetParent(viewPager);
-        if (bottomSheetParent != null) {
-            /**
-             * 避免重复添加
-             */
-            Object tag = bottomSheetParent.getTag(R.id.navigation_page_bottom_sheet_listener);
-            if (!(tag instanceof BottomSheetViewPagerListener)) {
-                BottomSheetViewPagerListener listener = new BottomSheetViewPagerListener(viewPager, bottomSheetParent);
-                bottomSheetParent.setTag(R.id.navigation_page_bottom_sheet_listener, listener);
-                viewPager.addOnPageChangeListener(listener);
+        /**
+         * 避免重复添加
+         */
+        Object viewpageListener = viewPager.getTag(R.id.navigation_page_bottom_sheet_listener);
+        if (!(viewpageListener instanceof BottomSheetViewPagerListener)) {
+            final View bottomSheetParent = findBottomSheetParent(viewPager);
+            if (bottomSheetParent != null) {
+                viewpageListener = new BottomSheetViewPagerListener(viewPager, bottomSheetParent);
+                viewPager.addOnPageChangeListener((ViewPager.OnPageChangeListener) viewpageListener);
+                viewPager.setTag(R.id.navigation_page_bottom_sheet_listener, viewpageListener);
+            } else if (!viewPager.isAttachedToWindow()) {
+                Object attachListener = viewPager.getTag(R.id.navigation_page_bottom_sheet_attach_state_listener);
+                if (!(attachListener instanceof View.OnAttachStateChangeListener)) {
+                    attachListener = new View.OnAttachStateChangeListener() {
+                        @Override
+                        public void onViewAttachedToWindow(View v) {
+                            setupViewPager((ViewPager) v);
+                        }
+
+                        @Override
+                        public void onViewDetachedFromWindow(View v) {
+
+                        }
+                    };
+                    viewPager.addOnAttachStateChangeListener((View.OnAttachStateChangeListener) attachListener);
+                    viewPager.setTag(R.id.navigation_page_bottom_sheet_attach_state_listener, attachListener);
+                }
             }
         }
     }
 
     public static void setupViewPager(ViewPager2 viewPager) {
-        final View bottomSheetParent = findBottomSheetParent(viewPager);
-        if (bottomSheetParent != null) {
-            /**
-             * 避免重复添加
-             */
-            Object tag = bottomSheetParent.getTag(R.id.navigation_page_bottom_sheet_listener);
-            if (!(tag instanceof BottomSheetViewPager2Listener)) {
-                BottomSheetViewPager2Listener listener = new BottomSheetViewPager2Listener(viewPager, bottomSheetParent);
-                bottomSheetParent.setTag(R.id.navigation_page_bottom_sheet_listener, listener);
-                viewPager.registerOnPageChangeCallback(listener);
+        /**
+         * 避免重复添加
+         */
+        Object viewpageListener = viewPager.getTag(R.id.navigation_page_bottom_sheet_listener);
+        if (!(viewpageListener instanceof BottomSheetViewPager2Listener)) {
+            final View bottomSheetParent = findBottomSheetParent(viewPager);
+            if (bottomSheetParent != null) {
+                viewpageListener = new BottomSheetViewPager2Listener(viewPager, bottomSheetParent);
+                viewPager.registerOnPageChangeCallback((ViewPager2.OnPageChangeCallback) viewpageListener);
+                viewPager.setTag(R.id.navigation_page_bottom_sheet_listener, viewpageListener);
+            } else if (!viewPager.isAttachedToWindow()) {
+                Object attachListener = viewPager.getTag(R.id.navigation_page_bottom_sheet_attach_state_listener);
+                if (!(attachListener instanceof View.OnAttachStateChangeListener)) {
+                    attachListener = new View.OnAttachStateChangeListener() {
+                        @Override
+                        public void onViewAttachedToWindow(View v) {
+                            setupViewPager((ViewPager2) v);
+                        }
+
+                        @Override
+                        public void onViewDetachedFromWindow(View v) {
+
+                        }
+                    };
+                    viewPager.addOnAttachStateChangeListener((View.OnAttachStateChangeListener) attachListener);
+                    viewPager.setTag(R.id.navigation_page_bottom_sheet_attach_state_listener, attachListener);
+                }
             }
         }
     }

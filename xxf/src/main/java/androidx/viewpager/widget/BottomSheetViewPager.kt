@@ -15,4 +15,12 @@ open class BottomSheetViewPager:ViewPager {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs){
         BottomSheetUtils.setupViewPager(this)
     }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+    }
 }
