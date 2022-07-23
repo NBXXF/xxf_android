@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager.widget.ViewPagerUtils
+import androidx.viewpager2.widget.ViewPager2
 import java.lang.ref.WeakReference
 
 /**
@@ -28,7 +28,10 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
         if (view == null) {
             return null
         }
-        if (ViewCompat.isNestedScrollingEnabled(view!!)) {
+        /**
+         * 必须要显示的view
+         */
+        if (ViewCompat.isNestedScrollingEnabled(view!!) && view.isShown) {
             return view
         }
         if (view is ViewPager) {
@@ -45,16 +48,16 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
             if (scrollingChild != null) {
                 return scrollingChild
             }
-        }
-        else if (view is ViewGroup) {
+        } else if (view is ViewGroup) {
             val group = view
-            var i = group.childCount - 1
-            while (i >= 0) {
+            var i = 0
+            val count = group.childCount
+            while (i < count) {
                 val scrollingChild = findScrollingChild(group.getChildAt(i))
                 if (scrollingChild != null) {
                     return scrollingChild
                 }
-                i--
+                i++
             }
         }
         return null
@@ -76,7 +79,10 @@ class NavigationBottomSheetBehavior<V : View> : BottomSheetBehavior<V> {
      */
     fun setNestScrollingChild(child: View?) {
         if (child != null) {
-            if (ViewCompat.isNestedScrollingEnabled(child)) {
+            /**
+             * 必须要显示的view
+             */
+            if (ViewCompat.isNestedScrollingEnabled(child)&&child.isShown) {
                 nestedScrollingChildRef = WeakReference(child)
             } else {
                 throw IllegalArgumentException("child not isNestedScrollingEnabled")
