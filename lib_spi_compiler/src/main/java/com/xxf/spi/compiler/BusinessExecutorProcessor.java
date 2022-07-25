@@ -63,13 +63,14 @@ public class BusinessExecutorProcessor extends AbstractProcessor {
                 }
                 Element classElement = element.getEnclosingElement();
                 packageElement = mElementUtils.getPackageOf(classElement);
-              //  Class code = element.getAnnotation(Service.class).value();
-                int code = 1;
+               // Class code = element.getAnnotation(Service.class).value();
+                String code = element.getAnnotation(Service.class).path();
+               // int code = 1;
 
 
                 ClassName className = ClassName.get(packageElement.toString(),
                         element.getSimpleName().toString());
-                builder.add("       put("+(code) +"," + "new $T());\n", className);
+                builder.add("       put(\""+code+"\"," + "new $T());\n", className);
             }
             builder.add("\n   }").add("\n}");
 
@@ -92,7 +93,7 @@ public class BusinessExecutorProcessor extends AbstractProcessor {
             TypeSpec businessExecutorImpl = TypeSpec.classBuilder("BusinessExecutorImpl")
                     .addModifiers(Modifier.PUBLIC ,Modifier.FINAL)
                     .addField(executorList)
-                    .addMethod(getBusinessExecutor)
+                   // .addMethod(getBusinessExecutor)
                     .build();
 
         JavaFile javaFile = null;
