@@ -111,6 +111,7 @@ public abstract class XXFRecyclerListAdapter<V extends ViewBinding, T>
      * @param index 相对于List的位置
      * @return
      */
+    @Nullable
     public T getItem(@IntRange(from = 0) int index) {
         if (checkIndex(index)) {
             return super.getItem(index);

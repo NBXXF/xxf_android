@@ -38,6 +38,7 @@ public interface BaseAdapter<V extends ViewBinding, T> {
 
     void clearData();
 
+    @Nullable
     T getItem(@IntRange(from = 0) int index);
 
     int getIndex(@NonNull T t);
