@@ -34,6 +34,7 @@ import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.xxf.application.ApplicationInitializer;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.XXFUserInfoProvider;
+import com.xxf.arch.lint.ComponentLintPlugin;
 import com.xxf.arch.model.AppBackgroundEvent;
 import com.xxf.arch.service.SpService;
 import com.xxf.arch.utils.ToastUtils;
@@ -105,6 +106,12 @@ public class BaseApplication extends Application {
                         ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR, flag);
                     }
                 }));
+        ComponentLintPlugin.INSTANCE.setLintConsumer(new BiConsumer<Object, Class<?>>() {
+            @Override
+            public void accept(Object o, Class<?> aClass) throws Throwable {
+                ToastUtils.showToast(""+o.getClass().getSimpleName()+" must extends "+aClass);
+            }
+        });
         //可做本module 相关sdk初始化
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {

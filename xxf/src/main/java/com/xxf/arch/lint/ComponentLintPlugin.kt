@@ -13,12 +13,18 @@ import com.xxf.arch.activity.XXFActivity
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.XXFDialogFragment
 import com.xxf.arch.fragment.XXFFragment
+import io.reactivex.rxjava3.functions.BiConsumer
 import java.lang.RuntimeException
 
 /**
  * 组件检查伪插件
  */
 object ComponentLintPlugin {
+    /**
+     * 全局拦截继承异常
+     */
+    var lintConsumer: BiConsumer<Any, Class<*>>? = null
+
     /**
      * 指定归属的类
      */
@@ -65,7 +71,8 @@ object ComponentLintPlugin {
             return
         }
         if (!assignable.isAssignableFrom(obj::class.java)) {
-            throw RuntimeException("$obj must extends $assignable")
+            lintConsumer?.accept(obj, assignable)
+                ?: throw RuntimeException("$obj must extends $assignable")
         }
     }
 }
