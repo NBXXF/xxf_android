@@ -81,8 +81,8 @@ object ComponentLintPlugin {
 internal object LintActivityLifecycleCallbacks : SimpleActivityLifecycleCallbacks() {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         super.onActivityCreated(activity, savedInstanceState)
-        ComponentLintPlugin.assignableMap.get(activity::class.java).let {
-            ComponentLintPlugin.assignableMap.get(Activity::class.java)
+        ComponentLintPlugin.assignableMap.getOrElse(activity::class.java) {
+            ComponentLintPlugin.assignableMap[Activity::class.java]
         }?.let {
             ComponentLintPlugin.check(activity, it)
         }
@@ -103,22 +103,22 @@ internal object LintFragmentLifecycleCallbacks : FragmentManager.FragmentLifecyc
          */
         when (f) {
             is BottomSheetDialogFragment -> {
-                ComponentLintPlugin.assignableMap[f::class.java].let {
-                    ComponentLintPlugin.assignableMap.get(BottomSheetDialogFragment::class.java)
+                ComponentLintPlugin.assignableMap.getOrElse(f::class.java) {
+                    ComponentLintPlugin.assignableMap[BottomSheetDialogFragment::class.java]
                 }?.let {
                     ComponentLintPlugin.check(f, it)
                 }
             }
             is DialogFragment -> {
-                ComponentLintPlugin.assignableMap[f::class.java].let {
-                    ComponentLintPlugin.assignableMap.get(DialogFragment::class.java)
+                ComponentLintPlugin.assignableMap.getOrElse(f::class.java) {
+                    ComponentLintPlugin.assignableMap[DialogFragment::class.java]
                 }?.let {
                     ComponentLintPlugin.check(f, it)
                 }
             }
             else -> {
-                ComponentLintPlugin.assignableMap[f::class.java].let {
-                    ComponentLintPlugin.assignableMap.get(Fragment::class.java)
+                ComponentLintPlugin.assignableMap.getOrElse(f::class.java) {
+                    ComponentLintPlugin.assignableMap[Fragment::class.java]
                 }?.let {
                     ComponentLintPlugin.check(f, it)
                 }
