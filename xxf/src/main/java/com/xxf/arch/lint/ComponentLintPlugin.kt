@@ -98,17 +98,20 @@ internal object LintActivityLifecycleCallbacks : SimpleActivityLifecycleCallback
 internal object LintFragmentLifecycleCallbacks : FragmentManager.FragmentLifecycleCallbacks() {
     override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
         super.onFragmentResumed(fm, f)
+        /**
+         * 注意检查顺序
+         */
         when (f) {
-            is DialogFragment -> {
+            is BottomSheetDialogFragment -> {
                 ComponentLintPlugin.assignableMap[f::class.java].let {
-                    ComponentLintPlugin.assignableMap.get(DialogFragment::class.java)
+                    ComponentLintPlugin.assignableMap.get(BottomSheetDialogFragment::class.java)
                 }?.let {
                     ComponentLintPlugin.check(f, it)
                 }
             }
-            is BottomSheetDialogFragment -> {
+            is DialogFragment -> {
                 ComponentLintPlugin.assignableMap[f::class.java].let {
-                    ComponentLintPlugin.assignableMap.get(BottomSheetDialogFragment::class.java)
+                    ComponentLintPlugin.assignableMap.get(DialogFragment::class.java)
                 }?.let {
                     ComponentLintPlugin.check(f, it)
                 }
