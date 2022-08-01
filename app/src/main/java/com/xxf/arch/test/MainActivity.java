@@ -194,7 +194,7 @@ public class MainActivity extends XXFActivity {
 
 
 
-        setWindowSize((int)(ScreenUtils.getScreenWidth()*0.5),(int)(ScreenUtils.getScreenWidth() *0.5));
+//        setWindowSize((int)(ScreenUtils.getScreenWidth()*0.5),(int)(ScreenUtils.getScreenWidth() *0.5));
 
         new TestDialog(this).show();
 

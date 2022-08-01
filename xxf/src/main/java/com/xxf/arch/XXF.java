@@ -26,6 +26,7 @@ import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
 import com.xxf.arch.app.AppBackgroundLifecycleCallbacks;
 import com.xxf.arch.core.XXFUserInfoProvider;
+import com.xxf.arch.lint.ComponentLintPlugin;
 import com.xxf.bus.RxBus;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.activityresult.RxActivityResultCompact;
@@ -38,6 +39,7 @@ import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.rxjava.RxLifecycle;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import autodispose2.AutoDisposeConverter;
@@ -125,6 +127,9 @@ public class XXF {
             synchronized (XXF.class) {
                 if (XXF.application == null) {
                     XXF.application = builder.application;
+                    if(builder.isDebug) {
+                        ComponentLintPlugin.INSTANCE.initPlugin(builder.application, Arrays.asList("com.xxf.arch.test"));
+                    }
                     AppBackgroundLifecycleCallbacks.INSTANCE.register(builder.application);
                     //Initializer 跨进程不会初始化
                     ApplicationInitializer.Companion.init(builder.application);
