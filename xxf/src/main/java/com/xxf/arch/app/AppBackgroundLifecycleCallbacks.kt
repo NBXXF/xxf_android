@@ -17,6 +17,7 @@ internal object AppBackgroundLifecycleCallbacks : SimpleActivityLifecycleCallbac
                 this.isBackground = false
                 this.intent = activity.intent
                 this.activityClass = activity::class.java
+                this.activityClass
             }.postEvent()
         }
         visibleCount++

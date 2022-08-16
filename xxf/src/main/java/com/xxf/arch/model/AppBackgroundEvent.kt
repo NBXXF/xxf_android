@@ -13,20 +13,31 @@ class AppBackgroundEvent : java.io.Serializable {
 
     var activityClass: Class<*>? = null
 
+    var startSource: String? = null
+
+    override fun toString(): String {
+        return "AppBackgroundEvent(isBackground=$isBackground)"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is AppBackgroundEvent) return false
+        if (javaClass != other?.javaClass) return false
+
+        other as AppBackgroundEvent
 
         if (isBackground != other.isBackground) return false
+        if (intent != other.intent) return false
+        if (activityClass != other.activityClass) return false
+        if (startSource != other.startSource) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return isBackground.hashCode()
-    }
-
-    override fun toString(): String {
-        return "AppBackgroundEvent(isBackground=$isBackground)"
+        var result = isBackground.hashCode()
+        result = 31 * result + (intent?.hashCode() ?: 0)
+        result = 31 * result + (activityClass?.hashCode() ?: 0)
+        result = 31 * result + (startSource?.hashCode() ?: 0)
+        return result
     }
 }
