@@ -1,10 +1,17 @@
 package com.xxf.arch.model
 
+import android.app.Activity
+import android.content.Intent
+
 class AppBackgroundEvent : java.io.Serializable {
     /**
      * 应用是否在后台
      */
     var isBackground: Boolean = true
+
+    var intent: Intent? = null
+
+    var activityClass: Class<*>? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

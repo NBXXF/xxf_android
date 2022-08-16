@@ -15,6 +15,8 @@ internal object AppBackgroundLifecycleCallbacks : SimpleActivityLifecycleCallbac
         if (visibleCount <= 0) {
             AppBackgroundEvent().apply {
                 this.isBackground = false
+                this.intent = activity.intent
+                this.activityClass = activity::class.java
             }.postEvent()
         }
         visibleCount++
@@ -27,6 +29,8 @@ internal object AppBackgroundLifecycleCallbacks : SimpleActivityLifecycleCallbac
         if (visibleCount <= 0) {
             AppBackgroundEvent().apply {
                 this.isBackground = true
+                this.intent = activity.intent
+                this.activityClass = activity::class.java
             }.postEvent()
         }
     }
