@@ -57,6 +57,6 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    xxfVersion = "4.9.9.5"
+    xxfVersion = "4.9.9.6"
     xxfGroup = "next.space.NBXXF"
 }

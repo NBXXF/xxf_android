@@ -1,6 +1,7 @@
 package com.xxf.arch.app
 
 import android.app.Activity
+import android.os.Build
 import androidx.annotation.CallSuper
 import com.xxf.application.activity.SimpleActivityLifecycleCallbacks
 import com.xxf.arch.model.AppBackgroundEvent
@@ -17,7 +18,12 @@ internal object AppBackgroundLifecycleCallbacks : SimpleActivityLifecycleCallbac
                 this.isBackground = false
                 this.intent = activity.intent
                 this.activityClass = activity::class.java
-                this.activityClass
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    this.startSource = activity.referrer?.authority
+                } else {
+                    this.startSource = activity.callingPackage
+                }
             }.postEvent()
         }
         visibleCount++
