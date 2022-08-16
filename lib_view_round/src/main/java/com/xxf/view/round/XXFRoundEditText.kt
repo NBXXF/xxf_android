@@ -143,6 +143,30 @@ open class XXFRoundEditText : SkinCompatEditText, XXFRoundWidget {
         CornerUtil.clipViewRadius(this, radius)
     }
 
+    /**
+     * 删除所有监听，慎重使用，使用后一定需要调用 [addAllTextChangeListener]
+     */
+    fun removeAllTextChangeListener() {
+        textWatchers?.forEach {
+            removeTextChangedListener(it)
+        }
+    }
+
+    /**
+     * 执行一段不被监听的方法，执行前删除监听，执行后恢复监听
+     */
+    fun execNotTextWatchers(exec: () -> Unit) {
+        removeAllTextChangeListener()
+        exec()
+        addAllTextChangeListener()
+    }
+
+    fun addAllTextChangeListener() {
+        textWatchers?.forEach {
+            addTextChangedListener(it)
+        }
+    }
+
 
     /**
      * fix 锤子手机8.0崩溃
