@@ -148,7 +148,7 @@ open class XXFRoundEditText : SkinCompatEditText, XXFRoundWidget {
      */
     fun removeAllTextChangeListener() {
         textWatchers?.forEach {
-            removeTextChangedListener(it)
+            super.removeTextChangedListener(it)
         }
     }
 
@@ -157,13 +157,16 @@ open class XXFRoundEditText : SkinCompatEditText, XXFRoundWidget {
      */
     fun execNotTextWatchers(exec: () -> Unit) {
         removeAllTextChangeListener()
-        exec()
-        addAllTextChangeListener()
+        try {
+            exec()
+        } finally {
+            addAllTextChangeListener()
+        }
     }
 
     fun addAllTextChangeListener() {
         textWatchers?.forEach {
-            addTextChangedListener(it)
+            super.addTextChangedListener(it)
         }
     }
 
