@@ -19,6 +19,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.xxf.bus.postEvent
 import com.xxf.bus.subscribeEvent
+import io.reactivex.rxjava3.core.Observable
+import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -71,6 +73,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        Observable.just(1)
+            .map {
+                if(it>0) {
+                    throw RuntimeException("x mast <=0")
+                }
+                it
+            }.onErrorResumeNext {
+                Observable.just(100)
+            }.subscribe {
+                System.out.println("================>test xx::"+it);
+            }
 //        TestEvent::class.java.subscribeEvent()
 //                .subscribe {
 //            System.out.println("=====>"+"收到"+it);
