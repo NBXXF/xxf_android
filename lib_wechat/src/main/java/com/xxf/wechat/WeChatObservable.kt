@@ -11,6 +11,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.exceptions.CompositeException
 import io.reactivex.rxjava3.exceptions.Exceptions
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import java.lang.RuntimeException
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -78,8 +79,26 @@ class WeChatObservable(var appId: String, var baseReq: BaseReq) : Observable<Bas
             }
         }.also { eventHandler = it })
         observer.onSubscribe(eventHandler)
-        val wxApi = WXAPIFactory.createWXAPI(applicationContext, appId)
-        wxApi.registerApp(appId)
-        wxApi.sendReq(baseReq)
+        val wxApi = WXAPIFactory.createWXAPI(applicationContext, appId,false)
+        if(!wxApi.registerApp(appId)){
+            val t=RuntimeException("微信注册失败:$appId");
+            try {
+                observer.onError(t)
+            } catch (inner: Throwable) {
+                Exceptions.throwIfFatal(inner)
+                RxJavaPlugins.onError(CompositeException(t, inner))
+            }
+            return
+        }
+        if(!wxApi.sendReq(baseReq)){
+            val t=RuntimeException("微信请求失败");
+            try {
+                observer.onError(t)
+            } catch (inner: Throwable) {
+                Exceptions.throwIfFatal(inner)
+                RxJavaPlugins.onError(CompositeException(t, inner))
+            }
+            return
+        }
     }
 }
