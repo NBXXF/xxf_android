@@ -96,11 +96,11 @@ public class UriUtils {
             String path = uri.getPath();
 
             /**
-             * 先执行拷贝
+             * 先尝试执行沙盒执行拷贝
              */
             if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
                 File file = copyUri2Cache(context, uri);
-                if (file.exists() && file.length() > 0) {
+                if (file!=null && file.exists() && file.length() > 0) {
                     return file;
                 }
             }
