@@ -1,4 +1,4 @@
-package com.xxf.arch.utils;
+package com.xxf.utils;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.os.FileUtils;
 import android.os.ParcelFileDescriptor;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
@@ -23,14 +22,12 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.WorkerThread;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -39,8 +36,7 @@ import java.lang.reflect.Method;
 import static android.content.ContentResolver.SCHEME_CONTENT;
 import static android.content.Context.STORAGE_SERVICE;
 
-import com.xxf.hash.Murmur3A;
-import com.xxf.hash.PrimitiveDataChecksum;
+import com.xxf.hash.HashExtentionKt;
 
 /**
  * Description
@@ -437,9 +433,7 @@ public class UriUtils {
      * @return
      */
     private static long generateId(String data) {
-        PrimitiveDataChecksum primitiveDataChecksum = new PrimitiveDataChecksum(new Murmur3A());
-        primitiveDataChecksum.updateUtf8(data);
-        return primitiveDataChecksum.getValue();
+       return HashExtentionKt.toMurmurHash(data);
     }
 
 

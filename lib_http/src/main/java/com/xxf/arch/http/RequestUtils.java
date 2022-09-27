@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 
-import com.xxf.arch.utils.UriUtils;
+import com.xxf.utils.UriUtils;
 
 import java.io.File;
 import java.util.UUID;
