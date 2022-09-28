@@ -49,6 +49,10 @@ public class ViewLifecycleOwner {
             found = (LifecycleOwner) parentView.getTag(R.id.tag_view_lifecycle_owner);
             parent = parentView.getParent();
         }
+        //解决没有添加到window上的时候
+        if (found == null && (view.getContext() instanceof LifecycleOwner)) {
+            return (LifecycleOwner) view.getContext();
+        }
         return found;
     }
 }
