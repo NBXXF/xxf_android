@@ -2,7 +2,6 @@ package com.xxf.arch.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Pair;
@@ -11,15 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -132,6 +128,12 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewLifecycleOwner.set(view, this);
+        /**
+         * 检查是否实现了WindowComponent协议
+         */
+        if (getShowsDialog() && !(getDialog() instanceof WindowComponent)) {
+            throw new RuntimeException("dialog must extends from WindowComponent");
+        }
     }
 
     /**
@@ -199,47 +201,39 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
 
     @Override
     public void setWindowSize(int width, int height) {
-        Window window = getWindow();
-        if (window != null) {
-            WindowManager.LayoutParams attributes = window.getAttributes();
-            attributes.width = width;
-            attributes.height = height;
-            window.setAttributes(attributes);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowSize(width,height);
         }
     }
 
     @Override
     public void setWindowWidth(int width) {
-        Window window = getWindow();
-        if (window != null) {
-            WindowManager.LayoutParams attributes = window.getAttributes();
-            attributes.width = width;
-            window.setAttributes(attributes);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowWidth(width);
         }
     }
 
     @Override
     public void setWindowHeight(int height) {
-        Window window = getWindow();
-        if (window != null) {
-            WindowManager.LayoutParams attributes = window.getAttributes();
-            attributes.height = height;
-            window.setAttributes(attributes);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowHeight(height);
         }
     }
 
     @Nullable
     @Override
     public Window getWindow() {
-        return getDialog() != null ? getDialog().getWindow() : null;
+        if(getDialog() instanceof WindowComponent){
+            return ((WindowComponent)getDialog()).getWindow();
+        }
+        return null;
     }
 
     @Nullable
     @Override
     public FrameLayout getDecorView() {
-        Window window = getWindow();
-        if (window != null) {
-            return (FrameLayout) window.getDecorView();
+        if(getDialog() instanceof WindowComponent){
+           return  ((WindowComponent)getDialog()).getDecorView();
         }
         return null;
     }
@@ -247,70 +241,58 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
     @Nullable
     @Override
     public FrameLayout getContentParent() {
-        Window window = getWindow();
-        if (window != null) {
-            return (FrameLayout) window.findViewById(android.R.id.content);
+        if(getDialog() instanceof WindowComponent){
+            return  ((WindowComponent)getDialog()).getContentParent();
         }
         return null;
     }
 
     @Override
     public void setWindowDimAmount(float amount) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setDimAmount(amount);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowDimAmount(amount);
         }
     }
 
     @Override
     public void setWindowGravity(int gravity) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setGravity(gravity);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowGravity(gravity);
         }
     }
 
     @Override
     public void setWindowBackground(@NotNull Drawable drawable) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(drawable);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowBackground(drawable);
         }
     }
 
     @Override
     public void setWindowBackground(int color) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(color));
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowBackground(color);
         }
     }
 
     @Override
     public void setWindowBackgroundDimEnabled(boolean enabled) {
-        Window window = getWindow();
-        if (window != null) {
-            if (enabled) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            } else {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            }
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowBackgroundDimEnabled(enabled);
         }
     }
 
     @Override
     public void setCanceledOnTouchOutside(boolean cancel) {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.setCanceledOnTouchOutside(cancel);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setCanceledOnTouchOutside(cancel);
         }
     }
 
     @Override
     public void setWindowRadius(float radius) {
-        FrameLayout decorView = getDecorView();
-        if (decorView != null) {
-            CornerUtil.INSTANCE.clipViewRadius(decorView,radius);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowRadius(radius);
         }
     }
 }

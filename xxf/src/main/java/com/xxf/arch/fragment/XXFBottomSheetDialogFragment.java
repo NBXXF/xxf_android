@@ -2,7 +2,6 @@ package com.xxf.arch.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Pair;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
@@ -26,9 +24,9 @@ import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
+import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.XXFBottomSheetDialog;
 import com.xxf.utils.RAUtils;
-import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -117,6 +115,12 @@ public class XXFBottomSheetDialogFragment<E>
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ViewLifecycleOwner.set(view, this);
+        /**
+         * 检查是否实现了WindowComponent协议
+         */
+        if (getShowsDialog() && !(getDialog() instanceof WindowComponent)) {
+            throw new RuntimeException("dialog must extends from WindowComponent");
+        }
     }
 
     /**
@@ -186,9 +190,8 @@ public class XXFBottomSheetDialogFragment<E>
     @Nullable
     @Override
     public FrameLayout getBottomSheetView() {
-        View dec = getDecorView();
-        if (dec != null) {
-            return dec.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        if(getDialog() instanceof BottomSheetWindowComponent){
+           return  ((BottomSheetWindowComponent)getDialog()).getBottomSheetView();
         }
         return null;
     }
@@ -205,65 +208,48 @@ public class XXFBottomSheetDialogFragment<E>
      */
     @Nullable
     public BottomSheetBehavior<FrameLayout> getBehavior() {
-        FrameLayout bottomSheetView = getBottomSheetView();
-        if (bottomSheetView != null) {
-            return BottomSheetBehavior.from(bottomSheetView);
+        if(getDialog() instanceof BottomSheetWindowComponent){
+            return  ((BottomSheetWindowComponent)getDialog()).getBehavior();
         }
         return null;
     }
 
+
     @Override
     public void setWindowSize(int width, int height) {
-        View bottomSheet = getBottomSheetView();
-        if (bottomSheet == null) {
-            return;
-        }
-        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-        if (layoutParams.width != height || layoutParams.height != height) {
-            layoutParams.height = height;
-            layoutParams.width = width;
-            bottomSheet.requestLayout();
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowSize(width,height);
         }
     }
 
     @Override
     public void setWindowWidth(int width) {
-        View bottomSheet = getBottomSheetView();
-        if (bottomSheet == null) {
-            return;
-        }
-        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-        if (layoutParams.width != width) {
-            layoutParams.width = width;
-            bottomSheet.requestLayout();
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowWidth(width);
         }
     }
 
     @Override
     public void setWindowHeight(int height) {
-        View bottomSheet = getBottomSheetView();
-        if (bottomSheet == null) {
-            return;
-        }
-        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-        if (layoutParams.height != height) {
-            layoutParams.height = height;
-            bottomSheet.requestLayout();
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowHeight(height);
         }
     }
 
     @Nullable
     @Override
     public Window getWindow() {
-        return getDialog() != null ? getDialog().getWindow() : null;
+        if(getDialog() instanceof WindowComponent){
+            return ((WindowComponent)getDialog()).getWindow();
+        }
+        return null;
     }
 
     @Nullable
     @Override
     public FrameLayout getDecorView() {
-        Window window = getWindow();
-        if (window != null) {
-            return (FrameLayout) window.getDecorView();
+        if(getDialog() instanceof WindowComponent){
+            return  ((WindowComponent)getDialog()).getDecorView();
         }
         return null;
     }
@@ -271,70 +257,58 @@ public class XXFBottomSheetDialogFragment<E>
     @Nullable
     @Override
     public FrameLayout getContentParent() {
-        Window window = getWindow();
-        if (window != null) {
-            return (FrameLayout) window.findViewById(android.R.id.content);
+        if(getDialog() instanceof WindowComponent){
+            return  ((WindowComponent)getDialog()).getContentParent();
         }
         return null;
     }
 
     @Override
     public void setWindowDimAmount(float amount) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setDimAmount(amount);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowDimAmount(amount);
         }
     }
 
     @Override
     public void setWindowGravity(int gravity) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setGravity(gravity);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowGravity(gravity);
         }
     }
 
     @Override
     public void setWindowBackground(@NotNull Drawable drawable) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(drawable);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowBackground(drawable);
         }
     }
 
     @Override
     public void setWindowBackground(int color) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(color));
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowBackground(color);
         }
     }
 
     @Override
     public void setWindowBackgroundDimEnabled(boolean enabled) {
-        Window window = getWindow();
-        if (window != null) {
-            if (enabled) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            } else {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            }
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowBackgroundDimEnabled(enabled);
         }
     }
+
     @Override
     public void setCanceledOnTouchOutside(boolean cancel) {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.setCanceledOnTouchOutside(cancel);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setCanceledOnTouchOutside(cancel);
         }
     }
 
     @Override
     public void setWindowRadius(float radius) {
-        FrameLayout bottomSheetView = getBottomSheetView();
-        if (bottomSheetView != null) {
-            CornerUtil.INSTANCE.clipViewRadius(bottomSheetView,radius);
+        if(getDialog() instanceof WindowComponent){
+            ((WindowComponent)getDialog()).setWindowRadius(radius);
         }
     }
-
 }

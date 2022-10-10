@@ -55,12 +55,6 @@ open class XXFBottomSheetNavigationDialogFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /**
-         * 检查是否是这个dialog
-         */
-        if (showsDialog && dialog !is XXFBottomSheetDialog<*>) {
-            throw RuntimeException("dialog must extends from XXFBottomSheetDialog")
-        }
         try {
             val call = defaultNavHost.call()
             if (call == null) {

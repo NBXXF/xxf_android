@@ -2,14 +2,16 @@ package com.xxf.arch.fragment.navigation.container
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.xxf.arch.R
+import com.xxf.arch.dialog.TouchListenDialog
 import com.xxf.arch.fragment.XXFDialogFragment
-import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment.Companion.TAG_DEFAULT_NAV_HOST
 import com.xxf.arch.fragment.navigation.INavigationController
 import com.xxf.arch.fragment.navigation.NavigationContainer
+import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment.Companion.TAG_DEFAULT_NAV_HOST
 import com.xxf.arch.fragment.navigation.impl.FragmentNavController
 import java.util.concurrent.Callable
 
@@ -36,14 +38,18 @@ open class XXFNavigationDialogFragment :
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return object : BottomSheetDialog(requireContext(), theme) {
-            override fun onBackPressed() {
-                //拦截返回事件
-                if (!navController.navigationUp()) {
-                    super.onBackPressed()
-                }
+       return object : TouchListenDialog<Any?>(context, theme) {
+            override fun onDialogTouchOutside(event: MotionEvent) {
+                this@XXFNavigationDialogFragment.onDialogTouchOutside(event)
             }
-        }
+
+           override fun onBackPressed() {
+               //拦截返回事件
+               if (!navController.navigationUp()) {
+                   super.onBackPressed()
+               }
+           }
+        };
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
