@@ -76,6 +76,16 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
             // SystemUtils.hideSoftKeyBoard(requireActivity())
             //  hideInput()
         }
+        test(binding.root);
+    }
+
+    private fun test(view: View?){
+        view?.let {
+            println("============>view:$it")
+            if(it.parent is View){
+                test(it.parent as View);
+            }
+        }
     }
 
     class Test{

@@ -68,7 +68,8 @@ class MainActivity() : AppCompatActivity() {
         // test()
 
         // insert()
-        testSpeed()
+       // testSpeed()
+        testCountSpeed();
     }
 
 
@@ -235,6 +236,62 @@ class MainActivity() : AppCompatActivity() {
             .subscribe()
     }
 
+    private fun testCountSpeed(){
+        val box = getBox(this).boxFor(Animal::class.java);
+        box.removeAll();
+        for(i in 1..1000){
+            box.put(Animal().apply {
+                this.name = "李四"
+                this.uuid = ""+i;
+            })
+        }
+
+        var start = System.nanoTime();
+        box.query()
+            .`in`(Animal_.uuid, arrayOf("500","600","700"),QueryBuilder.StringOrder.CASE_INSENSITIVE)
+            .build()
+            .count();
+        var end=System.nanoTime();
+        System.out.println("=============>take2:" +(end-start));
+
+
+        start = System.nanoTime();
+        box.query()
+            .`in`(Animal_.uuid, arrayOf("500","600","700"),QueryBuilder.StringOrder.CASE_INSENSITIVE)
+            .build().findFirst();
+        end=System.nanoTime();
+        System.out.println("=============>take3:" +(end-start));
+
+        start = System.nanoTime();
+        box.query()
+            .`in`(Animal_.uuid, arrayOf("500","600","700"),QueryBuilder.StringOrder.CASE_INSENSITIVE)
+            .build().find().size;
+        end=System.nanoTime();
+        System.out.println("=============>take4:" +(end-start));
+
+
+        start = System.nanoTime();
+        box.query()
+            .`in`(Animal_.uuid, arrayOf("500","600","700"),QueryBuilder.StringOrder.CASE_INSENSITIVE)
+            .build().findIds().size
+        end=System.nanoTime();
+        System.out.println("=============>take5:" +(end-start));
+
+        start = System.nanoTime();
+        box.query()
+            .`in`(Animal_.uuid, arrayOf("500","600","700"),QueryBuilder.StringOrder.CASE_INSENSITIVE)
+            .build().findIds(0,1);
+        end=System.nanoTime();
+        System.out.println("=============>take6:" +(end-start));
+
+
+        start = System.nanoTime();
+       val result= box.query()
+            .`in`(Animal_.uuid, arrayOf("500","600","700"),QueryBuilder.StringOrder.CASE_INSENSITIVE)
+            .build().hasResult();
+        end=System.nanoTime();
+        System.out.println("=============>take7:" +(end-start)+" res:"+result);
+    }
     private fun testUnique() {
 
         getBox(this).boxFor(Animal::class.java)

@@ -627,15 +627,15 @@ public class MainActivity extends XXFActivity {
                                 });
 
 
-                        XXF.requestPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-
-                                .subscribe(new Consumer<Boolean>() {
-                                    @Override
-                                    public void accept(Boolean aBoolean) throws Exception {
-                                        Log.d("==========>", "requestPermission:" + aBoolean);
-                                        ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean, ToastUtils.ToastType.ERROR);
-                                    }
-                                });
+//                        XXF.requestPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+//
+//                                .subscribe(new Consumer<Boolean>() {
+//                                    @Override
+//                                    public void accept(Boolean aBoolean) throws Exception {
+//                                        Log.d("==========>", "requestPermission:" + aBoolean);
+//                                        ToastUtils.showToast("Manifest.permission.CAMERA:" + aBoolean, ToastUtils.ToastType.ERROR);
+//                                    }
+//                                });
                         TestDialogFragment dialogFragment = new TestDialogFragment();
                         dialogFragment.show(getSupportFragmentManager(), "hello");
                     }

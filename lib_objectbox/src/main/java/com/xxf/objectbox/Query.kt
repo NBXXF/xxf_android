@@ -38,3 +38,12 @@ fun <T> Query<T>.observableChange(): Observable<List<T>> {
 fun <T> Query<T>.single(): Single<List<T>> {
     return RxQuery.single(this)
 }
+
+/**
+ * 是否有结果 这种查询速度最快
+ * 比count快
+ * 比findFist快
+ */
+fun <T> Query<T>.hasResult(): Boolean {
+    return this.findIds(0,1).isNotEmpty();
+}
