@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.KeyboardShortcutGroup
+import android.view.Menu
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -323,6 +325,16 @@ class MainActivity() : AppCompatActivity() {
             )
         val find2 = getBox(this).boxFor(Animal::class.java).query().build().find()
         System.out.println("=============>query result2:" + find2)
+
+        listOf("x").firstOrNull()
+    }
+
+    override fun onProvideKeyboardShortcuts(
+        data: MutableList<KeyboardShortcutGroup>?,
+        menu: Menu?,
+        deviceId: Int
+    ) {
+        super.onProvideKeyboardShortcuts(data, menu, deviceId)
     }
 
 }

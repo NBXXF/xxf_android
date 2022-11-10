@@ -68,9 +68,11 @@ public class XXFAlertDialog<R>
 
     @Override
     public void show() {
-        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
-            super.show();
-        }
+        // 不能拦截  多个dialog 嵌套在dialogFragmennt中这样有问题 (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT))
+//        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
+//            super.show();
+//        }
+        super.show();
     }
 
     @Override
