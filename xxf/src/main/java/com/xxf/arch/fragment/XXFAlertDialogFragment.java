@@ -178,6 +178,9 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
 
     @Override
     public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
+        if(this.isAdded()){
+            return -1;
+        }
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
             return super.show(transaction, tag);
         }
@@ -186,6 +189,13 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
 
     @Override
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        try {
+            manager.executePendingTransactions();
+        }catch (Throwable throwable){
+        }
+        if(this.isAdded()){
+            return;
+        }
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
             super.show(manager, tag);
         }
@@ -193,6 +203,13 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
 
     @Override
     public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
+        try {
+            manager.executePendingTransactions();
+        }catch (Throwable throwable){
+        }
+        if(this.isAdded()){
+            return;
+        }
         if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
             super.showNow(manager, tag);
         }

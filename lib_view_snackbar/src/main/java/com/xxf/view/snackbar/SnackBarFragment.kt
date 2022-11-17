@@ -6,6 +6,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.*
 import androidx.annotation.CallSuper
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -52,6 +54,35 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
             e.printStackTrace()
         }
         return null;
+    }
+
+    override fun show(transaction: FragmentTransaction, tag: String?): Int {
+        if (this.isAdded) {
+            return -1
+        }
+        return  super.show(transaction, tag);
+    }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        try {
+            manager.executePendingTransactions()
+        } catch (throwable: Throwable) {
+        }
+        if (this.isAdded) {
+            return
+        }
+        super.show(manager, tag)
+    }
+
+    override fun showNow(manager: FragmentManager, tag: String?) {
+        try {
+            manager.executePendingTransactions()
+        } catch (throwable: Throwable) {
+        }
+        if (this.isAdded) {
+            return
+        }
+        super.showNow(manager, tag)
     }
 
     @CallSuper
