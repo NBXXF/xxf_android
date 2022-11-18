@@ -26,6 +26,7 @@ import com.xxf.application.lifecycle.ViewLifecycleOwner;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
+import com.xxf.utils.FragmentUtils;
 import com.xxf.utils.RAUtils;
 import com.xxf.view.round.CornerUtil;
 
@@ -175,6 +176,13 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
     }
 
 
+    /**
+     * 不建议使用这个,不能控制重复添加的bug
+     * @param transaction
+     * @param tag
+     * @return
+     */
+    @Deprecated
     @Override
     public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
         if(this.isAdded()){
@@ -188,6 +196,7 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
 
     @Override
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        FragmentUtils.removeFragment(manager,tag);
         try {
             manager.executePendingTransactions();
         }catch (Throwable throwable){
@@ -202,6 +211,7 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
 
     @Override
     public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
+        FragmentUtils.removeFragment(manager,tag);
         try {
             manager.executePendingTransactions();
         }catch (Throwable throwable){

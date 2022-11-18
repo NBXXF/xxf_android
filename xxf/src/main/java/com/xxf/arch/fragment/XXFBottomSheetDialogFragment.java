@@ -26,6 +26,7 @@ import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.XXFBottomSheetDialog;
+import com.xxf.utils.FragmentUtils;
 import com.xxf.utils.RAUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -164,6 +165,13 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
 
+    /**
+     * 不建议使用这个,不能控制重复添加的bug
+     * @param transaction
+     * @param tag
+     * @return
+     */
+    @Deprecated
     @Override
     public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
         if(this.isAdded()){
@@ -175,8 +183,10 @@ public class XXFBottomSheetDialogFragment<E>
         return -1;
     }
 
+
     @Override
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        FragmentUtils.removeFragment(manager,tag);
         try {
             manager.executePendingTransactions();
         }catch (Throwable throwable){
@@ -191,6 +201,7 @@ public class XXFBottomSheetDialogFragment<E>
 
     @Override
     public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
+        FragmentUtils.removeFragment(manager,tag);
         try {
             manager.executePendingTransactions();
         }catch (Throwable throwable){

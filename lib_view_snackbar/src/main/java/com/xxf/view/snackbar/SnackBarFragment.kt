@@ -4,10 +4,14 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.Gravity
+import android.view.View
+import android.view.WindowManager
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.xxf.utils.FragmentUtils
+import java.lang.Deprecated
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -56,6 +60,13 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
         return null;
     }
 
+    /**
+     * 不建议使用这个,不能控制重复添加的bug
+     * @param transaction
+     * @param tag
+     * @return
+     */
+    @Deprecated
     override fun show(transaction: FragmentTransaction, tag: String?): Int {
         if (this.isAdded) {
             return -1
@@ -63,7 +74,9 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
         return  super.show(transaction, tag);
     }
 
+
     override fun show(manager: FragmentManager, tag: String?) {
+        FragmentUtils.removeFragment(manager,tag);
         try {
             manager.executePendingTransactions()
         } catch (throwable: Throwable) {
@@ -75,6 +88,7 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
     }
 
     override fun showNow(manager: FragmentManager, tag: String?) {
+        FragmentUtils.removeFragment(manager,tag)
         try {
             manager.executePendingTransactions()
         } catch (throwable: Throwable) {

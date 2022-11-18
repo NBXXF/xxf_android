@@ -26,6 +26,7 @@ android {
 
 dependencies {
     api des.material
+    api project(path: ':lib_utils')
 }
 
 ext {

@@ -28,6 +28,16 @@ public class FragmentUtils {
      * 移除
      *
      * @param fragmentManager
+     * @param tag
+     */
+    public static void removeFragment(@NonNull FragmentManager fragmentManager,@Nullable String tag) {
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        removeFragment(fragmentManager,fragment);
+    }
+    /**
+     * 移除
+     *
+     * @param fragmentManager
      * @param fragment
      */
     public static void removeFragment(@NonNull FragmentManager fragmentManager, @Nullable Fragment fragment) {
