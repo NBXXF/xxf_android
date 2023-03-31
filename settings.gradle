@@ -28,7 +28,7 @@ include ':lib_adapter:lib_adapter_demo'
 include ':lib_effect:layout_anim_demo'
 include ':lib_hash:lib_hash_demo'
 include ':lib_objectbox:serialization_demo'
-include ':ds_bridge'
+//include ':ds_bridge'
 
 include ':lib_spi_compiler'
 include ':lib_spi_annotation'

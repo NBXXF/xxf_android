@@ -7,12 +7,11 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="Android Studio default JDK" />
+        <option name="gradleJvm" value="azul-13" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/ds_bridge" />
             <option value="$PROJECT_DIR$/lib_activityresult" />
             <option value="$PROJECT_DIR$/lib_adapter" />
             <option value="$PROJECT_DIR$/lib_adapter/lib_adapter_demo" />
@@ -47,6 +46,8 @@
             <option value="$PROJECT_DIR$/xxf" />
           </set>
         </option>
+        <option name="resolveExternalAnnotations" value="false" />
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
