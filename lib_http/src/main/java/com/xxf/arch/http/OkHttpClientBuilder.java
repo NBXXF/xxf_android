@@ -19,6 +19,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.CookieJar;
+import okhttp3.Dns;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
@@ -60,6 +61,11 @@ public class OkHttpClientBuilder {
 
     public OkHttpClientBuilder cookieJar(@Nullable CookieJar cookieJar) {
         builder.cookieJar(cookieJar);
+        return this;
+    }
+
+    public OkHttpClientBuilder dns(@Nullable Dns dns) {
+        builder.dns(dns);
         return this;
     }
 

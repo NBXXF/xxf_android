@@ -8,6 +8,7 @@ import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.BaseUrlProvider;
 import com.xxf.arch.annotation.CookieJar;
 import com.xxf.arch.annotation.Dispatcher;
+import com.xxf.arch.annotation.Dns;
 import com.xxf.arch.annotation.RxHttpCacheConfig;
 import com.xxf.arch.annotation.RxJavaInterceptor;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
@@ -95,6 +96,17 @@ public class XXFHttp {
             okhttp3.CookieJar cookieJar = cookieJarAnnotation.value().newInstance();
             if (cookieJar != null) {
                 ohcb.cookieJar(cookieJar);
+            }
+        }
+
+        /**
+         * 设置dns
+         */
+        Dns dnsAnnotation = apiClazz.getAnnotation(Dns.class);
+        if (dnsAnnotation  != null && dnsAnnotation .value() != null) {
+            okhttp3.Dns dns = dnsAnnotation.value().newInstance();
+            if (dns != null) {
+                ohcb.dns(dns);
             }
         }
 
