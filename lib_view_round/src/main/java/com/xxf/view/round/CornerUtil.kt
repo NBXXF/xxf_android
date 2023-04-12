@@ -37,19 +37,31 @@ object CornerUtil {
             val dp360 = dip2px(view.context, 360f)
             if (radius >= dp360) {
                 clipViewCircle(view)
-            } else {
+            } else if (radius > 0) {
                 clipViewRoundRect(view, radius)
+            } else {
+                clearClip(view)
             }
             radiusTr.recycle()
         }
+    }
+
+    /**
+     * 对于clip 为0的，只需要清除，不需要重新设置 outlineProvider
+     */
+    private fun clearClip(view: View) {
+        view.clipToOutline = false
+//        view.outlineProvider = ViewOutlineProvider.BACKGROUND
     }
 
     fun clipViewRadius(view: View, radius: Float) {
         val dp360 = dip2px(view.context, 360f)
         if (radius >= dp360) {
             clipViewCircle(view)
-        } else {
+        } else if (radius > 0) {
             clipViewRoundRect(view, radius.toInt())
+        } else {
+            clearClip(view)
         }
     }
 
