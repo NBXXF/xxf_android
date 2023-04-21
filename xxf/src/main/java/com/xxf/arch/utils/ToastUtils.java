@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -252,7 +253,7 @@ public class ToastUtils {
     @UiThread
     @Nullable
     public static Toast showToast(@NonNull CharSequence notice) {
-        return showToast(notice, ToastType.ERROR, Gravity.CENTER);
+        return showToast(notice, ToastType.SUCCESS, Gravity.CENTER);
     }
 
     /**
@@ -404,16 +405,20 @@ public class ToastUtils {
             int dp19 = DensityUtil.dip2px(19);
             switch (type) {
                 case ERROR:
-                    Drawable errorDrawable = ApplicationInitializer.applicationContext.getDrawable(R.drawable.xxf_ic_toast_error);
-                    errorDrawable.setBounds(0, 0, dp19, dp19);
+                    Drawable errorDrawable = AppCompatResources.getDrawable(rootView.getContext(),R.drawable.ic_cancel_20);
+                    if (errorDrawable != null) {
+                        errorDrawable.setBounds(0, 0, dp19, dp19);
+                    }
                     textView.setCompoundDrawables(errorDrawable, null, null, null);
                     break;
                 case NORMAL:
                     textView.setCompoundDrawables(null, null, null, null);
                     break;
                 case SUCCESS:
-                    Drawable successDrawable = ApplicationInitializer.applicationContext.getDrawable(R.drawable.xxf_ic_toast_success);
-                    successDrawable.setBounds(0, 0, dp19, dp19);
+                    Drawable successDrawable = AppCompatResources.getDrawable(rootView.getContext(),R.drawable.ic_table_checked_20);
+                    if (successDrawable != null) {
+                        successDrawable.setBounds(0, 0, dp19, dp19);
+                    }
                     textView.setCompoundDrawables(successDrawable, null, null, null);
                     break;
             }
@@ -443,16 +448,20 @@ public class ToastUtils {
         int dp19 = DensityUtil.dip2px(19);
         switch (type) {
             case ERROR:
-                Drawable errorDrawable = ApplicationInitializer.applicationContext.getDrawable(R.drawable.xxf_ic_toast_error);
-                errorDrawable.setBounds(0, 0, dp19, dp19);
+                Drawable errorDrawable = AppCompatResources.getDrawable(view.getContext(),R.drawable.ic_cancel_20);
+                if (errorDrawable != null) {
+                    errorDrawable.setBounds(0, 0, dp19, dp19);
+                }
                 text.setCompoundDrawables(errorDrawable, null, null, null);
                 break;
             case NORMAL:
                 text.setCompoundDrawables(null, null, null, null);
                 break;
             case SUCCESS:
-                Drawable successDrawable = ApplicationInitializer.applicationContext.getDrawable(R.drawable.xxf_ic_toast_success);
-                successDrawable.setBounds(0, 0, dp19, dp19);
+                Drawable successDrawable = AppCompatResources.getDrawable(view.getContext(),R.drawable.ic_table_checked_20);
+                if (successDrawable != null) {
+                    successDrawable.setBounds(0, 0, dp19, dp19);
+                }
                 text.setCompoundDrawables(successDrawable, null, null, null);
                 break;
         }

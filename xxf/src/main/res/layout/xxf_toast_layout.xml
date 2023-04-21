@@ -7,8 +7,8 @@
     android:gravity="center"
     android:minHeight="40dp"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
 
     <TextView
         android:id="@android:id/message"
@@ -21,6 +21,6 @@
         android:textColor="@android:color/white"
         android:textSize="13sp"
         android:textStyle="bold"
-        tools:drawableLeft="@drawable/xxf_ic_toast_success"
+        tools:drawableLeft="@drawable/ic_table_checked_20"
         tools:text="这是taost内容" />
 </LinearLayout>

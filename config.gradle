@@ -30,7 +30,7 @@ ext {
              */
             databinding_runtime           : "androidx.databinding:databinding-runtime:7.0.4",
 
-            skin_support                  : "next.space.lib:skin-support:4.0.8",
+            skin_support                  : "next.space.lib:skin-support:4.1.1",
             skin_support_appcompat        : "next.space.lib:skin-support-appcompat:4.0.8",
             skin_support_constraint_layout: "next.space.lib:skin-support-constraint-layout:4.0.8",
             skin_support_cardview         : "next.space.lib:skin-support-cardview:4.0.8",
