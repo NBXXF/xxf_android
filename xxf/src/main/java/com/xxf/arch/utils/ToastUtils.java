@@ -394,9 +394,10 @@ public class ToastUtils {
             return;
         }
         try {
+
             Snackbar snackbar = Snackbar.Companion.make(rootView, notice, Snackbar.LENGTH_SHORT);
             View snackbarView = snackbar.getView();
-            snackbarView.setPadding(0, topOffset, 0, 0);
+            snackbarView.setPadding(DensityUtil.dip2px(10), topOffset, 0, 0);
             snackbarView.setBackgroundColor(0xFF333333);
             TextView textView = (TextView) snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
             textView.setTextColor(Color.WHITE);
