@@ -21,6 +21,6 @@
         android:textColor="@android:color/white"
         android:textSize="13sp"
         android:textStyle="bold"
-        tools:drawableLeft="@drawable/ic_table_checked_20"
+        tools:drawableLeft="@drawable/xxf_ic_table_checked_20"
         tools:text="这是taost内容" />
 </LinearLayout>

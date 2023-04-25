@@ -406,7 +406,7 @@ public class ToastUtils {
             int dp19 = DensityUtil.dip2px(19);
             switch (type) {
                 case ERROR:
-                    Drawable errorDrawable = AppCompatResources.getDrawable(rootView.getContext(),R.drawable.ic_cancel_20);
+                    Drawable errorDrawable = AppCompatResources.getDrawable(rootView.getContext(),R.drawable.xxf_ic_cancel_20);
                     if (errorDrawable != null) {
                         errorDrawable.setBounds(0, 0, dp19, dp19);
                     }
@@ -416,7 +416,7 @@ public class ToastUtils {
                     textView.setCompoundDrawables(null, null, null, null);
                     break;
                 case SUCCESS:
-                    Drawable successDrawable = AppCompatResources.getDrawable(rootView.getContext(),R.drawable.ic_table_checked_20);
+                    Drawable successDrawable = AppCompatResources.getDrawable(rootView.getContext(),R.drawable.xxf_ic_table_checked_20);
                     if (successDrawable != null) {
                         successDrawable.setBounds(0, 0, dp19, dp19);
                     }
@@ -449,7 +449,7 @@ public class ToastUtils {
         int dp19 = DensityUtil.dip2px(19);
         switch (type) {
             case ERROR:
-                Drawable errorDrawable = AppCompatResources.getDrawable(view.getContext(),R.drawable.ic_cancel_20);
+                Drawable errorDrawable = AppCompatResources.getDrawable(view.getContext(),R.drawable.xxf_ic_cancel_20);
                 if (errorDrawable != null) {
                     errorDrawable.setBounds(0, 0, dp19, dp19);
                 }
@@ -459,7 +459,7 @@ public class ToastUtils {
                 text.setCompoundDrawables(null, null, null, null);
                 break;
             case SUCCESS:
-                Drawable successDrawable = AppCompatResources.getDrawable(view.getContext(),R.drawable.ic_table_checked_20);
+                Drawable successDrawable = AppCompatResources.getDrawable(view.getContext(),R.drawable.xxf_ic_table_checked_20);
                 if (successDrawable != null) {
                     successDrawable.setBounds(0, 0, dp19, dp19);
                 }
