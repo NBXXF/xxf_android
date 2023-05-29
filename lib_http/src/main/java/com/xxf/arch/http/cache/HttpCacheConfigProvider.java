@@ -5,6 +5,9 @@ import androidx.annotation.Nullable;
 
 import java.util.concurrent.TimeUnit;
 
+import kotlin.Deprecated;
+import retrofit2.Response;
+
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description
@@ -34,7 +37,17 @@ public interface HttpCacheConfigProvider {
      * @param body 在interface 中声明的 Observable<T> 对应的T
      * @return
      */
+    @Deprecated(message = "这个方法过时了,请使用isCache(Response rResponse)")
     default boolean isCache(@Nullable Object body) {
+        return true;
+    }
+
+    /**
+     * 是否缓存 场用于 用于下游判断code是否应该缓存
+     * @param response
+     * @return
+     */
+    default  boolean isCache(Response response){
         return true;
     }
 
