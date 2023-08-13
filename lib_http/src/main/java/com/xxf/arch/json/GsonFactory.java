@@ -12,6 +12,11 @@ import com.xxf.arch.json.typeadapter.number.IntegerTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.LongTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.PercentageDoubleTypeAdapter;
 import com.xxf.arch.json.typeadapter.number.PercentageFloatTypeAdapter;
+import com.xxf.arch.json.typeadapter.orgJSON.JSONArrayAdapter;
+import com.xxf.arch.json.typeadapter.orgJSON.JSONObjectAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * 此类不能转kotlin 否则int 兼容有问题
@@ -41,6 +46,8 @@ public class GsonFactory {
                 .registerTypeAdapter(float.class, new PercentageFloatTypeAdapter())
                 .registerTypeAdapter(ListOrSingle.class, new ListOrSingle.ListOrSingleTypeAdapter())
                 .registerTypeAdapter(ListOrEmpty.class, new ListOrEmpty.ListOrEmptyTypeAdapter())
+                .registerTypeAdapter(JSONObject.class, new JSONObjectAdapter())
+                .registerTypeAdapter(JSONArray.class, new JSONArrayAdapter())
                 .registerTypeAdapterFactory(TypeAdapters.LONG_ENUM_FACTORY);
         if (excludeUnSerializableField) {
             newBuilder.addSerializationExclusionStrategy(new ExposeSerializeExclusionStrategy());
