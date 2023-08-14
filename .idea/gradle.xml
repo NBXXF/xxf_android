@@ -7,7 +7,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="semeru-11" />
+        <option name="gradleJvm" value="ibm-11" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -33,8 +33,6 @@
             <option value="$PROJECT_DIR$/lib_rxjava" />
             <option value="$PROJECT_DIR$/lib_rxjava/lib_rxlifecycledemo" />
             <option value="$PROJECT_DIR$/lib_speed" />
-            <option value="$PROJECT_DIR$/lib_spi_annotation" />
-            <option value="$PROJECT_DIR$/lib_spi_compiler" />
             <option value="$PROJECT_DIR$/lib_utils" />
             <option value="$PROJECT_DIR$/lib_view" />
             <option value="$PROJECT_DIR$/lib_view_gradient" />
@@ -46,7 +44,6 @@
             <option value="$PROJECT_DIR$/xxf" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

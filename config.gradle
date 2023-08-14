@@ -8,7 +8,7 @@ ext {
             // ------------- 第三方-------------
             rxAndroid                     : 'io.reactivex.rxjava3:rxandroid:3.0.0',
             rxJava                        : 'io.reactivex.rxjava3:rxjava:3.1.2',
-            gson                          : "com.google.code.gson:gson:2.10.1",
+            gson                          : "com.google.code.gson:gson:2.9.0",
             okhttp                        : "com.squareup.okhttp3:okhttp:4.9.1",
 
             //-----------刷新-----------
@@ -30,12 +30,12 @@ ext {
              */
             databinding_runtime           : "androidx.databinding:databinding-runtime:7.0.4",
 
-            skin_support                  : "com.github.NBXXF.Android-skin-support:skin-support:1.0.3",
-            skin_support_appcompat        : "com.github.NBXXF.Android-skin-support:skin-support-appcompat:1.0.3",
-            skin_support_constraint_layout: "com.github.NBXXF.Android-skin-support:skin-support-constraint-layout:1.0.3",
-            skin_support_cardview         : "com.github.NBXXF.Android-skin-support:skin-support-cardview:1.0.3",
-            skin_support_design           : "com.github.NBXXF.Android-skin-support:skin-support-design:1.0.3",
-            // skin_support_circleimageview  : "com.github.NBXXF.Android-skin-support:circleimageview:1.0.2",
+            skin_support                  : "com.github.NBXXF.Android-skin-support:skin-support:1.0.2",
+            skin_support_appcompat        : "com.github.NBXXF.Android-skin-support:skin-support-appcompat:1.0.2",
+            skin_support_constraint_layout: "com.github.NBXXF.Android-skin-support:skin-support-constraint-layout:1.0.2",
+            skin_support_cardview         : "com.github.NBXXF.Android-skin-support:skin-support-cardview:1.0.2",
+            skin_support_design           : "com.github.NBXXF.Android-skin-support:skin-support-design:1.0.2",
+           // skin_support_circleimageview  : "com.github.NBXXF.Android-skin-support:circleimageview:1.0.2",
             //skin_support_flycotablayout   : "com.github.NBXXF.Android-skin-support:flycotablayout:1.0.2"
 
     ]

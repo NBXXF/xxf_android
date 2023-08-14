@@ -61,6 +61,6 @@ dependencies {
     //implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 
-    implementation project(path: ':lib_spi_annotation')
-    kapt project(path: ':lib_spi_compiler')
+//    implementation project(path: ':lib_spi_annotation')
+//    kapt project(path: ':lib_spi_compiler')
 }

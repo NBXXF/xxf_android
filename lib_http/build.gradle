@@ -29,4 +29,3 @@ dependencies {
     implementation project(path: ':lib_speed')
     implementation project(path: ':lib_utils')
 }
-
