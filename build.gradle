@@ -20,28 +20,12 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-def getPublishPassword() {
-    return "OEYRVbb6)nPD"
-}
+
 allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
         mavenCentral()
-        maven {
-            credentials {
-                username '62ab0fd729d72730d90c029a'
-                password getPublishPassword()
-            }
-            url 'https://packages.aliyun.com/maven/repository/2241957-release-sl5HmI/'
-        }
-        maven {
-            credentials {
-                username '62ab0fd729d72730d90c029a'
-                password getPublishPassword()
-            }
-            url 'https://packages.aliyun.com/maven/repository/2241957-snapshot-RhSWX2/'
-        }
         google()
     }
     configurations.all {
@@ -55,8 +39,4 @@ allprojects {
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-ext {
-    xxfVersion = "5.0.2.1"
-    xxfGroup = "next.space.NBXXF"
 }

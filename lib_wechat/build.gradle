@@ -20,11 +20,3 @@ dependencies {
     implementation project(path: ':lib_utils')
 }
 
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_wechat'
-    descContent = 'lib_wechat'
-}
-
-apply from: '../publish_maven.gradle'

@@ -33,11 +33,3 @@ dependencies {
     api project(path: ':lib_utils')
     api "androidx.recyclerview:recyclerview:1.2.1"
 }
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_adapter'
-    descContent = 'lib_adapter'
-}
-
-apply from: '../publish_maven.gradle'

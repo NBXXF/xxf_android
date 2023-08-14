@@ -20,12 +20,3 @@ android {
 
 dependencies {
 }
-
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_speed'
-    descContent = 'lib_speed'
-}
-
-apply from: '../publish_maven.gradle'

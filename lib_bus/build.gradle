@@ -28,11 +28,3 @@ dependencies {
     api des.material
     api des.rxJava
 }
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_bus'
-    descContent = 'lib_bus'
-}
-
-apply from: '../publish_maven.gradle'

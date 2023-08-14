@@ -27,11 +27,3 @@ android {
 dependencies {
     implementation project(path: ':lib_view_round')
 }
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_view_ratio'
-    descContent = 'lib_view_ratio'
-}
-
-apply from: '../publish_maven.gradle'

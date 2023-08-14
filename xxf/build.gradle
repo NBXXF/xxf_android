@@ -43,12 +43,3 @@ dependencies {
     api des.material
     api des.viewbindingpropertydelegate
 }
-
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'xxf'
-    descContent = 'xxf'
-}
-
-apply from: '../publish_maven.gradle'

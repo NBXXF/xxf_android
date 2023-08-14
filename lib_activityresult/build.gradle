@@ -29,11 +29,3 @@ dependencies {
     api des.rxJava
     api des.rxAndroid
 }
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_activityresult'
-    descContent = 'lib_activityresult'
-}
-
-apply from: '../publish_maven.gradle'

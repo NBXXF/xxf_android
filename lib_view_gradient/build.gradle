@@ -31,11 +31,3 @@ dependencies {
 repositories {
     mavenCentral()
 }
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_view_gradient'
-    descContent = 'lib_view_gradient'
-}
-
-apply from: '../publish_maven.gradle'
