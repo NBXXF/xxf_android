@@ -1,6 +1,8 @@
 package com.xxf.application.activity
 
 import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context.ACTIVITY_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
@@ -47,6 +49,8 @@ interface ActivityStackProvider {
      * 重启app
      */
     fun restartApp();
+
+    fun resetApp();
 
     /**
      * 是否在后台
@@ -158,6 +162,11 @@ object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), Activi
         } catch (e: Throwable) {
             e.printStackTrace()
         }
+    }
+
+    override fun resetApp() {
+        val am = topActivity?.getSystemService(ACTIVITY_SERVICE) as ActivityManager?
+        am?.clearApplicationUserData();
     }
 
     override fun isBackground(): Boolean {
