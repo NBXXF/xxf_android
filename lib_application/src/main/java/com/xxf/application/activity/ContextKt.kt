@@ -54,7 +54,7 @@ fun Context.restartApp(){
 //    android.os.Process.killProcess(android.os.Process.myPid());
 
     val intent =
-        applicationContext.packageManager.getLaunchIntentForPackage(this.packageName)
+        this.packageManager.getLaunchIntentForPackage(this.packageName)
     intent!!.addFlags(
         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -68,6 +68,6 @@ fun Context.restartApp(){
  * 重置应用
  */
 fun Context.resetApp(){
-    val am = AndroidActivityStackProvider.topActivity?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+    val am = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
     am?.clearApplicationUserData();
 }

@@ -55,12 +55,6 @@ val allActivity: Array<Activity>
         return AndroidActivityStackProvider.allActivity
     }
 
-/**
- * 重启app 仅activity
- */
-fun restartApp() {
-    AndroidActivityStackProvider.restartApp()
-}
 
 /**
  *  判断app是否在后台
