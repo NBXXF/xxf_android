@@ -145,28 +145,14 @@ object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), Activi
      */
     override fun restartApp() {
         try {
-            val activities = ArrayList(activityStack)
-            for (activity in activities) {
-                activity?.finish()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        try {
-            val packageManager = ApplicationInitializer.applicationContext.packageManager ?: return
-            val intent = packageManager.getLaunchIntentForPackage(ApplicationInitializer.applicationContext.packageName)
-            if (intent != null) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                ApplicationInitializer.applicationContext.startActivity(intent)
-            }
+            ApplicationInitializer.applicationContext.restartApp();
         } catch (e: Throwable) {
             e.printStackTrace()
         }
     }
 
     override fun resetApp() {
-        val am = topActivity?.getSystemService(ACTIVITY_SERVICE) as ActivityManager?
-        am?.clearApplicationUserData();
+        ApplicationInitializer.applicationContext.resetApp();
     }
 
     override fun isBackground(): Boolean {
