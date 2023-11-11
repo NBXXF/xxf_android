@@ -327,13 +327,15 @@ fun SpServiceDelegate.bindBoolean(
     getSharedPreferencesService()::putBoolean
 )
 
-inline fun <reified T> SpServiceDelegate.bindObject(key: String? = null,  differUser: Boolean = false) =
+inline fun <reified T> SpServiceDelegate.bindObject(key: String? = null,
+                                                    defaultValue:T?=null,
+                                                    differUser: Boolean = false) =
     object : ReadWriteProperty<Any, T?> {
         override fun getValue(thisRef: Any, property: KProperty<*>): T? {
             return getSharedPreferencesService().getObject(
                 key ?: property.name,
                 object : TypeToken<T>() {}.type,
-                null,
+                defaultValue,
                 differUser
             )
         }
@@ -343,13 +345,16 @@ inline fun <reified T> SpServiceDelegate.bindObject(key: String? = null,  differ
         }
     }
 
-inline fun <reified T> SpServiceDelegate.bindObject(key: String? = null, typeOfT: Type,  differUser: Boolean = false) =
+inline fun <reified T> SpServiceDelegate.bindObject(key: String? = null,
+                                                    typeOfT: Type,
+                                                    defaultValue:T?=null,
+                                                    differUser: Boolean = false) =
     object : ReadWriteProperty<Any, T?> {
         override fun getValue(thisRef: Any, property: KProperty<*>): T? {
             return getSharedPreferencesService().getObject(
                 key ?: property.name,
                 typeOfT,
-                null,
+                defaultValue,
                 differUser
             )
         }
