@@ -22,3 +22,11 @@ dependencies {
     implementation project(path: ':lib_speed')
 }
 
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_utils'
+    descContent = 'lib_utils'
+}
+
+apply from: '../publish_maven.gradle'

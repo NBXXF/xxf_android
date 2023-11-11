@@ -25,3 +25,12 @@ dependencies {
     api project(path: ':lib_application')
     api des.twitter_serial
 }
+
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_objectbox'
+    descContent = 'lib_objectbox'
+}
+
+apply from: '../publish_maven.gradle'

@@ -29,3 +29,11 @@ dependencies {
     api project(path: ':lib_utils')
 }
 
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_view_snackbar'
+    descContent = 'lib_view_snackbar'
+}
+
+apply from: '../publish_maven.gradle'

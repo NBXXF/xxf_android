@@ -1,0 +1,46 @@
+//将源代码打包进aar
+task androidSourcesJar(type: Jar) {
+    archiveClassifier = "sources"
+    from android.sourceSets.main.java.getSrcDirs()
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier = "sources"
+    from android.sourceSets.main.java.getSrcDirs()
+
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives sourcesJar
+}
+
+
+apply plugin: 'maven-publish'
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+
+                from components.release
+                artifact androidSourcesJar
+
+
+                groupId = publishGroup
+                artifactId = moduleName
+                version = publishVersion
+            }
+        }
+
+        repositories {
+            maven {
+                credentials {
+                    username '654f228a9736f3ea5b1d9d74'
+                    password 'DiCCXZH7MfvI'
+                }
+                url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
+            }
+        }
+    }
+}

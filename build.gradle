@@ -27,6 +27,24 @@ allprojects {
         maven { url "https://jitpack.io" }
         mavenCentral()
         google()
+
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            credentials {
+                username '654f228a9736f3ea5b1d9d74'
+                password 'DiCCXZH7MfvI'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
+        }
+        maven {
+            credentials {
+                username '654f228a9736f3ea5b1d9d74'
+                password 'DiCCXZH7MfvI'
+            }
+            url 'https://packages.aliyun.com/maven/repository/2433389-snapshot-Kqt8ID/'
+        }
     }
     configurations.all {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'// maven禁止缓存
@@ -39,4 +57,8 @@ allprojects {
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+ext {
+    xxfVersion = "1.0.0.1"
+    xxfGroup = "com.NBXXF"
 }

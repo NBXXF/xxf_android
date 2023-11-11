@@ -27,3 +27,11 @@ android {
 dependencies {
     api des.material
 }
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = 'lib_effect'
+    descContent = 'lib_effect'
+}
+
+apply from: '../publish_maven.gradle'
