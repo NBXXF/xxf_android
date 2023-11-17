@@ -580,7 +580,7 @@ object BitmapUtils {
      */
     fun cropCompose(bitmap: Bitmap,rects:List<Rect>,padding:Int):Bitmap{
         try {
-            val temp=rects.first();
+            val temp=Rect(rects.first());
             if(rects.size>1) {
                 rects.forEach {
                     temp.left = min(it.left, temp.left)

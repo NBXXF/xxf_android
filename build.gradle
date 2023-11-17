@@ -71,6 +71,6 @@ task clean(type: Delete) {
 
 //全局版本号  发布命令 ./gradlew publish
 ext {
-    xxfVersion = "5.2.1.3"
+    xxfVersion = "5.2.1.4"
     xxfGroup = "com.NBXXF.xxf_android"
 }
