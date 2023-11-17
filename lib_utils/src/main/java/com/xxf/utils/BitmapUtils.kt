@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * @Description: bitmap处理工具类
@@ -558,5 +560,46 @@ object BitmapUtils {
             e.printStackTrace()
         }
         return false
+    }
+
+    /**
+     * @param bitmap
+     * @param rect
+     * @param padding 上下左右偏移量
+     */
+    fun crop(bitmap: Bitmap,rect:Rect,padding:Int):Bitmap{
+        return this.cropCompose(bitmap, listOfNotNull(rect),padding);
+    }
+
+
+    /**
+     * 裁切 整个包含的最大部分
+     * @param bitmap
+     * @param rects
+     * @param padding 上下左右偏移量
+     */
+    fun cropCompose(bitmap: Bitmap,rects:List<Rect>,padding:Int):Bitmap{
+        try {
+            val temp=rects.first();
+            if(rects.size>1) {
+                rects.forEach {
+                    temp.left = min(it.left, temp.left)
+                    temp.top = min(it.top, temp.top)
+                    temp.right = max(it.right, temp.right)
+                    temp.bottom = max(it.bottom, temp.bottom)
+                }
+            }
+
+            //处理边距 且不超过图片本身大小
+            temp.left = max(temp.left-padding,0)
+            temp.top = max(temp.top-padding,0)
+            temp.right = min(temp.right+padding,bitmap.width);
+            temp.bottom = min(temp.bottom+padding,bitmap.height);
+
+            return Bitmap.createBitmap(bitmap,temp.left,temp.top,temp.width(),temp.height())
+        }catch (e:Throwable){
+            e.printStackTrace()
+        }
+        return bitmap;
     }
 }
