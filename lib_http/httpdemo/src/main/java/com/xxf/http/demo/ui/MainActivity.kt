@@ -3,6 +3,7 @@ package com.xxf.http.demo.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
@@ -86,6 +87,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val findViewById1 = findViewById<View>(R.id.root);
+        findViewById1.setOnLongClickListener {
+            println("=================>长按了")
+            false;
+        }
 
         RxJavaPlugins.setErrorHandler { }
         GsonConverterFactory.setOnGsonConvertFailListener { gson, adapter, json, e ->
