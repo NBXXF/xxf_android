@@ -19,24 +19,20 @@ import androidx.fragment.app.FragmentManager
  * @Description 为Activity, fragment 提供全局的占位隐藏view 常用语统计活跃时间 或者进入开发者模式
  * @date createTime：2018/9/7
  */
-open class AttachPlaceViewActivityLifecycleCallbacks: SimpleActivityLifecycleCallbacks() {
+abstract class AttachPlaceViewActivityLifecycleCallbacks: SimpleActivityLifecycleCallbacks() {
     val TAG_PLACE_TOUCH_VIEW = "${AttachPlaceViewActivityLifecycleCallbacks::class.java.name}_touch_place_view";
 
     /**
      * 全局的占位view 事件只能是setOnTouchListener 不能用setOnClickListener和setOnLongClickListener
      * @return  null 代表不注册
      */
-    open fun onCreatePlaceView(activity: Activity):View?{
-        return View(activity);
-    }
+    abstract fun onCreatePlaceView(activity: Activity):View?
 
     /**
      * 全局的占位view 事件只能是setOnTouchListener 不能用setOnClickListener和setOnLongClickListener
      *  @return  null 代表不注册
      */
-    open fun onCreatePlaceView(dialog: Dialog):View?{
-        return View(dialog.window!!.context);
-    }
+    abstract fun onCreatePlaceView(dialog: Dialog):View?
 
     /**
      * 用一个占位的View 来监听点击
