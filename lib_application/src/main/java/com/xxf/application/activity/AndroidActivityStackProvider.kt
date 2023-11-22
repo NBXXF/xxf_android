@@ -1,14 +1,11 @@
 package com.xxf.application.activity
 
 import android.app.Activity
-import android.app.ActivityManager
-import android.content.Context.ACTIVITY_SERVICE
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.application.ApplicationInitializer
+import com.xxf.application.initializer.ApplicationInitializer
 import com.xxf.application.lifecycle.ViewLifecycleOwner
 import java.util.*
 
@@ -45,12 +42,6 @@ interface ActivityStackProvider {
      */
     fun empty(): Boolean
 
-    /**
-     * 重启app
-     */
-    fun restartApp();
-
-    fun resetApp();
 
     /**
      * 是否在后台
@@ -140,20 +131,6 @@ object AndroidActivityStackProvider : SimpleActivityLifecycleCallbacks(), Activi
     }
 
 
-    /**
-     * 重启app
-     */
-    override fun restartApp() {
-        try {
-            ApplicationInitializer.applicationContext.restartApp();
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-    }
-
-    override fun resetApp() {
-        ApplicationInitializer.applicationContext.resetApp();
-    }
 
     override fun isBackground(): Boolean {
         for ((_, event) in activityLifecycle) {

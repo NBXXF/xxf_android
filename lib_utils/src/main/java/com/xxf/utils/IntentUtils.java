@@ -15,13 +15,14 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
-import androidx.core.content.FileProvider;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import static android.Manifest.permission.CALL_PHONE;
+
+import com.xxf.fileprovider.FileProvider7;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
@@ -64,13 +65,7 @@ public final class IntentUtils {
      */
     public static Intent getInstallAppIntent(Context context,final File file) {
         if (!FileUtils.isFileExists(context,file)) return null;
-        Uri uri;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            uri = Uri.fromFile(file);
-        } else {
-            String authority = context.getPackageName() + ".utilcode.provider";
-            uri = FileProvider.getUriForFile(context, authority, file);
-        }
+        Uri uri= FileProvider7.INSTANCE.getUriForFile(context,file);
         return getInstallAppIntent(uri);
     }
 

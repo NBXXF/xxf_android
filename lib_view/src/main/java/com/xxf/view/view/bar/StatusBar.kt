@@ -2,7 +2,7 @@ package com.xxf.view.view.bar
 
 import android.content.Context
 import android.util.AttributeSet
-import com.xxf.application.activity.findActivity
+import com.xxf.application.findActivity
 import com.xxf.utils.BarUtils
 
 /**

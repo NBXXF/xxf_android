@@ -1,6 +1,6 @@
 package com.xxf.view.utils;
 
-import static com.xxf.application.ApplicationInitializer.applicationContext;
+import static com.xxf.application.initializer.ApplicationInitializer.applicationContext;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -35,7 +35,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.application.ApplicationInitializer;
+import com.xxf.application.initializer.ApplicationInitializer;
 import com.xxf.arch.XXF;
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.utils.UriUtils;

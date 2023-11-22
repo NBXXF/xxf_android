@@ -1,7 +1,9 @@
-package com.xxf.application.activity
+package com.xxf.application
 
 import android.app.Activity
 import androidx.fragment.app.FragmentActivity
+import com.xxf.application.activity.ActivityStackProvider
+import com.xxf.application.activity.AndroidActivityStackProvider
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -18,6 +20,13 @@ val KEY_ACTIVITY_RESULT by lazy { "ActivityResult" }
  */
 val KEY_COMPAT_PARAM by lazy { "CompatParam" }
 
+
+/**
+ * activity 栈
+ */
+val activityStack: ActivityStackProvider by lazy {
+    AndroidActivityStackProvider
+}
 
 /**
  * 栈顶activity

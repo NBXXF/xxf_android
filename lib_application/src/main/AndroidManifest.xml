@@ -10,7 +10,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.xxf.application.ApplicationInitializer"
+                android:name="com.xxf.application.initializer.ApplicationInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>

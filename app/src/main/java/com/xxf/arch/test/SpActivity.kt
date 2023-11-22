@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.xxf.application.ApplicationInitializer
+import com.xxf.application.initializer.ApplicationInitializer
 import com.xxf.arch.service.*
 import com.xxf.arch.service.SpService.getString
 import com.xxf.arch.service.SpService.observeAllChange

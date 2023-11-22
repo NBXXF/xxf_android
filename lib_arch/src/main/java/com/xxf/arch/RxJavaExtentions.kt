@@ -2,7 +2,7 @@ package com.xxf.arch
 
 import android.view.Gravity
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.application.activity.topFragmentActivity
+import com.xxf.application.topFragmentActivity
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer
 import com.xxf.arch.rxjava.transformer.filter.ErrorNoFilter

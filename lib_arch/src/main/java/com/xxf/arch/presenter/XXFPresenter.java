@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.application.ApplicationInitializer;
+import com.xxf.application.initializer.ApplicationInitializer;
 import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 
 import java.util.Objects;

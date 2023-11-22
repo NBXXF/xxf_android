@@ -3,7 +3,7 @@ package com.xxf.http.demo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.xxf.application.ApplicationInitializer;
+import com.xxf.application.initializer.ApplicationInitializer;
 import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import java.io.File;

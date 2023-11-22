@@ -1,14 +1,9 @@
 package com.xxf.view.view.bar
 
 import android.content.Context
-import android.content.res.Configuration
 import android.util.AttributeSet
-import android.view.View.MeasureSpec.EXACTLY
-import android.view.WindowInsets
-import androidx.annotation.CallSuper
-import com.xxf.application.activity.findActivity
+import com.xxf.application.findActivity
 import com.xxf.utils.BarUtils
-import com.xxf.view.round.XXFRoundView
 
 /**
  * 导航栏 导航栏系统没显示 高度就自动为0,如果系统显示了导航栏 就显示为导航栏的高度

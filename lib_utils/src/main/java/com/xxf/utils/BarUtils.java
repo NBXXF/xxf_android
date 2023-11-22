@@ -26,10 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.xxf.application.ApplicationContextKt;
-import com.xxf.application.activity.ActivityStackProvider;
-
+import com.xxf.application.ApplicationProviderKtKt;
 import java.lang.reflect.Method;
 
 
@@ -48,7 +45,7 @@ public final class BarUtils {
     }
 
     private static Context getApp() {
-        return ApplicationContextKt.getApplicationContext();
+        return ApplicationProviderKtKt.getApplicationContext();
     }
 
     /**

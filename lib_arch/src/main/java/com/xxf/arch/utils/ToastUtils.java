@@ -27,10 +27,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.application.ApplicationInitializer;
+import com.xxf.application.initializer.ApplicationInitializer;
 import com.xxf.arch.R;
 import com.xxf.arch.XXF;
-import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 import com.xxf.utils.DensityUtil;
 import com.xxf.view.snackbar.SnackBarFragment;
 import com.xxf.view.snackbar.Snackbar;

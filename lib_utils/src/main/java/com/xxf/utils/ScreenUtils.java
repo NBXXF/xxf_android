@@ -14,7 +14,6 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
-import android.util.Size;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
@@ -22,7 +21,7 @@ import android.view.WindowManager;
 
 import static android.Manifest.permission.WRITE_SETTINGS;
 
-import com.xxf.application.ApplicationInitializer;
+import com.xxf.application.initializer.ApplicationInitializer;
 
 
 /**

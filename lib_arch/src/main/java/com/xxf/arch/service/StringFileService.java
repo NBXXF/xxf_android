@@ -1,7 +1,7 @@
 package com.xxf.arch.service;
 
 
-import com.xxf.application.ApplicationInitializer;
+import com.xxf.application.initializer.ApplicationInitializer;
 import com.xxf.utils.FileUtils;
 
 import java.io.File;

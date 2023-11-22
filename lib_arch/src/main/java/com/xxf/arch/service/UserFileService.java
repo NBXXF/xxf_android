@@ -2,7 +2,7 @@ package com.xxf.arch.service;
 
 import android.os.Environment;
 
-import com.xxf.application.ApplicationInitializer;
+import com.xxf.application.initializer.ApplicationInitializer;
 import com.xxf.arch.XXF;
 import com.xxf.utils.FileUtils;
 
