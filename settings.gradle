@@ -19,11 +19,12 @@ include ':lib_permission'
 include ':lib_view_snackbar'
 include ':lib_effect'
 include ':lib_effect:ovserscroll_demo'
-include ':app',
-        ':lib_http',
-        ':xxf',
-        ':lib_view',
-        ':lib_wechat'
+include ':app'
+include ':lib_http'
+include ':lib_arch'
+include ':lib_view'
+include ':lib_wechat'
+include ':libs'
 include ':lib_adapter:lib_adapter_demo'
 include ':lib_effect:layout_anim_demo'
 include ':lib_hash:lib_hash_demo'

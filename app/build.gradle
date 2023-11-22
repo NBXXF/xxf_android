@@ -46,8 +46,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':lib_arch')
     // implementation 'com.github.NBXXF:xxf_android:2.6.9'
-    implementation project(':xxf')
     implementation project(':lib_view')
     implementation project(':lib_utils')
     implementation project(':lib_view_round')
