@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/BC2"
                     android:padding="10dp"
-                    android:text="http"
+                    android:text="toast"
                     android:textColor="@color/C1" />
 
                 <Button

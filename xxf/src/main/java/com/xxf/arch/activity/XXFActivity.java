@@ -11,8 +11,11 @@ import android.widget.FrameLayout;
 import androidx.annotation.CallSuper;
 import androidx.annotation.CheckResult;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.component.WindowComponent;
@@ -43,9 +46,10 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getLifecycle().addObserver(new XXFLifecycleObserver() {
+        this.getLifecycle().addObserver(new DefaultLifecycleObserver(){
             @Override
-            public void onPause() {
+            public void onPause(@NonNull LifecycleOwner owner) {
+                DefaultLifecycleObserver.super.onPause(owner);
                 getIntent().removeExtra(KEY_ACTIVITY_RESULT);
             }
         });

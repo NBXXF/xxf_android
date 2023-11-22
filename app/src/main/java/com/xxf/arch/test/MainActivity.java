@@ -196,7 +196,7 @@ public class MainActivity extends XXFActivity {
 
 //        setWindowSize((int)(ScreenUtils.getScreenWidth()*0.5),(int)(ScreenUtils.getScreenWidth() *0.5));
 
-        new TestDialog(this).show();
+       // new TestDialog(this).show();
 
         TestNumber.INSTANCE.test();
 
@@ -254,9 +254,6 @@ public class MainActivity extends XXFActivity {
                 Log.e("--------rxjava", integer.toString());
             }
         });
-        this.getLifecycle().addObserver(
-                new XXFLifecycleObserver() {
-                });
         this.getLifecycle().addObserver(new LifecycleEventObserver() {
             @Override
             public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
@@ -435,12 +432,9 @@ public class MainActivity extends XXFActivity {
                 });
         findViewById(R.id.bt_http)
                 .setOnClickListener(new View.OnClickListener() {
-                    boolean first = true;
-
                     @Override
                     public void onClick(View view) {
-                        Log.d("======>hell", "========");
-                        ((TextView) view).setText("http " + System.currentTimeMillis());
+                        ToastUtils.showSnackBar("xxxgf165435676457685", ToastUtils.ToastType.ERROR);
                     }
                 });
         findViewById(R.id.file)

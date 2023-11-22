@@ -24,6 +24,8 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.application.ApplicationInitializer;
 import com.xxf.arch.R;
@@ -347,9 +349,10 @@ public class ToastUtils {
                 }
                 snackBarFragment = new SnackBarFragment();
                 SnackBarFragment finalSnackBarFragment = snackBarFragment;
-                snackBarFragment.getLifecycle().addObserver(new XXFLifecycleObserver() {
+                snackBarFragment.getLifecycle().addObserver(new DefaultLifecycleObserver() {
                     @Override
-                    public void onStart() {
+                    public void onStart(@NonNull LifecycleOwner owner) {
+                        DefaultLifecycleObserver.super.onStart(owner);
                         if (finalSnackBarFragment != null) {
                             showSnackBar(finalSnackBarFragment.getDecorView(), notice, type, 0);
                             finalSnackBarFragment.getLifecycle().removeObserver(this);
