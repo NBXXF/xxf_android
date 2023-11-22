@@ -160,6 +160,16 @@ public final class IntentUtils {
     }
 
     /**
+     * 跳转到系统设置页面
+     * @param pkgName
+     * @param isNewTask
+     * @return
+     */
+    public static Intent getLaunchSettingsIntent(final boolean isNewTask) {
+        return getIntent(new Intent(android.provider.Settings.ACTION_SETTINGS),isNewTask);
+    }
+
+    /**
      * Return the intent of share text.
      *
      * @param content The content.

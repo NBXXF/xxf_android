@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.text.TextUtils
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.xxf.application.allActivity
 import java.io.File
@@ -49,6 +50,100 @@ fun Application.installApp(uri: Uri){
 @RequiresPermission(Manifest.permission.REQUEST_DELETE_PACKAGES)
 fun Application.uninstallApp(packageName:String=this.packageName){
     this.startActivity(IntentUtils.getUninstallAppIntent(packageName))
+}
+
+
+
+/**
+ * 静默安装app
+ *
+ */
+@RequiresPermission(Manifest.permission.INSTALL_PACKAGES)
+fun Application.installAppSilent(file: File, params: String?=null): Boolean {
+    return installAppSilent(file, params,this.isDeviceRooted())
+}
+
+/**
+ * 静默安装app
+ *
+ * Without root permission must hold
+ * `android:sharedUserId="android.uid.shell"` and
+ *
+ * @param file     The file.
+ * @param params   The params of installation(e.g.,`-r`, `-s`).
+ * @param isRooted True to use root, false otherwise.
+ * @return `true`: success<br></br>`false`: fail
+ */
+@RequiresPermission(Manifest.permission.INSTALL_PACKAGES)
+fun Application.installAppSilent(
+    file: File,
+    params: String?,
+    isRooted: Boolean
+): Boolean {
+    if (!FileUtils.isFileExists(this,file)) return false
+    val filePath = '"'.toString() + file.absolutePath + '"'
+    val command = ("LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm install " +
+            (if (params == null) "" else "$params ")
+            + filePath)
+    val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
+    return if (commandResult.successMsg != null
+        && commandResult.successMsg.toLowerCase().contains("success")
+    ) {
+        true
+    } else {
+        Log.e(
+            "AppUtils", "installAppSilent successMsg: " + commandResult.successMsg +
+                    ", errorMsg: " + commandResult.errorMsg
+        )
+        false
+    }
+}
+
+
+/**
+ * 静默卸载.
+ */
+@RequiresPermission(Manifest.permission.DELETE_PACKAGES)
+fun Application.uninstallAppSilent(packageName: String=this.packageName, isKeepData: Boolean=false): Boolean {
+    return uninstallAppSilent(
+        packageName,
+        isKeepData,
+        this.isDeviceRooted()
+    )
+}
+
+/**
+ * 静默卸载.
+ *
+ * Without root permission must hold
+ * `android:sharedUserId="android.uid.shell"` and
+ *
+ * @param packageName The name of the package.
+ * @param isKeepData  Is keep the data.
+ * @param isRooted    True to use root, false otherwise.
+ * @return `true`: success<br></br>`false`: fail
+ */
+@RequiresPermission(Manifest.permission.DELETE_PACKAGES)
+fun Application.uninstallAppSilent(
+    packageName: String,
+    isKeepData: Boolean,
+    isRooted: Boolean
+): Boolean {
+    val command = ("LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm uninstall "
+            + (if (isKeepData) "-k " else "")
+            + packageName)
+    val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
+    return if (commandResult.successMsg != null
+        && commandResult.successMsg.toLowerCase().contains("success")
+    ) {
+        true
+    } else {
+        Log.e(
+            "AppUtils", "uninstallAppSilent successMsg: " + commandResult.successMsg +
+                    ", errorMsg: " + commandResult.errorMsg
+        )
+        false
+    }
 }
 
 /**
@@ -143,6 +238,15 @@ fun Application.launchAppDetailsSettings(packageName: String=this.packageName) {
     if (!IntentUtils.isIntentAvailable(this,intent)) return
     this.startActivity(intent)
 }
+
+/**
+ * 启动app 设置页面
+ */
+fun Application.launchSettings() {
+    val intent: Intent = IntentUtils.getLaunchSettingsIntent(true)
+    this.startActivity(intent)
+}
+
 
 /**
  * 获取 App 图标
@@ -283,4 +387,22 @@ fun Application.isFirstTimeInstalled(packageName: String=this.packageName): Bool
         e.printStackTrace()
         true
     }
+}
+
+/**
+ * 是否root
+ */
+fun Application.isDeviceRooted(): Boolean {
+    val su = "su"
+    val locations = arrayOf(
+        "/system/bin/", "/system/xbin/", "/sbin/", "/system/sd/xbin/",
+        "/system/bin/failsafe/", "/data/local/xbin/", "/data/local/bin/", "/data/local/",
+        "/system/sbin/", "/usr/bin/", "/vendor/bin/"
+    )
+    for (location in locations) {
+        if (File(location + su).exists()) {
+            return true
+        }
+    }
+    return false
 }

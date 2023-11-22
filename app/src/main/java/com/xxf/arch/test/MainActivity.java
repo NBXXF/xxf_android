@@ -38,6 +38,7 @@ import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
+import com.xxf.utils.ApplicationKtKt;
 import com.xxf.utils.DateUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.utils.FileUtils;
@@ -193,6 +194,8 @@ public class MainActivity extends XXFActivity {
         super.onCreate(savedInstanceState);
 
 
+        //ApplicationKtKt.launchAppDetailsSettings(this.getApplication(),this.getApplication().getPackageName());
+        ApplicationKtKt.launchSettings(this.getApplication());
 
 //        setWindowSize((int)(ScreenUtils.getScreenWidth()*0.5),(int)(ScreenUtils.getScreenWidth() *0.5));
 
