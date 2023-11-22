@@ -33,11 +33,11 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
 import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
-import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
 import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
+import com.xxf.permission.common.PermissionUtils;
 import com.xxf.utils.ApplicationKtKt;
 import com.xxf.utils.DateUtils;
 import com.xxf.utils.DensityUtil;
@@ -91,48 +91,7 @@ public class MainActivity extends XXFActivity {
     }
 
 
-    class Presenter extends XXFPresenter<Object> {
 
-        public Presenter(@NonNull LifecycleOwner lifecycleOwner, Object view) {
-            super(lifecycleOwner, view);
-        }
-
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            Log.d("================>p", "onCreate");
-        }
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            Log.d("================>p", "onStart");
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-            Log.d("================>p", "onResume");
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            Log.d("================>p", "onPause");
-        }
-
-        @Override
-        public void onStop() {
-            super.onStop();
-            Log.d("================>p", "onStop");
-        }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            Log.d("================>p", "onDestroy");
-        }
-    }
 
 
     private Observable<Object> getXXData() {
@@ -195,7 +154,8 @@ public class MainActivity extends XXFActivity {
 
 
         //ApplicationKtKt.launchAppDetailsSettings(this.getApplication(),this.getApplication().getPackageName());
-        ApplicationKtKt.launchSettings(this.getApplication());
+       // ApplicationKtKt.launchSettings(this.getApplication());
+
 
 //        setWindowSize((int)(ScreenUtils.getScreenWidth()*0.5),(int)(ScreenUtils.getScreenWidth() *0.5));
 
@@ -317,7 +277,6 @@ public class MainActivity extends XXFActivity {
         StatusBarUtils.setTransparentForWindow(this);
         StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout));
 
-        new Presenter(this, this);
 
 
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
@@ -437,6 +396,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        PermissionUtils.INSTANCE.jumpPermissionSettingPage(MainActivity.this);
                         ToastUtils.showSnackBar("xxxgf165435676457685", ToastUtils.ToastType.ERROR);
                     }
                 });

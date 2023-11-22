@@ -46,15 +46,15 @@ public abstract class XXFNetwrokPresenter<V> extends XXFPresenter<V> {
 
     @CallSuper
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onResume(@NonNull LifecycleOwner owner) {
+        super.onResume(owner);
         XXF.registerNetworkCallback(networkCallback);
     }
 
     @CallSuper
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onPause(@NonNull LifecycleOwner owner) {
+        super.onPause(owner);
         XXF.unregisterNetworkCallback(networkCallback);
     }
 

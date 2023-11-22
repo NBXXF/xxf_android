@@ -161,7 +161,6 @@ public final class IntentUtils {
 
     /**
      * 跳转到系统设置页面
-     * @param pkgName
      * @param isNewTask
      * @return
      */

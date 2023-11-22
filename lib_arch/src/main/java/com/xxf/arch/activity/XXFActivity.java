@@ -19,7 +19,6 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.component.WindowComponent;
-import com.xxf.arch.lifecycle.XXFLifecycleObserver;
 import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
