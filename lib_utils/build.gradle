@@ -17,7 +17,6 @@ android {
     }
 }
 dependencies {
-    api des.material
     implementation project(path: ':lib_application')
     implementation project(path: ':lib_fileprovider')
     implementation project(path: ':lib_speed')

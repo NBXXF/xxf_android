@@ -54,7 +54,7 @@ fun Application.uninstallApp(packageName:String=this.packageName){
 /**
  * 是否安装
  */
-fun Application.isAppInstalled(packageName:String): Boolean {
+fun Application.isAppInstalled(packageName:String=this.packageName): Boolean {
     return try {
         this.packageManager.getApplicationInfo(packageName, 0).enabled;
     } catch (e:PackageManager.NameNotFoundException) {
@@ -149,7 +149,7 @@ fun Application.launchAppDetailsSettings(packageName: String=this.packageName) {
  */
 fun Application.getAppIcon(packageName: String=this.packageName): Drawable? {
     return try {
-        val pm: PackageManager = this.getPackageManager()
+        val pm: PackageManager = this.packageManager
         val pi = pm.getPackageInfo(packageName, 0)
         pi?.applicationInfo?.loadIcon(pm)
     } catch (e: PackageManager.NameNotFoundException) {
