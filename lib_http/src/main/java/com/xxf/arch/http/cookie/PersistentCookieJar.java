@@ -2,7 +2,7 @@ package com.xxf.arch.http.cookie;
 
 import androidx.annotation.NonNull;
 
-import com.xxf.arch.json.JsonUtils;
+import com.xxf.json.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;

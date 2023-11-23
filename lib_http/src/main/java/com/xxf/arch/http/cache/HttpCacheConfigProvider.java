@@ -31,16 +31,6 @@ public interface HttpCacheConfigProvider {
         return 1024 * 1024 * 100;
     }
 
-    /**
-     * 是否缓存 场用于 用于下游判断code是否应该缓存
-     *
-     * @param body 在interface 中声明的 Observable<T> 对应的T
-     * @return
-     */
-    @Deprecated(message = "这个方法过时了,请使用isCache(Response rResponse)")
-    default boolean isCache(@Nullable Object body) {
-        return true;
-    }
 
     /**
      * 是否缓存 场用于 用于下游判断code是否应该缓存
@@ -48,7 +38,7 @@ public interface HttpCacheConfigProvider {
      * @return
      */
     default  boolean isCache(Response response){
-        return true;
+        return response!=null&&response.isSuccessful();
     }
 
     /**

@@ -19,15 +19,13 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    api des.material
     api des.rxJava
     api des.rxAndroid
     api 'com.github.NBXXF:retrofit2:1.1.0'
-    api des.gson
     api des.okhttp
-    implementation project(path: ':lib_application')
-    implementation project(path: ':lib_speed')
+    implementation project(path: ':lib_json')
     implementation project(path: ':lib_utils')
+    implementation project(path: ':lib_application')
 }
 
 ext {

@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.JsonObject
 import com.xxf.activityresult.startActivityForResultObservable
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
-import com.xxf.arch.json.JsonUtils
+import com.xxf.json.JsonUtils
 import com.xxf.arch.test.databinding.TestFragmentBinding
 import com.xxf.utils.DensityUtil
 import java.io.Serializable
@@ -64,7 +64,7 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
 //            d = BigDecimal("8.8")
 //        })
 
-        val toBean = JsonUtils.toBean(   JsonObject().apply {
+        val toBean = com.xxf.json.JsonUtils.toBean(   JsonObject().apply {
             this.addProperty("d",8.8)
         }, Test::class.java)
         println("============>toBean:$toBean")

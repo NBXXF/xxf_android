@@ -1,8 +1,8 @@
 package com.xxf.room.demo;
 
 import com.google.gson.annotations.JsonAdapter;
-import com.xxf.arch.json.typeadapter.color.RGBAColorHexIntTypeAdapter;
-import com.xxf.arch.json.typeadapter.color.RGBAColorStringTypeAdapter;
+import com.xxf.json.typeadapter.color.RGBAColorHexIntTypeAdapter;
+import com.xxf.json.typeadapter.color.RGBAColorStringTypeAdapter;
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq

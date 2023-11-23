@@ -1,6 +1,6 @@
 package com.xxf.arch.test
 
-import com.xxf.arch.json.JsonUtils
+import com.xxf.json.JsonUtils
 
 object TestNumber {
     class TestModel {
@@ -30,11 +30,11 @@ object TestNumber {
         val apply = TestModel().apply {
             this.num = float
         }
-        val json = JsonUtils.toJsonObject(apply)
+        val json = com.xxf.json.JsonUtils.toJsonObject(apply)
         println("==============>ser json:$json")
 
 
-        val model = JsonUtils.toBean(json, TestModel::class.java)
+        val model = com.xxf.json.JsonUtils.toBean(json, TestModel::class.java)
         println("==============>deser model:$model")
 
         if (model.num == apply.num) {

@@ -4,50 +4,35 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Switch
-import android.widget.TextView
 import com.google.gson.*
 import com.google.gson.annotations.JsonAdapter
-import com.google.gson.internal.Streams
-import com.google.gson.reflect.TypeToken
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.xxf.arch.apiService
 import com.xxf.arch.http.converter.gson.GsonConverterFactory
-import com.xxf.arch.json.JsonUtils
-import com.xxf.arch.json.ListTypeToken
-import com.xxf.arch.json.typeadapter.NullableSerializerTypeAdapterFactory
+import com.xxf.json.JsonUtils
+import com.xxf.json.ListTypeToken
+import com.xxf.json.typeadapter.NullableSerializerTypeAdapterFactory
 import com.xxf.arch.utils.copy
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import com.xxf.http.demo.ui.test.Animal
-import com.xxf.http.demo.ui.test.IBase
 import com.xxf.http.demo.ui.test.Person
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
-import io.reactivex.rxjava3.subjects.Subject
 import kotlinx.serialization.*
 import kotlinx.serialization.cbor.Cbor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
-import retrofit2.CacheType
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
-import kotlin.random.Random
-import kotlin.reflect.jvm.internal.impl.metadata.ProtoBuf
 
 class MainActivity : AppCompatActivity() {
     class Demo {
-        @JsonAdapter(NullableSerializerTypeAdapterFactory::class, nullSafe = false)
+        @JsonAdapter(com.xxf.json.typeadapter.NullableSerializerTypeAdapterFactory::class, nullSafe = false)
         var name: String? = null
 
 //        class Jsonadapter : TypeAdapter<String?>() {
@@ -64,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     class Demo2 {
-        @JsonAdapter(NullableSerializerTypeAdapterFactory::class, nullSafe = false)
+        @JsonAdapter(com.xxf.json.typeadapter.NullableSerializerTypeAdapterFactory::class, nullSafe = false)
         var name: String? = "xxx"
         override fun toString(): String {
             return "Demo2(name=$name)"
@@ -107,10 +92,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val bean = JsonUtils.toBean(apply1, Animal::class.java, true)
+        val bean = com.xxf.json.JsonUtils.toBean(apply1, Animal::class.java, true)
         System.out.println("=============>bean:" + bean)
 
-        val bean2 = JsonUtils.toBean(apply1, Person::class.java, true)
+        val bean2 = com.xxf.json.JsonUtils.toBean(apply1, Person::class.java, true)
         bean2.name = "xx"
         System.out.println("=============>bean2:" + bean2)
 
@@ -127,8 +112,8 @@ class MainActivity : AppCompatActivity() {
         map.put("xxx3", Demo().apply {
             // this.name="xxx"
         })
-        System.out.println("==========>ser:" + JsonUtils.toJsonElement(map))
-        System.out.println("==========>ser11:" + JsonUtils.toJsonElement(Demo().apply {
+        System.out.println("==========>ser:" + com.xxf.json.JsonUtils.toJsonElement(map))
+        System.out.println("==========>ser11:" + com.xxf.json.JsonUtils.toJsonElement(Demo().apply {
             // this.name="xxx"
         }))
         System.out.println(
@@ -148,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             this.name = "hello"
             this.des = "x:" + System.currentTimeMillis()
         }
-        System.out.println("==========>expose serlize:" + JsonUtils.toJsonString(testModel))
+        System.out.println("==========>expose serlize:" + com.xxf.json.JsonUtils.toJsonString(testModel))
 
         val copy_1 = testModel.copy()
         System.out.println("==========>expose copy:" + copy_1)
@@ -161,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         val apply = JsonObject().apply {
             this.addProperty("age", 10.5)
         }
-        val toBean1 = JsonUtils.toBean(apply, TestFloatDTO::class.java);
+        val toBean1 = com.xxf.json.JsonUtils.toBean(apply, TestFloatDTO::class.java);
 
         System.out.println("=======>TT:" + toBean1);
         val copy = toBean1.copy()
@@ -173,7 +158,7 @@ class MainActivity : AppCompatActivity() {
         val list = arrayListOf<TestFloatDTO>(copy2)
         System.out.println("=======>TT cp3:" + list.copy());
         val toJsonString =
-            JsonUtils.toJsonString(
+            com.xxf.json.JsonUtils.toJsonString(
                 TestDTO(
                     "hello",
                     TestDTO.Type.TYPE_A,
@@ -182,7 +167,7 @@ class MainActivity : AppCompatActivity() {
                 )
             );
         System.out.println("=======>T1:" + toJsonString);
-        val toBean = JsonUtils.toBean(toJsonString, TestDTO::class.java)
+        val toBean = com.xxf.json.JsonUtils.toBean(toJsonString, TestDTO::class.java)
         System.out.println("=======>T2:" + toBean);
 
         val wsc =
@@ -213,8 +198,8 @@ class MainActivity : AppCompatActivity() {
         map.put("xxx3", Demo().apply {
             // this.name="xxx"
         })
-        System.out.println("==========>ser:" + JsonUtils.toJsonElement(map))
-        System.out.println("==========>ser11:" + JsonUtils.toJsonElement(Demo().apply {
+        System.out.println("==========>ser:" + com.xxf.json.JsonUtils.toJsonElement(map))
+        System.out.println("==========>ser11:" + com.xxf.json.JsonUtils.toJsonElement(Demo().apply {
             // this.name="xxx"
         }, excludeUnSerializableField = true))
         System.out.println(
@@ -231,11 +216,11 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        val toJsonString = JsonUtils.toJsonString(Demo2().apply {
+        val toJsonString = com.xxf.json.JsonUtils.toJsonString(Demo2().apply {
             this.name = null
         }, excludeUnSerializableField = false)
         System.out.println("===========>ser4 json:" + toJsonString)
-        val toBean = JsonUtils.toBean(
+        val toBean = com.xxf.json.JsonUtils.toBean(
             toJsonString,
             Demo2::class.java,
             excludeUnDeserializableField = false
@@ -291,8 +276,8 @@ class MainActivity : AppCompatActivity() {
                     des = "好好学习"
                 })
             }
-            val json = JsonUtils.toJsonString(test)
-            val toBean = JsonUtils.toBean(json, TestModel::class.java)
+            val json = com.xxf.json.JsonUtils.toJsonString(test)
+            val toBean = com.xxf.json.JsonUtils.toBean(json, TestModel::class.java)
             System.out.println("===========>toBean:" + toBean)
         }).start()
     }
@@ -388,7 +373,7 @@ class MainActivity : AppCompatActivity() {
 
 
             start = System.currentTimeMillis()
-            val fromJson = gson.fromJson<List<InnerDto2>>(gsonStr, ListTypeToken<InnerDto2>().type)
+            val fromJson = gson.fromJson<List<InnerDto2>>(gsonStr, com.xxf.json.ListTypeToken<InnerDto2>().type)
             System.out.println("=============>j gson deser take:" + (System.currentTimeMillis() - start))
 
 

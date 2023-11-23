@@ -24,9 +24,4 @@ public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheConfigProvi
         return file.getAbsolutePath();
     }
 
-
-    @Override
-    public boolean isCache(@Nullable Object body) {
-        return true;
-    }
 }

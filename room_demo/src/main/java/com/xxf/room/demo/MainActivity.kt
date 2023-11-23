@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.room.Room
-import com.xxf.arch.json.JsonUtils
+import com.xxf.json.JsonUtils
 import com.xxf.room.demo.dao.UserDao
 import com.xxf.room.demo.database.UserDatabase
 import com.xxf.room.demo.databinding.ActivityMainBinding
@@ -87,10 +87,10 @@ class MainActivity : AppCompatActivity() {
             }")
 
         val testModel=TestColorModel("#80E5E5E5", 0x80E5E5E5.toInt());
-        val toJsonString = JsonUtils.toJsonString(testModel);
+        val toJsonString = com.xxf.json.JsonUtils.toJsonString(testModel);
         Log.d("=====>序列化颜色:",toJsonString);
 
-        val deserlizeModel = JsonUtils.toBean(toJsonString,TestColorModel::class.java);
+        val deserlizeModel = com.xxf.json.JsonUtils.toBean(toJsonString,TestColorModel::class.java);
         Log.d("=====>反序列化颜色:",""+deserlizeModel);
         Log.d("=====>反序列化颜色2:","#"+Integer.toHexString(deserlizeModel.colorInt));
     }

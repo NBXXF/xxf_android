@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.http.cache.disklrucache.SimpleDiskLruCache;
 import com.xxf.arch.http.interceptor.internal.Utf8Kt;
-import com.xxf.arch.json.JsonUtils;
+import com.xxf.json.JsonUtils;
 
 import java.io.File;
 import java.io.IOException;

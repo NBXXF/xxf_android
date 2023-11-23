@@ -8,7 +8,7 @@ import com.xxf.arch.annotation.Interceptor;
 import com.xxf.arch.annotation.JsonString;
 import com.xxf.arch.annotation.RxHttpCacheConfig;
 import com.xxf.arch.annotation.RxJavaInterceptor;
-import com.xxf.arch.json.datastructure.ListOrSingle;
+import com.xxf.json.datastructure.ListOrSingle;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.CacheType;

@@ -31,6 +31,7 @@ dependencies {
     api project(path: ':lib_view_round')
     api project(path: ':lib_activityresult')
     api project(path: ':lib_bus')
+    api project(path: ':lib_json')
     api des.viewbindingpropertydelegate
 }
 

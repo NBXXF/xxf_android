@@ -1,6 +1,5 @@
 package com.xxf.arch.test;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,18 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.util.Pair;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
@@ -31,22 +24,17 @@ import androidx.lifecycle.LifecycleOwner;
 import com.google.gson.annotations.JsonAdapter;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
-import com.xxf.arch.json.typeadapter.format.formatobject.NumberFormatObject;
-import com.xxf.arch.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
+import com.xxf.json.typeadapter.format.formatobject.NumberFormatObject;
+import com.xxf.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter;
 import com.xxf.arch.presenter.XXFNetwrokPresenter;
-import com.xxf.arch.presenter.XXFPresenter;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.bus.ActionTypeEvent;
 import com.xxf.permission.common.PermissionUtils;
-import com.xxf.utils.ApplicationKtKt;
 import com.xxf.utils.DateUtils;
-import com.xxf.utils.DensityUtil;
 import com.xxf.utils.FileUtils;
 import com.xxf.utils.HandlerUtils;
-import com.xxf.utils.ScreenUtils;
 import com.xxf.view.round.XXFRoundImageTextView;
 import com.xxf.view.utils.StatusBarUtils;
-import com.xxf.view.utils.SystemUtils;
 
 
 import java.io.BufferedReader;
@@ -64,14 +52,12 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.CacheType;
 
 
 public class MainActivity extends XXFActivity {

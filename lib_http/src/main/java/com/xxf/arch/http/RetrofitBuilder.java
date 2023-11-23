@@ -3,7 +3,6 @@ package com.xxf.arch.http;
 
 import androidx.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.xxf.arch.http.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
 import com.xxf.arch.http.cache.HttpCacheConfigProvider;
@@ -11,9 +10,7 @@ import com.xxf.arch.http.converter.gson.GsonConverterFactory;
 import com.xxf.arch.http.converter.json.JsonConverterFactory;
 import com.xxf.arch.http.converter.json.JsonStringConverterFactory;
 import com.xxf.arch.http.converter.string.ScalarsConverterFactory;
-import com.xxf.arch.json.GsonFactory;
-import com.xxf.arch.json.exclusionstrategy.ExposeDeserializeExclusionStrategy;
-import com.xxf.arch.json.exclusionstrategy.ExposeSerializeExclusionStrategy;
+import com.xxf.json.GsonFactory;
 
 import java.util.List;
 import java.util.concurrent.Executor;
