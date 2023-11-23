@@ -168,6 +168,19 @@ fun Application.isAppInstalled(packageName:String=this.packageName): Boolean {
 }
 
 /**
+ * 是否是root rom
+ */
+fun Application.isAppRoot(): Boolean {
+    try {
+        val result = ShellUtils.execCmd("echo root", true)
+        return result.result === 0
+    }catch (e:Throwable){
+        e.printStackTrace()
+        return false
+    }
+}
+
+/**
  * 判断 App 是否是 Debug 版本
  */
 fun Application.isAppDebug(packageName: String=this.packageName): Boolean {
