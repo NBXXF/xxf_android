@@ -19,3 +19,9 @@ val applicationContext: Application by lazy {
     ApplicationInitializer.applicationContext
 }
 
+/**
+ * 全局上下文 Application
+ */
+val application: Application by lazy {
+    ApplicationInitializer.applicationContext
+}
