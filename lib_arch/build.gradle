@@ -23,8 +23,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api project(path: ':lib_wechat')
-    api project(path: ':lib_view_ratio')
     api project(path: ':lib_effect')
     api project(path: ':lib_view_gradient')
     api project(path: ':lib_adapter')

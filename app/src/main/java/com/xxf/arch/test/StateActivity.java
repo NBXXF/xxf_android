@@ -32,6 +32,7 @@ import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.fileprovider.FileProvider7;
+import com.xxf.rxjava.RxLifecycle;
 import com.xxf.utils.BitmapUtils;
 import com.xxf.utils.DensityUtil;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
@@ -160,7 +161,7 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
                                 getSafeProgressHUD().updateStateText((downloadTask.getCurrent() * 1.0f / downloadTask.getDuration()) * 100 + "%");
                             }
                         }.setDismissOnNext(false))
-                        .to(XXF.bindLifecycle(StateActivity.this))
+                        .to(RxLifecycle.INSTANCE.bindLifecycle(v))
                         .subscribe(new Consumer<DownloadTask>() {
                             @Override
                             public void accept(DownloadTask downloadTask) throws Throwable {
@@ -205,7 +206,7 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .to(XXF.bindLifecycle(this))
+
                 .subscribe(new Consumer<List<Integer>>() {
                     @Override
                     public void accept(List<Integer> strings) throws Exception {

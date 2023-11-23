@@ -232,15 +232,6 @@ public class MainActivity extends XXFActivity {
         Log.d("=======>", " actionTypeEvent:" + actionTypeEvent);
         Log.d("=======>", " actionTypeEvent2:" + actionTypeEvent2);
 
-        XXF.subscribeEvent(String.class)
-                .observeOn(AndroidSchedulers.mainThread())
-                .to(XXF.bindLifecycle(this, Lifecycle.Event.ON_PAUSE))
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        Log.d("", "==============>收到事件:" + s + "  thread:" + Thread.currentThread().getName());
-                    }
-                });
 
         Integer integer = Double.valueOf("0.09111").intValue();
         Log.d("", "===========>ssss" + integer);
@@ -289,8 +280,6 @@ public class MainActivity extends XXFActivity {
 
         XXF.getFileService()
                 .putFilesString("test.txt", "173256abs", false, false, false)
-                .compose(XXF.bindToErrorNotice())
-                .to(XXF.bindLifecycle(this))
                 .subscribe();
 
 
@@ -507,7 +496,6 @@ public class MainActivity extends XXFActivity {
                                 "1% 03\n" +
                                 "0% 00";
                         XXF.getFileService().putFilesString(fileName, s, false, false, false)
-                                .compose(XXF.bindToErrorNotice())
                                 .subscribe(new Consumer<File>() {
                                     @SuppressLint("CheckResult")
                                     @Override
@@ -602,7 +590,7 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        ToastUtils.showToast("yes?" + XXF.isGrantedPermission(Manifest.permission.CAMERA), ToastUtils.ToastType.ERROR);
+
                     }
                 });
 
@@ -611,13 +599,6 @@ public class MainActivity extends XXFActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        SystemUtils.selectFile(MainActivity.this)
-                                .subscribe(new Consumer<String>() {
-                                    @Override
-                                    public void accept(String s) throws Throwable {
-                                        Log.d("=====>path", s);
-                                    }
-                                });
 
 //                        SystemUtils.takeVideo(MainActivity.this, new Bundle())
 //                                .subscribe(new Consumer<String>() {
@@ -792,11 +773,6 @@ public class MainActivity extends XXFActivity {
         return super.dispatchGenericMotionEvent(ev);
     }
 
-    @Override
-    public boolean dispatchKeyShortcutEvent(KeyEvent event) {
-        System.out.println("=============>touch6:" + (System.currentTimeMillis()));
-        return super.dispatchKeyShortcutEvent(event);
-    }
 
     @Override
     public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
