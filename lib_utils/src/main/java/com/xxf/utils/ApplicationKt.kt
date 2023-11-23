@@ -171,12 +171,12 @@ fun Application.isAppInstalled(packageName:String=this.packageName): Boolean {
  * 是否是root rom
  */
 fun Application.isAppRoot(): Boolean {
-    try {
+    return try {
         val result = ShellUtils.execCmd("echo root", true)
-        return result.result === 0
+        result.result === 0
     }catch (e:Throwable){
         e.printStackTrace()
-        return false
+        false
     }
 }
 
