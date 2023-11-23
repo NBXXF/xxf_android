@@ -19,7 +19,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.gson.annotations.JsonAdapter
-import com.next.space.cflow.arch.logD
 import com.xxf.arch.XXF
 import com.xxf.arch.activity.XXFActivity
 import com.xxf.arch.presenter.XXFNetwrokPresenter
@@ -27,11 +26,11 @@ import com.xxf.arch.utils.ToastUtils
 import com.xxf.bus.ActionTypeEvent.Companion.create
 import com.xxf.json.typeadapter.format.formatobject.NumberFormatObject
 import com.xxf.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter
+import com.xxf.log.logD
 import com.xxf.permission.common.PermissionUtils.jumpPermissionSettingPage
 import com.xxf.utils.DateUtils.format
 import com.xxf.utils.FileUtils
 import com.xxf.utils.HandlerUtils.mainHandler
-import com.xxf.utils.LogUtils
 import com.xxf.view.round.XXFRoundImageTextView
 import com.xxf.view.utils.StatusBarUtils
 import io.reactivex.rxjava3.core.Observable
