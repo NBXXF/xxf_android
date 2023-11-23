@@ -25,8 +25,8 @@ dependencies {
 ext {
     publishVersion = rootProject.xxfVersion
     publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_utils'
-    descContent = 'lib_utils'
+    moduleName = project.name
+    descContent = project.name
 }
 
 apply from: '../publish_maven.gradle'

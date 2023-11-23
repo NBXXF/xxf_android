@@ -29,8 +29,8 @@ dependencies {
 ext {
     publishVersion = rootProject.xxfVersion
     publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_objectbox'
-    descContent = 'lib_objectbox'
+    moduleName = project.name
+    descContent = project.name
 }
 
 apply from: '../publish_maven.gradle'

@@ -1,9 +1,8 @@
 package com.xxf.arch.rxjava.transformer.filter
 
 import android.system.ErrnoException
+import android.text.TextUtils
 import io.reactivex.rxjava3.functions.Predicate
-import okhttp3.internal.connection.RouteException
-import okhttp3.internal.http2.ConnectionShutdownException
 import org.apache.http.conn.ConnectTimeoutException
 import java.io.InterruptedIOException
 import java.net.*
@@ -49,10 +48,10 @@ object ErrorIgnoreNetFilter : Predicate<Throwable> {
         if (t is ConnectException) {
             return false
         }
-        if (t is ConnectionShutdownException) {
+        if(TextUtils.equals(t?.javaClass?.name,"okhttp3.internal.connection.RouteException")){
             return false
         }
-        if (t is RouteException) {
+        if(TextUtils.equals(t?.javaClass?.name,"okhttp3.internal.connection.RouteException")){
             return false
         }
         if (t is ProtocolException) {

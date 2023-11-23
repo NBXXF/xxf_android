@@ -32,8 +32,8 @@ dependencies {
 ext {
     publishVersion = rootProject.xxfVersion
     publishGroup = rootProject.xxfGroup
-    moduleName = 'lib_view_snackbar'
-    descContent = 'lib_view_snackbar'
+    moduleName = project.name
+    descContent = project.name
 }
 
 apply from: '../publish_maven.gradle'

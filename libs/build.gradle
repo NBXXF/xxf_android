@@ -23,6 +23,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //全部仓库列表 索引用
     api project(path: ':lib_activityresult')
     api project(path: ':lib_adapter')
     api project(path: ':lib_application')

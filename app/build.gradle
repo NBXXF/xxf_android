@@ -46,15 +46,13 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':lib_arch')
+    implementation project(':libs')
     // implementation 'com.github.NBXXF:xxf_android:2.6.9'
-    implementation project(':lib_view')
-    implementation project(':lib_utils')
-    implementation project(':lib_view_round')
+
+
     implementation 'com.github.peter1492:LongScreenshot:1.0'
     //To runtime Permission
     implementation 'com.karumi:dexter:5.0.0'
-    api project(path: ':lib_fileprovider')
 
    // implementation  'com.github.wendux:DSBridge-Android:3.0-SNAPSHOT'
    // implementation 'androidx.draganddrop:draganddrop:1.0.0'
