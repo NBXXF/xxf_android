@@ -80,22 +80,27 @@ fun Application.installAppSilent(
     params: String?,
     isRooted: Boolean
 ): Boolean {
-    if (!FileUtils.isFileExists(this,file)) return false
-    val filePath = '"'.toString() + file.absolutePath + '"'
-    val command = ("LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm install " +
-            (if (params == null) "" else "$params ")
-            + filePath)
-    val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
-    return if (commandResult.successMsg != null
-        && commandResult.successMsg.toLowerCase().contains("success")
-    ) {
-        true
-    } else {
-        Log.e(
-            "AppUtils", "installAppSilent successMsg: " + commandResult.successMsg +
-                    ", errorMsg: " + commandResult.errorMsg
-        )
-        false
+    try {
+        if (!FileUtils.isFileExists(this,file)) return false
+        val filePath = '"'.toString() + file.absolutePath + '"'
+        val command = ("LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm install " +
+                (if (params == null) "" else "$params ")
+                + filePath)
+        val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
+        return if (commandResult.successMsg != null
+            && commandResult.successMsg.toLowerCase().contains("success")
+        ) {
+            true
+        } else {
+            Log.e(
+                "AppUtils", "installAppSilent successMsg: " + commandResult.successMsg +
+                        ", errorMsg: " + commandResult.errorMsg
+            )
+            false
+        }
+    }catch (e:Throwable){
+        e.printStackTrace()
+        return false
     }
 }
 
@@ -129,20 +134,25 @@ fun Application.uninstallAppSilent(
     isKeepData: Boolean,
     isRooted: Boolean
 ): Boolean {
-    val command = ("LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm uninstall "
-            + (if (isKeepData) "-k " else "")
-            + packageName)
-    val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
-    return if (commandResult.successMsg != null
-        && commandResult.successMsg.toLowerCase().contains("success")
-    ) {
-        true
-    } else {
-        Log.e(
-            "AppUtils", "uninstallAppSilent successMsg: " + commandResult.successMsg +
-                    ", errorMsg: " + commandResult.errorMsg
-        )
-        false
+    try {
+        val command = ("LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm uninstall "
+                + (if (isKeepData) "-k " else "")
+                + packageName)
+        val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
+        return if (commandResult.successMsg != null
+            && commandResult.successMsg.toLowerCase().contains("success")
+        ) {
+            true
+        } else {
+            Log.e(
+                "AppUtils", "uninstallAppSilent successMsg: " + commandResult.successMsg +
+                        ", errorMsg: " + commandResult.errorMsg
+            )
+            false
+        }
+    }catch (e:Throwable){
+        e.printStackTrace()
+        return false
     }
 }
 
