@@ -25,7 +25,6 @@ android {
 }
 
 dependencies {
-    api des.material
 }
 
 ext {
