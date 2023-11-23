@@ -25,6 +25,8 @@ import com.xxf.arch.lint.ComponentLintPlugin;
 import com.xxf.arch.service.XXFFileService;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
+import com.xxf.log.LogUtils;
+
 import java.util.Arrays;
 import java.util.Objects;
 import io.reactivex.rxjava3.functions.BiConsumer;
@@ -110,6 +112,7 @@ public class XXF {
                     if(builder.isDebug) {
                         ComponentLintPlugin.INSTANCE.initPlugin(builder.application, Arrays.asList("com.xxf.arch.test"));
                     }
+                    LogUtils.INSTANCE.getConfig().setDebug(builder.isDebug);
                     AppBackgroundLifecycleCallbacks.INSTANCE.register(builder.application);
                     //Initializer 跨进程不会初始化
                     ApplicationInitializer.Companion.init(builder.application);

@@ -11,11 +11,11 @@ object LogUtils:Logger{
     /**
      * 配置
      */
-    data class Config(val isDebug: Boolean=true,val logger:Logger=AndroidLogger())
+    data class Config(var isDebug: Boolean=true,var logger:Logger=AndroidLogger())
     /**
      * 执行配置
      */
-    var config:Config=Config()
+    val config:Config=Config()
     override fun logV(tag: String?, log: () -> Any) {
         if(!config.isDebug){
             return
