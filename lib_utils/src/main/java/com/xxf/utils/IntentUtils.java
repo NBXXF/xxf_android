@@ -490,6 +490,17 @@ public final class IntentUtils {
         return intent;
     }
 
+    /**
+     * 获取管理未知来源安装包
+     * @param isNewTask
+     * @return
+     */
+    public static Intent getManageUnknownAppSources(final boolean isNewTask) {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+        return intentgetIntent(intent, isNewTask);;
+    }
+
+
     private static Intent getIntent(final Intent intent, final boolean isNewTask) {
         return isNewTask ? intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) : intent;
     }
