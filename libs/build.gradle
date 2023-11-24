@@ -23,7 +23,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    //全部仓库列表 索引用
+    //列出全部仓库列表 索引用 开发者可以一次性使用所有lib
     api project(path: ':lib_activityresult')
     api project(path: ':lib_adapter')
     api project(path: ':lib_application')
@@ -37,13 +37,14 @@ dependencies {
     api project(path: ':lib_objectbox')
     api project(path: ':lib_permission')
     api project(path: ':lib_rxjava')
+    api project(path: ':lib_snackbar')
     api project(path: ':lib_speed')
     api project(path: ':lib_utils')
     api project(path: ':lib_view')
     api project(path: ':lib_view_gradient')
     api project(path: ':lib_view_ratio')
     api project(path: ':lib_view_round')
-    api project(path: ':lib_snackbar')
+    api project(path: ':lib_viewbinding')
     api project(path: ':lib_wechat')
 }
 
