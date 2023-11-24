@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.CallSuper
-import com.xxf.application.applicationContext
 import com.xxf.arch.http.OkHttpClientBuilder
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -55,7 +54,7 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
             PublishSubject.create<Any>().toSerialized();
         }
     }
-
+    private val context: Context
     private val okHttpClient: OkHttpClient
     private val request: Request
     private val retryStep: Long
@@ -64,12 +63,14 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
     private val handler: Handler = Handler(Looper.getMainLooper())
     private var currentWebSocket: WebSocket? = null;
 
-    constructor(url: String) : this(
+    constructor(context:Context,url: String) : this(
+        context,
         OkHttpClientBuilder().build(),
         Request.Builder().url(url).build()
     )
 
-    constructor(okHttpClient: OkHttpClient, request: Request) : this(
+    constructor(context:Context,okHttpClient: OkHttpClient, request: Request) : this(
+        context,
         okHttpClient,
         request,
         1,
@@ -77,11 +78,13 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
     )
 
     constructor(
+        context:Context,
         okHttpClient: OkHttpClient,
         request: Request,
         retryStep: Long,
         retryDelayTime: Long
     ) : super() {
+        this.context=context.applicationContext;
         this.okHttpClient = okHttpClient
         this.request = request
         this.retryStep = retryStep
@@ -142,7 +145,7 @@ open class WebSocketClient : IWebSocketClient, WebSocketListener {
      * 判断网络是否链接
      */
     private fun isNetworkConnected(): Boolean {
-        val mConnectivityManager = applicationContext
+        val mConnectivityManager = this.context
             .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val mNetworkInfo = mConnectivityManager
             .activeNetworkInfo
