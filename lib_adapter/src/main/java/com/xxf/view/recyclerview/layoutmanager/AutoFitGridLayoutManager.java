@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xxf.utils.ScreenUtils;
 
 /**
  * 格子布局 手机 pad 横竖自适应
@@ -49,8 +48,25 @@ public class AutoFitGridLayoutManager extends GridLayoutManager {
             totalSpace = getWidth() - getPaddingTop() - getPaddingBottom();
         }
         if (totalSpace > 0) {
-            int expectedColumn = ScreenUtils.spanCount(totalSpace, expectedColumnWidth);
+            int expectedColumn = spanCount(totalSpace, expectedColumnWidth);
             setSpanCount(expectedColumn);
         }
     }
+
+    /**
+     * 格子布局
+     *
+     * @param parentWidth      父容器宽度
+     * @param gridExpectedSize 最小格子宽度 px
+     * @return
+     */
+    public int spanCount(int parentWidth, int gridExpectedSize) {
+        int screenWidth = parentWidth;
+        int spanCount = screenWidth / gridExpectedSize;
+        if (spanCount <= 0) {
+            spanCount = 1;
+        }
+        return spanCount;
+    }
+
 }

@@ -21,14 +21,7 @@ ext {
              * viewbinding 代理类
              */
             viewbindingpropertydelegate   : 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3',
-            core_ktx                      : 'androidx.core:core-ktx:1.6.0',
 
-
-            /**
-             * databinding 数据Z结构类
-             *  如xxfadapter 用到了ObservableList
-             */
-            databinding_runtime           : "androidx.databinding:databinding-runtime:7.0.4",
 
             skin_support                  : "com.github.NBXXF.Android-skin-support:skin-support:1.0.2",
             skin_support_appcompat        : "com.github.NBXXF.Android-skin-support:skin-support-appcompat:1.0.2",

@@ -8,7 +8,6 @@ import androidx.lifecycle.LifecycleOwner
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import java.lang.IllegalArgumentException
-import java.lang.RuntimeException
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -25,7 +24,7 @@ inline fun <reified T : FragmentActivity> T.startActivityForResultObservable(
     options: Bundle? = null
 ): Observable<ActivityResult> {
     return Observable.defer {
-        RxActivityResultCompact.startActivityForResult(this, intent, requestCode, options)
+        RxActivityResultUtils.startActivityForResult(this, intent, requestCode, options)
     }.subscribeOn(AndroidSchedulers.mainThread())
 }
 
@@ -38,7 +37,7 @@ inline fun <reified T : Fragment> T.startActivityForResultObservable(
     options: Bundle? = null
 ): Observable<ActivityResult> {
     return Observable.defer {
-        RxActivityResultCompact.startActivityForResult(this, intent, requestCode, options)
+        RxActivityResultUtils.startActivityForResult(this, intent, requestCode, options)
     }.subscribeOn(AndroidSchedulers.mainThread())
 }
 
@@ -52,14 +51,14 @@ inline fun <reified T : LifecycleOwner> T.startActivityForResultObservable(
 ): Observable<ActivityResult> {
     return Observable.defer {
         if (this is FragmentActivity) {
-            return@defer RxActivityResultCompact.startActivityForResult(
+            return@defer RxActivityResultUtils.startActivityForResult(
                 this,
                 intent,
                 requestCode,
                 options
             )
         } else if (this is Fragment) {
-            return@defer RxActivityResultCompact.startActivityForResult(
+            return@defer RxActivityResultUtils.startActivityForResult(
                 this,
                 intent,
                 requestCode,

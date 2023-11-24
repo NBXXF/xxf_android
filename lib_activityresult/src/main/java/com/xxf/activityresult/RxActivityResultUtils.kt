@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import io.reactivex.rxjava3.core.Observable
 
-object RxActivityResultCompact {
-    private val FRAGMENT_TAG = RxActivityResultCompact::class.java.name
+object RxActivityResultUtils {
+    private val FRAGMENT_TAG = RxActivityResultUtils::class.java.name
     fun startActivityForResult(
             activity: FragmentActivity, intent: Intent, requestCode: Int): Observable<ActivityResult> {
         return startActivityForResult(activity.supportFragmentManager, intent, requestCode, null)
