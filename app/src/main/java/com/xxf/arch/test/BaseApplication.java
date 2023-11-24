@@ -27,7 +27,8 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
-import com.xxf.application.initializer.ApplicationInitializer;
+import com.xxf.application.ApplicationProviderKtKt;
+;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.arch.lint.ComponentLintPlugin;
@@ -63,8 +64,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("====>app", "app:" + ApplicationInitializer.applicationContext);
-        Toast.makeText(this, "yes:" + ApplicationInitializer.applicationContext, Toast.LENGTH_LONG).show();
+        Log.d("====>app", "app:" + ApplicationProviderKtKt.getApplication());
         INSTANCE = this;
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override

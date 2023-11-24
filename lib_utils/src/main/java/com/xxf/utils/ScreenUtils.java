@@ -2,6 +2,7 @@ package com.xxf.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Application;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -21,7 +22,8 @@ import android.view.WindowManager;
 
 import static android.Manifest.permission.WRITE_SETTINGS;
 
-import com.xxf.application.initializer.ApplicationInitializer;
+import com.xxf.application.ApplicationProviderKtKt;
+;
 
 
 /**
@@ -48,6 +50,14 @@ import com.xxf.application.initializer.ApplicationInitializer;
  */
 public final class ScreenUtils {
 
+    /**
+     * 私有 仅限内部链接application
+     * @return
+     */
+    private static Application getLinkedApplication(){
+        return ApplicationProviderKtKt.getApplication();
+    }
+
     private ScreenUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -69,7 +79,7 @@ public final class ScreenUtils {
     }
 
     public static Point getScreenSize() {
-        WindowManager wm = (WindowManager) ApplicationInitializer.applicationContext.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) getLinkedApplication().getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) return new Point(-1,-1);
         Point point = new Point();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -104,7 +114,7 @@ public final class ScreenUtils {
      * @return the application's width of screen, in pixel
      */
     public static int getAppScreenWidth() {
-        WindowManager wm = (WindowManager) ApplicationInitializer.applicationContext.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) getLinkedApplication().getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) return -1;
         Point point = new Point();
         wm.getDefaultDisplay().getSize(point);
@@ -117,7 +127,7 @@ public final class ScreenUtils {
      * @return the application's height of screen, in pixel
      */
     public static int getAppScreenHeight() {
-        WindowManager wm = (WindowManager) ApplicationInitializer.applicationContext.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) getLinkedApplication().getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) return -1;
         Point point = new Point();
         wm.getDefaultDisplay().getSize(point);
@@ -274,7 +284,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isLandscape() {
-        return ApplicationInitializer.applicationContext.getResources().getConfiguration().orientation
+        return getLinkedApplication().getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
 
@@ -284,7 +294,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isPortrait() {
-        return ApplicationInitializer.applicationContext.getResources().getConfiguration().orientation
+        return getLinkedApplication().getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_PORTRAIT;
     }
 
@@ -316,7 +326,7 @@ public final class ScreenUtils {
      */
     public static boolean isScreenLock() {
         KeyguardManager km =
-                (KeyguardManager) ApplicationInitializer.applicationContext.getSystemService(Context.KEYGUARD_SERVICE);
+                (KeyguardManager) getLinkedApplication().getSystemService(Context.KEYGUARD_SERVICE);
         if (km == null) return false;
         return km.inKeyguardRestrictedInputMode();
     }
@@ -330,7 +340,7 @@ public final class ScreenUtils {
     @RequiresPermission(WRITE_SETTINGS)
     public static void setSleepDuration(final int duration) {
         Settings.System.putInt(
-                ApplicationInitializer.applicationContext.getContentResolver(),
+                getLinkedApplication().getContentResolver(),
                 Settings.System.SCREEN_OFF_TIMEOUT,
                 duration
         );
@@ -344,7 +354,7 @@ public final class ScreenUtils {
     public static int getSleepDuration() {
         try {
             return Settings.System.getInt(
-                    ApplicationInitializer.applicationContext.getContentResolver(),
+                    getLinkedApplication().getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT
             );
         } catch (Settings.SettingNotFoundException e) {

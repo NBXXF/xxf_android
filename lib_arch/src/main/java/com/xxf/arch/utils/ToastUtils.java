@@ -2,6 +2,7 @@ package com.xxf.arch.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -27,7 +28,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.application.initializer.ApplicationInitializer;
+import com.xxf.application.ApplicationProviderKtKt;
+;
 import com.xxf.arch.R;
 import com.xxf.arch.XXF;
 import com.xxf.utils.DensityUtil;
@@ -54,6 +56,13 @@ import java.util.ArrayList;
  */
 @SuppressLint("SoonBlockedPrivateApi")
 public class ToastUtils {
+    /**
+     * 私有 仅限内部链接application
+     * @return
+     */
+    private static Application getLinkedApplication(){
+        return ApplicationProviderKtKt.getApplication();
+    }
 
     @Nullable
     private static ToastFactory toastFactory;
@@ -210,10 +219,6 @@ public class ToastUtils {
     }
 
 
-    private static Context getContext() {
-        return ApplicationInitializer.applicationContext;
-    }
-
     /**
      * toast是否可用
      *
@@ -221,7 +226,7 @@ public class ToastUtils {
      */
     public static boolean isNotificationEnabled() {
         try {
-            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getContext());
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getLinkedApplication());
             boolean areNotificationsEnabled = notificationManagerCompat.areNotificationsEnabled();
             return areNotificationsEnabled;
         } catch (Exception e) {
@@ -241,7 +246,7 @@ public class ToastUtils {
     @UiThread
     @Nullable
     public static Toast showToast(@StringRes int notice, @NonNull ToastType type) {
-        return showToast(getContext().getString(notice), type);
+        return showToast(getLinkedApplication().getString(notice), type);
     }
 
     /**
@@ -294,7 +299,7 @@ public class ToastUtils {
          */
         noticeString = notice;
 
-        LimitToast toast = ToastUtils.toastFactory != null ? ToastUtils.toastFactory.createToast(notice, type, ApplicationInitializer.applicationContext, flag) : createToast(notice, type);
+        LimitToast toast = ToastUtils.toastFactory != null ? ToastUtils.toastFactory.createToast(notice, type, getLinkedApplication(), flag) : createToast(notice, type);
         //fix bug #65709 BadTokenException from BugTags
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
             hook(toast);
@@ -376,7 +381,7 @@ public class ToastUtils {
     public static void showSnackBar(@NonNull View rootView, @NonNull CharSequence notice, @NonNull ToastType type) {
         Activity topActivity = XXF.getActivityStackProvider().getTopActivity();
         if (isStatusBarShown(topActivity)) {
-            showSnackBar(rootView, notice, type, getStatusBarHeight(ApplicationInitializer.applicationContext));
+            showSnackBar(rootView, notice, type, getStatusBarHeight(getLinkedApplication()));
         } else {
             showSnackBar(rootView, notice, type, 0);
         }
@@ -444,7 +449,7 @@ public class ToastUtils {
     }
 
     private static LimitToast createToast(CharSequence msg, ToastType type) {
-        LayoutInflater inflater = LayoutInflater.from(ApplicationInitializer.applicationContext);
+        LayoutInflater inflater = LayoutInflater.from(getLinkedApplication());
         View view = inflater.inflate(R.layout.xxf_toast_layout, null);
 
         TextView text = view.findViewById(android.R.id.message);
@@ -469,7 +474,7 @@ public class ToastUtils {
                 break;
         }
         text.setText(msg);
-        LimitToast toast = new LimitToast(ApplicationInitializer.applicationContext);
+        LimitToast toast = new LimitToast(getLinkedApplication());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(view);

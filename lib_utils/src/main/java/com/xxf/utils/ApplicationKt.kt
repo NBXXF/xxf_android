@@ -33,7 +33,7 @@ import kotlin.system.exitProcess
  */
 @RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
 fun Application.installApp(file: File){
-    this.startActivity(IntentUtils.getInstallAppIntent(this,file))
+    this.startActivity(IntentUtils.getInstallAppIntent(file))
 }
 
 /**
@@ -211,7 +211,7 @@ fun Application.isAppSystem(packageName: String=this.packageName): Boolean {
  * 启动app
  */
 fun Application.launchApp(packageName: String=this.packageName):Boolean {
-    val launchAppIntent =IntentUtils.getLaunchAppIntent(this,packageName)
+    val launchAppIntent =IntentUtils.getLaunchAppIntent(packageName)
     if(launchAppIntent!=null) {
         this.startActivity(launchAppIntent)
     }
@@ -258,7 +258,7 @@ fun Application.exitApp(){
  */
 fun Application.launchAppDetailsSettings(packageName: String=this.packageName) {
     val intent: Intent = IntentUtils.getLaunchAppDetailsSettingsIntent(packageName, true)
-    if (!IntentUtils.isIntentAvailable(this,intent)) return
+    if (!IntentUtils.isIntentAvailable(intent)) return
     this.startActivity(intent)
 }
 

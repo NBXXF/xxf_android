@@ -13,7 +13,7 @@ import com.xxf.application.activity.AndroidActivityStackProvider
  */
 class ApplicationInitializer : Initializer<Unit> {
     companion object {
-        lateinit var applicationContext: Application
+       internal lateinit var applicationContext: Application
 
         fun init(app: Application): Boolean {
             return if (!this::applicationContext.isInitialized) {

@@ -1,7 +1,10 @@
 package com.xxf.arch.service;
 
 
-import com.xxf.application.initializer.ApplicationInitializer;
+import android.app.Application;
+
+import com.xxf.application.ApplicationProviderKtKt;
+;
 import com.xxf.utils.FileUtils;
 
 import java.io.File;
@@ -30,7 +33,7 @@ public interface StringFileService extends UserFileService {
                 .defer(new Supplier<ObservableSource<? extends String>>() {
                     @Override
                     public ObservableSource<? extends String> get() throws Throwable {
-                        if (FileUtils.isFileExists(ApplicationInitializer.applicationContext,file)) {
+                        if (FileUtils.isFileExists(getLinkedApplication(),file)) {
                             try (FileReader fr = new FileReader(file)) {
                                 char[] bt = new char[1024];
                                 StringBuffer sb = new StringBuffer();

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.application.initializer.ApplicationInitializer
+
 import com.xxf.application.lifecycle.ViewLifecycleOwner
 import java.util.*
 

@@ -1,9 +1,12 @@
 package com.xxf.http.demo;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.xxf.application.initializer.ApplicationInitializer;
+import com.xxf.application.ApplicationProviderKtKt;
+;
 import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import java.io.File;
@@ -13,11 +16,18 @@ import java.io.File;
  * @Description rxjava htpp默认缓存
  */
 public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheConfigProvider {
+    /**
+     * 私有 仅限内部链接application
+     * @return
+     */
+    private static Application getLinkedApplication(){
+        return ApplicationProviderKtKt.getApplication();
+    }
 
     @NonNull
     @Override
     public String getDirectory() {
-        File file = new File(ApplicationInitializer.applicationContext.getCacheDir(), "okHttpCache4");
+        File file = new File(getLinkedApplication().getCacheDir(), "okHttpCache4");
         if (!file.exists()) {
             file.mkdirs();
         }

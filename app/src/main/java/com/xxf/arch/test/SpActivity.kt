@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.xxf.application.initializer.ApplicationInitializer
+
 import com.xxf.arch.service.*
 import com.xxf.arch.service.SpService.getString
 import com.xxf.arch.service.SpService.observeAllChange
@@ -58,7 +58,7 @@ class SpActivity : AppCompatActivity() {
                 System.out.println("================>截流:" + it)
             }
 
-        System.out.println("================>context:" + ApplicationInitializer.applicationContext)
+        System.out.println("================>context:" + application)
 
 
         //显示一个包含导航控制器的的bottomsheet

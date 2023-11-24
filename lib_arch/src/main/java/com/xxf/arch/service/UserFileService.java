@@ -1,8 +1,10 @@
 package com.xxf.arch.service;
 
+import android.app.Application;
 import android.os.Environment;
 
-import com.xxf.application.initializer.ApplicationInitializer;
+import com.xxf.application.ApplicationProviderKtKt;
+;
 import com.xxf.arch.XXF;
 import com.xxf.utils.FileUtils;
 
@@ -68,6 +70,14 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * 可参考https://www.123si.org/android/article/android-file-directory-and-permissions/
  */
 public interface UserFileService {
+
+    /**
+     * 私有 仅限内部链接application
+     * @return
+     */
+    default Application getLinkedApplication(){
+        return ApplicationProviderKtKt.getApplication();
+    }
     /**
      * 不需要权限
      * 规则 如果sd卡挂载 就用sd 否则用私有区域
@@ -82,9 +92,9 @@ public interface UserFileService {
         return Observable.fromCallable(new Callable<File>() {
             @Override
             public File call() throws Exception {
-                File dir = ApplicationInitializer.applicationContext.getFilesDir();
+                File dir = getLinkedApplication().getFilesDir();
                 if (!forceInnerFiles && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                    dir = ApplicationInitializer.applicationContext.getExternalFilesDir(null);
+                    dir = getLinkedApplication().getExternalFilesDir(null);
                 }
                 FileUtils.createOrExistsDir(dir);
                 if (differUser) {
@@ -109,9 +119,9 @@ public interface UserFileService {
         return Observable.fromCallable(new Callable<File>() {
             @Override
             public File call() throws Exception {
-                File dir = ApplicationInitializer.applicationContext.getCacheDir();
+                File dir = getLinkedApplication().getCacheDir();
                 if (!forceInnerCache && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-                    dir = ApplicationInitializer.applicationContext.getExternalCacheDir();
+                    dir = getLinkedApplication().getExternalCacheDir();
                 }
                 FileUtils.createOrExistsDir(dir);
                 if (differUser) {

@@ -42,9 +42,8 @@ object FileProvider7 {
         return context.packageName + ".android7.fileprovider"
     }
 
-    fun getUriForFile(context: Context, file: File?): Uri? {
-        var fileUri: Uri? = null
-        fileUri = if (Build.VERSION.SDK_INT >= 24) {
+    fun getUriForFile(context: Context, file: File?): Uri {
+        val fileUri: Uri = if (Build.VERSION.SDK_INT >= 24) {
             getUriForFile24(context, file)
         } else {
             Uri.fromFile(file)

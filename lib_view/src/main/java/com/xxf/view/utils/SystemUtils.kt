@@ -3,6 +3,7 @@ package com.xxf.view.utils
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ComponentName
@@ -22,18 +23,17 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.RequiresPermission
-import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import com.xxf.activityresult.ActivityResult
 import com.xxf.activityresult.startActivityForResultObservable
-import com.xxf.application.initializer.ApplicationInitializer
-import com.xxf.arch.XXF
+import com.xxf.application.application
+import com.xxf.fileprovider.FileProvider7
 import com.xxf.fileprovider.FileProvider7.getUriForFile
 import com.xxf.permission.requestPermissionsObservable
 import com.xxf.permission.transformer.RxPermissionTransformer
 import com.xxf.utils.FileUtils
+import com.xxf.utils.IntentUtils
 import com.xxf.utils.UriUtils
 import com.xxf.view.exception.FileNotMatchTypeException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -55,6 +55,14 @@ import java.util.concurrent.TimeUnit
  * @Description  相机,分享,键盘,粘贴板
  */
 object SystemUtils {
+    /**
+     * 私有 仅限内部链接application
+     * @return
+     */
+    private fun getLinkedApplication(): Application {
+        return application
+    }
+
     const val REQUEST_CODE_CAMERA = 59999
     const val REQUEST_CODE_CAMERA_VIDEO = 59994
     const val REQUEST_CODE_ALBUM = 59998
@@ -80,27 +88,6 @@ object SystemUtils {
     val SHARE_WEIBO_CIRCLE_COMPONENT =
         ComponentName("com.sina.weibo", "com.sina.weibo.composerinde.ComposerDispatchActivity")
 
-    /**
-     * 获取拍照意图
-     *
-     * @param imageFile
-     * @return
-     */
-    @RequiresPermission(allOf = [Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA])
-    fun getTakePhotoIntent(imageFile: File?): Intent {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val uriForFile = getUriForFile(XXF.getApplication(), imageFile)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile)
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-        return intent
-    }
-
-    @RequiresPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    fun getAlbumIntent():Intent{
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-        return intent
-    }
 
     /**
      * 拍摄视频
@@ -180,7 +167,7 @@ object SystemUtils {
                     picFile.createNewFile()
                 }
                 context.startActivityForResultObservable(
-                    getTakePhotoIntent(picFile),
+                    IntentUtils.getCaptureIntent(picFile),
                     REQUEST_CODE_CAMERA
                 )
                     .flatMap { activityResult ->
@@ -221,13 +208,13 @@ object SystemUtils {
         context: FragmentActivity,
         cropBuilder: PathCropIntentBuilder?
     ): Observable<String> {
-        return context.requestPermissionsObservable(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .compose(RxPermissionTransformer(context, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        return context.requestPermissionsObservable(Manifest.permission.READ_EXTERNAL_STORAGE)
+            .compose(RxPermissionTransformer(context, Manifest.permission.READ_EXTERNAL_STORAGE))
             .flatMap(object : Function<Boolean, ObservableSource<String>> {
                 @SuppressLint("MissingPermission")
                 @Throws(Exception::class)
                 override fun apply(aBoolean: Boolean): ObservableSource<String> {
-                    return context.startActivityForResultObservable(getAlbumIntent(), REQUEST_CODE_ALBUM)
+                    return context.startActivityForResultObservable(IntentUtils.getPickIntentWithGallery(), REQUEST_CODE_ALBUM)
                         .flatMap { activityResult ->
                             if (!activityResult.isOk) {
                                 Observable.empty()
@@ -306,13 +293,13 @@ object SystemUtils {
                                 fos?.close()
                                 File(
                                     UriUtils.getPath(
-                                        ApplicationInitializer.applicationContext,
+                                        getLinkedApplication(),
                                         uri
                                     )
                                 )
                             } else {
                                 val appDir =
-                                    ApplicationInitializer.applicationContext.getExternalFilesDir(
+                                    getLinkedApplication().getExternalFilesDir(
                                         Environment.DIRECTORY_PICTURES
                                     )
                                 if (!appDir!!.exists()) {
@@ -661,7 +648,7 @@ object SystemUtils {
      */
     fun copyTextToClipboard(lable: String?, charSequence: CharSequence) {
         val cmb =
-            ApplicationInitializer.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            getLinkedApplication().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 ?: return
         //将内容放入粘贴管理器,在别的地方长按选择"粘贴"即可
         cmb.setPrimaryClip(ClipData.newPlainText(lable, charSequence))
@@ -674,7 +661,7 @@ object SystemUtils {
      */
     fun copyTextToClipboard(charSequence: CharSequence) {
         val cmb =
-            ApplicationInitializer.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            getLinkedApplication().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 ?: return
         //将内容放入粘贴管理器,在别的地方长按选择"粘贴"即可
         cmb.setPrimaryClip(ClipData.newPlainText("text", charSequence))
@@ -687,7 +674,7 @@ object SystemUtils {
          * @return
          */
         get() {
-            val cmb: ClipboardManager = ApplicationInitializer.applicationContext.getSystemService(
+            val cmb: ClipboardManager = getLinkedApplication().getSystemService(
                 Context.CLIPBOARD_SERVICE
             ) as ClipboardManager
             if (cmb != null) {
@@ -717,7 +704,12 @@ object SystemUtils {
      *
      * @param context
      * @param text          分享文本
-     * @param componentName 指定 包名 空 会调用系统选择面板,否则调用指定的app
+     * @param componentName 指定 包名 空 会调用系统选择面板,否则调用指定的app  有
+     *   SystemUtils.SHARE_QQ_FRIEND_COMPONENT
+     *   SystemUtils.SHARE_WECHAT_FRIEND_COMPONENT
+     *   SystemUtils.SHARE_WECHAT_CIRCLE_COMPONENT
+     *   SystemUtils.SHARE_WEIBO_FRIEND_COMPONENT
+     *   SystemUtils.SHARE_WEIBO_CIRCLE_COMPONENT
      * @return
      */
     fun shareText(
@@ -776,29 +768,30 @@ object SystemUtils {
      *
      * @param context
      * @param filePath      文件
-     * @param authority     如果文件是私有目录一定要传递  authority 或者 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+     * 内部处理了 uri权限
+     *    如果文件是私有目录一定要传递  authority 或者 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
      * StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
      * StrictMode.setVmPolicy(builder.build());
      * }
      * @param componentName 指定 包名 空 会调用系统选择面板,否则调用指定的app
+     *  有
+     *      *   SystemUtils.SHARE_QQ_FRIEND_COMPONENT
+     *      *   SystemUtils.SHARE_WECHAT_FRIEND_COMPONENT
+     *      *   SystemUtils.SHARE_WECHAT_CIRCLE_COMPONENT
+     *      *   SystemUtils.SHARE_WEIBO_FRIEND_COMPONENT
+     *      *   SystemUtils.SHARE_WEIBO_CIRCLE_COMPONENT
      * @return
      */
     fun shareFile(
         context: Context,
         filePath: String?,
-        authority: String?,
         componentName: ComponentName?
     ): Observable<ActivityResult> {
         return Observable.defer<ActivityResult> {
             val file = File(filePath)
             val intent = Intent(Intent.ACTION_SEND)
-            val uri: Uri
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && authority != null) {
-                uri = FileProvider.getUriForFile(context, authority, file)
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            } else {
-                uri = Uri.fromFile(file)
-            }
+            val uri: Uri=FileProvider7.getUriForFile(getLinkedApplication(),FileUtils.getFileByPath(filePath))
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             intent.putExtra(Intent.EXTRA_STREAM, uri)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             var fileType = FileUtils.getMimeType(filePath)
@@ -937,7 +930,7 @@ object SystemUtils {
         }
 
         fun inputImgFile(inImgFile: File?): CropIntentBuilder {
-            val inImgUri = getUriForFile(ApplicationInitializer.applicationContext, inImgFile)
+            val inImgUri = getUriForFile(getLinkedApplication(), inImgFile)
             mCropIntent.setDataAndType(inImgUri, "image/*")
             return this
         }
@@ -969,7 +962,7 @@ object SystemUtils {
 
         fun outputFile(outputImgFile: File?): CropIntentBuilder {
             mCropIntent.putExtra("return-data", false)
-            val outImgUri = getUriForFile(ApplicationInitializer.applicationContext, outputImgFile)
+            val outImgUri = getUriForFile(getLinkedApplication(), outputImgFile)
             mCropIntent.putExtra("output", outImgUri)
             mCropIntent.clipData = ClipData.newRawUri(null, outImgUri)
             mCropIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)

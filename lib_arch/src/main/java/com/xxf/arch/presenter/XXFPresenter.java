@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.application.initializer.ApplicationInitializer;
+import com.xxf.application.ApplicationProviderKtKt;
+;
 
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class XXFPresenter<V> implements LifecyclePresenter<V>, DefaultLifecycleO
     @NonNull
     @Override
     public final <T extends Application> T getApplication() {
-        return (T) ApplicationInitializer.applicationContext;
+        return (T) ApplicationProviderKtKt.getApplication();
     }
 
     @Override
