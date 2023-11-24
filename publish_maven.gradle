@@ -41,7 +41,7 @@ afterEvaluate {
             maven {
                 credentials {
                     username = localProps.getProperty("publish.username")
-                    password = localProps.getProperty("publish.username")
+                    password = localProps.getProperty("publish.password")
                 }
                 url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
             }
