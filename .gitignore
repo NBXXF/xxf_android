@@ -10,3 +10,4 @@
 .externalNativeBuild
 /.idea
 .publish_maven.gradle
+/publish_maven.gradle
