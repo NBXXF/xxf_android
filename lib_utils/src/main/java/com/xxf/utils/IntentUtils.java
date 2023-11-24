@@ -497,7 +497,7 @@ public final class IntentUtils {
      */
     public static Intent getManageUnknownAppSources(final boolean isNewTask) {
         Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-        return intentgetIntent(intent, isNewTask);;
+        return getIntent(intent, isNewTask);
     }
 
 
