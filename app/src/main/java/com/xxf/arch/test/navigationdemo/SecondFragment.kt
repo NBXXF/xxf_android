@@ -2,7 +2,7 @@ package com.xxf.arch.test.navigationdemo
 
 import android.os.Bundle
 import android.view.View
-import by.kirich1409.viewbindingdelegate.viewBinding
+import com.xxf.viewbinding.viewBinding
 import com.xxf.arch.fragment.XXFFragment
 import com.xxf.arch.fragment.navigation.findNavController
 import com.xxf.arch.fragment.navigation.isInNavController

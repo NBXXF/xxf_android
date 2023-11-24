@@ -1,4 +1,4 @@
-package com.xxf.view.snackbar
+package com.xxf.snackbar
 
 import android.os.Handler
 import android.os.Looper
@@ -51,7 +51,8 @@ internal class SnackbarManager private constructor() {
                 mNextSnackbar = SnackbarRecord(duration, callback)
             }
             if (mCurrentSnackbar != null && cancelSnackbarLocked(mCurrentSnackbar,
-                            Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE)) {
+                    Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE
+                )) {
                 // If we currently have a TSnackbar, try and cancel it and wait in line
                 return
             } else {

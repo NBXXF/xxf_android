@@ -1,4 +1,4 @@
-package com.xxf.view.snackbar
+package com.xxf.snackbar
 
 import android.content.Context
 import android.util.AttributeSet

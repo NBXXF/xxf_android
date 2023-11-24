@@ -33,8 +33,8 @@ import com.xxf.application.ApplicationProviderKtKt;
 import com.xxf.arch.R;
 import com.xxf.arch.XXF;
 import com.xxf.utils.DensityUtil;
-import com.xxf.view.snackbar.SnackBarFragment;
-import com.xxf.view.snackbar.Snackbar;
+import com.xxf.snackbar.SnackBarFragment;
+import com.xxf.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

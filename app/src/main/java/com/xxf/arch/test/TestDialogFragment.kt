@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
-import by.kirich1409.viewbindingdelegate.internal.getRootView
-import by.kirich1409.viewbindingdelegate.viewBinding
+import com.xxf.viewbinding.getRootView
+import com.xxf.viewbinding.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.JsonObject
 import com.xxf.activityresult.startActivityForResultObservable

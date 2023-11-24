@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ContentInfoCompat
 import androidx.core.view.OnReceiveContentListener
 import androidx.core.view.ViewCompat
-import by.kirich1409.viewbindingdelegate.viewBinding
+import com.xxf.viewbinding.viewBinding
 import com.xxf.arch.test.databinding.ActivityReciveBinding
 
 class ReciveContentActivity : AppCompatActivity(R.layout.activity_recive) {

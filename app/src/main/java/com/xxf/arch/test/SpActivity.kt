@@ -3,7 +3,7 @@ package com.xxf.arch.test
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
-import by.kirich1409.viewbindingdelegate.viewBinding
+import com.xxf.viewbinding.viewBinding
 
 import com.xxf.arch.service.*
 import com.xxf.arch.service.SpService.getString

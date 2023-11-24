@@ -1,4 +1,4 @@
-package com.xxf.view.snackbar
+package com.xxf.snackbar
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -391,8 +391,10 @@ class Snackbar private constructor(private val mParent: ViewGroup?) {
                     .setDuration(ANIMATION_DURATION.toLong())
                     .setListener(object : ViewPropertyAnimatorListenerAdapter() {
                         override fun onAnimationStart(view: View) {
-                            mView.animateChildrenIn(ANIMATION_DURATION - ANIMATION_FADE_DURATION,
-                                    ANIMATION_FADE_DURATION)
+                            mView.animateChildrenIn(
+                                ANIMATION_DURATION - ANIMATION_FADE_DURATION,
+                                    ANIMATION_FADE_DURATION
+                            )
                         }
 
                         override fun onAnimationEnd(view: View) {

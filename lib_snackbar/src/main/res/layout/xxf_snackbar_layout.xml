@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<com.xxf.view.snackbar.SnackbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.xxf.snackbar.SnackbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Widget.Design.Snackbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

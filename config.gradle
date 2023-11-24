@@ -6,6 +6,7 @@ ext {
             annotation                    : "androidx.annotation:annotation:1.2.0",
             startup                       : "androidx.startup:startup-runtime:1.1.0",
 
+
             // ------------- 第三方-------------
             rxAndroid                     : 'io.reactivex.rxjava3:rxandroid:3.0.0',
             rxJava                        : 'io.reactivex.rxjava3:rxjava:3.1.2',

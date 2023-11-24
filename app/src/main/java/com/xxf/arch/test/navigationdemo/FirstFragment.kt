@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
-import by.kirich1409.viewbindingdelegate.viewBinding
+import com.xxf.viewbinding.viewBinding
 import com.xxf.application.lifecycle.findViewLifecycleOwner
 import com.xxf.arch.fragment.XXFFragment
 import com.xxf.arch.fragment.navigation.findNavController

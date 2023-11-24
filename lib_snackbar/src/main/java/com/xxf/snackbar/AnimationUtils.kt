@@ -1,4 +1,4 @@
-package com.xxf.view.snackbar
+package com.xxf.snackbar
 
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator

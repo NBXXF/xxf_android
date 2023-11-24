@@ -1,4 +1,4 @@
-package com.xxf.view.snackbar
+package com.xxf.snackbar
 
 import android.app.Dialog
 import android.os.Bundle
