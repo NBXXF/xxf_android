@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.xxf.viewbinding.findRootView
 import com.xxf.arch.dialog.XXFDialog
 import com.xxf.arch.test.databinding.DialogTestBinding
 import com.xxf.utils.dp

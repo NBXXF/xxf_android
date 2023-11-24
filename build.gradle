@@ -20,17 +20,10 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-def getXXFUsername() {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def userName = properties.getProperty('publish.username')
-    return userName;
-}
-def getXXFPassword() {
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def password = properties.getProperty('publish.password')
-    return password;
+Properties localProps = new Properties()
+File localProperties = new File(rootProject.rootDir, "local.properties")
+if (localProperties.exists() && localProperties.isFile()) {
+    localProperties.withInputStream { localProps.load(it) }
 }
 allprojects {
     repositories {
@@ -46,15 +39,15 @@ allprojects {
 
         maven {
             credentials {
-                username getXXFUsername()
-                password getXXFPassword()
+                username = localProps.getProperty("xxf_android.username")
+                password = localProps.getProperty("xxf_android.username")
             }
             url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
         }
         maven {
             credentials {
-                username getXXFUsername()
-                password getXXFPassword()
+                username = localProps.getProperty("xxf_android.username")
+                password = localProps.getProperty("xxf_android.username")
             }
             url 'https://packages.aliyun.com/maven/repository/2433389-snapshot-Kqt8ID/'
         }

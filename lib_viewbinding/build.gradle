@@ -31,8 +31,8 @@ android {
 
 dependencies {
     api des.material
-    implementation "androidx.fragment:fragment:1.5.5"
-    implementation "androidx.lifecycle:lifecycle-runtime:2.5.1"
+    api des.fragment
+    api des.lifecycle_common
 }
 
 ext {

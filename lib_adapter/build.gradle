@@ -30,7 +30,7 @@ android {
 
 dependencies {
     api des.material
-    api "androidx.recyclerview:recyclerview:1.2.1"
+    api des.recyclerview
 }
 
 ext {

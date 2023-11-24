@@ -14,7 +14,11 @@ artifacts {
     archives androidSourcesJar
     archives sourcesJar
 }
-
+Properties localProps = new Properties()
+File localProperties = new File(rootProject.rootDir, "local.properties")
+if (localProperties.exists() && localProperties.isFile()) {
+    localProperties.withInputStream { localProps.load(it) }
+}
 
 apply plugin: 'maven-publish'
 afterEvaluate {
@@ -36,8 +40,8 @@ afterEvaluate {
         repositories {
             maven {
                 credentials {
-                    username '654f228a9736f3ea5b1d9d74'
-                    password 'DiCCXZH7MfvI'
+                    username = localProps.getProperty("publish.username")
+                    password = localProps.getProperty("publish.username")
                 }
                 url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
             }

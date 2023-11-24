@@ -23,6 +23,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api des.lifecycle_common
     api project(path: ':lib_application')
     api project(path: ':lib_http')
     api project(path: ':lib_utils')
