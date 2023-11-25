@@ -32,6 +32,7 @@ dependencies {
     api project(path: ':lib_snackbar')
     api project(path: ':lib_view_round')
     api project(path: ':lib_activityresult')
+    api project(path: ':lib_activityresult_launcher')
     api project(path: ':lib_bus')
     api project(path: ':lib_json')
 }
