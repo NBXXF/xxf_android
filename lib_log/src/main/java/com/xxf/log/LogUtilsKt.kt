@@ -41,9 +41,9 @@ inline fun logW(tag:String?=null,noinline log: () -> Any){
     LogUtils.logV(tag?:Thread.currentThread().stackTrace[2].fileName,log)
 }
 
-inline fun logJson(tag:String?=null,noinline log: () -> String){
+inline fun logJson(tag:String?=null,noinline log: () -> Any){
     if(!LogUtils.config.isDebug){
         return
     }
-    LogUtils.logV(tag?:Thread.currentThread().stackTrace[2].fileName,log)
+    LogUtils.logJson (tag?:Thread.currentThread().stackTrace[2].fileName,log)
 }

@@ -30,8 +30,8 @@ class AndroidLogger:Logger {
         Log.w(tag?:"","${log()}")
     }
 
-    override fun logJson(tag: String?, log: () -> String) {
-        Log.i(tag?:"", log())
+    override fun logJson(tag: String?, log: () -> Any) {
+        Log.i(tag?:"","${log()}")
     }
 
 }

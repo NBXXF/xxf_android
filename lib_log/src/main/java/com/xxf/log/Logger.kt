@@ -17,5 +17,5 @@ interface Logger {
 
     fun logW(tag:String?=null,log: () -> Any);
 
-    fun logJson(tag:String?=null,log: () -> String)
+    fun logJson(tag:String?=null,log: () -> Any)
 }
