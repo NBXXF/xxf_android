@@ -1,11 +1,13 @@
-package com.core.result
+package com.xxf.activity.result.launcher
 
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.activity.result.launcher.LifecycleStartActivityForResult
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -18,10 +20,41 @@ internal object AutoInjectActivityResultLifecycleCallbacks : Application.Activit
 
     internal val cache= mutableSetOf<LifecycleStartActivityForResultWrapper>();
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-        (activity as? androidx.activity.ComponentActivity)?.let {
-            LifecycleStartActivityForResult().also {
-                cache.add(LifecycleStartActivityForResultWrapper(activity, it))
-            }.register(it)
+        (activity as? LifecycleOwner)?.let {
+            register(it)
+        }
+        (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(object :
+            FragmentLifecycleCallbacks() {
+            override fun onFragmentCreated(
+                fm: FragmentManager,
+                f: Fragment,
+                savedInstanceState: Bundle?
+            ) {
+                (f as? LifecycleOwner)?.let {
+                    register(it)
+                }
+            }
+
+            override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
+                super.onFragmentDestroyed(fm, f)
+                (f as? LifecycleOwner)?.let {
+                    unregister(it)
+                }
+            }
+        },true)
+    }
+    private fun register(owner: LifecycleOwner){
+        LifecycleStartActivityForResult().also {
+            cache.add(LifecycleStartActivityForResultWrapper(owner, it))
+        }.register(owner)
+    }
+
+    private fun unregister(owner: LifecycleOwner){
+        cache.firstOrNull {
+            it.lifecycleOwner==owner
+        }?.run {
+            this.lifecycleStartActivityForResult.unregister()
+            cache.remove(this)
         }
     }
 
@@ -47,11 +80,8 @@ internal object AutoInjectActivityResultLifecycleCallbacks : Application.Activit
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        cache.firstOrNull {
-            it.lifecycleOwner==activity
-        }?.run {
-             this.lifecycleStartActivityForResult.unregister()
-            cache.remove(this)
+        (activity as? LifecycleOwner)?.let {
+            unregister(it)
         }
     }
 }

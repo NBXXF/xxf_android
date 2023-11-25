@@ -11,7 +11,12 @@ import io.reactivex.rxjava3.exceptions.CompositeException
 import io.reactivex.rxjava3.exceptions.Exceptions
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 
-
+/**
+ * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
+ * @version 2.3.1
+ * @Description  用新方式来 处理activityForResult和 permissionForResult
+ * @date createTime：2018/9/5
+ */
 class ActivityResultContractObservable<I,O>(
     private val owner:LifecycleOwner,
     private val contact: ActivityResultContract<I, O>,
