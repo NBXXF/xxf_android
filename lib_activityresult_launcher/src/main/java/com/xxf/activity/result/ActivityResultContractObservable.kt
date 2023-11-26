@@ -29,7 +29,7 @@ class ActivityResultContractObservable<I, O>(
 
     private var terminated = false
     override fun subscribeActual(observer: Observer<in O>) {
-        owner.startActivityForResult(contact, input, options, object : EventHandler<O>() {
+        this.eventHandler=object : EventHandler<O>() {
             override fun onActivityResult(result: O) {
                 try {
                     observer.onNext(result)
@@ -63,6 +63,22 @@ class ActivityResultContractObservable<I, O>(
         }.also {
             this.eventHandler = it
             observer.onSubscribe(it)
-        })
+        }
+        try {
+            owner.startActivityForResult(contact, input, options,this.eventHandler!!)
+        }catch (t:Throwable){
+            t.printStackTrace()
+            Exceptions.throwIfFatal(t)
+            if (terminated) {
+                RxJavaPlugins.onError(t)
+            } else if (this.eventHandler?.isDisposed != true) {
+                try {
+                    observer.onError(t)
+                } catch (inner: Throwable) {
+                    Exceptions.throwIfFatal(inner)
+                    RxJavaPlugins.onError(CompositeException(t, inner))
+                }
+            }
+        }
     }
 }
