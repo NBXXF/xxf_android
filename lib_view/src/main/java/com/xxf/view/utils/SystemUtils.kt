@@ -214,7 +214,7 @@ object SystemUtils {
                 @SuppressLint("MissingPermission")
                 @Throws(Exception::class)
                 override fun apply(aBoolean: Boolean): ObservableSource<String> {
-                    return context.startActivityForResultObservable(IntentUtils.getPickIntentWithGallery(), REQUEST_CODE_ALBUM)
+                    return context.startActivityForResultObservable(IntentUtils.getPickImageFromGalleryIntent(), REQUEST_CODE_ALBUM)
                         .flatMap { activityResult ->
                             if (!activityResult.isOk) {
                                 Observable.empty()

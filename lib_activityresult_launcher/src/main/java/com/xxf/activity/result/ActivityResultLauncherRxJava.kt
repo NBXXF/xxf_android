@@ -1,4 +1,4 @@
-package com.xxf.activity.result.launcher
+package com.xxf.activity.result
 
 import android.content.Intent
 import androidx.activity.result.ActivityResult
@@ -11,9 +11,8 @@ import androidx.lifecycle.LifecycleOwner
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
  * @Description  用新方式来 处理activityForResult和 permissionForResult
- * @date createTime：2018/9/5
+ * @date createTime：2020/9/4
  */
-
 
 
 /**
@@ -30,12 +29,12 @@ import androidx.lifecycle.LifecycleOwner
  *  @param options
  */
 @JvmOverloads
-fun <I,O> LifecycleOwner.startActivityForResult(
+fun <I, O> LifecycleOwner.startActivityForResult(
     contact: ActivityResultContract<I, O>,
-    input:I,
-    options: ActivityOptionsCompat?=null,
+    input: I,
+    options: ActivityOptionsCompat? = null,
 ): ActivityResultContractObservable<I, O> {
-    return ActivityResultContractObservable<I,O>(this,contact,input,options)
+    return ActivityResultContractObservable<I, O>(this, contact, input, options)
 }
 
 
@@ -50,10 +49,11 @@ fun <I,O> LifecycleOwner.startActivityForResult(
 @JvmOverloads
 fun LifecycleOwner.startActivityForResult(
     input: Intent,
-    options: ActivityOptionsCompat?=null,
+    options: ActivityOptionsCompat? = null,
 ): ActivityResultContractObservable<Intent, ActivityResult> {
     return this.startActivityForResult(
         ActivityResultContracts.StartActivityForResult(),
         input,
-        options)
+        options
+    )
 }

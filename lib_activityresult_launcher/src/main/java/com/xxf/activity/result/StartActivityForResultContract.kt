@@ -1,4 +1,4 @@
-package com.xxf.activity.result.launcher
+package com.xxf.activity.result
 
 import android.content.Context
 import android.content.Intent
@@ -14,22 +14,25 @@ import androidx.core.app.ActivityOptionsCompat
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
  * @Description  用新方式来 处理activityForResult和 permissionForResult
- * @date createTime：2018/9/5
+ * @date createTime：2020/9/5
  */
-internal class StartActivityForResultContract(container: ComponentActivity) : ActivityResultContract<Intent, ActivityResult>(),ActivityResultCallback<ActivityResult>{
+internal class StartActivityForResultContract(container: ComponentActivity) :
+    ActivityResultContract<Intent, ActivityResult>(), ActivityResultCallback<ActivityResult> {
 
-    private var activityResultLauncher:ActivityResultLauncher<Intent>
-    private var activityResultCallback: ActivityResultCallback<ActivityResult> = ActivityResultCallback<ActivityResult> { }
+    private var activityResultLauncher: ActivityResultLauncher<Intent>
+    private var activityResultCallback: ActivityResultCallback<ActivityResult> =
+        ActivityResultCallback<ActivityResult> { }
 
 
     init {
-        activityResultLauncher=container.registerForActivityResult(this,this)
+        activityResultLauncher = container.registerForActivityResult(this, this)
     }
+
     override fun createIntent(context: Context, input: Intent): Intent {
         return input
     }
 
-    fun unregister(){
+    fun unregister() {
         activityResultLauncher.unregister()
     }
 
@@ -43,11 +46,13 @@ internal class StartActivityForResultContract(container: ComponentActivity) : Ac
      * 启动
      */
     @JvmOverloads
-    fun launch(input: Intent,
-               options: ActivityOptionsCompat?=null,
-               activityResultCallback: ActivityResultCallback<ActivityResult>) {
+    fun launch(
+        input: Intent,
+        options: ActivityOptionsCompat? = null,
+        activityResultCallback: ActivityResultCallback<ActivityResult>
+    ) {
         this.activityResultCallback = activityResultCallback
-        activityResultLauncher.launch(input,options)
+        activityResultLauncher.launch(input, options)
     }
 
     override fun onActivityResult(result: ActivityResult) {

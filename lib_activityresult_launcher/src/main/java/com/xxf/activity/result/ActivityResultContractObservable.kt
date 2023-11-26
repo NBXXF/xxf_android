@@ -1,9 +1,10 @@
-package com.xxf.activity.result.launcher
+package com.xxf.activity.result
 
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LifecycleOwner
+import com.xxf.activity.result.launcher.startActivityForResult
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
@@ -15,20 +16,20 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
  * @Description  用新方式来 处理activityForResult和 permissionForResult
- * @date createTime：2018/9/5
+ * @date createTime：2020/9/4
  */
-class ActivityResultContractObservable<I,O>(
-    private val owner:LifecycleOwner,
+class ActivityResultContractObservable<I, O>(
+    private val owner: LifecycleOwner,
     private val contact: ActivityResultContract<I, O>,
-    private val input:I,
-    private val options: ActivityOptionsCompat?=null,
-                             ) : Observable<O>(){
-    private abstract class EventHandler<O> : ActivityResultCallback<O>,Disposable;
-    private var eventHandler:EventHandler<O>?=null;
+    private val input: I,
+    private val options: ActivityOptionsCompat? = null,
+) : Observable<O>() {
+    private abstract class EventHandler<O> : ActivityResultCallback<O>, Disposable;
+    private var eventHandler: EventHandler<O>? = null;
 
     private var terminated = false
     override fun subscribeActual(observer: Observer<in O>) {
-        owner.startActivityForResult(contact,input,options,object :EventHandler<O>(){
+        owner.startActivityForResult(contact, input, options, object : EventHandler<O>() {
             override fun onActivityResult(result: O) {
                 try {
                     observer.onNext(result)
@@ -52,15 +53,15 @@ class ActivityResultContractObservable<I,O>(
             }
 
             override fun dispose() {
-                this@ActivityResultContractObservable.eventHandler=null;
+                this@ActivityResultContractObservable.eventHandler = null;
             }
 
             override fun isDisposed(): Boolean {
-                return this@ActivityResultContractObservable.eventHandler==null;
+                return this@ActivityResultContractObservable.eventHandler == null;
             }
 
         }.also {
-            this.eventHandler=it
+            this.eventHandler = it
             observer.onSubscribe(it)
         })
     }

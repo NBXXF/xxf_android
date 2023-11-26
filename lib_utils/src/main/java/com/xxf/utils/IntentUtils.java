@@ -484,7 +484,7 @@ public final class IntentUtils {
      * @return
      */
     @RequiresPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    public static Intent getPickIntentWithGallery() {
+    public static Intent getPickImageFromGalleryIntent() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         return intent;

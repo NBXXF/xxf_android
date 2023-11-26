@@ -2,14 +2,12 @@ package com.xxf.activity.result.launcher.demo
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.icu.util.ULocale
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.xxf.activity.result.launcher.startActivityForResult
+import com.xxf.activity.result.startActivityForResult
 import java.util.*
 
 class MainActivity : AppCompatActivity() {

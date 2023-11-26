@@ -10,12 +10,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import com.xxf.activity.result.AutoInjectActivityResultLifecycleCallbacks
+import com.xxf.activity.result.StartActivityForResultContract
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
  * @Description  用新方式来 处理activityForResult和 permissionForResult
- * @date createTime：2018/9/5
+ * @date createTime：2020/9/4
  */
 object ActivityResultLauncher {
 
@@ -24,9 +26,9 @@ object ActivityResultLauncher {
      * @param application
      * @param concurrent 并发数量
      */
-    fun init(application: Application,concurrent:Int=5) {
+    fun init(application: Application, concurrent: Int = 5) {
         application.registerActivityLifecycleCallbacks(AutoInjectActivityResultLifecycleCallbacks.also {
-            it.concurrent=concurrent;
+            it.concurrent = concurrent;
         })
     }
 
@@ -54,18 +56,19 @@ private fun ComponentActivity.activityResultLauncher(): StartActivityForResultCo
  *  @param activityResultCallback
  */
 @JvmOverloads
-fun <I,O> LifecycleOwner.startActivityForResult(
+fun <I, O> LifecycleOwner.startActivityForResult(
     contact: ActivityResultContract<I, O>,
-    input:I,
-    options: ActivityOptionsCompat?=null,
+    input: I,
+    options: ActivityOptionsCompat? = null,
     activityResultCallback: ActivityResultCallback<O>
 ) {
-    val container= ((this as? Fragment)?.requireContext() as? ComponentActivity)?: (this as ComponentActivity)
+    val container =
+        ((this as? Fragment)?.requireContext() as? ComponentActivity) ?: (this as ComponentActivity)
     container.activityResultLauncher()?.launch(
-        contact.createIntent(container,input),
+        contact.createIntent(container, input),
         options
-    ){
-        activityResultCallback.onActivityResult(contact.parseResult(it.resultCode,it.data))
+    ) {
+        activityResultCallback.onActivityResult(contact.parseResult(it.resultCode, it.data))
     }
 }
 
@@ -80,13 +83,14 @@ fun <I,O> LifecycleOwner.startActivityForResult(
 @JvmOverloads
 fun LifecycleOwner.startActivityForResult(
     input: Intent,
-    options: ActivityOptionsCompat?=null,
+    options: ActivityOptionsCompat? = null,
     activityResultCallback: ActivityResultCallback<ActivityResult>
 ) {
-  this.startActivityForResult(
-      ActivityResultContracts.StartActivityForResult(),
-      input,
-      options,
-      activityResultCallback)
+    this.startActivityForResult(
+        ActivityResultContracts.StartActivityForResult(),
+        input,
+        options,
+        activityResultCallback
+    )
 }
 
