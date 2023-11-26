@@ -26,7 +26,7 @@ class ActivityResultContractObservable<I,O>(
     private abstract class EventHandler<O> : ActivityResultCallback<O>,Disposable;
     private var eventHandler:EventHandler<O>?=null;
 
-    var terminated = false
+    private var terminated = false
     override fun subscribeActual(observer: Observer<in O>) {
         owner.startActivityForResult(contact,input,options,object :EventHandler<O>(){
             override fun onActivityResult(result: O) {

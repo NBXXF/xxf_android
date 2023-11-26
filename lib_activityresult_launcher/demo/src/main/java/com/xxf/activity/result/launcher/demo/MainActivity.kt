@@ -17,10 +17,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        println("============================>22222");
 
 
         this.startActivityForResult(ActivityResultContracts.RequestPermission(),Manifest.permission.CAMERA).subscribe {
+            println("================================>1111")
+            Toast.makeText(this, "结果:$it",Toast.LENGTH_LONG).show();
+        }
+        this.startActivityForResult(ActivityResultContracts.RequestPermission(),Manifest.permission.CAMERA).subscribe {
+            println("================================>2222")
             Toast.makeText(this, "结果:$it",Toast.LENGTH_LONG).show();
         }
         this.findViewById<View>(R.id.test).setOnClickListener {
@@ -28,6 +32,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "结果:$it",Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        println("============================>onPause")
     }
 
 }
