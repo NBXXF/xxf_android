@@ -21,9 +21,13 @@ object ActivityResultLauncher {
 
     /**
      * 初始化
+     * @param application
+     * @param concurrent 并发数量
      */
-    fun init(application: Application) {
-        application.registerActivityLifecycleCallbacks(AutoInjectActivityResultLifecycleCallbacks)
+    fun init(application: Application,concurrent:Int=5) {
+        application.registerActivityLifecycleCallbacks(AutoInjectActivityResultLifecycleCallbacks.also {
+            it.concurrent=concurrent;
+        })
     }
 
 }
@@ -31,10 +35,8 @@ object ActivityResultLauncher {
 /**
  * 获取唯一注册的activityResultLauncher
  */
-private fun LifecycleOwner.activityResultLauncher(): LifecycleStartActivityForResult? {
-    return AutoInjectActivityResultLifecycleCallbacks.cache.firstOrNull {
-        it.lifecycleOwner == this;
-    }?.lifecycleStartActivityForResult
+private fun ComponentActivity.activityResultLauncher(): StartActivityForResultContract? {
+    return AutoInjectActivityResultLifecycleCallbacks.getPlacedContract(this)
 }
 
 
@@ -58,9 +60,9 @@ fun <I,O> LifecycleOwner.startActivityForResult(
     options: ActivityOptionsCompat?=null,
     activityResultCallback: ActivityResultCallback<O>
 ) {
-    val context= (this as? Fragment)?.requireContext()?: (this as ComponentActivity)
-    activityResultLauncher()?.launch(
-        contact.createIntent(context,input),
+    val container= ((this as? Fragment)?.requireContext() as? ComponentActivity)?: (this as ComponentActivity)
+    container.activityResultLauncher()?.launch(
+        contact.createIntent(container,input),
         options
     ){
         activityResultCallback.onActivityResult(contact.parseResult(it.resultCode,it.data))

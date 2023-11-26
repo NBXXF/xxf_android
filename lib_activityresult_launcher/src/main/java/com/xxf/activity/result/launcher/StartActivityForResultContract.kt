@@ -2,13 +2,12 @@ package com.xxf.activity.result.launcher
 
 import android.content.Context
 import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.app.ActivityOptionsCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 
 
 /**
@@ -17,23 +16,21 @@ import androidx.lifecycle.LifecycleOwner
  * @Description  用新方式来 处理activityForResult和 permissionForResult
  * @date createTime：2018/9/5
  */
-internal class LifecycleStartActivityForResult: ActivityResultContract<Intent, ActivityResult>(),ActivityResultCallback<ActivityResult>{
+internal class StartActivityForResultContract(container: ComponentActivity) : ActivityResultContract<Intent, ActivityResult>(),ActivityResultCallback<ActivityResult>{
 
-    private var activityResultLauncher:ActivityResultLauncher<Intent>?=null
-    private var activityResultCallback: ActivityResultCallback<ActivityResult>? = null
+    private var activityResultLauncher:ActivityResultLauncher<Intent>
+    private var activityResultCallback: ActivityResultCallback<ActivityResult> = ActivityResultCallback<ActivityResult> { }
 
 
+    init {
+        activityResultLauncher=container.registerForActivityResult(this,this)
+    }
     override fun createIntent(context: Context, input: Intent): Intent {
         return input
     }
 
-    fun register(owner: LifecycleOwner){
-        this.activityResultLauncher = (owner as? Fragment)?.registerForActivityResult(this,this)
-            ?: (owner as? androidx.activity.ComponentActivity)?.registerForActivityResult(this,this)
-    }
-
     fun unregister(){
-        activityResultLauncher?.unregister()
+        activityResultLauncher.unregister()
     }
 
     override fun parseResult(
@@ -50,10 +47,10 @@ internal class LifecycleStartActivityForResult: ActivityResultContract<Intent, A
                options: ActivityOptionsCompat?=null,
                activityResultCallback: ActivityResultCallback<ActivityResult>) {
         this.activityResultCallback = activityResultCallback
-        activityResultLauncher?.launch(input,options)
+        activityResultLauncher.launch(input,options)
     }
 
     override fun onActivityResult(result: ActivityResult) {
-        activityResultCallback?.onActivityResult(result)
+        activityResultCallback.onActivityResult(result)
     }
 }

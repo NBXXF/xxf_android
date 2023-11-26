@@ -21,11 +21,11 @@ class MainActivity : AppCompatActivity() {
 
         this.startActivityForResult(ActivityResultContracts.RequestPermission(),Manifest.permission.CAMERA).subscribe {
             println("================================>1111")
-            Toast.makeText(this, "结果:$it",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "结果11:$it",Toast.LENGTH_LONG).show();
         }
         this.startActivityForResult(ActivityResultContracts.RequestPermission(),Manifest.permission.CAMERA).subscribe {
             println("================================>2222")
-            Toast.makeText(this, "结果:$it",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "结果22:$it",Toast.LENGTH_LONG).show();
         }
         this.findViewById<View>(R.id.test).setOnClickListener {
             this.startActivityForResult(ActivityResultContracts.RequestPermission(),Manifest.permission.CAMERA).subscribe {

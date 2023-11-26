@@ -3,11 +3,8 @@ package com.xxf.activity.result.launcher
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks
-import androidx.lifecycle.LifecycleOwner
+import androidx.activity.ComponentActivity
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -16,44 +13,54 @@ import androidx.lifecycle.LifecycleOwner
  * @date createTime：2018/9/5
  */
 internal object AutoInjectActivityResultLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
-    internal class LifecycleStartActivityForResultWrapper(val lifecycleOwner: LifecycleOwner, val lifecycleStartActivityForResult:LifecycleStartActivityForResult);
+    internal class LifecycleStartActivityForResultWrapper(val container: ComponentActivity,
+                                                          val contracts:List<StartActivityForResultContract>){
+        /**
+         * 控制并发
+         */
+        internal val localRequestCode:AtomicInteger= AtomicInteger(0);
+    }
 
-    internal val cache= mutableSetOf<LifecycleStartActivityForResultWrapper>();
-    override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-        (activity as? LifecycleOwner)?.let {
-            register(it)
+    private val cache= mutableSetOf<LifecycleStartActivityForResultWrapper>()
+
+    /**
+     * 获取占位的contact
+     */
+    internal fun getPlacedContract(container:ComponentActivity): StartActivityForResultContract? {
+        this.cache.firstOrNull {
+            it.container==container;
+        }?.let {
+            return it.contracts[it.localRequestCode.getAndIncrement() % it.contracts.size]
         }
-        (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(object :
-            FragmentLifecycleCallbacks() {
-            override fun onFragmentCreated(
-                fm: FragmentManager,
-                f: Fragment,
-                savedInstanceState: Bundle?
-            ) {
-                (f as? LifecycleOwner)?.let {
-                    register(it)
-                }
-            }
-
-            override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
-                super.onFragmentDestroyed(fm, f)
-                (f as? LifecycleOwner)?.let {
-                    unregister(it)
-                }
-            }
-        },true)
-    }
-    private fun register(owner: LifecycleOwner){
-        LifecycleStartActivityForResult().also {
-            cache.add(LifecycleStartActivityForResultWrapper(owner, it))
-        }.register(owner)
+        return null
     }
 
-    private fun unregister(owner: LifecycleOwner){
+    /**
+     * 并发数量,避免请求权限 并发与rx zip 等
+     * 本身占位不影响性能 目测5个不到1ms
+     */
+    internal var concurrent:Int=5
+
+    override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
+        (activity as? ComponentActivity)?.let {
+            placeRegister(it)
+        }
+    }
+    private fun placeRegister(container: ComponentActivity){
+        val batchList= mutableListOf<StartActivityForResultContract>()
+        for(i in 0 until concurrent){
+            batchList.add(StartActivityForResultContract(container))
+        }
+        cache.add(LifecycleStartActivityForResultWrapper(container,batchList))
+    }
+
+    private fun placeUnRegister(container: ComponentActivity){
         cache.firstOrNull {
-            it.lifecycleOwner==owner
+            it.container==container
         }?.run {
-            this.lifecycleStartActivityForResult.unregister()
+            this.contracts.forEach {
+                it.unregister()
+            }
             cache.remove(this)
         }
     }
@@ -80,8 +87,8 @@ internal object AutoInjectActivityResultLifecycleCallbacks : Application.Activit
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        (activity as? LifecycleOwner)?.let {
-            unregister(it)
+        (activity as? ComponentActivity)?.let {
+            placeUnRegister(it)
         }
     }
 }
