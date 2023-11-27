@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.xxf.activityresult.contracts.EnableBluetoothSettingContract
+import com.xxf.activityresult.contracts.EnableManageUnknownAppSources
 import com.xxf.activityresult.contracts.EnableNFCContract
 import com.xxf.activityresult.contracts.EnableNFCWithPanelContract
 import com.xxf.activityresult.contracts.EnableNetWithPanelContract
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "结果22:$it", Toast.LENGTH_SHORT).show();
         }
         this.findViewById<View>(R.id.test).setOnClickListener {
-            this.startActivityForResult(EnableNetWithPanelContract(), Unit)
+            this.startActivityForResult(EnableManageUnknownAppSources(), Unit)
                 .doOnError {
                     Toast.makeText(this, "错误结果:$it", Toast.LENGTH_SHORT).show();
                 }

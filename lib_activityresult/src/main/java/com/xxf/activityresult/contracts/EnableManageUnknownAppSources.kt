@@ -2,6 +2,7 @@ package com.xxf.activityresult.contracts
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import com.xxf.activityresult.contracts.setting.SettingEnableContract
@@ -12,7 +13,6 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
  * @Description  允许管理安装未知应用 建议用[com.xxf.activity.result.contracts.EnableInstallUnknownAppSources] 其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-@Deprecated(message = "这个设置 会导致返回页面逻辑不对,建议用 [com.xxf.activity.result.contracts.EnableInstallUnknownAppSources]")
 class EnableManageUnknownAppSources :
     SettingEnableContract() {
 
@@ -20,7 +20,7 @@ class EnableManageUnknownAppSources :
     override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)
         return Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
-            this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            data = Uri.fromParts("package", context.packageName, null)
         }
     }
 

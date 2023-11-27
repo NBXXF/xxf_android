@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.xxf.activityresult.contracts.EnableInstallUnknownAppSources
-import com.xxf.activityresult.startActivityForResult
 import com.xxf.permission.requestPermission
 import java.util.*
 
