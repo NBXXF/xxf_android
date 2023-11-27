@@ -13,8 +13,10 @@ import androidx.activity.result.contract.ActivityResultContract
  * @date createTime：2020/9/5
  */
 @Deprecated(message = "这个设置 会导致返回页面逻辑不对,建议用 [com.xxf.activity.result.contracts.EnableInstallUnknownAppSources]")
-class EnableManageUnknownAppSources : ActivityResultContract<Unit, Boolean>() {
+class EnableManageUnknownAppSources : ActivityResultContract<Unit, Boolean>(), EnableContract {
     private var context: Context? = null
+
+
     override fun createIntent(context: Context, input: Unit): Intent {
         this.context = context
         return Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
@@ -23,6 +25,10 @@ class EnableManageUnknownAppSources : ActivityResultContract<Unit, Boolean>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
+        return isEnabled(context)
+    }
+
+    override fun isEnabled(context: Context?): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context?.packageManager?.canRequestPackageInstalls() == true
         } else {

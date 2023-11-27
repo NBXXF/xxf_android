@@ -11,19 +11,20 @@ import androidx.core.app.NotificationManagerCompat
  * @Description  打开通知设置  其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-class EnableNotificationContract : AppDetailsSettingsContract<Boolean>() {
-    fun isNotificationEnabled(context:Context): Boolean {
+class EnableNotificationContract : AppDetailsSettingsContract<Boolean>(), EnableContract {
+    override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
+        return isEnabled(context)
+    }
+
+    override fun isEnabled(context: Context?): Boolean {
         try {
             val notificationManagerCompat =
-                NotificationManagerCompat.from(context)
+                NotificationManagerCompat.from(context!!)
             return notificationManagerCompat.areNotificationsEnabled()
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return false
-    }
-    override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
-        return context?.let { isNotificationEnabled(it) } == true
     }
 
 }

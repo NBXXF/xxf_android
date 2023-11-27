@@ -14,7 +14,7 @@ import androidx.activity.result.contract.ActivityResultContract
  * @date createTime：2020/9/5
  */
 class EnableLocationContract :
-    ActivityResultContract<Unit, Boolean>() {
+    ActivityResultContract<Unit, Boolean>(), EnableContract {
     private var context: Context? = null
     override fun createIntent(context: Context, input: Unit): Intent {
         this.context = context
@@ -22,6 +22,10 @@ class EnableLocationContract :
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
+       return isEnabled(context)
+    }
+
+    override fun isEnabled(context: Context?): Boolean {
         val locationManager =
             this.context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

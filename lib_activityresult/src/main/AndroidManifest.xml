@@ -3,5 +3,6 @@
     package="com.xxf.activityresult">
     <!--    <uses-permission android:name="android.permission.BLUETOOTH"/>-->
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 </manifest>
