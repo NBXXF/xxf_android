@@ -7,7 +7,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.xxf.activityresult.contracts.EnableInstallUnknownAppSources
+import com.xxf.activityresult.contracts.EnableBluetoothSettingContract
+import com.xxf.activityresult.contracts.EnableNFCContract
+import com.xxf.activityresult.contracts.EnableNFCWithPanelContract
+import com.xxf.activityresult.contracts.EnableNetWithPanelContract
+import com.xxf.activityresult.contracts.EnableNotificationContract
+import com.xxf.activityresult.contracts.EnableWifiContract
+import com.xxf.activityresult.contracts.EnableWifiWithPanelContract
 import com.xxf.activityresult.startActivityForResult
 import java.util.*
 
@@ -33,13 +39,14 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "结果22:$it", Toast.LENGTH_SHORT).show();
         }
         this.findViewById<View>(R.id.test).setOnClickListener {
-            this.startActivityForResult(EnableInstallUnknownAppSources(), Unit)
+            this.startActivityForResult(EnableNetWithPanelContract(), Unit)
                 .doOnError {
                     Toast.makeText(this, "错误结果:$it", Toast.LENGTH_SHORT).show();
                 }
                 .subscribe {
                     Toast.makeText(this, "结果:$it", Toast.LENGTH_SHORT).show();
                 }
+
         }
     }
 

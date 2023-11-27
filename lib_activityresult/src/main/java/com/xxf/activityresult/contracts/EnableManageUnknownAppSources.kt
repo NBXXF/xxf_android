@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import androidx.activity.result.contract.ActivityResultContract
+import com.xxf.activityresult.contracts.setting.SettingEnableContract
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -13,19 +13,19 @@ import androidx.activity.result.contract.ActivityResultContract
  * @date createTime：2020/9/5
  */
 @Deprecated(message = "这个设置 会导致返回页面逻辑不对,建议用 [com.xxf.activity.result.contracts.EnableInstallUnknownAppSources]")
-class EnableManageUnknownAppSources : ActivityResultContract<Unit, Boolean>(), EnableContract {
-    private var context: Context? = null
+class EnableManageUnknownAppSources :
+    SettingEnableContract() {
 
 
     override fun createIntent(context: Context, input: Unit): Intent {
-        this.context = context
+        super.createIntent(context, input)
         return Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES).apply {
             this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
     }
 
-    override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
-        return isEnabled(context)
+    override fun isSupported(context: Context?): Boolean {
+        return true
     }
 
     override fun isEnabled(context: Context?): Boolean {
