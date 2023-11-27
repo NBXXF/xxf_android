@@ -1,4 +1,4 @@
-package com.xxf.arch.toast;
+package com.xxf.toast;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -17,7 +17,7 @@ import androidx.annotation.UiThread;
 import androidx.core.app.NotificationManagerCompat;
 import com.xxf.application.ApplicationProviderKtKt;
 import com.xxf.arch.XXF;
-import com.xxf.arch.toast.impl.DefaultToastFactory;
+import com.xxf.toast.impl.DefaultToastFactory;
 
 
 import java.lang.reflect.Field;

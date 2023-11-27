@@ -1,4 +1,4 @@
-package com.xxf.arch.toast.impl
+package com.xxf.toast.impl
 
 import android.content.Context
 import android.graphics.Color
@@ -9,14 +9,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import com.xxf.arch.R
-import com.xxf.arch.toast.LimitToast
-import com.xxf.arch.toast.ToastFactory
-import com.xxf.arch.toast.ToastType
+import com.xxf.toast.LimitToast
+import com.xxf.toast.ToastFactory
+import com.xxf.toast.ToastType
 import com.xxf.snackbar.Snackbar
 import com.xxf.snackbar.Snackbar.Companion.make
 import com.xxf.utils.DensityUtil.dip2px
+import com.xxf.utils.dp
 
-class DefaultToastFactory : ToastFactory {
+open class DefaultToastFactory : ToastFactory {
     override fun createToast(
         msg: CharSequence,
         type: ToastType,
@@ -60,7 +61,7 @@ class DefaultToastFactory : ToastFactory {
     ): Snackbar {
         val snackbar = make(rootView, msg, Snackbar.LENGTH_SHORT)
         val snackbarView = snackbar.view
-        snackbarView.setPadding(dip2px(10f), getStatusBarHeight(context), 0, 0)
+        snackbarView.setPadding(10.dp, 0, 10.dp, 0)
         snackbarView.setBackgroundColor(-0xcccccd)
         val textView =
             snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView

@@ -22,7 +22,7 @@ import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.test.databinding.ActivityStateBinding;
 import com.xxf.arch.test.databinding.ItemTest2Binding;
 import com.xxf.arch.test.databinding.ItemTestBinding;
-import com.xxf.arch.toast.ToastUtils;
+import com.xxf.toast.ToastUtils;
 import com.xxf.rxjava.RxLifecycle;
 import com.xxf.utils.DensityUtil;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;

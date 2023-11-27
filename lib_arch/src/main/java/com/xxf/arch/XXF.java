@@ -24,8 +24,8 @@ import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.arch.lint.ComponentLintPlugin;
 
 import com.xxf.arch.service.XXFFileService;
-import com.xxf.arch.toast.ToastType;
-import com.xxf.arch.toast.ToastUtils;
+import com.xxf.toast.ToastType;
+import com.xxf.toast.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.log.LogUtils;
 

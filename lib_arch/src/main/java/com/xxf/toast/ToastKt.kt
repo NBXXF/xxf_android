@@ -1,4 +1,4 @@
-package com.xxf.arch.toast
+package com.xxf.toast
 
 import android.view.Gravity
 import android.widget.Toast

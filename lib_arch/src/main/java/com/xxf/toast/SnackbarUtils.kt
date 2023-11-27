@@ -1,4 +1,4 @@
-package com.xxf.arch.toast
+package com.xxf.toast
 
 import android.app.Activity
 import android.view.View

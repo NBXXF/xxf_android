@@ -22,9 +22,9 @@ import com.google.gson.annotations.JsonAdapter
 import com.xxf.arch.XXF
 import com.xxf.arch.activity.XXFActivity
 import com.xxf.arch.presenter.XXFNetwrokPresenter
-import com.xxf.arch.toast.ToastType
-import com.xxf.arch.toast.ToastUtils
-import com.xxf.arch.toast.showToast
+import com.xxf.toast.ToastType
+import com.xxf.toast.ToastUtils
+import com.xxf.toast.showToast
 import com.xxf.bus.ActionTypeEvent.Companion.create
 import com.xxf.json.typeadapter.format.formatobject.NumberFormatObject
 import com.xxf.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter

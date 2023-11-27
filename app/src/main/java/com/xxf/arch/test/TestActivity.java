@@ -10,8 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.xxf.arch.test.databinding.ActivityTestBinding;
-import com.xxf.arch.toast.ToastType;
-import com.xxf.arch.toast.ToastUtils;
+import com.xxf.toast.ToastType;
+import com.xxf.toast.ToastUtils;
 
 
 public class TestActivity extends AppCompatActivity {
