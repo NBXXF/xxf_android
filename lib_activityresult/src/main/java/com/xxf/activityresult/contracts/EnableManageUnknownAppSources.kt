@@ -12,7 +12,7 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
- * @Description  允许管理安装未知应用 建议用[com.xxf.activity.result.contracts.EnableInstallUnknownAppSources] 其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
+ * @Description  允许管理安装未知应用 其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  *               需要声明权限    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/> 声明之后 就会在权限列表展示,这个不是动态权限
  *
  *  @date createTime：2020/9/5
