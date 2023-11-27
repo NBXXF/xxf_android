@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.activityresult.ActivityResult;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.view.round.CornerUtil;
 
@@ -54,28 +53,11 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
         });
     }
 
-    /**
-     * 获取结果
-     * 有效周期是在onPause之前
-     * onPause会清理
-     *
-     * @return
-     */
-    @CheckResult
-    @Nullable
-    public ActivityResult getActivityResult() {
-        if (getIntent() != null
-                && getIntent().hasExtra(KEY_ACTIVITY_RESULT)) {
-            return (ActivityResult) getIntent().getParcelableExtra(KEY_ACTIVITY_RESULT);
-        }
-        return null;
-    }
 
 
     @CallSuper
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        getIntent().putExtra(KEY_ACTIVITY_RESULT, new ActivityResult(requestCode, resultCode, data));
         super.onActivityResult(requestCode, resultCode, data);
     }
 

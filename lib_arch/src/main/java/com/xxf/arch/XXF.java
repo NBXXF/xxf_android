@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 
-import com.xxf.activity.result.launcher.ActivityResultLauncher;
+import com.xxf.activityresult.ActivityResultLauncher;
 import com.xxf.application.initializer.ApplicationInitializer;
 import com.xxf.application.activity.ActivityStackProvider;
 import com.xxf.application.activity.AndroidActivityStackProvider;
@@ -116,7 +116,7 @@ public class XXF {
                     LogUtils.INSTANCE.getConfig().setDebug(builder.isDebug);
                     AppBackgroundLifecycleCallbacks.INSTANCE.register(builder.application);
                     //初始化新方式 获取activity result和权限
-                    ActivityResultLauncher.INSTANCE.init(builder.application);
+                    ActivityResultLauncher.INSTANCE.init(builder.application,5);
                     //Initializer 跨进程不会初始化
                     ApplicationInitializer.Companion.init(builder.application);
                     XXF.errorHandler = builder.errorHandler;

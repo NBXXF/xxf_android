@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import com.xxf.arch.dialog.XXFDialog
 import com.xxf.arch.test.databinding.DialogTestBinding
 import com.xxf.utils.dp
-import kotlinx.android.synthetic.main.activity_recive.*
 
 class TestDialog(context: Context) : XXFDialog<Unit>(context,R.style.Test) {
     val binding by lazy {

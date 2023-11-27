@@ -23,14 +23,15 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResult
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.activityresult.ActivityResult
-import com.xxf.activityresult.startActivityForResultObservable
+import com.xxf.activityresult.isOk
+import com.xxf.activityresult.startActivityForResult
 import com.xxf.application.application
 import com.xxf.fileprovider.FileProvider7
 import com.xxf.fileprovider.FileProvider7.getUriForFile
-import com.xxf.permission.requestPermissionsObservable
+import com.xxf.permission.requestPermission
 import com.xxf.permission.transformer.RxPermissionTransformer
 import com.xxf.utils.FileUtils
 import com.xxf.utils.IntentUtils
@@ -63,13 +64,6 @@ object SystemUtils {
         return application
     }
 
-    const val REQUEST_CODE_CAMERA = 59999
-    const val REQUEST_CODE_CAMERA_VIDEO = 59994
-    const val REQUEST_CODE_ALBUM = 59998
-    const val REQUEST_CODE_DOCUMENT = 59997
-    const val REQUEST_CODE_SHARE = 59996
-    const val REQUEST_CODE_CROP = 59995
-
     /**
      * 常见分享组件
      */
@@ -99,7 +93,7 @@ object SystemUtils {
      * @return
      */
     fun takeVideoUri(context: FragmentActivity, bundle: Bundle?): Observable<Uri> {
-        return context.requestPermissionsObservable(Manifest.permission.CAMERA)
+        return context.requestPermission(Manifest.permission.CAMERA)
             .compose(RxPermissionTransformer(context, Manifest.permission.CAMERA))
             .flatMap {
                 val mIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
@@ -108,7 +102,7 @@ object SystemUtils {
                 //设置时长
                 mIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, TimeUnit.MINUTES.toMillis(10))
                 bundle?.let { it1 -> mIntent.putExtras(it1) }
-                context.startActivityForResultObservable(mIntent, REQUEST_CODE_CAMERA_VIDEO)
+                context.startActivityForResult(mIntent)
                     .flatMap { activityResult ->
                         if (!activityResult.isOk) {
                             Observable.empty()
@@ -148,7 +142,7 @@ object SystemUtils {
         context: FragmentActivity,
         cropBuilder: PathCropIntentBuilder?
     ): Observable<String> {
-        return context.requestPermissionsObservable(
+        return context.requestPermission(
             arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         )
             .compose(
@@ -166,9 +160,8 @@ object SystemUtils {
                 if (!picFile.exists()) {
                     picFile.createNewFile()
                 }
-                context.startActivityForResultObservable(
+                context.startActivityForResult(
                     IntentUtils.getCaptureIntent(picFile),
-                    REQUEST_CODE_CAMERA
                 )
                     .flatMap { activityResult ->
                         if (!activityResult.isOk) {
@@ -181,10 +174,8 @@ object SystemUtils {
                 override fun apply(s: String): ObservableSource<String> {
                     if (cropBuilder != null) {
                         cropBuilder.inputImgFile(File(s))
-                        return context.startActivityForResultObservable(
-                            cropBuilder.build(),
-                            REQUEST_CODE_CROP
-                        )
+                        return context.startActivityForResult(
+                            cropBuilder.build())
                             .flatMap { activityResult ->
                                 if (!activityResult.isOk) {
                                     Observable.empty()
@@ -208,13 +199,13 @@ object SystemUtils {
         context: FragmentActivity,
         cropBuilder: PathCropIntentBuilder?
     ): Observable<String> {
-        return context.requestPermissionsObservable(Manifest.permission.READ_EXTERNAL_STORAGE)
+        return context.requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
             .compose(RxPermissionTransformer(context, Manifest.permission.READ_EXTERNAL_STORAGE))
             .flatMap(object : Function<Boolean, ObservableSource<String>> {
                 @SuppressLint("MissingPermission")
                 @Throws(Exception::class)
                 override fun apply(aBoolean: Boolean): ObservableSource<String> {
-                    return context.startActivityForResultObservable(IntentUtils.getPickImageFromGalleryIntent(), REQUEST_CODE_ALBUM)
+                    return context.startActivityForResult(IntentUtils.getPickImageFromGalleryIntent())
                         .flatMap { activityResult ->
                             if (!activityResult.isOk) {
                                 Observable.empty()
@@ -232,9 +223,8 @@ object SystemUtils {
                 override fun apply(s: String): ObservableSource<String> {
                     if (cropBuilder != null) {
                         cropBuilder.inputImgFile(File(s))
-                        return context.startActivityForResultObservable(
-                            cropBuilder.build(),
-                            REQUEST_CODE_CROP
+                        return context.startActivityForResult(
+                            cropBuilder.build()
                         )
                             .flatMap { activityResult ->
                                 if (!activityResult.isOk) {
@@ -263,7 +253,7 @@ object SystemUtils {
         picName: String?,
         bmp: Bitmap
     ): Observable<File> {
-        return context.requestPermissionsObservable(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return context.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .compose(RxPermissionTransformer(context, Manifest.permission.WRITE_EXTERNAL_STORAGE))
             .flatMap(object : Function<Boolean, ObservableSource<File>> {
                 @Throws(Exception::class)
@@ -356,7 +346,7 @@ object SystemUtils {
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "*/*"
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-        return activity.requestPermissionsObservable(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return activity.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .compose(
                 RxPermissionTransformer(
                     activity,
@@ -366,7 +356,7 @@ object SystemUtils {
             .flatMap(object : Function<Boolean, ObservableSource<Uri>> {
                 @Throws(Throwable::class)
                 override fun apply(aBoolean: Boolean): ObservableSource<Uri> {
-                    return activity.startActivityForResultObservable(intent, REQUEST_CODE_DOCUMENT)
+                    return activity.startActivityForResult(intent)
                         .flatMap(object : Function<ActivityResult, ObservableSource<Uri>> {
                             @Throws(Throwable::class)
                             override fun apply(activityResult: ActivityResult): ObservableSource<Uri> {
@@ -449,7 +439,7 @@ object SystemUtils {
         intent.type = "*/*" //无类型限制
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) //关键！多选参数
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        return activity.requestPermissionsObservable(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return activity.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .compose(
                 RxPermissionTransformer(
                     activity,
@@ -459,7 +449,7 @@ object SystemUtils {
             .flatMap(object : Function<Boolean, ObservableSource<List<Uri>>> {
                 @Throws(Throwable::class)
                 override fun apply(aBoolean: Boolean): ObservableSource<List<Uri>> {
-                    return activity.startActivityForResultObservable(intent, REQUEST_CODE_DOCUMENT)
+                    return activity.startActivityForResult(intent)
                         .flatMap(object :
                             Function<ActivityResult, ObservableSource<List<Uri>>> {
                             @Throws(Throwable::class)
@@ -752,13 +742,13 @@ object SystemUtils {
             chooser = Intent.createChooser(sendIntent, "share text")
         }
         return if (context is LifecycleOwner) {
-            context.startActivityForResultObservable(chooser, REQUEST_CODE_SHARE)
+            context.startActivityForResult(chooser)
         } else {
             val finalChooser = chooser
             Observable
                 .fromCallable<ActivityResult> {
                     context.startActivity(finalChooser)
-                    ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, Intent())
+                    ActivityResult(Activity.RESULT_OK, Intent())
                 }
         }
     }
@@ -814,13 +804,13 @@ object SystemUtils {
             }
             applyProviderPermission(context, intent, uri)
             if (context is LifecycleOwner) {
-                context.startActivityForResultObservable(chooser, REQUEST_CODE_SHARE)
+                context.startActivityForResult(chooser)
             } else {
                 val finalChooser = chooser
                 Observable
                     .fromCallable<ActivityResult> {
                         context.startActivity(finalChooser)
-                        ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, Intent())
+                        ActivityResult(Activity.RESULT_OK, Intent())
                     }
             }
         }
@@ -882,12 +872,12 @@ object SystemUtils {
             intent.putExtra(Intent.EXTRA_TEXT, content) // 正文
             val chooser = Intent.createChooser(intent, chooserAppTitle)
             if (context is LifecycleOwner) {
-                context.startActivityForResultObservable(chooser, REQUEST_CODE_SHARE)
+                context.startActivityForResult(chooser)
             } else {
                 Observable
                     .fromCallable<ActivityResult>(Callable<ActivityResult> {
                         context.startActivity(chooser)
-                        ActivityResult(REQUEST_CODE_SHARE, Activity.RESULT_OK, Intent())
+                        ActivityResult(Activity.RESULT_OK, Intent())
                     })
             }
         }

@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
+def des = rootProject.ext.dependencies
 
 android {
     compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
@@ -30,5 +31,6 @@ android {
 }
 
 dependencies {
+    api des.material
     implementation project(path: ':lib_permission')
 }

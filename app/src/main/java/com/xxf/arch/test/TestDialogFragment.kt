@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentManager
 import com.xxf.viewbinding.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.JsonObject
-import com.xxf.activityresult.startActivityForResultObservable
+import com.xxf.activityresult.startActivityForResult
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.json.JsonUtils
 import com.xxf.arch.test.databinding.TestFragmentBinding
@@ -33,7 +33,7 @@ class TestDialogFragment : XXFBottomSheetDialogFragment<String?>(R.layout.test_f
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startActivityForResultObservable(Intent(requireContext(),TestActivity::class.java),1000)
+        startActivityForResult(Intent(requireContext(),TestActivity::class.java))
             .subscribe {
 
             }

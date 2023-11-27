@@ -25,9 +25,8 @@ android {
 }
 
 dependencies {
-    api des.material
+    api des.fragment_ktx
     api des.rxJava
-    api des.rxAndroid
 }
 
 ext {

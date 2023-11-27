@@ -2,7 +2,6 @@ package com.xxf.permission.transformer
 
 import android.content.Context
 import com.xxf.permission.PermissionDeniedException
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.core.ObservableTransformer
@@ -16,7 +15,7 @@ import io.reactivex.rxjava3.functions.Function
  */
 open class RxPermissionTransformer(val context: Context, vararg val permission: String) : ObservableTransformer<Boolean, Boolean> {
     override fun apply(upstream: Observable<Boolean>): ObservableSource<Boolean> {
-        return upstream.observeOn(AndroidSchedulers.mainThread())
+        return upstream
                 .map(Function { granted ->
                     if (!granted) {
                         throw PermissionDeniedException(context, *permission)

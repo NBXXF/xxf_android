@@ -1,15 +1,21 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'com.github.dcendents.android-maven'
 }
 def des = rootProject.ext.dependencies
+
 android {
     compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
+
     defaultConfig {
+        applicationId "com.xxf.activityresult.demo"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -25,14 +31,7 @@ android {
 }
 
 dependencies {
-    api project(path: ':lib_activityresult')
+    api des.material
+    implementation project(path: ':lib_permission')
+    implementation project(path: ':lib_activityresult')
 }
-
-ext {
-    publishVersion = rootProject.xxfVersion
-    publishGroup = rootProject.xxfGroup
-    moduleName = project.name
-    descContent = project.name
-}
-
-apply from: '../publish_maven.gradle'

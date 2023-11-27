@@ -25,7 +25,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //列出全部仓库列表 索引用 开发者可以一次性使用所有lib
     api project(path: ':lib_activityresult')
-    api project(path: ':lib_activityresult_launcher')
     api project(path: ':lib_adapter')
     api project(path: ':lib_application')
     api project(path: ':lib_arch')
