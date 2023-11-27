@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "结果22:$it", Toast.LENGTH_SHORT).show();
         }
         this.findViewById<View>(R.id.test).setOnClickListener {
-            this.startActivityForResult(EnableManageUnknownAppSources(), Unit)
+            this.startActivityForResult(EnableNotificationContract(), Unit)
                 .doOnError {
                     Toast.makeText(this, "错误结果:$it", Toast.LENGTH_SHORT).show();
                 }

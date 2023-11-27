@@ -2,6 +2,7 @@ package com.xxf.activityresult.contracts
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import com.xxf.activityresult.contracts.setting.SettingEnableContract
