@@ -1,7 +1,5 @@
 package com.xxf.arch.test
 
-import com.xxf.json.JsonUtils
-
 object TestNumber {
     class TestModel {
         var num: Float? = null

@@ -56,7 +56,10 @@ dependencies {
     debugImplementation 'com.apkfuns.logutils:library:1.7.5'
     releaseImplementation 'com.apkfuns.logutils:logutils-no-op:1.7.5'
 
-   // implementation  'com.github.wendux:DSBridge-Android:3.0-SNAPSHOT'
+    //implementation 'androidx.core:core-ktx:1.12.0'
+
+
+    // implementation  'com.github.wendux:DSBridge-Android:3.0-SNAPSHOT'
    // implementation 'androidx.draganddrop:draganddrop:1.0.0'
     //implementation 'org.apache.commons:commons-lang3:3.12.0'
 

@@ -10,7 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.xxf.arch.test.databinding.ActivityTestBinding;
-import com.xxf.arch.utils.ToastUtils;
+import com.xxf.arch.toast.ToastType;
+import com.xxf.arch.toast.ToastUtils;
 
 
 public class TestActivity extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTestBinding.inflate(getLayoutInflater(), null, false);
         setContentView(binding.getRoot());
-        ToastUtils.showToast("param:" + param + " name:" + getIntent().getStringExtra("name") + " age:" + getIntent().getStringExtra("age"), ToastUtils.ToastType.SUCCESS);
+        ToastUtils.showToast("param:" + param + " name:" + getIntent().getStringExtra("name") + " age:" + getIntent().getStringExtra("age"), ToastType.SUCCESS);
 
         binding.btSetResult.setOnClickListener(new View.OnClickListener() {
             @Override

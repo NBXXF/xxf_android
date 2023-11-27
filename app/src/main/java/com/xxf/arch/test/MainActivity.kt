@@ -22,12 +22,13 @@ import com.google.gson.annotations.JsonAdapter
 import com.xxf.arch.XXF
 import com.xxf.arch.activity.XXFActivity
 import com.xxf.arch.presenter.XXFNetwrokPresenter
-import com.xxf.arch.utils.ToastUtils
+import com.xxf.arch.toast.ToastType
+import com.xxf.arch.toast.ToastUtils
+import com.xxf.arch.toast.showToast
 import com.xxf.bus.ActionTypeEvent.Companion.create
 import com.xxf.json.typeadapter.format.formatobject.NumberFormatObject
 import com.xxf.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter
 import com.xxf.log.logD
-import com.xxf.permission.common.PermissionUtils.jumpPermissionSettingPage
 import com.xxf.utils.DateUtils.format
 import com.xxf.utils.FileUtils
 import com.xxf.utils.HandlerUtils.mainHandler
@@ -288,8 +289,8 @@ class MainActivity() : XXFActivity() {
         findViewById<View>(R.id.bt_http)
             .setOnClickListener(object : View.OnClickListener {
                 override fun onClick(view: View) {
-                    jumpPermissionSettingPage(this@MainActivity)
-                    ToastUtils.showSnackBar("xxxgf165435676457685", ToastUtils.ToastType.ERROR)
+                    showToast("xxxxxxgfd")
+                    //jumpPermissionSettingPage(this@MainActivity)
                 }
             })
         findViewById<View>(R.id.file)
@@ -555,7 +556,7 @@ class MainActivity() : XXFActivity() {
         // Toast.makeText(this,"abcd",Toast.LENGTH_SHORT).show();
         Handler().postDelayed(object : Runnable {
             override fun run() {
-                ToastUtils.showToast("testxxx", ToastUtils.ToastType.ERROR)
+                ToastUtils.showToast("testxxx", ToastType.ERROR)
             }
         }, 2000)
         Log.d("", "=============isBack stop:" + XXF.getActivityStackProvider().isBackground())

@@ -24,7 +24,8 @@ import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.arch.lint.ComponentLintPlugin;
 
 import com.xxf.arch.service.XXFFileService;
-import com.xxf.arch.utils.ToastUtils;
+import com.xxf.arch.toast.ToastType;
+import com.xxf.arch.toast.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.log.LogUtils;
 
@@ -44,7 +45,7 @@ public class XXF {
         BiConsumer<Integer, Throwable> errorHandler = new BiConsumer<Integer, Throwable>() {
             @Override
             public void accept(Integer integer, Throwable throwable) {
-                ToastUtils.showToast(throwable.getMessage(), ToastUtils.ToastType.ERROR);
+                ToastUtils.showToast(throwable.getMessage(), ToastType.ERROR);
             }
         };
         @NonNull

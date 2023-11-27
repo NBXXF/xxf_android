@@ -32,7 +32,8 @@ import com.xxf.application.ApplicationProviderKtKt;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.arch.lint.ComponentLintPlugin;
-import com.xxf.arch.utils.ToastUtils;
+import com.xxf.arch.toast.ToastType;
+import com.xxf.arch.toast.ToastUtils;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.view.loading.XXFLoadingDialog;
@@ -97,7 +98,7 @@ public class BaseApplication extends Application {
                 .setErrorHandler(new BiConsumer<Integer, Throwable>() {
                     @Override
                     public void accept(Integer flag, Throwable throwable) throws Throwable {
-                        ToastUtils.showToast("error:" + throwable, ToastUtils.ToastType.ERROR, flag);
+                        ToastUtils.showToast("error:" + throwable, ToastType.ERROR, flag);
                     }
                 }));
         ComponentLintPlugin.INSTANCE.setLintConsumer(new BiConsumer<Object, Class<?>>() {
@@ -141,7 +142,7 @@ public class BaseApplication extends Application {
                 frameLayout.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        Toast.makeText(BaseApplication.this, "点击了", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(BaseApplication.this, "点击了", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                 });
@@ -165,7 +166,7 @@ public class BaseApplication extends Application {
                                 frameLayout.setOnTouchListener(new View.OnTouchListener() {
                                     @Override
                                     public boolean onTouch(View v, MotionEvent event) {
-                                        Toast.makeText(BaseApplication.this, "点击了", Toast.LENGTH_SHORT).show();
+                                       // Toast.makeText(BaseApplication.this, "点击了", Toast.LENGTH_SHORT).show();
                                         return false;
                                     }
                                 });
