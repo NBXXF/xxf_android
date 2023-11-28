@@ -17,7 +17,7 @@ import android.os.Process
 import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.RequiresPermission
-import com.xxf.application.allActivity
+import com.xxf.application.activityList
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -246,7 +246,7 @@ fun Application.resetApp(){
  * 退出应用
  */
 fun Application.exitApp(){
-   allActivity.forEach {
+    activityList.forEach {
        it.finish()
    }
     exitProcess(0)

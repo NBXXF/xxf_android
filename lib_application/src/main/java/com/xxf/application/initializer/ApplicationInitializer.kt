@@ -3,7 +3,7 @@ package com.xxf.application.initializer
 import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
-import com.xxf.application.activity.AndroidActivityStackProvider
+import com.xxf.application.activitylifecycle.AndroidActivityStackProvider
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq

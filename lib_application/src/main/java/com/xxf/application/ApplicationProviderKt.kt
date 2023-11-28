@@ -1,8 +1,6 @@
 package com.xxf.application
 
 import android.app.Application
-import com.xxf.application.activity.ActivityStackProvider
-import com.xxf.application.activity.AndroidActivityStackProvider
 import com.xxf.application.initializer.ApplicationInitializer
 
 /**

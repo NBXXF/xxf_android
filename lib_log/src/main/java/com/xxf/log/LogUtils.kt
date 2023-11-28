@@ -46,11 +46,25 @@ object LogUtils:Logger{
      * 执行配置
      */
     val config:Config=Config()
+
+    private val StackTraceElement.isIgnorable: Boolean
+        get() = isNativeMethod || className == Thread::class.java.name || className == Logger::class.java.name
+
+
+    private fun String.limitLength(length: Int): String =
+        if (this.length <= length) this else substring(0, length)
+    private val StackTraceElement.simpleClassName
+        get() = className.split(".").run {
+            if (isNotEmpty()) last().limitLength(23) else null
+        }
+    private inline val TAG: String
+        get() = Thread.currentThread().stackTrace
+            .find { !it.isIgnorable }?.simpleClassName.orEmpty()
     override fun logV(tag: String?, log: () -> Any) {
         if(!config.isDebug){
             return
         }
-        config.logger.logV(tag){
+        config.logger.logV(tag?: TAG){
             config.dispatchParser(log)
         }
     }
@@ -59,7 +73,7 @@ object LogUtils:Logger{
         if(!config.isDebug){
             return
         }
-        config.logger.logI(tag){
+        config.logger.logI(tag?: TAG){
             config.dispatchParser(log)
         }
     }
@@ -68,7 +82,7 @@ object LogUtils:Logger{
         if(!config.isDebug){
             return
         }
-        config.logger.logD(tag){
+        config.logger.logD(tag?: TAG){
             config.dispatchParser(log)
         }
     }
@@ -77,7 +91,7 @@ object LogUtils:Logger{
         if(!config.isDebug){
             return
         }
-        config.logger.logE(tag){
+        config.logger.logE(tag?: TAG){
             config.dispatchParser(log)
         }
     }
@@ -86,7 +100,7 @@ object LogUtils:Logger{
         if(!config.isDebug){
             return
         }
-        config.logger.logW(tag){
+        config.logger.logW(tag?: TAG){
             config.dispatchParser(log)
         }
     }
@@ -95,7 +109,7 @@ object LogUtils:Logger{
         if(!config.isDebug){
             return
         }
-        config.logger.logJson(tag){
+        config.logger.logJson(tag?: TAG){
             GsonFactory.createGson(false,false).toJson(log())
         }
     }

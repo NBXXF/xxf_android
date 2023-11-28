@@ -2,7 +2,7 @@ package com.xxf.arch
 
 import android.view.Gravity
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.application.topFragmentActivity
+import com.xxf.application.topFragmentActivityOrNull
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl
 import com.xxf.arch.rxjava.transformer.UIErrorTransformer
 import com.xxf.arch.rxjava.transformer.filter.ErrorNoFilter
@@ -44,7 +44,7 @@ inline fun <reified T> Observable<T>.bindProgressHud(
     successNotice: String? = "",
     errorNotice: String? = null
 ): Observable<T> {
-    val topActivity = topFragmentActivity
+    val topActivity = topFragmentActivityOrNull
     if (topActivity != null) {
         var progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(topActivity)
         progressHUDTransformerImpl.setLoadingNotice(loadingNotice)
@@ -79,7 +79,7 @@ inline fun <reified T> Flowable<T>.bindProgressHud(
     successNotice: String? = "",
     errorNotice: String? = null
 ): Flowable<T> {
-    val topActivity = topFragmentActivity
+    val topActivity = topFragmentActivityOrNull
     if (topActivity != null) {
         var progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(topActivity)
         progressHUDTransformerImpl.setLoadingNotice(loadingNotice)
@@ -114,7 +114,7 @@ inline fun <reified T> Maybe<T>.bindProgressHud(
     successNotice: String? = "",
     errorNotice: String? = null
 ): Maybe<T> {
-    val topActivity = topFragmentActivity
+    val topActivity = topFragmentActivityOrNull
     if (topActivity != null) {
         var progressHUDTransformerImpl = ProgressHUDTransformerImpl<T>(topActivity)
         progressHUDTransformerImpl.setLoadingNotice(loadingNotice)

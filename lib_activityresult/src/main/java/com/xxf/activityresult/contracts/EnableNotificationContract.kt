@@ -3,6 +3,7 @@ package com.xxf.activityresult.contracts
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import com.xxf.activityresult.contracts.setting.SettingEnableContract
@@ -17,8 +18,14 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
 class EnableNotificationContract : SettingEnableContract() {
     override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)
-        return Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-            .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+       return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        } else {
+            Intent("android.settings.APP_NOTIFICATION_SETTINGS")
+                .putExtra("app_package", context.packageName)
+                .putExtra("app_uid", context.applicationInfo.uid)
+        }
     }
 
     override fun isSupported(context: Context?): Boolean {

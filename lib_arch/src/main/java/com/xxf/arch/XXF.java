@@ -17,8 +17,6 @@ import androidx.annotation.RequiresPermission;
 
 import com.xxf.activityresult.ActivityResultLauncher;
 import com.xxf.application.initializer.ApplicationInitializer;
-import com.xxf.application.activity.ActivityStackProvider;
-import com.xxf.application.activity.AndroidActivityStackProvider;
 import com.xxf.arch.app.AppBackgroundLifecycleCallbacks;
 import com.xxf.arch.core.XXFUserInfoProvider;
 import com.xxf.arch.lint.ComponentLintPlugin;
@@ -142,14 +140,6 @@ public class XXF {
         return application;
     }
 
-    /**
-     * activity堆栈
-     *
-     * @return
-     */
-    public static ActivityStackProvider getActivityStackProvider() {
-        return AndroidActivityStackProvider.INSTANCE;
-    }
 
     public static String getSharedPreferencesName() {
         return sharedPreferencesName;

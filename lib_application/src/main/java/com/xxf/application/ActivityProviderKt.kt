@@ -1,9 +1,9 @@
 package com.xxf.application
 
 import android.app.Activity
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import com.xxf.application.activity.ActivityStackProvider
-import com.xxf.application.activity.AndroidActivityStackProvider
+import java.util.LinkedList
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -21,54 +21,14 @@ val KEY_ACTIVITY_RESULT by lazy { "ActivityResult" }
 val KEY_COMPAT_PARAM by lazy { "CompatParam" }
 
 
-/**
- * activity 栈
- */
-val activityStack: ActivityStackProvider by lazy {
-    AndroidActivityStackProvider
-}
+internal val activityCache = LinkedList<Activity>()
 
-/**
- * 栈顶activity
- */
+val activityList: List<Activity> get() = activityCache.toList()
 
-val topActivity: Activity?
-    get() {
-        return AndroidActivityStackProvider.topActivity
-    }
+val topActivity: Activity get() = activityCache.last()
 
-/**
- * 栈顶 fragmentActivity
- */
-val topFragmentActivity: FragmentActivity?
-    get() {
-        if (AndroidActivityStackProvider.topActivity is FragmentActivity) {
-            return AndroidActivityStackProvider.topActivity as FragmentActivity
-        }
-        return null
-    }
+val topActivityOrNull: Activity? get() = activityCache.lastOrNull()
 
-/**
- * 根activity
- */
-val rootActivity: Activity?
-    get() {
-        return AndroidActivityStackProvider.rootActivity
-    }
+val topFragmentActivityOrNull: FragmentActivity? get() = topActivityOrNull as? FragmentActivity
 
-/**
- * 所有Activity
- */
-val allActivity: Array<Activity>
-    get() {
-        return AndroidActivityStackProvider.allActivity
-    }
-
-
-/**
- *  判断app是否在后台
- */
-val isAppBackground: Boolean
-    get() {
-        return AndroidActivityStackProvider.isBackground()
-    }
+val topActivityOrApplication: Context get() = topActivityOrNull ?: application

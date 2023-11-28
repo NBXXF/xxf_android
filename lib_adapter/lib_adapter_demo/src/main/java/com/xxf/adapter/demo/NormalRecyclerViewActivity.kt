@@ -7,17 +7,17 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.xxf.adapter.demo.databinding.ActivityMainBinding
-import com.xxf.application.activity.bindExtra
+import com.xxf.ktx.bindExtra
 import java.util.*
 
 open class NormalRecyclerViewActivity : AppCompatActivity() {
-    val uuid: String by bindExtra(defaultValue = "defaultXXX")
+    val uuid: String by com.xxf.ktx.bindExtra(defaultValue = "defaultXXX")
 
-    val uuid2: String by bindExtra("KEY", defaultValue = "defaultXXX")
+    val uuid2: String by com.xxf.ktx.bindExtra("KEY", defaultValue = "defaultXXX")
 
-    val uuid3: String? by bindExtra("KEY")
+    val uuid3: String? by com.xxf.ktx.bindExtra("KEY")
 
-    var uuid4: String? by bindExtra("KEY")
+    var uuid4: String? by com.xxf.ktx.bindExtra("KEY")
 
     var binding: ActivityMainBinding? = null
     var adapter = TestNormalAdapter()

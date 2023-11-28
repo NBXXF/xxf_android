@@ -16,7 +16,6 @@ import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
 import androidx.core.app.NotificationManagerCompat;
 import com.xxf.application.ApplicationProviderKtKt;
-import com.xxf.arch.XXF;
 import com.xxf.toast.impl.DefaultToastFactory;
 
 
@@ -173,10 +172,6 @@ public class ToastUtils {
     public static Toast showToast(@NonNull CharSequence notice, @NonNull ToastType type, int flag) {
         try{
             if (!isMainThread() || TextUtils.isEmpty(notice)) {
-                return null;
-            }
-            //app 后台不允许toast
-            if (XXF.getActivityStackProvider().isBackground()) {
                 return null;
             }
 

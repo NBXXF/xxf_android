@@ -559,7 +559,6 @@ class MainActivity() : XXFActivity() {
                 ToastUtils.showToast("testxxx", ToastType.ERROR)
             }
         }, 2000)
-        Log.d("", "=============isBack stop:" + XXF.getActivityStackProvider().isBackground())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

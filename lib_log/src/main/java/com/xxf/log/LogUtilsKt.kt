@@ -6,49 +6,44 @@ package com.xxf.log
  * @date createTime：2018/9/7
  */
 
-inline fun logDefaultTag(): String {
-    val stackTraceElement = Thread.currentThread().stackTrace[2]
-    return stackTraceElement.fileName
-}
-
 inline fun logV(tag:String?=null, noinline log: () -> Any){
     if(!LogUtils.config.isDebug){
         return
     }
-    LogUtils.logV(tag?:logDefaultTag(),log)
+    LogUtils.logV(tag,log)
 }
 
 inline fun logI(tag:String?=null,noinline log: () -> Any){
     if(!LogUtils.config.isDebug) {
         return
     }
-    LogUtils.logV(tag?:logDefaultTag(),log)
+    LogUtils.logV(tag,log)
 }
 
 inline fun logD(tag:String?=null,noinline log: () -> Any){
     if(!LogUtils.config.isDebug) {
         return
     }
-    LogUtils.logV(tag?:logDefaultTag(),log)
+    LogUtils.logV(tag,log)
 }
 
 inline fun logE(tag:String?=null,noinline log: () -> Any){
     if(!LogUtils.config.isDebug){
         return
     }
-    LogUtils.logV(tag?:logDefaultTag(),log)
+    LogUtils.logV(tag,log)
 }
 
 inline fun logW(tag:String?=null,noinline log: () -> Any){
     if(!LogUtils.config.isDebug){
         return
     }
-    LogUtils.logV(tag?:logDefaultTag(),log)
+    LogUtils.logV(tag,log)
 }
 
 inline fun logJson(tag:String?=null,noinline log: () -> Any){
     if(!LogUtils.config.isDebug){
         return
     }
-    LogUtils.logJson (tag?:logDefaultTag(),log)
+    LogUtils.logJson (tag,log)
 }

@@ -5,12 +5,10 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.xxf.arch.XXF
+import com.xxf.application.activityList
 import com.xxf.snackbar.SnackBarFragment
 
 object SnackbarUtils {
-    private val topActivity: Activity?
-        private get() = XXF.getActivityStackProvider().topActivity
 
     /**
      * 可能会被遮挡 采用dialogFragment的方式提示
@@ -20,19 +18,24 @@ object SnackbarUtils {
      */
     @JvmStatic
     fun showSnackBar(notice: CharSequence, type: ToastType) {
-        try {
-            //去除snackbar
-            val topActivity = topActivity
-            val snackBarFragment = (topActivity as FragmentActivity?)!!.supportFragmentManager
-                .findFragmentByTag(SnackBarFragment::class.java.name) as SnackBarFragment?
-            snackBarFragment?.dismissAllowingStateLoss()
-        } catch (e: Throwable) {
-            e.printStackTrace()
+        //找到合适的activity 弹出来
+        val topActivity = activityList.reversed().firstOrNull {
+            !it.isUnavailable()
         }
-        val topActivity = XXF.getActivityStackProvider().topActivity
-        if (topActivity != null && !topActivity.isDestroyed && !topActivity.isFinishing) {
-            if (topActivity is FragmentActivity) {
-                var snackBarFragment = topActivity.supportFragmentManager
+        (topActivity as? FragmentActivity)?.let {
+            try {
+                //去除snackbar
+                val snackBarFragment = it.supportFragmentManager
+                    .findFragmentByTag(SnackBarFragment::class.java.name) as SnackBarFragment?
+                snackBarFragment?.dismissAllowingStateLoss()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
+
+        topActivity?.run {
+            if (this is FragmentActivity) {
+                var snackBarFragment = this.supportFragmentManager
                     .findFragmentByTag(SnackBarFragment::class.java.name) as SnackBarFragment?
                 snackBarFragment?.dismissAllowingStateLoss()
                 snackBarFragment = SnackBarFragment()
@@ -47,13 +50,17 @@ object SnackbarUtils {
                     }
                 })
                 snackBarFragment.show(
-                    topActivity.supportFragmentManager,
+                    this.supportFragmentManager,
                     SnackBarFragment::class.java.name
                 )
             } else {
                 showSnackBar(topActivity.window.decorView, notice, type)
             }
         }
+    }
+
+    private fun Activity?.isUnavailable(): Boolean {
+        return this?.isDestroyed ?: true || this?.isFinishing ?: true
     }
 
     /**

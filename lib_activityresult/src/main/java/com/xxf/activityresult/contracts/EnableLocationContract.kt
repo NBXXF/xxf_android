@@ -3,8 +3,8 @@ package com.xxf.activityresult.contracts
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
-import android.os.Build
 import android.provider.Settings
+import androidx.core.content.getSystemService
 import com.xxf.activityresult.contracts.setting.SettingEnableContract
 
 /**
@@ -24,15 +24,11 @@ class EnableLocationContract :SettingEnableContract() {
     }
 
     override fun isEnabled(context: Context?): Boolean {
-        val locationManager =
-            this.context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            locationManager?.isLocationEnabled
-        } else {
-            locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                    || locationManager?.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        return try {
+            context?.getSystemService<LocationManager>()?.isProviderEnabled(LocationManager.GPS_PROVIDER) == true
+        } catch (e: Exception) {
+            false
         }
     }
-
 
 }

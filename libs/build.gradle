@@ -33,6 +33,7 @@ dependencies {
     api project(path: ':lib_fileprovider')
     api project(path: ':lib_http')
     api project(path: ':lib_json')
+    api project(path: ':lib_ktx')
     api project(path: ':lib_log')
     api project(path: ':lib_objectbox')
     api project(path: ':lib_permission')

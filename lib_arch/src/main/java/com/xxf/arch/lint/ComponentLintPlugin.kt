@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.xxf.application.activity.SimpleActivityLifecycleCallbacks
+import com.xxf.application.activitylifecycle.SimpleActivityLifecycleCallbacks
 import com.xxf.arch.activity.XXFActivity
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.fragment.XXFDialogFragment

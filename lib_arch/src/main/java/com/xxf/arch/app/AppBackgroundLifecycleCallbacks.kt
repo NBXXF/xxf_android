@@ -3,7 +3,7 @@ package com.xxf.arch.app
 import android.app.Activity
 import android.os.Build
 import androidx.annotation.CallSuper
-import com.xxf.application.activity.SimpleActivityLifecycleCallbacks
+import com.xxf.application.activitylifecycle.SimpleActivityLifecycleCallbacks
 import com.xxf.arch.model.AppBackgroundEvent
 import com.xxf.bus.postEvent
 

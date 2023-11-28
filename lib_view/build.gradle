@@ -28,6 +28,7 @@ dependencies {
     api project(path: ':lib_adapter')
     api project(path: ':lib_fileprovider')
     api project(path: ':lib_utils')
+    api project(path: ':lib_ktx')
     api project(path: ':lib_arch')
     api project(path: ':lib_application')
     api des.lottie

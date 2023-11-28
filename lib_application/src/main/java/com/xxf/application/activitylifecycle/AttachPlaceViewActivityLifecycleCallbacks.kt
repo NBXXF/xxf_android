@@ -1,4 +1,4 @@
-package com.xxf.application.activity
+package com.xxf.application.activitylifecycle
 
 import android.app.Activity
 import android.app.Dialog

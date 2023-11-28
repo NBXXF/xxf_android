@@ -1,7 +1,8 @@
-package com.xxf.application
+package com.xxf.ktx
 
 import android.app.Activity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 
 /**
@@ -26,6 +27,12 @@ fun LifecycleOwner.asActivityOrNull():Activity?{
     return this as? Activity
 }
 
+/**
+ * 转换成FragmentActivity
+ */
+fun LifecycleOwner.asFragmentActivityOrNull():FragmentActivity?{
+    return this as? FragmentActivity
+}
 /**
  * 转换fragment
  */

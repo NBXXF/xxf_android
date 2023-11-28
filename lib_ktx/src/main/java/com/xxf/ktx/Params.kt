@@ -1,4 +1,4 @@
-package com.xxf.application.activity
+package com.xxf.ktx
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,15 @@ import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import java.io.Serializable
 import kotlin.reflect.KProperty
+/**
+ * 绑定获取参数
+ */
+fun <T> bindExtra(key: String? = null, defaultValue: T) = ExtrasDelegate(key, defaultValue)
+
+/**
+ * 绑定获取参数
+ */
+fun bindExtra(key: String? = null) = bindExtra(key, null)
 
 /**
  * 处理参数获取 简化
@@ -45,15 +54,7 @@ class ExtrasDelegate<out T>(private val key: String?, private val defaultValue: 
     }
 }
 
-/**
- * 绑定获取参数
- */
-fun <T> bindExtra(key: String? = null, defaultValue: T) = ExtrasDelegate(key, defaultValue)
 
-/**
- * 绑定获取参数
- */
-fun bindExtra(key: String? = null) = bindExtra(key, null)
 
 /**
  * key value

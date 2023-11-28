@@ -29,6 +29,7 @@
             <option value="$PROJECT_DIR$/lib_http" />
             <option value="$PROJECT_DIR$/lib_http/httpdemo" />
             <option value="$PROJECT_DIR$/lib_json" />
+            <option value="$PROJECT_DIR$/lib_ktx" />
             <option value="$PROJECT_DIR$/lib_log" />
             <option value="$PROJECT_DIR$/lib_objectbox" />
             <option value="$PROJECT_DIR$/lib_objectbox/lib_objectbox_demo" />
