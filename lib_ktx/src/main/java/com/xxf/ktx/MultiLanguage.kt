@@ -9,8 +9,6 @@ import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.core.content.edit
-import com.xxf.ktx.application
-import com.xxf.ktx.packageName
 import java.util.*
 
 private var appLanguageCache: Locale? = null
@@ -59,7 +57,7 @@ private object LanguageManager {
   private const val KEY_LANGUAGE = "longan_language"
   private const val KEY_COUNTRY = "longan_country"
   private val sharedPreferences: SharedPreferences =
-    application.getSharedPreferences("${packageName}_preferences", Context.MODE_PRIVATE)
+    application.getSharedPreferences("${application.packageName}_preferences", Context.MODE_PRIVATE)
 
   var appLanguage: Locale
     get() = language?.let { Locale(it, country.orEmpty()) } ?: systemLanguage

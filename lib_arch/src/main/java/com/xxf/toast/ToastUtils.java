@@ -2,10 +2,7 @@ package com.xxf.toast;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.os.Build;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -17,9 +14,6 @@ import androidx.annotation.UiThread;
 import androidx.core.app.NotificationManagerCompat;
 import com.xxf.application.ApplicationProviderKtKt;
 import com.xxf.toast.impl.DefaultToastFactory;
-
-
-import java.lang.reflect.Field;
 
 
 /**
@@ -49,57 +43,8 @@ public class ToastUtils {
 
     public static ToastFactory toastFactory=new DefaultToastFactory();
 
-    private static Field sField_TN;
-    private static Field sField_TN_Handler;
 
     private ToastUtils() {
-    }
-
-    /**
-     * 通过反射封装 Toast 类中TN Binder内部类中的handler,
-     * 捕获BadTokenException, 解决Android API 25 引入的
-     * Bug
-     */
-    static {
-        try {
-            sField_TN = Toast.class.getDeclaredField("mTN");
-            sField_TN.setAccessible(true);
-            sField_TN_Handler = sField_TN.getType().getDeclaredField("mHandler");
-            sField_TN_Handler.setAccessible(true);
-        } catch (Throwable e) {
-        }
-    }
-
-    public static void hook(Toast toast) {
-        try {
-            Object tn = sField_TN.get(toast);
-            Handler preHandler = (Handler) sField_TN_Handler.get(tn);
-            sField_TN_Handler.set(tn, new SafelyHandlerWrapper(preHandler));
-        } catch (Exception e) {
-        }
-    }
-
-
-    private static class SafelyHandlerWrapper extends Handler {
-
-        private Handler impl;
-
-        public SafelyHandlerWrapper(Handler impl) {
-            this.impl = impl;
-        }
-
-        @Override
-        public void dispatchMessage(Message msg) {
-            try {
-                super.dispatchMessage(msg);
-            } catch (Exception e) {
-            }
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            impl.handleMessage(msg);//需要委托给原Handler执行
-        }
     }
 
 
@@ -176,10 +121,6 @@ public class ToastUtils {
             }
 
             LimitToast toast =toastFactory.createToast(notice, type, getLinkedApplication(), flag);
-            //fix bug #65709 BadTokenException from BugTags
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1) {
-                hook(toast);
-            }
 
 
             if (isNotificationEnabled()) {

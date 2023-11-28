@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import com.xxf.ktx.identityId
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -15,7 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger
 internal object AutoInjectActivityResultLifecycleCallbacks :
     Application.ActivityLifecycleCallbacks {
     internal class LifecycleStartActivityForResultWrapper(
-        val container: ComponentActivity,
         val contracts: List<StartActivityForResultContract>
     ) {
         /**
@@ -24,18 +24,17 @@ internal object AutoInjectActivityResultLifecycleCallbacks :
         internal val localRequestCode: AtomicInteger = AtomicInteger(0);
     }
 
-    private val cache = mutableSetOf<LifecycleStartActivityForResultWrapper>()
+    private val cacheMap = mutableMapOf<String, LifecycleStartActivityForResultWrapper>()
 
     /**
      * 获取占位的contact
      */
     internal fun getPlacedContract(container: ComponentActivity): StartActivityForResultContract? {
-        cache.firstOrNull {
-            it.container == container;
-        }?.let {
-            return it.contracts[it.localRequestCode.getAndIncrement() % it.contracts.size]
+        return cacheMap[container.identityId]?.let {
+            return it.contracts[it.localRequestCode.getAndIncrement() % it.contracts.size].also {
+               // println("===================>xxx:"+it)
+            }
         }
-        return null
     }
 
     /**
@@ -55,17 +54,15 @@ internal object AutoInjectActivityResultLifecycleCallbacks :
         for (i in 0 until concurrent) {
             batchList.add(StartActivityForResultContract(container))
         }
-        cache.add(LifecycleStartActivityForResultWrapper(container, batchList))
+        cacheMap[container.identityId] = LifecycleStartActivityForResultWrapper(batchList)
     }
 
     private fun placeUnRegister(container: ComponentActivity) {
-        cache.firstOrNull {
-            it.container == container
-        }?.run {
+        cacheMap[container.identityId]?.run {
             this.contracts.forEach {
                 it.unregister()
             }
-            cache.remove(this)
+            cacheMap.remove(container.identityId)
         }
     }
 

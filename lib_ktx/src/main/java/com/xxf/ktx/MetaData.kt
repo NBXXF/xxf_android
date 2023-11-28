@@ -9,11 +9,9 @@ import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.pm.PackageManager.GET_META_DATA
-import com.xxf.ktx.application
-import com.xxf.ktx.packageName
 
 fun applicationMetaDataOf(name: String): String? =
-  application.packageManager.getApplicationInfo(packageName, GET_META_DATA).metaData.getString(name)
+  application.packageManager.getApplicationInfo(application.packageName, GET_META_DATA).metaData.getString(name)
 
 inline fun <reified T : Activity> activityMetaDataOf(name: String): String? =
   application.packageManager.getActivityInfo(ComponentName<T>(), GET_META_DATA).metaData.getString(name)

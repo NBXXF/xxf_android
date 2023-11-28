@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    api des.fragment_ktx
+    api project(path: ':lib_ktx')
     api des.rxJava
 }
 

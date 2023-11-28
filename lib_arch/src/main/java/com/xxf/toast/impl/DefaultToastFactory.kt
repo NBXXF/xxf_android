@@ -14,6 +14,7 @@ import com.xxf.toast.ToastFactory
 import com.xxf.toast.ToastType
 import com.xxf.snackbar.Snackbar
 import com.xxf.snackbar.Snackbar.Companion.make
+import com.xxf.toast.fixBadTokenException
 import com.xxf.utils.DensityUtil.dip2px
 import com.xxf.utils.dp
 
@@ -49,7 +50,10 @@ open class DefaultToastFactory : ToastFactory {
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.duration = Toast.LENGTH_SHORT
         toast.view = view
-        return toast
+        return toast.apply {
+            //切记一定要执行
+            this.fixBadTokenException()
+        }
     }
 
     override fun createSnackbar(
