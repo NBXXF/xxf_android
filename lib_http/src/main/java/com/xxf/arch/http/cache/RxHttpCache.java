@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 
 import com.xxf.arch.http.cache.disklrucache.SimpleDiskLruCache;
 import com.xxf.arch.http.interceptor.internal.Utf8Kt;
-import com.xxf.json.JsonUtils;
+import com.xxf.json.Json;
 
 import java.io.File;
 import java.io.IOException;
@@ -193,7 +193,7 @@ public class RxHttpCache {
             if (TextUtils.equals(requestMethod, "GET")) {
                 String key = key(request.url());
                 try {
-                    diskLruCache.put(key, JsonUtils.toJsonString(response.body(),true));
+                    diskLruCache.put(key, Json.INSTANCE.toJson(response.body(), gson -> gson));
                     recordCacheTime(key);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -211,7 +211,7 @@ public class RxHttpCache {
                     if (Utf8Kt.isProbablyUtf8(buffer)) {
                         String key = key(request.url() + buffer.clone().readString(charset));
                         try {
-                            diskLruCache.put(key, JsonUtils.toJsonString(response.body(),true));
+                            diskLruCache.put(key, Json.INSTANCE.toJson(response.body(), gson -> gson));
                             recordCacheTime(key);
                         } catch (Exception e) {
                             e.printStackTrace();

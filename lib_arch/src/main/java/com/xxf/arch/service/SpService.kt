@@ -8,7 +8,6 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.reflect.TypeToken
 import com.xxf.application.applicationContext
 import com.xxf.arch.XXF
-import com.xxf.json.JsonUtils
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
@@ -151,7 +150,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     override fun putObject(key: String, value: Any?, differUser: Boolean) {
         putString(
             generateKey(key, differUser),
-            com.xxf.json.JsonUtils.toJsonString(value)
+            com.xxf.json.Json.toJson(value)
         )
     }
 
@@ -164,7 +163,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
         val string =
             getString(generateKey(key, differUser), null)
         try {
-            return com.xxf.json.JsonUtils.toType(JsonPrimitive(string).asString, typeOfT) ?: defaultValue
+            return com.xxf.json.Json.defaultGson.fromJson(JsonPrimitive(string).asString, typeOfT) ?: defaultValue
         } catch (e: Throwable) {
             e.printStackTrace()
         }

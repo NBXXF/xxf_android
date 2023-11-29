@@ -5,7 +5,7 @@ import com.google.gson.internal.Streams
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import com.xxf.json.JsonUtils
+import com.xxf.json.GsonUtils
 
 /**
  * Author: xiangning
@@ -22,7 +22,7 @@ class NullableSerializerTypeAdapterFactory : TypeAdapterFactory {
                 val oldSerializeNulls = writer?.serializeNulls
                 writer?.serializeNulls = true
                 Streams.write(
-                    JsonUtils.getGson(
+                    GsonUtils.getGson(
                         excludeUnSerializableField = false,
                         excludeUnDeserializableField = false
                     )

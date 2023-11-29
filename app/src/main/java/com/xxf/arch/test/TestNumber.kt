@@ -28,11 +28,11 @@ object TestNumber {
         val apply = TestModel().apply {
             this.num = float
         }
-        val json = com.xxf.json.JsonUtils.toJsonObject(apply)
+        val json = com.xxf.json.Json.toJson(apply)
         println("==============>ser json:$json")
 
 
-        val model = com.xxf.json.JsonUtils.toBean(json, TestModel::class.java)
+        val model = com.xxf.json.Json.fromJson<TestModel>(json)
         println("==============>deser model:$model")
 
         if (model.num == apply.num) {
