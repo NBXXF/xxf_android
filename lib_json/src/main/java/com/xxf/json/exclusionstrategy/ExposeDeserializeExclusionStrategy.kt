@@ -5,7 +5,12 @@ import com.google.gson.FieldAttributes
 import com.google.gson.annotations.Expose
 
 /**
- * 去除 指定deserialize=false 的字段
+ * 去除 指定deserialize=false 的字段 这种方式更友好 不用强制写Expose,让不写注解默认参与解析
+ *
+ * 避免默认的 强制必须写Expose才能生效
+ * 且初始化必须 GsonBuilder()
+ *     .excludeFieldsWithoutExposeAnnotation()
+ *     .create()
  */
 class ExposeDeserializeExclusionStrategy : ExclusionStrategy {
     override fun shouldSkipField(f: FieldAttributes?): Boolean {

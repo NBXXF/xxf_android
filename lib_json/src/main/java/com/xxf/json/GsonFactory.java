@@ -27,8 +27,7 @@ public class GsonFactory {
      *
      * @return
      */
-    public static Gson createGson(boolean excludeUnSerializableField,
-                                  boolean excludeUnDeserializableField) {
+    public static Gson createGson() {
         GsonBuilder newBuilder = new GsonBuilder()
                 .setLenient()// json宽松
                 .enableComplexMapKeySerialization()//支持Map的key为复杂对象的形式
@@ -48,13 +47,9 @@ public class GsonFactory {
                 .registerTypeAdapter(ListOrEmpty.class, new ListOrEmpty.ListOrEmptyTypeAdapter())
                 .registerTypeAdapter(JSONObject.class, new JSONObjectAdapter())
                 .registerTypeAdapter(JSONArray.class, new JSONArrayAdapter())
-                .registerTypeAdapterFactory(TypeAdapters.LONG_ENUM_FACTORY);
-        if (excludeUnSerializableField) {
-            newBuilder.addSerializationExclusionStrategy(new ExposeSerializeExclusionStrategy());
-        }
-        if (excludeUnDeserializableField) {
-            newBuilder.addDeserializationExclusionStrategy(new ExposeDeserializeExclusionStrategy());
-        }
+                .registerTypeAdapterFactory(TypeAdapters.LONG_ENUM_FACTORY)
+                .addSerializationExclusionStrategy(new ExposeSerializeExclusionStrategy())
+                .addDeserializationExclusionStrategy(new ExposeDeserializeExclusionStrategy());
         return newBuilder.create();
     }
 

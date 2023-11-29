@@ -20,50 +20,48 @@ object Json {
     /**
      * 初始化默认的 [com.google.gson.Gson] 转换器
      */
-    var defaultGson: Gson = GsonUtils.getGson(
-        excludeUnSerializableField = true,
-        excludeUnDeserializableField = true
-    )
+    var innerDefaultGson: Gson = GsonFactory.createGson()
 
     inline fun <reified T : Any> fromJson(
         json: String,
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it -> it }
     ): T = gsonBuilder(
-        defaultGson
+        innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
     inline fun <reified T : Any> fromJson(
         json: Reader,
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
-        defaultGson
+        innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
     inline fun <reified T : Any> fromJson(
         json: JsonReader,
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
-        defaultGson
+        innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
     inline fun <reified T : Any> fromJson(
         json: JsonElement,
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
-        defaultGson
+        innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
     inline fun toJson(
         obj: Any?,
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
-    ) =
-        defaultGson.toJson(obj)
+    ): String =
+        gsonBuilder(
+            innerDefaultGson).toJson(obj)
 
 
     inline fun toJsonTree(
         obj: Any?,
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
-    ) = defaultGson.toJsonTree(obj)
+    ): JsonElement = gsonBuilder(innerDefaultGson).toJsonTree(obj)
 }
 
 

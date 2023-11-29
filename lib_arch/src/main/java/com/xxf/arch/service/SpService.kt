@@ -163,7 +163,7 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
         val string =
             getString(generateKey(key, differUser), null)
         try {
-            return com.xxf.json.Json.defaultGson.fromJson(JsonPrimitive(string).asString, typeOfT) ?: defaultValue
+            return com.xxf.json.Json.innerDefaultGson.fromJson(JsonPrimitive(string).asString, typeOfT) ?: defaultValue
         } catch (e: Throwable) {
             e.printStackTrace()
         }
