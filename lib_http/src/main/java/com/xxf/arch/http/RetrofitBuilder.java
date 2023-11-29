@@ -54,7 +54,7 @@ public class RetrofitBuilder {
     public RetrofitBuilder(RxJavaCallAdapterInterceptor interceptor, HttpCacheConfigProvider rxHttpCache) {
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(
                 //网络层一定要去除 expose  serialize  = false  或者deserialize  = false 的情况
-                GsonFactory.createGson(true, true));
+                GsonFactory.createGson());
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(ScalarsConverterFactory.create())

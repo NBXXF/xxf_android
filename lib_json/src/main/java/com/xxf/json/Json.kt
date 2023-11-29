@@ -15,6 +15,8 @@ import java.lang.reflect.WildcardType
  * date 创建时间：2023/11/29 9:43
  * version
  */
+
+
 object Json {
 
     /**
@@ -24,7 +26,7 @@ object Json {
 
     inline fun <reified T : Any> fromJson(
         json: String,
-        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it -> it }
+        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
         innerDefaultGson
     ).fromJson(json, typeToken<T>())
@@ -55,13 +57,15 @@ object Json {
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): String =
         gsonBuilder(
-            innerDefaultGson).toJson(obj)
+            innerDefaultGson
+        ).toJson(obj)
 
 
     inline fun toJsonTree(
         obj: Any?,
         noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): JsonElement = gsonBuilder(innerDefaultGson).toJsonTree(obj)
+
 }
 
 
@@ -119,3 +123,15 @@ fun removeTypeWildcards(type: Type): Type {
     return type
 }
 
+
+/**
+ * 深拷贝
+ * 可以拷贝自己的类型 也可以
+ * 父类和子类对象 可以双向转换复制
+ */
+inline fun <reified OUT : Any> Any.copy(
+    noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
+): OUT {
+    val jsonStr: String = Json.toJson(this, gsonBuilder)
+    return Json.fromJson<OUT>(jsonStr, gsonBuilder)
+}

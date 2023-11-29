@@ -50,7 +50,6 @@
             <option value="$PROJECT_DIR$/lib_wechat" />
             <option value="$PROJECT_DIR$/libs" />
             <option value="$PROJECT_DIR$/room_demo" />
-            <option value="$PROJECT_DIR$/room_demo/demo" />
           </set>
         </option>
       </GradleProjectSettings>

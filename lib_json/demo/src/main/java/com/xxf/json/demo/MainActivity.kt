@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.google.gson.annotations.Expose
 import com.xxf.json.Json
+import com.xxf.json.copy
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
             println("====================>des json:$fromJson")
 
             testMap()
+
+            testCopy()
         }
     }
 
@@ -30,10 +33,19 @@ class MainActivity : AppCompatActivity() {
                     @Expose(serialize = true, deserialize = false)
                     val age:Int=100)
 
+    data class User2(val name:String,
+                    val age:Int=100)
+
 
     private fun testMap(){
         val map= mutableMapOf<String,User>("xx" to User("jack"))
         val fromJson = Json.fromJson<Map<String, User>>(Json.toJson(map))
         println("====================>json2:$fromJson")
+    }
+
+    private fun testCopy(){
+        val uses= listOf<User2>(User2("apple"));
+        val copy = uses.copy<List<User2>>();
+        println("====================>json2:$copy")
     }
 }

@@ -1,17 +1,18 @@
 # xxf架构
 
-xxf架构是一种MVVM架构,让MVVM更加简洁,规范
+xxf架构封装常用组件与用法,且符合函数式和流式编程
 
 1. 去除RxLife,用Android自带的lifecycle来管理RxJava的生命周期
 2. viewModel中也可以使用rxjava bind生命周期,跟activity一样,可以处理rxjava的生命周期
-3. 权限请求可以用RxJava链式调用,不用写复杂的回调
-4. startActivityForResult可以用RxJava链式调用,不用写复杂的回调
+3. 权限请求可以用RxJava链式调用,不用写复杂的回调 内部使用ActivityResultLauncher 且可以免注册
+4. startActivityForResult可以用RxJava链式调用,不用写复杂的回调 内部使用ActivityResultLauncher 且可以免注册
 5. 简单配置http,轻松完成网络请求
-6. http双缓存,多种策略保证数据及时交互
+6. http双缓存(避免服务器不处理etag),多种策略保证数据及时交互
 7. 时间和货币格式化全权交割给框架处理
 8. 各种工具类Number,Time,File,Toast,Zip,Arrays....等15种
-9. 扩展ARouter支持 path为http 或者路径携带参数/user/login?phone=17611639077
+9. 全面转向kotlin 扩展函数超 400 个 全部开箱即可使用
 10. 封装常见自定义View TitleBar,Loading,ScaleFrameLayout,MaxHeightView,SoftKeyboardSizeWatchLayout...等20种
+11. 数据库在objectbox上进行封装以及监听,以及生成long id
 
 #### 用法
 
@@ -23,55 +24,22 @@ xxf架构是一种MVVM架构,让MVVM更加简洁,规范
     最新版本参考[点击](https://github.com/NBXXF/xxf_android/releases)  
  ```
 
-##### Application 与Activity 管理 提供以下[直接访问]的内敛函数
+##### Application 与Activity 管理 提供以下[直接访问]的内敛函数，其他组件扩展 400个函数 参考lib_ktx
 
  ```
- /**
- * 全局上下文
- */
-val applicationContext by lazy {
-    ...
-}
+val applicationContext: Application
 
-/**
- * activity 栈
- */
-val activityStack by lazy {
-    ....
-}
+val application: Application
 
-/**
- * 栈顶activity
- */
-val topActivity: Activity?
+val activityList: List<Activity> 
 
-/**
- * 栈顶 fragmentActivity
- */
-val topFragmentActivity: FragmentActivity?
+val topActivity: Activity
 
-/**
- * 根activity
- */
-val rootActivity: Activity?
+val topActivityOrNull: Activity?
 
-/**
- * 所有Activity
- */
-val allActivity: Array<Activity>
+val topFragmentActivityOrNull: FragmentActivity? 
 
-/**
- * 重启app 仅activity
- */
-inline fun restartApp() {
-    ...
-}
-
-/**
- *  判断app是否在后台
- */
-val isAppBackground: Boolean
-
+val topActivityOrApplication: Context
  
  ```
 
@@ -211,7 +179,7 @@ public enum CacheType {
 
   ```
 
-##### 权限,权限请求使用Rx链式调用
+##### 权限,权限请求使用Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)
 
       //请求授权
         ``` 
@@ -228,7 +196,7 @@ public enum CacheType {
       ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + isGrantedPermission(Manifest.permission.CAMERA));
      ```
 
-##### startActivityForResult Rx链式调用
+##### startActivityForResult Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)
 
   ``` 
      支持activity fragment LifecycleOwner 挂载对象访问 如果是在其他类对象中 可以访问全局内敛函数 topFragmentActivity?.startActivityForResultObservable

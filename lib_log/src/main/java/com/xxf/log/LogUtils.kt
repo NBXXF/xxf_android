@@ -1,6 +1,6 @@
 package com.xxf.log
 
-import com.xxf.json.GsonFactory
+import com.xxf.json.Json
 import com.xxf.log.impl.AndroidLogger
 import com.xxf.log.parser.Parser
 import com.xxf.log.parser.impl.BundleParser
@@ -110,7 +110,11 @@ object LogUtils:Logger{
             return
         }
         config.logger.logJson(tag?: TAG){
-            GsonFactory.createGson(false,false).toJson(log())
+            return@logJson try {
+                Json.toJson(log())
+            }catch (e:Throwable){
+                log()
+            }
         }
     }
 
