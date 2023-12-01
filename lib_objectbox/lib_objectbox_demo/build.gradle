@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'io.objectbox' // apply last
 }
+def des = rootProject.ext.dependencies
 
 android {
     compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
@@ -33,4 +34,5 @@ android {
 dependencies {
     implementation project(path: ':lib_objectbox')
     api project(path: ':lib_rxjava')
+    api des.material
 }
