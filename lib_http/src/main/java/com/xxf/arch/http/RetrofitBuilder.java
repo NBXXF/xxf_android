@@ -11,6 +11,7 @@ import com.xxf.arch.http.converter.json.JsonConverterFactory;
 import com.xxf.arch.http.converter.json.JsonStringConverterFactory;
 import com.xxf.arch.http.converter.string.ScalarsConverterFactory;
 import com.xxf.json.GsonFactory;
+import com.xxf.json.Json;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -53,8 +54,7 @@ public class RetrofitBuilder {
 
     public RetrofitBuilder(RxJavaCallAdapterInterceptor interceptor, HttpCacheConfigProvider rxHttpCache) {
         GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(
-                //网络层一定要去除 expose  serialize  = false  或者deserialize  = false 的情况
-                GsonFactory.createGson());
+                Json.INSTANCE.getInnerDefaultGson());
         builder = new Retrofit.Builder()
                 .client(new OkHttpClientBuilder().build())
                 .addConverterFactory(ScalarsConverterFactory.create())

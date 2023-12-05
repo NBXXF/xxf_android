@@ -6,7 +6,6 @@ import com.xxf.json.datastructure.ListOrEmpty;
 import com.xxf.json.datastructure.ListOrSingle;
 import com.xxf.json.exclusionstrategy.ExposeDeserializeExclusionStrategy;
 import com.xxf.json.exclusionstrategy.ExposeSerializeExclusionStrategy;
-import com.xxf.json.typeadapter.TypeAdapters;
 import com.xxf.json.typeadapter.bool.BooleanTypeAdapter;
 import com.xxf.json.typeadapter.number.IntegerTypeAdapter;
 import com.xxf.json.typeadapter.number.LongTypeAdapter;
@@ -31,7 +30,6 @@ public class GsonFactory {
         GsonBuilder newBuilder = new GsonBuilder()
                 .setLenient()// json宽松
                 .enableComplexMapKeySerialization()//支持Map的key为复杂对象的形式
-                .setPrettyPrinting()// 调教格式
                 .disableHtmlEscaping() //默认是GSON把HTML 转义的
                 //不使用 与relam 插入更新违背
                 //  .registerTypeAdapter(String.class, new StringNullAdapter())//将空字符串转换成""
@@ -47,7 +45,6 @@ public class GsonFactory {
                 .registerTypeAdapter(ListOrEmpty.class, new ListOrEmpty.ListOrEmptyTypeAdapter())
                 .registerTypeAdapter(JSONObject.class, new JSONObjectAdapter())
                 .registerTypeAdapter(JSONArray.class, new JSONArrayAdapter())
-                .registerTypeAdapterFactory(TypeAdapters.LONG_ENUM_FACTORY)
                 .addSerializationExclusionStrategy(new ExposeSerializeExclusionStrategy())
                 .addDeserializationExclusionStrategy(new ExposeDeserializeExclusionStrategy());
         return newBuilder.create();
