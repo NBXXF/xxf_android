@@ -15,7 +15,7 @@ import retrofit2.Call;
  * @Author: XGod
  * @CreateDate: 2018/7/1 15:47
  */
-public class TrackerJavaCallAdapterInterceptor implements RxJavaCallAdapterInterceptor {
+public class TrackerRxJavaCallAdapterInterceptor implements RxJavaCallAdapterInterceptor {
 
     @Override
     public Object adapt(Call call, @Nullable Object[] args, Object rxJavaObservable) {

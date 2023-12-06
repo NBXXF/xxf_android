@@ -24,11 +24,20 @@ open class HttpExceptionTrackerInterceptor : Interceptor {
         val response: Response = try {
             chain.proceed(request)
         } catch (e: Throwable) {
-            val tookMs = TimeUnit.NANOSECONDS.toMillis(SystemClock.elapsedRealtimeNanos() - startNs)
-            onFeedHttpException(request, response = null, throwable = e, tookMs = tookMs)
+            e.run {
+                val tookMs =
+                    TimeUnit.NANOSECONDS.toMillis(SystemClock.elapsedRealtimeNanos() - startNs)
+                onFeedHttpException(request, response = null, throwable = e, tookMs = tookMs)
+            }
             throw e
         }
-        return response
+        return response.also {
+            if (!it.isSuccessful) {
+                val tookMs =
+                    TimeUnit.NANOSECONDS.toMillis(SystemClock.elapsedRealtimeNanos() - startNs)
+                onFeedHttpException(request, response = response, throwable = null, tookMs = tookMs)
+            }
+        }
     }
 
     /**

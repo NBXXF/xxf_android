@@ -1,5 +1,6 @@
 package com.xxf.http.demo.ui
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,11 +12,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.xxf.arch.apiService
+import com.xxf.arch.getApiService
 import com.xxf.arch.http.converter.gson.GsonConverterFactory
-import com.xxf.json.JsonUtils
-import com.xxf.json.ListTypeToken
-import com.xxf.json.typeadapter.NullableSerializerTypeAdapterFactory
-import com.xxf.arch.utils.copy
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import com.xxf.http.demo.ui.test.Animal
@@ -32,7 +30,6 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     class Demo {
-        @JsonAdapter(com.xxf.json.typeadapter.NullableSerializerTypeAdapterFactory::class, nullSafe = false)
         var name: String? = null
 
 //        class Jsonadapter : TypeAdapter<String?>() {
@@ -49,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     class Demo2 {
-        @JsonAdapter(com.xxf.json.typeadapter.NullableSerializerTypeAdapterFactory::class, nullSafe = false)
         var name: String? = "xxx"
         override fun toString(): String {
             return "Demo2(name=$name)"
@@ -92,12 +88,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val bean = com.xxf.json.JsonUtils.toBean(apply1, Animal::class.java, true)
-        System.out.println("=============>bean:" + bean)
-
-        val bean2 = com.xxf.json.JsonUtils.toBean(apply1, Person::class.java, true)
-        bean2.name = "xx"
-        System.out.println("=============>bean2:" + bean2)
 
         val editText = findViewById<MyEditText>(R.id.edit_text)
         val findViewById = findViewById<Switch>(R.id.btn_test)
@@ -106,72 +96,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val map = mutableMapOf<String, Any?>()
-        map.put("xxx", "r");
-        map.put("xxx2", JsonNull.INSTANCE)
-        map.put("xxx3", Demo().apply {
-            // this.name="xxx"
-        })
-        System.out.println("==========>ser:" + com.xxf.json.JsonUtils.toJsonElement(map))
-        System.out.println("==========>ser11:" + com.xxf.json.JsonUtils.toJsonElement(Demo().apply {
-            // this.name="xxx"
-        }))
-        System.out.println(
-            "==========>ser2:" + Gson()
-                .newBuilder()
-                .serializeNulls()
-                .create().toJson(map)
-        )
-        System.out.println(
-            "==========>ser3:" + Gson()
-                .newBuilder()
-                .serializeNulls()
-                .create().toJsonTree(map)
-        )
-
-        val testModel = ExposeTestModel().apply {
-            this.name = "hello"
-            this.des = "x:" + System.currentTimeMillis()
-        }
-        System.out.println("==========>expose serlize:" + com.xxf.json.JsonUtils.toJsonString(testModel))
-
-        val copy_1 = testModel.copy()
-        System.out.println("==========>expose copy:" + copy_1)
-
-        val copy_2 =
-            testModel.copy(excludeUnSerializableField = true, excludeUnDeserializableField = true)
-        System.out.println("==========>expose copy2:" + copy_2)
 
 
-        val apply = JsonObject().apply {
-            this.addProperty("age", 10.5)
-        }
-        val toBean1 = com.xxf.json.JsonUtils.toBean(apply, TestFloatDTO::class.java);
 
-        System.out.println("=======>TT:" + toBean1);
-        val copy = toBean1.copy()
-        System.out.println("=======>TT cp:" + copy);
-
-        val copy2 = toBean1.copy(TestFloatDTO::class.java)
-        System.out.println("=======>TT cp2:" + copy2);
-
-        val list = arrayListOf<TestFloatDTO>(copy2)
-        System.out.println("=======>TT cp3:" + list.copy());
-        val toJsonString =
-            com.xxf.json.JsonUtils.toJsonString(
-                TestDTO(
-                    "hello",
-                    TestDTO.Type.TYPE_A,
-                    TestDTO.Type2.TYPE_B2,
-                    TestDTO.Gender.FEMAIL
-                )
-            );
-        System.out.println("=======>T1:" + toJsonString);
-        val toBean = com.xxf.json.JsonUtils.toBean(toJsonString, TestDTO::class.java)
-        System.out.println("=======>T2:" + toBean);
 
         val wsc =
-            WebSocketClient("http://dev.allflow.cn/ws/webSocket/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOWJjNDhmY2UtYWI1Yi00OTg3LWJmZDAtNTc2ZjhlY2RjODc5Iiwibmlja25hbWUiOiJCYmIiLCJwaG9uZSI6IjE3NjExNjM5MDgwIiwiaWF0IjoxNjI5ODU5ODU4LCJleHAiOjE2MzI0NTE4NTh9.Q7LJxgJSc7mURO9A7fkhe-N1i9gI7RpbFxxUo7lMybo");
+            WebSocketClient(this,"http://dev.allflow.cn/ws/webSocket/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOWJjNDhmY2UtYWI1Yi00OTg3LWJmZDAtNTc2ZjhlY2RjODc5Iiwibmlja25hbWUiOiJCYmIiLCJwaG9uZSI6IjE3NjExNjM5MDgwIiwiaWF0IjoxNjI5ODU5ODU4LCJleHAiOjE2MzI0NTE4NTh9.Q7LJxgJSc7mURO9A7fkhe-N1i9gI7RpbFxxUo7lMybo");
         wsc.subTextMessage().subscribe {
             System.out.println("=======>收到:" + it);
         }
@@ -191,42 +121,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun test() {
-        val map = mutableMapOf<String, Any?>()
-        map.put("xxx", "r");
-        map.put("xxx2", JsonNull.INSTANCE)
-        map.put("xxx3", Demo().apply {
-            // this.name="xxx"
-        })
-        System.out.println("==========>ser:" + com.xxf.json.JsonUtils.toJsonElement(map))
-        System.out.println("==========>ser11:" + com.xxf.json.JsonUtils.toJsonElement(Demo().apply {
-            // this.name="xxx"
-        }, excludeUnSerializableField = true))
-        System.out.println(
-            "==========>ser2:" + Gson()
-                .newBuilder()
-                .serializeNulls()
-                .create().toJson(map)
-        )
-        System.out.println(
-            "==========>ser3:" + Gson()
-                .newBuilder()
-                .serializeNulls()
-                .create().toJsonTree(map)
-        )
-
-
-        val toJsonString = com.xxf.json.JsonUtils.toJsonString(Demo2().apply {
-            this.name = null
-        }, excludeUnSerializableField = false)
-        System.out.println("===========>ser4 json:" + toJsonString)
-        val toBean = com.xxf.json.JsonUtils.toBean(
-            toJsonString,
-            Demo2::class.java,
-            excludeUnDeserializableField = false
-        )
-        System.out.println("===========>ser4:" + toBean)
-    }
 
     override fun onResume() {
         super.onResume()
@@ -266,31 +160,19 @@ class MainActivity : AppCompatActivity() {
 //        }).start()
 
 
-        Thread(Runnable {
-            val test = TestModel()
-            test.ext = mutableMapOf<String, Any>().apply {
-                put("name", "张三")
-                put("age", 20)
-                put("other", InnerDto().apply {
-                    name = "儿子"
-                    des = "好好学习"
-                })
-            }
-            val json = com.xxf.json.JsonUtils.toJsonString(test)
-            val toBean = com.xxf.json.JsonUtils.toBean(json, TestModel::class.java)
-            System.out.println("===========>toBean:" + toBean)
-        }).start()
     }
 
+    @SuppressLint("CheckResult")
     private fun testhttp() {
-        LoginApiService::class.java.apiService()
-            .getCity(TestQueryJsonField("xxx"))
+        getApiService<LoginApiService>()
+            .getCity()
+            //.getCity(TestQueryJsonField("xxx"))
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError {
                 Log.d("==========>retry no", "" + it)
             }
             .subscribe {
-                Log.d("================>gson xxxx", "" + it)
+                Log.d("===========>gson xxxx", "" + it)
             }
     }
 
@@ -373,8 +255,6 @@ class MainActivity : AppCompatActivity() {
 
 
             start = System.currentTimeMillis()
-            val fromJson = gson.fromJson<List<InnerDto2>>(gsonStr, com.xxf.json.ListTypeToken<InnerDto2>().type)
-            System.out.println("=============>j gson deser take:" + (System.currentTimeMillis() - start))
 
 
             val deserializerMoshi: com.squareup.moshi.JsonAdapter<List<InnerDto2>> =

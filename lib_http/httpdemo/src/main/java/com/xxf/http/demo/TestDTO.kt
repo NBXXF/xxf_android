@@ -1,7 +1,6 @@
 package com.xxf.http.demo
 
 import com.google.gson.annotations.SerializedName
-import com.xxf.json.datastructure.LongEnum
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -23,7 +22,7 @@ class TestDTO(val name: String, val type: Type, val type2: Type2,val gen:Gender)
     }
 
 
-    enum class Type2(override val value: Long) : com.xxf.json.datastructure.LongEnum {
+    enum class Type2(val value: Long) {
         @SerializedName("1")
         TYPE_A2(1),
 
