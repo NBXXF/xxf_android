@@ -30,7 +30,7 @@ open class RxJavaCallAdapterTrackerInterceptor : RxJavaCallAdapterInterceptor {
         return rxJavaObservable
     }
 
-    protected fun onHandleExceptionTracker(request: Request, throwable: Throwable) {
+    protected open fun onHandleExceptionTracker(request: Request, throwable: Throwable) {
         HttpExceptionTrackerInterceptor().onFeedHttpException(request, null, throwable, -1)
     }
 }
