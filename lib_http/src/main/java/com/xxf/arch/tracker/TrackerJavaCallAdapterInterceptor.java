@@ -31,7 +31,7 @@ public class TrackerJavaCallAdapterInterceptor implements RxJavaCallAdapterInter
         return rxJavaObservable;
     }
 
-    void onHandleExceptionTracker(Request request, Throwable throwable) {
+    protected void onHandleExceptionTracker(Request request, Throwable throwable) {
         new HttpExceptionTrackerInterceptor().onFeedHttpException(request, null, throwable, -1);
     }
 }
