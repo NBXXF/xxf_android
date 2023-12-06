@@ -1,7 +1,6 @@
 package com.xxf.json.typeadapter.number;
 
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -34,15 +33,23 @@ public class IntegerTypeAdapter extends TypeAdapter<Integer> {
         JsonToken peek = jsonReader.peek();
         jsonReader.setLenient(true);
         switch (peek) {
-            case STRING:
             case NUMBER:
-                /**
-                 * 解决 传递来的数据是其他类型 比如浮点数
-                 */
                 try {
-                    return new BigDecimal(jsonReader.nextString()).intValue();
+                    return jsonReader.nextInt();
                 } catch (NumberFormatException e) {
-                    throw new JsonSyntaxException(e);
+                    // 如果带小数点则会抛出这个异常
+                    return (int) jsonReader.nextDouble();
+                }
+            case STRING:
+                String result = jsonReader.nextString();
+                if (result == null || "".equals(result)) {
+                    return 0;
+                }
+                try {
+                    return Integer.parseInt(result);
+                } catch (NumberFormatException e) {
+                    // 如果带小数点则会抛出这个异常
+                    return (int) new BigDecimal(result).floatValue();
                 }
             case NULL:
                 jsonReader.nextNull();

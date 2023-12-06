@@ -33,16 +33,19 @@ public class PercentageFloatTypeAdapter extends TypeAdapter<Float> {
         jsonReader.setLenient(true);
         switch (peek) {
             case STRING:
-                String s = jsonReader.nextString();
-                if (!TextUtils.isEmpty(s) && s.contains("%")) {
+                String result = jsonReader.nextString();
+                if (!TextUtils.isEmpty(result) && result.contains("%")) {
                     try {
-                        return NumberFormat.getPercentInstance().parse(s).floatValue();
+                        return NumberFormat.getPercentInstance().parse(result).floatValue();
                     } catch (ParseException e) {
                         e.printStackTrace();
                         return 0.0f;
                     }
                 }
-                return Float.parseFloat(s);
+                if (result == null || "".equals(result)) {
+                    return 0F;
+                }
+                return Float.parseFloat(result);
             case NULL:
                 try {
                     jsonReader.nextNull();

@@ -33,16 +33,19 @@ public class PercentageDoubleTypeAdapter extends TypeAdapter<Double> {
         jsonReader.setLenient(true);
         switch (peek) {
             case STRING:
-                String s = jsonReader.nextString();
-                if (!TextUtils.isEmpty(s) && s.contains("%")) {
+                String result = jsonReader.nextString();
+                if (!TextUtils.isEmpty(result) && result.contains("%")) {
                     try {
-                        return NumberFormat.getPercentInstance().parse(s).doubleValue();
+                        return NumberFormat.getPercentInstance().parse(result).doubleValue();
                     } catch (ParseException e) {
                         e.printStackTrace();
                         return 0.0;
                     }
                 }
-                return Double.parseDouble(s);
+                if (result == null || "".equals(result)) {
+                    return 0D;
+                }
+                return Double.parseDouble(result);
             case NULL:
                 try {
                     jsonReader.nextNull();
