@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.xxf.arch.tracker.TrackerRxJavaCallAdapterInterceptor;
+import com.xxf.arch.tracker.RxJavaCallAdapterTrackerInterceptor;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -15,7 +15,7 @@ import retrofit2.Call;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/7/1 15:47
  */
-public class DefaultCallAdapter extends TrackerRxJavaCallAdapterInterceptor {
+public class DefaultCallAdapter extends RxJavaCallAdapterTrackerInterceptor {
     @Override
     public Object adapt(Call call, @Nullable Object[] args, Object rxJavaObservable) {
         if (rxJavaObservable instanceof Observable) {

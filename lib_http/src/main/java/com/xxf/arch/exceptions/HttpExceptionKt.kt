@@ -7,10 +7,9 @@ import java.nio.charset.StandardCharsets
 val HttpException.rawResponse: okhttp3.Response? get() = response()?.raw()
 val HttpException.rawResponseRequest: okhttp3.Request? get() = rawResponse?.request
 val HttpException.rawResponseHeaders: okhttp3.Headers? get() = rawResponse?.headers
-val HttpException.rawResponseBody: okhttp3.ResponseBody? get() = rawResponse?.body
 val HttpException.errorBody: okhttp3.ResponseBody? get() = response()?.errorBody()
 
-fun HttpException.readBodyString(): String? {
+fun HttpException.readErrorBodyString(): String? {
     try {
         val source = errorBody!!
             .source()

@@ -1,37 +1,36 @@
-package com.xxf.arch.tracker;
+package com.xxf.arch.tracker
 
-
-import androidx.annotation.Nullable;
-
-import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor;
-import com.xxf.arch.http.interceptor.HttpExceptionTrackerInterceptor;
-
-import io.reactivex.rxjava3.core.Observable;
-import okhttp3.Request;
-import retrofit2.Call;
+import com.xxf.arch.exceptions.rawResponseRequest
+import com.xxf.arch.http.adapter.rxjava2.RxJavaCallAdapterInterceptor
+import com.xxf.arch.http.interceptor.HttpExceptionTrackerInterceptor
+import io.reactivex.rxjava3.core.Observable
+import okhttp3.Request
+import retrofit2.Call
+import retrofit2.HttpException
 
 /**
  * @Description: http RxJava错误采集
  * @Author: XGod
  * @CreateDate: 2018/7/1 15:47
  */
-public class TrackerRxJavaCallAdapterInterceptor implements RxJavaCallAdapterInterceptor {
-
-    @Override
-    public Object adapt(Call call, @Nullable Object[] args, Object rxJavaObservable) {
-        if (rxJavaObservable instanceof Observable<?>) {
-            //noinspection unchecked
-            Observable<Object> observable = (Observable<Object>) rxJavaObservable;
-            return observable.doOnError(throwable -> {
-                if (call != null) {
-                    onHandleExceptionTracker(call.request().newBuilder().build(), throwable);
+open class RxJavaCallAdapterTrackerInterceptor : RxJavaCallAdapterInterceptor {
+    override fun adapt(call: Call<*>?, args: Array<Any>?, rxJavaObservable: Any): Any {
+        if (rxJavaObservable is Observable<*>) {
+            val observable = rxJavaObservable as Observable<Any>
+            return observable.doOnError { throwable: Throwable? ->
+                if (call != null && throwable != null) {
+                    if (throwable is HttpException && throwable.rawResponseRequest != null) {
+                        onHandleExceptionTracker(throwable.rawResponseRequest!!, throwable)
+                    } else {
+                        onHandleExceptionTracker(call.request().newBuilder().build(), throwable)
+                    }
                 }
-            });
+            }
         }
-        return rxJavaObservable;
+        return rxJavaObservable
     }
 
-    protected void onHandleExceptionTracker(Request request, Throwable throwable) {
-        new HttpExceptionTrackerInterceptor().onFeedHttpException(request, null, throwable, -1);
+    protected fun onHandleExceptionTracker(request: Request, throwable: Throwable) {
+        HttpExceptionTrackerInterceptor().onFeedHttpException(request, null, throwable, -1)
     }
 }
