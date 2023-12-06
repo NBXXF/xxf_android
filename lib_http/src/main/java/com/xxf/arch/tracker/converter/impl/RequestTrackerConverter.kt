@@ -12,7 +12,8 @@ import java.nio.charset.StandardCharsets
 
 class RequestTrackerConverter : TrackerConverter {
     companion object {
-        val KEY_REQUEST_METHOD_URL: String = RequestTrackerConverter::class.java.simpleName
+        val KEY_REQUEST_METHOD: String = "http_method"
+        val KEY_REQUEST_URL: String = "http_url"
     }
 
     override fun convert(data: Any, extra: MutableMap<Any, Any>, chanel: ChanelTracker): String? {
@@ -29,7 +30,8 @@ class RequestTrackerConverter : TrackerConverter {
                     sb.append("requestBody:")
                 }
                 return sb.toString().apply {
-                    extra[KEY_REQUEST_METHOD_URL] = methodUrl
+                    extra[KEY_REQUEST_METHOD] = data.method
+                    extra[KEY_REQUEST_URL] = data.url.toString()
                 }
             } catch (e: Throwable) {
                 e.printStackTrace()

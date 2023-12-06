@@ -6,7 +6,7 @@ import com.xxf.arch.tracker.converter.TrackerConverter
 
 class ThrowableTrackerConverter : TrackerConverter {
     companion object {
-        val KEY_THROWABLE_NAME: String = ThrowableTrackerConverter::class.java.simpleName
+        val KEY_THROWABLE_NAME: String = "throwable_name"
     }
 
     override fun convert(data: Any, extra: MutableMap<Any, Any>, chanel: ChanelTracker): String? {
