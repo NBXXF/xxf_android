@@ -39,12 +39,14 @@ object RAUtils {
      * @return 是否有效;true表示应该是合法的,可以通过
      */
     fun isLegal(key: String, duration: Long): Boolean {
-        val lastEffected = effectedMap.getOrPut(key) { 0L }
-        val current = SystemClock.elapsedRealtime()
-        if (current - lastEffected >= duration) {
-            effectedMap[key] = current
-            return true
+        synchronized(RAUtils::class.java) {
+            val lastEffected = effectedMap.getOrPut(key) { 0L }
+            val current = SystemClock.elapsedRealtime()
+            if (current - lastEffected >= duration) {
+                effectedMap[key] = current
+                return true
+            }
+            return false
         }
-        return false
     }
 }
