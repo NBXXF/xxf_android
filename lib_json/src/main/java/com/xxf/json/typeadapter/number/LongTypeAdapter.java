@@ -1,6 +1,7 @@
 package com.xxf.json.typeadapter.number;
 
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -55,7 +56,7 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
                 jsonReader.nextNull();
                 return null;
             default:
-                throw new JsonParseException("Expected long but was " + peek);
+                throw new JsonSyntaxException("Expected long but was " + peek);
         }
     }
 }

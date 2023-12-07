@@ -45,18 +45,14 @@ public class BooleanTypeAdapter extends TypeAdapter<Boolean> {
             case NUMBER:
                 return in.nextInt() != 0;
             case STRING:
-                try {
-                    return apply(in.nextString());
-                } catch (Exception e) {
-                    throw new IOException(e);
-                }
+                return apply(in.nextString());
             default:
                 throw new JsonParseException("Expected BOOLEAN or NUMBER but was " + peek);
         }
     }
 
 
-    public Boolean apply(String value) throws Exception {
+    public Boolean apply(String value) {
         return (!TextUtils.isEmpty(value))
                 &&
                 (value.equalsIgnoreCase("true") || !value.equals("0"));

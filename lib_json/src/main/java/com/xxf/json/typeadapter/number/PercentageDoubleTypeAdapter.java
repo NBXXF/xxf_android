@@ -3,6 +3,7 @@ package com.xxf.json.typeadapter.number;
 import android.text.TextUtils;
 
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -56,7 +57,7 @@ public class PercentageDoubleTypeAdapter extends TypeAdapter<Double> {
             case NUMBER:
                 return jsonReader.nextDouble();
             default:
-                throw new JsonParseException("Expected number but was " + peek);
+                throw new JsonSyntaxException("Expected number but was " + peek);
         }
     }
 }

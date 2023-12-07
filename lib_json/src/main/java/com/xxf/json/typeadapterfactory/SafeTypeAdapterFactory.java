@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xxf.json.datastructure.ListOrEmpty;
 import com.xxf.json.datastructure.ListOrSingle;
 import com.xxf.json.typeadapter.bool.BooleanTypeAdapter;
+import com.xxf.json.typeadapter.number.BigDecimalTypeAdapter;
 import com.xxf.json.typeadapter.number.IntegerTypeAdapter;
 import com.xxf.json.typeadapter.number.LongTypeAdapter;
 import com.xxf.json.typeadapter.number.PercentageDoubleTypeAdapter;
@@ -16,6 +17,8 @@ import com.xxf.json.typeadapter.orgJSON.JSONObjectTypeAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.math.BigDecimal;
 
 /**
  * @Description gson容错
@@ -43,6 +46,9 @@ public class SafeTypeAdapterFactory implements TypeAdapterFactory {
         }
         if (float.class.isAssignableFrom(typeToken.getRawType()) || Float.class.isAssignableFrom(typeToken.getRawType())) {
             return (TypeAdapter<T>) new PercentageFloatTypeAdapter();
+        }
+        if (BigDecimal.class.isAssignableFrom(typeToken.getRawType())) {
+            return (TypeAdapter<T>) new BigDecimalTypeAdapter();
         }
         if (JSONObject.class.isAssignableFrom(typeToken.getRawType())) {
             return (TypeAdapter<T>) new JSONObjectTypeAdapter();
