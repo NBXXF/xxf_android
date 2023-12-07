@@ -17,20 +17,21 @@ package com.xxf.arch.http.converter.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
-import com.xxf.arch.http.converter.OnGsonConvertFailListener;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
-    static OnGsonConvertFailListener onConvertFailListener;
     private final Gson gson;
     private final TypeAdapter<T> adapter;
 
@@ -41,32 +42,39 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        Charset charSet=StandardCharsets.UTF_8;
-        if(value.contentType()!=null) {
-            charSet=value.contentType().charset(StandardCharsets.UTF_8);
+        Charset charSet = StandardCharsets.UTF_8;
+        if (value.contentType() != null) {
+            charSet = value.contentType().charset(StandardCharsets.UTF_8);
         }
         String jsonStr = value.source().readString(charSet);
         JsonReader jsonReader = gson.newJsonReader(new StringReader(jsonStr));
-        //宽容解析
-        jsonReader.setLenient(true);
         try {
             T result = adapter.read(jsonReader);
             if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
                 throw new JsonIOException("JSON document was not fully consumed.");
             }
             return result;
-        } catch (Throwable e) {
+        } catch (Throwable jsonException) {
             /**
-             * 全局监听 解析错误
+             * 包裹异常 携带全部jsonStr
+             * 大部分是这三种异常
              */
-            if (onConvertFailListener != null) {
-                try {
-                    onConvertFailListener.onResponseConvertFail(gson, adapter, jsonStr, e);
-                } catch (Throwable ex) {
-                    ex.printStackTrace();
-                }
+            String TAG_ADAPTER = " in adapter:";
+            String TAG_JSON = " for jsonStr:";
+            String newMessage = "" +
+                    jsonException.getMessage() +
+                    TAG_ADAPTER +
+                    adapter.getClass().getSimpleName() +
+                    TAG_JSON +
+                    jsonStr;
+            if (jsonException instanceof JsonIOException) {
+                throw new JsonIOException(newMessage, jsonException.getCause());
+            } else if (jsonException instanceof JsonSyntaxException) {
+                throw new JsonSyntaxException(newMessage, jsonException.getCause());
+            } else if (jsonException instanceof JsonParseException) {
+                throw new JsonParseException(newMessage, jsonException.getCause());
             }
-            throw e;
+            throw jsonException;
         } finally {
             value.close();
         }

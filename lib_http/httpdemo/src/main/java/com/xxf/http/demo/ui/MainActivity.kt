@@ -76,9 +76,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         RxJavaPlugins.setErrorHandler { }
-        GsonConverterFactory.setOnGsonConvertFailListener { gson, adapter, json, e ->
-            println("=================>gson解析异常了$e  json: ${json}")
-        }
 
 
         val apply1 = JsonObject().apply {

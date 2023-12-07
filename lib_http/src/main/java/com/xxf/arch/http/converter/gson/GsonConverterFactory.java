@@ -18,7 +18,6 @@ package com.xxf.arch.http.converter.gson;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
-import com.xxf.arch.http.converter.OnGsonConvertFailListener;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -38,14 +37,6 @@ import retrofit2.Retrofit;
  */
 public final class GsonConverterFactory extends Converter.Factory {
 
-    /**
-     * 监听gson 解析异常
-     *
-     * @param listener
-     */
-    public static void setOnGsonConvertFailListener(OnGsonConvertFailListener listener) {
-        GsonResponseBodyConverter.onConvertFailListener = listener;
-    }
 
     /**
      * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
