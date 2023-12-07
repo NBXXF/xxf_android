@@ -23,6 +23,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
@@ -64,7 +65,7 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
             String newMessage = "" +
                     jsonException.getMessage() +
                     TAG_ADAPTER +
-                    adapter.getClass().getSimpleName() +
+                    adapter.getClass().getName() +
                     TAG_JSON +
                     jsonStr;
             if (jsonException instanceof JsonIOException) {
@@ -73,6 +74,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                 throw new JsonSyntaxException(newMessage, jsonException.getCause());
             } else if (jsonException instanceof JsonParseException) {
                 throw new JsonParseException(newMessage, jsonException.getCause());
+            } else if (jsonException instanceof EOFException){
+                throw new EOFException(newMessage);
             }
             throw jsonException;
         } finally {

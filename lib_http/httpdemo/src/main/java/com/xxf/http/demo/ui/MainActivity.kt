@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity() {
     private fun testhttp() {
         getApiService<LoginApiService>()
             .getCity()
-            //.getCity(TestQueryJsonField("xxx"))
+           //; .getCity(TestQueryJsonField("xxx"))
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError {
                 Log.d("==========>retry no", "" + it)

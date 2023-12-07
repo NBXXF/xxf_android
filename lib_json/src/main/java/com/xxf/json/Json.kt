@@ -52,18 +52,18 @@ object Json {
         innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
-    inline fun toJson(
+    fun toJson(
         obj: Any?,
-        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
+        gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): String =
         gsonBuilder(
             innerDefaultGson
         ).toJson(obj)
 
 
-    inline fun toJsonTree(
+    fun toJsonTree(
         obj: Any?,
-        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
+        gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): JsonElement = gsonBuilder(innerDefaultGson).toJsonTree(obj)
 
 }
