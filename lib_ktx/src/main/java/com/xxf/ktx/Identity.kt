@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.view.Window
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.who
 import java.util.UUID
 
 /**
@@ -36,5 +37,7 @@ val Window.identityId: String get() = this.decorView.identityId
  */
 val Activity.identityId: String get() = this.window.identityId
 
-
-//val Fragment.identityId:String  get() = this.view
+/**
+ * 整個系統唯一標識
+ */
+val Fragment.identityId: String get() = this.who
