@@ -18,6 +18,7 @@ object Tracker {
         mutableListOf<TrackerConverter>(
             RequestTrackerConverter(),
             ResponseTrackerConverter(),
+            ResponseTrackerConverter(),
             ThrowableTrackerConverter(),
             StringTrackerConverter()
         )

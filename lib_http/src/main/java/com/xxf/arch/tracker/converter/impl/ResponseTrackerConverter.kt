@@ -12,7 +12,7 @@ import java.lang.StringBuilder
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
-internal class ResponseTrackerConverter : TrackerConverter {
+class ResponseTrackerConverter : TrackerConverter {
     override fun convert(data: Any, extra: MutableMap<Any, Any>, chanel: ChanelTracker): String? {
         if (data is Response) {
             try {
