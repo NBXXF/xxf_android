@@ -22,6 +22,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.MalformedJsonException;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -68,14 +69,23 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                     adapter.getClass().getName() +
                     TAG_JSON +
                     jsonStr;
+            //常规TypeAdapter 中抛出的异常
             if (jsonException instanceof JsonIOException) {
                 throw new JsonIOException(newMessage, jsonException.getCause());
             } else if (jsonException instanceof JsonSyntaxException) {
                 throw new JsonSyntaxException(newMessage, jsonException.getCause());
             } else if (jsonException instanceof JsonParseException) {
                 throw new JsonParseException(newMessage, jsonException.getCause());
-            } else if (jsonException instanceof EOFException){
+            }
+            //jsonReader中常规抛出的异常
+            else if (jsonException instanceof EOFException){
                 throw new EOFException(newMessage);
+            }else if (jsonException instanceof IllegalStateException){
+                throw new IllegalStateException(newMessage,jsonException.getCause());
+            }else if(jsonException instanceof MalformedJsonException){
+                throw new MalformedJsonException(newMessage,jsonException.getCause());
+            }else if(jsonException instanceof NumberFormatException){
+                throw new NumberFormatException(newMessage);
             }
             throw jsonException;
         } finally {
