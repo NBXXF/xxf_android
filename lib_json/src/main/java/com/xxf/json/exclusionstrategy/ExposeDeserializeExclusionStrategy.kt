@@ -11,6 +11,8 @@ import com.google.gson.annotations.Expose
  * 且初始化必须 GsonBuilder()
  *     .excludeFieldsWithoutExposeAnnotation()
  *     .create()
+ *
+ * 源码   com.google.gson.internal.Excluder#164
  */
 class ExposeDeserializeExclusionStrategy : ExclusionStrategy {
     override fun shouldSkipField(f: FieldAttributes?): Boolean {
