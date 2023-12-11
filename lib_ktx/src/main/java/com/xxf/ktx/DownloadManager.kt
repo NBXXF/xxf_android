@@ -16,7 +16,6 @@ import android.os.Build
 import androidx.annotation.RequiresPermission
 import androidx.core.content.getSystemService
 import com.xxf.ktx.NO_GETTER
-import com.xxf.ktx.mainThread
 import com.xxf.ktx.noGetter
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -150,7 +149,7 @@ class DownloadRequestBuilder internal constructor(url: String) {
 
     override fun onChange(selfChange: Boolean) {
       scheduleExecutor?.scheduleAtFixedRate({
-        mainThread {
+        runMainThread {
           downloadManager?.query(downloadId) { cursor ->
             val downloadedSize = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
             val totalSize = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
