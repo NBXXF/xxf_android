@@ -13,7 +13,7 @@ object HandlerUtils {
      * 获取主线程的handler
      * @return
      */
-    val mainHandler = Handler(Looper.getMainLooper())
+    val mainHandler by lazy { Handler(Looper.getMainLooper()) }
 
     /**
      * 检查是否在主线程showToast
