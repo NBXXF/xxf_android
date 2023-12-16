@@ -11,7 +11,7 @@ Table of Contents
   * [startActivityForResult Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)](#startactivityforresult-rx 链式调用内部使用activityresultlauncher-且使用方免注册)
   * [事件通信框架](#事件通信框架)
   * [Uri 授权](#uri-授权)
-  * [Uri 授权](#uri-授权-1)
+  * [Json安全](#Json安全)
   * [RecyclerView 分割线](#recyclerview-分割线)
   * [圆角组件(app:radius="8dp",app:radius="360dp" 为圆形 详细参考下面每个类的 类注释！！！)](#圆角组件appradius8dpappradius360dp-为圆形-详细参考下面每个类的-类注释)
   * [带渐变背景的组件(app:start\_color app:end\_color 详细参考下面每个类的 类注释！！！)](#带渐变背景的组件appstart_color-append_color-详细参考下面每个类的-类注释)
@@ -263,7 +263,7 @@ Uri 授权每个app都去注册 十分麻烦,这里采用自动注册FileProvide
 ``` 
 File.toAuthorizedUri
 ``` 
-##### Uri 授权
+##### Json安全
 更加安全的JsonTypeAdapter,应对若语言类的服务器开发工程师,比如 把int 返回双引号空,框架内部 兼容了int,bool,long,double,float,number,bigDecimal等常用类型的安全性
 
 ``` 
