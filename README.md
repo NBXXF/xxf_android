@@ -1,4 +1,22 @@
-# xxf架构
+Table of Contents
+=================
+
+* [Android技术中台](#android技术中台)
+  * [用法](#用法)
+  * [引入方式 代码已经80%转换成kotlin 请注意用法改变](#引入方式-代码已经80转换成kotlin-请注意用法改变)
+  * [Application 与Activity 管理 提供以下[直接访问]的内敛函数，其他组件扩展 400个函数 参考lib\_ktx](#application- 与activity-管理-提供以下直接访问的内敛函数其他组件扩展-400个函数-参考lib_ktx)
+  * [http请求](#http请求)
+  * [RxJava生命周期管理](#rxjava生命周期管理)
+  * [权限,权限请求使用Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)](#权限权限请求使用rx链式调用内部使用activityresultlauncher-且使用方免注册)
+  * [startActivityForResult Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)](#startactivityforresult-rx 链式调用内部使用activityresultlauncher-且使用方免注册)
+  * [事件通信框架](#事件通信框架)
+  * [Uri 授权](#uri-授权)
+  * [Uri 授权](#uri-授权-1)
+  * [RecyclerView 分割线](#recyclerview-分割线)
+  * [圆角组件(app:radius="8dp",app:radius="360dp" 为圆形 详细参考下面每个类的 类注释！！！)](#圆角组件appradius8dpappradius360dp-为圆形-详细参考下面每个类的-类注释)
+  * [带渐变背景的组件(app:start\_color app:end\_color 详细参考下面每个类的 类注释！！！)](#带渐变背景的组件appstart_color-append_color-详细参考下面每个类的-类注释)
+  * [设置宽高比例的组件(app:widthRatio app:heightRatio 详细参考下面每个类的 类注释！！！)](#设置宽高比例的组件appwidthratio-appheightratio-详细参考下面每个类的-类注释)
+# Android技术中台
 
 xxf架构封装常用组件与用法,且符合函数式和流式编程
 
@@ -45,7 +63,7 @@ val topActivityOrApplication: Context
 
 ##### http请求
 
-1. http接口interface声明（与retrofit十分类似)
+1. http接口interface声明（与retrofit十分类似) 全部采用注解式,灵活插拔,无client概念
 
  ```
 /**
@@ -162,6 +180,14 @@ public enum CacheType {
                     }
                 });
 ```
+kotlin 方式
+
+```
+       BackupApiService::class.apiService()
+       
+       getApiService<BackupApiService>()
+        
+```
 
 ##### RxJava生命周期管理
 
@@ -180,6 +206,7 @@ public enum CacheType {
   ```
 
 ##### 权限,权限请求使用Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)
+常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher 更节约内存,且解决了并行的问题,也能免注册调用
 
       //请求授权
         ``` 
@@ -197,6 +224,7 @@ public enum CacheType {
      ```
 
 ##### startActivityForResult Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)
+常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher 更节约内存,且解决了并行的问题,也能免注册调用
 
   ``` 
      支持activity fragment LifecycleOwner 挂载对象访问 如果是在其他类对象中 可以访问全局内敛函数 topFragmentActivity?.startActivityForResultObservable
@@ -230,6 +258,20 @@ String.javaClass.subscribeEvent()
         }
   TestEvent().postEvent();      
 ``` 
+##### Uri 授权
+Uri 授权每个app都去注册 十分麻烦,这里采用自动注册FileProvider
+``` 
+File.toAuthorizedUri
+``` 
+##### Uri 授权
+更加安全的JsonTypeAdapter,应对若语言类的服务器开发工程师,比如 把int 返回双引号空,框架内部 兼容了int,bool,long,double,float,number,bigDecimal等常用类型的安全性
+
+``` 
+GsonBuilder()
+    .registerTypeAdapterFactory(new SafeTypeAdapterFactory())
+    .build()
+``` 
+这里同时也推荐我的另外一款code-gen工具 对gson提升10倍速度,比市面上的任何序列化工具都优秀,请参考[gson_plugin](https://github.com/NBXXF/gson_plugin)
 
 ##### RecyclerView 分割线
 
