@@ -17,15 +17,13 @@ ext {
             rxJava                        : 'io.reactivex.rxjava3:rxjava:3.1.2',
             gson                          : "com.google.code.gson:gson:2.10.1",
             okhttp                        : "com.squareup.okhttp3:okhttp:4.9.1",
-            okio                          : "com.squareup.okio:okio:3.0.0",
+            okio                          : "com.squareup.okio:okio:3.2.0",
 
 
             //-----------刷新-----------
             smart_refresh                 : "io.github.scwang90:refresh-layout-kernel:2.0.5",
             refresh_footer                : 'io.github.scwang90:refresh-footer-classics:2.0.5',    //经典加载
             lottie                        : "com.airbnb.android:lottie:4.1.0",
-
-            twitter_serial                : "com.twitter.serial:serial:0.1.6",//二进制序列化工具
 
 
             skin_support                  : "com.github.NBXXF.Android-skin-support:skin-support:1.0.2",

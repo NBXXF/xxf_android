@@ -3,19 +3,22 @@ Table of Contents
 
 * [Android技术中台](#android技术中台)
   * [用法](#用法)
-  * [引入方式 代码已经80%转换成kotlin 请注意用法改变](#引入方式-代码已经80转换成kotlin-请注意用法改变)
-  * [Application 与Activity 管理 提供以下[直接访问]的内敛函数，其他组件扩展 400个函数 参考lib\_ktx](#application- 与activity-管理-提供以下直接访问的内敛函数其他组件扩展-400个函数-参考lib_ktx)
+  * [引入方式](#引入方式)
+  * [Application 与Activity 管理](#application-与activity-管理)
   * [http请求](#http请求)
   * [RxJava生命周期管理](#rxjava生命周期管理)
-  * [权限,权限请求使用Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)](#权限权限请求使用rx链式调用内部使用activityresultlauncher-且使用方免注册)
-  * [startActivityForResult Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)](#startactivityforresult-rx 链式调用内部使用activityresultlauncher-且使用方免注册)
+  * [权限](#权限)
+  * [startActivityForResult](#startactivityforresult)
   * [事件通信框架](#事件通信框架)
   * [Uri 授权](#uri-授权)
-  * [Json安全](#Json安全)
+  * [Json安全](#json安全)
+  * [效率提升](#效率提升)
+  * [委托属性](#委托属性)
   * [RecyclerView 分割线](#recyclerview-分割线)
-  * [圆角组件(app:radius="8dp",app:radius="360dp" 为圆形 详细参考下面每个类的 类注释！！！)](#圆角组件appradius8dpappradius360dp-为圆形-详细参考下面每个类的-类注释)
-  * [带渐变背景的组件(app:start\_color app:end\_color 详细参考下面每个类的 类注释！！！)](#带渐变背景的组件appstart_color-append_color-详细参考下面每个类的-类注释)
-  * [设置宽高比例的组件(app:widthRatio app:heightRatio 详细参考下面每个类的 类注释！！！)](#设置宽高比例的组件appwidthratio-appheightratio-详细参考下面每个类的-类注释)
+  * [圆角组件](#圆角组件)
+  * [带渐变背景的组件](#带渐变背景的组件)
+  * [设置宽高比例的组件](#设置宽高比例的组件)
+
 # Android技术中台
 
 xxf架构封装常用组件与用法,且符合函数式和流式编程
@@ -34,7 +37,9 @@ xxf架构封装常用组件与用法,且符合函数式和流式编程
 
 #### 用法
 
-##### 引入方式 代码已经80%转换成kotlin 请注意用法改变
+##### 引入方式
+
+代码已经80%转换成kotlin 请注意用法改变
 
  ```
     //必选
@@ -42,7 +47,9 @@ xxf架构封装常用组件与用法,且符合函数式和流式编程
     最新版本参考[点击](https://github.com/NBXXF/xxf_android/releases)  
  ```
 
-##### Application 与Activity 管理 提供以下[直接访问]的内敛函数，其他组件扩展 400个函数 参考lib_ktx
+##### Application 与Activity 管理 
+
+提供以下[直接访问]的内敛函数，其他组件扩展 400个函数 参考lib_ktx
 
  ```
 val applicationContext: Application
@@ -205,7 +212,9 @@ kotlin 方式
 
   ```
 
-##### 权限,权限请求使用Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)
+##### 权限
+
+权限请求使用Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)  
 常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher 更节约内存,且解决了并行的问题,也能免注册调用
 
       //请求授权
@@ -223,7 +232,9 @@ kotlin 方式
       ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + isGrantedPermission(Manifest.permission.CAMERA));
      ```
 
-##### startActivityForResult Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)
+##### startActivityForResult
+
+Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)  
 常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher 更节约内存,且解决了并行的问题,也能免注册调用
 
   ``` 
@@ -259,11 +270,13 @@ String.javaClass.subscribeEvent()
   TestEvent().postEvent();      
 ``` 
 ##### Uri 授权
+
 Uri 授权每个app都去注册 十分麻烦,这里采用自动注册FileProvider
 ``` 
 File.toAuthorizedUri
 ``` 
 ##### Json安全
+
 更加安全的JsonTypeAdapter,应对若语言类的服务器开发工程师,比如 把int 返回双引号空,框架内部 兼容了int,bool,long,double,float,number,bigDecimal等常用类型的安全性
 
 ``` 
@@ -273,13 +286,46 @@ GsonBuilder()
 ``` 
 这里同时也推荐我的另外一款code-gen工具 对gson提升10倍速度,比市面上的任何序列化工具都优秀,请参考[gson_plugin](https://github.com/NBXXF/gson_plugin)
 
+
+##### 效率提升  
+
+1. 增加避免装箱拆箱的LongHashMap 比如SparseArray查询效率更快,相比hashmap 提升50%,以及LongHashSet等组件
+2. 增加MurmurHash 比jdk自带hash 更快 200%提升
+3. 增加city hash 对于大数据 hash 效率更高
+
+##### 委托属性
+
+获取viewbinding 可以 使用 by viewBinding()加载
+``` 
+   private val binding by viewBinding(ActivitySettingBinding::bind);
+
+```
+
+activity intent和fragment Fragment参数绑定 可以使用 by bindExtra("xxx")
+``` 
+    private val withNfcId: String? by bindExtra("withNfcId");//携带了NFC卡号
+``` 
+
+SharedPreference 可以采用 by
+``` 
+object UserSpServiceDelegate : SpServiceDelegate() {
+    /**
+     * app token
+     */
+    var token: String by bindString(key = "_app_token", defaultValue = "")
+}
+``` 
+
+
 ##### RecyclerView 分割线
 
 1. DividerDecorationFactory 工厂模式
 2. DividerDecoration 水平或者分割线
 3. GridItemDecoration 格子分割线
 
-##### 圆角组件(app:radius="8dp",app:radius="360dp" 为圆形 详细参考下面每个类的 类注释！！！)
+##### 圆角组件
+
+(app:radius="8dp",app:radius="360dp" 为圆形 详细参考下面每个类的 类注释！！！)
 
 1. XXFRoundButton
 2. XXFRoundCheckedTextView
@@ -290,7 +336,9 @@ GsonBuilder()
 7. XXFRoundLinearLayout
 8. XXFRoundRelativeLayout
 
-##### 带渐变背景的组件(app:start_color app:end_color 详细参考下面每个类的 类注释！！！)
+##### 带渐变背景的组件
+
+(app:start_color app:end_color 详细参考下面每个类的 类注释！！！)
 
 1. XXFGradientCompatButton
 2. XXFGradientCompatCheckedTextView
@@ -301,7 +349,9 @@ GsonBuilder()
 7. XXFGradientLinearLayout
 8. XXFGradientRelativeLayout
 
-##### 设置宽高比例的组件(app:widthRatio app:heightRatio 详细参考下面每个类的 类注释！！！)
+##### 设置宽高比例的组件
+
+(app:widthRatio app:heightRatio 详细参考下面每个类的 类注释！！！)
 
 1. XXFRationCompatButton
 2. XXFRationCompatCheckedTextView

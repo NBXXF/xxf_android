@@ -12,8 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2018/7/16 17:34
  */
-@Deprecated(message = "禁止直接使用这个,请用objectboxbuilder 的buildSingle方法")
-object ObjectBoxFactory {
+internal object ObjectBoxFactory {
     private val boxStoreMap: MutableMap<String, BoxStore> = ConcurrentHashMap()
 
     /**

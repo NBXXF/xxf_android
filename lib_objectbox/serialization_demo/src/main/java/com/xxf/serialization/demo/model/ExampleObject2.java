@@ -6,7 +6,8 @@ import com.twitter.serial.serializer.SerializationContext;
 import com.twitter.serial.serializer.Serializer;
 import com.twitter.serial.stream.SerializerInput;
 import com.twitter.serial.stream.SerializerOutput;
-import com.xxf.objectbox.binserial.BinSerializers;
+import com.xxf.serialization.demo.BinSerializers;
+
 
 import org.jetbrains.annotations.NotNull;
 

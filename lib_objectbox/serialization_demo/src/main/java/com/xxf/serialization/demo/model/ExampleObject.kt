@@ -7,7 +7,7 @@ import com.twitter.serial.stream.SerializerInput
 import com.twitter.serial.serializer.CoreSerializers
 import com.twitter.serial.serializer.ObjectSerializer
 import com.twitter.serial.serializer.Serializer
-import com.xxf.objectbox.binserial.BinSerializers
+import com.xxf.serialization.demo.BinSerializers
 import java.io.IOException
 
 /**

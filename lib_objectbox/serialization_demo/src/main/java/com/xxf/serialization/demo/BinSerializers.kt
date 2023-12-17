@@ -1,4 +1,4 @@
-package com.xxf.objectbox.binserial
+package com.xxf.serialization.demo
 
 import com.twitter.serial.serializer.ObjectSerializer
 import kotlin.Throws
