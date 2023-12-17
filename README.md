@@ -39,12 +39,47 @@ xxf架构封装常用组件与用法,且符合函数式和流式编程
 
 ##### 引入方式
 
-代码已经80%转换成kotlin 请注意用法改变
+代码已经80%转换成kotlin 请注意用法改变,新版本使用方式
+```groovy
+//请在build.gradle中配置
+allprojects {
+    repositories {
+
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            credentials {
+                username '654f4d888f25556ebb4ed790'
+                password 'OsVOuR6WZFK='
+            }
+            url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
+        }
+        maven {
+            credentials {
+                username '654f4d888f25556ebb4ed790'
+                password 'OsVOuR6WZFK='
+            }
+            url 'https://packages.aliyun.com/maven/repository/2433389-snapshot-Kqt8ID/'
+        }
+    }
+    configurations.all {
+        // 实时检查 Snapshot 更新
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+}
+```
+
 
  ```
-    //必选
+    //新版本使用方式,需要添加上面的权限
+    implementation 'com.NBXXF.xxf_android:libs:5.2.2.1-SNAPSHOT'
+ ```
+
+
+ ```
+    //老版本使用方式,无权限
     implementation 'com.github.NBXXF.xxf_android:lib_view:5.2.1.0'//主要lib
-    最新版本参考[点击](https://github.com/NBXXF/xxf_android/releases)  
  ```
 
 ##### Application 与Activity 管理 
