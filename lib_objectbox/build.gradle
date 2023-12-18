@@ -20,7 +20,6 @@ android {
 }
 dependencies {
     api des.rxJava
-    api des.gson
     api project(path: ':lib_speed')
     api project(path: ':lib_application')
 }
