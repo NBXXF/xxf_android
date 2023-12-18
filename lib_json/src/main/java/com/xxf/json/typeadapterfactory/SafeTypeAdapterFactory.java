@@ -28,6 +28,8 @@ import java.math.BigDecimal;
  * val gson = GsonBuilder()
  * .registerTypeAdapterFactory(SafeTypeAdapterFactory())
  * .create()
+ *
+ * 推荐结合 https://github.com/NBXXF/gson_plugin 来使用
  */
 public class SafeTypeAdapterFactory implements TypeAdapterFactory {
     @Override
