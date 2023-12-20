@@ -2,7 +2,6 @@ package com.xxf.objectbox.demo
 
 import android.content.Context
 import com.xxf.objectbox.buildSingle
-import com.xxf.objectbox.demo.model.MyObjectBox
 import com.xxf.objectbox.demo.model.Teacher
 import com.xxf.objectbox.demo.model.User
 import io.objectbox.Box

@@ -16,6 +16,7 @@ import com.xxf.objectbox.*
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.disposables.Disposable
 import com.xxf.objectbox.demo.model.*
+import com.xxf.objectbox.demo.nested.TestPODbService
 import com.xxf.rxjava.*
 import io.objectbox.BoxStore
 import io.objectbox.query.QueryBuilder
@@ -27,6 +28,10 @@ import kotlin.random.Random
 class MainActivity() : AppCompatActivity() {
     var i: Long = 0
     var tv: TextView? = null
+
+    val testPODbService by lazy {
+        TestPODbService()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,6 +54,9 @@ class MainActivity() : AppCompatActivity() {
                 )
             System.out.println("====================>insert :${nextInt}")
             Toast.makeText(it.context, "插入了", Toast.LENGTH_SHORT).show()
+
+//            testPODbService.testAdd()
+//            testPODbService.testQuery()
         }
         box
             .boxFor(Teacher::class.java)

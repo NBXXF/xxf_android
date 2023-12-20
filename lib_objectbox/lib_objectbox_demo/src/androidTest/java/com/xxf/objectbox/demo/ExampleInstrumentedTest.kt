@@ -1,26 +1,46 @@
-package com.xxf.objectbox.demo;
+package com.xxf.objectbox.demo
 
-import android.content.Context;
-
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import com.xxf.objectbox.buildSingle
+import com.xxf.objectbox.demo.nested.TestChildPO
+import com.xxf.objectbox.demo.nested.TestPO
+import org.junit.Assert
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.util.Date
+import java.util.UUID
 
 /**
  * Instrumented test, which will execute on an Android device.
  *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * @see [Testing documentation](http://d.android.com/tools/testing)
  */
-@RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+@RunWith(AndroidJUnit4::class)
+class ExampleInstrumentedTest {
     @Test
-    public void useAppContext() {
+    fun useAppContext() {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.xxf.objectbox.demo", appContext.getPackageName());
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        Assert.assertEquals("com.xxf.objectbox.demo", appContext.packageName)
+    }
+
+    var box = MyObjectBox.builder()
+        .buildSingle(TestPO::class.java.simpleName)
+        .boxFor(TestPO::class.java)
+
+    @Test
+    fun insert(){
+        box.put(TestPO().apply {
+            this.uuid=UUID.randomUUID().toString()
+            this.nest= TestChildPO().apply {
+                this.name=Date().toString()
+            }
+        })
+    }
+
+    fun query(){
+        val all = box.all
+        println("===================>all:$all")
     }
 }
