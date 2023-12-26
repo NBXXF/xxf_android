@@ -1,6 +1,9 @@
 package com.xxf.ktx
 
 import android.os.SystemClock
+import kotlin.system.measureNanoTime
+import kotlin.time.measureTime
+import kotlin.time.measureTimedValue
 
 /**
  * 仅仅debug模式下才会执行
@@ -17,6 +20,8 @@ inline fun runDebugging(block: () -> Unit): Boolean {
 
 /**
  * 计算耗时
+ * 等价于kt自带 measureTime,measureNanoTime
+ * 只不过刨除了cpu睡眠时间
  * @param block
  * @return 耗时 单位纳秒
  */
