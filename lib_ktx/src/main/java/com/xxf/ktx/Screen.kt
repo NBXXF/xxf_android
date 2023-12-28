@@ -5,15 +5,15 @@
 package com.xxf.ktx
 
 import android.app.Activity
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import com.xxf.ktx.application
 
-inline val screenWidth: Int get() = application.resources.displayMetrics.widthPixels
+inline val Context.screenWidth: Int get() = resources.displayMetrics.widthPixels
 
-inline val screenHeight: Int get() = application.resources.displayMetrics.heightPixels
+inline val Context.screenHeight: Int get() = resources.displayMetrics.heightPixels
 
 inline var Fragment.isFullScreen: Boolean
   get() = activity?.isFullScreen == true

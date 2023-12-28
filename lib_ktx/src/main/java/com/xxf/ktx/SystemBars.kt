@@ -89,8 +89,8 @@ inline var View.isStatusBarVisible: Boolean
 
 val Activity.statusBarHeight: Int
   get() = this.window.decorView.rootWindowInsetsCompat?.getInsets(Type.statusBars())?.top
-    ?: application.resources.getIdentifier("status_bar_height", "dimen", "android")
-      .let { if (it > 0) application.resources.getDimensionPixelSize(it) else 0 }
+    ?: resources.getIdentifier("status_bar_height", "dimen", "android")
+      .let { if (it > 0) resources.getDimensionPixelSize(it) else 0 }
 
 val View.navigationBarHeight:Int
   get() = this.context.findActivity()?.navigationBarHeight?:0
@@ -191,8 +191,8 @@ inline var View.isNavigationBarVisible: Boolean
 
 val Activity.navigationBarHeight: Int
   get() = this.window.decorView.rootWindowInsetsCompat?.getInsets(Type.navigationBars())?.bottom
-    ?: application.resources.getIdentifier("navigation_bar_height", "dimen", "android")
-      .let { if (it > 0) application.resources.getDimensionPixelSize(it) else 0 }
+    ?: resources.getIdentifier("navigation_bar_height", "dimen", "android")
+      .let { if (it > 0) resources.getDimensionPixelSize(it) else 0 }
 
 fun View.addNavigationBarHeightToMarginBottom() = post {
   if (isNavigationBarVisible && isAddedMarginBottom != true) {

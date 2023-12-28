@@ -23,8 +23,8 @@ import androidx.lifecycle.LiveData
 import com.xxf.ktx.application
 
 @get:RequiresPermission(ACCESS_NETWORK_STATE)
-val isNetworkAvailable: Boolean
-  get() = application.getSystemService<ConnectivityManager>()?.run {
+val Context.isNetworkAvailable: Boolean
+  get() = getSystemService<ConnectivityManager>()?.run {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       getNetworkCapabilities(activeNetwork)?.run {
         hasCapability(NET_CAPABILITY_INTERNET) && hasCapability(NET_CAPABILITY_VALIDATED)
@@ -36,8 +36,8 @@ val isNetworkAvailable: Boolean
   } ?: false
 
 @get:RequiresPermission(ACCESS_NETWORK_STATE)
-val isWifiConnected: Boolean
-  get() = application.getSystemService<ConnectivityManager>()?.run {
+val Context.isWifiConnected: Boolean
+  get() = getSystemService<ConnectivityManager>()?.run {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       getNetworkCapabilities(activeNetwork)?.hasTransport(TRANSPORT_WIFI)
     } else {
@@ -47,8 +47,8 @@ val isWifiConnected: Boolean
   } ?: false
 
 @get:RequiresPermission(ACCESS_NETWORK_STATE)
-val isMobileData: Boolean
-  get() = application.getSystemService<ConnectivityManager>()?.run {
+val Context.isMobileData: Boolean
+  get() = getSystemService<ConnectivityManager>()?.run {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       getNetworkCapabilities(activeNetwork)?.hasTransport(TRANSPORT_CELLULAR)
     } else {
@@ -58,8 +58,8 @@ val isMobileData: Boolean
   } ?: false
 
 @get:RequiresPermission(ACCESS_WIFI_STATE)
-inline val isWifiEnabled: Boolean
-  get() = application.getSystemService<WifiManager>()?.isWifiEnabled == true
+inline val Context.isWifiEnabled: Boolean
+  get() = getSystemService<WifiManager>()?.isWifiEnabled == true
 
 inline val ScanResult.is24GHz: Boolean
   get() = frequency in 2400..2550
@@ -67,9 +67,9 @@ inline val ScanResult.is24GHz: Boolean
 inline val ScanResult.is5GHz: Boolean
   get() = frequency in 5500..5800
 
-class NetworkAvailableLiveData @RequiresPermission(ACCESS_NETWORK_STATE) constructor() : LiveData<Boolean>() {
+class NetworkAvailableLiveData @RequiresPermission(ACCESS_NETWORK_STATE) constructor(val context:Context) : LiveData<Boolean>() {
 
-  private val connectivityManager = application.getSystemService<ConnectivityManager>()
+  private val connectivityManager = context.getSystemService<ConnectivityManager>()
 
   @RequiresPermission(ACCESS_NETWORK_STATE)
   override fun onActive() {
@@ -122,10 +122,10 @@ class NetworkAvailableLiveData @RequiresPermission(ACCESS_NETWORK_STATE) constru
   }
 }
 
-class WifiListLiveData @RequiresPermission(allOf = [ACCESS_WIFI_STATE, CHANGE_WIFI_STATE]) constructor() : LiveData<List<WifiScanResult>?>() {
+class WifiListLiveData @RequiresPermission(allOf = [ACCESS_WIFI_STATE, CHANGE_WIFI_STATE]) constructor(val context: Context) : LiveData<List<WifiScanResult>?>() {
 
   private val wifiManager: WifiManager by lazy(LazyThreadSafetyMode.NONE) {
-    application.getSystemService(Context.WIFI_SERVICE) as WifiManager
+    context.getSystemService(Context.WIFI_SERVICE) as WifiManager
   }
 
   @Suppress("DEPRECATION")
@@ -137,11 +137,11 @@ class WifiListLiveData @RequiresPermission(allOf = [ACCESS_WIFI_STATE, CHANGE_WI
   }
 
   override fun onActive() {
-    application.registerReceiver(wifiScanReceiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
+    context.registerReceiver(wifiScanReceiver, IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
   }
 
   override fun onInactive() {
-    application.unregisterReceiver(wifiScanReceiver)
+    context.unregisterReceiver(wifiScanReceiver)
   }
 
   private val wifiScanReceiver = object : BroadcastReceiver() {
