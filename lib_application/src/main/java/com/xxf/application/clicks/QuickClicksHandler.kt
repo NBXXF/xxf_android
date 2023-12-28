@@ -16,6 +16,8 @@ open class QuickClicksHandler(
     val duration: Long = 1000 // 规定有效时间 毫秒
 ) {
     private val ignorePoint = PointF(-1.0f, -1.0f);
+    private val defaultOffset = SizeF(15.0f, 15.0f)
+
     private var mHits: LongArray = LongArray(count)
     private var mHitsLocations: Array<PointF> = Array<PointF>(count) { ignorePoint }
 
@@ -26,7 +28,7 @@ open class QuickClicksHandler(
      */
     fun handle(
         eventLocation: PointF = ignorePoint,
-        allowOffset: SizeF = SizeF(10.0f, 10.0f),
+        allowOffset: SizeF = defaultOffset,
         result: () -> Unit
     ) {
         //每次点击时，数组向前移动一位
