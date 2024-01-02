@@ -8,15 +8,15 @@ import com.xxf.view.recyclerview.adapter.XXFViewHolder
 
 class TestAdapter : XXFRecyclerAdapter<ItemTestBinding, String>() {
     override fun onCreateBinding(
-        inflater: LayoutInflater?,
-        viewGroup: ViewGroup?,
+        inflater: LayoutInflater,
+        viewGroup: ViewGroup,
         viewType: Int
     ): ItemTestBinding {
         return ItemTestBinding.inflate(inflater!!, viewGroup, false)
     }
 
     override fun onBindHolder(
-        holder: XXFViewHolder<ItemTestBinding, String>?,
+        holder: XXFViewHolder<ItemTestBinding, String>,
         item: String?,
         index: Int
     ) {

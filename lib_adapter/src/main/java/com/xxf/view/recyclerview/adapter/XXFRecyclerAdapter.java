@@ -239,7 +239,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      * @param inflater
      * @return
      */
-    protected abstract V onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType);
+    protected abstract V onCreateBinding(@NonNull LayoutInflater inflater, @NonNull ViewGroup viewGroup, int viewType);
 
 
     /**
@@ -249,7 +249,7 @@ public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
      * @param item
      * @param index  相对于List的位置
      */
-    public abstract void onBindHolder(XXFViewHolder<V, T> holder, @Nullable T item, int index);
+    public abstract void onBindHolder(@NonNull XXFViewHolder<V, T> holder, @Nullable T item, int index);
 
     @Override
     public final XXFViewHolder<V, T> onCreateViewHolder(ViewGroup viewGroup, int viewType) {
