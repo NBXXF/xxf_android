@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'com.github.dcendents.android-maven'
 }
 def des = rootProject.ext.dependencies
 android {
@@ -31,8 +30,18 @@ dependencies {
     compileOnly 'com.squareup.picasso:picasso:2.5.2'
 
     implementation project(path: ':lib_permission')
+    implementation project(path: ':lib_fileprovider')
     implementation project(path: ':lib_adapter')
     implementation project(path: ':lib_utils')
     implementation project(path: ':lib_rxjava')
 
 }
+
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = project.name
+    descContent = project.name
+}
+
+apply from: '../../publish_maven.gradle'

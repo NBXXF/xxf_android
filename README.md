@@ -14,6 +14,9 @@ Table of Contents
   * [Json安全](#json安全)
   * [效率提升](#效率提升)
   * [委托属性](#委托属性)
+  * [自定义相册](#自定义相册)
+  * [自定义相机仿微信](#自定义相机仿微信)
+  * [二维码生成](#二维码生成)
   * [RecyclerView 分割线](#recyclerview-分割线)
   * [圆角组件](#圆角组件)
   * [带渐变背景的组件](#带渐变背景的组件)
@@ -350,7 +353,74 @@ object UserSpServiceDelegate : SpServiceDelegate() {
     var token: String by bindString(key = "_app_token", defaultValue = "")
 }
 ``` 
+##### 自定义相册
+```
+    //需额外加依赖
+    implementation 'com.NBXXF.xxf_android:lib_album:xxxx'
+```
 
+```
+   AlbumLauncher.from(SampleActivity.this)
+                        .choose(MimeType.ofImage(), false)
+                        .countable(true)
+                        .capture(true)
+                        .maxSelectable(9)
+                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                        .gridExpectedSize(
+                                getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new GlideEngine())
+                        .setOnSelectedListener((uriList, pathList) -> {
+                            Log.e("onSelected", "onSelected: pathList=" + pathList);
+                        })
+                        .showSingleMediaType(true)
+                        .originalEnable(true)
+                        .maxOriginalSize(10)
+                        .autoHideToolbarOnSingleTap(true)
+                        .setOnCheckedListener(isChecked -> {
+                            Log.e("isChecked", "onCheck: isChecked=" + isChecked);
+                        })
+                        .forResult()
+                        .subscribe(new Consumer<AlbumResult>() {
+                            @Override
+                            public void accept(AlbumResult albumResult) throws Throwable {
+                                mAdapter.setData(albumResult.getUris(), albumResult.getPaths());
+                            }
+                        });
+```
+#### 自定义相机仿微信
+```
+    //需额外加依赖
+    implementation 'com.NBXXF.xxf_android:lib_camera_wechat:xxxx'
+```
+
+```
+ CameraLauncher.instance
+                    //.openPreCamera()// 是否打开为前置摄像头
+                    .allowPhoto(true)// 是否允许拍照 默认允许
+                    .allowRecord(true)// 是否允许录像 默认允许
+                    .setMaxRecordTime(3)//最长录像时间 秒
+                    .forResult(this)
+                    .subscribe {
+                        if (it.isImage) {
+                            text.text = "Image Path：\n${it.path}"
+                        } else {
+                            text.text = "Video Path：\n${it.path}"
+                        }
+                    }
+```
+#### 二维码生成
+```
+QRCodeProviders.of(content)
+                .setOutputSize(new Size(width, height))
+                .setContentMargin(Integer.valueOf(margin))
+                .setContentColor(color_black)
+                .setBackgroundColor(color_white)
+                .setLogo(logoBitmap)
+                .setContentFillImg(blackBitmap)
+                .build();
+```
 
 ##### RecyclerView 分割线
 

@@ -59,6 +59,8 @@
             <option value="$PROJECT_DIR$/media/lib_camera_wechat/camera_demo" />
             <option value="$PROJECT_DIR$/media/lib_preview" />
             <option value="$PROJECT_DIR$/media/lib_preview/lib_previewer_demo" />
+            <option value="$PROJECT_DIR$/media/lib_qrcode" />
+            <option value="$PROJECT_DIR$/media/lib_qrcode/demo" />
             <option value="$PROJECT_DIR$/room_demo" />
           </set>
         </option>
