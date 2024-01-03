@@ -27,7 +27,7 @@ import com.xxf.rxjava.RxLifecycle;
 import com.xxf.utils.DensityUtil;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFViewHolder;
-import com.xxf.view.recyclerview.itemdecorations.DividerDecoration;
+import com.xxf.view.recyclerview.itemdecorations.LinearItemDecoration;
 import com.xxf.view.utils.SystemUtils;
 
 import java.io.File;
@@ -91,7 +91,7 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
         // stateBinding.recyclerView.addItemDecoration(new GridItemDecoration(DensityUtil.dip2px(5)));
         stateBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //stateBinding.recyclerView.addItemDecoration(ItemDecorationFactory.createHorizontalItemDecoration(new HorizontalDividerItemDecoration.Builder(this).size(DensityUtil.dip2px(20)).color(Color.RED)));
-        DividerDecoration dividerItemDecoration = new DividerDecoration(this, Color.YELLOW, DensityUtil.dip2px(20));
+        LinearItemDecoration dividerItemDecoration = new LinearItemDecoration.Builder(this).horizontal().setColorDrawable(Color.YELLOW, DensityUtil.dip2px(20)).build();
         stateBinding.recyclerView.addItemDecoration(dividerItemDecoration);
         stateBinding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override

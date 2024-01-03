@@ -355,8 +355,7 @@ object UserSpServiceDelegate : SpServiceDelegate() {
 ##### RecyclerView 分割线
 
 1. DividerDecorationFactory 工厂模式
-2. DividerDecoration 水平或者分割线
-3. GridItemDecoration 格子分割线
+2. LinearItemDecoration 支持 水平 垂直 和格子
 
 ##### 圆角组件
 
