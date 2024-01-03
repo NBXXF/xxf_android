@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import com.xxf.activityresult.isOk
 import com.xxf.activityresult.startActivityForResult
+import com.xxf.fileprovider.FileProvider7
 import com.xxf.media.album.engine.ImageEngine
 import com.xxf.media.album.filter.Filter
 import com.xxf.media.album.internal.entity.CaptureStrategy
@@ -83,6 +84,8 @@ class SelectionCreator internal constructor(
      */
     init {
         mSelectionSpec = SelectionSpec.getCleanInstance()
+        //默认增加授权
+        mSelectionSpec.captureStrategy= CaptureStrategy(false,FileProvider7.getAuthority(mMatisse.activity!!))
         mSelectionSpec.mimeTypeSet = mimeTypes
         mSelectionSpec.mediaTypeExclusive = mediaTypeExclusive
         mSelectionSpec.orientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED

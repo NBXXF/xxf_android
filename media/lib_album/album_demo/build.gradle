@@ -8,7 +8,7 @@ android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
 
     defaultConfig {
-        applicationId 'com.zhihu.matisse.sample'
+        applicationId 'com.xxf.media.album.sample'
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
         versionCode 1

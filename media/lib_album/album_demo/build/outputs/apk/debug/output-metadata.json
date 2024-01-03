@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.zhihu.matisse.sample",
+  "applicationId": "com.xxf.media.album.sample",
   "variantName": "processDebugResources",
   "elements": [
     {

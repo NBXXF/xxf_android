@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                     //.allowPhoto(true)// 是否允许拍照 默认允许
                     //.allowRecord(true)// 是否允许录像 默认允许
                     //.setMaxRecordTime(3)//最长录像时间 秒
-                    .forResult(this, PHOTO_OR_VIDEO_FOR_CAMERA)
+                    .forResult(this)
                     .subscribe {
                         if (it.isImage) {
                             text.text = "Image Path：\n${it.path}"

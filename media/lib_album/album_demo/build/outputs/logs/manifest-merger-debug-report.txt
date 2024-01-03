@@ -8,10 +8,10 @@ MERGED from [:media:lib_album] E:\developer\android_studio\spaces\xxf_android\me
 MERGED from [:lib_permission] E:\developer\android_studio\spaces\xxf_android\lib_permission\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:lib_adapter] E:\developer\android_studio\spaces\xxf_android\lib_adapter\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-22:12
+MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:lib_rxjava] E:\developer\android_studio\spaces\xxf_android\lib_rxjava\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-22:12
 MERGED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-22:12
-MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:lib_speed] E:\developer\android_studio\spaces\xxf_android\lib_speed\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:lib_ktx] E:\developer\android_studio\spaces\xxf_android\lib_ktx\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.fragment:fragment-ktx:1.5.5] E:\developer\android_studio\space_gradle_cache\caches\transforms-2\files-2.1\55bc38251a9d8cfe5242a26eb49c85be\jetified-fragment-ktx-1.5.5\AndroidManifest.xml:17:1-24:12
@@ -69,7 +69,7 @@ INJECTED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\alb
 INJECTED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:17:1-37:12
 INJECTED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:17:1-37:12
 	package
-		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:18:11-45
+		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:18:11-47
 		INJECTED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml
 		INJECTED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml
 	android:versionName
@@ -86,12 +86,12 @@ application
 ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:20:5-35:19
 MERGED from [:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:5-32:19
 MERGED from [:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:5-32:19
+MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-19:19
+MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-19:19
 MERGED from [:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
 MERGED from [:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
 MERGED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
 MERGED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
-MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-19:19
-MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-19:19
 MERGED from [com.github.bumptech.glide:glide:4.9.0] E:\developer\android_studio\space_gradle_cache\caches\transforms-2\files-2.1\43c150e545bffa796e073001d212b9a6\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
 MERGED from [com.github.bumptech.glide:glide:4.9.0] E:\developer\android_studio\space_gradle_cache\caches\transforms-2\files-2.1\43c150e545bffa796e073001d212b9a6\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
 MERGED from [com.google.android.material:material:1.4.0] E:\developer\android_studio\space_gradle_cache\caches\transforms-2\files-2.1\69018f7eccc53a615a733a861101f786\material-1.4.0\AndroidManifest.xml:22:5-20
@@ -120,14 +120,14 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] E:\develope
 		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:21:9-35
 	android:theme
 		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:24:9-40
-activity#com.zhihu.matisse.sample.SampleActivity
+activity#com.xxf.media.album.sample.SampleActivity
 ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:25:9-34:20
 	android:exported
 		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:28:13-36
 	android:configChanges
 		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:27:13-74
 	android:name
-		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:26:13-67
+		ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:26:13-43
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:29:13-33:29
 action#android.intent.action.MAIN
@@ -150,14 +150,14 @@ MERGED from [:lib_adapter] E:\developer\android_studio\spaces\xxf_android\lib_ad
 MERGED from [:lib_adapter] E:\developer\android_studio\spaces\xxf_android\lib_adapter\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
+MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:lib_rxjava] E:\developer\android_studio\spaces\xxf_android\lib_rxjava\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:lib_rxjava] E:\developer\android_studio\spaces\xxf_android\lib_rxjava\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
 MERGED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:6:5-8:41
-MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
-MERGED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:lib_speed] E:\developer\android_studio\spaces\xxf_android\lib_speed\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:lib_speed] E:\developer\android_studio\spaces\xxf_android\lib_speed\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:lib_ktx] E:\developer\android_studio\spaces\xxf_android\lib_ktx\build\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-7:41
@@ -318,6 +318,22 @@ ADDED from [:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils
 		ADDED from [:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:9-44
 	android:name
 		ADDED from [:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-58
+provider#androidx.core.content.FileProvider
+ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:9-18:20
+	android:grantUriPermissions
+		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-47
+	android:authorities
+		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-73
+	android:exported
+		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-37
+	android:name
+		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-62
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-17:54
+	android:resource
+		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-51
+	android:name
+		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:17-67
 provider#androidx.startup.InitializationProvider
 ADDED from [:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
 MERGED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
@@ -344,19 +360,3 @@ ADDED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib
 		ADDED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-49
 	android:name
 		ADDED from [:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-86
-provider#androidx.core.content.FileProvider
-ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:9-18:20
-	android:grantUriPermissions
-		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-47
-	android:authorities
-		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-73
-	android:exported
-		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-37
-	android:name
-		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-62
-meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-17:54
-	android:resource
-		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-51
-	android:name
-		ADDED from [:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:17-67

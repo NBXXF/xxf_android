@@ -1,5 +1,5 @@
-com/zhihu/matisse/sample/BuildConfig.java
- com.zhihu.matisse.sample.BuildConfig
-com/zhihu/matisse/sample/GifSizeFilter.java
- com.zhihu.matisse.sample.GifSizeFilter
- com.zhihu.matisse.sample.GifSizeFilter$1
+com/xxf/media/album/sample/BuildConfig.java
+ com.xxf.media.album.sample.BuildConfig
+com/xxf/media/album/sample/GifSizeFilter.java
+ com.xxf.media.album.sample.GifSizeFilter
+ com.xxf.media.album.sample.GifSizeFilter$1

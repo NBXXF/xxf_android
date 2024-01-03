@@ -15,7 +15,7 @@
   limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zhihu.matisse.sample"
+    package="com.xxf.media.album.sample"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -40,7 +40,7 @@
         android:testOnly="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.zhihu.matisse.sample.SampleActivity"
+            android:name="com.xxf.media.album.sample.SampleActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true" >
             <intent-filter>
@@ -54,8 +54,17 @@
         <activity android:name="com.xxf.media.album.internal.ui.SelectedPreviewActivity" />
 
         <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.xxf.media.album.sample.android7.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.zhihu.matisse.sample.androidx-startup"
+            android:authorities="com.xxf.media.album.sample.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="com.xxf.activityresult.ActivityResultAutoInitializer"
@@ -63,15 +72,6 @@
             <meta-data
                 android:name="com.xxf.application.initializer.ApplicationInitializer"
                 android:value="androidx.startup" />
-        </provider>
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.zhihu.matisse.sample.android7.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true" >
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

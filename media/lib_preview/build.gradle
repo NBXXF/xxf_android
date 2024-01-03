@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'com.github.dcendents.android-maven'
 }
 def des = rootProject.ext.dependencies
 android {
@@ -35,3 +34,13 @@ dependencies {
     api 'com.github.chrisbanes:PhotoView:2.3.0'
 
 }
+
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = project.name
+    descContent = project.name
+}
+
+apply from: '../../publish_maven.gradle'
+

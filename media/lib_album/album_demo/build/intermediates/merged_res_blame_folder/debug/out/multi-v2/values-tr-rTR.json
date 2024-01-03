@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "E:\\developer\\android_studio\\spaces\\xxf_android\\media\\lib_album\\album_demo\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-tr-rTR\\values-tr-rTR.xml",
+            "map": [
+                {
+                    "source": "E:\\developer\\android_studio\\spaces\\xxf_android\\media\\lib_album\\build\\intermediates\\packaged_res\\debug\\values-tr-rTR\\values-tr-rTR.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,108,162,218,263,307,360,415,485,595,683,774,835,931,992",
+                        "endColumns": "52,53,55,44,43,52,54,69,109,87,90,60,95,60,53",
+                        "endOffsets": "103,157,213,258,302,355,410,480,590,678,769,830,926,987,1041"
+                    },
+                    "to": {
+                        "startLines": "2,4,5,6,7,8,9,10,12,13,14,15,16,17,19",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,155,209,265,310,354,407,462,667,777,865,956,1017,1113,1252",
+                        "endColumns": "52,53,55,44,43,52,54,69,109,87,90,60,95,60,53",
+                        "endOffsets": "103,204,260,305,349,402,457,527,772,860,951,1012,1108,1169,1301"
+                    }
+                },
+                {
+                    "source": "E:\\developer\\android_studio\\spaces\\xxf_android\\media\\lib_album\\album_demo\\src\\main\\res\\values-tr-rTR\\strings.xml",
+                    "from": {
+                        "startLines": "17,19,18",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "650,777,698",
+                        "endColumns": "46,134,77",
+                        "endOffsets": "692,907,771"
+                    },
+                    "to": {
+                        "startLines": "3,11,18",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "108,532,1174",
+                        "endColumns": "46,134,77",
+                        "endOffsets": "150,662,1247"
+                    }
+                }
+            ]
+        }
+    ]
+}

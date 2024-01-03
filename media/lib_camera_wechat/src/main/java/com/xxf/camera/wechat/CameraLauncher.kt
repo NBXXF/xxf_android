@@ -67,7 +67,7 @@ class CameraLauncher {
     /**
      * 自动请求权限
      */
-    fun forResult(activity: FragmentActivity, requestCode: Int): Observable<CameraResult> {
+    fun forResult(activity: FragmentActivity): Observable<CameraResult> {
         return Observable
                 .defer<CameraResult> {
                     activity.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
