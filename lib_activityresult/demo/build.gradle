@@ -33,5 +33,4 @@ android {
 dependencies {
     api des.material
     implementation project(path: ':lib_permission')
-    implementation project(path: ':lib_activityresult')
 }

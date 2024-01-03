@@ -1,0 +1,27 @@
+apply plugin: 'com.android.application'
+def des = rootProject.ext.dependencies
+android {
+    compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
+    defaultConfig {
+        applicationId "com.chenxf.audiorecord"
+        minSdkVersion project.MIN_SDK_VERSION.toInteger()
+        targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation des.rxJava
+    implementation des.material
+    implementation project(path: ':media:lib_audio')
+    api files('libs/eventbus-3.0.0.jar')
+}

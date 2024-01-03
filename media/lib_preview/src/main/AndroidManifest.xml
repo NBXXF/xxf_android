@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xxf.media.preview">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application>
+        <activity
+            android:name="com.xxf.media.preview.ui.PreviewActivity"
+            android:theme="@style/preview_transparent_style" />
+    </application>
+</manifest>

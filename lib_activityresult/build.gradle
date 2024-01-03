@@ -27,6 +27,7 @@ android {
 dependencies {
     api project(path: ':lib_ktx')
     api des.rxJava
+    api des.startup
 }
 
 ext {

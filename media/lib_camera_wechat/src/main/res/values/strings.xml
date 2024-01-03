@@ -1,0 +1,7 @@
+<resources>
+    <string name="photo_tip">Tap to take a picture</string>
+    <string name="record_tip">Long press to record video</string>
+    <string name="no_permission_tip">Shooting requires access to memory card and camera permission</string>
+    <string name="open_camera_error_tip">Open camera fail</string>
+    <string name="record_time_short">The recording time is too short</string>
+</resources>

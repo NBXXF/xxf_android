@@ -1,0 +1,41 @@
+
+{
+	"buildFiles" : 
+	[
+		"/Users/mac/Documents/work_space/xxf_media/lib_audio/src/main/cpp/CMakeLists.txt"
+	],
+	"cFileExtensions" : [ "c" ],
+	"cleanCommands" : 
+	[
+		"/Users/mac/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/mac/Documents/work_space/xxf_media/lib_audio/.cxx/cmake/release/x86_64 --target clean"
+	],
+	"libraries" : 
+	{
+		"audio-processor-Release-x86_64" : 
+		{
+			"abi" : "x86_64",
+			"artifactName" : "audio-processor",
+			"buildCommand" : "/Users/mac/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/mac/Documents/work_space/xxf_media/lib_audio/.cxx/cmake/release/x86_64 --target audio-processor",
+			"buildType" : "release",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/mac/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/mac/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Daudio_processor_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC      -c ",
+					"src" : "/Users/mac/Documents/work_space/xxf_media/lib_audio/src/main/cpp/smbPitchShift.c",
+					"workingDirectory" : "/Users/mac/Documents/work_space/xxf_media/lib_audio/.cxx/cmake/release/x86_64"
+				}
+			],
+			"output" : "/Users/mac/Documents/work_space/xxf_media/lib_audio/build/intermediates/cmake/release/obj/x86_64/libaudio-processor.so",
+			"toolchain" : "6777799232608219301"
+		}
+	},
+	"toolchains" : 
+	{
+		"6777799232608219301" : 
+		{
+			"cCompilerExecutable" : "/Users/mac/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/Users/mac/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+		}
+	}
+}

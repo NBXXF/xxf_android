@@ -1,0 +1,49 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3  Copyright 2017 Zhihu Inc.
+4
+5  Licensed under the Apache License, Version 2.0 (the "License");
+6  you may not use this file except in compliance with the License.
+7  You may obtain a copy of the License at
+8
+9  http://www.apache.org/licenses/LICENSE-2.0
+10
+11  Unless required by applicable law or agreed to in writing, software
+12  distributed under the License is distributed on an "AS IS" BASIS,
+13  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+14  See the License for the specific language governing permissions and
+15  limitations under the License.
+16-->
+17<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+18    package="com.xxf.media.album" >
+19
+20    <uses-sdk
+21        android:minSdkVersion="21"
+21-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml
+22        android:targetSdkVersion="31" />
+22-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml
+23
+24    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+24-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:21:5-80
+24-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:21:22-78
+25    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+25-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:22:5-79
+25-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:22:22-77
+26    <uses-permission android:name="android.permission.CAMERA" />
+26-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:23:5-64
+26-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:23:22-62
+27
+28    <application>
+28-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:25:5-29:19
+29        <activity android:name="com.xxf.media.album.ui.AlbumActivity" />
+29-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:26:9-72
+29-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:26:19-70
+30        <activity android:name="com.xxf.media.album.internal.ui.AlbumPreviewActivity" />
+30-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:27:9-88
+30-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:27:19-86
+31        <activity android:name="com.xxf.media.album.internal.ui.SelectedPreviewActivity" />
+31-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:28:9-91
+31-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\src\main\AndroidManifest.xml:28:19-89
+32    </application>
+33
+34</manifest>

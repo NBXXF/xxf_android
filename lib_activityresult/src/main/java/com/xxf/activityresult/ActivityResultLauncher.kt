@@ -20,14 +20,16 @@ import androidx.lifecycle.LifecycleOwner
 object ActivityResultLauncher {
 
     /**
-     * 初始化
+     * 初始化,默认情况下不用自己注册 会自动注册,除非有多进程 或者自定义并发数量
      * @param application
-     * @param concurrent 并发数量
+     * @param concurrent 并发数量(注册占位数量)
      */
     fun init(application: Application, concurrent: Int = 5) {
-        application.registerActivityLifecycleCallbacks(AutoInjectActivityResultLifecycleCallbacks.also {
-            it.concurrent = concurrent;
-        })
+        application.unregisterActivityLifecycleCallbacks(AutoInjectActivityResultLifecycleCallbacks)
+        application.registerActivityLifecycleCallbacks(
+            AutoInjectActivityResultLifecycleCallbacks.also {
+                it.concurrent = concurrent;
+            })
     }
 
 }

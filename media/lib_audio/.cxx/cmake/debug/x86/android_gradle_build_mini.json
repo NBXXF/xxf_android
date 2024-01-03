@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/Users/mac/Documents/work_space/xxf_media/lib_audio/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/mac/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/mac/Documents/work_space/xxf_media/lib_audio/.cxx/cmake/debug/x86 --target clean"
+  ],
+  "libraries": {
+    "audio-processor-Debug-x86": {
+      "artifactName": "audio-processor",
+      "buildCommand": "/Users/mac/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/mac/Documents/work_space/xxf_media/lib_audio/.cxx/cmake/debug/x86 --target audio-processor",
+      "abi": "x86",
+      "output": "/Users/mac/Documents/work_space/xxf_media/lib_audio/build/intermediates/cmake/debug/obj/x86/libaudio-processor.so"
+    }
+  }
+}

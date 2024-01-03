@@ -1,0 +1,2 @@
+[1/2] Building C object CMakeFiles/audio-processor.dir/smbPitchShift.c.o
+[2/2] Linking C shared library /Users/mac/Documents/work_space/xxf_media/lib_audio/build/intermediates/cmake/debug/obj/x86/libaudio-processor.so

@@ -15,14 +15,15 @@ import io.reactivex.rxjava3.core.Observable
  * Description ://权限拓展  支持activity fragment LifecycleOwner 挂载对象访问
  */
 
+
 /**
- * activity 请求权限 可以结合内敛函数topFragmentActivity
+ * activity 请求权限  可以结合内敛函数topFragmentActivity
  * @param permissions 可以参考 [android.Manifest.permission]  android.Manifest.permission
  */
 inline fun <reified T : LifecycleOwner> T.requestPermission(
-    permissions: Array<String>
+    permissions: List<String>
 ): Observable<Boolean> {
-    return this.startActivityForResult(ActivityResultContracts.RequestMultiplePermissions(),permissions)
+    return this.startActivityForResult(ActivityResultContracts.RequestMultiplePermissions(),permissions.toTypedArray())
         .map {
             it.values.all { it }
         }
@@ -30,13 +31,13 @@ inline fun <reified T : LifecycleOwner> T.requestPermission(
 
 
 /**
- * fragment 请求权限  可以结合内敛函数topFragmentActivity
+ * activity 请求权限  可以结合内敛函数topFragmentActivity
  * @param permission 可以参考 [android.Manifest.permission]  android.Manifest.permission
  */
 inline fun <reified T : LifecycleOwner> T.requestPermission(
-    permission: String,
+    vararg permission: String,
 ): Observable<Boolean> {
-    return this.startActivityForResult(ActivityResultContracts.RequestPermission(),permission)
+    return this.requestPermission(permission.asList())
 }
 
 

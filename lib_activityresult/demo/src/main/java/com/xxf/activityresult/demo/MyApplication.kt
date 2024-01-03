@@ -11,6 +11,5 @@ class MyApplication : Application() {
         RxJavaPlugins.setErrorHandler {
 
         }
-        ActivityResultLauncher.init(this)
     }
 }

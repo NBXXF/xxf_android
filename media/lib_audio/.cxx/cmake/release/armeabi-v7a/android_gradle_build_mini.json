@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/Users/mac/Documents/work_space/xxf_media/lib_audio/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/mac/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/mac/Documents/work_space/xxf_media/lib_audio/.cxx/cmake/release/armeabi-v7a --target clean"
+  ],
+  "libraries": {
+    "audio-processor-Release-armeabi-v7a": {
+      "artifactName": "audio-processor",
+      "buildCommand": "/Users/mac/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/mac/Documents/work_space/xxf_media/lib_audio/.cxx/cmake/release/armeabi-v7a --target audio-processor",
+      "abi": "armeabi-v7a",
+      "output": "/Users/mac/Documents/work_space/xxf_media/lib_audio/build/intermediates/cmake/release/obj/armeabi-v7a/libaudio-processor.so"
+    }
+  }
+}

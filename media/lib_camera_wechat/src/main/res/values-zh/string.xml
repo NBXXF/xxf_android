@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="photo_tip">轻触可拍照</string>
+    <string name="record_tip">长按录制视频</string>
+    <string name="no_permission_tip">拍摄需要访问存储卡和相机许可</string>
+    <string name="open_camera_error_tip">打开摄像头失败</string>
+    <string name="record_time_short">录制时间太短</string>
+</resources>

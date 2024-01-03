@@ -1,0 +1,3 @@
+# ninja log v5
+0	363	0	CMakeFiles/audio-processor.dir/smbPitchShift.c.o	8d53c2ee242ba80d
+363	499	0	/Users/mac/Documents/work_space/xxf_media/lib_audio/build/intermediates/cmake/debug/obj/armeabi-v7a/libaudio-processor.so	66aa177f582280b9

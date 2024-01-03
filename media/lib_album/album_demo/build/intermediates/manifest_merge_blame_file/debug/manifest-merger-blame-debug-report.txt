@@ -1,0 +1,133 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3  Copyright 2017 Zhihu Inc.
+4
+5  Licensed under the Apache License, Version 2.0 (the "License");
+6  you may not use this file except in compliance with the License.
+7  You may obtain a copy of the License at
+8
+9  http://www.apache.org/licenses/LICENSE-2.0
+10
+11  Unless required by applicable law or agreed to in writing, software
+12  distributed under the License is distributed on an "AS IS" BASIS,
+13  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+14  See the License for the specific language governing permissions and
+15  limitations under the License.
+16-->
+17<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+18    package="com.zhihu.matisse.sample"
+19    android:versionCode="1"
+20    android:versionName="1.0" >
+21
+22    <uses-sdk
+23        android:minSdkVersion="21"
+23-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml
+24        android:targetSdkVersion="31" />
+24-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml
+25
+26    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+26-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:5-81
+26-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:22-78
+27    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+27-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:5-80
+27-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:22-77
+28    <uses-permission android:name="android.permission.CAMERA" /> <!-- 安装app -->
+28-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:5-65
+28-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:22-62
+29    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 卸载app -->
+29-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-83
+29-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:22-80
+30    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" /> <!-- 静默安装app -->
+30-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-82
+30-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-79
+31    <uses-permission android:name="android.permission.INSTALL_PACKAGES" /> <!-- 静默卸载app -->
+31-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-16:47
+31-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:9-59
+32    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
+32-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:5-20:47
+32-->[:lib_utils] E:\developer\android_studio\spaces\xxf_android\lib_utils\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-58
+33
+34    <application
+34-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:20:5-35:19
+35        android:allowBackup="true"
+35-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:21:9-35
+36        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+36-->[androidx.core:core:1.8.0] E:\developer\android_studio\space_gradle_cache\caches\transforms-2\files-2.1\7f9202fd6c2972b51aa8693dc6a80595\core-1.8.0\AndroidManifest.xml:24:18-86
+37        android:debuggable="true"
+38        android:icon="@mipmap/ic_launcher"
+38-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:22:9-43
+39        android:label="@string/app_name"
+39-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:23:9-41
+40        android:testOnly="true"
+41        android:theme="@style/AppTheme" >
+41-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:24:9-40
+42        <activity
+42-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:25:9-34:20
+43            android:name="com.zhihu.matisse.sample.SampleActivity"
+43-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:26:13-67
+44            android:configChanges="orientation|screenSize|keyboardHidden"
+44-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:27:13-74
+45            android:exported="true" >
+45-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:28:13-36
+46            <intent-filter>
+46-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:29:13-33:29
+47                <action android:name="android.intent.action.MAIN" />
+47-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:30:17-68
+47-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:30:25-66
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:32:17-76
+49-->E:\developer\android_studio\spaces\xxf_android\media\lib_album\album_demo\src\main\AndroidManifest.xml:32:27-74
+50            </intent-filter>
+51        </activity>
+52        <activity android:name="com.xxf.media.album.ui.AlbumActivity" />
+52-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:9-73
+52-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:19-70
+53        <activity android:name="com.xxf.media.album.internal.ui.AlbumPreviewActivity" />
+53-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:30:9-89
+53-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:30:19-86
+54        <activity android:name="com.xxf.media.album.internal.ui.SelectedPreviewActivity" />
+54-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:9-92
+54-->[:media:lib_album] E:\developer\android_studio\spaces\xxf_android\media\lib_album\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:19-89
+55
+56        <provider
+56-->[:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
+57            android:name="androidx.startup.InitializationProvider"
+57-->[:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-67
+58            android:authorities="com.zhihu.matisse.sample.androidx-startup"
+58-->[:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-68
+59            android:exported="false" >
+59-->[:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+60            <meta-data
+60-->[:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:52
+61                android:name="com.xxf.activityresult.ActivityResultAutoInitializer"
+61-->[:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-84
+62                android:value="androidx.startup" />
+62-->[:lib_activityresult] E:\developer\android_studio\spaces\xxf_android\lib_activityresult\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-49
+63            <meta-data
+63-->[:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:52
+64                android:name="com.xxf.application.initializer.ApplicationInitializer"
+64-->[:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-86
+65                android:value="androidx.startup" />
+65-->[:lib_application] E:\developer\android_studio\spaces\xxf_android\lib_application\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-49
+66        </provider>
+67        <provider
+67-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:9-18:20
+68            android:name="androidx.core.content.FileProvider"
+68-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-62
+69            android:authorities="com.zhihu.matisse.sample.android7.fileprovider"
+69-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-73
+70            android:exported="false"
+70-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-37
+71            android:grantUriPermissions="true" >
+71-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-47
+72            <meta-data
+72-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-17:54
+73                android:name="android.support.FILE_PROVIDER_PATHS"
+73-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:17-67
+74                android:resource="@xml/file_paths" />
+74-->[:lib_fileprovider] E:\developer\android_studio\spaces\xxf_android\lib_fileprovider\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-51
+75        </provider>
+76    </application>
+77
+78</manifest>
