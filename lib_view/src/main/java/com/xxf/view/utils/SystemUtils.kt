@@ -143,7 +143,7 @@ object SystemUtils {
         cropBuilder: PathCropIntentBuilder?
     ): Observable<String> {
         return context.requestPermission(
-            arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
             .compose(
                 RxPermissionTransformer(
