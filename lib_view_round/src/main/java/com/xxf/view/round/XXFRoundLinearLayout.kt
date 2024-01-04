@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import skin.support.widget.SkinCompatLinearLayout
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:39
  */
-open class XXFRoundLinearLayout : SkinCompatLinearLayout, XXFRoundWidget{
+open class XXFRoundLinearLayout : LinearLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {

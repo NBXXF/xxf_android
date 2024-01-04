@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import skin.support.widget.SkinCompatRelativeLayout
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:43
  */
-open class XXFRoundRelativeLayout : SkinCompatRelativeLayout, XXFRoundWidget{
+open class XXFRoundRelativeLayout : RelativeLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {

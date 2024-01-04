@@ -4,14 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import skin.support.widget.SkinCompatFrameLayout
 
 /**
  * @Description: eg app:radius="4dp"
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:41
  */
-open class XXFRoundLayout : SkinCompatFrameLayout, XXFRoundWidget{
+open class XXFRoundLayout : FrameLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {

@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
-import skin.support.constraint.SkinCompatConstraintLayout
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -12,7 +11,7 @@ import skin.support.constraint.SkinCompatConstraintLayout
  * Description ://处理圆角
  * app:radius="4dp"
  */
-class XXFRoundConstraintLayout : SkinCompatConstraintLayout, XXFRoundWidget {
+class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget {
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {

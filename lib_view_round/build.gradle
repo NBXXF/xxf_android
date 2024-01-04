@@ -26,11 +26,11 @@ android {
 
 dependencies {
     api des.material
-    api des.skin_support
-    api des.skin_support_appcompat
-    api des.skin_support_constraint_layout
-    api des.skin_support_design
-    api des.skin_support_cardview
+//    api des.skin_support
+//    api des.skin_support_appcompat
+//    api des.skin_support_constraint_layout
+//    api des.skin_support_design
+//    api des.skin_support_cardview
    // api des.skin_support_flycotablayout
    // api des.skin_support_circleimageview
 }
