@@ -25,7 +25,7 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
      * 数据源提供
      */
     interface AdapterSourceProvider {
-        val adapterSource: List<*>?
+        fun getAdapterSource(): List<*>
     }
 
     private val holderBackgroundCache: MutableMap<String, Drawable> = HashMap()
@@ -98,11 +98,11 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
         //这里可以添加判断，实现某一项不可交换
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
-                Collections.swap(adapterSourceProvider.adapterSource, i, i + 1)
+                Collections.swap(adapterSourceProvider.getAdapterSource(), i, i + 1)
             }
         } else {
             for (i in fromPosition downTo toPosition + 1) {
-                Collections.swap(adapterSourceProvider.adapterSource, i, i - 1)
+                Collections.swap(adapterSourceProvider.getAdapterSource(), i, i - 1)
             }
         }
         recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
