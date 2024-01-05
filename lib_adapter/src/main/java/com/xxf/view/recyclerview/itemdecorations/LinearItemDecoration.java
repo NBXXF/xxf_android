@@ -2,6 +2,7 @@ package com.xxf.view.recyclerview.itemdecorations;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -84,10 +85,9 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
     }
 
     private int mOrientation;
-    /**
-     * 是否展示最后一行或者最后一列的分割线
-     */
     private boolean showLastDivider;
+    private final Rect mBounds = new Rect();
+
 
     public LinearItemDecoration(Builder builder) {
         super(builder.context, builder.orientation);
@@ -102,6 +102,61 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
         super.setOrientation(orientation);
     }
 
+    @Override
+    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        if (parent.getLayoutManager() instanceof GridLayoutManager && mOrientation == HORIZONTAL) {
+            //父类对于grid 不能均分 有偏移算法
+            drawHorizontal(c, parent);
+        }else {
+            super.onDraw(c, parent, state);
+        }
+    }
+
+    private void drawHorizontal(Canvas canvas, RecyclerView parent) {
+        canvas.save();
+        final int top;
+        final int bottom;
+        //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
+        if (parent.getClipToPadding()) {
+            top = parent.getPaddingTop();
+            bottom = parent.getHeight() - parent.getPaddingBottom();
+            canvas.clipRect(parent.getPaddingLeft(), top,
+                    parent.getWidth() - parent.getPaddingRight(), bottom);
+        } else {
+            top = 0;
+            bottom = parent.getHeight();
+        }
+
+        final int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = parent.getChildAt(i);
+            parent.getLayoutManager().getDecoratedBoundsWithMargins(child, mBounds);
+            //原始代码
+//            final int right = mBounds.right + Math.round(child.getTranslationX());
+//            final int left = right - mDivider.getIntrinsicWidth();
+//            mDivider.setBounds(left, top, right, bottom);
+//            mDivider.draw(canvas);
+
+            //grid为了列均分 所以拆分成左右各不均等的部分
+            Drawable mDivider=getDrawable();
+            final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) child.getLayoutParams();
+            final int rightPartLeft = child.getRight()+lp.rightMargin+ Math.round(child.getTranslationX());
+            final int rightPartRight = mBounds.right + Math.round(child.getTranslationX());
+            if(rightPartRight>rightPartLeft) {
+                mDivider.setBounds(rightPartLeft, top, rightPartRight, bottom);
+                mDivider.draw(canvas);
+            }
+            final int leftPartLeft = mBounds.left+ Math.round(child.getTranslationX());
+            final int leftPartRight = child.getLeft()-lp.leftMargin+ Math.round(child.getTranslationX());
+            if(leftPartRight>leftPartLeft) {
+                mDivider.setBounds(leftPartLeft, top, leftPartRight, bottom);
+                mDivider.draw(canvas);
+            }
+
+        }
+        canvas.restore();
+    }
+
     @CallSuper
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -109,14 +164,17 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
         if (getDrawable() == null) {
             outRect.set(0, 0, 0, 0);
         } else if (parent.getLayoutManager() instanceof GridLayoutManager && mOrientation == HORIZONTAL) {
-            //均分策略算法 其他算法有bug
-            int mSpanCount = ((GridLayoutManager) parent.getLayoutManager()).getSpanCount();
-            int position = parent.getChildAdapterPosition(view);
-            int column = position % mSpanCount;
+            GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
+            GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view.getLayoutParams();
+            int spanCount = layoutManager.getSpanCount();
+            int spanIndex = lp.getSpanIndex();
+            int column=spanIndex;
             int mSpacing = Math.max(getDrawable().getIntrinsicHeight(), getDrawable().getIntrinsicWidth());
+
+            //均分策略算法 其他算法有bug
             //列 竖向划线
-            int left = column * mSpacing / mSpanCount;
-            int right = mSpacing - (column + 1) * mSpacing / mSpanCount;
+            int left = column * mSpacing / spanCount;
+            int right = mSpacing - (column + 1) * mSpacing / spanCount;
 
             outRect.set(left, 0, right, 0);
         } else {
