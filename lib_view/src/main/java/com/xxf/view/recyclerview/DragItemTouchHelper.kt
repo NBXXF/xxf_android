@@ -2,17 +2,18 @@ package com.xxf.view.recyclerview
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Service
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Vibrator
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.xxf.ktx.identityId
+import com.xxf.ktx.standard.runIf
+import com.xxf.ktx.vibrator
 import java.util.Collections
 
 /**
@@ -22,23 +23,45 @@ import java.util.Collections
  */
 class DragItemTouchHelper : ItemTouchHelper.Callback {
     /**
+     * 拖动中的view 的样式
+     * -1.0f 代表不操作
+     */
+    data class DraggingViewStyle(
+        val backgroundColor: Int = Color.RED,
+        val elevation: Float = -1.0f,
+        val alpha: Float = -1.0f
+    )
+
+    private data class DraggingViewStyleCache(
+        val background: Drawable,
+        val elevation: Float,
+        val alpha: Float
+    ) {
+        constructor(view: View) : this(view.background, view.elevation, view.alpha)
+    }
+
+    /**
      * 数据源提供
      */
     interface AdapterSourceProvider {
         fun getAdapterSource(): List<*>
     }
 
-    private val holderBackgroundCache: MutableMap<String, Drawable> = HashMap()
+    private val draggingViewStyleCacheMap: MutableMap<String, DraggingViewStyleCache> = HashMap()
     private var adapterSourceProvider: AdapterSourceProvider
-    private var dragBackgroundColor = Color.RED
+    private val draggingViewStyle: DraggingViewStyle;
 
     constructor(adapterSourceProvider: AdapterSourceProvider) {
         this.adapterSourceProvider = adapterSourceProvider
+        this.draggingViewStyle = DraggingViewStyle()
     }
 
-    constructor(adapterSourceProvider: AdapterSourceProvider, dragBackgroundColor: Int) {
+    constructor(
+        adapterSourceProvider: AdapterSourceProvider,
+        draggingViewStyle: DraggingViewStyle
+    ) {
         this.adapterSourceProvider = adapterSourceProvider
-        this.dragBackgroundColor = dragBackgroundColor
+        this.draggingViewStyle = draggingViewStyle;
     }
 
     fun attachToRecyclerView(recyclerView: RecyclerView): ItemTouchHelper {
@@ -69,9 +92,9 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
     ): Int {
         //swipeFlags是侧滑标志，我们把swipeFlags 都设置为0，表示不处理滑动操作
         //dragFlags 是拖拽标志
-        val dragFlags = 0
-        val swipeFlags =
+        val dragFlags =
             ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        val swipeFlags = 0
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
@@ -129,19 +152,29 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
             try {
-                //获取系统震动服务
-                val vib =
-                    viewHolder!!.itemView.context.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator
-                //震动70毫秒
-                vib.vibrate(70)
+                viewHolder!!.itemView.context.vibrator?.vibrate(70)
             } catch (e: Throwable) {
                 e.printStackTrace()
             }
-            viewHolder!!.itemView.isPressed = true
+            viewHolder?.let {
+                //记录拖动前的样式
+                draggingViewStyleCacheMap[viewHolder.itemView.identityId] =
+                    DraggingViewStyleCache(viewHolder.itemView)
 
-            //演示拖拽的时候item背景颜色加深（实际情况中去掉）
-            holderBackgroundCache[viewHolder.itemView.identityId] = viewHolder.itemView.background
-            viewHolder.itemView.background = ColorDrawable(dragBackgroundColor)
+                //初始化拖动中的样式
+                with(viewHolder.itemView) {
+                    this.isPressed = true
+                    draggingViewStyle.backgroundColor.runIf({ it >= 0 }) {
+                        this.background = ColorDrawable(it)
+                    }
+                    draggingViewStyle.alpha.runIf({ it >= 0 }) {
+                        this.alpha = it
+                    }
+                    draggingViewStyle.elevation.runIf({ it >= 0 }) {
+                        this.elevation = it
+                    }
+                }
+            }
         }
         super.onSelectedChanged(viewHolder, actionState)
     }
@@ -152,10 +185,19 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        viewHolder.itemView.isPressed = false
-        //演示拖拽的完毕后item背景颜色恢复原样（实际情况中去掉）
-        viewHolder.itemView.background = holderBackgroundCache[viewHolder.itemView.identityId]
-        holderBackgroundCache.remove(viewHolder.itemView.identityId)
+
+        //恢复样式
+        val dragViewStyleCache = draggingViewStyleCacheMap[viewHolder.itemView.identityId]
+        dragViewStyleCache?.let {
+            with(viewHolder.itemView) {
+                this.isPressed = false
+                this.background = it.background
+                this.alpha = it.alpha
+                this.elevation = it.elevation
+            }
+            draggingViewStyleCacheMap.remove(viewHolder.itemView.identityId)
+        }
+
         //解决重叠问题
         recyclerView.adapter!!.notifyDataSetChanged()
     }
