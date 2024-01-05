@@ -33,7 +33,7 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
     )
 
     private data class DraggingViewStyleCache(
-        val background: Drawable,
+        val background: Drawable?,
         val elevation: Float,
         val alpha: Float
     ) {
