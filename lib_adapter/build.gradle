@@ -31,6 +31,7 @@ android {
 dependencies {
     api des.material
     api des.recyclerview
+    api project(path: ':lib_ktx')
 }
 
 ext {

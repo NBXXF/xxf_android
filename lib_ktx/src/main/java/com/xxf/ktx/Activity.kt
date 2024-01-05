@@ -13,6 +13,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import java.util.*
 
@@ -45,3 +46,11 @@ var Activity.decorFitsSystemWindows: Boolean
 
 inline val Activity.contentView: View
   get() = (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+
+inline val Context.context: Context get() = this
+
+inline val Activity.activity: Activity get() = this
+
+inline val FragmentActivity.fragmentActivity: FragmentActivity get() = this
+
+inline val ComponentActivity.lifecycleOwner: LifecycleOwner get() = this

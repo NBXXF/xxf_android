@@ -1,4 +1,4 @@
-package com.xxf.view.recyclerview
+package com.xxf.view.recyclerview.itemtouchhelpers
 
 import android.Manifest
 import android.annotation.SuppressLint

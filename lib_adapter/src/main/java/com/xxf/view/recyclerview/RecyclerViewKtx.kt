@@ -1,65 +1,66 @@
-package com.xxf.view.recyclerview.layoutmanager;
+package com.xxf.view.recyclerview
 
-import android.content.Context;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.content.Context
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-/**
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
- * @Description 平缓滚动 LinearLayoutManager
- */
-public class SmoothLinearLayoutManager extends LinearLayoutManager {
+fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
+    val layoutManager = this.layoutManager
+    if (layoutManager is LinearLayoutManager) {
+        layoutManager.scrollToPositionWithOffset(position, offset)
+    } else if (layoutManager is StaggeredGridLayoutManager) {
+        layoutManager.scrollToPositionWithOffset(position, offset)
+    }
+}
 
-    public interface OnSmoothScrollListener {
-        void onStart();
+fun RecyclerView.scrollToStartWithOffset(offset: Int) = scrollToPositionWithOffset(0, offset)
 
-        void onStop();
+fun RecyclerView.scrollToEndWithOffset(offset: Int) =
+    scrollToPositionWithOffset(adapter!!.itemCount - 1, offset)
+
+fun RecyclerView.scrollToStart() = this.scrollToPosition(0)
+fun RecyclerView.scrollToEnd() = this.scrollToPosition(adapter!!.itemCount - 1)
+
+fun RecyclerView.smoothScrollToStart() =
+    smoothScrollToStartPosition(0)
+
+fun RecyclerView.smoothScrollToEnd() =
+    smoothScrollToEndPosition(adapter!!.itemCount - 1)
+
+fun RecyclerView.smoothScrollToStartPosition(position: Int) =
+    smoothScrollToPosition(position, SNAP.SNAP_TO_START)
+
+fun RecyclerView.smoothScrollToEndPosition(position: Int) =
+    smoothScrollToPosition(position, SNAP.SNAP_TO_END)
+
+fun RecyclerView.smoothScrollToPosition(position: Int, snapPreference: SNAP) =
+    layoutManager?.let {
+        val smoothScroller = LinearSmoothScroller(context, snapPreference)
+        smoothScroller.targetPosition = position
+        it.startSmoothScroll(smoothScroller)
     }
 
-    private SmoothLinearScroller.SNAP snap;
-    private OnSmoothScrollListener onSmoothScrollListener;
-
-    public SmoothLinearLayoutManager setOnSmoothScrollListener(OnSmoothScrollListener onSmoothScrollListener) {
-        this.onSmoothScrollListener = onSmoothScrollListener;
-        return this;
+fun LinearSmoothScroller(context: Context, snapPreference: SNAP) =
+    object : LinearSmoothScroller(context) {
+        override fun getVerticalSnapPreference() = snapPreference.value
+        override fun getHorizontalSnapPreference() = snapPreference.value
     }
 
-    public SmoothLinearLayoutManager setSnap(SmoothLinearScroller.SNAP snap) {
-        this.snap = snap;
-        return this;
-    }
+enum class SNAP(var value: Int) {
+    /**
+     * 顶部
+     */
+    SNAP_TO_START(LinearSmoothScroller.SNAP_TO_START),
 
-    public SmoothLinearLayoutManager(Context context, SmoothLinearScroller.SNAP snap) {
-        super(context);
-        this.snap = snap;
-    }
+    /**
+     * 尾部
+     */
+    SNAP_TO_END(LinearSmoothScroller.SNAP_TO_END),
 
-    public SmoothLinearLayoutManager(Context context, int orientation, boolean reverseLayout, SmoothLinearScroller.SNAP snap) {
-        super(context, orientation, reverseLayout);
-        this.snap = snap;
-    }
-
-    @Override
-    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-        RecyclerView.SmoothScroller smoothScroller = new SmoothLinearScroller(recyclerView.getContext(), this.snap) {
-            @Override
-            protected void onStart() {
-                super.onStart();
-                if (onSmoothScrollListener != null) {
-                    onSmoothScrollListener.onStart();
-                }
-            }
-
-            @Override
-            protected void onStop() {
-                super.onStop();
-                if (onSmoothScrollListener != null) {
-                    onSmoothScrollListener.onStop();
-                }
-            }
-        };
-        smoothScroller.setTargetPosition(position);
-        startSmoothScroll(smoothScroller);
-    }
-
+    /**
+     * 默认
+     */
+    SNAP_TO_ANY(LinearSmoothScroller.SNAP_TO_ANY)
 }
