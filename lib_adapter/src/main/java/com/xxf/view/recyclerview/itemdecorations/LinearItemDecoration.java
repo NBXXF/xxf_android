@@ -167,16 +167,21 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
             GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
             GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view.getLayoutParams();
             int spanCount = layoutManager.getSpanCount();
-            int spanIndex = lp.getSpanIndex();
-            int column=spanIndex;
-            int mSpacing = Math.max(getDrawable().getIntrinsicHeight(), getDrawable().getIntrinsicWidth());
+            //占满一行
+            if(lp.getSpanSize()==spanCount){
+                outRect.set(0, 0, 0, 0);
+            }else {
+                int spanIndex = lp.getSpanIndex();
+                int column = spanIndex;
+                int mSpacing = Math.max(getDrawable().getIntrinsicHeight(), getDrawable().getIntrinsicWidth());
 
-            //均分策略算法 其他算法有bug
-            //列 竖向划线
-            int left = column * mSpacing / spanCount;
-            int right = mSpacing - (column + 1) * mSpacing / spanCount;
+                //均分策略算法 其他算法有bug
+                //列 竖向划线
+                int left = column * mSpacing / spanCount;
+                int right = mSpacing - (column + 1) * mSpacing / spanCount;
 
-            outRect.set(left, 0, right, 0);
+                outRect.set(left, 0, right, 0);
+            }
         } else {
             //控制 最后一条不画
             if (!showLastDivider) {
