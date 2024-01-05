@@ -6,9 +6,8 @@ import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.xxf.view.recyclerview.layoutmanager.SmoothLinearScroller;
 
 public class AutoPollRecyclerView extends MaxHeightRecyclerView {
     private static final long TIME_AUTO_POLL = 3000;
@@ -40,7 +39,7 @@ public class AutoPollRecyclerView extends MaxHeightRecyclerView {
             @Override
             public void smoothScrollToPosition(RecyclerView recyclerView, State state, int position) {
 //                super.smoothScrollToPosition(recyclerView, state, position);
-                RecyclerView.SmoothScroller smoothScroller = new SmoothLinearScroller(recyclerView.getContext(), SmoothLinearScroller.SNAP.SNAP_TO_ANY) {
+                RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(recyclerView.getContext()) {
 
                     @Override
                     protected int calculateTimeForDeceleration(int dx) {
