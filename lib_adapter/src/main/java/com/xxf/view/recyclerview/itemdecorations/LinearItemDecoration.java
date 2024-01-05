@@ -104,12 +104,48 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        if (parent.getLayoutManager() instanceof GridLayoutManager && mOrientation == HORIZONTAL) {
-            //父类对于grid 不能均分 有偏移算法
-            drawHorizontal(c, parent);
-        }else {
-            super.onDraw(c, parent, state);
+        //super.onDraw(c,parent,state);
+        if (parent.getLayoutManager() == null || getDrawable() == null) {
+            return;
         }
+        if (mOrientation == VERTICAL) {
+            drawVertical(c, parent);
+        } else {
+            drawHorizontal(c, parent);
+        }
+    }
+
+    private void drawVertical(Canvas canvas, RecyclerView parent) {
+        canvas.save();
+        final int left;
+        final int right;
+        //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
+        if (parent.getClipToPadding()) {
+            left = parent.getPaddingLeft();
+            right = parent.getWidth() - parent.getPaddingRight();
+            canvas.clipRect(left, parent.getPaddingTop(), right,
+                    parent.getHeight() - parent.getPaddingBottom());
+        } else {
+            left = 0;
+            right = parent.getWidth();
+        }
+
+        final int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = parent.getChildAt(i);
+            parent.getDecoratedBoundsWithMargins(child, mBounds);
+            final int bottom = mBounds.bottom + Math.round(child.getTranslationY());
+
+            Drawable mDivider=getDrawable();
+            final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) child.getLayoutParams();
+            final int top = child.getBottom()+lp.bottomMargin;
+            //最后一条可能隐藏
+            if(top<bottom) {
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(canvas);
+            }
+        }
+        canvas.restore();
     }
 
     private void drawHorizontal(Canvas canvas, RecyclerView parent) {
