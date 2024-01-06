@@ -12,6 +12,8 @@ import androidx.annotation.CallSuper;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import kotlin.Deprecated;
+
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：6/25/19
@@ -20,6 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
  * 1.扩展支持颜色
  * 2.兼容gridLayoutManager 需要添加两条不同方向的分割线
  */
+
+/**
+ * "过时了,太多缺陷,格子适配问题太多"
+ */
+@Deprecated(message = "过时了,太多缺陷,格子适配问题太多,请使用 [com.xxf.view.recyclerview.itemdecorations.DividerItemDecoration.Builder]")
+//@Deprecated
 public class LinearItemDecoration extends androidx.recyclerview.widget.DividerItemDecoration {
     public static class Builder {
         Context context;
@@ -136,11 +144,11 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
             parent.getDecoratedBoundsWithMargins(child, mBounds);
             final int bottom = mBounds.bottom + Math.round(child.getTranslationY());
 
-            Drawable mDivider=getDrawable();
+            Drawable mDivider = getDrawable();
             final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) child.getLayoutParams();
-            final int top = child.getBottom()+lp.bottomMargin;
+            final int top = child.getBottom() + lp.bottomMargin;
             //最后一条可能隐藏
-            if(top<bottom) {
+            if (top < bottom) {
                 mDivider.setBounds(left, top, right, bottom);
                 mDivider.draw(canvas);
             }
@@ -174,17 +182,17 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
 //            mDivider.draw(canvas);
 
             //grid为了列均分 所以拆分成左右各不均等的部分
-            Drawable mDivider=getDrawable();
+            Drawable mDivider = getDrawable();
             final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) child.getLayoutParams();
-            final int rightPartLeft = child.getRight()+lp.rightMargin+ Math.round(child.getTranslationX());
+            final int rightPartLeft = child.getRight() + lp.rightMargin + Math.round(child.getTranslationX());
             final int rightPartRight = mBounds.right + Math.round(child.getTranslationX());
-            if(rightPartRight>rightPartLeft) {
+            if (rightPartRight > rightPartLeft) {
                 mDivider.setBounds(rightPartLeft, top, rightPartRight, bottom);
                 mDivider.draw(canvas);
             }
-            final int leftPartLeft = mBounds.left+ Math.round(child.getTranslationX());
-            final int leftPartRight = child.getLeft()-lp.leftMargin+ Math.round(child.getTranslationX());
-            if(leftPartRight>leftPartLeft) {
+            final int leftPartLeft = mBounds.left + Math.round(child.getTranslationX());
+            final int leftPartRight = child.getLeft() - lp.leftMargin + Math.round(child.getTranslationX());
+            if (leftPartRight > leftPartLeft) {
                 mDivider.setBounds(leftPartLeft, top, leftPartRight, bottom);
                 mDivider.draw(canvas);
             }
@@ -204,9 +212,9 @@ public class LinearItemDecoration extends androidx.recyclerview.widget.DividerIt
             GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view.getLayoutParams();
             int spanCount = layoutManager.getSpanCount();
             //占满一行
-            if(lp.getSpanSize()==spanCount){
+            if (lp.getSpanSize() == spanCount) {
                 outRect.set(0, 0, 0, 0);
-            }else {
+            } else {
                 int spanIndex = lp.getSpanIndex();
                 int column = spanIndex;
                 int mSpacing = Math.max(getDrawable().getIntrinsicHeight(), getDrawable().getIntrinsicWidth());
