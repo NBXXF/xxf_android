@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.format.DateFormat
 import android.util.Log
+import android.util.Size
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -32,6 +33,7 @@ import com.xxf.log.logD
 import com.xxf.utils.DateUtils.format
 import com.xxf.utils.FileUtils
 import com.xxf.utils.HandlerUtils.mainHandler
+import com.xxf.view.recyclerview.layoutmanager.AutoFitGridLayoutManager
 import com.xxf.view.round.XXFRoundImageTextView
 import com.xxf.view.utils.StatusBarUtils
 import io.reactivex.rxjava3.core.Observable
@@ -85,6 +87,7 @@ class MainActivity() : XXFActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        AutoFitGridLayoutManager.Builder(this, Size(199,100)).setSpacing(Size(10,10)).build()
         logD { "======================>xxxgffdd" }
 
         //ApplicationKtKt.launchAppDetailsSettings(this.getApplication(),this.getApplication().getPackageName());

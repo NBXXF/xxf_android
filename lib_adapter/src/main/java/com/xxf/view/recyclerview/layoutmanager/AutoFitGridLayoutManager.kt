@@ -1,74 +1,140 @@
-package com.xxf.view.recyclerview.layoutmanager;
+package com.xxf.view.recyclerview.layoutmanager
 
-import android.content.Context;
-
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Context
+import android.util.Range
+import android.util.Size
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * 格子布局 手机 pad 横竖自适应
- * 自动计算格子数量
+ * 自动计算格子数量,注意两个方向 排列计算是不一样的 跟orientation相关
  */
-public class AutoFitGridLayoutManager extends GridLayoutManager {
-    public int expectedColumnWidth;
+open class AutoFitGridLayoutManager(private val context: Context, private val adaptConfig: AdaptConfig) :
+    GridLayoutManager(context, 1) {
+    class Builder(
+        private var context: Context,
+        /**
+         * 期望的大小
+         */
+        private var expectedSize: Size
+    ) {
+        /**
+         * 间距
+         */
+        private var spacing = Size(0, 0)
 
-    /**
-     * @param context
-     * @param expectedColumnWidth 像素 期望格子宽度 像素
-     */
-    public AutoFitGridLayoutManager(Context context, int expectedColumnWidth) {
-        super(context, 1);
-        this.expectedColumnWidth = expectedColumnWidth;
-    }
+        /**
+         * 列的区间限制
+         */
+        private var columnRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE)
 
-    /**
-     * @param expectedColumnWidth 像素 期望格子宽度 像素
-     */
-    public void setExpectedColumnWidth(int expectedColumnWidth) {
-        if (this.expectedColumnWidth != expectedColumnWidth) {
-            this.expectedColumnWidth = expectedColumnWidth;
-            autoFitSpan();
+        /**
+         * 行的区间限制
+         */
+        private var rowRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE)
+
+        fun setSpacing(spacing: Size): Builder {
+            this.spacing = spacing
+            return this
+        }
+
+        fun setColumnRange(columnRange: Range<Int>): Builder {
+            this.columnRange = columnRange
+            return this
+        }
+
+        fun setRowRange(rowRange: Range<Int>): Builder {
+            this.rowRange = rowRange
+            return this
+        }
+
+        fun build(): AutoFitGridLayoutManager {
+            return AutoFitGridLayoutManager(
+                context, AdaptConfig(
+                    expectedSize, spacing, columnRange, rowRange
+                )
+            )
         }
     }
 
+    data class AdaptConfig(
+        /**
+         * 期望的大小
+         */
+        var expectedSize: Size,
+        /**
+         * 间距
+         */
+        var spacing: Size,
+        /**
+         * 列的区间限制
+         */
+        var columnRange: Range<Int>,
+        /**
+         * 行的区间限制
+         */
+        var rowRange: Range<Int>
+    )
 
-    @Override
-    public void onLayoutCompleted(RecyclerView.State state) {
-        super.onLayoutCompleted(state);
-        autoFitSpan();
+    class GridCalculator(private var totalSize: Size, private var adaptConfig: AdaptConfig) {
+        fun calculateByWidth(): Int {
+            return adaptSpanCount(
+                totalSize.width,
+                adaptConfig.expectedSize.width,
+                adaptConfig.spacing.width,
+                adaptConfig.columnRange
+            )
+        }
+
+        fun calculateByHeight(): Int {
+            return adaptSpanCount(
+                totalSize.height,
+                adaptConfig.expectedSize.height,
+                adaptConfig.spacing.height,
+                adaptConfig.rowRange
+            )
+        }
+
+        private fun adaptSpanCount(
+            parentWidth: Int,
+            expectedColumnWidth: Int,
+            spacingWidth: Int,
+            spanRange: Range<Int>
+        ): Int {
+            var spanCount = parentWidth / expectedColumnWidth
+            while (spanCount > 1 && spanCount * expectedColumnWidth + (spanCount - 1) * spacingWidth > parentWidth) {
+                spanCount--
+            }
+            return min(max(spanCount, spanRange.lower), spanRange.upper)
+        }
+    }
+
+    override fun onLayoutCompleted(state: RecyclerView.State) {
+        super.onLayoutCompleted(state)
+        autoFitSpan()
     }
 
     /**
      * 自动适配span 的数量
      */
-    public void autoFitSpan() {
-        int totalSpace = 0;
-        if (getOrientation() == VERTICAL) {
-            totalSpace = getWidth() - getPaddingStart() - getPaddingEnd();
+    protected open fun autoFitSpan() {
+        val totalSize = Size(
+            width - paddingStart - paddingEnd,
+            height - paddingTop - paddingBottom
+        )
+        spanCount = if (orientation == VERTICAL) {
+            GridCalculator(
+                totalSize,
+                adaptConfig
+            ).calculateByWidth()
         } else {
-            totalSpace = getWidth() - getPaddingTop() - getPaddingBottom();
-        }
-        if (totalSpace > 0) {
-            int expectedColumn = spanCount(totalSpace, expectedColumnWidth);
-            setSpanCount(expectedColumn);
+            GridCalculator(
+                totalSize,
+                adaptConfig
+            ).calculateByHeight()
         }
     }
-
-    /**
-     * 格子布局
-     *
-     * @param parentWidth      父容器宽度
-     * @param gridExpectedSize 最小格子宽度 px
-     * @return
-     */
-    public int spanCount(int parentWidth, int gridExpectedSize) {
-        int screenWidth = parentWidth;
-        int spanCount = screenWidth / gridExpectedSize;
-        if (spanCount <= 0) {
-            spanCount = 1;
-        }
-        return spanCount;
-    }
-
 }
