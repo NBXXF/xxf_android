@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import com.xxf.arch.R
+import com.xxf.ktx.dp
 import com.xxf.toast.LimitToast
 import com.xxf.toast.ToastFactory
 import com.xxf.toast.ToastType
@@ -16,7 +17,6 @@ import com.xxf.snackbar.Snackbar
 import com.xxf.snackbar.Snackbar.Companion.make
 import com.xxf.toast.fixBadTokenException
 import com.xxf.utils.DensityUtil.dip2px
-import com.xxf.utils.dp
 
 open class DefaultToastFactory : ToastFactory {
     override fun createToast(

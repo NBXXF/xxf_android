@@ -1,6 +1,6 @@
 package com.xxf.utils
 
-import android.util.TypedValue
+
 import com.xxf.application.applicationContext
 
 /**
@@ -9,34 +9,6 @@ import com.xxf.application.applicationContext
  * date createTime：16/6/23
  * version
  */
-val Float.dp
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this,
-        applicationContext.resources.displayMetrics
-    )
-
-val Float.sp
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_SP,
-        this,
-        applicationContext.resources.displayMetrics
-    )
-
-val Int.dp
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        applicationContext.resources.displayMetrics
-    ).toInt()
-
-val Int.sp
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_SP,
-        this.toFloat(),
-        applicationContext.resources.displayMetrics
-    ).toInt()
-
 object DensityUtil {
 
     @JvmStatic

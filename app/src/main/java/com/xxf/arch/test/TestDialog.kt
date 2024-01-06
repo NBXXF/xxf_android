@@ -9,7 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.xxf.arch.dialog.XXFDialog
 import com.xxf.arch.test.databinding.DialogTestBinding
-import com.xxf.utils.dp
+import com.xxf.ktx.dp
+
 
 class TestDialog(context: Context) : XXFDialog<Unit>(context,R.style.Test) {
     val binding by lazy {
