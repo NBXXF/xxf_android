@@ -12,8 +12,21 @@ import kotlin.math.min
  * 格子布局 手机 pad 横竖自适应
  * 自动计算格子数量,注意两个方向 排列计算是不一样的 跟orientation相关
  */
-open class AutoFitGridLayoutManager(private val context: Context, private val adaptConfig: AdaptConfig) :
+open class AutoFitGridLayoutManager(
+    private val context: Context,
+    private val adaptConfig: AdaptConfig
+) :
     GridLayoutManager(context, 1) {
+
+    constructor(
+        context: Context,
+        block: (AdaptConfig) -> Unit
+    ) : this(context, AdaptConfig(expectedSize = Size(0, 0)).apply { block(this) })
+
+    /**
+     * 保留
+     * 主要是支持java 更方便
+     */
     class Builder(
         private var context: Context,
         /**
@@ -21,42 +34,25 @@ open class AutoFitGridLayoutManager(private val context: Context, private val ad
          */
         private var expectedSize: Size
     ) {
-        /**
-         * 间距
-         */
-        private var spacing = Size(0, 0)
-
-        /**
-         * 列的区间限制
-         */
-        private var columnRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE)
-
-        /**
-         * 行的区间限制
-         */
-        private var rowRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE)
+        private var adaptConfig: AdaptConfig = AdaptConfig(expectedSize)
 
         fun setSpacing(spacing: Size): Builder {
-            this.spacing = spacing
+            adaptConfig.spacing = spacing
             return this
         }
 
         fun setColumnRange(columnRange: Range<Int>): Builder {
-            this.columnRange = columnRange
+            adaptConfig.columnRange = columnRange
             return this
         }
 
         fun setRowRange(rowRange: Range<Int>): Builder {
-            this.rowRange = rowRange
+            adaptConfig.rowRange = rowRange
             return this
         }
 
         fun build(): AutoFitGridLayoutManager {
-            return AutoFitGridLayoutManager(
-                context, AdaptConfig(
-                    expectedSize, spacing, columnRange, rowRange
-                )
-            )
+            return AutoFitGridLayoutManager(context, adaptConfig)
         }
     }
 
@@ -68,15 +64,15 @@ open class AutoFitGridLayoutManager(private val context: Context, private val ad
         /**
          * 间距
          */
-        var spacing: Size,
+        var spacing: Size = Size(0, 0),
         /**
          * 列的区间限制
          */
-        var columnRange: Range<Int>,
+        var columnRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE),
         /**
          * 行的区间限制
          */
-        var rowRange: Range<Int>
+        var rowRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE)
     )
 
     class GridCalculator(private var totalSize: Size, private var adaptConfig: AdaptConfig) {

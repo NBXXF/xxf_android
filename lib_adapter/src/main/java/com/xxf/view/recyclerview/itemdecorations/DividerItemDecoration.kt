@@ -28,71 +28,84 @@ import com.xxf.view.recyclerview.itemdecorations.spacing.SpacingItemDecoration
  *
  */
 class DividerItemDecoration {
-    class Builder {
-        private var horizontalSpacing = 0//每两个项目之间的水平偏移量（以像素为单位）。
-        private var verticalSpacing = 0//每两个项目之间的垂直偏移量（以像素为单位）。
-        private var edges = Rect()//可用于将项目从父边向父边中心移动的偏移集。可以把它想象成一个列表视图填充。以像素为单位的值是预期的。
-        private var item = Rect()//添加到每个项目边缘的偏移量（以像素为单位）。
-        private var edgeColor = Color.TRANSPARENT //设置边距的颜色 前提是有edges
-        private var itemColor = Color.TRANSPARENT //当前item的背景色
-        private var horizontalColor = Color.TRANSPARENT//水平方向的颜色
-        private var verticalColor = Color.TRANSPARENT//垂直方向的颜色
+    data class DividerConfig(
+        var horizontalSpacing: Int = 0,//每两个项目之间的水平偏移量（以像素为单位）。
+        var verticalSpacing: Int = 0,//每两个项目之间的垂直偏移量（以像素为单位）。
+        var edges: Rect = Rect(),//可用于将项目从父边向父边中心移动的偏移集。可以把它想象成一个列表视图填充。以像素为单位的值是预期的。
+        var item: Rect = Rect(),//添加到每个项目边缘的偏移量（以像素为单位）。
+        var edgeColor: Int = Color.TRANSPARENT, //设置边距的颜色 前提是有edges
+        var itemColor: Int = Color.TRANSPARENT, //当前item的背景色
+        var horizontalColor: Int = Color.TRANSPARENT,//水平方向的颜色
+        var verticalColor: Int = Color.TRANSPARENT //垂直方向的颜色)
+    )
+
+    /**
+     * 保留
+     * 主要是支持java 更方便
+     */
+    class Builder() {
+        internal var dividerConfig: DividerConfig = DividerConfig()
+
+        constructor(dividerConfig: DividerConfig) : this() {
+            this.dividerConfig = dividerConfig
+        }
+
         fun setSpacing(spacing: Int) = apply {
-            this.horizontalSpacing = spacing;
-            this.verticalSpacing = spacing;
+            dividerConfig.horizontalSpacing = spacing;
+            dividerConfig.verticalSpacing = spacing;
         }
 
         fun setHorizontalSpacing(horizontalSpacing: Int) = apply {
-            this.horizontalSpacing = horizontalSpacing
+            dividerConfig.horizontalSpacing = horizontalSpacing
         }
 
         fun setVerticalSpacing(verticalSpacing: Int) = apply {
-            this.verticalSpacing = verticalSpacing
+            dividerConfig.verticalSpacing = verticalSpacing
         }
 
         fun setEdges(edges: Rect) = apply {
-            this.edges = edges
+            dividerConfig.edges = edges
         }
 
         fun setItem(item: Rect) = apply {
-            this.item = item
+            dividerConfig.item = item
         }
 
         fun setEdgeColor(edgeColor: Int) = apply {
-            this.edgeColor = edgeColor
+            dividerConfig.edgeColor = edgeColor
         }
 
         fun setItemColor(itemColor: Int) = apply {
-            this.itemColor = itemColor
+            dividerConfig.itemColor = itemColor
         }
 
         fun setColor(color: Int) = apply {
-            this.horizontalColor = color
-            this.verticalColor = color
+            dividerConfig.horizontalColor = color
+            dividerConfig.verticalColor = color
         }
 
         fun setHorizontalColor(horizontalColor: Int) = apply {
-            this.horizontalColor = horizontalColor
+            dividerConfig.horizontalColor = horizontalColor
         }
 
         fun setVerticalColor(verticalColor: Int) = apply {
-            this.verticalColor = verticalColor
+            dividerConfig.verticalColor = verticalColor
         }
 
         fun build(): RecyclerView.ItemDecoration {
             return SpacingItemDecoration(
                 Spacing(
-                    horizontalSpacing,
-                    verticalSpacing,
-                    edges,
-                    item
+                    dividerConfig.horizontalSpacing,
+                    dividerConfig.verticalSpacing,
+                    dividerConfig.edges,
+                    dividerConfig.item
                 )
             ).apply {
                 this.drawingConfig = SpacingItemDecoration.DrawingConfig(
-                    edgeColor,
-                    itemColor,
-                    horizontalColor,
-                    verticalColor
+                    dividerConfig.edgeColor,
+                    dividerConfig.itemColor,
+                    dividerConfig.horizontalColor,
+                    dividerConfig.verticalColor
                 )
                 this.isSpacingDrawingEnabled = !this.drawingConfig.isAllTransparent()
             }
@@ -112,14 +125,19 @@ private fun SpacingItemDecoration.DrawingConfig.isAllTransparent(): Boolean {
  *          it.setSpacing(1)
  *         .setColor(1) }
  */
-fun RecyclerView.addItemDivider(block: (DividerItemDecoration.Builder) -> Unit): ItemDecoration {
+fun RecyclerView.addItemDivider(block: (DividerItemDecoration.DividerConfig) -> Unit): ItemDecoration {
     return DividerItemDecoration.Builder().apply {
-        block(this)
+        block(this.dividerConfig)
     }.build().also {
         addItemDivider(it)
     }
 }
 
+fun RecyclerView.addItemDivider(config: DividerItemDecoration.DividerConfig): ItemDecoration {
+    return DividerItemDecoration.Builder(config).build().also {
+        addItemDivider(it)
+    }
+}
 
 fun RecyclerView.addItemDivider(itemDecoration: RecyclerView.ItemDecoration) =
     addItemDecoration(itemDecoration)
