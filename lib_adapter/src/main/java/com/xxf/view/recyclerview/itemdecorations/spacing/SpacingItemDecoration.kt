@@ -14,7 +14,7 @@ import com.xxf.view.recyclerview.itemdecorations.spacing.ItemOffsetsCalculator
  * For flexibility, there are several offsets to define. Each of them can be used separately, or
  * together, depending on desired effect.
  */
-class SpacingItemDecoration(
+internal class SpacingItemDecoration(
         /**
          * Desired offsets of RecyclerView items. See [Spacing].
          */
