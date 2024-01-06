@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 格子布局 手机 pad 横竖自适应
+ * 自动计算格子数量
  */
 public class AutoFitGridLayoutManager extends GridLayoutManager {
     public int expectedColumnWidth;
@@ -31,10 +32,11 @@ public class AutoFitGridLayoutManager extends GridLayoutManager {
         }
     }
 
+
     @Override
-    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+    public void onLayoutCompleted(RecyclerView.State state) {
+        super.onLayoutCompleted(state);
         autoFitSpan();
-        super.onLayoutChildren(recycler, state);
     }
 
     /**
