@@ -23,7 +23,7 @@ import com.xxf.view.recyclerview.itemdecorations.spacing.SpacingItemDecoration
  *
  */
 class DividerItemDecoration {
-    internal class Builder {
+    class Builder {
         private var horizontalSpacing = 0//每两个项目之间的水平偏移量（以像素为单位）。
         private var verticalSpacing = 0//每两个项目之间的垂直偏移量（以像素为单位）。
         private var edges = Rect()//可用于将项目从父边向父边中心移动的偏移集。可以把它想象成一个列表视图填充。以像素为单位的值是预期的。
