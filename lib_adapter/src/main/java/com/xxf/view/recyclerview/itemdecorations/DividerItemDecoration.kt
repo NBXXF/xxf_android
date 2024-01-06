@@ -3,11 +3,16 @@ package com.xxf.view.recyclerview.itemdecorations
 import android.graphics.Color
 import android.graphics.Rect
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.xxf.view.recyclerview.itemdecorations.spacing.Spacing
 import com.xxf.view.recyclerview.itemdecorations.spacing.SpacingItemDecoration
 
 /**
  * 为[androidx.recyclerview.widget.RecyclerView] 添加分割线 支持线性和格子(达到等分) 且支持各种色彩填充和边距
+ * recyclerView.addItemDivider {
+ *    it.setSpacing(1)
+ *      .setColor(1)
+ * }
  *
  *
  * 技术选项篇
@@ -89,14 +94,32 @@ class DividerItemDecoration {
                     horizontalColor,
                     verticalColor
                 )
-                this.isGroupCountCacheEnabled = !this.drawingConfig.isAllTransparent()
+                this.isSpacingDrawingEnabled = !this.drawingConfig.isAllTransparent()
             }
         }
     }
 }
+
 private fun SpacingItemDecoration.DrawingConfig.isAllTransparent(): Boolean {
     return edgeColor == Color.TRANSPARENT
             && itemColor == Color.TRANSPARENT
             && horizontalColor == Color.TRANSPARENT
             && verticalColor == Color.TRANSPARENT
 }
+
+/**
+ * 用法    recyclerView.addItemDivider {
+ *          it.setSpacing(1)
+ *         .setColor(1) }
+ */
+fun RecyclerView.addItemDivider(block: (DividerItemDecoration.Builder) -> Unit): ItemDecoration {
+    return DividerItemDecoration.Builder().apply {
+        block(this)
+    }.build().also {
+        addItemDivider(it)
+    }
+}
+
+
+fun RecyclerView.addItemDivider(itemDecoration: RecyclerView.ItemDecoration) =
+    addItemDecoration(itemDecoration)
