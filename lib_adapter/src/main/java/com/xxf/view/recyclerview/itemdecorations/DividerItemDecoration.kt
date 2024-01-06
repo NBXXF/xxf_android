@@ -2,6 +2,7 @@ package com.xxf.view.recyclerview.itemdecorations
 
 import android.graphics.Color
 import android.graphics.Rect
+import androidx.recyclerview.widget.RecyclerView
 import com.xxf.view.recyclerview.itemdecorations.spacing.Spacing
 import com.xxf.view.recyclerview.itemdecorations.spacing.SpacingItemDecoration
 
@@ -73,7 +74,7 @@ class DividerItemDecoration {
             this.verticalColor = verticalColor
         }
 
-        fun build(): SpacingItemDecoration {
+        fun build(): RecyclerView.ItemDecoration {
             return SpacingItemDecoration(
                 Spacing(
                     horizontalSpacing,
