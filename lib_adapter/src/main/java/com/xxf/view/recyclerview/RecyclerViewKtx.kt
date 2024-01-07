@@ -64,3 +64,7 @@ enum class SNAP(var value: Int) {
      */
     SNAP_TO_ANY(LinearSmoothScroller.SNAP_TO_ANY)
 }
+
+fun RecyclerView.doAdapterDataObserver(block: () -> Unit): RecyclerView.AdapterDataObserver {
+    return  this.adapter!!.doAdapterDataObserver (block)
+}
