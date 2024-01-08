@@ -16,6 +16,7 @@ import io.reactivex.rxjava3.functions.Function
 open class RxPermissionTransformer(val context: Context, vararg val permission: String) :
     ObservableTransformer<Boolean, Boolean> {
 
+    constructor(context: Context,permissions: List<String>):this(context,*permissions.toTypedArray())
     override fun apply(upstream: Observable<Boolean>): ObservableSource<Boolean> {
         return upstream
             .map(Function { granted ->
