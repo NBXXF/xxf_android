@@ -23,13 +23,18 @@ import java.util.LinkedHashMap
 inline fun <reified T : LifecycleOwner> T.requestPermission(
     permissions: List<String>
 ): Observable<Boolean> {
+    return this.requestPermissionForResult(permissions).map {
+        it.values.all { it }
+    }
+}
+
+inline fun <reified T : LifecycleOwner> T.requestPermissionForResult(
+    permissions: List<String>
+): Observable<Map<String, Boolean>> {
     return this.startActivityForResult(
         ActivityResultContracts.RequestMultiplePermissions(),
         permissions.toTypedArray()
     )
-        .map {
-            it.values.all { it }
-        }
 }
 
 
@@ -42,6 +47,15 @@ inline fun <reified T : LifecycleOwner> T.requestPermission(
 ): Observable<Boolean> {
     return this.requestPermission(permission.asList())
 }
+
+
+inline fun <reified T : LifecycleOwner> T.requestPermissionForResult(
+    vararg permission: String,
+): Observable<Map<String, Boolean>> {
+    return this.requestPermissionForResult(permission.asList())
+}
+
+
 
 
 /**
@@ -64,18 +78,18 @@ inline fun <reified T : Context> T.checkSelfPermission(
 /**
  * 批量查询权限是否授权
  */
-inline fun <reified T : Context> T.querySelfPermission(
+inline fun <reified T : Context> T.checkSelfPermissionForResult(
     vararg permission: String
-): LinkedHashMap<String, Boolean> {
-    return this.querySelfPermission(permission.asList())
+): Map<String, Boolean> {
+    return this.checkSelfPermissionForResult(permission.asList())
 }
 
 /**
  * 批量查询权限是否授权
  */
-inline fun <reified T : Context> T.querySelfPermission(
+inline fun <reified T : Context> T.checkSelfPermissionForResult(
     permission: List<String>
-): LinkedHashMap<String, Boolean> {
+): Map<String, Boolean> {
     val linkedHashMap = LinkedHashMap<String, Boolean>()
     for (per in permission) {
         linkedHashMap[per] = ContextCompat.checkSelfPermission(

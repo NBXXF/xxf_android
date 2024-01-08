@@ -16,7 +16,7 @@ class PermissionDeniedException(val context: Context, vararg val permission: Str
      *
      * @return
      */
-    fun getPermissionResult(context: Context): LinkedHashMap<String, Boolean> {
+    fun getPermissionResult(context: Context): Map<String, Boolean> {
         return getPermissionResult(context, *permission)
     }
 
@@ -24,8 +24,8 @@ class PermissionDeniedException(val context: Context, vararg val permission: Str
         fun getPermissionResult(
             context: Context,
             vararg permissionStr: String
-        ): LinkedHashMap<String, Boolean> {
-            return context.querySelfPermission(*permissionStr)
+        ): Map<String, Boolean> {
+            return context.checkSelfPermissionForResult(*permissionStr)
         }
 
         /**
