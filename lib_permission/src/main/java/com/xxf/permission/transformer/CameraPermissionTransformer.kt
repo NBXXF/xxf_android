@@ -9,4 +9,6 @@ import android.content.Context
  * @Description 相机权限
  * @date createTime：2018/9/3
  */
-class CameraPermissionTransformer(context: Context) : RxPermissionTransformer(context, Manifest.permission.CAMERA)
+@Deprecated("过时了,请用map PermissionCheckMapFunction 或者 PermissionCheckForResultMapFunction")
+class CameraPermissionTransformer(context: Context) :
+    RxPermissionTransformer(context, Manifest.permission.CAMERA)

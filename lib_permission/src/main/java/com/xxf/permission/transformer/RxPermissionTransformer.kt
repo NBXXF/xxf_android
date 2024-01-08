@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.functions.Function
  * @Description 将不正确的信号 转换成错误信号
  * @date createTime：2018/9/3
  */
+@Deprecated("过时了,请用map PermissionCheckMapFunction 或者 PermissionCheckForResultMapFunction")
 open class RxPermissionTransformer(val context: Context, vararg val permission: String) :
     ObservableTransformer<Boolean, Boolean> {
 

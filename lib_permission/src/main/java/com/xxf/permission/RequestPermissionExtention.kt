@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.xxf.activityresult.startActivityForResult
+import com.xxf.ktx.findActivity
 import io.reactivex.rxjava3.core.Observable
 import java.util.LinkedHashMap
 
@@ -31,10 +32,19 @@ inline fun <reified T : LifecycleOwner> T.requestPermission(
 inline fun <reified T : LifecycleOwner> T.requestPermissionForResult(
     permissions: List<String>
 ): Observable<Map<String, Boolean>> {
-    return this.startActivityForResult(
-        ActivityResultContracts.RequestMultiplePermissions(),
-        permissions.toTypedArray()
-    )
+    //避免无效打开内置的Activity
+    return if (this.findActivity().checkSelfPermission(permissions)) {
+        Observable.fromCallable {
+            permissions.associateWith {
+                true
+            }
+        }
+    } else {
+        this.startActivityForResult(
+            ActivityResultContracts.RequestMultiplePermissions(),
+            permissions.toTypedArray()
+        )
+    }
 }
 
 
@@ -54,8 +64,6 @@ inline fun <reified T : LifecycleOwner> T.requestPermissionForResult(
 ): Observable<Map<String, Boolean>> {
     return this.requestPermissionForResult(permission.asList())
 }
-
-
 
 
 /**

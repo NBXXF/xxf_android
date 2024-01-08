@@ -48,13 +48,13 @@ abstract class SettingEnableContract : ActivityResultContract<Unit, Boolean>() {
 }
 
 /**
- *  force 是否强制再对应的页面 默认false
+ *  force 是否强制再对应的页面 默认false;保持不要每次都打开Activity来获取结果,对于设置可以提前感知是否打开
  */
 @JvmOverloads
 fun <T : SettingEnableContract> LifecycleOwner.startActivityForResult(
     contact: T,
     options: ActivityOptionsCompat? = null,
-    force: Boolean
+    force: Boolean = false
 ): Observable<Boolean> {
     if (force) {
         return ActivityResultContractObservable<Unit, Boolean>(this, contact, Unit, options)
