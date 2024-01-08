@@ -72,6 +72,22 @@ fun <I, O> LifecycleOwner.startActivityForResult(
     }
 }
 
+@JvmOverloads
+fun <O> LifecycleOwner.startActivityForResult(
+    contact: ActivityResultContract<Unit, O>,
+    options: ActivityOptionsCompat? = null,
+    activityResultCallback: ActivityResultCallback<O>
+) {
+    val container =
+        ((this as? Fragment)?.requireContext() as? ComponentActivity) ?: (this as ComponentActivity)
+    container.activityResultLauncher()?.launch(
+        contact.createIntent(container, Unit),
+        options
+    ) {
+        activityResultCallback.onActivityResult(contact.parseResult(it.resultCode, it.data))
+    }
+}
+
 
 /**
  *  startActivityForResult API封装 包括权限的请求方式(新的android sdk 兼容了 权限)

@@ -38,6 +38,15 @@ fun <I, O> LifecycleOwner.startActivityForResult(
 }
 
 
+@JvmOverloads
+fun <O> LifecycleOwner.startActivityForResult(
+    contact: ActivityResultContract<Unit, O>,
+    options: ActivityOptionsCompat? = null,
+): ActivityResultContractObservable<Unit, O> {
+    return ActivityResultContractObservable<Unit, O>(this, contact, Unit, options)
+}
+
+
 /**
  *  [rxjava 方式]
  *
