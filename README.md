@@ -267,7 +267,7 @@ kotlin 方式
                                 });
                                 
       //获取是否授权                          
-      ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + isGrantedPermission(Manifest.permission.CAMERA));
+      ToastUtils.showToast(v.getContext(), "Manifest.permission.CAMERA:" + checkSelfPermissions(Manifest.permission.CAMERA));
      ```
 
 ##### startActivityForResult

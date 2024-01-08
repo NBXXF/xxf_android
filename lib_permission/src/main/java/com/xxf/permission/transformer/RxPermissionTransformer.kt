@@ -13,14 +13,16 @@ import io.reactivex.rxjava3.functions.Function
  * @Description 将不正确的信号 转换成错误信号
  * @date createTime：2018/9/3
  */
-open class RxPermissionTransformer(val context: Context, vararg val permission: String) : ObservableTransformer<Boolean, Boolean> {
+open class RxPermissionTransformer(val context: Context, vararg val permission: String) :
+    ObservableTransformer<Boolean, Boolean> {
+
     override fun apply(upstream: Observable<Boolean>): ObservableSource<Boolean> {
         return upstream
-                .map(Function { granted ->
-                    if (!granted) {
-                        throw PermissionDeniedException(context, *permission)
-                    }
-                    granted
-                })
+            .map(Function { granted ->
+                if (!granted) {
+                    throw PermissionDeniedException(context, *permission)
+                }
+                granted
+            })
     }
 }

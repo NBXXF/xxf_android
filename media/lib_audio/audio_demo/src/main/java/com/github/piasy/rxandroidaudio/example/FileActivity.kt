@@ -42,7 +42,6 @@ import com.xxf.media.audio.AudioRecorder
 import com.xxf.media.audio.PlayConfig
 import com.xxf.media.audio.RxAmplitude
 import com.xxf.media.audio.RxAudioPlayer
-import com.xxf.permission.isGrantedPermission
 import com.xxf.permission.requestPermission
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -112,8 +111,8 @@ class FileActivity() : AppCompatActivity(), AudioRecorder.OnErrorListener {
         mTvPressToSay!!.setBackgroundResource(R.drawable.button_press_to_say_pressed_bg)
         mTvRecordingHint!!.setText(R.string.voice_msg_input_hint_speaking)
         val isPermissionsGranted =
-            (isGrantedPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    && isGrantedPermission(Manifest.permission.RECORD_AUDIO))
+            (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    && checkSelfPermission(Manifest.permission.RECORD_AUDIO))
         if (!isPermissionsGranted) {
             compositeDisposable.add(
                 this.requestPermission(

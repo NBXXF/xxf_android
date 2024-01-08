@@ -9,4 +9,4 @@ import android.content.Context
  * @Description 文件读写权限
  * @date createTime：2018/9/3
  */
-class FilePermissionTransformer(context: Context?) : RxPermissionTransformer(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+class FilePermissionTransformer(context: Context) : RxPermissionTransformer(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)

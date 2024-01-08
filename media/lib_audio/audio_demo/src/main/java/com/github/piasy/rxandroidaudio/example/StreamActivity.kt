@@ -40,7 +40,6 @@ import com.github.piasy.audioprocessor.AudioProcessor
 import com.xxf.media.audio.StreamAudioPlayer
 import com.xxf.media.audio.StreamAudioRecorder
 import com.xxf.media.audio.StreamAudioRecorder.AudioDataCallback
-import com.xxf.permission.isGrantedPermission
 import com.xxf.permission.requestPermission
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.functions.Consumer
@@ -100,8 +99,8 @@ class StreamActivity() : AppCompatActivity() {
             mIsRecording = false
         } else {
             val isPermissionsGranted =
-                (isGrantedPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        && isGrantedPermission(Manifest.permission.RECORD_AUDIO))
+                (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        && checkSelfPermission(Manifest.permission.RECORD_AUDIO))
             if (!isPermissionsGranted) {
                 this.requestPermission(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
