@@ -6,6 +6,7 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LifecycleOwner
+import io.reactivex.rxjava3.core.Observable
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -33,7 +34,7 @@ fun <I, O> LifecycleOwner.startActivityForResult(
     contact: ActivityResultContract<I, O>,
     input: I,
     options: ActivityOptionsCompat? = null,
-): ActivityResultContractObservable<I, O> {
+): Observable<O> {
     return ActivityResultContractObservable<I, O>(this, contact, input, options)
 }
 
@@ -42,7 +43,7 @@ fun <I, O> LifecycleOwner.startActivityForResult(
 fun <O> LifecycleOwner.startActivityForResult(
     contact: ActivityResultContract<Unit, O>,
     options: ActivityOptionsCompat? = null,
-): ActivityResultContractObservable<Unit, O> {
+): Observable<O> {
     return ActivityResultContractObservable<Unit, O>(this, contact, Unit, options)
 }
 
@@ -59,7 +60,7 @@ fun <O> LifecycleOwner.startActivityForResult(
 fun LifecycleOwner.startActivityForResult(
     input: Intent,
     options: ActivityOptionsCompat? = null,
-): ActivityResultContractObservable<Intent, ActivityResult> {
+): Observable<ActivityResult> {
     return this.startActivityForResult(
         ActivityResultContracts.StartActivityForResult(),
         input,

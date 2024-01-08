@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins
  * @Description  用新方式来 处理activityForResult和 permissionForResult
  * @date createTime：2020/9/4
  */
-class ActivityResultContractObservable<I, O>(
+internal class ActivityResultContractObservable<I, O>(
     private val owner: LifecycleOwner,
     private val contact: ActivityResultContract<I, O>,
     private val input: I,
