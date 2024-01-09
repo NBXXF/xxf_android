@@ -195,7 +195,7 @@ class KeyValueDelegate<out T>(
     private val differUser: Boolean,
     private val getter: (String, T, Boolean) -> T?,
     private val setter: (String, T?, Boolean) -> Unit,
-    private val onChange: (newValue: T) -> Unit
+    private val onChange: (newValue: T?) -> Unit
 ) {
 
     operator fun <F : SpServiceDelegate> getValue(thisRef: F, property: KProperty<*>): T {
@@ -268,7 +268,7 @@ fun SpServiceDelegate.bindInt(
     key: String? = null,
     defaultValue: Int = 0,
     differUser: Boolean = false,
-    onChange: (newValue: Int) -> Unit = {}
+    onChange: (newValue: Int?) -> Unit = {}
 ) = KeyValueDelegate<Int>(
     key,
     defaultValue,
@@ -283,7 +283,7 @@ fun SpServiceDelegate.bindLong(
     key: String? = null,
     defaultValue: Long = 0L,
     differUser: Boolean = false,
-    onChange: (newValue: Long) -> Unit = {}
+    onChange: (newValue: Long?) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
@@ -298,7 +298,7 @@ fun SpServiceDelegate.bindFloat(
     key: String? = null,
     defaultValue: Float = 0.0F,
     differUser: Boolean = false,
-    onChange: (newValue: Float) -> Unit = {}
+    onChange: (newValue: Float?) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
@@ -312,7 +312,7 @@ fun SpServiceDelegate.bindBoolean(
     key: String? = null,
     defaultValue: Boolean = false,
     differUser: Boolean = false,
-    onChange: (newValue: Boolean) -> Unit = {}
+    onChange: (newValue: Boolean?) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
