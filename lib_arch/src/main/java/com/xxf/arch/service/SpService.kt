@@ -213,7 +213,7 @@ fun SpServiceDelegate.bindString(
     key: String? = null,
     defaultValue: String = "",
     differUser: Boolean = false,
-    onChange: (newValue: String) -> Unit = {}
+    onChange: (newValue: String?) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
@@ -254,7 +254,7 @@ fun SpServiceDelegate.bindStringSet(
     key: String? = null,
     defaultValue: Set<String>,
     differUser: Boolean = false,
-    onChange: (newValue: Set<String>) -> Unit = {}
+    onChange: (newValue: Set<String>?) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
@@ -350,7 +350,20 @@ inline fun <reified T> SharedPreferencesService.getObject(
 
 inline fun <reified T> SpServiceDelegate.bindObject(
     key: String? = null,
-    defaultValue: T? = null,
+    differUser: Boolean = false,
+    noinline onChange: (newValue: T?) -> Unit = {}
+) = KeyValueDelegate(
+    key,
+    null,
+    differUser,
+    getSharedPreferencesService()::getObject,
+    getSharedPreferencesService()::putObject,
+    onChange
+)
+
+inline fun <reified T> SpServiceDelegate.bindObject(
+    key: String? = null,
+    defaultValue: T,
     differUser: Boolean = false,
     noinline onChange: (newValue: T?) -> Unit = {}
 ) = KeyValueDelegate(
