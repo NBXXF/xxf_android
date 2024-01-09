@@ -24,30 +24,30 @@ object Json {
      */
     var innerDefaultGson: Gson = GsonFactory.createGson()
 
-    inline fun <reified T : Any> fromJson(
+    inline fun <reified T> fromJson(
         json: String,
-        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
+        gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
         innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
-    inline fun <reified T : Any> fromJson(
+    inline fun <reified T> fromJson(
         json: Reader,
-        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
+        gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
         innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
-    inline fun <reified T : Any> fromJson(
+    inline fun <reified T> fromJson(
         json: JsonReader,
-        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
+        gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
         innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
-    inline fun <reified T : Any> fromJson(
+    inline fun <reified T> fromJson(
         json: JsonElement,
-        noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
+        gsonBuilder: ((gson: Gson) -> Gson) = { it }
     ): T = gsonBuilder(
         innerDefaultGson
     ).fromJson(json, typeToken<T>())
@@ -70,7 +70,7 @@ object Json {
 
 
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
-inline fun <reified T : Any> typeToken(): Type {
+inline fun <reified T> typeToken(): Type {
     val type = gsonTypeToken<T>()
 
     if (type is ParameterizedType && type.isWildcard())
@@ -80,7 +80,7 @@ inline fun <reified T : Any> typeToken(): Type {
 }
 
 @Suppress("PROTECTED_CALL_FROM_PUBLIC_INLINE")
-inline fun <reified T : Any> gsonTypeToken(): Type = object : TypeToken<T>() {}.type
+inline fun <reified T> gsonTypeToken(): Type = object : TypeToken<T>() {}.type
 
 fun ParameterizedType.isWildcard(): Boolean {
     var hasAnyWildCard = false
@@ -129,7 +129,7 @@ fun removeTypeWildcards(type: Type): Type {
  * 可以拷贝自己的类型 也可以
  * 父类和子类对象 可以双向转换复制
  */
-inline fun <reified OUT : Any> Any.copy(
+inline fun <reified OUT> Any.copy(
     noinline gsonBuilder: ((gson: Gson) -> Gson) = { it }
 ): OUT {
     val jsonStr: String = Json.toJson(this, gsonBuilder)

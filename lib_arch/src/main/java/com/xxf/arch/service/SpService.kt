@@ -8,6 +8,7 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.reflect.TypeToken
 import com.xxf.application.applicationContext
 import com.xxf.arch.XXF
+import com.xxf.json.Json
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
@@ -147,29 +148,6 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
         ).commit()
     }
 
-    override fun putObject(key: String, value: Any?, differUser: Boolean) {
-        putString(
-            generateKey(key, differUser),
-            com.xxf.json.Json.toJson(value)
-        )
-    }
-
-    override fun <T : Any?> getObject(
-        key: String,
-        typeOfT: Type,
-        defaultValue: T?,
-        differUser: Boolean
-    ): T? {
-        val string =
-            getString(generateKey(key, differUser), null)
-        try {
-            return com.xxf.json.Json.innerDefaultGson.fromJson(JsonPrimitive(string).asString, typeOfT) ?: defaultValue
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-        return defaultValue
-    }
-
 
     override fun contains(key: String, differUser: Boolean): Boolean {
         return mSharedPreferences.contains(generateKey(key, differUser))
@@ -215,150 +193,171 @@ class KeyValueDelegate<out T>(
     private val key: String?,
     private val defaultValue: T,
     private val differUser: Boolean,
-    private val getter: (String, T,Boolean) -> T?,
-    private val setter: (String, T?,Boolean) -> Unit
+    private val getter: (String, T, Boolean) -> T?,
+    private val setter: (String, T?, Boolean) -> Unit,
+    private val onChange: (newValue: T) -> Unit
 ) {
 
     operator fun <F : SpServiceDelegate> getValue(thisRef: F, property: KProperty<*>): T {
-        return getter(key ?: property.name, defaultValue,differUser) ?: defaultValue
+        return getter(key ?: property.name, defaultValue, differUser) ?: defaultValue
     }
 
 
     operator fun <F : SpServiceDelegate> setValue(thisRef: F, property: KProperty<*>, value: Any?) {
-        setter(key ?: property.name, value as T,differUser)
+        setter(key ?: property.name, value as T, differUser)
+        onChange(value)
     }
 }
 
 fun SpServiceDelegate.bindString(
     key: String? = null,
-    defaultValue: String,
-    differUser: Boolean = false
+    defaultValue: String = "",
+    differUser: Boolean = false,
+    onChange: (newValue: String) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
     differUser,
     getSharedPreferencesService()::getString,
-    getSharedPreferencesService()::putString
+    getSharedPreferencesService()::putString,
+    onChange
 )
 
 fun SpServiceDelegate.bindString(
     key: String? = null,
-    differUser: Boolean = false
+    differUser: Boolean = false,
+    onChange: (newValue: String?) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     null,
     differUser,
     getSharedPreferencesService()::getString,
-    getSharedPreferencesService()::putString
+    getSharedPreferencesService()::putString,
+    onChange
 )
 
 
 fun SpServiceDelegate.bindStringSet(
     key: String? = null,
-    differUser: Boolean = false
+    differUser: Boolean = false,
+    onChange: (newValue: Set<String>?) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     null,
     differUser,
     getSharedPreferencesService()::getStringSet,
-    getSharedPreferencesService()::putStringSet
+    getSharedPreferencesService()::putStringSet,
+    onChange
 )
 
 fun SpServiceDelegate.bindStringSet(
     key: String? = null,
     defaultValue: Set<String>,
-    differUser: Boolean = false
+    differUser: Boolean = false,
+    onChange: (newValue: Set<String>) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
     differUser,
     getSharedPreferencesService()::getStringSet,
-    getSharedPreferencesService()::putStringSet
+    getSharedPreferencesService()::putStringSet,
+    onChange
 )
 
 fun SpServiceDelegate.bindInt(
     key: String? = null,
     defaultValue: Int = 0,
-    differUser: Boolean = false
+    differUser: Boolean = false,
+    onChange: (newValue: Int) -> Unit = {}
 ) = KeyValueDelegate<Int>(
     key,
     defaultValue,
     differUser,
     getSharedPreferencesService()::getInt,
     getSharedPreferencesService()::putInt,
+    onChange
 )
 
 
 fun SpServiceDelegate.bindLong(
     key: String? = null,
     defaultValue: Long = 0L,
-    differUser: Boolean = false
+    differUser: Boolean = false,
+    onChange: (newValue: Long) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
     differUser,
     getSharedPreferencesService()::getLong,
-    getSharedPreferencesService()::putLong
+    getSharedPreferencesService()::putLong,
+    onChange
 )
 
 
 fun SpServiceDelegate.bindFloat(
     key: String? = null,
     defaultValue: Float = 0.0F,
-    differUser: Boolean = false
+    differUser: Boolean = false,
+    onChange: (newValue: Float) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
     differUser,
     getSharedPreferencesService()::getFloat,
-    getSharedPreferencesService()::putFloat
+    getSharedPreferencesService()::putFloat,
+    onChange
 )
 
 fun SpServiceDelegate.bindBoolean(
     key: String? = null,
     defaultValue: Boolean = false,
-    differUser: Boolean = false
+    differUser: Boolean = false,
+    onChange: (newValue: Boolean) -> Unit = {}
 ) = KeyValueDelegate(
     key,
     defaultValue,
     differUser,
     getSharedPreferencesService()::getBoolean,
-    getSharedPreferencesService()::putBoolean
+    getSharedPreferencesService()::putBoolean,
+    onChange
 )
 
-inline fun <reified T> SpServiceDelegate.bindObject(key: String? = null,
-                                                    defaultValue:T?=null,
-                                                    differUser: Boolean = false) =
-    object : ReadWriteProperty<Any, T?> {
-        override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-            return getSharedPreferencesService().getObject(
-                key ?: property.name,
-                object : TypeToken<T>() {}.type,
-                defaultValue,
-                differUser
-            )
-        }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-            getSharedPreferencesService().putObject(key ?: property.name, value,differUser=differUser)
-        }
+inline fun <reified T> SharedPreferencesService.putObject(
+    key: String,
+    value: T?,
+    differUser: Boolean
+) {
+    putString(
+        SpService.generateKey(key, differUser),
+        Json.toJson(value)
+    )
+}
+
+
+inline fun <reified T> SharedPreferencesService.getObject(
+    key: String,
+    defaultValue: T?,
+    differUser: Boolean
+): T? {
+    val string = getString(SpService.generateKey(key, differUser), null)
+    if (!TextUtils.isEmpty(string)) {
+        return Json.fromJson<T>(JsonPrimitive(string).asString) ?: defaultValue
     }
+    return defaultValue
+}
 
-inline fun <reified T> SpServiceDelegate.bindObject(key: String? = null,
-                                                    typeOfT: Type,
-                                                    defaultValue:T?=null,
-                                                    differUser: Boolean = false) =
-    object : ReadWriteProperty<Any, T?> {
-        override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-            return getSharedPreferencesService().getObject(
-                key ?: property.name,
-                typeOfT,
-                defaultValue,
-                differUser
-            )
-        }
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-            getSharedPreferencesService().putObject(key ?: property.name, value,differUser=differUser)
-        }
-    }
+inline fun <reified T> SpServiceDelegate.bindObject(
+    key: String? = null,
+    defaultValue: T? = null,
+    differUser: Boolean = false,
+    noinline onChange: (newValue: T?) -> Unit = {}
+) = KeyValueDelegate(
+    key,
+    defaultValue,
+    differUser,
+    getSharedPreferencesService()::getObject,
+    getSharedPreferencesService()::putObject,
+    onChange
+)

@@ -85,26 +85,6 @@ interface SharedPreferencesService {
      */
     fun putBoolean(key: String, value: Boolean?, differUser: Boolean = false)
 
-    /**
-     * 以json 存储对象
-     *
-     * @param key
-     * @param value
-     * @param differUser 是否区分用户
-     */
-    fun putObject(key: String, value: Any?, differUser: Boolean = false)
-
-    /**
-     * 将存储的json 转换成对应的模型
-     *
-     * @param key
-     * @param typeOfT
-     * @param defaultValue
-     * @param differUser 是否区分用户
-     * @param <T>
-     * @return
-    </T> */
-    fun <T> getObject(key: String, typeOfT: Type, defaultValue: T?, differUser: Boolean = false): T?
 
     /**
      * @param differUser 是否区分用户
