@@ -89,6 +89,15 @@ fun <V : Any> doLazyUnsafe(
     initializer: () -> V
 ): ReadWriteProperty<Any?, V> = LazyReadWriteProperty(initializer)
 
+/**
+ * 延迟初始化的委托,能用var修饰,可空修饰
+ * 解决kotlin by lazy自带无法修改其值,只能用val修饰的缺陷
+ * 线程不安全
+ */
+fun <V : Any> lazyUnsafe(
+    initializer: () -> V
+): ReadWriteProperty<Any?, V> = doLazyUnsafe(initializer)
+
 
 private class LazyReadWriteProperty<T : Any>(open val initializer: () -> T) :
     ReadWriteProperty<Any?, T> {
