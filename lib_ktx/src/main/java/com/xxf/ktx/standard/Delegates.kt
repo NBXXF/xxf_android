@@ -35,3 +35,99 @@ fun <D> Delegates.propertyDelegateProvider(provide: (thisRef: Any?, property: KP
     PropertyDelegateProvider<Any?, D> { thisRef, property ->
         provide(thisRef, property)
     }
+
+/**
+ * 延迟初始化的委托,能用var修饰,可空修饰
+ * 解决kotlin by lazy自带无法修改其值,只能用val修饰的缺陷
+ */
+fun <V : Any> Delegates.lazy(initializer: () -> V): ReadWriteProperty<Any?, V> =
+    SafeLazyReadWriteProperty<V>(initializer)
+
+
+/**
+ * 延迟初始化的委托,能用var修饰,可空修饰
+ * 解决kotlin by lazy自带无法修改其值,只能用val修饰的缺陷
+ */
+fun <V : Any> Delegates.lazy(
+    mode: LazyThreadSafetyMode, initializer: () -> V
+): ReadWriteProperty<Any?, V> = when (mode) {
+    LazyThreadSafetyMode.SYNCHRONIZED -> SafeLazyReadWriteProperty(initializer)
+    LazyThreadSafetyMode.PUBLICATION -> SafeLazyReadWriteProperty(initializer)
+    LazyThreadSafetyMode.NONE -> LazyReadWriteProperty(initializer)
+}
+
+/**
+ * 延迟初始化的委托,能用var修饰,可空修饰
+ * 解决kotlin by lazy自带无法修改其值,只能用val修饰的缺陷
+ *  线程不安全
+ */
+fun <V : Any> Delegates.lazyUnSafe(
+    initializer: () -> V
+): ReadWriteProperty<Any?, V> = LazyReadWriteProperty(initializer)
+
+
+/**
+ * 延迟初始化的委托,能用var修饰,可空修饰
+ * 解决kotlin by lazy自带无法修改其值,只能用val修饰的缺陷
+ */
+fun <V : Any> doLazy(initializer: () -> V): ReadWriteProperty<Any?, V> = Delegates.lazy(initializer)
+
+/**
+ * 延迟初始化的委托,能用var修饰,可空修饰
+ * 解决kotlin by lazy自带无法修改其值,只能用val修饰的缺陷
+ */
+fun <V : Any> doLazy(
+    mode: LazyThreadSafetyMode, initializer: () -> V
+): ReadWriteProperty<Any?, V> = Delegates.lazy(mode, initializer)
+
+/**
+ * 延迟初始化的委托,能用var修饰,可空修饰
+ * 解决kotlin by lazy自带无法修改其值,只能用val修饰的缺陷
+ * 线程不安全
+ */
+fun <V : Any> doLazyUnsafe(
+    initializer: () -> V
+): ReadWriteProperty<Any?, V> = LazyReadWriteProperty(initializer)
+
+
+private class LazyReadWriteProperty<T : Any>(open val initializer: () -> T) :
+    ReadWriteProperty<Any?, T> {
+    internal lateinit var value: T
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return if (::value.isInitialized) {
+            value
+        } else {
+            initializer().also {
+                this.value = it
+            }
+        }
+    }
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        this.value = value
+    }
+}
+
+private class SafeLazyReadWriteProperty<T : Any>(val initializer: () -> T) :
+    ReadWriteProperty<Any?, T> {
+    internal lateinit var value: T
+    override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return if (::value.isInitialized) {
+            value
+        } else {
+            synchronized(this) {
+                if (::value.isInitialized) {
+                    value
+                } else {
+                    initializer().also {
+                        this.value = it
+                    }
+                }
+            }
+        }
+    }
+
+    override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        this.value = value
+    }
+}
