@@ -4,7 +4,6 @@ package com.xxf.arch.model;
 import androidx.annotation.Nullable;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,8 @@ public class ProjectSetting {
                 break;
             } else {
                 step = temp;
+                //进行合并
+                step.mergedStepSetting(settings);
             }
         }
         return completedStepList;
