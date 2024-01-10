@@ -57,3 +57,17 @@ fun <S> ProjectStepSetting<S>.fillSettingIntent(
         }
     }
 }
+
+/**
+ * 跳入下一步
+ * @return 是否跳转成功
+ */
+fun <S> ProjectStepSetting<S>.jumpNextStepSetting(
+    context: Context,
+    block: (Intent) -> Unit = {}
+): Boolean = this.run {
+    val stepLauncher = this.nextStepSetting()?.stepLauncher(context) ?: return false
+    block(stepLauncher)
+    context.startActivity(stepLauncher)
+    true
+}
