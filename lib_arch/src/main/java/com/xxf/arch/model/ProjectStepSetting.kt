@@ -14,6 +14,10 @@ abstract class ProjectStepSetting<S>
  *
  * @param stepSettingData 当前步骤数据
  */(open var stepSettingData: S) {
+    companion object {
+        const val KEY_STEP_SETTING: String = "stepSetting";
+    }
+
     /**
      * 当前步骤启动intent
      */
@@ -35,12 +39,13 @@ abstract class ProjectStepSetting<S>
     abstract fun nextStepSetting(): ProjectStepSetting<*>?
 }
 
+
 fun <S> ProjectStepSetting<S>.fillSettingIntent(
     context: Context,
     act: Class<*>,
-    key: String = "stepSetting"
 ): Intent = this.run {
     val value = this
+    val key: String = ProjectStepSetting.KEY_STEP_SETTING
     Intent(context, act).apply {
         when (value) {
             is Parcelable -> {
@@ -68,6 +73,10 @@ fun <S> ProjectStepSetting<S>.jumpNextStepSetting(
 ): Boolean = this.run {
     val stepLauncher = this.nextStepSetting()?.stepLauncher(context) ?: return false
     block(stepLauncher)
+    val key: String = ProjectStepSetting.KEY_STEP_SETTING
+    if (!stepLauncher.hasExtra(key)) {
+        throw IllegalArgumentException("缺乏$key 参数")
+    }
     context.startActivity(stepLauncher)
     true
 }
