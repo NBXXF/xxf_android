@@ -52,6 +52,15 @@ object Json {
         innerDefaultGson
     ).fromJson(json, typeToken<T>())
 
+    inline fun <reified T> copy(
+        json: Any?,
+        gsonBuilder: ((gson: Gson) -> Gson) = { it }
+    ): T = gsonBuilder(
+        innerDefaultGson
+    ).run {
+        return fromJson(toJson(json), typeToken<T>())
+    }
+
     fun toJson(
         obj: Any?,
         gsonBuilder: ((gson: Gson) -> Gson) = { it }
