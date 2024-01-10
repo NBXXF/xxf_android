@@ -9,7 +9,6 @@ import androidx.annotation.CallSuper
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LifecycleOwner
 import com.xxf.activityresult.ActivityResultContractObservable
-import com.xxf.activityresult.startActivityForResult
 import com.xxf.ktx.findActivity
 import io.reactivex.rxjava3.core.Observable
 
@@ -38,8 +37,6 @@ abstract class SettingEnableContract : ActivityResultContract<Unit, Boolean>() {
         return Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", context.packageName, null)
         }
-        val lif: LifecycleOwner;
-        lif.startActivityForResult(this)
     }
 
     final override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
