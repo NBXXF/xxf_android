@@ -142,10 +142,10 @@ interface SharedPreferencesOwner : IPreferencesOwner {
     }
 }
 
-class PrefsDelegate<P : IPreferencesOwner, V>(
+open class PrefsDelegate<P : IPreferencesOwner, V>(
     key: String?,
     default: V,
-    private val propertyType: KClass<*>
+    open val propertyType: KClass<*>
 ) :
     KeyValueDelegate<P, V>(key, default) {
     @Suppress("UNCHECKED_CAST")
@@ -168,6 +168,30 @@ class PrefsDelegate<P : IPreferencesOwner, V>(
  *         println("=============>PrefsDemo3:$newValue")
  *     }
  * }
+ *
+ * 拓展gson
+ *
+ * fun <P : IPreferencesOwner, V> PrefsDelegate<P, V>.useGson(typeToken: TypeToken<V>): KeyValueDelegate<P, V> {
+ *     return object : KeyValueDelegate<P, V>(this.key, this.default) {
+ *         val stringDelegate = PrefsDelegate<P, String>(this.key, "{}", String::class);
+ *
+ *         @Suppress("UNCHECKED_CAST")
+ *         override fun getValue(thisRef: P, property: KProperty<*>): V {
+ *             val gson = Json.innerDefaultGson
+ *             return gson.fromJson(
+ *                 stringDelegate.getValue(thisRef, property),
+ *                 typeToken
+ *             ) ?: default
+ *         }
+ *
+ *         override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
+ *             val gson = Json.innerDefaultGson
+ *             stringDelegate.setValue(thisRef, property, gson.toJson(value));
+ *         }
+ *     }
+ * }
+ * 用法
+ *   var user: User by preferencesBinding("key3", User()).useGson(TypeToken.get(User::class.java))
  */
 inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?, default: V) =
     PrefsDelegate<T, V>(key, default, V::class)
