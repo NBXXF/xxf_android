@@ -5,17 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import java.io.Serializable
 import kotlin.reflect.KProperty
-/**
- * 绑定获取参数
- */
+
+@Deprecated("方法纠正", replaceWith = ReplaceWith("argumentBinding"))
 fun <T> bindExtra(key: String? = null, defaultValue: T) = ExtrasDelegate(key, defaultValue)
 
-/**
- * 绑定获取参数
- */
+@Deprecated("方法纠正", replaceWith = ReplaceWith("argumentBinding"))
 fun bindExtra(key: String? = null) = bindExtra(key, null)
+
+fun Activity.argumentBinding(key: String? = null)= ExtrasDelegate(key, null)
+
+fun <T> Activity.argumentBinding(key: String? = null, defaultValue: T)= ExtrasDelegate(key, defaultValue)
+
+fun Fragment.argumentBinding(key: String? = null)= ExtrasDelegate(key, null)
+
+fun <T> Fragment.argumentBinding(key: String? = null, defaultValue: T)= ExtrasDelegate(key, defaultValue)
 
 /**
  * 处理参数获取 简化
