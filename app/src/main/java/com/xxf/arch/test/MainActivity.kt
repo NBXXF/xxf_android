@@ -23,6 +23,7 @@ import com.google.gson.annotations.JsonAdapter
 import com.xxf.arch.XXF
 import com.xxf.arch.activity.XXFActivity
 import com.xxf.arch.presenter.XXFNetwrokPresenter
+import com.xxf.arch.test.prefs.PreferencesDemo
 import com.xxf.toast.ToastType
 import com.xxf.toast.ToastUtils
 import com.xxf.toast.showToast
@@ -86,6 +87,7 @@ class MainActivity() : XXFActivity() {
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        PreferencesDemo.test()
 
         AutoFitGridLayoutManager.Builder(this, Size(199,100)).setSpacing(Size(10,10)).build()
         logD { "======================>xxxgffdd" }
