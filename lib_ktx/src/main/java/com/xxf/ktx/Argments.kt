@@ -6,6 +6,22 @@ import androidx.fragment.app.Fragment
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+
+@Deprecated("废弃了", replaceWith = ReplaceWith("argumentBinding"))
+fun <T> Activity.bindExtra(key: String? = null, defaultValue: T) =
+    argumentBinding(key, defaultValue)
+
+@Deprecated("废弃了", replaceWith = ReplaceWith("argumentBinding"))
+fun Activity.bindExtra(key: String? = null) = argumentBinding(key, null)
+
+@Deprecated("废弃了", replaceWith = ReplaceWith("argumentBinding"))
+fun <T> Fragment.bindExtra(key: String? = null, defaultValue: T) =
+    argumentBinding(key, defaultValue)
+
+@Deprecated("废弃了", replaceWith = ReplaceWith("argumentBinding"))
+fun Fragment.bindExtra(key: String? = null) = argumentBinding(key, null)
+
+
 /**
  * 绑定参数
  */
