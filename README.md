@@ -339,9 +339,9 @@ GsonBuilder()
 
 ```
 
-activity intent和fragment Fragment参数绑定 可以使用 by bindExtra("xxx")
+activity intent和fragment Fragment参数绑定 可以使用 by argumentBinding("xxx")
 ``` 
-    private val withNfcId: String? by bindExtra("withNfcId");//携带了NFC卡号
+    private val withNfcId: String? by argumentBinding("withNfcId");//携带了NFC卡号
 ``` 
 
 SharedPreference 可以采用 by
