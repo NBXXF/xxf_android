@@ -7,7 +7,6 @@ package com.xxf.ktx
 import android.graphics.Color
 import android.text.format.Formatter
 import androidx.core.util.PatternsCompat
-import com.xxf.ktx.application
 import org.json.JSONObject
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -33,8 +32,7 @@ const val REGEX_ID_CARD_15: String =
 const val REGEX_ID_CARD_18: String =
   "^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9Xx])$"
 
-inline val randomUUIDString: String
-  get() = UUID.randomUUID().toString()
+
 
 fun Long.toFileSizeString(): String =
   Formatter.formatFileSize(application, this)
