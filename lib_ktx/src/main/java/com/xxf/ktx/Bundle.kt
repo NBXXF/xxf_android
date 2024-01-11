@@ -3,6 +3,7 @@ package com.xxf.ktx
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import com.xxf.ktx.standard.KeyValueDelegate
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -13,10 +14,10 @@ operator fun <T> Bundle?.get(key: String): T? = this?.get(key) as? T
 /**
  * bundle 委托
  */
-open class BundleDelegate<V>(open val key: String?, open val defaultValue: V) :
-    ReadWriteProperty<Bundle, V> {
+open class BundleDelegate<V>(override val key: String?, override val default: V) :
+    KeyValueDelegate<Bundle, V>(key, default) {
     override fun getValue(thisRef: Bundle, property: KProperty<*>): V {
-        return thisRef.get<V>(key ?: property.name) ?: defaultValue
+        return thisRef.get<V>(key ?: property.name) ?: default
     }
 
     override fun setValue(thisRef: Bundle, property: KProperty<*>, value: V) {

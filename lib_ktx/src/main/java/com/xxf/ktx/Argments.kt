@@ -3,7 +3,7 @@ package com.xxf.ktx
 import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import kotlin.properties.ReadWriteProperty
+import com.xxf.ktx.standard.KeyValueDelegate
 import kotlin.reflect.KProperty
 
 
@@ -39,13 +39,13 @@ fun <T> Fragment.argumentBinding(key: String? = null, defaultValue: T) =
     FragmentArgumentsDelegate(key, defaultValue)
 
 
-open class ActivityIntentDelegate<V>(val key: String?, val defaultValue: V) :
-    ReadWriteProperty<Activity, V> {
-    open val proxy: BundleDelegate<V> = BundleDelegate<V>(key, defaultValue)
+open class ActivityIntentDelegate<V>(key: String?, default: V) :
+    KeyValueDelegate<Activity, V>(key,default) {
+    open val proxy: BundleDelegate<V> = BundleDelegate<V>(key, default)
     override fun getValue(thisRef: Activity, property: KProperty<*>): V {
         return thisRef.intent.extras?.run {
             proxy.getValue(this, property)
-        } ?: defaultValue
+        } ?: default
     }
 
     override fun setValue(thisRef: Activity, property: KProperty<*>, value: V) {
@@ -56,13 +56,13 @@ open class ActivityIntentDelegate<V>(val key: String?, val defaultValue: V) :
     }
 }
 
-open class FragmentArgumentsDelegate<V>(val key: String?, val defaultValue: V) :
-    ReadWriteProperty<Fragment, V> {
-    open val proxy: BundleDelegate<V> = BundleDelegate<V>(key, defaultValue)
+open class FragmentArgumentsDelegate<V>(key: String?, default: V) :
+    KeyValueDelegate<Fragment, V>(key,default) {
+    open val proxy: BundleDelegate<V> = BundleDelegate<V>(key, default)
     override fun getValue(thisRef: Fragment, property: KProperty<*>): V {
         return thisRef.arguments?.run {
             proxy.getValue(this, property)
-        } ?: defaultValue
+        } ?: default
     }
 
     override fun setValue(thisRef: Fragment, property: KProperty<*>, value: V) {
@@ -73,28 +73,3 @@ open class FragmentArgumentsDelegate<V>(val key: String?, val defaultValue: V) :
     }
 }
 
-
-/**
- * key value
- */
-fun Fragment.putExtra(key: String, value: Any): Bundle {
-    if (arguments == null) {
-        arguments = Bundle()
-    }
-    return arguments!!.putExtras(key to value)
-}
-
-/**
- * putExtras(
- *          "Key1" to "Value",
- *          "Key2" to 123,
- *          "Key3" to false,
- *          "Key4" to arrayOf("4", "5", "6")
- *      )
- */
-fun <T> Fragment.putExtras(vararg params: Pair<String, T>): Bundle {
-    if (arguments == null) {
-        arguments = Bundle()
-    }
-    return arguments!!.putExtras(*params)
-}

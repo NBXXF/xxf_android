@@ -140,3 +140,35 @@ private class SafeLazyReadWriteProperty<T : Any>(val initializer: () -> T) :
         this.value = value
     }
 }
+
+/**
+ * 标准定义KeyValue 的代理
+ * 实现可以 intent bundle,prefs
+ */
+abstract class KeyValueDelegate<in T, V>(open val key: String?, open val default: V) :
+    ReadWriteProperty<T, V> {
+}
+
+class ObservableDelegate<in T, V>(
+    val delegate: ReadWriteProperty<T, V>,
+    val beforeChange: (property: KProperty<*>, newValue: V) -> Unit = { _, _ -> },
+    val afterChange: (property: KProperty<*>, newValue: V) -> Unit
+) : ReadWriteProperty<T, V> {
+    override fun getValue(thisRef: T, property: KProperty<*>): V {
+        return delegate.getValue(thisRef, property)
+    }
+
+    override fun setValue(thisRef: T, property: KProperty<*>, value: V) {
+        beforeChange(property, value)
+        delegate.setValue(thisRef, property, value)
+        afterChange(property, value)
+    }
+}
+
+/**
+ * 观察原始的delegate
+ */
+fun <T, V> ReadWriteProperty<T, V>.observable(
+    beforeChange: (property: KProperty<*>, newValue: V) -> Unit = { _, _ -> },
+    afterChange: (property: KProperty<*>, newValue: V) -> Unit
+) = ObservableDelegate<T, V>(this, beforeChange, afterChange)
