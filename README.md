@@ -372,7 +372,7 @@ object PreferencesDemo : SharedPreferencesOwner {
     }
 }
 
-inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.useGson(): KeyValueDelegate<P, V> {
+inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): KeyValueDelegate<P, V> {
     return object : KeyValueDelegate<P, V>(this.key, this.default) {
         private val stringDelegate by lazyUnsafe {
             PrefsDelegate<P, String>(this.key, "", String::class);

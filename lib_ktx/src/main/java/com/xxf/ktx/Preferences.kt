@@ -175,7 +175,8 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  *
  * 对于不支持的类型 可以自己重写IPreferencesOwner 或者继续包装代理,如下:
  * 拓展gson[gson 默认不继承在框架里面,业务只需要申明这个拓展就行了]
- * inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.useGson(): KeyValueDelegate<P, V> {
+ *
+ * inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): KeyValueDelegate<P, V> {
  *     return object : KeyValueDelegate<P, V>(this.key, this.default) {
  *         private val stringDelegate by lazyUnsafe {
  *             PrefsDelegate<P, String>(this.key, "", String::class);
@@ -195,6 +196,7 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  *         }
  *     }
  * }
+ *
  * 用法
  *  var user: User by preferencesBinding("key3", User()).useGson()
  */
