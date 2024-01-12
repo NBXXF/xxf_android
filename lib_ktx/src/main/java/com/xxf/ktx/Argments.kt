@@ -27,16 +27,16 @@ fun Fragment.bindExtra(key: String? = null) = argumentBinding(key, null)
  */
 fun <T> Activity.argumentBinding(key: String? = null) = ActivityIntentDelegate<T?>(key, null)
 
-fun <T> Activity.argumentBinding(key: String? = null, defaultValue: T) =
-    ActivityIntentDelegate(key, defaultValue)
+fun <T> Activity.argumentBinding(key: String? = null, default: T) =
+    ActivityIntentDelegate(key, default)
 
 /**
  * 绑定参数
  */
 fun <T> Fragment.argumentBinding(key: String? = null) = FragmentArgumentsDelegate<T?>(key, null)
 
-fun <T> Fragment.argumentBinding(key: String? = null, defaultValue: T) =
-    FragmentArgumentsDelegate(key, defaultValue)
+fun <T> Fragment.argumentBinding(key: String? = null, default: T) =
+    FragmentArgumentsDelegate(key, default)
 
 
 open class ActivityIntentDelegate<V>(key: String?, default: V) :
