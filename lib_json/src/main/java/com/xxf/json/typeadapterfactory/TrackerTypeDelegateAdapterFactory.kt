@@ -17,7 +17,9 @@ import java.io.IOException
  * .registerTypeAdapterFactory(TrackerTypeDelegateAdapterFactory())
  * .create()
  *
- *  采集信息 可以获取 reader.path type.rawType
+ *  采集信息 可以获取
+ *  reader.path
+ *  type.rawType
  *
  *  缺点 不能拿到json
  *  否则需要反射获取reader.in
@@ -37,6 +39,7 @@ class TrackerTypeDelegateAdapterFactory(
                     delegate.write(out, value)
                 } catch (e: Throwable) {
                     writeCallBack?.let { it(out, type, e) }
+                    throw e
                 }
             }
 
