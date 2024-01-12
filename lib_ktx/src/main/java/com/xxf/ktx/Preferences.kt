@@ -200,3 +200,9 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  */
 inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?, default: V) =
     PrefsDelegate<T, V>(key, default, V::class)
+
+/**
+ * 用法介绍参考 preferencesBinding(key: String?, default: V)
+ */
+inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?) =
+    PrefsDelegate<T, V?>(key, null, V::class)

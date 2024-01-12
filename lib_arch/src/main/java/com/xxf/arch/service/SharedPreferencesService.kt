@@ -8,6 +8,7 @@ import java.lang.reflect.Type
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/26 9:44
  */
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 interface SharedPreferencesService {
     fun getAll(): Map<String, *>?
 

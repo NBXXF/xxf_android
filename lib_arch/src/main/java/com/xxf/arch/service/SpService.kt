@@ -24,6 +24,7 @@ import kotlin.reflect.KProperty
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @CreateDate: 2020/6/26 9:50
  */
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
     /**
      * 在key 上面区分user存储,业务不要用这个
@@ -183,12 +184,13 @@ object SpService : SharedPreferencesService, OnSharedPreferenceChangeListener {
 /**
  * 不用担心主线程效率 底层用的mmkv,大数据存储 请转移到数据库
  */
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 open class SpServiceDelegate {
     fun getSharedPreferencesService(): SharedPreferencesService {
         return SpService
     }
 }
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 class KeyValueDelegate<out T>(
     private val key: String?,
     private val defaultValue: T,
@@ -208,7 +210,7 @@ class KeyValueDelegate<out T>(
         onChange(value)
     }
 }
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 fun SpServiceDelegate.bindString(
     key: String? = null,
     defaultValue: String = "",
@@ -222,7 +224,7 @@ fun SpServiceDelegate.bindString(
     getSharedPreferencesService()::putString,
     onChange
 )
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 fun SpServiceDelegate.bindString(
     key: String? = null,
     differUser: Boolean = false,
@@ -236,7 +238,7 @@ fun SpServiceDelegate.bindString(
     onChange
 )
 
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 fun SpServiceDelegate.bindStringSet(
     key: String? = null,
     differUser: Boolean = false,
@@ -249,7 +251,7 @@ fun SpServiceDelegate.bindStringSet(
     getSharedPreferencesService()::putStringSet,
     onChange
 )
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 fun SpServiceDelegate.bindStringSet(
     key: String? = null,
     defaultValue: Set<String>,
@@ -263,7 +265,7 @@ fun SpServiceDelegate.bindStringSet(
     getSharedPreferencesService()::putStringSet,
     onChange
 )
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 fun SpServiceDelegate.bindInt(
     key: String? = null,
     defaultValue: Int = 0,
@@ -278,7 +280,7 @@ fun SpServiceDelegate.bindInt(
     onChange
 )
 
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 fun SpServiceDelegate.bindLong(
     key: String? = null,
     defaultValue: Long = 0L,
@@ -307,7 +309,7 @@ fun SpServiceDelegate.bindFloat(
     getSharedPreferencesService()::putFloat,
     onChange
 )
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 fun SpServiceDelegate.bindBoolean(
     key: String? = null,
     defaultValue: Boolean = false,
@@ -322,7 +324,7 @@ fun SpServiceDelegate.bindBoolean(
     onChange
 )
 
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 inline fun <reified T> SharedPreferencesService.putObject(
     key: String,
     value: T?,
@@ -334,7 +336,7 @@ inline fun <reified T> SharedPreferencesService.putObject(
     )
 }
 
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 inline fun <reified T> SharedPreferencesService.getObject(
     key: String,
     defaultValue: T?,
@@ -347,7 +349,7 @@ inline fun <reified T> SharedPreferencesService.getObject(
     return defaultValue
 }
 
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 inline fun <reified T> SpServiceDelegate.bindObject(
     key: String? = null,
     differUser: Boolean = false,
@@ -360,7 +362,7 @@ inline fun <reified T> SpServiceDelegate.bindObject(
     getSharedPreferencesService()::putObject,
     onChange
 )
-
+@Deprecated("过时了", replaceWith = ReplaceWith("IPreferencesOwner 和 IPreferencesOwner.preferencesBinding 委托"))
 inline fun <reified T> SpServiceDelegate.bindObject(
     key: String? = null,
     defaultValue: T,

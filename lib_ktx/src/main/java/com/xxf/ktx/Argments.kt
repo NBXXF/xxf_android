@@ -25,7 +25,7 @@ fun Fragment.bindExtra(key: String? = null) = argumentBinding(key, null)
 /**
  * 绑定参数
  */
-fun Activity.argumentBinding(key: String? = null) = ActivityIntentDelegate(key, null)
+fun <T> Activity.argumentBinding(key: String? = null) = ActivityIntentDelegate<T?>(key, null)
 
 fun <T> Activity.argumentBinding(key: String? = null, defaultValue: T) =
     ActivityIntentDelegate(key, defaultValue)
@@ -33,14 +33,14 @@ fun <T> Activity.argumentBinding(key: String? = null, defaultValue: T) =
 /**
  * 绑定参数
  */
-fun Fragment.argumentBinding(key: String? = null) = FragmentArgumentsDelegate(key, null)
+fun <T> Fragment.argumentBinding(key: String? = null) = FragmentArgumentsDelegate<T?>(key, null)
 
 fun <T> Fragment.argumentBinding(key: String? = null, defaultValue: T) =
     FragmentArgumentsDelegate(key, defaultValue)
 
 
 open class ActivityIntentDelegate<V>(key: String?, default: V) :
-    KeyValueDelegate<Activity, V>(key,default) {
+    KeyValueDelegate<Activity, V>(key, default) {
     open val proxy: BundleDelegate<V> = BundleDelegate<V>(key, default)
     override fun getValue(thisRef: Activity, property: KProperty<*>): V {
         return thisRef.intent.extras?.run {
@@ -57,7 +57,7 @@ open class ActivityIntentDelegate<V>(key: String?, default: V) :
 }
 
 open class FragmentArgumentsDelegate<V>(key: String?, default: V) :
-    KeyValueDelegate<Fragment, V>(key,default) {
+    KeyValueDelegate<Fragment, V>(key, default) {
     open val proxy: BundleDelegate<V> = BundleDelegate<V>(key, default)
     override fun getValue(thisRef: Fragment, property: KProperty<*>): V {
         return thisRef.arguments?.run {
