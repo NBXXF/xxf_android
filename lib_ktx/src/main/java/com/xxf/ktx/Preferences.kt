@@ -7,6 +7,10 @@ import com.xxf.ktx.standard.KeyValueDelegate
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
+/**
+ * 默认实现有 SharedPreferencesOwner
+ * 十分方便扩展,可以扩展为MMKV,sqlite,file等等
+ */
 interface IPreferencesOwner {
     fun getPreferencesValue(
         property: KProperty<*>,
@@ -169,29 +173,30 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  *     }
  * }
  *
- * 拓展gson
- *
- * fun <P : IPreferencesOwner, V> PrefsDelegate<P, V>.useGson(typeToken: TypeToken<V>): KeyValueDelegate<P, V> {
+ * 对于不支持的类型 可以自己重写IPreferencesOwner 或者继续包装代理,如下:
+ * 拓展gson[gson 默认不继承在框架里面,业务只需要申明这个拓展就行了]
+ * inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.useGson(): KeyValueDelegate<P, V> {
  *     return object : KeyValueDelegate<P, V>(this.key, this.default) {
- *         val stringDelegate = PrefsDelegate<P, String>(this.key, "{}", String::class);
+ *         private val stringDelegate by lazyUnsafe {
+ *             PrefsDelegate<P, String>(this.key, "", String::class);
+ *         }
  *
- *         @Suppress("UNCHECKED_CAST")
  *         override fun getValue(thisRef: P, property: KProperty<*>): V {
- *             val gson = Json.innerDefaultGson
- *             return gson.fromJson(
- *                 stringDelegate.getValue(thisRef, property),
- *                 typeToken
- *             ) ?: default
+ *             val value = stringDelegate.getValue(thisRef, property)
+ *             return if (value.isEmpty()) {
+ *                 default
+ *             } else {
+ *                 Json.fromJson<V>(value) ?: default
+ *             }
  *         }
  *
  *         override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
- *             val gson = Json.innerDefaultGson
- *             stringDelegate.setValue(thisRef, property, gson.toJson(value));
+ *             stringDelegate.setValue(thisRef, property, Json.toJson(value));
  *         }
  *     }
  * }
  * 用法
- *   var user: User by preferencesBinding("key3", User()).useGson(TypeToken.get(User::class.java))
+ *  var user: User by preferencesBinding("key3", User()).useGson()
  */
 inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?, default: V) =
     PrefsDelegate<T, V>(key, default, V::class)
