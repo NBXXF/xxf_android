@@ -333,24 +333,64 @@ GsonBuilder()
 
 ##### 委托属性
 
-获取viewbinding 可以 使用 by viewBinding()加载
+###### 获取viewbinding 可以 使用 by viewBinding()加载
 ``` 
    private val binding by viewBinding(ActivitySettingBinding::bind);
 
 ```
 
-activity intent和fragment Fragment参数绑定 可以使用 by argumentBinding("xxx")
+###### activity intent和fragment Fragment参数绑定 可以使用 by argumentBinding("xxx")
 ``` 
     private val withNfcId: String? by argumentBinding("withNfcId");//携带了NFC卡号
 ``` 
 
-SharedPreference 可以采用 by
+###### SharedPreference 可以采用 by  
+读写 key value 委托,内部具体用什么缓存 由IPreferencesOwner决定,十分方便扩展,可以扩展为MMKV,sqlite,file等等
 ``` 
-object UserSpServiceDelegate : SpServiceDelegate() {
-    /**
-     * app token
-     */
-    var token: String by bindString(key = "_app_token", defaultValue = "")
+object PreferencesDemo : SharedPreferencesOwner {
+
+    data class User(val name: String? = null)
+
+    var name: String by preferencesBinding("key", "xxx")
+
+    //可以监听
+    var name2: String by preferencesBinding("key2", "xxx").observable { property, newValue ->
+        println("=============>PrefsDemo3:$newValue")
+    }
+    var user: User by preferencesBinding("key3", User()).useGson()
+
+    fun test() {
+        println("=============>PrefsDemo:$name")
+        name = randomUUIDString32;
+        println("=============>PrefsDemo2:$name")
+        name2 = randomUUIDString32;
+        println("=============>PrefsDemo4:$name2")
+
+        println("=============>PrefsDemoUserBefore:$user")
+        user = User("张三 ${System.currentTimeMillis()}")
+        println("=============>PrefsDemoUser:$user")
+    }
+}
+
+inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.useGson(): KeyValueDelegate<P, V> {
+    return object : KeyValueDelegate<P, V>(this.key, this.default) {
+        private val stringDelegate by lazyUnsafe {
+            PrefsDelegate<P, String>(this.key, "", String::class);
+        }
+
+        override fun getValue(thisRef: P, property: KProperty<*>): V {
+            val value = stringDelegate.getValue(thisRef, property)
+            return if (value.isEmpty()) {
+                default
+            } else {
+                Json.fromJson<V>(value) ?: default
+            }
+        }
+
+        override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
+            stringDelegate.setValue(thisRef, property, Json.toJson(value));
+        }
+    }
 }
 ``` 
 ##### 自定义相册
