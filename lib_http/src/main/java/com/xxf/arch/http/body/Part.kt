@@ -12,7 +12,7 @@ import java.io.InputStream
 
 fun File.toPart(
     partName: String,
-    partFilename: String?,
+    partFilename: String? = null,
     contentType: MediaType? = null
 ): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
@@ -25,7 +25,7 @@ fun File.toPart(
 fun Uri.toPart(
     context: Context,
     partName: String,
-    partFilename: String?,
+    partFilename: String? = null,
     contentType: MediaType? = null
 ): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
@@ -37,7 +37,7 @@ fun Uri.toPart(
 
 fun InputStream.toPart(
     partName: String,
-    partFilename: String?,
+    partFilename: String? = null,
     contentType: MediaType? = null
 ): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
@@ -49,7 +49,7 @@ fun InputStream.toPart(
 
 fun ParcelFileDescriptor.toPart(
     partName: String,
-    partFilename: String?,
+    partFilename: String? = null,
     contentType: MediaType? = null
 ): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
@@ -62,7 +62,7 @@ fun ParcelFileDescriptor.toPart(
 
 fun AssetFileDescriptor.toPart(
     partName: String,
-    partFilename: String?,
+    partFilename: String? = null,
     contentType: MediaType? = null
 ): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
@@ -74,7 +74,7 @@ fun AssetFileDescriptor.toPart(
 
 fun FileDescriptor.toPart(
     partName: String,
-    partFilename: String?,
+    partFilename: String? = null,
     contentType: MediaType? = null
 ): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
