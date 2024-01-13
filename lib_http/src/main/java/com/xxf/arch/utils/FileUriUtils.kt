@@ -9,7 +9,7 @@ import java.net.URLConnection
 import java.util.UUID
 
 object FileUriUtils {
-    private inline val String.mimeType: String?
+    inline val String.mimeType: String?
         get() {
             MimeTypeMap.getSingleton().getMimeTypeFromExtension(this)?.let {
                 return it

@@ -7,6 +7,8 @@ import android.os.ParcelFileDescriptor
 import com.xxf.arch.utils.FileUriUtils
 import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okio.FileSystem
+import okio.Path
 import java.io.File
 import java.io.FileDescriptor
 import java.io.InputStream
@@ -87,9 +89,23 @@ fun FileDescriptor.toPart(
     )
 }
 
-fun String.toPart(
-    name: String
+fun Path.toPart(
+    partName: String,
+    partFilename: String? = null,
+    fileSystem: FileSystem= FileSystem.SYSTEM,
+    contentType: MediaType? = null,
 ): MultipartBody.Part {
-    return MultipartBody.Part.createFormData(name, this)
+    return MultipartBody.Part.createFormData(
+        partName,
+        partFilename,
+        this.toRequestBody(fileSystem, contentType)
+    )
 }
+
+fun String.toPart(
+    partName: String
+): MultipartBody.Part {
+    return MultipartBody.Part.createFormData(partName, this)
+}
+
 

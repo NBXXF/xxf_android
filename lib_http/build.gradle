@@ -26,6 +26,7 @@ dependencies {
     api des.okhttp
     api des.okio
     api project(path: ':lib_json')
+    api project(path: ':lib_application')
 }
 
 ext {
