@@ -9,21 +9,25 @@ import java.net.URLConnection
 import java.util.UUID
 
 object FileUriUtils {
+    private inline val String.mimeType: String?
+        get() {
+            MimeTypeMap.getSingleton().getMimeTypeFromExtension(this)?.let {
+                return it
+            }
+            return URLConnection.guessContentTypeFromName(this)
+        }
+
     /**
      * 生成对应类型的 随机名称
      */
     internal fun generateRandomTypeFileName(context: Context, uri: Uri): String {
+        val mimeType = getMimeType(context, uri)
+        val extensionFromMimeType = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
         return "random_${UUID.randomUUID().toString().replace("-", "")}.${
-            getFileExtension(
-                context,
-                uri
-            )
+            extensionFromMimeType
         }"
     }
 
-    internal fun getFileExtension(context: Context, uri: Uri): String? {
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(getMimeType(context, uri))?: URLConnection.guessContentTypeFromName(uri.lastPathSegment?:"")
-    }
 
     @SuppressLint("Range")
     internal fun getFileName(context: Context, uri: Uri): String? {
@@ -43,7 +47,10 @@ object FileUriUtils {
         return null
     }
 
+    /**
+     * 需要动态查询
+     */
     internal fun getMimeType(context: Context, uri: Uri): String? {
-        return context.contentResolver.getType(uri)
+        return uri.toString().mimeType ?: context.contentResolver.getType(uri)
     }
 }

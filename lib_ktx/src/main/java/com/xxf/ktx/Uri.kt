@@ -83,10 +83,17 @@ inline fun <R> Uri.openOutputStream(crossinline block: (OutputStream) -> R): R? 
 fun Uri.loadThumbnail(width: Int, height: Int, signal: CancellationSignal? = null): Bitmap =
     contentResolver.loadThumbnail(this, Size(width, height), signal)
 
+/**
+ * uri 需要动态查 可能不包括后缀
+ * mime 动态就行了
+ */
 inline val Uri.fileExtension: String?
     get() = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
-        ?: URLConnection.guessContentTypeFromName(lastPathSegment ?: "")
 
+
+/**
+ * uri 需要动态查 可能不包括后缀
+ */
 inline val Uri.fileName: String?
     @SuppressLint("Range", "Recycle")
     get() {
@@ -104,9 +111,13 @@ inline val Uri.fileName: String?
         }
         return null
     }
+
+/**
+ * uri 需要动态查 可能不包括后缀
+ */
 inline val Uri.mimeType: String?
     get() {
-        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(lastPathSegment ?: "")
+        return this.toString().mimeType
             ?: contentResolver.getType(this)
     }
 

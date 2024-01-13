@@ -49,8 +49,10 @@ fun File.rename(newName: String): Boolean =
             }
 
 inline val File.mimeType: String?
-    get() = MimeTypeMap.getSingleton().getMimeTypeFromExtension(name)
-        ?: URLConnection.guessContentTypeFromName(name)
+    get() = name.mimeType
+
+inline val File.extension: String?
+    get() = name.fileExtension
 
 inline val fileSeparator: String get() = File.separator
 
