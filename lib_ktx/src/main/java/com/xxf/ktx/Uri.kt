@@ -19,18 +19,10 @@ import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.annotation.RequiresApi
-import androidx.core.content.FileProvider
-import com.xxf.ktx.ExperimentalApi
-import com.xxf.ktx.application
-import com.xxf.ktx.contentResolver
-import com.xxf.ktx.queryFirst
-import com.xxf.ktx.update
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.io.OutputStream
-
-lateinit var fileProviderAuthority: String
 
 inline val EXTERNAL_MEDIA_IMAGES_URI: Uri
   get() = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -45,12 +37,6 @@ inline val EXTERNAL_MEDIA_AUDIO_URI: Uri
 inline val EXTERNAL_MEDIA_DOWNLOADS_URI: Uri
   get() = MediaStore.Downloads.EXTERNAL_CONTENT_URI
 
-fun File.toUri(authority: String = fileProviderAuthority): Uri =
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-    FileProvider.getUriForFile(application, authority, this)
-  } else {
-    Uri.fromFile(this)
-  }
 
 fun Uri.update(vararg pairs: Pair<String, Any?>): Boolean =
   contentResolver.update(
