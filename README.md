@@ -236,7 +236,9 @@ kotlin 方式
 ```
 
 拓展上传的文件类型 </br>
-支持7种标识文件的方式,注意一般的服务器都支持 不传filename在表单,这个取决于你的服务器(或者我提供了uri.toPart("filename"),file.toPart("filename")...)
+支持7种标识文件的方式,注意一般的服务器都支持 不传filename在表单,这个取决于你的服务器</br>
+也就是协议中的 Content-Disposition: form-data; name="file" 与   Content-Disposition: form-data; name="file"; filename="1705161084857114.jpeg" 的区别</br>
+或者我提供了很多拓展uri.toPart("filename"),file.toPart("filename")...</br>
 
 1. File
 2. ByteArray
