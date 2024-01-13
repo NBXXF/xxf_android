@@ -93,5 +93,5 @@ fun ByteArray.toFileRequestBody(contentType: MediaType? = null): RequestBody {
 
 
 fun String.toJsonRequestBody(): RequestBody {
-    return this.toRequestBody("application/json; charset=utf-8".toMediaType())
+    return this.toRequestBody(MediaType.JsonUTF8)
 }

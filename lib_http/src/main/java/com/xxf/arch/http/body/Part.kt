@@ -12,7 +12,7 @@ import java.io.InputStream
 
 fun File.toPart(
     partName: String,
-    partFilename: String? = null,
+    partFilename: String? = this.name,
     contentType: MediaType? = null
 ): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
