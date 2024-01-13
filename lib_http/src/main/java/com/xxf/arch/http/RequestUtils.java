@@ -15,6 +15,17 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
+ * 过时了 请直接使用
+ * Uri.toRequestBody
+ * File.toRequestBody
+ * FileDescriptor.toRequestBody
+ * ...
+ * File.toPart
+ * Uri.toPart
+ * FileDescriptor.toPart
+ * .....
+ *
+ * <p>
  * Description
  * <p>
  *
@@ -22,14 +33,17 @@ import okhttp3.RequestBody;
  * date createTime：2017/4/10
  * version 1.0.0
  */
+@Deprecated
 public class RequestUtils {
 
     /**
+     * createFilePart
      * 构建文本请求体
      *
      * @param text
      * @return
      */
+    @Deprecated
     public static RequestBody createTextBody(String text) {
         return RequestBody
                 .create(MediaType.parse("text/plain"),
@@ -52,12 +66,14 @@ public class RequestUtils {
     }
 
     /**
+     * 过时了 请直接使用RequestBody.toXXX方
      * 构建表单请求体
      * 兼容 文件描述符
      *
      * @param path 文件路径
      * @return
      */
+    @Deprecated
     public static RequestBody createFileBody(Context context, String path) {
         try {
             ParcelFileDescriptor pfd = UriUtils.getFileDescriptorSafe(context, path);
@@ -77,6 +93,7 @@ public class RequestUtils {
     }
 
     /**
+     * 过时了 请直接使用RequestBody.toXXX方
      * 构建表单请求体
      * 支持文件描述符
      *
@@ -85,6 +102,7 @@ public class RequestUtils {
      * @param path
      * @return
      */
+    @Deprecated
     public static MultipartBody.Part createFilePart(Context context, String formKey, String path) {
         try {
             if (UriUtils.isFileDescriptor(path)) {
@@ -107,6 +125,7 @@ public class RequestUtils {
      *
      * @return
      */
+    @Deprecated
     public static RequestBody createFileBody(byte[] bytes) {
         if (bytes == null) {
             bytes = new byte[0];
@@ -116,6 +135,7 @@ public class RequestUtils {
 
     /**
      * 构建json请求体
+     * 过时了 请直接使用RequestBody.toXXX方
      *
      * @param json
      * @return

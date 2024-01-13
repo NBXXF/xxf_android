@@ -1,4 +1,4 @@
-package com.xxf.arch.http.progress
+package com.xxf.arch.http.body.progress
 
 import okhttp3.MediaType
 import okhttp3.RequestBody
