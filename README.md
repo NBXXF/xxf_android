@@ -2,25 +2,25 @@ Table of Contents
 =================
 
 * [Android技术中台](#android技术中台)
-  * [用法](#用法)
-  * [引入方式](#引入方式)
-  * [Application 与Activity 管理](#application-与activity-管理)
-  * [http请求](#http请求)
-  * [RxJava生命周期管理](#rxjava生命周期管理)
-  * [权限](#权限)
-  * [startActivityForResult](#startactivityforresult)
-  * [事件通信框架](#事件通信框架)
-  * [Uri 授权](#uri-授权)
-  * [Json安全](#json安全)
-  * [效率提升](#效率提升)
-  * [委托属性](#委托属性)
-  * [自定义相册](#自定义相册)
-  * [自定义相机仿微信](#自定义相机仿微信)
-  * [二维码生成](#二维码生成)
-  * [RecyclerView 分割线](#recyclerview-分割线)
-  * [圆角组件](#圆角组件)
-  * [带渐变背景的组件](#带渐变背景的组件)
-  * [设置宽高比例的组件](#设置宽高比例的组件)
+    * [用法](#用法)
+    * [引入方式](#引入方式)
+    * [Application 与Activity 管理](#application-与activity-管理)
+    * [http请求](#http请求)
+    * [RxJava生命周期管理](#rxjava生命周期管理)
+    * [权限](#权限)
+    * [startActivityForResult](#startactivityforresult)
+    * [事件通信框架](#事件通信框架)
+    * [Uri 授权](#uri-授权)
+    * [Json安全](#json安全)
+    * [效率提升](#效率提升)
+    * [委托属性](#委托属性)
+    * [自定义相册](#自定义相册)
+    * [自定义相机仿微信](#自定义相机仿微信)
+    * [二维码生成](#二维码生成)
+    * [RecyclerView 分割线](#recyclerview-分割线)
+    * [圆角组件](#圆角组件)
+    * [带渐变背景的组件](#带渐变背景的组件)
+    * [设置宽高比例的组件](#设置宽高比例的组件)
 
 # Android技术中台
 
@@ -35,7 +35,8 @@ xxf架构封装常用组件与用法,且符合函数式和流式编程
 7. 时间和货币格式化全权交割给框架处理
 8. 各种工具类Number,Time,File,Toast,Zip,Arrays....等15种
 9. 全面转向kotlin 扩展函数超 400 个 全部开箱即可使用
-10. 封装常见自定义View TitleBar,Loading,ScaleFrameLayout,MaxHeightView,SoftKeyboardSizeWatchLayout...等20种
+10. 封装常见自定义View
+    TitleBar,Loading,ScaleFrameLayout,MaxHeightView,SoftKeyboardSizeWatchLayout...等20种
 11. 数据库在objectbox上进行封装以及监听,以及生成long id
 
 #### 用法
@@ -43,6 +44,7 @@ xxf架构封装常用组件与用法,且符合函数式和流式编程
 ##### 引入方式
 
 代码已经80%转换成kotlin 请注意用法改变,新版本使用方式
+
 ```groovy
 //请在build.gradle中配置
 allprojects {
@@ -73,19 +75,17 @@ allprojects {
 }
 ```
 
-
  ```
     //新版本使用方式,需要添加上面的权限
     implementation 'com.NBXXF.xxf_android:libs:5.2.2.1-SNAPSHOT'
  ```
-
 
  ```
     //老版本使用方式,无权限
     implementation 'com.github.NBXXF.xxf_android:lib_view:5.2.1.0'//主要lib
  ```
 
-##### Application 与Activity 管理 
+##### Application 与Activity 管理
 
 提供以下[直接访问]的内敛函数，其他组件扩展 400个函数 参考lib_ktx
 
@@ -225,6 +225,7 @@ public enum CacheType {
                     }
                 });
 ```
+
 kotlin 方式
 
 ```
@@ -232,6 +233,27 @@ kotlin 方式
        
        getApiService<BackupApiService>()
         
+```
+
+拓展上传的文件类型 </br>
+支持7种标识文件的方式,注意一般的服务器都支持 不传filename在表单,这个取决于你的服务器(或者我提供了uri.toPart("filename"),file.toPart("filename")...)
+
+1. File
+2. ByteArray
+3. inputStream
+4. FileDescriptor
+5. ParcelFileDescriptor
+6. AssetFileDescriptor 
+7. Uri
+如下demo
+
+```
+@POST("api/rentalAreaPad/uploadFile")
+@Multipart
+fun uploadRentalAreaPadFile2(
+@Query("companyId") companyId: String,
+@Part("file") fileUri: Uri,
+): Observable<BaseResultDTO<String>>
 ```
 
 ##### RxJava生命周期管理
@@ -253,7 +275,8 @@ kotlin 方式
 ##### 权限
 
 权限请求使用Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)  
-常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher 更节约内存,且解决了并行的问题,也能免注册调用
+常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher
+更节约内存,且解决了并行的问题,也能免注册调用
 
       //请求授权
         ``` 
@@ -273,7 +296,8 @@ kotlin 方式
 ##### startActivityForResult
 
 Rx链式调用(内部使用ActivityResultLauncher 且使用方免注册)  
-常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher 更节约内存,且解决了并行的问题,也能免注册调用
+常规为了避免断链式调用,那么需要attach隐藏的fragment,而这里的实现为站位ActivityResultLauncher
+更节约内存,且解决了并行的问题,也能免注册调用
 
   ``` 
      支持activity fragment LifecycleOwner 挂载对象访问 如果是在其他类对象中 可以访问全局内敛函数 topFragmentActivity?.startActivityForResultObservable
@@ -307,25 +331,30 @@ String.javaClass.subscribeEvent()
         }
   TestEvent().postEvent();      
 ``` 
+
 ##### Uri 授权
 
 Uri 授权每个app都去注册 十分麻烦,这里采用自动注册FileProvider
+
 ``` 
 File.toAuthorizedUri
 ``` 
+
 ##### Json安全
 
-更加安全的JsonTypeAdapter,应对若语言类的服务器开发工程师,比如 把int 返回双引号空,框架内部 兼容了int,bool,long,double,float,number,bigDecimal等常用类型的安全性
+更加安全的JsonTypeAdapter,应对若语言类的服务器开发工程师,比如 把int 返回双引号空,框架内部
+兼容了int,bool,long,double,float,number,bigDecimal等常用类型的安全性
 
 ``` 
 GsonBuilder()
     .registerTypeAdapterFactory(new SafeTypeAdapterFactory())
     .build()
 ``` 
-这里同时也推荐我的另外一款code-gen工具 对gson提升10倍速度,比市面上的任何序列化工具都优秀,请参考[gson_plugin](https://github.com/NBXXF/gson_plugin)
 
+这里同时也推荐我的另外一款code-gen工具
+对gson提升10倍速度,比市面上的任何序列化工具都优秀,请参考[gson_plugin](https://github.com/NBXXF/gson_plugin)
 
-##### 效率提升  
+##### 效率提升
 
 1. 增加避免装箱拆箱的LongHashMap 比如SparseArray查询效率更快,相比hashmap 提升50%,以及LongHashSet等组件
 2. 增加MurmurHash 比jdk自带hash 更快 200%提升
@@ -334,18 +363,22 @@ GsonBuilder()
 ##### 委托属性
 
 ###### 获取viewbinding 可以 使用 by viewBinding()加载
+
 ``` 
    private val binding by viewBinding(ActivitySettingBinding::bind);
 
 ```
 
 ###### activity intent和fragment Fragment参数绑定 可以使用 by argumentBinding("xxx")
+
 ``` 
     private val withNfcId: String? by argumentBinding("withNfcId");//携带了NFC卡号
 ``` 
 
-###### SharedPreference 可以采用 by  
+###### SharedPreference 可以采用 by
+
 读写 key value 委托,内部具体用什么缓存 由IPreferencesOwner决定,十分方便扩展,可以扩展为MMKV,sqlite,file等等
+
 ``` 
 object PreferencesDemo : SharedPreferencesOwner {
 
@@ -393,7 +426,9 @@ inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson():
     }
 }
 ``` 
+
 ##### 自定义相册
+
 ```
     //需额外加依赖
     implementation 'com.NBXXF.xxf_android:lib_album:xxxx'
@@ -429,7 +464,9 @@ inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson():
                             }
                         });
 ```
+
 #### 自定义相机仿微信
+
 ```
     //需额外加依赖
     implementation 'com.NBXXF.xxf_android:lib_camera_wechat:xxxx'
@@ -450,7 +487,9 @@ inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson():
                         }
                     }
 ```
+
 #### 二维码生成
+
 ```
 QRCodeProviders.of(content)
                 .setOutputSize(new Size(width, height))
