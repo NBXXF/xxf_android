@@ -24,9 +24,8 @@ dependencies {
     api des.rxAndroid
     api 'com.github.NBXXF:retrofit2:1.1.0'
     api des.okhttp
+    api des.okio
     api project(path: ':lib_json')
-    implementation project(path: ':lib_utils')
-
 }
 
 ext {
