@@ -23,31 +23,35 @@ import io.reactivex.rxjava3.core.*
  */
 fun <T> Observable<T>.filterWhen(
     owner: LifecycleOwner,
-    vararg states: Lifecycle.State
-): Observable<T> =
-    this.filter {
-        states.firstOrNull {
-            owner.lifecycle.currentState.isAtLeast(it)
-        } != null
-    }
+    vararg atLeastState: Lifecycle.State
+): Observable<T> = this.filter {
+    atLeastState.firstOrNull {
+        owner.lifecycle.currentState.isAtLeast(it)
+    } != null
+}
 
 /**
  * 筛选等同于filter 不会真的取消事件流
  */
-fun <T> Flowable<T>.filterWhen(owner: LifecycleOwner, vararg states: Lifecycle.State): Flowable<T> =
-    this.filter {
-        states.firstOrNull {
-            owner.lifecycle.currentState.isAtLeast(it)
-        } != null
-    }
+fun <T> Flowable<T>.filterWhen(
+    owner: LifecycleOwner,
+    vararg atLeastState: Lifecycle.State
+): Flowable<T> = this.filter {
+    atLeastState.firstOrNull {
+        owner.lifecycle.currentState.isAtLeast(it)
+    } != null
+}
 
 
 /**
  * 筛选等同于filter 不会真的取消事件流
  */
-fun <T> Maybe<T>.filterWhen(owner: LifecycleOwner, vararg states: Lifecycle.State): Maybe<T> =
+fun <T> Maybe<T>.filterWhen(
+    owner: LifecycleOwner,
+    vararg atLeastState: Lifecycle.State
+): Maybe<T> =
     this.filter {
-        states.firstOrNull {
+        atLeastState.firstOrNull {
             owner.lifecycle.currentState.isAtLeast(it)
         } != null
     }
