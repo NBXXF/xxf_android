@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
  * Description ://处理圆角
  * app:radius="4dp"
  */
-class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget {
+open class XXFRoundConstraintLayout : ConstraintLayout, XXFRoundWidget {
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
