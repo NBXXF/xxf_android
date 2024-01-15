@@ -7,13 +7,16 @@ import java.io.Serializable
 
 /**
  * 常用于设置步骤 每一步动态分发下一步(比如按类型 等等)
+ *
+ * 继承自一个没有实现Serializable接口的父类的类序列化时, 应该注意哪些事项?
+ * 在此种情况下, 父类必须要有一个显示的无参构造函数,而且其无参构造函数必须是能够对其子类可见的, 比如不能使用 private 修饰, 否则会抛出异常. 其原因在于, 在反序列化的过程中, 父类的变量会通过父类的无参构造函数进行初始化(==按照文档的意思, 似乎无参构造函数必须申明为public/protected, 但我实际试了下, 不使用也可以, 只要保证子类能正常访问就行==)
  */
 abstract class ProjectStepSetting<S>
 /**
  * 常用于设置步骤 每一步动态分发下一步(比如按类型 等等)
  *
  * @param stepSettingData 当前步骤数据
- */(open var stepSettingData: S) {
+ */(open var stepSettingData: S) : Serializable {
     companion object {
         const val KEY_STEP_SETTING: String = "stepSetting";
     }
@@ -48,8 +51,9 @@ fun <S> ProjectStepSetting<S>.fillSettingIntent(
     val key: String = ProjectStepSetting.KEY_STEP_SETTING
     Intent(context, act).apply {
         when (value) {
+            //优先Parcelable
             is Parcelable -> {
-                putExtra(key, value)
+                putExtra(key, value as Parcelable)
             }
 
             is Serializable -> {
