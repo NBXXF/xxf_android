@@ -23,4 +23,12 @@ object DateUtils {
             null
         }
     }
+
+    fun parse(pattern: String, source: String): Date? {
+        return try {
+            FastDateFormat.getInstance(pattern).parse(source)
+        } catch (e: Throwable) {
+            null
+        }
+    }
 }
