@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import kotlin.properties.Delegates
 
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
     val layoutManager = this.layoutManager
@@ -66,5 +68,17 @@ enum class SNAP(var value: Int) {
 }
 
 fun RecyclerView.doAdapterDataObserver(block: () -> Unit): RecyclerView.AdapterDataObserver {
-    return  this.adapter!!.doAdapterDataObserver (block)
+    return this.adapter!!.doAdapterDataObserver(block)
+}
+
+/**
+ * 获取adapter
+ * 没有,或者类型不匹配 都将初始化
+ */
+inline fun <reified T : Adapter<VH>, VH> RecyclerView.getAdapter(initializer: () -> T): T {
+    return if (adapter is T) {
+        adapter as T
+    } else {
+        initializer()
+    }
 }
