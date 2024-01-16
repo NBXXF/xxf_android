@@ -79,6 +79,8 @@ inline fun <reified T : Adapter<VH>, VH> RecyclerView.getAdapter(initializer: ()
     return if (adapter is T) {
         adapter as T
     } else {
-        initializer()
+        return initializer().apply {
+            adapter = this
+        }
     }
 }
