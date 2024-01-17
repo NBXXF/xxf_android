@@ -4,6 +4,7 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.media.MediaMetadataRetriever
+import android.util.Base64
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -410,6 +411,29 @@ object BitmapUtils {
         return null
     }
 
+
+    /**
+     *从base64 上面创建图片
+     */
+    fun createBitmapFromBase64(base64: String): Bitmap? {
+        //data:image/jpeg;base64,/9j/4AAQSkZJRgA..........
+        try {
+
+            if (base64.contains("base64,")) {
+                val decode = Base64.decode(base64.split(",")[1], Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size);
+                return bitmap
+            } else if (base64.isNotEmpty()) {
+                val decode = Base64.decode(base64, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size);
+                return bitmap
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
     /**
      * 截取NestedScrollView 截图
      *
@@ -567,8 +591,8 @@ object BitmapUtils {
      * @param rect
      * @param padding 上下左右偏移量
      */
-    fun crop(bitmap: Bitmap,rect:Rect,padding:Int):Bitmap{
-        return this.cropCompose(bitmap, listOfNotNull(rect),padding);
+    fun crop(bitmap: Bitmap, rect: Rect, padding: Int): Bitmap {
+        return this.cropCompose(bitmap, listOfNotNull(rect), padding);
     }
 
 
@@ -578,10 +602,10 @@ object BitmapUtils {
      * @param rects
      * @param padding 上下左右偏移量
      */
-    fun cropCompose(bitmap: Bitmap,rects:List<Rect>,padding:Int):Bitmap{
+    fun cropCompose(bitmap: Bitmap, rects: List<Rect>, padding: Int): Bitmap {
         try {
-            val temp=Rect(rects.first());
-            if(rects.size>1) {
+            val temp = Rect(rects.first());
+            if (rects.size > 1) {
                 rects.forEach {
                     temp.left = min(it.left, temp.left)
                     temp.top = min(it.top, temp.top)
@@ -591,13 +615,13 @@ object BitmapUtils {
             }
 
             //处理边距 且不超过图片本身大小
-            temp.left = max(temp.left-padding,0)
-            temp.top = max(temp.top-padding,0)
-            temp.right = min(temp.right+padding,bitmap.width);
-            temp.bottom = min(temp.bottom+padding,bitmap.height);
+            temp.left = max(temp.left - padding, 0)
+            temp.top = max(temp.top - padding, 0)
+            temp.right = min(temp.right + padding, bitmap.width);
+            temp.bottom = min(temp.bottom + padding, bitmap.height);
 
-            return Bitmap.createBitmap(bitmap,temp.left,temp.top,temp.width(),temp.height())
-        }catch (e:Throwable){
+            return Bitmap.createBitmap(bitmap, temp.left, temp.top, temp.width(), temp.height())
+        } catch (e: Throwable) {
             e.printStackTrace()
         }
         return bitmap;

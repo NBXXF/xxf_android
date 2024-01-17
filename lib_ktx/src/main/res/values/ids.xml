@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <item name="tag_is_added_margin_top" type="id" />
-  <item name="tag_is_added_margin_bottom" type="id" />
-  <item name="tag_is_added_padding_top" type="id" />
-  <item name="tag_last_click_time" type="id" />
-  <item name="tag_root_window_insets" type="id" />
-  <item name="tag_window_insets_controller" type="id" />
+    <item name="tag_is_added_margin_top" type="id" />
+    <item name="tag_is_added_margin_bottom" type="id" />
+    <item name="tag_is_added_padding_top" type="id" />
+    <item name="tag_last_click_time" type="id" />
+    <item name="tag_root_window_insets" type="id" />
+    <item name="tag_window_insets_controller" type="id" />
 
-  <!-- 唯一标识 拒绝系统的hashcode 冲突问题 -->
-  <item name="tag_view_identity_id" type="id" />
+    <!-- 唯一标识 拒绝系统的hashcode 冲突问题 -->
+    <item name="tag_view_identity_id" type="id" />
+    <!-- 避免每次声明的map -->
+    <item name="tag_view_map_container_id" type="id" />
 </resources>
