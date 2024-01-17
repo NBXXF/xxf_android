@@ -5,10 +5,10 @@
 package com.xxf.ktx
 
 import android.content.Context
+import android.os.Build
 import android.os.Looper
-import com.xxf.ktx.cacheDirPath
-import com.xxf.ktx.mainThreadHandler
-import com.xxf.ktx.print
+import androidx.annotation.RequiresApi
+import com.xxf.ktx.time.format.format
 import java.io.File
 import java.time.Instant
 
@@ -32,6 +32,7 @@ inline fun handleMainThreadException(crossinline block: (Throwable) -> Unit) {
   }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun Context.saveCrashLogLocally(dirPath: String = cacheDirPath) =
   handleUncaughtException { thread, e ->
     val now = Instant.now()
