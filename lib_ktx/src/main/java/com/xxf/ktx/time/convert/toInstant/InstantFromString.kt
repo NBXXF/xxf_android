@@ -1,4 +1,4 @@
-package com.xxf.ktx.time.convert
+package com.xxf.ktx.time.convert.toInstant
 
 import android.os.Build
 import androidx.annotation.RequiresApi

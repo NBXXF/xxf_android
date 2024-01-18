@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
@@ -32,6 +33,12 @@ fun LocalDateTime.isYesterday(zone: ZoneId = systemZoneId): Boolean =
 @RequiresApi(Build.VERSION_CODES.O)
 fun LocalDate.isYesterday(zone: ZoneId = systemZoneId): Boolean =
     this == LocalDate.now(zone).minus(1, ChronoUnit.DAYS)
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun LocalDateTime.startOfDay(): LocalDateTime = LocalDateTime.of(this.toLocalDate(), LocalTime.MIN)
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun LocalDateTime.endOfDay(): LocalDateTime = LocalDateTime.of(this.toLocalDate(), LocalTime.MAX)
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun LocalDateTime.firstDayOfYear(): LocalDateTime = with(TemporalAdjusters.firstDayOfYear())
