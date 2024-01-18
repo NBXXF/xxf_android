@@ -75,7 +75,7 @@ fun RecyclerView.doAdapterDataObserver(block: () -> Unit): RecyclerView.AdapterD
  * 获取adapter
  * 没有,或者类型不匹配 都将初始化
  */
-inline fun <reified T : Adapter<VH>, VH> RecyclerView.getAdapter(initializer: () -> T): T {
+inline fun <reified T : Adapter<VH>, VH> RecyclerView.getAdapterIfNeeded(initializer: () -> T): T {
     return if (adapter is T) {
         adapter as T
     } else {

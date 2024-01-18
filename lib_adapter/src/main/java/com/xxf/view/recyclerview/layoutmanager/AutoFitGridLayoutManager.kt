@@ -20,8 +20,8 @@ open class AutoFitGridLayoutManager(
 
     constructor(
         context: Context,
-        block: (AdaptConfig) -> Unit
-    ) : this(context, AdaptConfig(expectedSize = Size(0, 0)).apply { block(this) })
+        block: AdaptConfig.() -> Unit
+    ) : this(context, AdaptConfig(expectedSize = Size(0, 0)).apply(block))
 
     /**
      * 保留

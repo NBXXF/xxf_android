@@ -2,8 +2,17 @@
 
 package com.xxf.ktx
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+
+inline fun <reified T : Activity> Fragment.startActivity(
+    vararg pairs: Pair<String, Any?>,
+    crossinline block: Intent.() -> Unit = {}
+) =
+    startActivity(requireActivity().intentOf<T>(*pairs).apply(block))
+
 
 fun Fragment.makeSureNoNullArguments() {
     if (this.arguments == null) {

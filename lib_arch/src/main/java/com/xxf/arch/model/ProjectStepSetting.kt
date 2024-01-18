@@ -73,10 +73,10 @@ fun <S> ProjectStepSetting<S>.fillSettingIntent(
  */
 fun <S> ProjectStepSetting<S>.jumpNextStepSetting(
     context: Context,
-    block: (Intent) -> Unit = {}
+    block: Intent.() -> Unit = {}
 ): Boolean = this.run {
     val stepLauncher = this.nextStepSetting()?.stepLauncher(context) ?: return false
-    block(stepLauncher)
+    stepLauncher.apply(block)
     val key: String = ProjectStepSetting.KEY_STEP_SETTING
     if (!stepLauncher.hasExtra(key)) {
         throw IllegalArgumentException("缺乏$key 参数")

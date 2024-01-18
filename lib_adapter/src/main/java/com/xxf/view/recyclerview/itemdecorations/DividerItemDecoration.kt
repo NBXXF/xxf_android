@@ -125,9 +125,9 @@ private fun SpacingItemDecoration.DrawingConfig.isAllTransparent(): Boolean {
  *          it.setSpacing(1)
  *         .setColor(1) }
  */
-fun RecyclerView.addItemDivider(block: (DividerItemDecoration.DividerConfig) -> Unit): ItemDecoration {
+fun RecyclerView.addItemDivider(block:DividerItemDecoration.DividerConfig.() -> Unit): ItemDecoration {
     return DividerItemDecoration.Builder().apply {
-        block(this.dividerConfig)
+        this.dividerConfig.apply(block)
     }.build().also {
         addItemDivider(it)
     }
