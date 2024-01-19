@@ -11,11 +11,15 @@ import android.view.MotionEvent;
 import com.xxf.view.utils.SystemUtils;
 
 /**
+ * 废弃了 kotlin 请直接用 View.isKeyboardHiddenInTouchMode 拓展
+ *
  * @version 2.2.1
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @Description 搜索页面  键盘关闭的时机:1:点击 2:滚动, 默认会清除焦点
  * @date createTime：2017/11/21
  */
+
+@Deprecated
 public class SearchManageSoftKeyboardLayout extends SoftKeyboardSizeWatchLayout {
 
     public SearchManageSoftKeyboardLayout(Context context, AttributeSet attrs) {
