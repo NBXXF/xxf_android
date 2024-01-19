@@ -9,7 +9,7 @@ import com.xxf.ktx.hideKeyboard
 /**
  * 触摸事件 关闭键盘
  */
-internal class KeyboardHiddenTouchListener : View.OnTouchListener {
+class KeyboardHiddenTouchListener : View.OnTouchListener {
     private var gestureDetector: GestureDetector? = null
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
