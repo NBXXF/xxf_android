@@ -34,5 +34,4 @@ dependencies {
     //UI
     implementation project(path: ':media:lib_qrcode')
 
-//    implementation 'com.google.zxing:core:3.3.0'
 }

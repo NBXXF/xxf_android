@@ -34,7 +34,7 @@ public class QRCodeUtil {
      * @param outputSizePx           输出二维码图片大小
      * @param character_set          编码方式（一般使用UTF-8）
      * @param error_correction_level 容错率 L：7% M：15% Q：25% H：35%
-     * @param margin                 空白边距（二维码与边框的空白区域）
+     * @param padding                空白边距（二维码与边框的空白区域） 做到了边框大小 确定 和输出尺寸确定
      * @param contentColor           内容色块
      * @param backgroundColor        背景色块
      * @param logoBitmap             logo图片（传null时不添加logo）
@@ -42,16 +42,22 @@ public class QRCodeUtil {
      * @param contentReplaceBitmp    用来代替黑色色块的图片（传null时不代替）
      * @return
      */
-    public static Bitmap createQRCodeBitmap(String content, Size outputSizePx, Charset character_set, ErrorCorrectionLevel error_correction_level,
-                                            int margin, int contentColor, int backgroundColor, Bitmap logoBitmap, float logoPercent, Bitmap contentReplaceBitmp) {
+    public static Bitmap createQRCodeBitmap(String content,
+                                            Size outputSizePx,
+                                            Charset character_set,
+                                            ErrorCorrectionLevel error_correction_level,
+                                            int padding,
+                                            int contentColor,
+                                            int backgroundColor,
+                                            Bitmap logoBitmap,
+                                            float logoPercent,
+                                            Bitmap contentReplaceBitmp) {
         // 字符串内容判空
         if (TextUtils.isEmpty(content)) {
             return null;
         }
-        int outputWidth = outputSizePx.getWidth();
-        int outputHeight = outputSizePx.getHeight();
         // 宽和高>=0
-        if (outputWidth < 0 || outputHeight < 0) {
+        if (outputSizePx.getWidth() < 0 || outputSizePx.getWidth() < 0) {
             return null;
         }
         try {
@@ -61,16 +67,24 @@ public class QRCodeUtil {
             hints.put(EncodeHintType.CHARACTER_SET, character_set.name());
             // 容错率设置
             hints.put(EncodeHintType.ERROR_CORRECTION, error_correction_level);
-            // 空白边距设置
-            hints.put(EncodeHintType.MARGIN, margin);
+            // 空白边距设置 系统的有bug
+            hints.put(EncodeHintType.MARGIN, 0);
             /** 2.将配置参数传入到QRCodeWriter的encode方法生成BitMatrix(位矩阵)对象 */
-            BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, outputWidth, outputHeight, hints);
+            BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, outputSizePx.getWidth(), outputSizePx.getHeight(), hints);
+
+            //系统默认内边距很烦人
+            bitMatrix = deleteMargin(bitMatrix);
+            int outputWidth = bitMatrix.getWidth();
+            int outputHeight = bitMatrix.getHeight();
+
 
             /** 3.创建像素数组,并根据BitMatrix(位矩阵)对象为数组元素赋颜色值 */
             if (contentReplaceBitmp != null) {
                 //从当前位图按一定的比例创建一个新的位图
                 contentReplaceBitmp = Bitmap.createScaledBitmap(contentReplaceBitmp, outputWidth, outputHeight, false);
             }
+
+            //着色
             int[] pixels = new int[outputWidth * outputHeight];
             for (int y = 0; y < outputHeight; y++) {
                 for (int x = 0; x < outputWidth; x++) {
@@ -91,6 +105,9 @@ public class QRCodeUtil {
             Bitmap bitmap = Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888);
             bitmap.setPixels(pixels, 0, outputWidth, 0, 0, outputWidth, outputHeight);
 
+            /**  5 保证最终输出尺寸是符合参数的*/
+            bitmap = merge(bitmap, outputSizePx, backgroundColor, padding);
+
             /** 5.为二维码添加logo图标 */
             if (logoBitmap != null) {
                 return addLogo(bitmap, logoBitmap, logoPercent);
@@ -100,6 +117,78 @@ public class QRCodeUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    /**
+     * 叠加居中合并
+     *
+     * @param bitmap
+     * @return
+     */
+    public static Bitmap merge(Bitmap bitmap,
+                               Size outputSizePx,
+                               int backgroundColor,
+                               int padding) {
+        if (padding * 2 >= outputSizePx.getWidth() || padding * 2 >= outputSizePx.getHeight()) {
+            throw new IllegalArgumentException("边距过大!");
+        }
+
+        Bitmap resultBitmap = Bitmap.createBitmap(outputSizePx.getWidth(), outputSizePx.getHeight(), bitmap.getConfig());
+        resultBitmap.eraseColor(backgroundColor);
+        int outPutWidth = resultBitmap.getWidth();
+        int outPutHeight = resultBitmap.getHeight();
+
+        // 创建画布对象
+        Canvas canvas = new Canvas(resultBitmap);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, resultBitmap.getWidth() - 2 * padding, resultBitmap.getHeight() - 2 * padding, false);
+        canvas.drawBitmap(scaledBitmap, (outPutWidth - scaledBitmap.getWidth()) / 2.0f, (outPutHeight - scaledBitmap.getHeight()) / 2.0f, null);
+        return resultBitmap;
+    }
+
+
+    /**
+     * 自定义白边边框宽度 但是无法保证 最终输出大小 650 最后就是620了
+     *
+     * @param matrix
+     * @param margin 其实应该是padding
+     * @return
+     */
+    @Deprecated
+    public static BitMatrix update(final BitMatrix matrix, final int margin) {
+        int tempM = margin * 2;
+        // 获取二维码图案的属性
+        int[] rec = matrix.getEnclosingRectangle();
+        int resWidth = rec[2] + tempM;
+        int resHeight = rec[3] + tempM;
+        // 按照自定义边框生成新的BitMatrix
+        BitMatrix resMatrix = new BitMatrix(resWidth, resHeight);
+        resMatrix.clear();
+        // 循环，将二维码图案绘制到新的bitMatrix中
+        for (int i = margin; i < resWidth - margin; i++) {
+            for (int j = margin; j < resHeight - margin; j++) {
+                if (matrix.get(i - margin + rec[0], j - margin + rec[1])) {
+                    resMatrix.set(i, j);
+                }
+            }
+        }
+        return resMatrix;
+    }
+
+    private static BitMatrix deleteMargin(BitMatrix matrix) {
+        int[] rec = matrix.getEnclosingRectangle();
+        int resWidth = rec[2];
+        int resHeight = rec[3];
+
+        BitMatrix resMatrix = new BitMatrix(resWidth, resHeight);
+        resMatrix.clear();
+        for (int i = 0; i < resWidth; i++) {
+            for (int j = 0; j < resHeight; j++) {
+                if (matrix.get(i + rec[0], j + rec[1]))
+                    resMatrix.set(i, j);
+            }
+        }
+        return resMatrix;
     }
 
     /**

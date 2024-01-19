@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description
+ * @Description 解决了zxing 边框问题 内边距问题 zxing默认margin 不对
  */
 public class QRCodeProviders {
 
@@ -45,7 +45,7 @@ public class QRCodeProviders {
         /**
          * 二维码内边距
          */
-        int contentMargin = 1;
+        int contentPadding = 1;
         /**
          * 二维码背景色
          */
@@ -85,8 +85,26 @@ public class QRCodeProviders {
             return this;
         }
 
+        /**
+         * 请使用 setContentPadding
+         *
+         * @param contentMargin
+         * @return
+         */
+        @Deprecated
         public Builder setContentMargin(int contentMargin) {
-            this.contentMargin = contentMargin;
+            this.contentPadding = contentMargin;
+            return this;
+        }
+
+        /**
+         * 做到了边框大小 确定 和输出尺寸确定
+         *
+         * @param contentPadding
+         * @return
+         */
+        public Builder setContentPadding(int contentPadding) {
+            this.contentPadding = contentPadding;
             return this;
         }
 
@@ -116,7 +134,7 @@ public class QRCodeProviders {
         }
 
         public Bitmap build() {
-            return QRCodeUtil.createQRCodeBitmap(content, outputSize, charSet, errorCorrectionLevel, contentMargin, contentColor, backgroundColor, logo, logoPercent, contentFillImg);
+            return QRCodeUtil.createQRCodeBitmap(content, outputSize, charSet, errorCorrectionLevel, contentPadding, contentColor, backgroundColor, logo, logoPercent, contentFillImg);
         }
     }
 }

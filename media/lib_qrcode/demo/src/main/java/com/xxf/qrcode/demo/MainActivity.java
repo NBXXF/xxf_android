@@ -245,12 +245,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         qrcode_bitmap = QRCodeProviders.of(content)
                 .setOutputSize(new Size(width, height))
-                .setContentMargin(Integer.valueOf(margin))
+                .setContentMargin(Integer.valueOf(margin) * 10)
                 .setContentColor(color_black)
                 .setBackgroundColor(color_white)
                 .setLogo(logoBitmap)
                 .setContentFillImg(blackBitmap)
                 .build();
+        Log.d("==========>", "==========>" + qrcode_bitmap.getWidth() + "   " + qrcode_bitmap.getHeight());
         iv_qrcode.setImageBitmap(qrcode_bitmap);
     }
 

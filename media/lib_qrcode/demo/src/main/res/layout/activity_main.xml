@@ -20,7 +20,9 @@
 
         <EditText
             android:id="@+id/et_content"
-            android:text="test"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="v103AQALAHRlbmFudHNsaW5rAgBAAIeN8LxWqeElUkyKKV9tMTa8fz7dyqFeWZYtvvLHmJhFx/kxIx99YJoBEudV8RTvrgUIuTmROJ6yK6NuVjbzxVA=9085"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

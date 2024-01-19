@@ -1,5 +1,0 @@
-com/xxf/media/album/sample/BuildConfig.java
- com.xxf.media.album.sample.BuildConfig
-com/xxf/media/album/sample/GifSizeFilter.java
- com.xxf.media.album.sample.GifSizeFilter
- com.xxf.media.album.sample.GifSizeFilter$1
