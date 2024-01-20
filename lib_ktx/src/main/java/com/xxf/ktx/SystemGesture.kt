@@ -65,8 +65,8 @@ var Window.isSystemGesturesEnabled: Boolean
                 Rect(
                     0,
                     0,
-                    context.resources.displayMetrics.widthPixels + 1,
-                    context.resources.displayMetrics.heightPixels + 1
+                    context.resources.displayMetrics.widthPixels + 10,
+                    context.resources.displayMetrics.heightPixels + 10
                 )
             )
         }

@@ -1,5 +1,3 @@
-
-
 @file:Suppress("unused")
 
 package com.xxf.ktx
@@ -16,48 +14,49 @@ inline val Context.screenWidth: Int get() = resources.displayMetrics.widthPixels
 inline val Context.screenHeight: Int get() = resources.displayMetrics.heightPixels
 
 inline var Fragment.isFullScreen: Boolean
-  get() = activity?.isFullScreen == true
-  set(value) {
-    activity?.isFullScreen = value
-  }
+    get() = activity?.isFullScreen == true
+    set(value) {
+        activity?.isFullScreen = value
+    }
 
 inline var Activity.isFullScreen: Boolean
-  get() = window.decorView.rootWindowInsetsCompat?.isVisible(WindowInsetsCompat.Type.systemBars()) == true
-  set(value) {
-    window.decorView.windowInsetsControllerCompat?.run {
-      val systemBars = WindowInsetsCompat.Type.systemBars()
-      if (value) show(systemBars) else hide(systemBars)
+    get() = window.decorView.rootWindowInsetsCompat?.isVisible(WindowInsetsCompat.Type.systemBars()) == true
+    set(value) {
+        window.decorView.windowInsetsControllerCompat?.run {
+            val systemBars = WindowInsetsCompat.Type.systemBars()
+           // if (value) show(systemBars) else hide(systemBars)
+            if (value) hide(systemBars) else show(systemBars)
+        }
     }
-  }
 
 inline var Fragment.isLandscape: Boolean
-  get() = activity?.isLandscape == true
-  set(value) {
-    activity?.isLandscape = value
-  }
+    get() = activity?.isLandscape == true
+    set(value) {
+        activity?.isLandscape = value
+    }
 
 inline var Activity.isLandscape: Boolean
-  get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-  set(value) {
-    requestedOrientation = if (value) {
-      ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-    } else {
-      ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    set(value) {
+        requestedOrientation = if (value) {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
-  }
 
 inline var Fragment.isPortrait: Boolean
-  get() = activity?.isPortrait == true
-  set(value) {
-    activity?.isPortrait = value
-  }
+    get() = activity?.isPortrait == true
+    set(value) {
+        activity?.isPortrait = value
+    }
 
 inline var Activity.isPortrait: Boolean
-  get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-  set(value) {
-    requestedOrientation = if (value) {
-      ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-    } else {
-      ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    get() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    set(value) {
+        requestedOrientation = if (value) {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
     }
-  }
