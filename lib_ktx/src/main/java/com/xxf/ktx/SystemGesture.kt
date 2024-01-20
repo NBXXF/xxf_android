@@ -61,12 +61,13 @@ var Window.isSystemGesturesEnabled: Boolean
             }.toMutableList()
 
         if (!value) {
+            val edgePadding = 48.dp
             systemGestureExclusionRects.add(
                 Rect(
                     0,
                     0,
-                    context.resources.displayMetrics.widthPixels + 10,
-                    context.resources.displayMetrics.heightPixels + 10
+                    context.resources.displayMetrics.widthPixels + edgePadding,
+                    context.resources.displayMetrics.heightPixels + edgePadding
                 )
             )
         }
