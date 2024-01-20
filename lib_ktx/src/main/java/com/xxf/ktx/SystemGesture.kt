@@ -45,7 +45,7 @@ var Window.isSystemGesturesEnabled: Boolean
                     context.resources.displayMetrics.heightPixels
                 )
             )
-        } >= 0
+        } == -1
     }
     set(value) {
         val systemGestureExclusionRects =
