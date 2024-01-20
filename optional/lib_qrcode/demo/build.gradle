@@ -32,6 +32,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation des.material
     //UI
-    implementation project(path: ':media:lib_qrcode')
+    implementation project(path: ':optional:lib_qrcode')
 
 }

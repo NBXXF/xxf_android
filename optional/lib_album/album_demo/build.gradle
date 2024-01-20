@@ -1,28 +1,21 @@
-apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-def des = rootProject.ext.dependencies
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.github.dcendents.android-maven'
+}
 android {
     compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
 
-
     defaultConfig {
+        applicationId 'com.xxf.media.album.sample'
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    dataBinding {
-        enabled true
+    lintOptions {
+        abortOnError false
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -30,10 +23,13 @@ android {
     }
 }
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api project(':media:lib_camera_wechat')
+    implementation project(':optional:lib_album')
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    implementation des.material
     implementation project(path: ':lib_permission')
+    implementation project(path: ':lib_adapter')
 }
