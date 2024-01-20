@@ -1,9 +1,11 @@
 package com.xxf.arch.model
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Parcelable
 import java.io.Serializable
+import kotlin.reflect.KClass
 
 /**
  * 常用于设置步骤 每一步动态分发下一步(比如按类型 等等)
@@ -40,6 +42,22 @@ abstract class ProjectStepSetting<S>
      * 创建下一步,如果为空就没有下一步了 代表整个流程结束
      */
     abstract fun nextStepSetting(): ProjectStepSetting<*>?
+}
+
+/**
+ * 简化 传参 默认
+ */
+abstract class ProjectStepActivitySetting<T : Activity, S>(override var stepSettingData: S) :
+    ProjectStepSetting<S>(stepSettingData) {
+
+    override fun stepLauncher(context: Context): Intent {
+        return fillSettingIntent(context, stepLauncherActivity())
+    }
+
+    /**
+     * 当前步骤 activity class
+     */
+    abstract fun stepLauncherActivity(): Class<T>;
 }
 
 
