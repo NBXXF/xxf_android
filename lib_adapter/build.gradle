@@ -32,6 +32,7 @@ dependencies {
     api des.material
     api des.recyclerview
     api project(path: ':lib_ktx')
+    implementation project(path: ':lib_speed')
 }
 
 ext {

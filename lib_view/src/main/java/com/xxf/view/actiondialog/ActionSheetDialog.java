@@ -18,15 +18,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.xxf.arch.XXF;
 import com.xxf.arch.dialog.XXFDialog;
-import com.xxf.utils.DensityUtil;
 import com.xxf.utils.ScreenUtils;
 import com.xxf.view.R;
 import com.xxf.view.config.AdapterStyle;
 import com.xxf.view.databinding.XxfAdapterItemBottomActionBinding;
 import com.xxf.view.databinding.XxfDialogBottomActionBinding;
 import com.xxf.view.model.ItemMenu;
+import com.xxf.view.model.ItemMenuImpl;
 import com.xxf.view.recyclerview.adapter.BaseAdapter;
 import com.xxf.view.recyclerview.adapter.OnItemClickListener;
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
@@ -88,7 +87,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
         public Builder setItems(List<String> items, String selected) {
             this.mItems.clear();
             for (String item : items) {
-                this.mItems.add(new ItemMenuImpl<>(item, item, TextUtils.equals(item, selected)));
+                this.mItems.add(new ItemMenuImpl<>(item, item,null, TextUtils.equals(item, selected),false));
             }
             return this;
         }
@@ -202,7 +201,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
 
         TextView menuTV = binding.tvItemTitle;
         menuTV.setTextSize(adapterStyle.getItemTitleTextSize());
-        if (t.isItemDisable()) {
+        if (t.isItemDisabled()) {
             binding.getRoot().setBackgroundColor(adapterStyle.getItemDisableBgColor());
             menuTV.setTextColor(adapterStyle.getItemTitleDisableColor());
         } else if (t.isItemSelected()) {
@@ -212,7 +211,7 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
             binding.getRoot().setBackgroundColor(adapterStyle.getItemBackgroundColor());
             menuTV.setTextColor(adapterStyle.getItemTitleColor());
         }
-        menuTV.setEnabled(!t.isItemDisable());
+        menuTV.setEnabled(!t.isItemDisabled());
         menuTV.setText(t.getItemTitle());
         binding.itemDivider.setBackgroundColor(adapterStyle.getItemDividerColor());
     }

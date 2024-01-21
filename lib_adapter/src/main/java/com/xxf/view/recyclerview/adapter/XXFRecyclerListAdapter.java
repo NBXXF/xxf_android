@@ -396,24 +396,5 @@ public abstract class XXFRecyclerListAdapter<V extends ViewBinding, T>
         return this.onItemChildLongClickListener != null && this.onItemChildLongClickListener.onItemChildLongClick(this, holder, childView, index, getItem(index));
     }
 
-    /**
-     * 原始adapter 不支持了
-     *
-     * @return
-     */
-    @Deprecated
-    public int getHeaderCount() {
-        return 0;
-    }
-
-    /**
-     * 原始adapter 不支持了
-     *
-     * @return
-     */
-    @Deprecated
-    public int getFooterCount() {
-        return 0;
-    }
 }
 

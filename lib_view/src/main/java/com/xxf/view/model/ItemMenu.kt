@@ -1,6 +1,6 @@
-package com.xxf.view.model;
+package com.xxf.view.model
 
-import androidx.annotation.DrawableRes;
+import com.xxf.model.SelectableEntity
 
 /**
  * @author xuanyouwu
@@ -8,20 +8,23 @@ import androidx.annotation.DrawableRes;
  * @time 2016-09-21 15:45
  * item 渲染控制模型
  */
-public interface ItemMenu<T> extends SelectableEntity {
+interface ItemMenu<T> : SelectableEntity {
+    /**
+     * 实际数据
+     */
+    var item: T
 
-    T getItem();
-
-    CharSequence getItemTitle();
+    /**
+     * 标题
+     */
+    var itemTitle: CharSequence?
 
     /**
      * 支持id int
      * 支持 string
+     * gilde 就支持any 建议用glide加载 也不用转换
      *
      * @return
      */
-    Object getItemIcon();
-
-    boolean isItemDisable();
-
+    var itemIcon: Any?
 }

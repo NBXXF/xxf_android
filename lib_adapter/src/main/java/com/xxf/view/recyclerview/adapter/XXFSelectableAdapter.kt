@@ -1,166 +1,82 @@
-package com.xxf.view.recyclerview.adapter;
+package com.xxf.view.recyclerview.adapter
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.AsyncDifferConfig;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.viewbinding.ViewBinding;
-
-import com.xxf.view.model.SelectableEntity;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
+import com.xxf.model.SelectableEntity
+import com.xxf.model.clearSelected
+import com.xxf.model.getFirstSelected
+import com.xxf.model.getSelectedItems
+import com.xxf.model.setItemSelect
+import java.io.Serializable
 
 /**
- * Description  可选择的适配器
- * <p>
- *
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
- * date createTime：2017/10/5
- * version 2.1.0
+ * 提供直接操作的
  */
-public abstract class XXFSelectableAdapter<V extends ViewBinding, T extends SelectableEntity> extends XXFRecyclerAdapter<V, T> implements ISelectableAdapter {
+/**
+ * 清除选中的items
+ */
+@SuppressLint("NotifyDataSetChanged")
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.clearSelectedItems() {
+    this.currentList.clearSelected()
+    changeRefresh()
+}
 
-    public static final int SELECT_TYPE_UNSELECTABLE = 200;
-    public static final int SELECT_TYPE_SINGLE = 201;
-    public static final int SELECT_TYPE_MULTIPLE = 202;
-
-    @IntDef({SELECT_TYPE_UNSELECTABLE,
-            SELECT_TYPE_SINGLE,
-            SELECT_TYPE_MULTIPLE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface SelectType {
+/**
+ * 选中item
+ *
+ * @param select
+ * @param index
+ */
+@SuppressLint("NotifyDataSetChanged")
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.setItemSelect(
+    select: Boolean,
+    index: Int,
+    selectType: SelectType = SelectType.SELECT_TYPE_SINGLE
+) {
+    if (selectType == SelectType.SELECT_TYPE_SINGLE) {
+        this.currentList.clearSelected()
     }
+    this.currentList.setItemSelect(select, index)
+    changeRefresh()
+}
 
-    @SelectType
-    private int selectType = SELECT_TYPE_SINGLE;//默认单选
+/**
+ * 反选item
+ *
+ * @param index
+ */
+@SuppressLint("NotifyDataSetChanged")
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.toggleItemSelect(
+    index: Int,
+    selectType: SelectType = SelectType.SELECT_TYPE_SINGLE
+) {
+    val item = getItem(index)
+    this.setItemSelect(item?.isItemSelected != true, index, selectType)
+}
 
-    public XXFSelectableAdapter(@SelectType int selectType) {
-        this.selectType = selectType;
+/**
+ * 获取全部选中的
+ */
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItems(index: Int): List<T> {
+    return this.currentList.getSelectedItems()
+}
+
+/**
+ * 获取第一个选中的
+ */
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItem(index: Int): T? {
+    return this.currentList.getFirstSelected()
+}
+
+@SuppressLint("NotifyDataSetChanged")
+private fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.changeRefresh() {
+    if (this is RecyclerView.Adapter<*>) {
+        this.notifyDataSetChanged()
     }
+}
 
-
-    public int getSelectType() {
-        return selectType;
-    }
-
-    public void setSelectType(@SelectType int selectType) {
-        if (this.selectType != selectType) {
-            this.selectType = selectType;
-            clearSelectedItems();
-            notifyDataSetChanged();
-        }
-    }
-
-    /**
-     * 是否开启选择模式
-     *
-     * @return
-     */
-    @Override
-    public final boolean isSelectable() {
-        return selectType == SELECT_TYPE_SINGLE || selectType == SELECT_TYPE_MULTIPLE;
-    }
-
-    @Override
-    public final boolean isMultiSelect() {
-        return selectType == SELECT_TYPE_MULTIPLE;
-    }
-
-    @Override
-    public final boolean isSingleSelect() {
-        return selectType == SELECT_TYPE_SINGLE;
-    }
-
-    /**
-     * 清除选中的items
-     */
-    public void clearSelectedItems() {
-        for (int i = 0; i < getItemCount(); i++) {
-            T item = getItem(i);
-            if (item != null) {
-                item.setItemSelect(false);
-            }
-        }
-        notifyDataSetChanged();
-    }
-
-
-    /**
-     * 选中item
-     *
-     * @param select
-     * @param index
-     */
-    public void setItemSelect(boolean select, int index) {
-        switch (selectType) {
-            case SELECT_TYPE_MULTIPLE: {
-                T item = getItem(index);
-                if (item != null
-                        && item.isItemSelected() != select) {
-                    item.setItemSelect(select);
-                    updateItem(item);
-                }
-            }
-            break;
-            case SELECT_TYPE_SINGLE: {
-                clearSelectedItems();
-                T item = getItem(index);
-                if (item != null
-                        && item.isItemSelected() != select) {
-                    item.setItemSelect(select);
-                    notifyDataSetChanged();
-                }
-            }
-            break;
-        }
-    }
-
-    /**
-     * 反选item
-     *
-     * @param index
-     */
-    public void toogleItemSelect(int index) {
-        T item = getItem(index);
-        if (item != null) {
-            setItemSelect(!item.isItemSelected(), index);
-        }
-    }
-
-    /**
-     * 获取已经选择的item
-     *
-     * @return
-     */
-    @NonNull
-    public List<T> getSelectedItems() {
-        List<T> selectedItems = new ArrayList<>();
-        for (int i = 0; i < getItemCount(); i++) {
-            T item = getItem(i);
-            if (item != null && item.isItemSelected()) {
-                selectedItems.add(item);
-            }
-        }
-        return selectedItems;
-    }
-
-    /**
-     * 获取第一个选中的item
-     *
-     * @return
-     */
-    @Nullable
-    @CheckResult
-    public T getSelectedItem() {
-        List<T> selectedItems = getSelectedItems();
-        if (!selectedItems.isEmpty()) {
-            return selectedItems.get(0);
-        }
-        return null;
-    }
+enum class SelectType : Serializable {
+    SELECT_TYPE_SINGLE,
+    SELECT_TYPE_MULTIPLE
 }
