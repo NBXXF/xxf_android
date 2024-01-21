@@ -24,9 +24,9 @@ interface SelectableEntity : Serializable {
     var isItemDisabled: Boolean
 }
 
-class SimpleSelectableEntity(
-    override var isItemSelected: Boolean = false,
-    override var isItemDisabled: Boolean = false
+open class SimpleSelectableEntity(
+    open override var isItemSelected: Boolean = false,
+    open override var isItemDisabled: Boolean = false
 ) : SelectableEntity
 
 @Deprecated("过时,直接访问字段,这是为了兼容老版本", ReplaceWith("直接访问字段"))
