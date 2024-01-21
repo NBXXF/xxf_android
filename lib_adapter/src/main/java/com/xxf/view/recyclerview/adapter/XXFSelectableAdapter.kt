@@ -58,14 +58,14 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.toggleItemSelect(
 /**
  * 获取全部选中的
  */
-fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItems(index: Int): List<T> {
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItems(): List<T> {
     return this.currentList.getSelectedItems()
 }
 
 /**
  * 获取第一个选中的
  */
-fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItem(index: Int): T? {
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItem(): T? {
     return this.currentList.getFirstSelected()
 }
 
