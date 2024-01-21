@@ -1,5 +1,22 @@
 package com.xxf.ktx.standard
 
+
+/**
+ * 如果为空 将进行执行block
+ */
+inline fun <T> T.takeIfNeeded(block: () -> T): T {
+    return this ?: block()
+}
+
+/**
+ * 如果为空 将返回default
+ */
+fun <T> T.takeIfNeeded(default: T): T {
+    return this?.let {
+        this
+    } ?: default
+}
+
 /**
  * 由于Kotlin 三目运算 只能写if
  * 提供功能函数简化

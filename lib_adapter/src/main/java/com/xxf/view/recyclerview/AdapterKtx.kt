@@ -4,10 +4,10 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.xxf.view.recyclerview.adapter.XXFUIAdapterObserver
 
-fun <VH : RecyclerView.ViewHolder> RecyclerView.Adapter<VH>.doAdapterDataObserver(block: () -> Unit): RecyclerView.AdapterDataObserver {
+fun <VH : RecyclerView.ViewHolder,T:RecyclerView.Adapter<VH>> T.doAdapterDataObserver(block: T.() -> Unit): RecyclerView.AdapterDataObserver {
     return object : XXFUIAdapterObserver() {
         override fun updateUI() {
-            block()
+            this@doAdapterDataObserver.apply(block)
         }
     }.also {
         this.registerAdapterDataObserver(it)
