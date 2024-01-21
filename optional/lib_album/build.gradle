@@ -31,7 +31,6 @@ dependencies {
 
     implementation project(path: ':lib_permission')
     implementation project(path: ':lib_fileprovider')
-    implementation project(path: ':lib_adapter')
     implementation project(path: ':lib_utils')
     implementation project(path: ':lib_rxjava')
 

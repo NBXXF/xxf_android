@@ -16,6 +16,7 @@
  */
 package com.xxf.media.album.internal.entity;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -28,9 +29,8 @@ import androidx.annotation.Nullable;
 
 import com.xxf.media.album.MimeType;
 import com.xxf.media.album.internal.utils.PathUtils;
-import com.xxf.view.model.SelectableEntity;
 
-public class Item implements Parcelable, SelectableEntity {
+public class Item implements Parcelable{
     public static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override
         @Nullable
@@ -77,6 +77,7 @@ public class Item implements Parcelable, SelectableEntity {
         duration = source.readLong();
     }
 
+    @SuppressLint("Range")
     public static Item valueOf(Cursor cursor) {
         return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
@@ -147,20 +148,6 @@ public class Item implements Parcelable, SelectableEntity {
         return result;
     }
 
-    @Override
-    public boolean isItemSelected() {
-        return itemSelected;
-    }
-
-    @Override
-    public void setItemSelect(boolean select) {
-        this.itemSelected = select;
-    }
-
-    @Override
-    public void toggleItemSelect() {
-        this.itemSelected = !this.itemSelected;
-    }
 
     public String getPath(Context context) {
         return PathUtils.getPath(context, this.uri);
@@ -177,4 +164,6 @@ public class Item implements Parcelable, SelectableEntity {
                 ", itemSelected=" + itemSelected +
                 '}';
     }
+
+
 }
