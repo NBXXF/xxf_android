@@ -67,6 +67,6 @@ fun Intent.makeSureNoNullExtras() {
 fun <T> Intent.putExtras(vararg params: Pair<String, T>): Intent {
     if (params.isEmpty()) return this
     makeSureNoNullExtras()
-    this.extras?.putExtras(*params)
+    this.putExtras(bundleOf(*params))
     return this
 }
