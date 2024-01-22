@@ -24,6 +24,8 @@ import java.io.IOException
  *  缺点 不能拿到json
  *  否则需要反射获取reader.in
  *  还有 JsonTreeReader 的问题
+ *
+ *  最重要的一个缺点  如果项目中还有这样类似的一个getDelegateAdapter 就会形成环
  */
 class TrackerTypeDelegateAdapterFactory(
     val writeCallBack: ((writer: JsonWriter, type: TypeToken<*>, e: Throwable) -> Unit)? = null,
