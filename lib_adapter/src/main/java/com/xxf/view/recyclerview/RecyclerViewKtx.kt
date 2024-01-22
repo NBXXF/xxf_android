@@ -1,11 +1,19 @@
 package com.xxf.view.recyclerview
 
 import android.content.Context
+import android.view.MotionEvent
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.xxf.ktx.getTag
+import com.xxf.ktx.hideKeyboard
+import com.xxf.ktx.internals.KeyboardHiddenTouchListener
+import com.xxf.ktx.isKeyboardHiddenInTouchMode
+import com.xxf.ktx.setTag
 
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
     val layoutManager = this.layoutManager
@@ -66,7 +74,9 @@ enum class SNAP(var value: Int) {
     SNAP_TO_ANY(LinearSmoothScroller.SNAP_TO_ANY)
 }
 
-fun <VH : RecyclerView.ViewHolder,T:RecyclerView.Adapter<VH>> RecyclerView.doAdapterDataObserver(block: T.() -> Unit): RecyclerView.AdapterDataObserver {
+fun <VH : RecyclerView.ViewHolder, T : RecyclerView.Adapter<VH>> RecyclerView.doAdapterDataObserver(
+    block: T.() -> Unit
+): RecyclerView.AdapterDataObserver {
     @Suppress("UNCHECKED_CAST")
     return (this.adapter as T).doAdapterDataObserver(block)
 }
@@ -84,3 +94,41 @@ inline fun <reified T : Adapter<VH>, VH> RecyclerView.getAdapterIfNeeded(initial
         }
     }
 }
+
+/**
+ * 隐藏键盘
+ */
+inline var RecyclerView.isKeyboardHiddenInTouchMode: Boolean
+    get() {
+        return this.getTag<OnItemTouchListener>(RecyclerView::isKeyboardHiddenInTouchMode.name) != null
+    }
+    set(value) {
+        var itemTouchListener =
+            this.getTag<OnItemTouchListener>(RecyclerView::isKeyboardHiddenInTouchMode.name)
+        if (value) {
+            if (itemTouchListener == null) {
+                itemTouchListener = object : OnItemTouchListener {
+                    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                        if (e.action == MotionEvent.ACTION_DOWN) {
+                            rv.hideKeyboard()
+                        }
+                        return false
+                    }
+
+                    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+                    }
+
+                    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+
+                    }
+                }.also { it ->
+                    this.setTag(RecyclerView::isKeyboardHiddenInTouchMode.name, it)
+                }
+            }
+            this.removeOnItemTouchListener(itemTouchListener)
+            this.addOnItemTouchListener(itemTouchListener)
+        } else {
+            itemTouchListener?.let { this.removeOnItemTouchListener(it) }
+            this.setTag(RecyclerView::isKeyboardHiddenInTouchMode.name, Unit)
+        }
+    }
