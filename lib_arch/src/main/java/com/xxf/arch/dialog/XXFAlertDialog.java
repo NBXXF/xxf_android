@@ -1,7 +1,6 @@
 package com.xxf.arch.dialog;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Pair;
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
-import com.xxf.utils.RAUtils;
 import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,16 +40,14 @@ public class XXFAlertDialog<R>
                 .map(new Function<Object, Pair<AlertDialog, R>>() {
                     @Override
                     public Pair<AlertDialog, R> apply(Object o) throws Throwable {
-                        return Pair.create(XXFAlertDialog.this, (R) o);
+                        return (Pair<AlertDialog, R>) o;
                     }
                 });
     }
 
     @Override
     public void setComponentResult(R result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
+        componentSubject.onNext(Pair.create(this, result));
     }
 
     protected XXFAlertDialog(@NonNull Context context) {
@@ -175,7 +171,7 @@ public class XXFAlertDialog<R>
     public void setWindowRadius(float radius) {
         FrameLayout decorView = getDecorView();
         if (decorView != null) {
-            CornerUtil.INSTANCE.clipViewRadius(decorView,radius);
+            CornerUtil.INSTANCE.clipViewRadius(decorView, radius);
         }
     }
 }

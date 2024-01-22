@@ -1,7 +1,6 @@
 package com.xxf.arch.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -29,8 +28,8 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @date createTime：2018/9/7
  */
 
-public class XXFFragment<E>
-        extends Fragment implements ObservableComponent<Fragment, E> {
+public class XXFFragment<R>
+        extends Fragment implements ObservableComponent<Fragment, R> {
 
     public XXFFragment() {
     }
@@ -43,21 +42,19 @@ public class XXFFragment<E>
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
-    public Observable<Pair<Fragment, E>> getComponentObservable() {
+    public Observable<Pair<Fragment, R>> getComponentObservable() {
         return componentSubject.ofType(Object.class)
-                .map(new Function<Object, Pair<Fragment, E>>() {
+                .map(new Function<Object, Pair<Fragment, R>>() {
                     @Override
-                    public Pair<Fragment, E> apply(Object o) throws Throwable {
-                        return Pair.create(XXFFragment.this, (E) o);
+                    public Pair<Fragment, R> apply(Object o) throws Throwable {
+                        return (Pair<Fragment, R>) o;
                     }
                 });
     }
 
     @Override
-    public void setComponentResult(E result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
+    public void setComponentResult(R result) {
+        componentSubject.onNext(Pair.create(this, result));
     }
 
     @CallSuper

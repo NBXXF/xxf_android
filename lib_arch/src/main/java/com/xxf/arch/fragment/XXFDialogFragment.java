@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
@@ -28,7 +27,6 @@ import com.xxf.arch.component.WindowComponent;
 import com.xxf.arch.dialog.TouchListenDialog;
 import com.xxf.utils.FragmentUtils;
 import com.xxf.utils.RAUtils;
-import com.xxf.view.round.CornerUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,7 +41,7 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFDialogFragment<E> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, E>, WindowComponent {
+public class XXFDialogFragment<R> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, R>, WindowComponent {
     private final String TAG_PREFIX = "show_rau_";
     @LayoutRes
     private int mContentLayoutId;
@@ -59,21 +57,19 @@ public class XXFDialogFragment<E> extends AppCompatDialogFragment implements Obs
     }
 
     @Override
-    public Observable<Pair<DialogFragment, E>> getComponentObservable() {
+    public Observable<Pair<DialogFragment, R>> getComponentObservable() {
         return componentSubject.ofType(Object.class)
-                .map(new Function<Object, Pair<DialogFragment, E>>() {
+                .map(new Function<Object, Pair<DialogFragment, R>>() {
                     @Override
-                    public Pair<DialogFragment, E> apply(Object o) throws Throwable {
-                        return Pair.create(XXFDialogFragment.this, (E) o);
+                    public Pair<DialogFragment, R> apply(Object o) throws Throwable {
+                        return (Pair<DialogFragment, R>) o;
                     }
                 });
     }
 
     @Override
-    public void setComponentResult(E result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
+    public void setComponentResult(R result) {
+        componentSubject.onNext(Pair.create(this, result));
     }
 
     @CallSuper

@@ -21,7 +21,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.xxf.application.lifecycle.ViewLifecycleOwner;
-import com.xxf.arch.R;
 import com.xxf.arch.component.BottomSheetWindowComponent;
 import com.xxf.arch.component.ObservableComponent;
 import com.xxf.arch.component.WindowComponent;
@@ -43,8 +42,8 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @date createTime：2018/9/7
  */
 
-public class XXFBottomSheetDialogFragment<E>
-        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, E>, BottomSheetWindowComponent {
+public class XXFBottomSheetDialogFragment<R>
+        extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, R>, BottomSheetWindowComponent {
     private final String TAG_PREFIX = "show_rau_";
     @LayoutRes
     private int mContentLayoutId;
@@ -60,21 +59,19 @@ public class XXFBottomSheetDialogFragment<E>
     }
 
     @Override
-    public Observable<Pair<BottomSheetDialogFragment, E>> getComponentObservable() {
+    public Observable<Pair<BottomSheetDialogFragment, R>> getComponentObservable() {
         return componentSubject.ofType(Object.class)
-                .map(new Function<Object, Pair<BottomSheetDialogFragment, E>>() {
+                .map(new Function<Object, Pair<BottomSheetDialogFragment, R>>() {
                     @Override
-                    public Pair<BottomSheetDialogFragment, E> apply(Object o) throws Throwable {
-                        return Pair.create(XXFBottomSheetDialogFragment.this, (E) o);
+                    public Pair<BottomSheetDialogFragment, R> apply(Object o) throws Throwable {
+                        return (Pair<BottomSheetDialogFragment, R>) o;
                     }
                 });
     }
 
     @Override
-    public void setComponentResult(E result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
+    public void setComponentResult(R result) {
+        componentSubject.onNext(Pair.create(this, result));
     }
 
     @CallSuper

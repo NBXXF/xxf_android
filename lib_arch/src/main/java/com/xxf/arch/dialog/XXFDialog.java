@@ -44,16 +44,14 @@ public class XXFDialog<R>
                 .map(new Function<Object, Pair<AppCompatDialog, R>>() {
                     @Override
                     public Pair<AppCompatDialog, R> apply(Object o) throws Throwable {
-                        return Pair.create(XXFDialog.this, (R) o);
+                        return (Pair<AppCompatDialog, R>) o;
                     }
                 });
     }
 
     @Override
     public void setComponentResult(R result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
+        componentSubject.onNext(Pair.create(this, result));
     }
 
     protected XXFDialog(@NonNull Context context) {

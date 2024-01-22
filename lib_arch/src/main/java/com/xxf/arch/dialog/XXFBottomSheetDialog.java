@@ -43,7 +43,7 @@ public class XXFBottomSheetDialog<R> extends AndroidBottomSheetDialog
                 .map(new Function<Object, Pair<AndroidBottomSheetDialog, R>>() {
                     @Override
                     public Pair<AndroidBottomSheetDialog, R> apply(Object o) throws Throwable {
-                        return Pair.create(XXFBottomSheetDialog.this, (R) o);
+                        return (Pair<AndroidBottomSheetDialog, R>) o;
                     }
                 });
     }
@@ -55,9 +55,7 @@ public class XXFBottomSheetDialog<R> extends AndroidBottomSheetDialog
 
     @Override
     public void setComponentResult(R result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
+        componentSubject.onNext(Pair.create(this, result));
     }
 
     public XXFBottomSheetDialog(@NonNull Context context) {

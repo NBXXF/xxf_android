@@ -64,16 +64,14 @@ public class XXFAlertDialogFragment<E> extends AppCompatDialogFragment implement
                 .map(new Function<Object, Pair<DialogFragment, E>>() {
                     @Override
                     public Pair<DialogFragment, E> apply(Object o) throws Throwable {
-                        return Pair.create(XXFAlertDialogFragment.this, (E) o);
+                        return (Pair<DialogFragment, E>) o;
                     }
                 });
     }
 
     @Override
     public void setComponentResult(E result) {
-        if (result != null) {
-            componentSubject.onNext(result);
-        }
+        componentSubject.onNext(Pair.create(this, result));
     }
 
 
