@@ -2,7 +2,6 @@ package com.xxf.arch.fragment.navigation
 
 import android.app.Activity
 import android.content.ComponentName
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
@@ -11,7 +10,6 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHost
 import androidx.navigation.NavOptions
@@ -19,12 +17,9 @@ import androidx.navigation.Navigator
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.FragmentNavigatorDestinationBuilder
 import androidx.navigation.fragment.NavHostFragment
 import com.xxf.arch.R
-import com.xxf.cache.ObjectCache
 import com.xxf.cache.ReflectionCache
-import kotlin.jvm.internal.Reflection
 
 
 /**
@@ -65,16 +60,16 @@ fun View.findNavControllerOrNull(): NavController? {
 /**
  * 获取回退栈数量
  */
-fun NavController.getNavCount(): Int {
-    return currentBackStack.value.size
-}
-
-/**
- * 获取回退栈
- */
-fun NavController.getNavBackStack(): List<NavBackStackEntry> {
-    return currentBackStack.value
-}
+//fun NavController.getNavCount(): Int {
+//    return currentBackStack.value.size
+//}
+//
+///**
+// * 获取回退栈
+// */
+//fun NavController.getNavBackStack(): List<NavBackStackEntry> {
+//    return currentBackStack.value
+//}
 
 /**
  * 支持更高的自定义
@@ -95,6 +90,7 @@ fun NavController.navigateTo(
     method.invoke(node, args, navOptions, navigatorExtras)
 }
 
+@JvmName("navigateFragment")
 fun <T : Fragment> NavController.navigate(
     target: Class<T>,
     args: Bundle? = null,
@@ -111,7 +107,7 @@ fun <T : Fragment> NavController.navigate(
     )
 }
 
-
+@JvmName("navigateActivity")
 fun <T : Activity> NavController.navigate(
     target: Class<T>,
     args: Bundle? = null,
@@ -129,6 +125,7 @@ fun <T : Activity> NavController.navigate(
 }
 
 
+@JvmName("navigateDialogFragment")
 fun <T : DialogFragment> NavController.navigate(
     target: Class<T>,
     args: Bundle? = null,

@@ -24,7 +24,11 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api des.lifecycle_common
-    api des.navigation_fragment_ktx
+    def nav_version = "2.5.0"
+    implementation "androidx.navigation:navigation-common:$nav_version"
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    //compileOnly des.navigation_fragment_ktx
+    //implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     api project(path: ':lib_application')
     api project(path: ':lib_http')
     api project(path: ':lib_utils')
