@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.xxf.arch.R
 import com.xxf.arch.dialog.TouchListenDialog
 import com.xxf.arch.fragment.XXFDialogFragment
-import com.xxf.arch.fragment.navigation.INavigationController
-import com.xxf.arch.fragment.navigation.NavigationContainer
-import com.xxf.arch.fragment.navigation.container.XXFBottomSheetNavigationDialogFragment.Companion.TAG_DEFAULT_NAV_HOST
-import com.xxf.arch.fragment.navigation.impl.FragmentNavController
+import com.xxf.arch.fragment.navigation.navigate
 import java.util.concurrent.Callable
 
 /**
@@ -23,34 +21,37 @@ import java.util.concurrent.Callable
  * @param defaultNavHost 默认fragment
  */
 open class XXFNavigationDialogFragment :
-    XXFDialogFragment<Unit>, NavigationContainer {
+    XXFDialogFragment<Unit> {
     constructor() : super(R.layout.xxf_fragment_container)
 
     constructor(contentLayoutId: Int) : super(contentLayoutId)
-    private var defaultNavHost: Callable<Fragment?> = Callable<Fragment?> { null }
 
-    constructor(defaultNavHost: Callable<Fragment?>) : super(R.layout.xxf_fragment_container) {
+    private var defaultNavHost: Callable<Class<Fragment>?> = Callable<Class<Fragment>?> { null }
+
+    constructor(defaultNavHost: Callable<Class<Fragment>?>) : super(R.layout.xxf_fragment_container) {
         this.defaultNavHost = defaultNavHost
     }
 
-    private val navController: INavigationController by lazy {
-        FragmentNavController(this)
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-       return object : TouchListenDialog<Any?>(context, theme) {
+        return object : TouchListenDialog<Any?>(context, theme) {
             override fun onDialogTouchOutside(event: MotionEvent) {
                 this@XXFNavigationDialogFragment.onDialogTouchOutside(event)
             }
 
-           override fun onBackPressed() {
-               //拦截返回事件
-               if (!navController.navigationUp()) {
-                   super.onBackPressed()
-               }
-           }
+            override fun onBackPressed() {
+                //拦截返回事件
+                if (findNavController()?.navigateUp() != true) {
+                    super.onBackPressed()
+                }
+            }
         };
     }
+
+    fun Fragment.findNavController(): NavController? {
+        return (childFragmentManager.findFragmentById(R.id.navigation_fragment_container) as NavHostFragment).navController
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,7 +61,7 @@ open class XXFNavigationDialogFragment :
                 dismissAllowingStateLoss()
                 return
             } else {
-                navController.navigation(call, null, TAG_DEFAULT_NAV_HOST)
+                findNavController()?.navigate(call)
             }
         } catch (e: Throwable) {
             e.printStackTrace()
@@ -68,7 +69,4 @@ open class XXFNavigationDialogFragment :
         }
     }
 
-    override fun getNavigationController(): INavigationController {
-        return navController
-    }
 }

@@ -1,119 +1,203 @@
 package com.xxf.arch.fragment.navigation
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.ActivityNavigator
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.NavDestination
+import androidx.navigation.NavHost
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigator
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.DialogFragmentNavigator
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorDestinationBuilder
+import androidx.navigation.fragment.NavHostFragment
 import com.xxf.arch.R
+import com.xxf.cache.ObjectCache
+import com.xxf.cache.ReflectionCache
+import kotlin.jvm.internal.Reflection
+
 
 /**
- * @version 2.3.1
- * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
- * @Description
- * @date createTime：2022/2/22
+ * 是否在导航控制器中
  */
-abstract class NavController(val lifecycle: LifecycleOwner, val fragmentManager: FragmentManager) :
-    INavigationController {
-    init {
-        fragmentManager.registerFragmentLifecycleCallbacks(object :FragmentManager.FragmentLifecycleCallbacks(){
-            override fun onFragmentViewCreated(
-                fm: FragmentManager,
-                f: Fragment,
-                v: View,
-                savedInstanceState: Bundle?
-            ) {
-                super.onFragmentViewCreated(fm, f, v, savedInstanceState)
-                /**
-                 * 在通过add添加多个Fragment的过程中，如果新fragment某空白区域对应上一fragment的某个控件，点击该空白区域会响应上一fragment控件点击事件，也就是事件透传过去了，解决该问题最简单的方法即为在fragment的根布局文件中加入android:clickable = true属性即可，或者对根布局设个空的点击事件也行
-                 */
-                //处理点击事件透传的bug，
-                v.isClickable=true
-                if(!v.hasOnClickListeners()){
-                    v.setOnClickListener {
-                    }
-                }
-            }
-        },true);
+fun Fragment.isInNavController(): Boolean {
+    return try {
+        findNavControllerOrNull() != null
+    } catch (e: Throwable) {
+        false
     }
-    override fun navigation(destination: Fragment, anim: AnimBuilder?, tag: String?, flag: Int) {
-        checkFragment(destination)
-        fragmentManager.beginTransaction()
-            .apply {
-                if (anim != null) {
-                    setCustomAnimations(
-                        anim.enter,
-                        anim.exit,
-                        anim.popEnter,
-                        anim.popExit
-                    )
-                }
-                fragmentManager.fragments.forEach { f ->
-                    this.hide(f)
-                    setMaxLifecycle(f, Lifecycle.State.STARTED)
-                }
-            }
-            .add(R.id.navigation_fragment_container, destination, tag)
-            .setMaxLifecycle(destination, Lifecycle.State.RESUMED)
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-    }
+}
 
-    /**
-     * 检查childFragment
-     * 子集是 BottomDialogFragment 会导致整体滚动问题
-     * 子集是 DialogFragment 调用自身的dismissXxx方法 会导致白屏
-     */
-    private fun checkFragment(fragment: Fragment) {
-        if (fragment is DialogFragment) {
-            throw IllegalStateException(
-                "Fragment " + this
-                        + " does not be DialogFragment"
-            )
+
+/**
+ * 获取导航控制器容器
+ * 不在导航控制器中会报错
+ * Get the root view for the fragment's layout (the one returned by onCreateView), if provided.
+ */
+fun Fragment.findNavControllerOrNull(): NavController? {
+    return try {
+        NavHostFragment.findNavController(this)
+    } catch (e: Throwable) {
+        e.printStackTrace()
+        null
+    }
+}
+
+fun View.findNavControllerOrNull(): NavController? {
+    return try {
+        return this.findNavController()
+    } catch (e: Throwable) {
+        e.printStackTrace()
+        null
+    }
+}
+
+/**
+ * 获取回退栈数量
+ */
+fun NavController.getNavCount(): Int {
+    return currentBackStack.value.size
+}
+
+/**
+ * 获取回退栈
+ */
+fun NavController.getNavBackStack(): List<NavBackStackEntry> {
+    return currentBackStack.value
+}
+
+/**
+ * 支持更高的自定义
+ */
+fun NavController.navigateTo(
+    node: NavDestination,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    val method = ReflectionCache.getInstance().getMethod(
+        this.javaClass, "navigate",
+        NavDestination::class.java,
+        Bundle::class.java,
+        NavOptions::class.java,
+        Navigator.Extras::class.java
+    )
+    method.invoke(node, args, navOptions, navigatorExtras)
+}
+
+fun <T : Fragment> NavController.navigate(
+    target: Class<T>,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    this.navigateTo(
+        FragmentNavigator
+            .Destination(this.navigatorProvider)
+            .setClassName(target.name),
+        args,
+        navOptions,
+        navigatorExtras
+    )
+}
+
+
+fun <T : Activity> NavController.navigate(
+    target: Class<T>,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    this.navigateTo(
+        ActivityNavigator
+            .Destination(this.navigatorProvider)
+            .setComponentName(ComponentName(this.context, target)),
+        args,
+        navOptions,
+        navigatorExtras
+    )
+}
+
+
+fun <T : DialogFragment> NavController.navigate(
+    target: Class<T>,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    this.navigateTo(
+        DialogFragmentNavigator
+            .Destination(this.navigatorProvider)
+            .setClassName(target.name),
+        args,
+        navOptions,
+        navigatorExtras
+    )
+}
+
+/**
+ * 找到容器对应的NavHost
+ */
+fun View.findNavHost(): NavHost? {
+    return this.findNavControllerView()?.getFragment<Fragment>() as? NavHost
+}
+
+/**
+ * 找到容器对应的NavHostFragment
+ */
+fun View.findNavHostFragment(): NavHostFragment? {
+    return this.findNavControllerView()?.getFragment<Fragment>() as? NavHostFragment
+}
+
+
+/**
+ * 找到 容器view
+ */
+fun View.findNavControllerView(): FragmentContainerView? {
+    return generateSequence(this) {
+        it.parent as? View?
+    }.mapNotNull {
+        //官方打的这个Tag
+        val tag = it.getTag(R.id.nav_controller_view_tag)
+        if (tag == null) null else it
+    }.firstOrNull() as? FragmentContainerView
+}
+
+/**
+ * 结束
+ * 对于DialogFragment 是dismiss
+ * 对于Activity 是 finish
+ */
+fun View.finishNav(): Boolean {
+    val findNavHostFragment = findNavHostFragment()
+    return when (val lifecycle = findNavHostFragment?.parentFragment) {
+        is DialogFragment -> {
+            lifecycle.dismissAllowingStateLoss()
+            true
         }
-    }
 
-    override fun navigationUp(flag: Int): Boolean {
-        if (flag == Intent.FLAG_ACTIVITY_CLEAR_TASK) {
-            if (lifecycle is DialogFragment) {
-                lifecycle.dismissAllowingStateLoss()
-                return true
-            } else if (lifecycle is Activity) {
-                lifecycle.onBackPressed()
-                return true
-            }
-            return false
-        } else {
-            if (fragmentManager.backStackEntryCount > 1) {
-                fragmentManager.popBackStack()
-                return true
+        is Fragment -> {
+            lifecycle.requireActivity().finish()
+            true
+        }
+
+        else -> {
+            if (findNavHostFragment != null) {
+                findNavHostFragment.requireActivity().finish()
+                true
             } else {
-                if (lifecycle is DialogFragment) {
-                    lifecycle.dismissAllowingStateLoss()
-                    return true
-                } else if (lifecycle is Activity) {
-                    lifecycle.finish()
-                    return true
-                }
-                return false
+                false
             }
         }
-    }
-
-    override fun getNavigationCount(): Int {
-        return fragmentManager.backStackEntryCount
-    }
-
-    override fun getNavigationFragmentManager(): FragmentManager {
-        return fragmentManager
-    }
-
-    override fun getNavigationLifecycleOwner(): LifecycleOwner {
-        return lifecycle
     }
 }

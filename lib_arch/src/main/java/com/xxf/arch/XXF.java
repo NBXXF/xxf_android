@@ -101,7 +101,6 @@ public class XXF {
     private static BiConsumer<Integer, Throwable> errorHandler;
     private static Function<Throwable, String> errorConvertFunction;
     private static XXFUserInfoProvider userInfoProvider;
-    private static String sharedPreferencesName="flow_us_sp_release";
 
 
     public static void init(Builder builder) {
@@ -141,9 +140,6 @@ public class XXF {
     }
 
 
-    public static String getSharedPreferencesName() {
-        return sharedPreferencesName;
-    }
 
     /**
      * 获取用户信息
