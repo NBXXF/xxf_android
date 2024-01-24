@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.annotation.MainThread
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -183,6 +184,7 @@ fun View.finishNav(): Boolean {
 /**
  * 支持更高的自定义
  */
+@MainThread
 fun NavController.navigateTo(
     node: NavDestination,
     args: Bundle? = null,
@@ -199,6 +201,7 @@ fun NavController.navigateTo(
     method.invoke(node, args, navOptions, navigatorExtras)
 }
 
+@MainThread
 @JvmName("navigateFragment")
 fun <T : Fragment> NavController.navigate(
     target: Class<T>,
@@ -216,6 +219,7 @@ fun <T : Fragment> NavController.navigate(
     )
 }
 
+@MainThread
 @JvmName("navigateActivity")
 fun <T : Activity> NavController.navigate(
     target: Class<T>,
@@ -233,7 +237,7 @@ fun <T : Activity> NavController.navigate(
     )
 }
 
-
+@MainThread
 @JvmName("navigateDialogFragment")
 fun <T : DialogFragment> NavController.navigate(
     target: Class<T>,
@@ -249,5 +253,20 @@ fun <T : DialogFragment> NavController.navigate(
         navOptions,
         navigatorExtras
     )
+}
+
+/**
+ * 简化参数 可以不传
+ * 系统的必须传递这些参数 那怕是空 不是很友好
+ */
+@MainThread
+@JvmName("navigateSimplifyParameters")
+fun NavController.navigate(
+    @IdRes resId: Int,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    this.navigate(resId, args, navOptions, navigatorExtras)
 }
 
