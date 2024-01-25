@@ -82,26 +82,6 @@ fun <VH : RecyclerView.ViewHolder, T : RecyclerView.Adapter<VH>> RecyclerView.do
     return (this.adapter as T).doAdapterDataObserver(block)
 }
 
-/**
- * 获取所有分割线
- */
-fun RecyclerView.getItemDecorations(): List<ItemDecoration> {
-    val itemDecorationCount = this.itemDecorationCount
-    val itemDecorations: MutableList<ItemDecoration> = mutableListOf()
-    repeat(itemDecorationCount) {
-        itemDecorations.add(getItemDecorationAt(it))
-    }
-    return itemDecorations
-}
-
-/**
- * 移除所有分割线
- */
-fun RecyclerView.removeItemDecorations() {
-    getItemDecorations().onEach {
-        removeItemDecoration(it)
-    }
-}
 
 /**
  * 获取adapter

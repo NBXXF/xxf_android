@@ -125,7 +125,7 @@ private fun SpacingItemDecoration.DrawingConfig.isAllTransparent(): Boolean {
  *          it.setSpacing(1)
  *         .setColor(1) }
  */
-fun RecyclerView.addItemDivider(block:DividerItemDecoration.DividerConfig.() -> Unit): ItemDecoration {
+fun RecyclerView.addItemDivider(block: DividerItemDecoration.DividerConfig.() -> Unit): ItemDecoration {
     return DividerItemDecoration.Builder().apply {
         this.dividerConfig.apply(block)
     }.build().also {
@@ -140,4 +140,53 @@ fun RecyclerView.addItemDivider(config: DividerItemDecoration.DividerConfig): It
 }
 
 fun RecyclerView.addItemDivider(itemDecoration: RecyclerView.ItemDecoration) =
-    addItemDecoration(itemDecoration)
+    itemDecoration.apply {
+        addItemDecoration(this)
+    }
+
+
+/**
+ * 获取所有分割线
+ */
+fun RecyclerView.getItemDecorations(): List<ItemDecoration> {
+    val itemDecorationCount = this.itemDecorationCount
+    val itemDecorations: MutableList<ItemDecoration> = mutableListOf()
+    repeat(itemDecorationCount) {
+        itemDecorations.add(getItemDecorationAt(it))
+    }
+    return itemDecorations
+}
+
+/**
+ * 移除所有分割线
+ */
+fun RecyclerView.removeItemDecorations() {
+    getItemDecorations().onEach {
+        removeItemDecoration(it)
+    }
+}
+
+
+/**
+ * 会先移除所有分割线
+ */
+fun RecyclerView.setItemDivider(block: DividerItemDecoration.DividerConfig.() -> Unit): ItemDecoration {
+    removeItemDecorations()
+    return this.addItemDivider(block)
+}
+
+/**
+ * 会先移除所有分割线
+ */
+fun RecyclerView.setItemDivider(config: DividerItemDecoration.DividerConfig): ItemDecoration {
+    removeItemDecorations()
+    return addItemDivider(config)
+}
+
+/**
+ * 会先移除所有分割线
+ */
+fun RecyclerView.setItemDivider(itemDecoration: RecyclerView.ItemDecoration): ItemDecoration {
+    removeItemDecorations()
+    return addItemDivider(itemDecoration)
+}
