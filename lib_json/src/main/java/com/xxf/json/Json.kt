@@ -2,6 +2,7 @@ package com.xxf.json
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import java.io.Reader
@@ -73,7 +74,14 @@ object Json {
     fun toJsonTree(
         obj: Any?,
         gsonBuilder: ((gson: Gson) -> Gson) = { it }
-    ): JsonElement = gsonBuilder(innerDefaultGson).toJsonTree(obj)
+    ): JsonElement {
+        return if (obj is String) {
+            //解决双引号问题
+            JsonParser.parseString(obj)
+        } else {
+            gsonBuilder(innerDefaultGson).toJsonTree(obj)
+        }
+    }
 
 }
 
