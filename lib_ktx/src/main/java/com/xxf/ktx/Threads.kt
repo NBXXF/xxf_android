@@ -31,20 +31,20 @@ fun runOnUiThread(delayMillis: Long, block: () -> Unit) {
 
 /********************View 开始***************************/
 fun <T : View> T.runMainThread(block: () -> Unit) {
-    runMainThread(this.handler, block)
+    runMainThread(this.handler?: mainThreadHandler, block)
 }
 
 fun <T : View> T.runMainThread(delayMillis: Long, block: () -> Unit) {
-    runMainThread(this.handler, delayMillis, block)
+    runMainThread(this.handler?: mainThreadHandler, delayMillis, block)
 }
 
 
 fun <T : View> T.runOnUiThread(block: () -> Unit) {
-    runMainThread(this.handler, block)
+    runMainThread(this.handler?: mainThreadHandler, block)
 }
 
 fun <T : View> T.runOnUiThread(delayMillis: Long, block: () -> Unit) {
-    runMainThread(this.handler, delayMillis, block)
+    runMainThread(this.handler?: mainThreadHandler, delayMillis, block)
 }
 
 /********************View 结束***************************/
@@ -52,20 +52,20 @@ fun <T : View> T.runOnUiThread(delayMillis: Long, block: () -> Unit) {
 
 /********************Activity 开始***************************/
 fun <T : Activity> T.runMainThread(block: () -> Unit) {
-    runMainThread(this.contentView.handler, block)
+    runMainThread(this.contentView.handler?: mainThreadHandler, block)
 }
 
 fun <T : Activity> T.runMainThread(delayMillis: Long, block: () -> Unit) {
-    runMainThread(this.contentView.handler, delayMillis, block)
+    runMainThread(this.contentView.handler?: mainThreadHandler, delayMillis, block)
 }
 
 
 fun <T : Activity> T.runOnUiThread(block: () -> Unit) {
-    runMainThread(this.contentView.handler, block)
+    runMainThread(this.contentView.handler?: mainThreadHandler, block)
 }
 
 fun <T : Activity> T.runOnUiThread(delayMillis: Long, block: () -> Unit) {
-    runMainThread(this.contentView.handler, delayMillis, block)
+    runMainThread(this.contentView.handler?: mainThreadHandler, delayMillis, block)
 }
 
 /********************Activity 结束***************************/
@@ -73,20 +73,20 @@ fun <T : Activity> T.runOnUiThread(delayMillis: Long, block: () -> Unit) {
 
 /********************Fragment 开始***************************/
 fun <T : Fragment> T.runMainThread(block: () -> Unit) {
-    runMainThread(this.view!!.handler, block)
+    runMainThread(this.view?.handler?: mainThreadHandler, block)
 }
 
 fun <T : Fragment> T.runMainThread(delayMillis: Long, block: () -> Unit) {
-    runMainThread(this.view!!.handler, delayMillis, block)
+    runMainThread(this.view?.handler?: mainThreadHandler, delayMillis, block)
 }
 
 
 fun <T : Fragment> T.runOnUiThread(block: () -> Unit) {
-    runMainThread(this.view!!.handler, block)
+    runMainThread(this.view?.handler?: mainThreadHandler, block)
 }
 
 fun <T : Fragment> T.runOnUiThread(delayMillis: Long, block: () -> Unit) {
-    runMainThread(this.view!!.handler, delayMillis, block)
+    runMainThread(this.view?.handler?: mainThreadHandler, delayMillis, block)
 }
 
 /********************Fragment 结束***************************/
