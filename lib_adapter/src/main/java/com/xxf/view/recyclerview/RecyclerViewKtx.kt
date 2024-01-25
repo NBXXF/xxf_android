@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.xxf.ktx.getTag
@@ -79,6 +80,27 @@ fun <VH : RecyclerView.ViewHolder, T : RecyclerView.Adapter<VH>> RecyclerView.do
 ): RecyclerView.AdapterDataObserver {
     @Suppress("UNCHECKED_CAST")
     return (this.adapter as T).doAdapterDataObserver(block)
+}
+
+/**
+ * 获取所有分割线
+ */
+fun RecyclerView.getItemDecorations(): List<ItemDecoration> {
+    val itemDecorationCount = this.itemDecorationCount
+    val itemDecorations: MutableList<ItemDecoration> = mutableListOf()
+    repeat(itemDecorationCount) {
+        itemDecorations.add(getItemDecorationAt(it))
+    }
+    return itemDecorations
+}
+
+/**
+ * 移除所有分割线
+ */
+fun RecyclerView.removeItemDecorations() {
+    getItemDecorations().onEach {
+        removeItemDecoration(it)
+    }
 }
 
 /**
