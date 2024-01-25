@@ -50,6 +50,11 @@
             <option value="$PROJECT_DIR$/lib_wechat" />
             <option value="$PROJECT_DIR$/libs" />
             <option value="$PROJECT_DIR$/optional" />
+            <option value="$PROJECT_DIR$/optional/blockcanary" />
+            <option value="$PROJECT_DIR$/optional/blockcanary/blockcanary-analyzer" />
+            <option value="$PROJECT_DIR$/optional/blockcanary/blockcanary-android" />
+            <option value="$PROJECT_DIR$/optional/blockcanary/blockcanary-android-no-op" />
+            <option value="$PROJECT_DIR$/optional/blockcanary/blockcanary-sample" />
             <option value="$PROJECT_DIR$/optional/lib_album" />
             <option value="$PROJECT_DIR$/optional/lib_album/album_demo" />
             <option value="$PROJECT_DIR$/optional/lib_audio" />

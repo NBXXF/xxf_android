@@ -1,0 +1,8 @@
+com/github/moduth/blockcanary/BlockCanary.java
+ com.github.moduth.blockcanary.BlockCanary
+com/github/moduth/blockcanary/internal/BlockInfo.java
+ com.github.moduth.blockcanary.internal.BlockInfo
+com/github/moduth/blockcanary/BlockCanaryContext.java
+ com.github.moduth.blockcanary.BlockCanaryContext
+com/github/moduth/blockcanary/BuildConfig.java
+ com.github.moduth.blockcanary.BuildConfig

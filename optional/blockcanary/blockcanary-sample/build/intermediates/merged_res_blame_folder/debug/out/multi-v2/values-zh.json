@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "E:\\developer\\android_studio\\spaces\\xxf_android\\optional\\blockcanary\\blockcanary-sample\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-zh\\values-zh.xml",
+            "map": [
+                {
+                    "source": "E:\\developer\\android_studio\\spaces\\xxf_android\\optional\\blockcanary\\blockcanary-sample\\src\\main\\res\\values-zh\\strings.xml",
+                    "from": {
+                        "startLines": "8,1,6,3,5,7,4",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "368,17,278,69,231,323,176",
+                        "endColumns": "52,48,43,105,45,43,53",
+                        "endOffsets": "416,61,317,170,272,362,225"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,108,157,201,307,353,397",
+                        "endColumns": "52,48,43,105,45,43,53",
+                        "endOffsets": "103,152,196,302,348,392,446"
+                    }
+                }
+            ]
+        }
+    ]
+}
