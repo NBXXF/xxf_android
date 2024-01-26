@@ -10,7 +10,7 @@
 
     <include layout="@layout/include_toolbar" />
 
-    <com.xxf.effect.layoutanimation.GridLayoutAnimationRecyclerView
+    <com.xxf.effect.recyclerview.layoutanimation.GridLayoutAnimationRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

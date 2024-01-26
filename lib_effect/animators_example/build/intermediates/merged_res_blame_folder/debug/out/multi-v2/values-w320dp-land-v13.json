@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "E:\\developer\\android_studio\\spaces\\xxf_android\\lib_effect\\animators_example\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
+            "map": [
+                {
+                    "source": "E:\\developer\\android_studio\\space_gradle_cache\\caches\\transforms-2\\files-2.1\\2a3f173ea4c84b920d99ed9a502e71ae\\material-1.4.0\\res\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,110",
+                        "endColumns": "54,61",
+                        "endOffsets": "105,167"
+                    }
+                }
+            ]
+        }
+    ]
+}
