@@ -164,7 +164,7 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
                 //初始化拖动中的样式
                 with(viewHolder.itemView) {
                     this.isPressed = true
-                    draggingViewStyle.backgroundColor.runIf({ it >= 0 }) {
+                    draggingViewStyle.backgroundColor.runIf({ it != Color.TRANSPARENT }) {
                         this.background = ColorDrawable(it)
                     }
                     draggingViewStyle.alpha.runIf({ it >= 0 }) {
