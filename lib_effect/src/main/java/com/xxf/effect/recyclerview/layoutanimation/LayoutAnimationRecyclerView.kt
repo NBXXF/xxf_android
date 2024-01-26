@@ -36,7 +36,7 @@ class LayoutAnimationRecyclerView : RecyclerView {
                     || layoutManager is StaggeredGridLayoutManager)
         ) {
             var animationParams =
-                params.layoutAnimationParameters as GridLayoutAnimationController.AnimationParameters
+                params.layoutAnimationParameters as? GridLayoutAnimationController.AnimationParameters
             if (animationParams == null) {
                 animationParams = GridLayoutAnimationController.AnimationParameters()
                 params.layoutAnimationParameters = animationParams
