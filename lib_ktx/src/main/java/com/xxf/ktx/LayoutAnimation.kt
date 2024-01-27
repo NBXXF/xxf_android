@@ -8,7 +8,7 @@ import androidx.annotation.AnimRes
 /**
  * 设置布局动画拓展拓展
  */
-fun ViewGroup.setLayoutAnimation(
+fun <T:ViewGroup> T.setLayoutAnimation(
     @AnimRes layoutAnimationId: Int,
     block: LayoutAnimationController.() -> Unit = {}
 ) {
@@ -19,7 +19,7 @@ fun ViewGroup.setLayoutAnimation(
 /**
  * 只执行第一次开始
  */
-fun ViewGroup.startLayoutAnimationFirstOnly(): Boolean {
+fun <T:ViewGroup> T.startLayoutAnimationFirstOnly(): Boolean {
     val key = ViewGroup::startLayoutAnimationFirstOnly.name
     return if (this.getTag<Boolean>(key) != true) {
         startLayoutAnimation()
@@ -31,9 +31,9 @@ fun ViewGroup.startLayoutAnimationFirstOnly(): Boolean {
 }
 
 /**
- * 只执行一次
+ * 只执行第一次开始
  */
-fun ViewGroup.scheduleLayoutAnimationFirstOnly(): Boolean {
+fun <T:ViewGroup> T.scheduleLayoutAnimationFirstOnly(): Boolean {
     val key = ViewGroup::scheduleLayoutAnimationFirstOnly.name
     return if (this.getTag<Boolean>(key) != true) {
         scheduleLayoutAnimation()

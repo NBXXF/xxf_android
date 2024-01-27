@@ -25,7 +25,7 @@ inline val View.keyboardHeight: Int
 /**
  * 触摸是否关闭键盘
  */
-inline var View.isKeyboardHiddenInTouchMode: Boolean
+inline var <T : View> T.isKeyboardHiddenInTouchMode: Boolean
     get() {
         return this.getTag<Boolean>(View::isKeyboardHiddenInTouchMode.name) == true
     }
