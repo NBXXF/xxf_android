@@ -20,8 +20,10 @@ fun ViewGroup.setLayoutAnimation(
  * 只执行第一次开始
  */
 fun ViewGroup.startLayoutAnimationFirstOnly(): Boolean {
-    return if (this.getTag<Boolean>(ViewGroup::startLayoutAnimationFirstOnly.name) != true) {
+    val key = ViewGroup::startLayoutAnimationFirstOnly.name
+    return if (this.getTag<Boolean>(key) != true) {
         startLayoutAnimation()
+        this.setTag(key, true)
         true
     } else {
         false
@@ -32,8 +34,10 @@ fun ViewGroup.startLayoutAnimationFirstOnly(): Boolean {
  * 只执行一次
  */
 fun ViewGroup.scheduleLayoutAnimationFirstOnly(): Boolean {
-    return if (this.getTag<Boolean>(ViewGroup::scheduleLayoutAnimationFirstOnly.name) != true) {
+    val key = ViewGroup::scheduleLayoutAnimationFirstOnly.name
+    return if (this.getTag<Boolean>(key) != true) {
         scheduleLayoutAnimation()
+        this.setTag(key, true)
         true
     } else {
         false
