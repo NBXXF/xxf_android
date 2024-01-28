@@ -64,6 +64,10 @@ fun <T : View> T.startAnimationShakeRelative(
     }
 }
 
+/**
+ * 振动
+ * https://developer.android.google.cn/develop/ui/views/haptics?hl=cs
+ */
 @SuppressLint("MissingPermission")
 private fun View.startVibrator() {
     try {
