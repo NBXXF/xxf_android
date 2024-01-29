@@ -12,11 +12,11 @@ import kotlin.math.min
  * 格子布局 手机 pad 横竖自适应
  * 自动计算格子数量,注意两个方向 排列计算是不一样的 跟orientation相关
  */
-open class AutoFitGridLayoutManager(
+open class AutoFitGridLayoutManager private constructor(
     private val context: Context,
     private val adaptConfig: AdaptConfig
 ) :
-    GridLayoutManager(context, 1) {
+    GridLayoutManager(context, adaptConfig.defaultSpanCount) {
 
     constructor(
         context: Context,
@@ -51,6 +51,10 @@ open class AutoFitGridLayoutManager(
             return this
         }
 
+        fun setDefaultSpanCount(defaultSpanCount: Int) = apply {
+            adaptConfig.defaultSpanCount = defaultSpanCount
+        }
+
         fun build(): AutoFitGridLayoutManager {
             return AutoFitGridLayoutManager(context, adaptConfig)
         }
@@ -72,7 +76,11 @@ open class AutoFitGridLayoutManager(
         /**
          * 行的区间限制
          */
-        var rowRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE)
+        var rowRange: Range<Int> = Range<Int>(1, Int.MAX_VALUE),
+        /**
+         * 默认span
+         */
+        var defaultSpanCount: Int = 1,
     )
 
     class GridCalculator(private var totalSize: Size, private var adaptConfig: AdaptConfig) {
