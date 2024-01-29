@@ -13,6 +13,7 @@ fun FragmentManager.findDialogFragments(): List<DialogFragment> {
     }.map { it as DialogFragment }
 }
 
+@JvmName("findDialogFragmentsByClass")
 inline fun <reified T : DialogFragment> FragmentManager.findDialogFragments(): List<T> {
     return this.fragments.filter { it ->
         (it is DialogFragment) && it.showsDialog && it.javaClass == T::class.java
@@ -34,6 +35,7 @@ fun Fragment.findDialogFragments(): List<DialogFragment> {
     return this.childFragmentManager.findDialogFragments()
 }
 
+@JvmName("findDialogFragmentsByClass")
 inline fun <reified T : DialogFragment> Fragment.findDialogFragments(): List<T> {
     return this.childFragmentManager.findDialogFragments<T>()
 }
@@ -52,6 +54,7 @@ fun FragmentActivity.findDialogFragments(): List<DialogFragment> {
     return this.supportFragmentManager.findDialogFragments()
 }
 
+@JvmName("findDialogFragmentsByClass")
 inline fun <reified T : DialogFragment> FragmentActivity.findDialogFragments(): List<T> {
     return this.supportFragmentManager.findDialogFragments<T>()
 }
