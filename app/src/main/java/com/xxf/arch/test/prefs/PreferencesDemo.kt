@@ -5,21 +5,19 @@ import com.xxf.json.Json
 import com.xxf.ktx.IPreferencesOwner
 import com.xxf.ktx.PrefsDelegate
 import com.xxf.ktx.SharedPreferencesOwner
+import com.xxf.ktx.writeAsync
+import com.xxf.ktx.observable
 import com.xxf.ktx.preferencesBinding
 import com.xxf.ktx.randomUUIDString32
-import com.xxf.ktx.standard.KeyValueDelegate
-import com.xxf.ktx.standard.lazyUnsafe
-import com.xxf.ktx.standard.observable
 import kotlin.reflect.KProperty
 
-inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): KeyValueDelegate<P, V> {
-    return object : KeyValueDelegate<P, V>(this.key, this.default) {
-        private val stringDelegate by lazyUnsafe {
-            PrefsDelegate<P, String?>(this.key, "", String::class);
-        }
+inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): PrefsDelegate<P, V> {
+    val delegate = this
+    return object : PrefsDelegate<P, V>(this.key, this.default, V::class) {
 
         override fun getValue(thisRef: P, property: KProperty<*>): V {
-            val value = stringDelegate.getValue(thisRef, property)
+            val value =
+                PrefsDelegate<P, String?>(this.key, "", String::class).getValue(thisRef, property)
             return if (value.isNullOrEmpty()) {
                 default
             } else {
@@ -27,11 +25,11 @@ inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson():
             }
         }
 
-        override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
+        override fun setValue(thisRef: P, property: KProperty<*>, value: Any?) {
             if (value is JsonNull || value == null) {
-                stringDelegate.setValue(thisRef, property, null);
+                delegate.setValue(thisRef, property, null)
             } else {
-                stringDelegate.setValue(thisRef, property, Json.toJson(value));
+                delegate.setValue(thisRef, property, Json.toJson(value))
             }
         }
     }
@@ -41,7 +39,9 @@ object PreferencesDemo : SharedPreferencesOwner {
 
     data class User(val name: String? = null)
 
-    var name: String by preferencesBinding("key", "xxx")
+    var name: String by preferencesBinding("key", "xxx").writeAsync().observable { property, newValue ->
+        println("=============>PrefsDemo change:$newValue")
+    }
 
     //可以监听
     var name2: String by preferencesBinding("key2", "xxx").observable { property, newValue ->
@@ -61,3 +61,4 @@ object PreferencesDemo : SharedPreferencesOwner {
         println("=============>PrefsDemoUser:$user")
     }
 }
+

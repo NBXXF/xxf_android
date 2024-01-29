@@ -3,10 +3,10 @@ package com.xxf.ktx
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import com.xxf.ktx.standard.KeyValueDelegate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
@@ -105,7 +105,8 @@ interface SharedPreferencesOwner : IPreferencesOwner {
             if (value == null) {
                 remove(rawKey)
             } else {
-                when (propertyType) {
+                //这里一定要用value::class
+                when (value::class) {
                     String::class -> {
                         putString(rawKey, value as String?)
                     }
@@ -150,17 +151,17 @@ interface SharedPreferencesOwner : IPreferencesOwner {
 }
 
 open class PrefsDelegate<P : IPreferencesOwner, V>(
-    key: String?,
-    default: V,
+    open val key: String?,
+    open val default: V,
     open val propertyType: KClass<*>
 ) :
-    KeyValueDelegate<P, V>(key, default) {
+    ReadOnlyProperty<P, V> {
     @Suppress("UNCHECKED_CAST")
     override fun getValue(thisRef: P, property: KProperty<*>): V {
         return (thisRef.getPreferencesValue(property, propertyType, key, default) as? V) ?: default
     }
 
-    override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
+    open operator fun setValue(thisRef: P, property: KProperty<*>, value: Any?) {
         thisRef.setPreferencesValue(property, propertyType, key, value, default)
     }
 }
@@ -179,14 +180,13 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  * 对于不支持的类型 可以自己重写IPreferencesOwner 或者继续包装代理,如下:
  * 拓展gson[gson 默认不继承在框架里面,业务只需要申明这个拓展就行了]
  *
- * inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): KeyValueDelegate<P, V> {
- *     return object : KeyValueDelegate<P, V>(this.key, this.default) {
- *         private val stringDelegate by lazyUnsafe {
- *             PrefsDelegate<P, String?>(this.key, "", String::class);
- *         }
+ * inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): PrefsDelegate<P, V> {
+ *     val delegate = this
+ *     return object : PrefsDelegate<P, V>(this.key, this.default, V::class) {
  *
  *         override fun getValue(thisRef: P, property: KProperty<*>): V {
- *             val value = stringDelegate.getValue(thisRef, property)
+ *             val value =
+ *                 PrefsDelegate<P, String?>(this.key, "", String::class).getValue(thisRef, property)
  *             return if (value.isNullOrEmpty()) {
  *                 default
  *             } else {
@@ -194,11 +194,11 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  *             }
  *         }
  *
- *         override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
+ *         override fun setValue(thisRef: P, property: KProperty<*>, value: Any?) {
  *             if (value is JsonNull || value == null) {
- *                 stringDelegate.setValue(thisRef, property, null);
+ *                 delegate.setValue(thisRef, property, null)
  *             } else {
- *                 stringDelegate.setValue(thisRef, property, Json.toJson(value));
+ *                 delegate.setValue(thisRef, property, Json.toJson(value))
  *             }
  *         }
  *     }
@@ -217,9 +217,9 @@ inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?)
     PrefsDelegate<T, V?>(key, null, V::class)
 
 /**
- * 异步
+ * 异步写入
  */
-inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.async(): PrefsDelegate<P, V> {
+inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.writeAsync(): PrefsDelegate<P, V> {
     val delegate = this
     return object : PrefsDelegate<P, V>(this.key, this.default, V::class) {
 
@@ -227,10 +227,33 @@ inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.async(): Prefs
             return delegate.getValue(thisRef, property)
         }
 
-        override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
+        override fun setValue(thisRef: P, property: KProperty<*>, value: Any?) {
             GlobalScope.launch(Dispatchers.IO) {
                 delegate.setValue(thisRef, property, value)
             }
+        }
+    }
+}
+
+
+/**
+ * 观察值改变
+ */
+fun <P : IPreferencesOwner, V> PrefsDelegate<P, V>.observable(
+    beforeChange: (property: KProperty<*>, newValue: V?) -> Unit = { _, _ -> },
+    afterChange: (property: KProperty<*>, newValue: V?) -> Unit
+): PrefsDelegate<P, V> {
+    val delegate = this
+    return object : PrefsDelegate<P, V>(delegate.key, delegate.default, delegate.propertyType) {
+        override fun getValue(thisRef: P, property: KProperty<*>): V {
+            return delegate.getValue(thisRef, property)
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        override fun setValue(thisRef: P, property: KProperty<*>, value: Any?) {
+            beforeChange(property, value as? V)
+            delegate.setValue(thisRef, property, value)
+            afterChange(property, value as? V)
         }
     }
 }

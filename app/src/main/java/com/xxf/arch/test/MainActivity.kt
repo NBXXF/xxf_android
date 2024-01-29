@@ -22,7 +22,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.gson.annotations.JsonAdapter
 import com.xxf.arch.XXF
 import com.xxf.arch.activity.XXFActivity
-import com.xxf.arch.presenter.XXFNetwrokPresenter
 import com.xxf.arch.test.prefs.PreferencesDemo
 import com.xxf.toast.ToastType
 import com.xxf.toast.ToastUtils
@@ -159,15 +158,6 @@ class MainActivity() : XXFActivity() {
         Log.d("=======>", " actionTypeEvent2:$actionTypeEvent2")
         val integer = java.lang.Double.valueOf("0.09111").toInt()
         Log.d("", "===========>ssss$integer")
-        object : XXFNetwrokPresenter<Any?>(this, null) {
-            override fun onNetworkAvailable(network: Network) {
-                Log.d("", "===========>net yes1:")
-            }
-
-            override fun onNetworkLost(network: Network) {
-                Log.d("", "===========>net no1:")
-            }
-        }
         XXF.registerNetworkCallback(object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
@@ -547,7 +537,7 @@ class MainActivity() : XXFActivity() {
         //FragmentUtils.addFragment(getSupportFragmentManager(), new TestFragment(), R.id.contentPanel);
         findViewById<View>(R.id.bt_sp).setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                startActivity(Intent(v.context, SpActivity::class.java))
+
             }
         })
     }

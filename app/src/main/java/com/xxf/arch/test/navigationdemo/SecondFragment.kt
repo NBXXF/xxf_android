@@ -2,9 +2,9 @@ package com.xxf.arch.test.navigationdemo
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.xxf.viewbinding.viewBinding
 import com.xxf.arch.fragment.XXFFragment
-import com.xxf.arch.fragment.navigation.findNavController
 import com.xxf.arch.fragment.navigation.isInNavController
 import com.xxf.arch.test.R
 import com.xxf.arch.test.databinding.FragmentFirstBinding
@@ -32,7 +32,7 @@ class SecondFragment : XXFFragment<Unit>(R.layout.fragment_second) {
                 //在导航控制器中
                // findNavController().navigationUp()
 
-                findNavController().navigationUp(Int.MIN_VALUE)
+                findNavController().navigateUp()
             } else {
                 //不在导航控制器中 比如activity 嵌套了一个此fragment 业务自己处理
             }

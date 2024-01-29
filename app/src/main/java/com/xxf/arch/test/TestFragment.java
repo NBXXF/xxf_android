@@ -8,10 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.xxf.arch.XXF;
-import com.xxf.arch.presenter.XXFPresenter;
 
-import io.reactivex.rxjava3.core.Observable;
 
 
 public class TestFragment extends Fragment {

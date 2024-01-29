@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.navigation.fragment.findNavController
 import com.xxf.viewbinding.viewBinding
 import com.xxf.application.lifecycle.findViewLifecycleOwner
 import com.xxf.arch.fragment.XXFFragment
-import com.xxf.arch.fragment.navigation.findNavController
-import com.xxf.arch.fragment.navigation.findSafeNavController
 import com.xxf.arch.test.R
 import com.xxf.arch.test.databinding.FragmentFirstBinding
 
@@ -39,13 +38,13 @@ class FirstFragment : XXFFragment<Unit>(R.layout.fragment_first) {
             }
 
         binding.back.setOnClickListener {
-            findNavController().navigationUp()
+            findNavController().navigateUp()
         }
         binding.jump.setOnClickListener {
             Toast.makeText(it.context, "xx:" + it.findViewLifecycleOwner(), Toast.LENGTH_LONG)
                 .show()
             //跳转到下一个fragment中
-            findSafeNavController()?.navigation(SecondFragment())
+           // findSafeNavController()?.navigation(SecondFragment())
             //  findNavController().navigation(SecondFragment())
         }
     }

@@ -36,7 +36,6 @@
         <activity android:name=".PdfViewActivity" android:resizeableActivity="true"/>
         <activity android:name=".PdfMainActivity" android:resizeableActivity="true"/>
         <activity android:name=".ReciveContentActivity" android:resizeableActivity="true"/>
-        <activity android:name=".SpActivity"  android:process=":MyService"/>
     </application>
 
 </manifest>
