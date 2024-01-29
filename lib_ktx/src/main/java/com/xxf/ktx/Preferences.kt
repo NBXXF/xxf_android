@@ -219,9 +219,9 @@ inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?)
 /**
  * 异步
  */
-inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.async(): KeyValueDelegate<P, V> {
+inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.async(): PrefsDelegate<P, V> {
     val delegate = this
-    return object : KeyValueDelegate<P, V>(this.key, this.default) {
+    return object : PrefsDelegate<P, V>(this.key, this.default, V::class) {
 
         override fun getValue(thisRef: P, property: KProperty<*>): V {
             return delegate.getValue(thisRef, property)
