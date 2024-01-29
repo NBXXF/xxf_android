@@ -4,6 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.xxf.ktx.standard.KeyValueDelegate
+import com.xxf.ktx.standard.lazyUnsafe
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
@@ -179,12 +184,12 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  * inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): KeyValueDelegate<P, V> {
  *     return object : KeyValueDelegate<P, V>(this.key, this.default) {
  *         private val stringDelegate by lazyUnsafe {
- *             PrefsDelegate<P, String>(this.key, "", String::class);
+ *             PrefsDelegate<P, String?>(this.key, "", String::class);
  *         }
  *
  *         override fun getValue(thisRef: P, property: KProperty<*>): V {
  *             val value = stringDelegate.getValue(thisRef, property)
- *             return if (value.isEmpty()) {
+ *             return if (value.isNullOrEmpty()) {
  *                 default
  *             } else {
  *                 Json.fromJson<V>(value) ?: default
@@ -192,7 +197,11 @@ open class PrefsDelegate<P : IPreferencesOwner, V>(
  *         }
  *
  *         override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
- *             stringDelegate.setValue(thisRef, property, Json.toJson(value));
+ *             if (value is JsonNull || value == null) {
+ *                 stringDelegate.setValue(thisRef, property, null);
+ *             } else {
+ *                 stringDelegate.setValue(thisRef, property, Json.toJson(value));
+ *             }
  *         }
  *     }
  * }
@@ -208,3 +217,25 @@ inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?,
  */
 inline fun <T : IPreferencesOwner, reified V> T.preferencesBinding(key: String?) =
     PrefsDelegate<T, V?>(key, null, V::class)
+
+/**
+ * 异步
+ */
+inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, V>.async(): KeyValueDelegate<P, V> {
+    val delegate = this
+    return object : KeyValueDelegate<P, V>(this.key, this.default) {
+        private val stringDelegate by lazyUnsafe {
+            PrefsDelegate<P, String?>(this.key, "", String::class);
+        }
+
+        override fun getValue(thisRef: P, property: KProperty<*>): V {
+            return delegate.getValue(thisRef, property)
+        }
+
+        override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
+            GlobalScope.launch(Dispatchers.IO) {
+                delegate.setValue(thisRef, property, value)
+            }
+        }
+    }
+}

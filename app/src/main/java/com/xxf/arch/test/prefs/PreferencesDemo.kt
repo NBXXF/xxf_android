@@ -1,5 +1,6 @@
 package com.xxf.arch.test.prefs
 
+import com.google.gson.JsonNull
 import com.xxf.json.Json
 import com.xxf.ktx.IPreferencesOwner
 import com.xxf.ktx.PrefsDelegate
@@ -14,12 +15,12 @@ import kotlin.reflect.KProperty
 inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): KeyValueDelegate<P, V> {
     return object : KeyValueDelegate<P, V>(this.key, this.default) {
         private val stringDelegate by lazyUnsafe {
-            PrefsDelegate<P, String>(this.key, "", String::class);
+            PrefsDelegate<P, String?>(this.key, "", String::class);
         }
 
         override fun getValue(thisRef: P, property: KProperty<*>): V {
             val value = stringDelegate.getValue(thisRef, property)
-            return if (value.isEmpty()) {
+            return if (value.isNullOrEmpty()) {
                 default
             } else {
                 Json.fromJson<V>(value) ?: default
@@ -27,7 +28,11 @@ inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson():
         }
 
         override fun setValue(thisRef: P, property: KProperty<*>, value: V) {
-            stringDelegate.setValue(thisRef, property, Json.toJson(value));
+            if (value is JsonNull || value == null) {
+                stringDelegate.setValue(thisRef, property, null);
+            } else {
+                stringDelegate.setValue(thisRef, property, Json.toJson(value));
+            }
         }
     }
 }
