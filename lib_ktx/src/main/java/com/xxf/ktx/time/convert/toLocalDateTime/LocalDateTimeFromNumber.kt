@@ -11,5 +11,5 @@ import java.time.ZoneId
  * 毫秒 转LocalDateTime
  */
 @RequiresApi(Build.VERSION_CODES.O)
-fun Long.toLocalDateTime(zone: ZoneId = systemZoneId): LocalDateTime =
+fun Long?.toLocalDateTime(zone: ZoneId = systemZoneId): LocalDateTime =
     this.toInstant().toLocalDateTime(zone)

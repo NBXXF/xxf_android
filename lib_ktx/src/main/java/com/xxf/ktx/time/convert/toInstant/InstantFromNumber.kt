@@ -10,5 +10,5 @@ import java.time.temporal.ChronoUnit
  * 毫秒 转Instant
  */
 @RequiresApi(Build.VERSION_CODES.O)
-fun Long.toInstant(unit: ChronoUnit = ChronoUnit.MILLIS): Instant =
-    Instant.ofEpochMilli(unit.duration.multipliedBy(this).toMillis())
+fun Long?.toInstant(unit: ChronoUnit = ChronoUnit.MILLIS): Instant =
+    Instant.ofEpochMilli(unit.duration.multipliedBy(this?:0).toMillis())

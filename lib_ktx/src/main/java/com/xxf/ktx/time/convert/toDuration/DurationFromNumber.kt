@@ -7,5 +7,5 @@ import java.time.temporal.ChronoUnit
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun Long.toDuration(unit: ChronoUnit = ChronoUnit.MILLIS): Duration =
-    unit.duration.multipliedBy(this)
+fun Long?.toDuration(unit: ChronoUnit = ChronoUnit.MILLIS): Duration =
+    unit.duration.multipliedBy(this?:0)

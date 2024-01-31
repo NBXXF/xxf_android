@@ -13,9 +13,9 @@ import java.time.temporal.ChronoUnit
  * 将数字转换成 默认单位MILLIS
  */
 @RequiresApi(Build.VERSION_CODES.O)
-fun Long.toLocalTime(
+fun Long?.toLocalTime(
     unit: ChronoUnit = ChronoUnit.MILLIS, zone: ZoneId = systemZoneId
 ): LocalTime =
-    Instant.ofEpochMilli(unit.duration.multipliedBy(this).toMillis())
+    Instant.ofEpochMilli(unit.duration.multipliedBy(this?:0).toMillis())
         .toLocalDateTime(zone)
         .toLocalTime()

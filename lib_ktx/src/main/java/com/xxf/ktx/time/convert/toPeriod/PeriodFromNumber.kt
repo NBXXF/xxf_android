@@ -7,6 +7,6 @@ import java.time.temporal.ChronoUnit
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun Long.toPeriod(unit: ChronoUnit = ChronoUnit.MILLIS): Period =
-    Period.from(unit.duration.multipliedBy(this))
+fun Long?.toPeriod(unit: ChronoUnit = ChronoUnit.MILLIS): Period =
+    Period.from(unit.duration.multipliedBy(this ?: 0))
 
