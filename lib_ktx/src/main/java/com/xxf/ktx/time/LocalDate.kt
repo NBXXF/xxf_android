@@ -12,6 +12,11 @@ import java.time.temporal.ChronoUnit.YEARS
 import java.time.temporal.TemporalAdjusters
 import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.O)
+fun LocalDate.startOfDay(): LocalDate = LocalDateTime.of(this, LocalTime.MIN).toLocalDate()
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun LocalDate.endOfDay(): LocalDate = LocalDateTime.of(this, LocalTime.MAX).toLocalDate()
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun LocalDate.firstDayOfYear(): LocalDate = with(TemporalAdjusters.firstDayOfYear())
