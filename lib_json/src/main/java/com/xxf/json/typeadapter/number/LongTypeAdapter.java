@@ -1,14 +1,20 @@
 package com.xxf.json.typeadapter.number;
 
-import com.google.gson.JsonParseException;
+import android.annotation.SuppressLint;
+
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 
 /**
@@ -19,7 +25,15 @@ import java.math.BigDecimal;
  * date createTime：2017/8/14
  * version 2.1.0
  */
+@SuppressLint("SimpleDateFormat")
 public class LongTypeAdapter extends TypeAdapter<Long> {
+    static SimpleDateFormat DEFAULT_SDF;
+
+    static {
+        //2021-07-15 16:13:35
+        DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    }
+
     @Override
     public void write(JsonWriter jsonWriter, Long s) throws IOException {
         if (null == s) {
@@ -45,6 +59,22 @@ public class LongTypeAdapter extends TypeAdapter<Long> {
                 String result = jsonReader.nextString();
                 if (result == null || "".equals(result)) {
                     return 0L;
+                }
+                // 支持时间格式化 2021-07-15 16:13:35  yyyy-MM-dd'T'HH:mm:ss
+                if (result.contains("-") && result.contains(":")) {
+                    if (result.contains("T")) {
+                        try {
+                            return ISO8601Utils.parse(result, new ParsePosition(0)).getTime();
+                        } catch (ParseException e) {
+                            throw new JsonSyntaxException("Expected long but was " + peek);
+                        }
+                    } else {
+                        try {
+                            return Objects.requireNonNull(DEFAULT_SDF.parse(result)).getTime();
+                        } catch (Exception e) {
+                            throw new JsonSyntaxException("Expected long but was " + peek);
+                        }
+                    }
                 }
                 try {
                     return Long.parseLong(result);
