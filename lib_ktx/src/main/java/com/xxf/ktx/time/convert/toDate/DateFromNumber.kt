@@ -9,6 +9,6 @@ import java.util.Date
  * 将数字转换成 默认单位MILLIS
  */
 @RequiresApi(Build.VERSION_CODES.O)
-fun Long.toDate(unit: ChronoUnit = ChronoUnit.MILLIS): Date {
-    return Date(unit.duration.multipliedBy(this).toMillis())
+fun Long?.toDate(unit: ChronoUnit = ChronoUnit.MILLIS): Date {
+    return Date(unit.duration.multipliedBy(this ?: 0).toMillis())
 }
