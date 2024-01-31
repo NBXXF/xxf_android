@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#3c3c3c"
@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:divider="@null"
-        android:dividerHeight="0dp"/>
+        android:dividerHeight="0dp" />
 
     <TextView
         android:id="@+id/__leak_canary_display_leak_failure"
@@ -20,12 +20,28 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:textSize="12sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <Button
-        android:id="@+id/__leak_canary_action"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/__leak_canary_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/__close_page_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="关闭叶绵绵" />
+    </LinearLayout>
+
 
 </LinearLayout>

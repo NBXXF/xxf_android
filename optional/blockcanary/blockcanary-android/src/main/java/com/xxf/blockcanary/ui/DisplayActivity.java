@@ -85,7 +85,7 @@ public class DisplayActivity extends Activity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         if (android.os.Build.VERSION.SDK_INT >= 31) {
-            return PendingIntent.getActivity(context, 1, intent, FLAG_UPDATE_CURRENT|  PendingIntent.FLAG_IMMUTABLE);
+            return PendingIntent.getActivity(context, 1, intent, FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         }
         return PendingIntent.getActivity(context, 1, intent, FLAG_UPDATE_CURRENT);
     }
@@ -108,6 +108,14 @@ public class DisplayActivity extends Activity {
         mListView = (ListView) findViewById(R.id.__leak_canary_display_leak_list);
         mFailureView = (TextView) findViewById(R.id.__leak_canary_display_leak_failure);
         mActionButton = (Button) findViewById(R.id.__leak_canary_action);
+
+        //解决actionbar 不显示返回
+        findViewById(R.id.__close_page_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mMaxStoredBlockCount = getResources().getInteger(R.integer.block_canary_max_stored_count);
 
