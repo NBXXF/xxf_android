@@ -62,3 +62,6 @@ include ':optional:blockcanary:blockcanary-android-no-op'
 include ':optional:blockcanary:blockcanary-sample'
 include ':animators_example'
 include ':animators'
+
+include ':optional:lib_flycoTabLayout'
+include ':optional:lib_flycoTabLayout:FlycoTabLayoutDemo'
