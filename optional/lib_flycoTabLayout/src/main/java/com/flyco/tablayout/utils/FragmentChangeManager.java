@@ -4,17 +4,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentChangeManager {
     private FragmentManager mFragmentManager;
     private int mContainerViewId;
     /** Fragment切换数组 */
-    private ArrayList<Fragment> mFragments;
+    private List<Fragment> mFragments;
     /** 当前选中的Tab */
     private int mCurrentTab;
 
-    public FragmentChangeManager(FragmentManager fm, int containerViewId, ArrayList<Fragment> fragments) {
+    public FragmentChangeManager(FragmentManager fm, int containerViewId, List<Fragment> fragments) {
         this.mFragmentManager = fm;
         this.mContainerViewId = containerViewId;
         this.mFragments = fragments;

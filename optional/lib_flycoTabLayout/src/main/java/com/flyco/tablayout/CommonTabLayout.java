@@ -36,6 +36,7 @@ import com.flyco.tablayout.utils.UnreadMsgUtils;
 import com.flyco.tablayout.widget.MsgView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 没有继承HorizontalScrollView不能滑动,对于ViewPager无依赖
@@ -223,7 +224,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     /**
      * 关联数据支持同时切换fragments
      */
-    public void setTabData(ArrayList<CustomTabEntity> tabEntitys, FragmentActivity fa, int containerViewId, ArrayList<Fragment> fragments) {
+    public void setTabData(ArrayList<CustomTabEntity> tabEntitys, FragmentActivity fa, int containerViewId, List<Fragment> fragments) {
         mFragmentChangeManager = new FragmentChangeManager(fa.getSupportFragmentManager(), containerViewId, fragments);
         setTabData(tabEntitys);
     }
@@ -231,7 +232,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     /**
      * 关联数据支持同时切换fragments
      */
-    public void setTabData(ArrayList<CustomTabEntity> tabEntitys, FragmentManager fm, int containerViewId, ArrayList<Fragment> fragments) {
+    public void setTabData(ArrayList<CustomTabEntity> tabEntitys, FragmentManager fm, int containerViewId, List<Fragment> fragments) {
         mFragmentChangeManager = new FragmentChangeManager(fm, containerViewId, fragments);
         setTabData(tabEntitys);
     }

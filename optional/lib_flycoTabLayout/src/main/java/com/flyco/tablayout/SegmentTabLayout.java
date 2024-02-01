@@ -32,6 +32,7 @@ import com.flyco.tablayout.utils.UnreadMsgUtils;
 import com.flyco.tablayout.widget.MsgView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SegmentTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener {
     private Context mContext;
@@ -186,7 +187,7 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
     /**
      * 关联数据支持同时切换fragments
      */
-    public void setTabData(String[] titles, FragmentActivity fa, int containerViewId, ArrayList<Fragment> fragments) {
+    public void setTabData(String[] titles, FragmentActivity fa, int containerViewId, List<Fragment> fragments) {
         mFragmentChangeManager = new FragmentChangeManager(fa.getSupportFragmentManager(), containerViewId, fragments);
         setTabData(titles);
     }
@@ -194,7 +195,7 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
     /**
      * 关联数据支持同时切换fragments
      */
-    public void setTabData(String[] titles, FragmentManager fm, int containerViewId, ArrayList<Fragment> fragments) {
+    public void setTabData(String[] titles, FragmentManager fm, int containerViewId, List<Fragment> fragments) {
         mFragmentChangeManager = new FragmentChangeManager(fm, containerViewId, fragments);
         setTabData(titles);
     }
