@@ -1,16 +1,13 @@
 package com.xxf.arch.widget;
 
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.view.ViewGroup;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +17,11 @@ import java.util.List;
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2017/4/8
  * version 1.0.0
+ * Deprecated
+ * Switch to androidx.viewpager2.widget.ViewPager2 and use androidx.viewpager2.adapter.FragmentStateAdapter instead.
  */
-public class BaseFragmentAdapter extends FragmentPagerAdapter {
+@Deprecated
+public class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
 
     public enum Behavior {
         /**
@@ -63,7 +63,7 @@ public class BaseFragmentAdapter extends FragmentPagerAdapter {
     }
 
 
-    public BaseFragmentAdapter(FragmentManager fm) {
+    public BaseFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
         this.fm = fm;
     }
@@ -74,7 +74,8 @@ public class BaseFragmentAdapter extends FragmentPagerAdapter {
      * @param fm
      * @param behavior
      */
-    public BaseFragmentAdapter(FragmentManager fm, Behavior behavior) {
+    @SuppressLint("WrongConstant")
+    public BaseFragmentPagerAdapter(FragmentManager fm, Behavior behavior) {
         super(fm, behavior.getValue());
         this.fm = fm;
     }
