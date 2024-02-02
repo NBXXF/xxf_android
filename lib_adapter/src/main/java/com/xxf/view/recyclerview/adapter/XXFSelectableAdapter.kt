@@ -1,13 +1,16 @@
 package com.xxf.view.recyclerview.adapter
 
 import android.annotation.SuppressLint
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.xxf.model.SelectableEntity
 import com.xxf.model.clearSelected
 import com.xxf.model.getFirstSelected
 import com.xxf.model.getSelectedItems
 import com.xxf.model.setItemSelect
+import com.xxf.view.recyclerview.doWithoutAnimation
 import java.io.Serializable
+
 
 /**
  * 提供直接操作的
@@ -17,8 +20,12 @@ import java.io.Serializable
  */
 @SuppressLint("NotifyDataSetChanged")
 fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.clearSelectedItems() {
-    changeRefresh(this.currentList.toList().apply {
+    changeRefresh(this.currentList.map {
+        it.isItemSelected
+    }, this.currentList.apply {
         this.clearSelected()
+    }.map {
+        it.isItemSelected
     })
 }
 
@@ -34,12 +41,18 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.setItemSelect(
     index: Int,
     selectType: SelectType = SelectType.SELECT_TYPE_SINGLE
 ) {
-    changeRefresh(this.currentList.toList().apply {
-        if (selectType == SelectType.SELECT_TYPE_SINGLE) {
-            this.clearSelected()
-        }
-        this.setItemSelect(select, index)
-    })
+    changeRefresh(
+        this.currentList.map {
+            it.isItemSelected
+        },
+        this.currentList.apply {
+            if (selectType == SelectType.SELECT_TYPE_SINGLE) {
+                this.clearSelected()
+            }
+            this.setItemSelect(select, index)
+        }.map {
+            it.isItemSelected
+        })
 }
 
 /**
@@ -71,9 +84,17 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItem():
 }
 
 @SuppressLint("NotifyDataSetChanged")
-private fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.changeRefresh(newResults: List<T>) {
-    //底层可能有diff 这样重新绑定一次 好一些 有效避免刷新
-    this.bindData(true, newResults)
+private fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.changeRefresh(
+    beforeChanges: List<Boolean>,
+    afterChanges: List<Boolean>
+) {
+    this.doWithoutAnimation {
+        beforeChanges.forEachIndexed { index, b ->
+            if (afterChanges[index] != b && this.recyclerView.findViewHolderForAdapterPosition(index) != null) {
+                (this as? RecyclerView.Adapter<*>)?.notifyItemChanged(index)
+            }
+        }
+    }
 }
 
 enum class SelectType : Serializable {
