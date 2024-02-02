@@ -1,7 +1,6 @@
 package com.xxf.view.recyclerview.adapter
 
 import android.annotation.SuppressLint
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.xxf.model.SelectableEntity
 import com.xxf.model.clearSelected
@@ -71,9 +70,8 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItem():
 
 @SuppressLint("NotifyDataSetChanged")
 private fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.changeRefresh() {
-    if (this is RecyclerView.Adapter<*>) {
-        this.notifyDataSetChanged()
-    }
+    //底层可能有diff 这样重新绑定一次 好一些 有效避免刷新
+    this.bindData(true, ArrayList(this.data))
 }
 
 enum class SelectType : Serializable {
