@@ -109,7 +109,12 @@ private fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.changeRefr
     this.doWithoutAnimation {
         beforeChanges.forEachIndexed { index, b ->
             if (afterChanges[index] != b && this.recyclerView.findViewHolderForAdapterPosition(index) != null) {
-                (this as? RecyclerView.Adapter<*>)?.notifyItemChanged(index)
+                try {
+                    //正常说 判断两层 不应该有报错 还是安全点
+                    (this as? RecyclerView.Adapter<*>)?.notifyItemChanged(index)
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
             }
         }
     }
