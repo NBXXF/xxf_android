@@ -9,13 +9,10 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.viewbinding.ViewBinding
 import com.xxf.ktx.getTag
 import com.xxf.ktx.hideKeyboard
 import com.xxf.ktx.isKeyboardHiddenInTouchMode
 import com.xxf.ktx.setTag
-import com.xxf.model.SelectableEntity
-import com.xxf.view.recyclerview.adapter.BaseAdapter
 
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
     val layoutManager = this.layoutManager
@@ -140,9 +137,9 @@ inline var RecyclerView.isKeyboardHiddenInTouchMode: Boolean
 /**
  * 在没有动画的事务中执行
  */
-fun <V : ViewBinding, D : SelectableEntity, T : BaseAdapter<V, D>> T.doWithoutAnimation(block: T.() -> Unit) {
-    if (this.recyclerView != null && this.recyclerView.itemAnimator != null) {
-        val itemAnimator = this.recyclerView.itemAnimator!!
+fun <T : RecyclerView> T.doWithoutAnimation(block: T.() -> Unit) {
+    if (this.itemAnimator != null) {
+        val itemAnimator = this.itemAnimator!!
         if (itemAnimator is SimpleItemAnimator) {
             val oldSupportsChangeAnimations = itemAnimator.supportsChangeAnimations
             try {
@@ -177,6 +174,6 @@ fun <V : ViewBinding, D : SelectableEntity, T : BaseAdapter<V, D>> T.doWithoutAn
 /**
  * 在没有动画的事务中执行
  */
-fun <V : ViewBinding, D : SelectableEntity, T : BaseAdapter<V, D>> T.withoutAnimation(block: T.() -> Unit) {
+fun <T : RecyclerView> T.withoutAnimation(block: T.() -> Unit) {
     this.doWithoutAnimation(block)
 }

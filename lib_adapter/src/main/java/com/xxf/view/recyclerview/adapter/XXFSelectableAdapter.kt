@@ -11,7 +11,25 @@ import com.xxf.model.setItemSelect
 import com.xxf.view.recyclerview.doWithoutAnimation
 import java.io.Serializable
 
+/**
+ * 在没有动画的事务中执行
+ */
+fun <V : ViewBinding, D : SelectableEntity, T : BaseAdapter<V, D>> T.doWithoutAnimation(block: T.() -> Unit) {
+    if (this.recyclerView != null) {
+        this.recyclerView.doWithoutAnimation {
+            this@doWithoutAnimation.apply(block)
+        }
+    } else {
+        block()
+    }
+}
 
+/**
+ * 在没有动画的事务中执行
+ */
+fun <V : ViewBinding, D : SelectableEntity, T : BaseAdapter<V, D>> T.withoutAnimation(block: T.() -> Unit) {
+    this.doWithoutAnimation(block)
+}
 /**
  * 提供直接操作的
  */
