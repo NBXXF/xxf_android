@@ -17,8 +17,9 @@ import java.io.Serializable
  */
 @SuppressLint("NotifyDataSetChanged")
 fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.clearSelectedItems() {
-    this.currentList.clearSelected()
-    changeRefresh()
+    changeRefresh(this.currentList.toList().apply {
+        this.clearSelected()
+    })
 }
 
 /**
@@ -33,11 +34,12 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.setItemSelect(
     index: Int,
     selectType: SelectType = SelectType.SELECT_TYPE_SINGLE
 ) {
-    if (selectType == SelectType.SELECT_TYPE_SINGLE) {
-        this.currentList.clearSelected()
-    }
-    this.currentList.setItemSelect(select, index)
-    changeRefresh()
+    changeRefresh(this.currentList.toList().apply {
+        if (selectType == SelectType.SELECT_TYPE_SINGLE) {
+            this.clearSelected()
+        }
+        this.setItemSelect(select, index)
+    })
 }
 
 /**
@@ -69,9 +71,9 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItem():
 }
 
 @SuppressLint("NotifyDataSetChanged")
-private fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.changeRefresh() {
+private fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.changeRefresh(newResults: List<T>) {
     //底层可能有diff 这样重新绑定一次 好一些 有效避免刷新
-    this.bindData(true, ArrayList(this.data))
+    this.bindData(true, newResults)
 }
 
 enum class SelectType : Serializable {
