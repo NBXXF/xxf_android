@@ -1,12 +1,10 @@
 package com.xxf.arch.widget;
 
-import android.annotation.SuppressLint;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,39 +19,8 @@ import java.util.List;
  * Deprecated
  *  * Switch to androidx.viewpager2.widget.ViewPager2 and use androidx.viewpager2.adapter.FragmentStateAdapter instead.
  */
-@Deprecated
+
 public class BaseFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
-
-    public enum Behavior {
-        /**
-         * Indicates that {@link Fragment#setUserVisibleHint(boolean)} will be called when the current
-         * fragment changes.
-         *
-         * @see #FragmentPagerAdapter(FragmentManager, int)
-         * @deprecated This behavior relies on the deprecated
-         * {@link Fragment#setUserVisibleHint(boolean)} API. Use
-         * {@link #BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT} to switch to its replacement,
-         * {@link FragmentTransaction#setMaxLifecycle}.
-         */
-        BEHAVIOR_SET_USER_VISIBLE_HINT(0),
-
-        /**
-         * Indicates that only the current fragment will be in the {@link Lifecycle.State#RESUMED}
-         * state. All other Fragments are capped at {@link Lifecycle.State#STARTED}.
-         *
-         * @see #FragmentPagerAdapter(FragmentManager, int)
-         */
-        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT(1);
-        int value;
-
-        Behavior(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
 
     private final List<Fragment> fragmentsList = new ArrayList<Fragment>();
     private final List<CharSequence> mFragmentTitles = new ArrayList<CharSequence>();
@@ -64,8 +31,12 @@ public class BaseFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
+    /**
+     * 默认 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+     * @param fm
+     */
     public BaseFragmentStatePagerAdapter(FragmentManager fm) {
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.fm = fm;
     }
 
@@ -75,9 +46,8 @@ public class BaseFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
      * @param fm
      * @param behavior
      */
-    @SuppressLint("WrongConstant")
-    public BaseFragmentStatePagerAdapter(FragmentManager fm, Behavior behavior) {
-        super(fm, behavior.getValue());
+    public BaseFragmentStatePagerAdapter(FragmentManager fm, int behavior) {
+        super(fm, behavior);
         this.fm = fm;
     }
 

@@ -3,7 +3,6 @@ package com.xxf.arch.widget;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.view.ViewGroup;
@@ -14,45 +13,18 @@ import java.util.List;
 /**
  * Description
  * <p>
+ *
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2017/4/8
  * version 1.0.0
  * Deprecated
  * Switch to androidx.viewpager2.widget.ViewPager2 and use androidx.viewpager2.adapter.FragmentStateAdapter instead.
+ * <p>
+ * 或者 BaseFragmentStatePagerAdapter
  */
 @Deprecated
 public class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    public enum Behavior {
-        /**
-         * Indicates that {@link Fragment#setUserVisibleHint(boolean)} will be called when the current
-         * fragment changes.
-         *
-         * @see #FragmentPagerAdapter(FragmentManager, int)
-         * @deprecated This behavior relies on the deprecated
-         * {@link Fragment#setUserVisibleHint(boolean)} API. Use
-         * {@link #BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT} to switch to its replacement,
-         * {@link FragmentTransaction#setMaxLifecycle}.
-         */
-        BEHAVIOR_SET_USER_VISIBLE_HINT(0),
-
-        /**
-         * Indicates that only the current fragment will be in the {@link Lifecycle.State#RESUMED}
-         * state. All other Fragments are capped at {@link Lifecycle.State#STARTED}.
-         *
-         * @see #FragmentPagerAdapter(FragmentManager, int)
-         */
-        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT(1);
-        int value;
-
-        Behavior(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
 
     private final List<Fragment> fragmentsList = new ArrayList<Fragment>();
     private final List<CharSequence> mFragmentTitles = new ArrayList<CharSequence>();
@@ -62,9 +34,13 @@ public class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
         return fragmentsList;
     }
 
-
+    /**
+     * 默认 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+     *
+     * @param fm
+     */
     public BaseFragmentPagerAdapter(FragmentManager fm) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.fm = fm;
     }
 
@@ -75,8 +51,8 @@ public class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
      * @param behavior
      */
     @SuppressLint("WrongConstant")
-    public BaseFragmentPagerAdapter(FragmentManager fm, Behavior behavior) {
-        super(fm, behavior.getValue());
+    public BaseFragmentPagerAdapter(FragmentManager fm, int behavior) {
+        super(fm, behavior);
         this.fm = fm;
     }
 
