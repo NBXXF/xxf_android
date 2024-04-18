@@ -49,7 +49,8 @@ xxf架构封装常用组件与用法,且符合函数式和流式编程
 //请在build.gradle中配置
 allprojects {
     repositories {
-
+        maven { url "https://jitpack.io" }
+        jcenter()
         maven {
             url 'https://maven.aliyun.com/repository/public'
         }
@@ -78,11 +79,6 @@ allprojects {
  ```
     //新版本使用方式,需要添加上面的权限
     implementation 'com.NBXXF.xxf_android:libs:5.2.2.1-SNAPSHOT'
- ```
-
- ```
-    //老版本使用方式,无权限
-    implementation 'com.github.NBXXF.xxf_android:lib_view:5.2.1.0'//主要lib
  ```
 
 ##### Application 与Activity 管理
