@@ -28,7 +28,6 @@ dependencies {
     api project(path: ':lib_adapter')
     api project(path: ':lib_application')
     api project(path: ':lib_arch')
-    api project(path: ':lib_bus')
     api project(path: ':lib_effect')
     api project(path: ':lib_fileprovider')
     api project(path: ':lib_http')

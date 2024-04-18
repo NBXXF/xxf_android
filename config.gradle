@@ -4,6 +4,7 @@ ext {
             http                          : "com.nbxxf.kpower:http:2.0.0-SNAPSHOT",
             speed                         : "com.nbxxf.kpower:speed:2.0.0-SNAPSHOT",
             json                          : "com.nbxxf.kpower:gson:2.0.0-SNAPSHOT",
+            bus                          : "com.nbxxf.kpower:bus:2.0.0-SNAPSHOT",
 
 
             //主要依赖库
