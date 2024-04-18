@@ -5,7 +5,7 @@ plugins {
 }
 def des = rootProject.ext.dependencies
 android {
-    compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
+    compileSdk project.COMPILE_SDK_VERSION.toInteger()
     defaultConfig {
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()

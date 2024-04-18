@@ -9,20 +9,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * Description :kotlin 简化
  */
 /********** Observable **********/
-inline fun <reified T> Observable<T>.subscribeOnTrampoline(): Observable<T> {
+inline fun <reified T : Any> Observable<T>.subscribeOnTrampoline(): Observable<T> {
     return this.subscribeOn(Schedulers.trampoline())
 }
 
-inline fun <reified T> Observable<T>.observeOnTrampoline(delayError: Boolean = false): Observable<T> {
+inline fun <reified T : Any> Observable<T>.observeOnTrampoline(delayError: Boolean = false): Observable<T> {
     return this.observeOn(Schedulers.trampoline(), delayError)
 }
 
 /********** Flowable **********/
-inline fun <reified T> Flowable<T>.subscribeOnTrampoline(): Flowable<T> {
+inline fun <reified T : Any> Flowable<T>.subscribeOnTrampoline(): Flowable<T> {
     return this.subscribeOn(Schedulers.trampoline())
 }
 
-inline fun <reified T> Flowable<T>.observeOnTrampoline(delayError: Boolean = false): Flowable<T> {
+inline fun <reified T : Any> Flowable<T>.observeOnTrampoline(delayError: Boolean = false): Flowable<T> {
     return this.observeOn(Schedulers.trampoline(), delayError)
 }
 
@@ -48,10 +48,10 @@ inline fun <reified T> Completable.observeOnTrampoline(): Completable {
 
 
 /********** Single **********/
-inline fun <reified T> Single<T>.subscribeOnTrampoline(): Single<T> {
+inline fun <reified T : Any> Single<T>.subscribeOnTrampoline(): Single<T> {
     return this.subscribeOn(Schedulers.trampoline())
 }
 
-inline fun <reified T> Single<T>.observeOnTrampoline(): Single<T> {
+inline fun <reified T : Any> Single<T>.observeOnTrampoline(): Single<T> {
     return this.observeOn(Schedulers.trampoline())
 }

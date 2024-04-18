@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
 }
 android {
-    compileSdkVersion 30
+    compileSdk 30
 
     defaultConfig {
         applicationId "com.xxf.media.previewer.demo"

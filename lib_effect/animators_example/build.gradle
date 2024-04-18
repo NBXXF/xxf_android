@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 def des = rootProject.ext.dependencies
 android {
-    compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
+    compileSdk project.COMPILE_SDK_VERSION.toInteger()
     defaultConfig {
         applicationId 'com.xxf.effect.recyclerview.demo'
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

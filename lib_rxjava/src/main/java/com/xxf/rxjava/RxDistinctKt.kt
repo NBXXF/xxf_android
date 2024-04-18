@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.core.*
  * 2.动画避免重复执行
  * 3.结合concat 等组合操作符 firstCache模式 提升页面速度 又避免闪动 重复刷新等
  */
-inline fun <reified T> Observable<T>.distinctUntilChangedByHash(): Observable<T> {
+inline fun <reified T : Any> Observable<T>.distinctUntilChangedByHash(): Observable<T> {
     return this.distinctUntilChanged { t1, t2 -> t1.hashCode() == t2.hashCode() }
 }
 
@@ -30,6 +30,6 @@ inline fun <reified T> Observable<T>.distinctUntilChangedByHash(): Observable<T>
  * 2.动画避免重复执行
  * 3.结合concat 等组合操作符 firstCache模式 提升页面速度 又避免闪动 重复刷新等
  */
-inline fun <reified T> Flowable<T>.distinctUntilChangedByHash(): Flowable<T> {
+inline fun <reified T : Any> Flowable<T>.distinctUntilChangedByHash(): Flowable<T> {
     return this.distinctUntilChanged { t1, t2 -> t1.hashCode() == t2.hashCode() }
 }

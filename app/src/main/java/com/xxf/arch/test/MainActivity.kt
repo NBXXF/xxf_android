@@ -175,10 +175,11 @@ class MainActivity() : XXFActivity() {
 //        imageTextView.getImageView().setImageResource(R.drawable.xxf_ic_toast_success);
         StatusBarUtils.setTransparentForWindow(this)
         StatusBarUtils.setStatusBarCustomerView(this, findViewById(R.id.statusbarLayout))
-        RxJavaPlugins.setErrorHandler(object : Consumer<Throwable?> {
-            @Throws(Exception::class)
-            override fun accept(throwable: Throwable?) {
-                Log.d("", "========>error:", throwable)
+        RxJavaPlugins.setErrorHandler(object : Consumer<Throwable> {
+
+            override fun accept(t: Throwable) {
+                Log.d("", "========>error:", t)
+
             }
         })
         XXF.getFileService()
@@ -556,10 +557,6 @@ class MainActivity() : XXFActivity() {
         }, 2000)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d("======>onActResult:", "" + this + "_")
-    }
 
     override fun onResume() {
         super.onResume()

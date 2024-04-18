@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
 }
 android {
-    compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
+    compileSdk project.TARGET_SDK_VERSION.toInteger()
 
 
     defaultConfig {

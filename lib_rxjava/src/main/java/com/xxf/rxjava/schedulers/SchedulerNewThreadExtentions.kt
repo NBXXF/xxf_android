@@ -9,20 +9,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * Description :kotlin 简化
  */
 /********** Observable **********/
-inline fun <reified T> Observable<T>.subscribeOnNewThread(): Observable<T> {
+inline fun <reified T : Any> Observable<T>.subscribeOnNewThread(): Observable<T> {
     return this.subscribeOn(Schedulers.newThread())
 }
 
-inline fun <reified T> Observable<T>.observeOnNewThread(delayError:Boolean=false): Observable<T> {
+inline fun <reified T : Any> Observable<T>.observeOnNewThread(delayError:Boolean=false): Observable<T> {
     return this.observeOn(Schedulers.newThread(),delayError)
 }
 
 /********** Flowable **********/
-inline fun <reified T> Flowable<T>.subscribeOnNewThread(delayError:Boolean=false): Flowable<T> {
+inline fun <reified T : Any> Flowable<T>.subscribeOnNewThread(delayError:Boolean=false): Flowable<T> {
     return this.subscribeOn(Schedulers.newThread(),delayError)
 }
 
-inline fun <reified T> Flowable<T>.observeOnNewThread(): Flowable<T> {
+inline fun <reified T : Any> Flowable<T>.observeOnNewThread(): Flowable<T> {
     return this.observeOn(Schedulers.newThread())
 }
 
@@ -48,10 +48,10 @@ inline fun <reified T> Completable.observeOnNewThread(): Completable {
 
 
 /********** Single **********/
-inline fun <reified T> Single<T>.subscribeOnNewThread(): Single<T> {
+inline fun <reified T : Any> Single<T>.subscribeOnNewThread(): Single<T> {
     return this.subscribeOn(Schedulers.newThread())
 }
 
-inline fun <reified T> Single<T>.observeOnNewThread(): Single<T> {
+inline fun <reified T : Any> Single<T>.observeOnNewThread(): Single<T> {
     return this.observeOn(Schedulers.newThread())
 }

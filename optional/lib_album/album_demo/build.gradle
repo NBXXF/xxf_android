@@ -2,10 +2,10 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'com.github.dcendents.android-maven'
+
 }
 android {
-    compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
+    compileSdk project.TARGET_SDK_VERSION.toInteger()
 
     defaultConfig {
         applicationId 'com.xxf.media.album.sample'

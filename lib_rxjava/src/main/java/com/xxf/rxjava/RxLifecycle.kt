@@ -24,7 +24,7 @@ object RxLifecycle {
      * @param <T>
      * @return
     </T> */
-    fun <T> bindLifecycle(lifecycleOwner: LifecycleOwner, untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY): AutoDisposeConverter<T> {
+    fun <T : Any> bindLifecycle(lifecycleOwner: LifecycleOwner, untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY): AutoDisposeConverter<T> {
         return AutoDispose.autoDisposable(ScopesFactory.completableOf(AndroidLifecycleScopeProvider.from(lifecycleOwner,untilEvent)))
     }
 
@@ -32,7 +32,7 @@ object RxLifecycle {
      * 绑定view的生命周期
      * 注意 必须是view aattached
      */
-    fun <T>bindLifecycle(view:View):AutoDisposeConverter<T> {
+    fun <T : Any>bindLifecycle(view:View):AutoDisposeConverter<T> {
         return AutoDispose.autoDisposable(ScopesFactory.completableOf(ViewScopeProvider.from(view)));
     }
 }

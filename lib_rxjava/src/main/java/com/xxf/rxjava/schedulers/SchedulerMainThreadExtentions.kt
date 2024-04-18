@@ -10,20 +10,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * Description :kotlin 简化
  */
 /********** Observable **********/
-inline fun <reified T> Observable<T>.subscribeOnMain(): Observable<T> {
+inline fun <reified T : Any> Observable<T>.subscribeOnMain(): Observable<T> {
     return this.subscribeOn(AndroidSchedulers.mainThread())
 }
 
-inline fun <reified T> Observable<T>.observeOnMain(delayError:Boolean=false): Observable<T> {
+inline fun <reified T : Any> Observable<T>.observeOnMain(delayError:Boolean=false): Observable<T> {
     return this.observeOn(AndroidSchedulers.mainThread(),delayError)
 }
 
 /********** Flowable **********/
-inline fun <reified T> Flowable<T>.subscribeOnMain(): Flowable<T> {
+inline fun <reified T : Any> Flowable<T>.subscribeOnMain(): Flowable<T> {
     return this.subscribeOn(AndroidSchedulers.mainThread())
 }
 
-inline fun <reified T> Flowable<T>.observeOnMain(delayError:Boolean=false): Flowable<T> {
+inline fun <reified T : Any> Flowable<T>.observeOnMain(delayError:Boolean=false): Flowable<T> {
     return this.observeOn(AndroidSchedulers.mainThread(),delayError)
 }
 
@@ -49,10 +49,10 @@ inline fun <reified T> Completable.observeOnMain(): Completable {
 
 
 /********** Single **********/
-inline fun <reified T> Single<T>.subscribeOnMain(): Single<T> {
+inline fun <reified T : Any> Single<T>.subscribeOnMain(): Single<T> {
     return this.subscribeOn(AndroidSchedulers.mainThread())
 }
 
-inline fun <reified T> Single<T>.observeOnMain(): Single<T> {
+inline fun <reified T : Any> Single<T>.observeOnMain(): Single<T> {
     return this.observeOn(AndroidSchedulers.mainThread())
 }

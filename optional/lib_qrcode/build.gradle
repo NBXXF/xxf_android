@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion project.TARGET_SDK_VERSION.toInteger()
+    compileSdk project.TARGET_SDK_VERSION.toInteger()
 
 
     defaultConfig {

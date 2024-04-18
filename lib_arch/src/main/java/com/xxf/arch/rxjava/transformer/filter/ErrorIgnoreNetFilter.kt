@@ -17,7 +17,7 @@ import javax.net.ssl.SSLProtocolException
  * 忽略网络错误
  */
 object ErrorIgnoreNetFilter : Predicate<Throwable> {
-    override fun test(t: Throwable?): Boolean {
+    override fun test(t: Throwable): Boolean {
         if (t is UnknownHostException) {
             return false
         }

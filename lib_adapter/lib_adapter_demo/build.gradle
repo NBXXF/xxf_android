@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
 }
 android {
-    compileSdkVersion 30
+    compileSdk 30
 
     defaultConfig {
         applicationId "com.xxf.adapter.demo"

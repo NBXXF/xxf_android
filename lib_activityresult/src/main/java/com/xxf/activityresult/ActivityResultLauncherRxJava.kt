@@ -30,7 +30,7 @@ import io.reactivex.rxjava3.core.Observable
  *  @param options
  */
 @JvmOverloads
-fun <I, O> LifecycleOwner.startActivityForResult(
+fun <I, O:Any> LifecycleOwner.startActivityForResult(
     contact: ActivityResultContract<I, O>,
     input: I,
     options: ActivityOptionsCompat? = null,
@@ -40,7 +40,7 @@ fun <I, O> LifecycleOwner.startActivityForResult(
 
 
 @JvmOverloads
-fun <O> LifecycleOwner.startActivityForResult(
+fun <O : Any> LifecycleOwner.startActivityForResult(
     contact: ActivityResultContract<Unit, O>,
     options: ActivityOptionsCompat? = null,
 ): Observable<O> {

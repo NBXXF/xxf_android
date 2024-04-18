@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewbinding.ViewBinding;
 
-import com.ezydev.bigscreenshot.BigScreenshot;
 import com.xxf.arch.XXF;
 import com.xxf.arch.model.DownloadTask;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -41,7 +40,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class StateActivity extends AppCompatActivity implements BigScreenshot.ProcessScreenshot {
+public class StateActivity extends AppCompatActivity {
 
     ActivityStateBinding stateBinding;
     TestAdaper testAdaper;
@@ -203,19 +202,6 @@ public class StateActivity extends AppCompatActivity implements BigScreenshot.Pr
                 });
     }
 
-    @Override
-    public void getScreenshot(Bitmap bitmap) {
-
-        ToastUtils.showToast("xxxx");
-        Log.d("=========>", "====>bitmap:" + bitmap);
-        SystemUtils.saveImageToAlbum(this, "" + System.currentTimeMillis() + ".png", bitmap)
-                .subscribe(new Consumer<File>() {
-                    @Override
-                    public void accept(File file) throws Throwable {
-                        Log.d("=========>", "====>bitmap2:" + file);
-                    }
-                });
-    }
 
     class TestAdaper extends XXFRecyclerAdapter<ViewBinding, Integer> {
 

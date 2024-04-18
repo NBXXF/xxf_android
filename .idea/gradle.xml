@@ -7,6 +7,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="$APPLICATION_HOME_DIR$/space_gradle_cache/wrapper/dists/gradle-8.7-bin/bhs2wmbdwecv87pi65oeuq5iu/gradle-8.7" />
         <option name="gradleJvm" value="ibm-11" />
         <option name="modules">
           <set>
@@ -31,8 +32,6 @@
             <option value="$PROJECT_DIR$/lib_hash/lib_hash_demo" />
             <option value="$PROJECT_DIR$/lib_http" />
             <option value="$PROJECT_DIR$/lib_http/httpdemo" />
-            <option value="$PROJECT_DIR$/lib_json" />
-            <option value="$PROJECT_DIR$/lib_json/demo" />
             <option value="$PROJECT_DIR$/lib_ktx" />
             <option value="$PROJECT_DIR$/lib_log" />
             <option value="$PROJECT_DIR$/lib_objectbox" />
@@ -43,7 +42,6 @@
             <option value="$PROJECT_DIR$/lib_rxjava" />
             <option value="$PROJECT_DIR$/lib_rxjava/lib_rxlifecycledemo" />
             <option value="$PROJECT_DIR$/lib_snackbar" />
-            <option value="$PROJECT_DIR$/lib_speed" />
             <option value="$PROJECT_DIR$/lib_utils" />
             <option value="$PROJECT_DIR$/lib_view" />
             <option value="$PROJECT_DIR$/lib_view_gradient" />

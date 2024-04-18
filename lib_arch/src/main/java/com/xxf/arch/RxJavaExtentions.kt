@@ -22,7 +22,7 @@ import io.reactivex.rxjava3.functions.Predicate
 /**
  * 添加加载圈loading
  */
-inline fun <reified T> Observable<T>.bindProgressHud(
+inline fun <reified T : Any> Observable<T>.bindProgressHud(
     lifecycleOwner: LifecycleOwner,
     loadingNotice: String? = "",
     successNotice: String? = "",
@@ -39,7 +39,7 @@ inline fun <reified T> Observable<T>.bindProgressHud(
  * 添加加载圈loading
  * 默认绑定 topFragmentActivity
  */
-inline fun <reified T> Observable<T>.bindProgressHud(
+inline fun <reified T : Any> Observable<T>.bindProgressHud(
     loadingNotice: String? = "",
     successNotice: String? = "",
     errorNotice: String? = null
@@ -57,7 +57,7 @@ inline fun <reified T> Observable<T>.bindProgressHud(
 
 //***************************Flowable**************************//
 
-inline fun <reified T> Flowable<T>.bindProgressHud(
+inline fun <reified T : Any> Flowable<T>.bindProgressHud(
     lifecycleOwner: LifecycleOwner,
     loadingNotice: String? = "",
     successNotice: String? = "",
@@ -74,7 +74,7 @@ inline fun <reified T> Flowable<T>.bindProgressHud(
  * 添加加载圈loading
  * 默认绑定 topFragmentActivity
  */
-inline fun <reified T> Flowable<T>.bindProgressHud(
+inline fun <reified T : Any> Flowable<T>.bindProgressHud(
     loadingNotice: String? = "",
     successNotice: String? = "",
     errorNotice: String? = null
@@ -92,7 +92,7 @@ inline fun <reified T> Flowable<T>.bindProgressHud(
 
 //***************************Flowable**************************//
 
-inline fun <reified T> Maybe<T>.bindProgressHud(
+inline fun <reified T : Any> Maybe<T>.bindProgressHud(
     lifecycleOwner: LifecycleOwner,
     loadingNotice: String? = "",
     successNotice: String? = "",
@@ -109,7 +109,7 @@ inline fun <reified T> Maybe<T>.bindProgressHud(
  * 添加加载圈loading
  * 默认绑定 topFragmentActivity
  */
-inline fun <reified T> Maybe<T>.bindProgressHud(
+inline fun <reified T : Any> Maybe<T>.bindProgressHud(
     loadingNotice: String? = "",
     successNotice: String? = "",
     errorNotice: String? = null
@@ -133,7 +133,7 @@ inline fun <reified T> Maybe<T>.bindProgressHud(
  * @param filter 错过过滤 哪些不提示 内置ErrorNoFilter  ErrorIgnoreNetFilter
  * @param toastFlag 对应toast的类型
  */
-inline fun <reified T> Observable<T>.bindErrorNotice(
+inline fun <reified T : Any> Observable<T>.bindErrorNotice(
     filter: Predicate<Throwable> = ErrorNoFilter,
     toastFlag: Int = Gravity.CENTER
 ): @NonNull Observable<T> {
@@ -146,7 +146,7 @@ inline fun <reified T> Observable<T>.bindErrorNotice(
  * @param filter 错过过滤 哪些不提示   内置ErrorNoFilter  ErrorIgnoreNetFilter
  * @param toastFlag  对应toast的类型
  */
-inline fun <reified T> Flowable<T>.bindErrorNotice(
+inline fun <reified T : Any> Flowable<T>.bindErrorNotice(
     filter: Predicate<Throwable> = ErrorNoFilter,
     toastFlag: Int = Gravity.CENTER
 ): @NonNull Flowable<T> {
@@ -159,7 +159,7 @@ inline fun <reified T> Flowable<T>.bindErrorNotice(
  * @param filter 错过过滤 哪些不提示   内置ErrorNoFilter  ErrorIgnoreNetFilter
  * @param toastFlag 对应toast的类型
  */
-inline fun <reified T> Maybe<T>.bindErrorNotice(
+inline fun <reified T : Any> Maybe<T>.bindErrorNotice(
     filter: Predicate<Throwable> = ErrorNoFilter,
     toastFlag: Int = Gravity.CENTER
 ): @NonNull Maybe<T> {

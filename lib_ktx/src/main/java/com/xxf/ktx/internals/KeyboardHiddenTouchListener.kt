@@ -15,19 +15,19 @@ class KeyboardHiddenTouchListener : View.OnTouchListener {
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         if (gestureDetector == null) {
             gestureDetector = GestureDetector(v!!.context!!, object : SimpleOnGestureListener() {
-                override fun onShowPress(e: MotionEvent?) {
+                override fun onShowPress(e: MotionEvent) {
                     super.onShowPress(e)
                     v.hideKeyboard()
                 }
 
-                override fun onSingleTapUp(e: MotionEvent?): Boolean {
+                override fun onSingleTapUp(e: MotionEvent): Boolean {
                     v.hideKeyboard()
                     return super.onSingleTapUp(e)
                 }
 
                 override fun onScroll(
-                    e1: MotionEvent?,
-                    e2: MotionEvent?,
+                    e1: MotionEvent,
+                    e2: MotionEvent,
                     distanceX: Float,
                     distanceY: Float
                 ): Boolean {
@@ -36,7 +36,9 @@ class KeyboardHiddenTouchListener : View.OnTouchListener {
                 }
             })
         }
-        gestureDetector!!.onTouchEvent(event)
+        if (event != null) {
+            gestureDetector!!.onTouchEvent(event)
+        }
         return false
     }
 }

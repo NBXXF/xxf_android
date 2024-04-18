@@ -107,7 +107,7 @@ object SystemUtils {
                         if (!activityResult.isOk) {
                             Observable.empty()
                         } else Observable.just(
-                            activityResult.data!!.data
+                            activityResult.data!!.data!!
                         )
                     }
             }
@@ -213,7 +213,7 @@ object SystemUtils {
                                 UriUtils.getPath(
                                     context,
                                     activityResult.data!!.data
-                                )
+                                )!!
                             )
                         }
                 }
@@ -363,7 +363,7 @@ object SystemUtils {
                                 return if (!activityResult.isOk) {
                                     Observable.empty()
                                 } else Observable.just(
-                                    activityResult.data!!.data
+                                    activityResult.data!!.data!!
                                 )
                             }
                         })

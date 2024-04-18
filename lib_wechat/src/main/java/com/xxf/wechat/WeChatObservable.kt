@@ -78,7 +78,7 @@ class WeChatObservable(var appId: String, var baseReq: BaseReq) : Observable<Bas
                 }
             }
         }.also { eventHandler = it })
-        observer.onSubscribe(eventHandler)
+        observer.onSubscribe(eventHandler!!)
         val wxApi = WXAPIFactory.createWXAPI(applicationContext, appId,false)
         if(!wxApi.registerApp(appId)){
             val t=RuntimeException("微信注册失败:$appId");

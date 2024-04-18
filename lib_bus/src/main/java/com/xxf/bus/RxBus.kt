@@ -45,7 +45,7 @@ object RxBus {
     /**
      * 订阅特定类型的Event Observable,注意线程问题
      */
-    fun <T> subscribeEvent(eventType: Class<T>, sticky: Boolean = false): Observable<T> {
+    fun <T:Any> subscribeEvent(eventType: Class<T>, sticky: Boolean = false): Observable<T> {
         if (sticky) {
             synchronized(mStickyEventMap) {
                 val observable = bus.ofType(eventType)

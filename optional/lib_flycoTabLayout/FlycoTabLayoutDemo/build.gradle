@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
+    compileSdk project.COMPILE_SDK_VERSION.toInteger()
     defaultConfig {
         applicationId "com.flyco.tablayoutsamples"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

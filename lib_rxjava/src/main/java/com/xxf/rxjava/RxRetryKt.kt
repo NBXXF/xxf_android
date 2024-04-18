@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * @param times 重试次数
  * @param delayTime 延迟重试的间隔
  */
-fun <T> Observable<T>.retryDelay(times: Long, delayTime: Long): Observable<T> {
+fun <T : Any> Observable<T>.retryDelay(times: Long, delayTime: Long): Observable<T> {
     return this.observeOn(Schedulers.io())
         .retry(times) {
             try {
@@ -25,7 +25,7 @@ fun <T> Observable<T>.retryDelay(times: Long, delayTime: Long): Observable<T> {
  * @param times 重试次数
  * @param delayTime 延迟重试的间隔
  */
-fun <T> Observable<T>.retryDelay(
+fun <T:Any> Observable<T>.retryDelay(
     times: Long,
     delayTime: Long,
     predicate: Predicate<Throwable>

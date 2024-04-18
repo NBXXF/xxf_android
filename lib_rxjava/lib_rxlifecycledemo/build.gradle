@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
+    compileSdk project.COMPILE_SDK_VERSION.toInteger()
 
     defaultConfig {
         applicationId "com.xxf.rxlifecycle.demo"

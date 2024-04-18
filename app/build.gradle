@@ -6,7 +6,7 @@ plugins {
 def des = rootProject.ext.dependencies
 android {
     ndkVersion '21.3.6528147'
-    compileSdkVersion project.COMPILE_SDK_VERSION.toInteger()
+    compileSdk project.COMPILE_SDK_VERSION.toInteger()
     defaultConfig {
         configurations.all {
             resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
@@ -20,12 +20,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled true
-        javaCompileOptions {
-            annotationProcessorOptions {
-                includeCompileClasspath = true
-                arguments = [AROUTER_MODULE_NAME: project.getName(), AROUTER_GENERATE_DOC: "enable"]
-            }
-        }
     }
     buildTypes {
         release {
@@ -49,7 +43,6 @@ dependencies {
     // implementation 'com.github.NBXXF:xxf_android:2.6.9'
 
 
-    implementation 'com.github.peter1492:LongScreenshot:1.0'
     //To runtime Permission
     implementation 'com.karumi:dexter:5.0.0'
 

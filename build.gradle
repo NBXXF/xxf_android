@@ -13,26 +13,38 @@ buildscript {
         google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.2"
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+        classpath 'com.android.tools.build:gradle:7.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
         classpath "io.objectbox:objectbox-gradle-plugin:3.7.0"
        // classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
-Properties localProps = new Properties()
-File localProperties = new File(rootProject.rootDir, "local.properties")
-if (localProperties.exists() && localProperties.isFile()) {
-    localProperties.withInputStream { localProps.load(it) }
+def getXXFUsername() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def userName = properties.getProperty('xxf_android.username')
+    return userName;
 }
+def getXXFPassword() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def password = properties.getProperty('xxf_android.password')
+    return password;
+}
+
 allprojects {
     repositories {
-        jcenter()
-        maven { url "https://jitpack.io" }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        mavenLocal()
         mavenCentral()
+        maven { url "https://jitpack.io" }
+        jcenter()
         google()
+        maven {url 'https://maven.aliyun.com/repository/jcenter'}
 
         //发布配置
         maven {
@@ -41,15 +53,15 @@ allprojects {
 
         maven {
             credentials {
-                username = localProps.getProperty("xxf_android.username")
-                password = localProps.getProperty("xxf_android.username")
+                username getXXFUsername()
+                password getXXFPassword()
             }
             url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
         }
         maven {
             credentials {
-                username = localProps.getProperty("xxf_android.username")
-                password = localProps.getProperty("xxf_android.username")
+                username getXXFUsername()
+                password getXXFPassword()
             }
             url 'https://packages.aliyun.com/maven/repository/2433389-snapshot-Kqt8ID/'
         }
@@ -67,6 +79,6 @@ task clean(type: Delete) {
 //全局版本号  发布命令 ./gradlew publish
 //您的制品文件具体推送到哪个库，根据您项目目录的build.gradle文件中version字段中是否配置了-SNAPSHOT。
 ext {
-    xxfVersion = "5.2.2.1-SNAPSHOT"
+    xxfVersion = "5.2.2.0-SNAPSHOT"
     xxfGroup = "com.NBXXF.xxf_android"
 }

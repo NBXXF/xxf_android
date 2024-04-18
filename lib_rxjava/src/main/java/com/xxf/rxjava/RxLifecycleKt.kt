@@ -19,7 +19,7 @@ import io.reactivex.rxjava3.parallel.ParallelFlowable
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Observable<T>.bindLifecycle(
+fun <T : Any> Observable<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): ObservableSubscribeProxy<T> {
@@ -38,7 +38,7 @@ fun <T> Observable<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Flowable<T>.bindLifecycle(
+fun <T : Any> Flowable<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): FlowableSubscribeProxy<T> {
@@ -57,7 +57,7 @@ fun <T> Flowable<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> ParallelFlowable<T>.bindLifecycle(
+fun <T : Any> ParallelFlowable<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): ParallelFlowableSubscribeProxy<T> {
@@ -76,7 +76,7 @@ fun <T> ParallelFlowable<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Maybe<T>.bindLifecycle(
+fun <T : Any> Maybe<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): MaybeSubscribeProxy<T> {
@@ -95,7 +95,7 @@ fun <T> Maybe<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Completable.bindLifecycle(
+fun <T:Any> Completable.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): CompletableSubscribeProxy {
@@ -114,7 +114,7 @@ fun <T> Completable.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Single<T>.bindLifecycle(
+fun <T : Any> Single<T>.bindLifecycle(
     lifecycleOwner: LifecycleOwner,
     untilEvent: Lifecycle.Event = Lifecycle.Event.ON_DESTROY
 ): SingleSubscribeProxy<T> {
@@ -134,7 +134,7 @@ fun <T> Single<T>.bindLifecycle(
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Observable<T>.bindLifecycle(
+fun <T : Any> Observable<T>.bindLifecycle(
     view: View,
     checkAttached: Boolean = true
 ): ObservableSubscribeProxy<T> {
@@ -154,7 +154,7 @@ fun <T> Observable<T>.bindLifecycle(
  * 绑定rxjava 生命周期
  *  * @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
  */
-fun <T> Flowable<T>.bindLifecycle(
+fun <T : Any> Flowable<T>.bindLifecycle(
     view: View,
     checkAttached: Boolean = true
 ): FlowableSubscribeProxy<T> {
@@ -174,7 +174,7 @@ fun <T> Flowable<T>.bindLifecycle(
  * 绑定rxjava 生命周期
  *  @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
  */
-fun <T> ParallelFlowable<T>.bindLifecycle(
+fun <T : Any> ParallelFlowable<T>.bindLifecycle(
     view: View,
     checkAttached: Boolean = true
 ): ParallelFlowableSubscribeProxy<T> {
@@ -194,7 +194,7 @@ fun <T> ParallelFlowable<T>.bindLifecycle(
  * 绑定rxjava 生命周期
  * @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
  */
-fun <T> Maybe<T>.bindLifecycle(view: View, checkAttached: Boolean = true): MaybeSubscribeProxy<T> {
+fun <T:Any> Maybe<T>.bindLifecycle(view: View, checkAttached: Boolean = true): MaybeSubscribeProxy<T> {
     return this.to(
         AutoDispose.autoDisposable(
             ScopesFactory.completableOf(
@@ -210,7 +210,7 @@ fun <T> Maybe<T>.bindLifecycle(view: View, checkAttached: Boolean = true): Maybe
 /**
  * 绑定rxjava 生命周期
  */
-fun <T> Completable.bindLifecycle(
+fun <T:Any> Completable.bindLifecycle(
     view: View,
     checkAttached: Boolean = true
 ): CompletableSubscribeProxy {
@@ -230,7 +230,7 @@ fun <T> Completable.bindLifecycle(
  * 绑定rxjava 生命周期
  * @param checkAttached 默认检查是否attached  否则在view init 构造方法等 会出现 view is not attached!
  */
-fun <T> Single<T>.bindLifecycle(
+fun <T:Any> Single<T>.bindLifecycle(
     view: View,
     checkAttached: Boolean = true
 ): SingleSubscribeProxy<T> {

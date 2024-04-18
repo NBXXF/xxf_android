@@ -23,7 +23,8 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
-            android:resizeableActivity="true">
+            android:resizeableActivity="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +33,6 @@
         </activity>
         <activity android:name=".TestActivity" android:resizeableActivity="true"/>
         <activity android:name=".StateActivity" android:resizeableActivity="true"/>
-        <activity android:name=".KotlinTestActivity" android:resizeableActivity="true"/>
         <activity android:name=".PdfViewActivity" android:resizeableActivity="true"/>
         <activity android:name=".PdfMainActivity" android:resizeableActivity="true"/>
         <activity android:name=".ReciveContentActivity" android:resizeableActivity="true"/>

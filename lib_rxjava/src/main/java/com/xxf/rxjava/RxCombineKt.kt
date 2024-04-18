@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.functions.Function3
 /**
  * 并行合并
  */
-fun <T, V, R> Observable<T>.combineLatestDelayError(
+fun <T:Any, V:Any, R:Any> Observable<T>.combineLatestDelayError(
     with: ObservableSource<V>,
     combiner: BiFunction<T, V, R>
 ): Observable<R> {
@@ -23,7 +23,7 @@ fun <T, V, R> Observable<T>.combineLatestDelayError(
 /**
  * 并行合并
  */
-fun <T, T1, T2, R> Observable<T>.combineLatestDelayError(
+fun <T : Any, T1 : Any, T2 : Any, R : Any> Observable<T>.combineLatestDelayError(
     with1: ObservableSource<T1>,
     with2: ObservableSource<T2>,
     combiner: Function3<T, T1, T2, R>

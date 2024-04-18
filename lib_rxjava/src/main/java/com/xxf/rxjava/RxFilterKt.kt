@@ -21,7 +21,7 @@ import io.reactivex.rxjava3.core.*
 /**
  * 筛选等同于filter 不会真的取消事件流
  */
-fun <T> Observable<T>.filterWhen(
+fun <T : Any> Observable<T>.filterWhen(
     owner: LifecycleOwner,
     vararg atLeastState: Lifecycle.State
 ): Observable<T> = this.filter {
@@ -33,7 +33,7 @@ fun <T> Observable<T>.filterWhen(
 /**
  * 筛选等同于filter 不会真的取消事件流
  */
-fun <T> Flowable<T>.filterWhen(
+fun <T : Any> Flowable<T>.filterWhen(
     owner: LifecycleOwner,
     vararg atLeastState: Lifecycle.State
 ): Flowable<T> = this.filter {

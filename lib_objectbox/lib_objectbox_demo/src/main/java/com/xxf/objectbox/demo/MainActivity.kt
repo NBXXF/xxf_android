@@ -175,6 +175,7 @@ class MainActivity() : AppCompatActivity() {
         val box = getBox(this)
         for (i in 0..20L) {
             try {
+                box.boxFor(Teacher::class.java).query().build().f
                 box.boxFor(Teacher::class.java).put(
                     Teacher(System.currentTimeMillis(), "" + i, user = Teacher.Student())
                 )
