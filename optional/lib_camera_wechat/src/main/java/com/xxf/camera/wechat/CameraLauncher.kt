@@ -77,9 +77,9 @@ class CameraLauncher {
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                     Manifest.permission.CAMERA,
                                     Manifest.permission.RECORD_AUDIO))
-                            .flatMap(Function<Boolean?, ObservableSource<ActivityResult>> {
+                            .flatMap{
                                 activity.startActivityForResult(Intent(activity, CameraActivity::class.java))
-                            }).subscribeOn(AndroidSchedulers.mainThread())
+                            }.subscribeOn(AndroidSchedulers.mainThread())
                             .flatMap {
                                 if (it.isOk) {
                                     val resultIsImg = resultIsImg(it.data);

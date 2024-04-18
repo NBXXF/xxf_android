@@ -56,9 +56,6 @@
             <option value="$PROJECT_DIR$/optional/blockcanary/blockcanary-sample" />
             <option value="$PROJECT_DIR$/optional/lib_album" />
             <option value="$PROJECT_DIR$/optional/lib_album/album_demo" />
-            <option value="$PROJECT_DIR$/optional/lib_audio" />
-            <option value="$PROJECT_DIR$/optional/lib_audio/audio_demo" />
-            <option value="$PROJECT_DIR$/optional/lib_audio/audio_demo_qq" />
             <option value="$PROJECT_DIR$/optional/lib_camera_wechat" />
             <option value="$PROJECT_DIR$/optional/lib_camera_wechat/camera_demo" />
             <option value="$PROJECT_DIR$/optional/lib_flycoTabLayout" />
