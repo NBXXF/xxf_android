@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 30
-    buildToolsVersion '29.0.3'
+    compileSdk project.COMPILE_SDK_VERSION.toInteger()
 
     defaultConfig {
         applicationId 'me.everything.overscrolldemo'
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion project.MIN_SDK_VERSION.toInteger()
+        targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
         versionCode 1
         versionName '1.0'
     }

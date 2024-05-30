@@ -2,12 +2,15 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'io.objectbox' // apply last
 }
+def des = rootProject.ext.dependencies
+
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
 
     defaultConfig {
-        applicationId "com.xxf.adapter.demo"
+        applicationId "com.xxf.objectbox.demo"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
         versionCode 1
@@ -22,10 +25,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildFeatures {
-        // for view binding :
-        viewBinding true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -33,14 +32,12 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation project(path: ':lib_adapter')
-    implementation project(path: ':lib_application')
+    implementation project(path: ':optional:lib_objectbox')
     implementation project(path: ':lib_rxjava')
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation des.material
+    implementation des.json
+
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'junit:junit:4.13.2'
 }

@@ -3,12 +3,12 @@ plugins {
     id 'kotlin-android'
 }
 android {
-    compileSdk 30
+    compileSdk project.COMPILE_SDK_VERSION.toInteger()
 
     defaultConfig {
         applicationId "com.xxf.media.previewer.demo"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion project.MIN_SDK_VERSION.toInteger()
+        targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
         versionCode 1
         versionName "1.0"
 

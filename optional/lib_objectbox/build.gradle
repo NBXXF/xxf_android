@@ -2,8 +2,10 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'io.objectbox' // apply last
 
 }
+
 def des = rootProject.ext.dependencies
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
@@ -16,10 +18,9 @@ android {
         targetCompatibility 1.8
     }
 }
-
 dependencies {
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    api des.http
+    api des.rxJava
+    api des.speed
     api project(path: ':lib_application')
 }
 
@@ -30,4 +31,4 @@ ext {
     descContent = project.name
 }
 
-apply from: '../publish_maven.gradle'
+apply from: '../../publish_maven.gradle'

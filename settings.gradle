@@ -27,26 +27,19 @@ include ':lib_viewbinding'
 include ':lib_wechat'
 include ':libs'
 include ':lib_adapter:lib_adapter_demo'
-
-include ':lib_effect:layout_anim_demo'
-include ':lib_effect:ovserscroll_demo'
-include ':lib_effect:animators_example'
-
-include ':lib_hash:lib_hash_demo'
-include ':lib_objectbox:serialization_demo'
 //include ':ds_bridge'
-//include ':lib_spi_compiler'
-//include ':lib_spi_annotation'
 
 
 //include ':optional:lib_audio'
 //include ':optional:lib_audio:audio_demo'
 //include ':optional:lib_audio:audio_demo_qq'
 
+include ':optional:lib_wechat'
+include ':optional:lib_objectbox'
+include ':optional:lib_objectbox:lib_objectbox_demo'
 include ':optional:lib_preview'
 include ':optional:lib_album'
 include ':optional:lib_camera_wechat'
-
 include ':optional:lib_camera_wechat:camera_demo'
 include ':optional:lib_album:album_demo'
 include ':optional:lib_preview:lib_previewer_demo'
@@ -57,8 +50,10 @@ include ':optional:blockcanary:blockcanary-analyzer'
 include ':optional:blockcanary:blockcanary-android'
 include ':optional:blockcanary:blockcanary-android-no-op'
 include ':optional:blockcanary:blockcanary-sample'
-include ':animators_example'
-include ':animators'
-
 include ':optional:lib_flycoTabLayout'
 include ':optional:lib_flycoTabLayout:FlycoTabLayoutDemo'
+
+
+include ':lib_effect:layout_anim_demo'
+include ':lib_effect:ovserscroll_demo'
+include ':lib_effect:animators_example'

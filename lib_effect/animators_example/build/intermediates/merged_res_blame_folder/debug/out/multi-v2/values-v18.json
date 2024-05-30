@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\developer\\android_studio\\spaces\\xxf_android\\lib_effect\\animators_example\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v18\\values-v18.xml",
+            "outputFile": "com.xxf.effect.recyclerview.demo.animators_example-mergeDebugResources-13:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "E:\\developer\\android_studio\\space_gradle_cache\\caches\\transforms-2\\files-2.1\\52c9510e83529502f910626d62032140\\appcompat-1.2.0\\res\\values-v18\\values-v18.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\transforms-3\\b87634979559910824b24ee650a9a75b\\transformed\\appcompat-1.2.0\\res\\values-v18\\values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

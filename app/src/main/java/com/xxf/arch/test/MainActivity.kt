@@ -292,7 +292,6 @@ class MainActivity() : XXFActivity() {
         findViewById<View>(R.id.file)
             .setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View) {
-                    startActivityForResult(Intent(v.context, PdfMainActivity::class.java), 1001)
                     val fileName = "aaa.text"
                     val s = ("99% FC\n" +
                             "98% FA\n" +

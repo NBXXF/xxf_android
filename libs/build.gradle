@@ -33,7 +33,6 @@ dependencies {
     api project(path: ':lib_http')
     api project(path: ':lib_ktx')
     api project(path: ':lib_log')
-    api project(path: ':lib_objectbox')
     api project(path: ':lib_permission')
     api project(path: ':lib_rxjava')
     api project(path: ':lib_snackbar')
@@ -43,7 +42,6 @@ dependencies {
     api project(path: ':lib_view_ratio')
     api project(path: ':lib_view_round')
     api project(path: ':lib_viewbinding')
-    api project(path: ':lib_wechat')
 }
 
 ext {
