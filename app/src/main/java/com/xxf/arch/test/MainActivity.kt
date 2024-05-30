@@ -27,10 +27,11 @@ import com.xxf.toast.ToastType
 import com.xxf.toast.ToastUtils
 import com.xxf.toast.showToast
 import com.xxf.bus.ActionTypeEvent.Companion.create
+import com.xxf.date.DateUtils
+import com.xxf.date.DateUtils.format
 import com.xxf.json.typeadapter.format.formatobject.NumberFormatObject
 import com.xxf.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter
 import com.xxf.log.logD
-import com.xxf.utils.DateUtils.format
 import com.xxf.utils.FileUtils
 import com.xxf.utils.HandlerUtils.mainHandler
 import com.xxf.view.recyclerview.layoutmanager.AutoFitGridLayoutManager
@@ -575,7 +576,7 @@ class MainActivity() : XXFActivity() {
                 start = System.currentTimeMillis()
                 for (i in 0..99999) {
                     val time = System.currentTimeMillis()
-                    val format = format("YYYY-M-d H:mm", time)
+                    val format =DateUtils.format("YYYY-M-d H:mm", time)
                 }
                 println("=============>java FastDateFormat:" + (System.currentTimeMillis() - start))
             }
