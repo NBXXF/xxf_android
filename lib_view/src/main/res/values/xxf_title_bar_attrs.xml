@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleBar">
+
+        <!-- 标题栏背景 -->
+        <attr name="android:background" />
+
+        <!-- 标题栏样式 -->
+        <attr name="barStyle">
+            <enum name="light" value="0x10" />
+            <enum name="night" value="0x20" />
+            <enum name="transparent" value="0x30" />
+            <enum name="ripple" value="0x40" />
+        </attr>
+
+        <!-- 子控件垂直内间距（可用于调整标题栏自适应的高度） -->
+        <attr name="childVerticalPadding" format="dimension" />
+
+        <!-- 中间标题 -->
+        <attr name="title" format="string" />
+        <attr name="titleColor" format="reference|color" />
+        <attr name="titleSize" format="dimension" />
+        <attr name="titleGravity">
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="center" value="0x11" />
+            <flag name="start" value="0x00800003" />
+            <flag name="end" value="0x00800005" />
+        </attr>
+        <attr name="titleStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <attr name="titleIcon" format="reference" />
+        <attr name="titleIconWidth" format="dimension" />
+        <attr name="titleIconHeight" format="dimension" />
+        <attr name="titleIconPadding" format="dimension" />
+        <attr name="titleIconTint" format="color" />
+        <attr name="titleIconGravity">
+            <flag name="top" value="0x30" />
+            <flag name="bottom" value="0x50" />
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="start" value="0x00800003" />
+            <flag name="end" value="0x00800005" />
+        </attr>
+        <attr name="titleHorizontalPadding" format="dimension" />
+        <!-- 中间标题文本溢出处理模式（默认开启跑马灯） -->
+        <attr name="titleOverflowMode">
+            <enum name="none" value="0" />
+            <enum name="start" value="1" />
+            <enum name="middle" value="2" />
+            <enum name="end" value="3" />
+            <enum name="marquee" value="4" />
+        </attr>
+
+        <!-- 左标题 -->
+        <attr name="leftTitle" format="string"/>
+        <attr name="leftTitleColor" format="reference|color" />
+        <attr name="leftTitleSize" format="dimension" />
+        <attr name="leftTitleStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <attr name="leftIcon" format="reference" />
+        <attr name="leftIconWidth" format="dimension" />
+        <attr name="leftIconHeight" format="dimension" />
+        <attr name="leftIconPadding" format="dimension" />
+        <attr name="leftIconTint" format="color" />
+        <attr name="leftIconGravity">
+            <flag name="top" value="0x30" />
+            <flag name="bottom" value="0x50" />
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="start" value="0x00800003" />
+            <flag name="end" value="0x00800005" />
+        </attr>
+        <attr name="leftBackground" format="reference|color" />
+        <attr name="leftForeground" format="reference|color" />
+        <attr name="leftHorizontalPadding" format="dimension" />
+        <!-- 左边标题文本溢出处理模式 -->
+        <attr name="leftTitleOverflowMode">
+            <enum name="none" value="0" />
+            <enum name="start" value="1" />
+            <enum name="middle" value="2" />
+            <enum name="end" value="3" />
+            <enum name="marquee" value="4" />
+        </attr>
+
+        <!-- 右标题 -->
+        <attr name="rightTitle" format="string" />
+        <attr name="rightTitleColor" format="reference|color" />
+        <attr name="rightTitleSize" format="dimension" />
+        <attr name="rightTitleStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <attr name="rightIcon" format="reference" />
+        <attr name="rightIconWidth" format="dimension" />
+        <attr name="rightIconHeight" format="dimension" />
+        <attr name="rightIconPadding" format="dimension" />
+        <attr name="rightIconTint" format="color" />
+        <attr name="rightIconGravity">
+            <flag name="top" value="0x30" />
+            <flag name="bottom" value="0x50" />
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="start" value="0x00800003" />
+            <flag name="end" value="0x00800005" />
+        </attr>
+        <attr name="rightBackground" format="reference|color" />
+        <attr name="rightForeground" format="reference|color" />
+        <attr name="rightHorizontalPadding" format="dimension" />
+        <!-- 右边标题文本溢出处理模式 -->
+        <attr name="rightTitleOverflowMode">
+            <enum name="none" value="0" />
+            <enum name="start" value="1" />
+            <enum name="middle" value="2" />
+            <enum name="end" value="3" />
+            <enum name="marquee" value="4" />
+        </attr>
+
+        <!-- 分割线 -->
+        <attr name="lineVisible" format="boolean" />
+        <attr name="lineDrawable" format="reference|color" />
+        <attr name="lineSize" format="dimension" />
+
+    </declare-styleable>
+    <string name="bar_string_placeholder">""</string>
+
+    <style name="TitleBarDefaultStyle">
+        <item name="android:background">@drawable/bar_drawable_placeholder</item>
+        <item name="leftIcon">@drawable/bar_drawable_placeholder</item>
+        <item name="leftBackground">@drawable/bar_drawable_placeholder</item>
+        <item name="rightBackground">@drawable/bar_drawable_placeholder</item>
+        <item name="title">@string/bar_string_placeholder</item>
+        <item name="leftTitle">@string/bar_string_placeholder</item>
+        <item name="rightTitle">@string/bar_string_placeholder</item>
+        <item name="lineDrawable">@drawable/bar_drawable_placeholder</item>
+        <item name="titleOverflowMode">marquee</item>
+        <item name="leftTitleOverflowMode">end</item>
+        <item name="rightTitleOverflowMode">end</item>
+    </style>
+</resources>
