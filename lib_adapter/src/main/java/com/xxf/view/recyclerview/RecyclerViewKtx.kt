@@ -2,17 +2,15 @@ package com.xxf.view.recyclerview
 
 import android.content.Context
 import android.view.MotionEvent
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
-import androidx.recyclerview.widget.SimpleItemAnimator
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.xxf.ktx.getTag
 import com.xxf.ktx.hideKeyboard
 import com.xxf.ktx.isKeyboardHiddenInTouchMode
 import com.xxf.ktx.setTag
+import com.xxf.view.recyclerview.adapter.BaseAdapter
 
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
     val layoutManager = this.layoutManager
@@ -175,5 +173,25 @@ fun <T : RecyclerView> T.doWithoutAnimation(block: T.() -> Unit) {
  * 在没有动画的事务中执行
  */
 fun <T : RecyclerView> T.withoutAnimation(block: T.() -> Unit) {
+    this.doWithoutAnimation(block)
+}
+
+/**
+ * 在没有动画的事务中执行
+ */
+fun <V : ViewBinding, D, T : BaseAdapter<V, D>> T.doWithoutAnimation(block: T.() -> Unit) {
+    if (this.recyclerView != null) {
+        this.recyclerView.doWithoutAnimation {
+            this@doWithoutAnimation.apply(block)
+        }
+    } else {
+        block()
+    }
+}
+
+/**
+ * 在没有动画的事务中执行
+ */
+fun <V : ViewBinding, D, T : BaseAdapter<V, D>> T.withoutAnimation(block: T.() -> Unit) {
     this.doWithoutAnimation(block)
 }
