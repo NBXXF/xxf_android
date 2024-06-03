@@ -99,6 +99,10 @@ fun LifecycleOwner.doOnCreate(
     block: (() -> Unit),
 ) = this.doOnLifecycle(onCreate = block)
 
+fun LifecycleOwner.doOnStart(
+    block: (() -> Unit),
+) = this.doOnLifecycle(onStart = block)
+
 fun LifecycleOwner.doOnResume(
     block: (() -> Unit),
 ) = this.doOnLifecycle(onResume = block)
