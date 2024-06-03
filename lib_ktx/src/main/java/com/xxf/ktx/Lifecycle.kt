@@ -1,5 +1,3 @@
-
-
 @file:Suppress("unused")
 
 package com.xxf.ktx
@@ -13,88 +11,109 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 
 fun Application.doOnActivityLifecycle(
-  onActivityCreated: ((Activity, Bundle?) -> Unit)? = null,
-  onActivityStarted: ((Activity) -> Unit)? = null,
-  onActivityResumed: ((Activity) -> Unit)? = null,
-  onActivityPaused: ((Activity) -> Unit)? = null,
-  onActivityStopped: ((Activity) -> Unit)? = null,
-  onActivitySaveInstanceState: ((Activity, Bundle?) -> Unit)? = null,
-  onActivityDestroyed: ((Activity) -> Unit)? = null,
+    onActivityCreated: ((Activity, Bundle?) -> Unit)? = null,
+    onActivityStarted: ((Activity) -> Unit)? = null,
+    onActivityResumed: ((Activity) -> Unit)? = null,
+    onActivityPaused: ((Activity) -> Unit)? = null,
+    onActivityStopped: ((Activity) -> Unit)? = null,
+    onActivitySaveInstanceState: ((Activity, Bundle?) -> Unit)? = null,
+    onActivityDestroyed: ((Activity) -> Unit)? = null,
 ): Application.ActivityLifecycleCallbacks =
-  object : Application.ActivityLifecycleCallbacks {
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-      onActivityCreated?.invoke(activity, savedInstanceState)
-    }
+    object : Application.ActivityLifecycleCallbacks {
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+            onActivityCreated?.invoke(activity, savedInstanceState)
+        }
 
-    override fun onActivityStarted(activity: Activity) {
-      onActivityStarted?.invoke(activity)
-    }
+        override fun onActivityStarted(activity: Activity) {
+            onActivityStarted?.invoke(activity)
+        }
 
-    override fun onActivityResumed(activity: Activity) {
-      onActivityResumed?.invoke(activity)
-    }
+        override fun onActivityResumed(activity: Activity) {
+            onActivityResumed?.invoke(activity)
+        }
 
-    override fun onActivityPaused(activity: Activity) {
-      onActivityPaused?.invoke(activity)
-    }
+        override fun onActivityPaused(activity: Activity) {
+            onActivityPaused?.invoke(activity)
+        }
 
-    override fun onActivityStopped(activity: Activity) {
-      onActivityStopped?.invoke(activity)
-    }
+        override fun onActivityStopped(activity: Activity) {
+            onActivityStopped?.invoke(activity)
+        }
 
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-      onActivitySaveInstanceState?.invoke(activity, outState)
-    }
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+            onActivitySaveInstanceState?.invoke(activity, outState)
+        }
 
-    override fun onActivityDestroyed(activity: Activity) {
-      onActivityDestroyed?.invoke(activity)
+        override fun onActivityDestroyed(activity: Activity) {
+            onActivityDestroyed?.invoke(activity)
+        }
+    }.also {
+        registerActivityLifecycleCallbacks(it)
     }
-  }.also {
-    registerActivityLifecycleCallbacks(it)
-  }
 
 fun Fragment.doOnViewLifecycle(
-  onCreateView: (() -> Unit)? = null,
-  onStart: (() -> Unit)? = null,
-  onResume: (() -> Unit)? = null,
-  onPause: (() -> Unit)? = null,
-  onStop: (() -> Unit)? = null,
-  onDestroyView: (() -> Unit)? = null,
+    onCreateView: (() -> Unit)? = null,
+    onStart: (() -> Unit)? = null,
+    onResume: (() -> Unit)? = null,
+    onPause: (() -> Unit)? = null,
+    onStop: (() -> Unit)? = null,
+    onDestroyView: (() -> Unit)? = null,
 ) =
-  viewLifecycleOwner.doOnLifecycle(onCreateView, onStart, onResume, onPause, onStop, onDestroyView)
+    viewLifecycleOwner.doOnLifecycle(onCreateView, onStart, onResume, onPause, onStop, onDestroyView)
 
 fun LifecycleOwner.doOnLifecycle(
-  onCreate: (() -> Unit)? = null,
-  onStart: (() -> Unit)? = null,
-  onResume: (() -> Unit)? = null,
-  onPause: (() -> Unit)? = null,
-  onStop: (() -> Unit)? = null,
-  onDestroy: (() -> Unit)? = null,
+    onCreate: (() -> Unit)? = null,
+    onStart: (() -> Unit)? = null,
+    onResume: (() -> Unit)? = null,
+    onPause: (() -> Unit)? = null,
+    onStop: (() -> Unit)? = null,
+    onDestroy: (() -> Unit)? = null,
 ) =
-  lifecycle.addObserver(object : DefaultLifecycleObserver {
-    override fun onCreate(owner: LifecycleOwner) {
-      onCreate?.invoke()
-    }
+    lifecycle.addObserver(object : DefaultLifecycleObserver {
+        override fun onCreate(owner: LifecycleOwner) {
+            onCreate?.invoke()
+        }
 
-    override fun onStart(owner: LifecycleOwner) {
-      onStart?.invoke()
-    }
+        override fun onStart(owner: LifecycleOwner) {
+            onStart?.invoke()
+        }
 
-    override fun onResume(owner: LifecycleOwner) {
-      onResume?.invoke()
-    }
+        override fun onResume(owner: LifecycleOwner) {
+            onResume?.invoke()
+        }
 
-    override fun onPause(owner: LifecycleOwner) {
-      onPause?.invoke()
-    }
+        override fun onPause(owner: LifecycleOwner) {
+            onPause?.invoke()
+        }
 
-    override fun onStop(owner: LifecycleOwner) {
-      onStop?.invoke()
-    }
+        override fun onStop(owner: LifecycleOwner) {
+            onStop?.invoke()
+        }
 
-    override fun onDestroy(owner: LifecycleOwner) {
-      onDestroy?.invoke()
-    }
-  })
+        override fun onDestroy(owner: LifecycleOwner) {
+            onDestroy?.invoke()
+        }
+    })
+
+fun LifecycleOwner.doOnCreate(
+    block: (() -> Unit),
+) = this.doOnLifecycle(onCreate = block)
+
+fun LifecycleOwner.doOnResume(
+    block: (() -> Unit),
+) = this.doOnLifecycle(onResume = block)
+
+fun LifecycleOwner.doOnPause(
+    block: (() -> Unit),
+) = this.doOnLifecycle(onPause = block)
+
+fun LifecycleOwner.doOnStop(
+    block: (() -> Unit),
+) = this.doOnLifecycle(onStop = block)
+
+fun LifecycleOwner.doOnDestroy(
+    block: (() -> Unit),
+) = this.doOnLifecycle(onDestroy = block)
+
 
 val Fragment.viewLifecycleScope get() = viewLifecycleOwner.lifecycleScope
