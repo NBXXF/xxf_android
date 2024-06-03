@@ -133,6 +133,10 @@ fun RecyclerView.addItemDivider(block: DividerItemDecoration.DividerConfig.() ->
     }
 }
 
+fun RecyclerView.addItemDecoration(block: DividerItemDecoration.DividerConfig.() -> Unit): ItemDecoration {
+    return this.addItemDivider(block)
+}
+
 fun RecyclerView.addItemDivider(config: DividerItemDecoration.DividerConfig): ItemDecoration {
     return DividerItemDecoration.Builder(config).build().also {
         addItemDivider(it)
