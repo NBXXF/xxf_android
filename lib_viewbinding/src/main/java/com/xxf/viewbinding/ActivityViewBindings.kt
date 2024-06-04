@@ -4,11 +4,11 @@
 package com.xxf.viewbinding
 
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
+import androidx.core.app.ComponentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.xxf.viewbinding.internal.emptyVbCallback
@@ -34,7 +34,7 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
  * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivity")
-public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
+public fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
     viewBinder: (A) -> T
 ): ViewBindingProperty<A, T> {
     return viewBinding(emptyVbCallback(), viewBinder)
@@ -45,7 +45,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
  * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivityWithCallbacks")
-public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
+public fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
     onViewDestroyed: (T) -> Unit = {},
     viewBinder: (A) -> T
 ): ViewBindingProperty<A, T> {
@@ -57,7 +57,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
  * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivity")
-public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
+public inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View = ::findRootView
 ): ViewBindingProperty<A, T> {
@@ -69,7 +69,7 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
  * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivityWithCallbacks")
-public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
+public inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
     noinline onViewDestroyed: (T) -> Unit = {},
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View = ::findRootView
@@ -86,7 +86,7 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
  */
 @Suppress("unused")
 @JvmName("viewBindingActivity")
-public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
+public inline fun <A : ComponentActivity,T : ViewBinding> A.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<ComponentActivity, T> {
@@ -102,7 +102,7 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
  */
 @Suppress("unused")
 @JvmName("viewBindingActivity")
-public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
+public inline fun <A : ComponentActivity,T : ViewBinding> A.viewBinding(
     noinline onViewDestroyed: (T) -> Unit = {},
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int

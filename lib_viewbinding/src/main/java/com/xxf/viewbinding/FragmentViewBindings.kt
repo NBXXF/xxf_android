@@ -133,7 +133,7 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragment")
-public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+public fun <F : Fragment, T : ViewBinding> F.viewBinding(
     viewBinder: (F) -> T,
 ): ViewBindingProperty<F, T> {
     return viewBinding(viewBinder, emptyVbCallback())
@@ -146,7 +146,7 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragmentWithCallbacks")
-public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+public fun <F : Fragment, T : ViewBinding> F.viewBinding(
     viewBinder: (F) -> T,
     onViewDestroyed: (T) -> Unit = {},
 ): ViewBindingProperty<F, T> {
@@ -163,7 +163,7 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
  */
 @JvmName("viewBindingFragment")
-public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View = Fragment::requireView,
 ): ViewBindingProperty<F, T> {
@@ -178,7 +178,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
 @JvmName("viewBindingFragmentWithCallbacks")
-public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View = Fragment::requireView,
     noinline onViewDestroyed: (T) -> Unit = {},
@@ -194,7 +194,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragment")
-public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<F, T> {
@@ -209,7 +209,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragmentWithCallbacks")
-public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
     noinline onViewDestroyed: (T) -> Unit,

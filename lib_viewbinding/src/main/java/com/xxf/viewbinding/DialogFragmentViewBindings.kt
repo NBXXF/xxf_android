@@ -16,7 +16,7 @@ import androidx.viewbinding.ViewBinding
     "Use viewBinding delegate",
     ReplaceWith("viewBinding(viewBinder)", "com.xxf.viewbinding.viewBindingActivity")
 )
-public fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBinding(
+public fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
     viewBinder: (F) -> T
 ): ViewBindingProperty<F, T> {
     return viewBinding(viewBinder)
@@ -32,7 +32,7 @@ public fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBindin
     "Use viewBinding delegate",
     ReplaceWith("viewBinding(vbFactory, viewProvider)", "com.xxf.viewbinding.viewBindingActivity")
 )
-public inline fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBinding(
+public inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View
 ): ViewBindingProperty<F, T> {
@@ -51,7 +51,7 @@ public inline fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogVie
     "Use viewBinding delegate",
     ReplaceWith("viewBinding(vbFactory, viewBindingRootId)", "com.xxf.viewbinding.viewBindingActivity"),
 )
-public inline fun <T : ViewBinding> DialogFragment.dialogViewBinding(
+public inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
