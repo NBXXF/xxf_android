@@ -19,7 +19,7 @@ class FileRequestBody(
 ) : FileSourceRequestBody<File?>(dataSource, contentType) {
 
     override fun contentType(): MediaType? {
-        return super.contentType() ?: dataSource?.mimeType?.toMediaTypeOrNull()
+        return super.contentType() ?: dataSource?.name?.mimeType?.toMediaTypeOrNull()
     }
 
     override fun contentLength(): Long {
