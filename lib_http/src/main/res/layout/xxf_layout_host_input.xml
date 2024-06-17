@@ -16,6 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@android:color/holo_blue_light"
                 android:hint="请输入host"
                 android:maxLines="1"
                 android:minWidth="200dp"

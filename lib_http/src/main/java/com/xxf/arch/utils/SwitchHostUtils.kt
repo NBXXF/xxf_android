@@ -3,8 +3,12 @@ package com.xxf.arch.utils
 import android.app.AlertDialog
 import android.app.Application
 import android.content.Intent
+import android.graphics.Color
 import android.os.Process
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextUtils
+import android.text.style.ForegroundColorSpan
 import androidx.annotation.MainThread
 import com.xxf.application.topActivity
 import com.xxf.arch.http.XXFHttp
@@ -12,7 +16,9 @@ import com.xxf.arch.http.databinding.XxfLayoutHostInputBinding
 import com.xxf.ktx.SharedPreferencesOwner
 import com.xxf.ktx.application
 import com.xxf.ktx.preferencesBinding
+import com.xxf.ktx.selectLast
 import kotlin.system.exitProcess
+
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -39,17 +45,22 @@ object SwitchHostUtils {
                 this.inputValueSelect.setOnClickListener {
                     AlertDialog.Builder(context)
                         .setCancelable(false)
-                        .setTitle("选择host")
+                        .setTitle("选择host".toNoThemeString())
                         .setItems(
-                            hostOptions
+                            hostOptions.map {
+                                it.toNoThemeString()
+                            }.toTypedArray()
                         ) { dialog, which ->
-                            this.inputValueTv.setText(
-                                hostOptions[which]
-                            );
+                            with(this.inputValueTv) {
+                                setText(
+                                    hostOptions[which]
+                                );
+                                selectLast()
+                            }
                             dialog.dismiss();
                         }
                         .setNeutralButton(
-                            "取消"
+                            "取消".toNoThemeString()
                         ) { dialog, which ->
                             dialog.dismiss();
                         }
@@ -59,20 +70,21 @@ object SwitchHostUtils {
             };
         AlertDialog.Builder(context)
             .setCancelable(false)
-            .setTitle("运行环境")
+            .setTitle("运行环境".toNoThemeString())
             .setView(hostInputBinding.root)
             .setPositiveButton(
-                "确认"
+                "确认".toNoThemeString()
             ) { dialog, which ->
                 if (!TextUtils.isEmpty(hostInputBinding.inputValueTv.text)) {
                     switchHost(hostInputBinding.inputValueTv.text.trim().toString())
                 }
             }.setNeutralButton(
-                "取消"
+                "取消".toNoThemeString()
             ) { dialog, which ->
                 dialog.dismiss();
             }.show()
     }
+
 
     @JvmOverloads
     fun getHost(): String {
@@ -84,6 +96,15 @@ object SwitchHostUtils {
         HostSpServiceDelegate.host = host
         XXFHttp.clearAllApiService()
         application.relaunchApp()
+    }
+
+    /**
+     * 避免修改系统主题导致的颜色不对的情况
+     */
+    private fun String.toNoThemeString(): SpannableString {
+        return SpannableString(this).apply {
+            this.setSpan(ForegroundColorSpan(Color.BLUE), 0, this.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        }
     }
 
     /**
