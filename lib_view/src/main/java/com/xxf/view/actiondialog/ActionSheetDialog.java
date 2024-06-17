@@ -227,10 +227,5 @@ public class ActionSheetDialog<T> extends XXFDialog<ItemMenu<T>> {
         public void onBindHolder(XXFViewHolder<XxfAdapterItemBottomActionBinding, T> holder, @Nullable T t, int index) {
             ActionSheetDialog.this.onBindHolder(holder, holder.getBinding(), t, index);
         }
-
-        @Override
-        public int getItemCount() {
-            return 0;
-        }
     }
 }

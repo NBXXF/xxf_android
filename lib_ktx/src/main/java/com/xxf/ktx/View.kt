@@ -13,9 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
 import androidx.core.content.withStyledAttributes
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.*
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -279,4 +277,20 @@ fun View.setTag(key: String, value: Any) {
 fun <T> View.getTag(key: String): T? {
     val tagMap = this.getTag(R.id.tag_view_map_container_id) as? Map<*, *>
     return tagMap?.get(key) as? T
+}
+
+
+fun <T : View> T.visibleIf(block: T.() -> Boolean): T {
+    this.isVisible = block()
+    return this
+}
+
+fun <T : View> T.invisibleIf(block: T.() -> Boolean): T {
+    this.isInvisible = block()
+    return this
+}
+
+fun <T : View> T.goneIf(block: T.() -> Boolean): T {
+    this.isGone = block()
+    return this
 }
