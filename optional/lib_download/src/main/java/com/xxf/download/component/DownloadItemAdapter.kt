@@ -6,6 +6,7 @@ import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause
 import com.liulishuo.okdownload.core.listener.DownloadListener3
 import com.xxf.download.IDownloadModel
+import com.xxf.download.IDownloadService
 import com.xxf.ktx.runOnUiThread
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter
 import com.xxf.view.recyclerview.adapter.XXFViewHolder
@@ -17,6 +18,23 @@ import com.xxf.view.recyclerview.doWithoutAnimation
  * Description: 下载队列更新高度抽象Adapter
  */
 open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : XXFRecyclerAdapter<V, T>() {
+
+
+    /**
+     * UI绑定
+     */
+    fun <T : IDownloadModel, O : IDownloadService<T>> bindDownloadService(service: O) {
+        service.removeListener(downloadListener)
+        service.addListener(downloadListener)
+    }
+
+    /**
+     * UI解绑
+     */
+    fun <T : IDownloadModel, O : IDownloadService<T>> unbindDownloadService(service: O) {
+        service.removeListener(downloadListener)
+    }
+
 
     /**
      * 只需要添加监听就行了
