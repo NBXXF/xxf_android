@@ -9,7 +9,6 @@ import com.xxf.download.IDownloadModel
 import com.xxf.ktx.runOnUiThread
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter
 import com.xxf.view.recyclerview.adapter.XXFViewHolder
-import com.xxf.view.recyclerview.doAdapterDataObserver
 import com.xxf.view.recyclerview.doWithoutAnimation
 
 /**
@@ -127,7 +126,6 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
             it.getDownloadUrl() == task.url
         }
         if (indexOfFirst >= 0) {
-            this.doAdapterDataObserver { }
             runOnUiThread {
                 this.doWithoutAnimation {
                     block(indexOfFirst)
