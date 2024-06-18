@@ -102,12 +102,14 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
         position: Int,
         payloads: MutableList<Any>,
     ) {
-        super.onBindViewHolder(holder, position, payloads)
         val info = payloads.firstOrNull {
             it is DownloadInfo
         } as? DownloadInfo
         if (info != null) {
             onBindDownloadViewHolder(holder, position, payloads, info)
+        } else {
+            //super会自动调用 this.onBindViewHolder(holder, position);
+            super.onBindViewHolder(holder, position, payloads)
         }
     }
 
