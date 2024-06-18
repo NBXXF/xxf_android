@@ -9,6 +9,7 @@ import android.os.IBinder
 import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadSerialQueue
 import com.liulishuo.okdownload.DownloadTask
+import com.liulishuo.okdownload.OkDownload
 import java.io.File
 
 
@@ -43,6 +44,13 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
             tasks: ArrayList<T> = arrayListOf()
         ) {
             context.startService(buildTaskIntent(context, this, tasks))
+        }
+
+        /**
+         * 停止service
+         */
+        fun <T : IDownloadModel, O : IDownloadService<T>> Class<O>.stopService(context: Context) {
+            context.stopService(buildTaskIntent(context, this, arrayListOf()))
         }
 
 
@@ -89,20 +97,39 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         }
         onSaveTasks(tasks)
         tasks.forEach {
-            val url = it.getDownloadUrl();
-            mSerialQueue.resume()
-            mSerialQueue.enqueue(
-                DownloadTask.Builder(
-                    url, File(it.getDownloadPath())
-                ).setConnectionCount(1).build()
-            )
+            mSerialQueue.enqueue(onConvertTask(it))
+            resumeTasks()
         }
     }
 
+    /**
+     * 转换任务到内部的task
+     */
+    @JvmOverloads
+    protected fun onConvertTask(task: T): DownloadTask {
+        return DownloadTask.Builder(
+            task.getDownloadUrl(),
+            File(task.getDownloadPath())
+        ).setConnectionCount(1)
+            .setHeaderMapFields(task.getDownloadHeader())
+            .build()
+    }
+
     override fun resumeTasks() {
+        mSerialQueue.resume()
+    }
+
+
+    override fun pauseTasks() {
+        mSerialQueue.pause()
     }
 
     override fun removeTask(tasks: List<T>) {
+        OkDownload.with()
+            .downloadDispatcher()
+            .cancel(tasks.map { task ->
+                onConvertTask(task)
+            }.toTypedArray())
         onDeleteTask(tasks)
     }
 

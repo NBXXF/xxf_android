@@ -1,13 +1,11 @@
 package com.xxf.download.component
 
-import com.liulishuo.okdownload.DownloadTask
 
 /**
  * 下载信息
  */
 class DownloadInfo(
     val status: DownloadStatus,
-    val task: DownloadTask,
     /**
      * 仅仅 CONNECT状态有值
      */

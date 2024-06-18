@@ -40,7 +40,13 @@ interface IDownloadService<T : IDownloadModel> : ICacheTaskDownloadService<T> {
      * 恢复全部任务
      */
     fun resumeTasks()
-    
+
+
+    /**
+     * 暂停全部任务
+     */
+    fun pauseTasks()
+
     /**
      * 移除任务
      */

@@ -24,22 +24,22 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
      * UI绑定
      */
     fun <T : IDownloadModel, O : IDownloadService<T>> bindDownloadService(service: O) {
-        service.removeListener(downloadListener)
-        service.addListener(downloadListener)
+        service.removeListener(mDownloadListener)
+        service.addListener(mDownloadListener)
     }
 
     /**
      * UI解绑
      */
     fun <T : IDownloadModel, O : IDownloadService<T>> unbindDownloadService(service: O) {
-        service.removeListener(downloadListener)
+        service.removeListener(mDownloadListener)
     }
 
 
     /**
      * 只需要添加监听就行了
      */
-    val downloadListener: DownloadListener3 = object : DownloadListener3() {
+    private val mDownloadListener: DownloadListener3 = object : DownloadListener3() {
         override fun retry(task: DownloadTask, cause: ResumeFailedCause) {
 
         }
@@ -49,7 +49,6 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
                 notifyItemChanged(
                     it, DownloadInfo(
                         DownloadStatus.CONNECT,
-                        task,
                         blockCount = blockCount,
                         currentOffset = currentOffset,
                         totalLength = totalLength
@@ -62,7 +61,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
             updateDownload(task) {
                 notifyItemChanged(
                     it, DownloadInfo(
-                        DownloadStatus.PROGRESS, task, currentOffset = currentOffset, totalLength = totalLength
+                        DownloadStatus.PROGRESS, currentOffset = currentOffset, totalLength = totalLength
                     )
                 )
             }
@@ -72,7 +71,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
             updateDownload(task) {
                 notifyItemChanged(
                     it, DownloadInfo(
-                        DownloadStatus.START, task
+                        DownloadStatus.START
                     )
                 )
             }
@@ -82,7 +81,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
             updateDownload(task) {
                 notifyItemChanged(
                     it, DownloadInfo(
-                        DownloadStatus.COMPLETED, task
+                        DownloadStatus.COMPLETED
                     )
                 )
             }
@@ -92,7 +91,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
             updateDownload(task) {
                 notifyItemChanged(
                     it, DownloadInfo(
-                        DownloadStatus.CANCEL, task
+                        DownloadStatus.CANCEL
                     )
                 )
             }
@@ -102,7 +101,8 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
             updateDownload(task) {
                 notifyItemChanged(
                     it, DownloadInfo(
-                        DownloadStatus.ERROR, task, error = e
+                        DownloadStatus.ERROR,
+                        error = e
                     )
                 )
             }
