@@ -1,13 +1,25 @@
 package com.xxf.download
 
 import com.liulishuo.okdownload.DownloadListener
-import io.objectbox.Box
 
-interface IDownloadService<T:DownloadModel> {
+interface ICacheTaskDownloadService<T : IDownloadModel> {
+    /**
+     * 获取已经入库的任务
+     */
+    fun getTasks(offset: Long, limit: Long): List<T>
 
-    fun getBox(): Box<T>
+    /**
+     * 内部执行保存
+     */
+    fun onSaveTasks(tasks: List<T>)
 
-    fun getDownloadModelClass():Class<T>
+    /**
+     * 执行删除
+     */
+    fun onDeleteTask(tasks: List<T>)
+}
+
+interface IDownloadService<T : IDownloadModel> : ICacheTaskDownloadService<T> {
 
     /**
      * 添加监听
@@ -28,9 +40,10 @@ interface IDownloadService<T:DownloadModel> {
      * 恢复全部任务
      */
     fun resumeTasks()
-
+    
     /**
-     * 获取已经入库的任务
+     * 移除任务
      */
-    fun getTasks(offset: Long, limit: Long): List<T>
+    fun removeTask(tasks: List<T>)
+
 }

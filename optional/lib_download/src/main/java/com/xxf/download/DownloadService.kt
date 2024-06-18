@@ -1,0 +1,139 @@
+package com.xxf.download
+
+import android.app.Service
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.Binder
+import android.os.IBinder
+import com.liulishuo.okdownload.DownloadListener
+import com.liulishuo.okdownload.DownloadSerialQueue
+import com.liulishuo.okdownload.DownloadTask
+import java.io.File
+
+
+/**
+ * @Author: XGod  xuanyouwu@163.com  17611639080
+ * Date: 1/8/19 12:07 PM
+ * Description: 下载任务队列抽象
+ */
+abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService<T> {
+
+    companion object {
+        const val ACTION_ADD_TASKS = "xxf.download.action.addTasks"
+        const val KEY_TASKS = "tasks"
+
+        private fun <T : IDownloadModel, O : IDownloadService<T>> buildTaskIntent(
+            context: Context,
+            target: Class<O>,
+            tasks: ArrayList<T>
+        ): Intent {
+            return Intent(context, target)
+                .apply {
+                    action = ACTION_ADD_TASKS
+                    putExtra(KEY_TASKS, tasks)
+                }
+        }
+
+        /**
+         * 开启service 并启动任务
+         */
+        fun <T : IDownloadModel, O : IDownloadService<T>> Class<O>.startService(
+            context: Context,
+            tasks: ArrayList<T> = arrayListOf()
+        ) {
+            context.startService(buildTaskIntent(context, this, tasks))
+        }
+
+
+        /**
+         * bindService 并启动任务
+         */
+        fun <T : IDownloadModel, O : IDownloadService<T>> Class<O>.bindService(
+            context: Context,
+            connection: ServiceConnection,
+            tasks: ArrayList<T> = arrayListOf()
+        ) {
+            context.bindService(buildTaskIntent(context, this, tasks), connection, BIND_AUTO_CREATE)
+        }
+
+
+        /**
+         * 取消绑定
+         */
+        fun <T : ServiceConnection> T.unbindService(context: Context) = context.unbindService(this)
+    }
+
+    private val mBinder: IBinder = LocalBinder()
+    private val mListenerWrapper = DownloaderListenerWrapper()
+    private val mSerialQueue: DownloadSerialQueue = DownloadSerialQueue(mListenerWrapper)
+
+    inner class LocalBinder : Binder() {
+        fun getService(): DownloadService<T> {
+            return this@DownloadService
+        }
+    }
+
+
+    override fun addListener(l: DownloadListener) {
+        mListenerWrapper.addListener(l)
+    }
+
+    override fun removeListener(l: DownloadListener) {
+        mListenerWrapper.removeListener(l)
+    }
+
+    override fun addTask(tasks: List<T>) {
+        if (tasks.isEmpty()) {
+            return
+        }
+        onSaveTasks(tasks)
+        tasks.forEach {
+            val url = it.getDownloadUrl();
+            mSerialQueue.resume()
+            mSerialQueue.enqueue(
+                DownloadTask.Builder(
+                    url, File(it.getDownloadPath())
+                ).setConnectionCount(1).build()
+            )
+        }
+    }
+
+    override fun resumeTasks() {
+    }
+
+    override fun removeTask(tasks: List<T>) {
+        onDeleteTask(tasks)
+    }
+
+    override fun onBind(intent: Intent?): IBinder {
+        intent?.let { handleIntent(it) }
+        return mBinder
+    }
+
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        intent?.let { handleIntent(it) }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSerialQueue.pause()
+    }
+
+    /**
+     * 处理意图
+     */
+    @Suppress("UNCHECKED_CAST")
+    private fun handleIntent(intent: Intent) {
+        when (intent.action.orEmpty()) {
+            ACTION_ADD_TASKS -> {
+                (intent.extras?.get(KEY_TASKS) as? List<T>)?.let {
+                    addTask(it)
+                }
+            }
+        }
+    }
+
+}

@@ -1,6 +1,8 @@
 package com.xxf.download
 
-interface DownloadModel {
+import java.io.Serializable
+
+interface IDownloadModel: Serializable {
     /**
      * 下载网络地址
      */
