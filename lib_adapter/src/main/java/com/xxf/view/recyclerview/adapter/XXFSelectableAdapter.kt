@@ -12,7 +12,6 @@ import com.xxf.view.recyclerview.doWithoutAnimation
 import java.io.Serializable
 
 
-
 /**
  * 清除选中的items
  */
@@ -65,6 +64,29 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.toggleItemSelect(
 ) {
     val item = getItem(index)
     this.setItemSelect(item?.isItemSelected != true, index, selectType)
+}
+
+/**
+ * 全选item
+ *
+ * @param index
+ */
+@SuppressLint("NotifyDataSetChanged")
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.selectAll() {
+    this.doWithoutAnimation {
+        this.currentList.forEach {
+            it.isItemSelected = true
+        }
+        (this as? RecyclerView.Adapter<*>)?.notifyDataSetChanged()
+    }
+}
+
+/**
+ * 是否有选中
+ */
+@SuppressLint("NotifyDataSetChanged")
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.hasSelected(): Boolean {
+    return this.getSelectedItems().isNotEmpty()
 }
 
 /**
