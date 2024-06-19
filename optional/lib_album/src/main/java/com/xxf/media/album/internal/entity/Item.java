@@ -30,7 +30,7 @@ import androidx.annotation.Nullable;
 import com.xxf.media.album.MimeType;
 import com.xxf.media.album.internal.utils.PathUtils;
 
-public class Item implements Parcelable{
+public class Item implements Parcelable {
     public static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override
         @Nullable
@@ -50,9 +50,10 @@ public class Item implements Parcelable{
     public final Uri uri;
     public final long size;
     public final long duration; // only for video, in ms
+    public final String name;
     public boolean itemSelected = false;
 
-    private Item(long id, String mimeType, long size, long duration) {
+    private Item(long id, String mimeType, long size, long duration, String name) {
         this.id = id;
         this.mimeType = mimeType;
         Uri contentUri;
@@ -67,6 +68,7 @@ public class Item implements Parcelable{
         this.uri = ContentUris.withAppendedId(contentUri, id);
         this.size = size;
         this.duration = duration;
+        this.name = name;
     }
 
     private Item(Parcel source) {
@@ -75,6 +77,7 @@ public class Item implements Parcelable{
         uri = source.readParcelable(Uri.class.getClassLoader());
         size = source.readLong();
         duration = source.readLong();
+        name = source.readString();
     }
 
     @SuppressLint("Range")
@@ -82,7 +85,8 @@ public class Item implements Parcelable{
         return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
                 cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
-                cursor.getLong(cursor.getColumnIndex("duration")));
+                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DURATION)),
+                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)));
     }
 
     @Override
@@ -97,6 +101,7 @@ public class Item implements Parcelable{
         dest.writeParcelable(uri, 0);
         dest.writeLong(size);
         dest.writeLong(duration);
+        dest.writeString(name);
     }
 
     public Uri getContentUri() {
@@ -132,7 +137,8 @@ public class Item implements Parcelable{
                 && (uri != null && uri.equals(other.uri)
                 || (uri == null && other.uri == null))
                 && size == other.size
-                && duration == other.duration;
+                && duration == other.duration
+                && (name != null && name.equals(other.name));
     }
 
     @Override
@@ -145,6 +151,9 @@ public class Item implements Parcelable{
         result = 31 * result + uri.hashCode();
         result = 31 * result + Long.valueOf(size).hashCode();
         result = 31 * result + Long.valueOf(duration).hashCode();
+        if (name != null) {
+            result = 31 * result + name.hashCode();
+        }
         return result;
     }
 
@@ -161,6 +170,7 @@ public class Item implements Parcelable{
                 ", uri=" + uri +
                 ", size=" + size +
                 ", duration=" + duration +
+                ", name=" + name +
                 ", itemSelected=" + itemSelected +
                 '}';
     }

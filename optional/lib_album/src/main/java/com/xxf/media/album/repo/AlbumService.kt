@@ -5,13 +5,12 @@ import android.provider.MediaStore
 import androidx.core.content.ContentResolverCompat
 import androidx.fragment.app.FragmentActivity
 import com.xxf.media.album.internal.entity.Item
-import com.xxf.permission.requestPermission
-import com.xxf.permission.transformer.RxPermissionTransformer
+import com.xxf.permission.requestPermissionForResult
+import com.xxf.permission.transformer.PermissionCheckForResultMapFunction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.*
-import java.util.concurrent.Callable
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
@@ -51,45 +50,34 @@ object AlbumService {
      * 获取相册所有图片和视频
      */
     fun getAlbum(context: FragmentActivity): Observable<List<Item>> {
-        return Observable
-            .defer<Boolean> {
-                context.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .compose(
-                        RxPermissionTransformer(
-                            context,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                    )
-            }
+        return context.requestPermissionForResult(Manifest.permission.READ_EXTERNAL_STORAGE)
+            .map(PermissionCheckForResultMapFunction(context))
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 Observable
-                    .fromCallable<List<Item>>(object : Callable<List<Item>> {
-                        override fun call(): List<Item> {
-                            val items: MutableList<Item> = ArrayList()
-                            val selection = SELECTION_ALL
-                            val selectionArgs = SELECTION_ALL_ARGS
-                            val cursor = ContentResolverCompat.query(
-                                context.getContentResolver(),
-                                QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY, null
-                            );
-                            try {
-                                if (cursor != null) {
-                                    while (cursor.moveToNext()) {
-                                        items.add(Item.valueOf(cursor))
-                                    }
-                                }
-                            } finally {
-                                try {
-                                    cursor?.close();
-                                } catch (e: Throwable) {
-                                    e.printStackTrace()
+                    .fromCallable<List<Item>> {
+                        val items: MutableList<Item> = ArrayList()
+                        val selection = SELECTION_ALL
+                        val selectionArgs = SELECTION_ALL_ARGS
+                        val cursor = ContentResolverCompat.query(
+                            context.contentResolver,
+                            QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY, null
+                        );
+                        try {
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    items.add(Item.valueOf(cursor))
                                 }
                             }
-                            return items;
+                        } finally {
+                            try {
+                                cursor?.close();
+                            } catch (e: Throwable) {
+                                e.printStackTrace()
+                            }
                         }
-
-                    })
+                        items;
+                    }
                     .subscribeOn(Schedulers.io());
             }
     }
@@ -99,38 +87,35 @@ object AlbumService {
      * 自动请求权限
      */
     fun getImages(context: FragmentActivity): Observable<List<Item>> {
-        return context.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .compose(RxPermissionTransformer(context, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        return context.requestPermissionForResult(Manifest.permission.READ_EXTERNAL_STORAGE)
+            .map(PermissionCheckForResultMapFunction(context))
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 Observable
-                    .fromCallable<List<Item>>(object : Callable<List<Item>> {
-                        override fun call(): List<Item> {
-                            val items: MutableList<Item> = ArrayList()
-                            val selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE
-                            val selectionArgs =
-                                arrayOf<String>(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString());
-                            val cursor = ContentResolverCompat.query(
-                                context.getContentResolver(),
-                                QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY, null
-                            );
-                            try {
-                                if (cursor != null) {
-                                    while (cursor.moveToNext()) {
-                                        items.add(Item.valueOf(cursor))
-                                    }
-                                }
-                            } finally {
-                                try {
-                                    cursor?.close();
-                                } catch (e: Throwable) {
-                                    e.printStackTrace()
+                    .fromCallable<List<Item>> {
+                        val items: MutableList<Item> = ArrayList()
+                        val selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE
+                        val selectionArgs =
+                            arrayOf<String>(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString());
+                        val cursor = ContentResolverCompat.query(
+                            context.contentResolver,
+                            QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY, null
+                        );
+                        try {
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    items.add(Item.valueOf(cursor))
                                 }
                             }
-                            return items;
+                        } finally {
+                            try {
+                                cursor?.close();
+                            } catch (e: Throwable) {
+                                e.printStackTrace()
+                            }
                         }
-
-                    })
+                        items;
+                    }
                     .subscribeOn(Schedulers.io());
             }
     }
@@ -140,45 +125,35 @@ object AlbumService {
      * 自动请求权限
      */
     fun getVideos(context: FragmentActivity): Observable<List<Item>> {
-        return Observable
-            .defer<Boolean> {
-                context.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .compose(
-                        RxPermissionTransformer(
-                            context,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                    )
-            }
+        return context.requestPermissionForResult(Manifest.permission.READ_EXTERNAL_STORAGE)
+            .map(PermissionCheckForResultMapFunction(context))
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 Observable
-                    .fromCallable<List<Item>>(object : Callable<List<Item>> {
-                        override fun call(): List<Item> {
-                            val items: MutableList<Item> = ArrayList()
-                            val selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE
-                            val selectionArgs =
-                                arrayOf<String>(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString());
-                            val cursor = ContentResolverCompat.query(
-                                context.getContentResolver(),
-                                QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY, null
-                            );
-                            try {
-                                if (cursor != null) {
-                                    while (cursor.moveToNext()) {
-                                        items.add(Item.valueOf(cursor))
-                                    }
-                                }
-                            } finally {
-                                try {
-                                    cursor?.close();
-                                } catch (e: Throwable) {
-                                    e.printStackTrace()
+                    .fromCallable<List<Item>> {
+                        val items: MutableList<Item> = ArrayList()
+                        val selection = SELECTION_ALL_FOR_SINGLE_MEDIA_TYPE
+                        val selectionArgs =
+                            arrayOf<String>(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString());
+                        val cursor = ContentResolverCompat.query(
+                            context.contentResolver,
+                            QUERY_URI, PROJECTION, selection, selectionArgs, ORDER_BY, null
+                        );
+                        try {
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    items.add(Item.valueOf(cursor))
                                 }
                             }
-                            return items;
+                        } finally {
+                            try {
+                                cursor?.close();
+                            } catch (e: Throwable) {
+                                e.printStackTrace()
+                            }
                         }
-                    })
+                        items;
+                    }
                     .subscribeOn(Schedulers.io());
             }
     }
