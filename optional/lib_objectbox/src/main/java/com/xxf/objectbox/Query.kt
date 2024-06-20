@@ -5,6 +5,7 @@ package com.xxf.objectbox
  * date createTime：2018/7/16 17:34
  * Description :
  */
+import com.xxf.objectbox.model.PageInfoDTO
 import io.objectbox.query.Query
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
@@ -14,7 +15,7 @@ import io.reactivex.rxjava3.core.Single
 /**
  * Shortcut for [`RxQuery.flowableOneByOne(query, strategy)`][RxQuery.flowableOneByOne].
  */
-fun <T:Any> Query<T>.flowableOneByOne(strategy: BackpressureStrategy = BackpressureStrategy.BUFFER): Flowable<T> {
+fun <T : Any> Query<T>.flowableOneByOne(strategy: BackpressureStrategy = BackpressureStrategy.BUFFER): Flowable<T> {
     return RxQuery.flowableOneByOne(this, strategy)
 }
 
@@ -45,5 +46,23 @@ fun <T> Query<T>.single(): Single<List<T>> {
  * 比findFist快
  */
 fun <T> Query<T>.hasResult(): Boolean {
-    return this.findIds(0,1).isNotEmpty();
+    return this.findIds(0, 1).isNotEmpty();
+}
+
+/**
+ * 分页查询
+ * @param pageNum 从1开始
+ * @param pageSize 大于0
+ */
+fun <T> Query<T>.findPage(pageNum: Long, pageSize: Long): PageInfoDTO<T> {
+    val count = this.count()
+    return this.find((pageNum - 1) * pageSize, pageSize).run {
+        PageInfoDTO<T>(
+            pageNum = pageNum,
+            pageSize = pageSize,
+            hasNextPage = count > pageSize * pageNum,
+            total = count,
+            list = this
+        )
+    }
 }
