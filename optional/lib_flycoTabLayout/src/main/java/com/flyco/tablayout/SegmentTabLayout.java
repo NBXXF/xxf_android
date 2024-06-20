@@ -844,6 +844,7 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
             mViewPager.removeOnPageChangeListener(this);
             mViewPager.addOnPageChangeListener(this);
         }
+        setTabData(titles);
     }
 
     @Override
