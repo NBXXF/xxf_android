@@ -9,7 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 /**
  * 支持ViewPager2
  */
-class BaseFragmentStateAdapter : FragmentStateAdapter {
+class BaseFragmentRecyclerViewAdapter : FragmentStateAdapter {
     private val fragmentsList: MutableList<Fragment> = ArrayList()
     fun getFragmentsList(): List<Fragment> {
         return fragmentsList

@@ -128,7 +128,7 @@ public class BaseFragmentPagerAdapter extends FragmentPagerAdapter {
     public void finishUpdate(ViewGroup container) {
         try {
             super.finishUpdate(container);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

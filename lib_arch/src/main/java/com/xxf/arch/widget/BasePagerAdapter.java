@@ -2,6 +2,7 @@ package com.xxf.arch.widget;
 
 import androidx.annotation.CheckResult;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import android.util.SparseArray;
@@ -167,5 +168,14 @@ public abstract class BasePagerAdapter<T> extends PagerAdapter implements View.O
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    @Override
+    public void finishUpdate(@NonNull ViewGroup container) {
+        try {
+            super.finishUpdate(container);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
