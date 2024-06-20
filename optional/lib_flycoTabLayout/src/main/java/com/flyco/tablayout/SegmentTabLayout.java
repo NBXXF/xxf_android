@@ -15,6 +15,7 @@ import android.os.Parcelable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -70,7 +71,7 @@ import java.util.List;
  * tl_indicator_bounce_enable	boolean	设置显示器支持动画回弹效果(only for CommonTabLayout)
  * tl_indicator_width_equal_title	boolean	设置显示器与标题一样长(only for SlidingTabLayout)
  */
-public class SegmentTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener {
+public class SegmentTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener, ViewPager.OnPageChangeListener {
     private Context mContext;
     private String[] mTitles;
     private LinearLayout mTabsContainer;
@@ -137,6 +138,8 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
 
     private FragmentChangeManager mFragmentChangeManager;
     private float[] mRadiusArr = new float[8];
+
+    ViewPager mViewPager;
 
     public SegmentTabLayout(Context context) {
         this(context, null, 0);
@@ -263,16 +266,7 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
             @Override
             public void onClick(View v) {
                 int position = (Integer) v.getTag();
-                if (mCurrentTab != position) {
-                    setCurrentTab(position);
-                    if (mListener != null) {
-                        mListener.onTabSelect(position);
-                    }
-                } else {
-                    if (mListener != null) {
-                        mListener.onTabReselect(position);
-                    }
-                }
+                dispatchTabSelect(position);
             }
         });
 
@@ -284,6 +278,22 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
             lp_tab = new LinearLayout.LayoutParams((int) mTabWidth, LayoutParams.MATCH_PARENT);
         }
         mTabsContainer.addView(tabView, position, lp_tab);
+    }
+
+    private void dispatchTabSelect(int position) {
+        if (mCurrentTab != position) {
+            setCurrentTab(position);
+            if (mViewPager != null) {
+                mViewPager.setCurrentItem(position);
+            }
+            if (mListener != null) {
+                mListener.onTabSelect(position);
+            }
+        } else {
+            if (mListener != null) {
+                mListener.onTabReselect(position);
+            }
+        }
     }
 
     private void updateTabStyles() {
@@ -787,6 +797,7 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
         super.onRestoreInstanceState(state);
     }
 
+
     class IndicatorPoint {
         public float left;
         public float right;
@@ -815,5 +826,38 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
     protected int sp2px(float sp) {
         final float scale = this.mContext.getResources().getDisplayMetrics().scaledDensity;
         return (int) (sp * scale + 0.5f);
+    }
+
+    /**
+     * 关联viewPager
+     *
+     * @param vp
+     * @param titles
+     */
+    public void setViewPager(ViewPager vp, String[] titles) {
+        //先移除老的
+        if (mViewPager != null) {
+            mViewPager.removeOnPageChangeListener(this);
+        }
+        mViewPager = vp;
+        if (mViewPager != null) {
+            mViewPager.removeOnPageChangeListener(this);
+            mViewPager.addOnPageChangeListener(this);
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        this.setCurrentTab(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }
