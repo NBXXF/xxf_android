@@ -3,6 +3,7 @@ package com.xxf.view.recyclerview.layoutmanager
 import android.content.Context
 import android.util.Range
 import android.util.Size
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
@@ -84,6 +85,20 @@ open class AutoFitGridLayoutManager private constructor(
     )
 
     class GridCalculator(private var totalSize: Size, private var adaptConfig: AdaptConfig) {
+        companion object {
+            private fun View.toLayoutChildSize(): Size {
+                return Size(
+                    this.width - this.paddingStart - this.paddingEnd,
+                    this.height - this.paddingTop - this.paddingBottom
+                )
+            }
+        }
+
+        constructor(parent: View, adaptConfig: AdaptConfig) : this(
+            parent.toLayoutChildSize(), adaptConfig
+        )
+
+
         fun calculateByWidth(): Int {
             return adaptSpanCount(
                 totalSize.width,
@@ -114,6 +129,13 @@ open class AutoFitGridLayoutManager private constructor(
             }
             return min(max(spanCount, spanRange.lower), spanRange.upper)
         }
+    }
+
+    override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
+        if (state.isPreLayout) {
+            autoFitSpan()
+        }
+        super.onLayoutChildren(recycler, state)
     }
 
     override fun onLayoutCompleted(state: RecyclerView.State) {
