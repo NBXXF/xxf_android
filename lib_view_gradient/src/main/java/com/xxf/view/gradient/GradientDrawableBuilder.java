@@ -32,7 +32,15 @@ public class GradientDrawableBuilder {
         this.radiusCornerBottomLeft = a.getFloat(R.styleable.GradientLayout_radius_bottom_left, 0);
         this.radiusCornerBottomRight = a.getFloat(R.styleable.GradientLayout_radius_bottom_right, 0);
 
-        final int attrOrientation = a.getInt(R.styleable.GradientLayout_orientation, 0);
+        int attrOrientation = 0;
+        /**
+         * fix 线性布局本身有orientation 误导
+         */
+        if (a.hasValue(R.styleable.GradientLayout_gradient_orientation)) {
+            attrOrientation = a.getInt(R.styleable.GradientLayout_gradient_orientation, 0);
+        } else {
+            attrOrientation = a.getInt(R.styleable.GradientLayout_orientation, 0);
+        }
         this.orientation = intToOrientation(attrOrientation);
         a.recycle();
     }
