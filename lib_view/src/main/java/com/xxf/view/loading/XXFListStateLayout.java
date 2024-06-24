@@ -8,6 +8,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
+import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.view.recyclerview.XXFRecycledViewPool;
@@ -15,6 +16,7 @@ import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFUIAdapterObserver;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +44,7 @@ public class XXFListStateLayout extends XXFStateLayout {
      * 如果设置为true 则自动判断不包含header footer
      * 否则 判断包含header footer
      */
+    @Deprecated
     private boolean lenient;
 
     /**
@@ -49,10 +52,12 @@ public class XXFListStateLayout extends XXFStateLayout {
      *
      * @param lenient
      */
+    @Deprecated
     public void setLenient(boolean lenient) {
         this.lenient = lenient;
     }
 
+    @Deprecated
     public boolean isLenient() {
         return lenient;
     }
@@ -65,14 +70,27 @@ public class XXFListStateLayout extends XXFStateLayout {
         protected void updateUI() {
             if (childRecyclerView != null
                     && childRecyclerView.getAdapter() != null) {
-                if (childRecyclerView.getAdapter() instanceof XXFRecyclerAdapter && isLenient()) {
-                    setViewState(((XXFRecyclerAdapter) childRecyclerView.getAdapter()).isDataEmpty() ? ViewState.VIEW_STATE_EMPTY : ViewState.VIEW_STATE_CONTENT);
+                if (childRecyclerView.getAdapter() instanceof ConcatAdapter) {
+                    ConcatAdapter concatAdapter = (ConcatAdapter) childRecyclerView.getAdapter();
+                    List<? extends RecyclerView.Adapter<? extends RecyclerView.ViewHolder>> adapters = concatAdapter.getAdapters();
+                    //获取最后一个子adapter
+                    if (adapters != null && !adapters.isEmpty()) {
+                        RecyclerView.Adapter<? extends RecyclerView.ViewHolder> lastAdapter = adapters.get(adapters.size() - 1);
+                        handleViewState(lastAdapter);
+                    } else {
+                        handleViewState(childRecyclerView.getAdapter());
+                    }
                 } else {
-                    setViewState(childRecyclerView.getAdapter().getItemCount() <= 0 ? ViewState.VIEW_STATE_EMPTY : ViewState.VIEW_STATE_CONTENT);
+                    handleViewState(childRecyclerView.getAdapter());
                 }
             }
         }
     };
+
+
+    protected void handleViewState(RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter) {
+        setViewState(adapter.getItemCount() <= 0 ? ViewState.VIEW_STATE_EMPTY : ViewState.VIEW_STATE_CONTENT);
+    }
 
     private final DataSetObserver listViewDataObserver = new DataSetObserver() {
         @Override
