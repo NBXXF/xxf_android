@@ -22,6 +22,16 @@ interface ICacheTaskDownloadService<T : IDownloadModel> {
 interface IDownloadService<T : IDownloadModel> : ICacheTaskDownloadService<T> {
 
     /**
+     * 是否仅wifi场景才下载
+     */
+    fun wifiRequired(required: Boolean)
+
+    /**
+     * 设置下载的请求携带header参数
+     */
+    fun requestHeaders(headerMapFields: Map<String, List<String>>)
+
+    /**
      * 添加监听
      */
     fun addListener(l: DownloadListener)

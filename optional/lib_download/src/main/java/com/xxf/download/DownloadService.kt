@@ -75,6 +75,8 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
     private val mBinder: IBinder = LocalBinder()
     private val mListenerWrapper = DownloaderListenerWrapper()
     private val mSerialQueue: DownloadSerialQueue = DownloadSerialQueue(mListenerWrapper)
+    private var mWifiRequired: Boolean = false
+    private var mHeaderMapFields: MutableMap<String, List<String>> = mutableMapOf()
 
     inner class LocalBinder : Binder() {
         fun getService(): DownloadService<T> {
@@ -82,6 +84,15 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         }
     }
 
+
+    override fun wifiRequired(required: Boolean) {
+        mWifiRequired = required
+    }
+
+    override fun requestHeaders(headerMapFields: Map<String, List<String>>) {
+        mHeaderMapFields.clear()
+        mHeaderMapFields.putAll(headerMapFields)
+    }
 
     override fun addListener(l: DownloadListener) {
         mListenerWrapper.addListener(l)
@@ -111,7 +122,8 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
             task.getDownloadUrl(),
             File(task.getDownloadPath())
         ).setConnectionCount(1)
-            .setHeaderMapFields(task.getDownloadHeader())
+            .setHeaderMapFields(mHeaderMapFields)
+            .setWifiRequired(mWifiRequired)
             .build()
     }
 
