@@ -12,12 +12,6 @@ abstract class ObDownloadService<T : ObDownloadModel> : DownloadService<T>() {
 
     protected abstract fun getBox(): Box<T>
 
-    override fun getTasks(offset: Long, limit: Long): List<T> {
-        return getBox()
-            .query()
-            .build()
-            .find(offset, limit)
-    }
 
     override fun onDeleteTask(tasks: List<T>) {
         getBox().remove(tasks)

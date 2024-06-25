@@ -6,7 +6,7 @@ interface ICacheTaskDownloadService<T : IDownloadModel> {
     /**
      * 获取已经入库的任务
      */
-    fun getTasks(offset: Long, limit: Long): List<T>
+    fun getTasks(offset: Long, limit: Long, desc: Boolean): List<T>
 
     /**
      * 内部执行保存

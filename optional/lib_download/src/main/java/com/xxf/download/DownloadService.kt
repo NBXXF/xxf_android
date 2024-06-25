@@ -9,7 +9,9 @@ import android.os.IBinder
 import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadSerialQueue
 import com.liulishuo.okdownload.DownloadTask
+import com.liulishuo.okdownload.InnerDownloadSerialQueue
 import com.liulishuo.okdownload.OkDownload
+import com.liulishuo.okdownload.StatusUtil
 import java.io.File
 
 
@@ -74,7 +76,9 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
 
     private val mBinder: IBinder = LocalBinder()
     private val mListenerWrapper = DownloaderListenerWrapper()
-    private val mSerialQueue: DownloadSerialQueue = DownloadSerialQueue(mListenerWrapper)
+    private val mTaskList = arrayListOf<DownloadTask>()
+    private var mSerialQueue: InnerDownloadSerialQueue =
+        InnerDownloadSerialQueue(mListenerWrapper, mTaskList)
     private var mWifiRequired: Boolean = false
     private var mHeaderMapFields: MutableMap<String, List<String>> = mutableMapOf()
 
@@ -109,7 +113,7 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         onSaveTasks(tasks)
         tasks.forEach {
             mSerialQueue.enqueue(onConvertTask(it))
-            resumeTasks()
+            mSerialQueue.resume()
         }
     }
 
@@ -128,6 +132,16 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
     }
 
     override fun resumeTasks() {
+        mSerialQueue.shutdown()
+        mTaskList.clear()
+        mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper, mTaskList)
+        getTasks(0, 300, true).filter {
+            val downloadFile = File(it.getDownloadPath())
+            val url = it.getDownloadUrl()
+            !StatusUtil.isCompleted(url, downloadFile.parent, downloadFile.name)
+        }.forEach {
+            mSerialQueue.enqueue(onConvertTask(it))
+        }
         mSerialQueue.resume()
     }
 
@@ -137,11 +151,9 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
     }
 
     override fun removeTask(tasks: List<T>) {
-        OkDownload.with()
-            .downloadDispatcher()
-            .cancel(tasks.map { task ->
-                onConvertTask(task)
-            }.toTypedArray())
+        mSerialQueue.cancel(tasks.map { task ->
+            onConvertTask(task)
+        })
         onDeleteTask(tasks)
     }
 
