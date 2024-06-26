@@ -21,7 +21,7 @@ import java.util.Collections
  * @Description recyclerview 拖动 排序 工具类
  * 用法 DragItemTouchHelper().attachToRecyclerView(xx)
  */
-class DragItemTouchHelper : ItemTouchHelper.Callback {
+open class DragItemTouchHelper : ItemTouchHelper.Callback {
     /**
      * 拖动中的view 的样式
      * -1.0f 代表不操作
@@ -108,6 +108,7 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
      * @param target
      * @return
      */
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresPermission(Manifest.permission.VIBRATE)
     override fun onMove(
         recyclerView: RecyclerView,
@@ -128,7 +129,19 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
                 Collections.swap(adapterSourceProvider.getAdapterSource(), i, i - 1)
             }
         }
-        recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
+
+        /**
+         * 解决嵌套在ConcatAdapter的adapter情况
+         */
+        if (adapterSourceProvider.getAdapterSource().size == requireNotNull(recyclerView.adapter).itemCount) {
+            //可以当成一个adapter来处理
+            recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+        } else if (viewHolder.bindingAdapter == target.bindingAdapter && viewHolder.bindingAdapter != null) {
+            //组内交换
+            viewHolder.bindingAdapter?.notifyItemMoved(fromPosition, toPosition)
+        } else {
+            recyclerView.adapter?.notifyDataSetChanged()
+        }
         return true
     }
 
@@ -182,6 +195,7 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
     /**
      * 当手指松开的时候（拖拽或滑动完成的时候）调用，这时候我们可以将item恢复为原来的状态（相对于背景颜色加深来说的）
      */
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
@@ -199,6 +213,6 @@ class DragItemTouchHelper : ItemTouchHelper.Callback {
         }
 
         //解决重叠问题
-        recyclerView.adapter!!.notifyDataSetChanged()
+        (viewHolder.bindingAdapter ?: recyclerView.adapter)?.notifyDataSetChanged()
     }
 }

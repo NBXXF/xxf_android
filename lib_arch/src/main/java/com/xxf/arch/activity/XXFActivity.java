@@ -1,15 +1,16 @@
 package com.xxf.arch.activity;
 
-import android.content.Intent;
+
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.xxf.arch.component.FragmentComponent;
 import com.xxf.arch.component.WindowComponent;
 import com.xxf.view.round.CornerUtil;
 
@@ -28,9 +30,9 @@ import org.jetbrains.annotations.NotNull;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFActivity extends AppCompatActivity implements WindowComponent {
-    private static final String KEY_ACTIVITY_RESULT = "KEY_XXF_ACTIVITY_RESULT";
+public class XXFActivity extends AppCompatActivity implements WindowComponent, FragmentComponent {
     private boolean mCancelable = true;
+    private Bundle mSavedInstanceState;
 
     public XXFActivity() {
     }
@@ -43,23 +45,38 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
     @CallSuper
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        mSavedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
-        this.getLifecycle().addObserver(new DefaultLifecycleObserver(){
+        this.getLifecycle().addObserver(new DefaultLifecycleObserver() {
             @Override
-            public void onPause(@NonNull LifecycleOwner owner) {
-                DefaultLifecycleObserver.super.onPause(owner);
-                getIntent().removeExtra(KEY_ACTIVITY_RESULT);
+            public void onDestroy(@NonNull LifecycleOwner owner) {
+                DefaultLifecycleObserver.super.onDestroy(owner);
+                onDestroyView();
             }
         });
     }
 
-
+    @CallSuper
+    @Override
+    public void setContentView(View view) {
+        super.setContentView(view);
+        dispatchViewCreated();
+    }
 
     @CallSuper
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void setContentView(View view, ViewGroup.LayoutParams params) {
+        super.setContentView(view, params);
+        dispatchViewCreated();
     }
+
+    @CallSuper
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        dispatchViewCreated();
+    }
+
 
     @Override
     public void setWindowSize(int width, int height) {
@@ -193,4 +210,21 @@ public class XXFActivity extends AppCompatActivity implements WindowComponent {
             super.onBackPressed();
         }
     }
+
+
+    private void dispatchViewCreated() {
+        onViewCreated(((ViewGroup) findViewById(android.R.id.content))
+                .getChildAt(0), mSavedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onDestroyView() {
+
+    }
+
 }
