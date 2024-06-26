@@ -3,6 +3,7 @@ package com.xxf.ktx
 import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 
 /**
@@ -16,26 +17,35 @@ import androidx.lifecycle.LifecycleOwner
  * 获取 容器 activity
  * 如果是fragment 那么获取的是fragment.activity
  */
-fun LifecycleOwner.findActivity():Activity{
-   return this.asFragmentOrNull()?.requireActivity()?: this.asActivityOrNull()!!
+fun LifecycleOwner.findActivity(): Activity {
+    return this.asFragmentOrNull()?.requireActivity() ?: this.asActivityOrNull()!!
 }
 
 /**
  * 转换成activity
  */
-fun LifecycleOwner.asActivityOrNull():Activity?{
+fun LifecycleOwner.asActivityOrNull(): Activity? {
     return this as? Activity
 }
 
 /**
  * 转换成FragmentActivity
  */
-fun LifecycleOwner.asFragmentActivityOrNull():FragmentActivity?{
+fun LifecycleOwner.asFragmentActivityOrNull(): FragmentActivity? {
     return this as? FragmentActivity
 }
+
 /**
  * 转换fragment
  */
-fun LifecycleOwner.asFragmentOrNull():Fragment?{
+fun LifecycleOwner.asFragmentOrNull(): Fragment? {
     return this as? Fragment
+}
+
+/**
+ * 获取当前的最适合的fragmentManager
+ */
+fun LifecycleOwner.getSupportFragmentManager(): FragmentManager? {
+    return asFragmentOrNull()?.childFragmentManager
+        ?: asFragmentActivityOrNull()?.supportFragmentManager
 }
