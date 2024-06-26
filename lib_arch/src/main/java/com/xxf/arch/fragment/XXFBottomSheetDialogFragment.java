@@ -1,7 +1,6 @@
 package com.xxf.arch.fragment;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Pair;
@@ -74,11 +73,6 @@ public class XXFBottomSheetDialogFragment<R>
         componentSubject.onNext(Pair.create(this, result));
     }
 
-    @CallSuper
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @NonNull
     @Override
@@ -120,47 +114,6 @@ public class XXFBottomSheetDialogFragment<R>
             throw new RuntimeException("dialog must extends from WindowComponent");
         }
     }
-
-    /**
-     * 需要调用父类的方法,否则影响XXF.startActivityForResult
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @CallSuper
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /**
-     * 需要调用父类的方法,否则影响XXF.requestPermission
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    @CallSuper
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    /**
-     * 会重复调用 禁止复写
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @CallSuper
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
 
     /**
      * 不建议使用这个,不能控制重复添加的bug

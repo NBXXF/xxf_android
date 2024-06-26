@@ -1,28 +1,22 @@
-package com.xxf.arch.activity;
+package com.xxf.arch.activity
 
+import android.R
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.FrameLayout
+import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import com.xxf.arch.component.FragmentComponent
+import com.xxf.arch.component.WindowComponent
+import com.xxf.view.round.CornerUtil.clipViewRadius
 
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-
-import androidx.annotation.CallSuper;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-
-import com.xxf.arch.component.FragmentComponent;
-import com.xxf.arch.component.WindowComponent;
-import com.xxf.view.round.CornerUtil;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @version 2.3.1
@@ -30,201 +24,168 @@ import org.jetbrains.annotations.NotNull;
  * @Description
  * @date createTime：2018/9/7
  */
-public class XXFActivity extends AppCompatActivity implements WindowComponent, FragmentComponent {
-    private boolean mCancelable = true;
-    private Bundle mSavedInstanceState;
+open class XXFActivity : AppCompatActivity, WindowComponent, FragmentComponent {
+    private var mCancelable = true
+    private var mSavedInstanceState: Bundle? = null
 
-    public XXFActivity() {
-    }
+    constructor()
 
-    public XXFActivity(@LayoutRes int contentLayoutId) {
-        super(contentLayoutId);
-    }
+    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
 
     @CallSuper
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        mSavedInstanceState = savedInstanceState;
-        super.onCreate(savedInstanceState);
-        this.getLifecycle().addObserver(new DefaultLifecycleObserver() {
-            @Override
-            public void onDestroy(@NonNull LifecycleOwner owner) {
-                DefaultLifecycleObserver.super.onDestroy(owner);
-                onDestroyView();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        mSavedInstanceState = savedInstanceState
+        super.onCreate(savedInstanceState)
+        this.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                super<DefaultLifecycleObserver>.onDestroy(owner)
+                onDestroyView()
             }
-        });
+        })
     }
 
     @CallSuper
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        dispatchViewCreated();
+    override fun setContentView(view: View) {
+        super.setContentView(view)
+        dispatchViewCreated()
     }
 
     @CallSuper
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        super.setContentView(view, params);
-        dispatchViewCreated();
+    override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
+        super.setContentView(view, params)
+        dispatchViewCreated()
     }
 
     @CallSuper
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        dispatchViewCreated();
+    override fun setContentView(layoutResID: Int) {
+        super.setContentView(layoutResID)
+        dispatchViewCreated()
     }
 
 
-    @Override
-    public void setWindowSize(int width, int height) {
-        Window window = getWindow();
+    override fun setWindowSize(width: Int, height: Int) {
+        val window = window
         if (window != null) {
-            WindowManager.LayoutParams attributes = window.getAttributes();
-            attributes.width = width;
-            attributes.height = height;
-            window.setAttributes(attributes);
+            val attributes = window.attributes
+            attributes.width = width
+            attributes.height = height
+            window.attributes = attributes
         }
     }
 
-    @Override
-    public void setWindowWidth(int width) {
-        Window window = getWindow();
+    override fun setWindowWidth(width: Int) {
+        val window = window
         if (window != null) {
-            WindowManager.LayoutParams attributes = window.getAttributes();
-            attributes.width = width;
-            window.setAttributes(attributes);
+            val attributes = window.attributes
+            attributes.width = width
+            window.attributes = attributes
         }
     }
 
-    @Override
-    public void setWindowHeight(int height) {
-        Window window = getWindow();
+    override fun setWindowHeight(height: Int) {
+        val window = window
         if (window != null) {
-            WindowManager.LayoutParams attributes = window.getAttributes();
-            attributes.height = height;
-            window.setAttributes(attributes);
+            val attributes = window.attributes
+            attributes.height = height
+            window.attributes = attributes
         }
     }
 
 
-    @Nullable
-    @Override
-    public FrameLayout getDecorView() {
-        Window window = getWindow();
+    override fun getDecorView(): FrameLayout? {
+        val window = window
         if (window != null) {
-            return (FrameLayout) window.getDecorView();
+            return window.decorView as FrameLayout
         }
-        return null;
+        return null
     }
 
-    @Nullable
-    @Override
-    public FrameLayout getContentParent() {
-        Window window = getWindow();
+    override fun getContentParent(): FrameLayout? {
+        val window = window
         if (window != null) {
-            return (FrameLayout) window.findViewById(android.R.id.content);
+            return window.findViewById<View>(R.id.content) as FrameLayout
         }
-        return null;
+        return null
     }
 
-    @Override
-    public void setWindowDimAmount(float amount) {
-        Window window = getWindow();
+    override fun setWindowDimAmount(amount: Float) {
+        val window = window
         if (window != null) {
             /**
              * activity 需要强制设置 主题默认是false
              * R.styleable.Window_backgroundDimEnabled
              */
-            setWindowBackgroundDimEnabled(amount > 0);
-            window.setDimAmount(amount);
+            setWindowBackgroundDimEnabled(amount > 0)
+            window.setDimAmount(amount)
         }
     }
 
-    @Override
-    public void setWindowGravity(int gravity) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setGravity(gravity);
-        }
+    override fun setWindowGravity(gravity: Int) {
+        val window = window
+        window?.setGravity(gravity)
     }
 
-    @Override
-    public void setWindowBackground(@NotNull Drawable drawable) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(drawable);
-        }
+    override fun setWindowBackground(drawable: Drawable) {
+        val window = window
+        window?.setBackgroundDrawable(drawable)
     }
 
-    @Override
-    public void setWindowBackground(int color) {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(color));
-        }
+    override fun setWindowBackground(color: Int) {
+        val window = window
+        window?.setBackgroundDrawable(ColorDrawable(color))
     }
 
-    @Override
-    public void setWindowBackgroundDimEnabled(boolean enabled) {
-        Window window = getWindow();
+    override fun setWindowBackgroundDimEnabled(enabled: Boolean) {
+        val window = window
         if (window != null) {
             if (enabled) {
-                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             } else {
-                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             }
         }
     }
 
-    @Override
-    public void setWindowRadius(float radius) {
-        FrameLayout decorView = getDecorView();
+    override fun setWindowRadius(radius: Float) {
+        val decorView = getDecorView()
         if (decorView != null) {
-            CornerUtil.INSTANCE.clipViewRadius(decorView, radius);
+            clipViewRadius(decorView, radius)
         }
     }
 
-    @Override
-    public void setCanceledOnTouchOutside(boolean cancel) {
+    override fun setCanceledOnTouchOutside(cancel: Boolean) {
         if (cancel && !mCancelable) {
-            mCancelable = true;
+            mCancelable = true
         }
-        this.setFinishOnTouchOutside(cancel);
+        this.setFinishOnTouchOutside(cancel)
     }
 
 
-    @Override
-    public void setCancelable(boolean flag) {
-        mCancelable = flag;
+    override fun setCancelable(flag: Boolean) {
+        mCancelable = flag
     }
 
     /**
      * activity 内部的是否能返回请用 OnBackPressedDispatcher
      */
-    @Override
-    public void onBackPressed() {
+    override fun onBackPressed() {
         if (mCancelable) {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
 
-    private void dispatchViewCreated() {
-        onViewCreated(((ViewGroup) findViewById(android.R.id.content))
-                .getChildAt(0), mSavedInstanceState);
+    private fun dispatchViewCreated() {
+        onViewCreated(
+            (findViewById<View>(R.id.content) as ViewGroup)
+                .getChildAt(0), mSavedInstanceState
+        )
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     }
 
-    @Override
-    public void onDestroyView() {
-
+    override fun onDestroyView() {
     }
-
 }
