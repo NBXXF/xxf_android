@@ -19,7 +19,7 @@ abstract class InnerAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Adapter
             /**
              * 忽略内部的adapters 内部的adapter 会进行布局等操作
              */
-            !TextUtils.equals( it.javaClass.`package`.name,RecyclerView::class.java.`package`.name)
+            !TextUtils.equals(it.javaClass.`package`.name, RecyclerView::class.java.`package`.name)
         }
     }
 
@@ -34,6 +34,12 @@ abstract class InnerAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Adapter
     }
 
     override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
+        /**
+         * 解决内部报错
+         */
+        if (mObserversList.contains(observer)) {
+            return
+        }
         super.registerAdapterDataObserver(observer)
         synchronized(mObserversList) {
             mObserversList.add(observer)
@@ -41,6 +47,12 @@ abstract class InnerAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Adapter
     }
 
     override fun unregisterAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
+        /**
+         * 解决内部报错
+         */
+        if (!mObserversList.contains(observer)) {
+            return
+        }
         super.unregisterAdapterDataObserver(observer)
         synchronized(mObserversList) {
             mObserversList.remove(observer)
