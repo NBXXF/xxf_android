@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.InnerListAdapter;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
@@ -36,7 +37,7 @@ import java.util.List;
  * *
  */
 public abstract class XXFRecyclerListAdapter<V extends ViewBinding, T>
-        extends ListAdapter<T, XXFViewHolder<V, T>> implements BaseAdapter<V, T> {
+        extends InnerListAdapter<T, XXFViewHolder<V, T>> implements BaseAdapter<V, T> {
 
     private RecyclerView attachedRecyclerView;
 

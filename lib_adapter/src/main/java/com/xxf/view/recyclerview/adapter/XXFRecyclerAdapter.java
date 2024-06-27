@@ -9,6 +9,7 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.InnerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
@@ -34,7 +35,7 @@ import java.util.List;
  * *
  */
 public abstract class XXFRecyclerAdapter<V extends ViewBinding, T>
-        extends RecyclerView.Adapter<XXFViewHolder<V, T>> implements BaseAdapter<V, T> {
+        extends InnerAdapter<XXFViewHolder<V, T>> implements BaseAdapter<V, T> {
 
     private RecyclerView attachedRecyclerView;
 
