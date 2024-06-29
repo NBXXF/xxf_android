@@ -7,10 +7,8 @@ import android.content.ServiceConnection
 import android.os.Binder
 import android.os.IBinder
 import com.liulishuo.okdownload.DownloadListener
-import com.liulishuo.okdownload.DownloadSerialQueue
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.InnerDownloadSerialQueue
-import com.liulishuo.okdownload.OkDownload
 import com.liulishuo.okdownload.StatusUtil
 import java.io.File
 
@@ -135,7 +133,7 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         mSerialQueue.shutdown()
         mTaskList.clear()
         mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper, mTaskList)
-        getTasks(0, 300, true).filter {
+        getTasks(0, 300, true).list.filter {
             val downloadFile = File(it.getDownloadPath())
             val url = it.getDownloadUrl()
             !StatusUtil.isCompleted(url, downloadFile.parent, downloadFile.name)
