@@ -20,8 +20,7 @@ android {
 }
 dependencies {
     api des.rxJava
-    api des.speed
-    api des.objectbox
+    api des.database_objectbox
     api project(path: ':lib_application')
 }
 

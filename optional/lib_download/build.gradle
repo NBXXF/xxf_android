@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
+def des = rootProject.ext.dependencies
 android {
     compileSdk project.TARGET_SDK_VERSION.toInteger()
 
@@ -27,8 +28,9 @@ dependencies {
     implementation "com.liulishuo.okdownload:okdownload:1.0.7"
     implementation "com.liulishuo.okdownload:sqlite:1.0.7"
     implementation "com.liulishuo.okdownload:okhttp:1.0.7"
-    implementation project(':lib_log')
-    implementation project(':lib_adapter')
+    api project(':lib_log')
+    api project(':lib_adapter')
+    api des.database
 }
 ext {
     publishVersion = rootProject.xxfVersion

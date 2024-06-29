@@ -6,7 +6,8 @@ ext {
             json                          : "com.nbxxf.kpower:gson:2.0.1-SNAPSHOT",
             bus                           : "com.nbxxf.kpower:bus:2.0.1-SNAPSHOT",
             ktx                           : "com.nbxxf.kpower:ktx:2.0.1-SNAPSHOT",
-            objectbox                     : "com.nbxxf.kpower:database_objectbox:2.0.1-SNAPSHOT",
+            database                      : "com.nbxxf.kpower:database:2.0.1-SNAPSHOT",
+            database_objectbox                     : "com.nbxxf.kpower:database_objectbox:2.0.1-SNAPSHOT",
 
 
             //主要依赖库
