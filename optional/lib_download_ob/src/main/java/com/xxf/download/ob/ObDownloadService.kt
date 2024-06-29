@@ -1,29 +1,31 @@
 package com.xxf.download.ob
 
+import com.nbxxf.kpower.database.objectbox.service.BaseServiceImpl
 import com.xxf.download.DownloadService
-import io.objectbox.Box
 import java.io.File
+import java.util.Date
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF  https://blog.csdn.net/axuanqq
  * @Description 下载结合objectbox做缓存
  */
-abstract class ObDownloadService<T : ObDownloadModel> : DownloadService<T>() {
+abstract class ObDownloadService<E : ObDownloadModel> :
+    DownloadService<E>() {
 
-    protected abstract fun getBox(): Box<T>
+    protected abstract fun getService(): BaseServiceImpl<E, *>
 
 
-    override fun onDeleteTask(tasks: List<T>) {
-        getBox().remove(tasks)
+    override fun onDeleteTask(tasks: List<E>) {
+        getService().deleteById(tasks.map { it.id })
         tasks.forEach {
             File(it.getDownloadPath()).deleteRecursively()
         }
     }
 
-    override fun onSaveTasks(tasks: List<T>) {
+    override fun onSaveTasks(tasks: List<E>) {
         tasks.forEach {
-            it._insertTime = System.currentTimeMillis()
+            it.createDate = Date()
         }
-        getBox().put(tasks);
+        getService().insertOrUpdate(tasks)
     }
 }

@@ -1,11 +1,12 @@
 ext {
 
     dependencies = [
-            http                          : "com.nbxxf.kpower:http:2.0.0-SNAPSHOT",
-            speed                         : "com.nbxxf.kpower:speed:2.0.0-SNAPSHOT",
-            json                          : "com.nbxxf.kpower:gson:2.0.0-SNAPSHOT",
-            bus                           : "com.nbxxf.kpower:bus:2.0.0-SNAPSHOT",
-            ktx                           : "com.nbxxf.kpower:ktx:2.0.0-SNAPSHOT",
+            http                          : "com.nbxxf.kpower:http:2.0.1-SNAPSHOT",
+            speed                         : "com.nbxxf.kpower:speed:2.0.1-SNAPSHOT",
+            json                          : "com.nbxxf.kpower:gson:2.0.1-SNAPSHOT",
+            bus                           : "com.nbxxf.kpower:bus:2.0.1-SNAPSHOT",
+            ktx                           : "com.nbxxf.kpower:ktx:2.0.1-SNAPSHOT",
+            objectbox                     : "com.nbxxf.kpower:database_objectbox:2.0.1-SNAPSHOT",
 
 
             //主要依赖库

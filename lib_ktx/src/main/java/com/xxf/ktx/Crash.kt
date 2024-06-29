@@ -36,7 +36,7 @@ inline fun handleMainThreadException(crossinline block: (Throwable) -> Unit) {
 fun Context.saveCrashLogLocally(dirPath: String = cacheDirPath) =
   handleUncaughtException { thread, e ->
     val now = Instant.now()
-    File(dirPath, "crash_${now.format("yyyy-MM-dd")}.txt").print(append = true) {
+    File(dirPath, "crash_${now.format("yyyy-MM-dd")}.txt").printWriter().apply {
       println("Time:          ${now.format("yyyy-MM-dd HH:mm:ss")}")
       println("App version:   ${application.appVersionName} (${application.appVersionCode})")
       println("OS version:    Android $sdkVersionName ($sdkVersionCode)")

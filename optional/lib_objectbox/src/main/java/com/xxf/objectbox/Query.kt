@@ -5,7 +5,6 @@ package com.xxf.objectbox
  * date createTime：2018/7/16 17:34
  * Description :
  */
-import com.xxf.objectbox.model.PageInfoDTO
 import io.objectbox.query.Query
 import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
@@ -47,22 +46,4 @@ fun <T> Query<T>.single(): Single<List<T>> {
  */
 fun <T> Query<T>.hasResult(): Boolean {
     return this.findIds(0, 1).isNotEmpty();
-}
-
-/**
- * 分页查询
- * @param pageNum 从1开始
- * @param pageSize 大于0
- */
-fun <T> Query<T>.findPage(pageNum: Long, pageSize: Long): PageInfoDTO<T> {
-    val count = this.count()
-    return this.find((pageNum - 1) * pageSize, pageSize).run {
-        PageInfoDTO<T>(
-            pageNum = pageNum,
-            pageSize = pageSize,
-            hasNextPage = count > pageSize * pageNum,
-            total = count,
-            list = this
-        )
-    }
 }
