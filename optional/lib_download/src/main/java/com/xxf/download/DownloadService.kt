@@ -158,7 +158,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
         mSerialQueue.shutdown()
         mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper)
         getCacheService().selectPage(1, 300) {
-            it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED)
+            it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED.value)
             it.order(IDownloadEntity::createDate, true)
             it
         }.list.forEach {
