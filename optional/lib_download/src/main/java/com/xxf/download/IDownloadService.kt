@@ -2,25 +2,29 @@ package com.xxf.download
 
 import com.liulishuo.okdownload.DownloadListener
 import com.nbxxf.kpower.database.model.BasePageInfoDTO
+import com.nbxxf.kpower.database.query.BaseQueryBuilder
+import com.nbxxf.kpower.database.service.BaseService
 
-interface ICacheTaskDownloadService<T : IDownloadModel> {
+interface ICacheTaskDownloadService<T : IDownloadEntity> {
+
+    /**
+     * 获取数据库层service
+     */
+    fun getCacheService(): BaseService<Long, T, BaseQueryBuilder<T, *>>
+
     /**
      * 获取已经入库的任务
      */
     fun getTasks(pageNum: Long, pageSize: Long, desc: Boolean): BasePageInfoDTO<T>
 
     /**
-     * 内部执行保存
+     * 按状态获取下载任务
      */
-    fun onSaveTasks(tasks: List<T>)
+    fun getTasks(pageNum: Long, pageSize: Long, desc: Boolean, status: Long): BasePageInfoDTO<T>
 
-    /**
-     * 执行删除
-     */
-    fun onDeleteTask(tasks: List<T>)
 }
 
-interface IDownloadService<T : IDownloadModel> : ICacheTaskDownloadService<T> {
+interface IDownloadService<T : IDownloadEntity> : ICacheTaskDownloadService<T> {
 
     /**
      * 是否仅wifi场景才下载

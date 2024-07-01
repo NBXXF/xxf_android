@@ -1,8 +1,13 @@
 package com.xxf.download
 
-import java.io.Serializable
+import com.nbxxf.kpower.database.entity.BaseTable
 
-interface IDownloadModel : Serializable {
+interface IDownloadEntity : BaseTable<Long> {
+    /**
+     * 下载状态
+     */
+    var downloadStatus: Long
+
     /**
      * 下载网络地址
      */

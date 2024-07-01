@@ -5,7 +5,7 @@ import androidx.viewbinding.ViewBinding
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause
 import com.liulishuo.okdownload.core.listener.DownloadListener3
-import com.xxf.download.IDownloadModel
+import com.xxf.download.IDownloadEntity
 import com.xxf.download.IDownloadService
 import com.xxf.ktx.runOnUiThread
 import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter
@@ -17,13 +17,13 @@ import com.xxf.view.recyclerview.doWithoutAnimation
  * Date: 1/4/19 6:05 PM
  * Description: 下载队列更新高度抽象Adapter
  */
-open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : XXFRecyclerAdapter<V, T>() {
+open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> : XXFRecyclerAdapter<V, T>() {
 
 
     /**
      * UI绑定
      */
-    fun <T : IDownloadModel, O : IDownloadService<T>> bindDownloadService(service: O) {
+    fun <T : IDownloadEntity, O : IDownloadService<T>> bindDownloadService(service: O) {
         service.removeListener(mDownloadListener)
         service.addListener(mDownloadListener)
     }
@@ -31,7 +31,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadModel> : X
     /**
      * UI解绑
      */
-    fun <T : IDownloadModel, O : IDownloadService<T>> unbindDownloadService(service: O) {
+    fun <T : IDownloadEntity, O : IDownloadService<T>> unbindDownloadService(service: O) {
         service.removeListener(mDownloadListener)
     }
 

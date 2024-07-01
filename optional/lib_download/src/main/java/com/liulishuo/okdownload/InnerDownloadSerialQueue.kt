@@ -2,10 +2,15 @@ package com.liulishuo.okdownload
 
 import java.util.ArrayList
 
-internal class InnerDownloadSerialQueue(val listener:DownloadListener, val taskList: ArrayList<DownloadTask>): DownloadSerialQueue(listener,taskList) {
+internal class InnerDownloadSerialQueue(
+    private val listener: DownloadListener,
+    private val taskList: ArrayList<DownloadTask>
+) : DownloadSerialQueue(listener, taskList) {
+
+    constructor(listener: DownloadListener) : this(listener, arrayListOf())
 
     @Synchronized
-    fun cancel(tasks: List<DownloadTask>){
+    fun cancel(tasks: List<DownloadTask>) {
         OkDownload.with()
             .downloadDispatcher()
             .cancel(tasks.toTypedArray())

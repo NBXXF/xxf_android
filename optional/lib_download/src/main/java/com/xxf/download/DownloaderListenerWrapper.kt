@@ -10,7 +10,7 @@ import com.xxf.log.logD
 /**
  * 包装分发1对多
  */
-class DownloaderListenerWrapper : DownloadListener {
+open class DownloaderListenerWrapper : DownloadListener {
     companion object {
         private const val TAG = "DownloaderListenerWrapper"
     }

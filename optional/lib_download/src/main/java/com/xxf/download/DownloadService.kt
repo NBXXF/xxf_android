@@ -10,7 +10,11 @@ import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.InnerDownloadSerialQueue
 import com.liulishuo.okdownload.StatusUtil
+import com.liulishuo.okdownload.core.cause.EndCause
+import com.nbxxf.kpower.database.model.BasePageInfoDTO
+import com.xxf.download.component.DownloadStatus
 import java.io.File
+import java.util.Date
 
 
 /**
@@ -18,13 +22,13 @@ import java.io.File
  * Date: 1/8/19 12:07 PM
  * Description: 下载任务队列抽象
  */
-abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService<T> {
+abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadService<T> {
 
     companion object {
         const val ACTION_ADD_TASKS = "xxf.download.action.addTasks"
         const val KEY_TASKS = "tasks"
 
-        private fun <T : IDownloadModel, O : IDownloadService<T>> buildTaskIntent(
+        private fun <T : IDownloadEntity, O : IDownloadService<T>> buildTaskIntent(
             context: Context,
             target: Class<O>,
             tasks: ArrayList<T>
@@ -39,7 +43,7 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         /**
          * 开启service 并启动任务
          */
-        fun <T : IDownloadModel, O : IDownloadService<T>> Class<O>.startService(
+        fun <T : IDownloadEntity, O : IDownloadService<T>> Class<O>.startService(
             context: Context,
             tasks: ArrayList<T> = arrayListOf()
         ) {
@@ -49,7 +53,7 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         /**
          * 停止service
          */
-        fun <T : IDownloadModel, O : IDownloadService<T>> Class<O>.stopService(context: Context) {
+        fun <T : IDownloadEntity, O : IDownloadService<T>> Class<O>.stopService(context: Context) {
             context.stopService(buildTaskIntent(context, this, arrayListOf()))
         }
 
@@ -57,7 +61,7 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         /**
          * bindService 并启动任务
          */
-        fun <T : IDownloadModel, O : IDownloadService<T>> Class<O>.bindService(
+        fun <T : IDownloadEntity, O : IDownloadService<T>> Class<O>.bindService(
             context: Context,
             connection: ServiceConnection,
             tasks: ArrayList<T> = arrayListOf()
@@ -73,10 +77,21 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
     }
 
     private val mBinder: IBinder = LocalBinder()
-    private val mListenerWrapper = DownloaderListenerWrapper()
-    private val mTaskList = arrayListOf<DownloadTask>()
+    private val mListenerWrapper = object : DownloaderListenerWrapper() {
+        @Suppress("UNCHECKED_CAST")
+        override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
+            if (cause == EndCause.COMPLETED) {
+                (task.taskModel as? T)?.let {
+                    val selectById = getCacheService().selectById(it.id()) ?: it
+                    selectById.downloadStatus = DownloadStatus.COMPLETED.value;
+                    getCacheService().insertOrUpdate(selectById)
+                }
+            }
+            super.taskEnd(task, cause, realCause)
+        }
+    }
     private var mSerialQueue: InnerDownloadSerialQueue =
-        InnerDownloadSerialQueue(mListenerWrapper, mTaskList)
+        InnerDownloadSerialQueue(mListenerWrapper)
     private var mWifiRequired: Boolean = false
     private var mHeaderMapFields: MutableMap<String, List<String>> = mutableMapOf()
 
@@ -108,7 +123,10 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         if (tasks.isEmpty()) {
             return
         }
-        onSaveTasks(tasks)
+        getCacheService().insert(tasks.map {
+            it.createDate = Date()
+            it
+        })
         tasks.forEach {
             mSerialQueue.enqueue(onConvertTask(it))
             mSerialQueue.resume()
@@ -126,18 +144,24 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         ).setConnectionCount(1)
             .setHeaderMapFields(mHeaderMapFields)
             .setWifiRequired(mWifiRequired)
+            /**
+             * 有持久化api 不要回调到主线程
+             */
+            .setAutoCallbackToUIThread(false)
             .build()
+            .apply {
+                this.taskModel = task
+            }
     }
 
     override fun resumeTasks() {
         mSerialQueue.shutdown()
-        mTaskList.clear()
-        mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper, mTaskList)
-        getTasks(0, 300, true).list.filter {
-            val downloadFile = File(it.getDownloadPath())
-            val url = it.getDownloadUrl()
-            !StatusUtil.isCompleted(url, downloadFile.parent, downloadFile.name)
-        }.forEach {
+        mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper)
+        getCacheService().selectPage(1, 300) {
+            it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED)
+            it.order(IDownloadEntity::createDate, true)
+            it
+        }.list.forEach {
             mSerialQueue.enqueue(onConvertTask(it))
         }
         mSerialQueue.resume()
@@ -152,7 +176,30 @@ abstract class DownloadService<T : IDownloadModel> : Service(), IDownloadService
         mSerialQueue.cancel(tasks.map { task ->
             onConvertTask(task)
         })
-        onDeleteTask(tasks)
+        getCacheService().deleteById(tasks.map { it.id() })
+        tasks.forEach {
+            File(it.getDownloadPath()).deleteRecursively()
+        }
+    }
+
+    override fun getTasks(pageNum: Long, pageSize: Long, desc: Boolean): BasePageInfoDTO<T> {
+        return getCacheService().selectPage(pageNum, pageSize) {
+            it.order(IDownloadEntity::createDate, desc)
+            it
+        }
+    }
+
+    override fun getTasks(
+        pageNum: Long,
+        pageSize: Long,
+        desc: Boolean,
+        status: Long
+    ): BasePageInfoDTO<T> {
+        return getCacheService().selectPage(pageNum, pageSize) {
+            it.equal(IDownloadEntity::downloadStatus, status)
+            it.order(IDownloadEntity::createDate, desc)
+            it
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder {
