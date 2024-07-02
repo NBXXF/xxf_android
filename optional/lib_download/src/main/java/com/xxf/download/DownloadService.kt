@@ -9,7 +9,6 @@ import android.os.IBinder
 import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.InnerDownloadSerialQueue
-import com.liulishuo.okdownload.core.cause.EndCause
 import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
@@ -78,9 +77,9 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
 
     private val mBinder: IBinder = LocalBinder()
     private val mListenerWrapper =
-        DownloaderListenerWrapper(mutableListOf(object : DownloadUpdateListener() {
-            override fun updateDownload(task: DownloadTask, info: DownloadInfo) {
-                updateDownload(task.taskModel as T, info)
+        DownloaderListenerWrapper(mutableListOf(object : DownloadUpdateListener<T>() {
+            override fun updateDownload(task: T?, info: DownloadInfo) {
+                updateDownload(task, info)
             }
         }))
     private var mSerialQueue: InnerDownloadSerialQueue =

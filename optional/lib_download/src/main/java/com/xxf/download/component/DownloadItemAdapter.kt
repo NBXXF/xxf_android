@@ -2,7 +2,6 @@ package com.xxf.download.component
 
 import androidx.annotation.CallSuper
 import androidx.viewbinding.ViewBinding
-import com.liulishuo.okdownload.DownloadTask
 import com.xxf.download.DownloadUpdateListener
 import com.xxf.download.IDownloadEntity
 import com.xxf.download.IDownloadService
@@ -39,10 +38,12 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
     /**
      * 只需要添加监听就行了
      */
-    private val mDownloadListener = object : DownloadUpdateListener() {
-        override fun updateDownload(task: DownloadTask, info: DownloadInfo) {
-            updateDownload(task) {
-                notifyItemChanged(it, info)
+    private val mDownloadListener:DownloadUpdateListener<T> = object : DownloadUpdateListener<T>() {
+        override fun updateDownload(task: T?, info: DownloadInfo) {
+            task?.let { it ->
+                updateDownload(it) {
+                    notifyItemChanged(it, info)
+                }
             }
         }
     }
@@ -75,9 +76,9 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
         downloadInfo: DownloadInfo
     )
 
-    protected fun updateDownload(task: DownloadTask, block: (index: Int) -> Unit) {
+    protected fun updateDownload(task: T, block: (index: Int) -> Unit) {
         val indexOfFirst = currentList.indexOfFirst {
-            it.getDownloadUrl() == task.url
+            it.getDownloadUrl() == task.getDownloadUrl()
         }
         if (indexOfFirst >= 0) {
             runOnUiThread {

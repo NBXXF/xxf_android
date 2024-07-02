@@ -5,12 +5,14 @@ import com.liulishuo.okdownload.core.cause.ResumeFailedCause
 import com.liulishuo.okdownload.core.listener.DownloadListener3
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
+
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
  * Date: 1/8/19 12:07 PM
  * Description: 下载聚合监听
  */
-abstract class DownloadUpdateListener : DownloadListener3() {
+@Suppress("UNCHECKED_CAST")
+abstract class DownloadUpdateListener<T : IDownloadEntity> : DownloadListener3() {
     override fun retry(task: DownloadTask, cause: ResumeFailedCause) {
 
     }
@@ -22,7 +24,7 @@ abstract class DownloadUpdateListener : DownloadListener3() {
         totalLength: Long
     ) {
         updateDownload(
-            task, DownloadInfo(
+            task.taskModel as? T, DownloadInfo(
                 DownloadStatus.CONNECT,
                 blockCount = blockCount,
                 currentOffset = currentOffset,
@@ -33,7 +35,7 @@ abstract class DownloadUpdateListener : DownloadListener3() {
 
     override fun progress(task: DownloadTask, currentOffset: Long, totalLength: Long) {
         updateDownload(
-            task, DownloadInfo(
+            task.taskModel as? T, DownloadInfo(
                 DownloadStatus.PROGRESS, currentOffset = currentOffset, totalLength = totalLength
             )
         )
@@ -41,7 +43,7 @@ abstract class DownloadUpdateListener : DownloadListener3() {
 
     override fun started(task: DownloadTask) {
         updateDownload(
-            task, DownloadInfo(
+            task.taskModel as? T, DownloadInfo(
                 DownloadStatus.START
             )
         )
@@ -49,7 +51,7 @@ abstract class DownloadUpdateListener : DownloadListener3() {
 
     override fun completed(task: DownloadTask) {
         updateDownload(
-            task, DownloadInfo(
+            task.taskModel as? T, DownloadInfo(
                 DownloadStatus.COMPLETED
             )
         )
@@ -57,7 +59,7 @@ abstract class DownloadUpdateListener : DownloadListener3() {
 
     override fun canceled(task: DownloadTask) {
         updateDownload(
-            task, DownloadInfo(
+            task.taskModel as? T, DownloadInfo(
                 DownloadStatus.CANCEL
             )
         )
@@ -65,7 +67,7 @@ abstract class DownloadUpdateListener : DownloadListener3() {
 
     override fun error(task: DownloadTask, e: java.lang.Exception) {
         updateDownload(
-            task, DownloadInfo(
+            task.taskModel as? T, DownloadInfo(
                 DownloadStatus.ERROR,
                 error = e
             )
@@ -75,5 +77,5 @@ abstract class DownloadUpdateListener : DownloadListener3() {
     override fun warn(task: DownloadTask) {
     }
 
-    protected abstract fun updateDownload(task: DownloadTask, info: DownloadInfo)
+    protected abstract fun updateDownload(task: T?, info: DownloadInfo)
 }
