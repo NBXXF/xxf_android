@@ -38,15 +38,16 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
     /**
      * 只需要添加监听就行了
      */
-    private val mDownloadListener:DownloadUpdateListener<T> = object : DownloadUpdateListener<T>() {
-        override fun updateDownload(task: T?, info: DownloadInfo) {
-            task?.let { it ->
-                updateDownload(it) {
-                    notifyItemChanged(it, info)
+    private val mDownloadListener: DownloadUpdateListener<T> =
+        object : DownloadUpdateListener<T>() {
+            override fun updateDownload(task: T?, info: DownloadInfo) {
+                task?.let { it ->
+                    updateDownload(it) {
+                        notifyItemChanged(it, info)
+                    }
                 }
             }
         }
-    }
 
 
     @CallSuper
@@ -76,7 +77,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
         downloadInfo: DownloadInfo
     )
 
-    protected fun updateDownload(task: T, block: (index: Int) -> Unit) {
+    protected open fun updateDownload(task: T, block: (index: Int) -> Unit) {
         val indexOfFirst = currentList.indexOfFirst {
             it.getDownloadUrl() == task.getDownloadUrl()
         }
