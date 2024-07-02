@@ -3,8 +3,7 @@ package com.xxf.download.component
 import androidx.annotation.CallSuper
 import androidx.viewbinding.ViewBinding
 import com.liulishuo.okdownload.DownloadTask
-import com.liulishuo.okdownload.core.cause.ResumeFailedCause
-import com.liulishuo.okdownload.core.listener.DownloadListener3
+import com.xxf.download.DownloadUpdateListener
 import com.xxf.download.IDownloadEntity
 import com.xxf.download.IDownloadService
 import com.xxf.ktx.runOnUiThread
@@ -17,7 +16,8 @@ import com.xxf.view.recyclerview.doWithoutAnimation
  * Date: 1/4/19 6:05 PM
  * Description: 下载队列更新高度抽象Adapter
  */
-open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> : XXFRecyclerAdapter<V, T>() {
+open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
+    XXFRecyclerAdapter<V, T>() {
 
 
     /**
@@ -39,78 +39,12 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> : 
     /**
      * 只需要添加监听就行了
      */
-    private val mDownloadListener: DownloadListener3 = object : DownloadListener3() {
-        override fun retry(task: DownloadTask, cause: ResumeFailedCause) {
-
-        }
-
-        override fun connected(task: DownloadTask, blockCount: Int, currentOffset: Long, totalLength: Long) {
+    private val mDownloadListener = object : DownloadUpdateListener() {
+        override fun updateDownload(task: DownloadTask, info: DownloadInfo) {
             updateDownload(task) {
-                notifyItemChanged(
-                    it, DownloadInfo(
-                        DownloadStatus.CONNECT,
-                        blockCount = blockCount,
-                        currentOffset = currentOffset,
-                        totalLength = totalLength
-                    )
-                )
+                notifyItemChanged(it, info)
             }
         }
-
-        override fun progress(task: DownloadTask, currentOffset: Long, totalLength: Long) {
-            updateDownload(task) {
-                notifyItemChanged(
-                    it, DownloadInfo(
-                        DownloadStatus.PROGRESS, currentOffset = currentOffset, totalLength = totalLength
-                    )
-                )
-            }
-        }
-
-        override fun started(task: DownloadTask) {
-            updateDownload(task) {
-                notifyItemChanged(
-                    it, DownloadInfo(
-                        DownloadStatus.START
-                    )
-                )
-            }
-        }
-
-        override fun completed(task: DownloadTask) {
-            updateDownload(task) {
-                notifyItemChanged(
-                    it, DownloadInfo(
-                        DownloadStatus.COMPLETED
-                    )
-                )
-            }
-        }
-
-        override fun canceled(task: DownloadTask) {
-            updateDownload(task) {
-                notifyItemChanged(
-                    it, DownloadInfo(
-                        DownloadStatus.CANCEL
-                    )
-                )
-            }
-        }
-
-        override fun error(task: DownloadTask, e: java.lang.Exception) {
-            updateDownload(task) {
-                notifyItemChanged(
-                    it, DownloadInfo(
-                        DownloadStatus.ERROR,
-                        error = e
-                    )
-                )
-            }
-        }
-
-        override fun warn(task: DownloadTask) {
-        }
-
     }
 
 

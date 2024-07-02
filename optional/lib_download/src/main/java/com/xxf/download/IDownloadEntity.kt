@@ -9,6 +9,11 @@ interface IDownloadEntity : BaseTable<Long> {
     var downloadStatus: Long
 
     /**
+     * 下载总文件大小
+     */
+    var downloadTotalLength: Long
+
+    /**
      * 下载网络地址
      */
     fun getDownloadUrl(): String

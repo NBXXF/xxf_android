@@ -9,11 +9,10 @@ import android.os.IBinder
 import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.InnerDownloadSerialQueue
-import com.liulishuo.okdownload.StatusUtil
 import com.liulishuo.okdownload.core.cause.EndCause
 import com.nbxxf.kpower.database.model.BasePageInfoDTO
+import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
-import com.xxf.log.logD
 import java.io.File
 import java.util.Date
 
@@ -78,15 +77,12 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     }
 
     private val mBinder: IBinder = LocalBinder()
-    private val mListenerWrapper = object : DownloaderListenerWrapper() {
-        @Suppress("UNCHECKED_CAST")
-        override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
-            if (cause == EndCause.COMPLETED) {
-                updateState(task.taskModel as T, DownloadStatus.COMPLETED.value)
+    private val mListenerWrapper =
+        DownloaderListenerWrapper(mutableListOf(object : DownloadUpdateListener() {
+            override fun updateDownload(task: DownloadTask, info: DownloadInfo) {
+                updateDownload(task.taskModel as T, info)
             }
-            super.taskEnd(task, cause, realCause)
-        }
-    }
+        }))
     private var mSerialQueue: InnerDownloadSerialQueue =
         InnerDownloadSerialQueue(mListenerWrapper)
     private var mWifiRequired: Boolean = false
@@ -154,12 +150,30 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     /**
      * 更新下载状态
      */
-    protected open fun updateState(task: T?, status: Long) {
-        val taskModel = requireNotNull(task)
-        val selectById = getCacheService().selectById(taskModel.id())
-            ?: taskModel
-        selectById.downloadStatus = status
-        getCacheService().insertOrUpdate(selectById)
+    protected open fun updateDownload(task: T?, info: DownloadInfo) {
+        when (info.status) {
+            DownloadStatus.CONNECT -> {
+                if ((info.totalLength ?: 0) > 0L) {
+                    val taskModel = requireNotNull(task)
+                    val selectById = getCacheService().selectById(taskModel.id())
+                        ?: taskModel
+                    selectById.downloadTotalLength = info.totalLength!!
+                    getCacheService().insertOrUpdate(listOf(selectById))
+                }
+            }
+
+            DownloadStatus.COMPLETED -> {
+                val taskModel = requireNotNull(task)
+                val selectById = getCacheService().selectById(taskModel.id())
+                    ?: taskModel
+                selectById.downloadStatus = info.status.value
+                getCacheService().insertOrUpdate(listOf(selectById))
+            }
+
+            else -> {
+
+            }
+        }
     }
 
     override fun resumeTasks() {

@@ -10,20 +10,23 @@ import com.xxf.log.logD
 /**
  * 包装分发1对多
  */
-open class DownloaderListenerWrapper : DownloadListener {
+open class DownloaderListenerWrapper(private val listeners: MutableList<DownloadListener> = mutableListOf<DownloadListener>()) :
+    DownloadListener {
     companion object {
         private const val TAG = "DownloaderListenerWrapper"
     }
 
-    private val listeners = mutableListOf<DownloadListener>()
-
     fun addListener(listener: DownloadListener): Boolean {
-        listeners.remove(listener)
-        return listeners.add(listener)
+        synchronized(listeners) {
+            listeners.remove(listener)
+            return listeners.add(listener)
+        }
     }
 
     fun removeListener(listener: DownloadListener): Boolean {
-        return listeners.remove(listener)
+        synchronized(listeners) {
+            return listeners.remove(listener)
+        }
     }
 
     override fun taskStart(p0: DownloadTask) {
@@ -39,14 +42,22 @@ open class DownloaderListenerWrapper : DownloadListener {
         }
     }
 
-    override fun connectTrialEnd(p0: DownloadTask, p1: Int, p2: MutableMap<String, MutableList<String>>) {
+    override fun connectTrialEnd(
+        p0: DownloadTask,
+        p1: Int,
+        p2: MutableMap<String, MutableList<String>>
+    ) {
         logD(TAG) { "=====>connectTrialEnd:" + p0.url }
         listeners.forEach {
             it.connectTrialEnd(p0, p1, p2)
         }
     }
 
-    override fun downloadFromBeginning(p0: DownloadTask, p1: BreakpointInfo, p2: ResumeFailedCause) {
+    override fun downloadFromBeginning(
+        p0: DownloadTask,
+        p1: BreakpointInfo,
+        p2: ResumeFailedCause
+    ) {
         logD(TAG) { "=====>downloadFromBeginning:" + p0.url + "" }
         listeners.forEach {
             it.downloadFromBeginning(p0, p1, p2)
@@ -60,14 +71,23 @@ open class DownloaderListenerWrapper : DownloadListener {
         }
     }
 
-    override fun connectStart(p0: DownloadTask, p1: Int, p2: MutableMap<String, MutableList<String>>) {
+    override fun connectStart(
+        p0: DownloadTask,
+        p1: Int,
+        p2: MutableMap<String, MutableList<String>>
+    ) {
         logD(TAG) { "=====>connectStart:" + p0.url }
         listeners.forEach {
             it.connectStart(p0, p1, p2)
         }
     }
 
-    override fun connectEnd(p0: DownloadTask, p1: Int, p2: Int, p3: MutableMap<String, MutableList<String>>) {
+    override fun connectEnd(
+        p0: DownloadTask,
+        p1: Int,
+        p2: Int,
+        p3: MutableMap<String, MutableList<String>>
+    ) {
         logD(TAG) { "=====>connectEnd:" + p0.url }
         listeners.forEach {
             it.connectEnd(p0, p1, p2, p3)
