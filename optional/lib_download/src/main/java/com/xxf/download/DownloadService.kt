@@ -79,7 +79,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     private val mListenerWrapper =
         DownloaderListenerWrapper(mutableListOf(object : DownloadUpdateListener<T>() {
             override fun updateDownload(task: T?, info: DownloadInfo) {
-                updateDownload(task, info)
+                this@DownloadService.updateDownload(task, info)
             }
         }))
     private var mSerialQueue: InnerDownloadSerialQueue =
