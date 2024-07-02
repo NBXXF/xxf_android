@@ -134,7 +134,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
      * 转换任务到内部的task
      */
     @JvmOverloads
-    protected fun onConvertTask(task: T): DownloadTask {
+    protected open fun onConvertTask(task: T): DownloadTask {
         return DownloadTask.Builder(
             task.getDownloadUrl(),
             File(task.getDownloadPath())
@@ -154,7 +154,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     /**
      * 更新下载状态
      */
-    protected fun updateState(task: T?, status: Long) {
+    protected open fun updateState(task: T?, status: Long) {
         val taskModel = requireNotNull(task)
         val selectById = getCacheService().selectById(taskModel.id())
             ?: taskModel
