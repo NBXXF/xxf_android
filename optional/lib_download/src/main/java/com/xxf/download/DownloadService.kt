@@ -13,6 +13,7 @@ import com.liulishuo.okdownload.StatusUtil
 import com.liulishuo.okdownload.core.cause.EndCause
 import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.xxf.download.component.DownloadStatus
+import com.xxf.log.logD
 import java.io.File
 import java.util.Date
 
@@ -81,11 +82,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
         @Suppress("UNCHECKED_CAST")
         override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
             if (cause == EndCause.COMPLETED) {
-                (task.taskModel as? T)?.let {
-                    val selectById = getCacheService().selectById(it.id()) ?: it
-                    selectById.downloadStatus = DownloadStatus.COMPLETED.value;
-                    getCacheService().insertOrUpdate(selectById)
-                }
+                updateState(task.taskModel as T, DownloadStatus.COMPLETED.value)
             }
             super.taskEnd(task, cause, realCause)
         }
@@ -152,6 +149,17 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
             .apply {
                 this.taskModel = task
             }
+    }
+
+    /**
+     * 更新下载状态
+     */
+    protected fun updateState(task: T?, status: Long) {
+        val taskModel = requireNotNull(task)
+        val selectById = getCacheService().selectById(taskModel.id())
+            ?: taskModel
+        selectById.downloadStatus = status
+        getCacheService().insertOrUpdate(selectById)
     }
 
     override fun resumeTasks() {
