@@ -41,11 +41,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
     private val mDownloadListener: DownloadUpdateListener<T> =
         object : DownloadUpdateListener<T>() {
             override fun updateDownload(task: T?, info: DownloadInfo) {
-                task?.let { it ->
-                    updateDownload(it) {
-                        notifyItemChanged(it, info)
-                    }
-                }
+                this@DownloadItemAdapter.updateDownload(task, info)
             }
         }
 
@@ -76,6 +72,14 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
         payloads: MutableList<Any>,
         downloadInfo: DownloadInfo
     )
+
+    protected open fun updateDownload(task: T?, info: DownloadInfo) {
+        task?.let { it ->
+            updateDownload(it) {
+                notifyItemChanged(it, info)
+            }
+        }
+    }
 
     protected open fun updateDownload(task: T, block: (index: Int) -> Unit) {
         val indexOfFirst = currentList.indexOfFirst {
