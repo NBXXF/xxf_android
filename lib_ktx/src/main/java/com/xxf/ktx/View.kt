@@ -18,7 +18,7 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-private var View.lastClickTime: Long? by viewTags(R.id.tag_last_click_time)
+internal var View.lastClickTime: Long? by viewTags(R.id.tag_last_click_time)
 var debouncingClickIntervals = 500
 
 @Deprecated(
@@ -292,5 +292,17 @@ fun <T : View> T.invisibleIf(block: T.() -> Boolean): T {
 
 fun <T : View> T.goneIf(block: T.() -> Boolean): T {
     this.isGone = block()
+    return this
+}
+
+fun <T : View> T.enabledWithAlpha(alpha: Float = 1.0f): T {
+    this.isEnabled = true
+    this.alpha = alpha
+    return this
+}
+
+fun <T : View> T.disableWithAlpha(alpha: Float = 0.3f): T {
+    this.isEnabled = false
+    this.alpha = alpha
     return this
 }
