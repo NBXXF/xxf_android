@@ -56,6 +56,10 @@ interface IDownloadService<T : IDownloadEntity> : ICacheTaskDownloadService<T> {
      */
     fun resumeTasks()
 
+    /**
+     * 恢复指定任务
+     */
+    fun resumeTask(tasks: List<T>)
 
     /**
      * 暂停全部任务
@@ -63,8 +67,14 @@ interface IDownloadService<T : IDownloadEntity> : ICacheTaskDownloadService<T> {
     fun pauseTasks()
 
     /**
+     * 暂停指定任务
+     */
+    fun pauseTask(tasks: List<T>)
+
+    /**
      * 移除任务
      */
     fun removeTask(tasks: List<T>)
+
 
 }

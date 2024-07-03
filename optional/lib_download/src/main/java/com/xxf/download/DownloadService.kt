@@ -169,6 +169,14 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
                 getCacheService().insertOrUpdate(listOf(selectById))
             }
 
+            DownloadStatus.ERROR -> {
+                val taskModel = requireNotNull(task)
+                val selectById = getCacheService().selectById(taskModel.id())
+                    ?: taskModel
+                selectById.downloadStatus = info.status.value
+                getCacheService().insertOrUpdate(listOf(selectById))
+            }
+
             else -> {
 
             }
@@ -188,9 +196,22 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
         mSerialQueue.resume()
     }
 
+    override fun resumeTask(tasks: List<T>) {
+        tasks.forEach {
+            if (!mSerialQueue.contains(it)) {
+                mSerialQueue.enqueue(onConvertTask(it))
+            }
+        }
+        mSerialQueue.resume()
+    }
+
 
     override fun pauseTasks() {
         mSerialQueue.pause()
+    }
+
+    override fun pauseTask(tasks: List<T>) {
+        mSerialQueue.remove(tasks)
     }
 
     override fun removeTask(tasks: List<T>) {
