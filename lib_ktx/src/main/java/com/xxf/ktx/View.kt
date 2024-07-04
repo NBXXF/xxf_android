@@ -312,7 +312,7 @@ fun <T : View> T.disableWithAlpha(alpha: Float = 0.3f): T {
  */
 var <T : View> T.isEnabledWithAlpha: Boolean
     get() {
-        return this.isEnabledWithAlpha
+        return this.isEnabled
     }
     set(value) {
         if (value) {
