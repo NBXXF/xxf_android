@@ -1,11 +1,10 @@
 package com.xxf.media.album.repo
 
-import android.Manifest
 import android.provider.MediaStore
 import androidx.core.content.ContentResolverCompat
 import androidx.fragment.app.FragmentActivity
 import com.xxf.media.album.internal.entity.Item
-import com.xxf.permission.requestPermissionForResult
+import com.xxf.permission.impl.requestFileReadPermissionForResult
 import com.xxf.permission.transformer.PermissionCheckForResultMapFunction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -50,7 +49,7 @@ object AlbumService {
      * 获取相册所有图片和视频
      */
     fun getAlbum(context: FragmentActivity): Observable<List<Item>> {
-        return context.requestPermissionForResult(Manifest.permission.READ_EXTERNAL_STORAGE)
+        return context.requestFileReadPermissionForResult()
             .map(PermissionCheckForResultMapFunction(context))
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {
@@ -87,7 +86,7 @@ object AlbumService {
      * 自动请求权限
      */
     fun getImages(context: FragmentActivity): Observable<List<Item>> {
-        return context.requestPermissionForResult(Manifest.permission.READ_EXTERNAL_STORAGE)
+        return context.requestFileReadPermissionForResult()
             .map(PermissionCheckForResultMapFunction(context))
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {
@@ -125,7 +124,7 @@ object AlbumService {
      * 自动请求权限
      */
     fun getVideos(context: FragmentActivity): Observable<List<Item>> {
-        return context.requestPermissionForResult(Manifest.permission.READ_EXTERNAL_STORAGE)
+        return context.requestFileReadPermissionForResult()
             .map(PermissionCheckForResultMapFunction(context))
             .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {
@@ -157,4 +156,5 @@ object AlbumService {
                     .subscribeOn(Schedulers.io());
             }
     }
+
 }
