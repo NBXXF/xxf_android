@@ -306,3 +306,18 @@ fun <T : View> T.disableWithAlpha(alpha: Float = 0.3f): T {
     this.alpha = alpha
     return this
 }
+
+/**
+ * 处理是否可用状态(用alpha的方式来处理)
+ */
+var <T : View> T.isEnabledWithAlpha: Boolean
+    get() {
+        return this.isEnabledWithAlpha
+    }
+    set(value) {
+        if (value) {
+            enabledWithAlpha()
+        } else {
+            disableWithAlpha()
+        }
+    }
