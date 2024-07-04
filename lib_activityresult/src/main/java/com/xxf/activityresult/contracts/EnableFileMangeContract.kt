@@ -30,7 +30,7 @@ open class EnableFileMangeContract : SettingEnableContract() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
     }
 
-    @RequiresPermission(Manifest.permission.BLUETOOTH)
+    @RequiresPermission(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
     override fun isEnabled(context: Context?): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Environment.isExternalStorageManager()
