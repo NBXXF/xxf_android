@@ -20,7 +20,7 @@ inline fun <reified T : LifecycleOwner> T.requestFileReadPermissionForResult(): 
     val enableFileMangeContract = EnableFileMangeContract()
     return if (enableFileMangeContract.isSupported(findActivity())) {
         if (enableFileMangeContract.isEnabled(this.findActivity())) {
-            return Observable.just(mapOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE to true))
+            Observable.just(mapOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE to true))
         } else {
             startActivityForResult(EnableFileMangeContract())
                 .map {
@@ -41,7 +41,7 @@ inline fun <reified T : LifecycleOwner> T.requestFileWritePermissionForResult():
     val enableFileMangeContract = EnableFileMangeContract()
     return if (enableFileMangeContract.isSupported(findActivity())) {
         if (enableFileMangeContract.isEnabled(this.findActivity())) {
-            return Observable.just(mapOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE to true))
+            Observable.just(mapOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE to true))
         } else {
             startActivityForResult(EnableFileMangeContract())
                 .map {
