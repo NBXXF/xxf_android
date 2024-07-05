@@ -1,9 +1,11 @@
 package com.xxf.activityresult.contracts
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
@@ -20,12 +22,29 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
  *               <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
  *               <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
  *               <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+ *               <uses-permission  android:name="android.permission.QUERY_ALL_PACKAGES"
+ *                                 tools:ignore="QueryAllPackagesPermission" />
  * @date createTime：2020/9/5
  */
 open class EnableFileMangeContract : SettingEnableContract() {
+    @SuppressLint("QueryPermissionsNeeded")
     override fun createIntent(context: Context, input: Unit): Intent {
-        super.createIntent(context, input)
-        return Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+        //特定app
+        return if (isSupported(context)) {
+            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                data = Uri.fromParts("package", context.packageName, null)
+            }.run {
+                if (runCatching { this.resolveActivity(context.packageManager) }
+                        .getOrNull() == null) {
+                    //非特定app
+                    Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                } else {
+                    this
+                }
+            }
+        } else {
+            super.createIntent(context, input)
+        }
     }
 
     override fun isSupported(context: Context?): Boolean {
