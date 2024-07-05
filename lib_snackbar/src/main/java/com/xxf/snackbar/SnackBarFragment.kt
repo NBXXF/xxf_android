@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.CallSuper
@@ -38,6 +39,10 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
     override fun onStart() {
         super.onStart()
         if (showsDialog) {
+            dialog?.setOnKeyListener { dialog, keyCode, event ->
+                // 返回键被释放，不消费该事件，允许事件继续传递
+                !(keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP)
+            }
             dialog?.window?.setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT
@@ -71,12 +76,12 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
         if (this.isAdded) {
             return -1
         }
-        return  super.show(transaction, tag);
+        return super.show(transaction, tag);
     }
 
 
     override fun show(manager: FragmentManager, tag: String?) {
-        FragmentUtils.removeFragment(manager,tag);
+        FragmentUtils.removeFragment(manager, tag);
         try {
             manager.executePendingTransactions()
         } catch (throwable: Throwable) {
@@ -88,7 +93,7 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
     }
 
     override fun showNow(manager: FragmentManager, tag: String?) {
-        FragmentUtils.removeFragment(manager,tag)
+        FragmentUtils.removeFragment(manager, tag)
         try {
             manager.executePendingTransactions()
         } catch (throwable: Throwable) {
