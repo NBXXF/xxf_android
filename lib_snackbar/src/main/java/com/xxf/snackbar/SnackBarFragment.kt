@@ -41,7 +41,13 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
         if (showsDialog) {
             dialog?.setOnKeyListener { dialog, keyCode, event ->
                 // 返回键被释放，不消费该事件，允许事件继续传递
-                !(keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP)
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_DOWN) {
+                    //传递出去
+                    requireActivity().onKeyDown(keyCode, event)
+                    true
+                } else {
+                    false
+                }
             }
             dialog?.window?.setLayout(
                 WindowManager.LayoutParams.MATCH_PARENT,
