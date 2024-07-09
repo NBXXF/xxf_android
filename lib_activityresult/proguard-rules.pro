@@ -140,6 +140,41 @@
     public protected <methods>;
 }
 
-# 保留android下的所有
+#kotlin 相关
+-dontwarn kotlin.**
+-keep class kotlin.** { *; }
+-keep interface kotlin.** { *; }
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+-keepclasseswithmembers @kotlin.Metadata class * { *; }
+-keepclassmembers class **.WhenMappings {
+    <fields>;
+}
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
+}
+
+-keep class kotlinx.** { *; }
+-keep interface kotlinx.** { *; }
+-dontwarn kotlinx.**
+-dontnote kotlinx.serialization.SerializationKt
+
+-keep class org.jetbrains.** { *; }
+-keep interface org.jetbrains.** { *; }
+-dontwarn org.jetbrains.**
+
+## 不混淆kotlin拓展
+-keep public class * {
+    public static ** $extensions(*);
+}
+## 不混淆kotlin拓展,如果是指定的包
+#-keep public class kotlin.jvm.internal.DefaultConstructorMarker{
+#   public static ** $extensions;
+#}
+
+
+# 保留rxjava3
 -dontwarn io.reactivex.rxjava3.**
 -keep class io.reactivex.rxjava3.** {*;}
+
