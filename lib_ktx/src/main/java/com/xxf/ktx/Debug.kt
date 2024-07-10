@@ -50,7 +50,7 @@ inline fun runMeasureNanoTime(block: () -> Unit): Long {
  * 等价于kt自带 measureTime,measureNanoTime
  * 只不过刨除了cpu睡眠时间
  * @param block
- * @return 耗时 单位纳秒
+ * @return 耗时 单位毫秒
  */
 inline fun runMeasureTimeMillis(block: () -> Unit): Long {
     val start = SystemClock.elapsedRealtime()
