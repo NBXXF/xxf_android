@@ -55,6 +55,7 @@ include ':optional:blockcanary:blockcanary-android-no-op'
 include ':optional:blockcanary:blockcanary-sample'
 include ':optional:lib_flycoTabLayout'
 include ':optional:lib_flycoTabLayout:FlycoTabLayoutDemo'
+include ':optional:lib_profileinstaller'
 
 
 include ':lib_effect:layout_anim_demo'

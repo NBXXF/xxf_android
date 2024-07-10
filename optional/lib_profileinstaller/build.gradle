@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+def des = rootProject.ext.dependencies
+android {
+    compileSdk project.TARGET_SDK_VERSION.toInteger()
+
+
+    defaultConfig {
+        minSdkVersion project.MIN_SDK_VERSION.toInteger()
+        targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    /**
+     * baseline.prof 需要写入到系统特定的目录下，才能够引导 AOT 编译
+     *  我们需要用到另一个 Jetpack Library：ProfileInstaller。从它的名字，我们就能看出，
+     *  它的功能就是：将 APK 当中的 baseline.prof 写入到系统目录下。
+     */
+    implementation libs.profileinstaller
+}
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = project.name
+    descContent = project.name
+}
+
+apply from: '../../publish_maven.gradle'
