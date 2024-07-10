@@ -30,7 +30,7 @@ dependencies {
      *  我们需要用到另一个 Jetpack Library：ProfileInstaller。从它的名字，我们就能看出，
      *  它的功能就是：将 APK 当中的 baseline.prof 写入到系统目录下。
      */
-    implementation libs.profileinstaller
+    api libs.profileinstaller
 }
 ext {
     publishVersion = rootProject.xxfVersion
