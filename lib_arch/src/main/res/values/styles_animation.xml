@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- activity左右切换动画-->
-    <style name="xxf_activity_animation_navigation_horizontal" parent="@android:style/Animation.Activity">
+    <style name="Theme.activity.xxf_animation_navigation_horizontal" parent="@android:style/Animation.Activity">
         <!--
         当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation
         当我们从 A1 启动 A2 时，A1 从屏幕上消失，这个动画叫做 android:activityOpenExitAnimation
@@ -17,7 +17,7 @@
         </item>
     </style>
     <!-- activity alpha切换动画-->
-    <style name="xxf_activity_animation_navigation_alpha" parent="@android:style/Animation.Activity">
+    <style name="Theme.activity.xxf_animation_navigation_alpha" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/navigation_alpha_open_enter
         </item>
         <item name="android:activityOpenExitAnimation">@anim/navigation_alpha_open_exit</item>

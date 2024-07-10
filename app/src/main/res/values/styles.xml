@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowAnimationStyle">@style/xxf_activity_animation_navigation_horizontal</item>
+        <item name="android:windowAnimationStyle">@style/Theme.activity_xxf_animation_navigation_horizontal</item>
         <!-- bottom sheet 统一样式-->
         <item name="bottomSheetStyle">@style/AppStandardBottomSheet</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog.cflow</item>
