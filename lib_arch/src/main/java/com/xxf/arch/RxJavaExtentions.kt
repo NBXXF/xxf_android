@@ -134,8 +134,8 @@ inline fun <reified T : Any> Maybe<T>.bindProgressHud(
  * @param toastFlag 对应toast的类型
  */
 inline fun <reified T : Any> Observable<T>.bindErrorNotice(
+    toastFlag: Int = Gravity.CENTER,
     filter: Predicate<Throwable> = ErrorNoFilter,
-    toastFlag: Int = Gravity.CENTER
 ): @NonNull Observable<T> {
     val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag, filter)
     return this.compose(uiErrorTransformer);
@@ -147,8 +147,8 @@ inline fun <reified T : Any> Observable<T>.bindErrorNotice(
  * @param toastFlag  对应toast的类型
  */
 inline fun <reified T : Any> Flowable<T>.bindErrorNotice(
-    filter: Predicate<Throwable> = ErrorNoFilter,
-    toastFlag: Int = Gravity.CENTER
+    toastFlag: Int = Gravity.CENTER,
+    filter: Predicate<Throwable> = ErrorNoFilter
 ): @NonNull Flowable<T> {
     val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag, filter)
     return this.compose(uiErrorTransformer);
@@ -160,8 +160,8 @@ inline fun <reified T : Any> Flowable<T>.bindErrorNotice(
  * @param toastFlag 对应toast的类型
  */
 inline fun <reified T : Any> Maybe<T>.bindErrorNotice(
-    filter: Predicate<Throwable> = ErrorNoFilter,
-    toastFlag: Int = Gravity.CENTER
+    toastFlag: Int = Gravity.CENTER,
+    filter: Predicate<Throwable> = ErrorNoFilter
 ): @NonNull Maybe<T> {
     val uiErrorTransformer = UIErrorTransformer<T>(XXF.getErrorHandler(), toastFlag, filter)
     return this.compose(uiErrorTransformer);
