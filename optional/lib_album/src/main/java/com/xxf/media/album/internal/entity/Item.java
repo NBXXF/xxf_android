@@ -51,9 +51,17 @@ public class Item implements Parcelable {
     public final long size;
     public final long duration; // only for video, in ms
     public final String name;
+    public final long createDate;
+    public final long updateDate;
     public boolean itemSelected = false;
 
-    private Item(long id, String mimeType, long size, long duration, String name) {
+    private Item(long id,
+                 String mimeType,
+                 long size,
+                 long duration,
+                 String name,
+                 long createDate,
+                 long updateDate) {
         this.id = id;
         this.mimeType = mimeType;
         Uri contentUri;
@@ -69,6 +77,8 @@ public class Item implements Parcelable {
         this.size = size;
         this.duration = duration;
         this.name = name;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
     }
 
     private Item(Parcel source) {
@@ -78,6 +88,8 @@ public class Item implements Parcelable {
         size = source.readLong();
         duration = source.readLong();
         name = source.readString();
+        createDate = source.readLong();
+        updateDate = source.readLong();
     }
 
     @SuppressLint("Range")
@@ -86,7 +98,9 @@ public class Item implements Parcelable {
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
                 cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
                 cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DURATION)),
-                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)));
+                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)),
+                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DATE_ADDED)),
+                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED)));
     }
 
     @Override
@@ -102,6 +116,8 @@ public class Item implements Parcelable {
         dest.writeLong(size);
         dest.writeLong(duration);
         dest.writeString(name);
+        dest.writeLong(createDate);
+        dest.writeLong(updateDate);
     }
 
     public Uri getContentUri() {
@@ -138,7 +154,9 @@ public class Item implements Parcelable {
                 || (uri == null && other.uri == null))
                 && size == other.size
                 && duration == other.duration
-                && (name != null && name.equals(other.name));
+                && (name != null && name.equals(other.name))
+                && createDate == other.createDate
+                && updateDate == other.updateDate;
     }
 
     @Override
@@ -154,6 +172,8 @@ public class Item implements Parcelable {
         if (name != null) {
             result = 31 * result + name.hashCode();
         }
+        result = 31 * result + Long.valueOf(createDate).hashCode();
+        result = 31 * result + Long.valueOf(updateDate).hashCode();
         return result;
     }
 
@@ -171,6 +191,8 @@ public class Item implements Parcelable {
                 ", size=" + size +
                 ", duration=" + duration +
                 ", name=" + name +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
                 ", itemSelected=" + itemSelected +
                 '}';
     }
