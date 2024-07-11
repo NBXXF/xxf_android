@@ -99,8 +99,18 @@ public class Item implements Parcelable {
                 cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
                 cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DURATION)),
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DATE_ADDED)),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED)));
+                getLong(cursor, MediaStore.MediaColumns.DATE_ADDED),
+                getLong(cursor, MediaStore.MediaColumns.DATE_MODIFIED));
+    }
+
+    @SuppressLint("Range")
+    private static long getLong(Cursor cursor, String columnName) {
+        try {
+            return cursor.getLong(cursor.getColumnIndex(columnName));
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        return 0L;
     }
 
     @Override
