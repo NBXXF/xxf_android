@@ -63,16 +63,22 @@ open class XXFPopupWindow : PopupWindow {
      * 范围从1.0(全黑)到0.0(全亮)。
      */
     open var dimAmount = 0.3F
+
+    /**
+     * 要应用于整个窗口的 alpha 值。alpha 为 1.0 表示完全不透明，0.0 表示完全透明
+     */
+    open var alpha = 0.7F
     private var originDimAmount = -1.0f
+    private var originAlpha = -1.0f
     override fun showAsDropDown(anchor: View?, xoff: Int, yoff: Int, gravity: Int) {
         recordDimAmount()
-        handleDimAmount(this.dimAmount)
+        handleDimAmount(this.dimAmount, this.alpha)
         super.showAsDropDown(anchor, xoff, yoff, gravity)
     }
 
     override fun showAtLocation(parent: View?, gravity: Int, x: Int, y: Int) {
         recordDimAmount()
-        handleDimAmount(this.dimAmount)
+        handleDimAmount(this.dimAmount, this.alpha)
         super.showAtLocation(parent, gravity, x, y)
     }
 
@@ -80,20 +86,24 @@ open class XXFPopupWindow : PopupWindow {
         val findActivity = context.findActivity()!!
         val lp: WindowManager.LayoutParams = findActivity.window.attributes
         originDimAmount = lp.dimAmount
+        originAlpha = lp.alpha
     }
 
-    private fun handleDimAmount(dimAmount: Float) {
+    private fun handleDimAmount(dimAmount: Float, alpha: Float) {
+        val findActivity = context.findActivity()!!
+        val lp: WindowManager.LayoutParams = findActivity.window.attributes
         if (dimAmount in 0.0f..1.0f) {
-            val findActivity = context.findActivity()!!
-            val lp: WindowManager.LayoutParams = findActivity.window.attributes
             lp.dimAmount = dimAmount
-            findActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            findActivity.window.setAttributes(lp)
         }
+        if (alpha in 0.0f..1.0f) {
+            lp.alpha = alpha
+        }
+        findActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        findActivity.window.setAttributes(lp)
     }
 
     private fun resetDimAmount() {
-        handleDimAmount(originDimAmount)
+        handleDimAmount(originDimAmount, originAlpha)
     }
 
     override fun setContentView(contentView: View?) {
