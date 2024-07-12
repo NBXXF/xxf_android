@@ -28,15 +28,19 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     }
 
     override fun taskStart(p0: DownloadTask) {
-        listeners.forEach {
-            it.taskStart(p0)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.taskStart(p0)
+            }
         }
     }
 
     override fun connectTrialStart(p0: DownloadTask, p1: MutableMap<String, MutableList<String>>) {
         logD(TAG) { "=====>connectTrialStart:" + p0.url }
-        listeners.forEach {
-            it.connectTrialStart(p0, p1)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.connectTrialStart(p0, p1)
+            }
         }
     }
 
@@ -46,8 +50,10 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         p2: MutableMap<String, MutableList<String>>
     ) {
         logD(TAG) { "=====>connectTrialEnd:" + p0.url }
-        listeners.forEach {
-            it.connectTrialEnd(p0, p1, p2)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.connectTrialEnd(p0, p1, p2)
+            }
         }
     }
 
@@ -57,15 +63,19 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         p2: ResumeFailedCause
     ) {
         logD(TAG) { "=====>downloadFromBeginning:" + p0.url + "" }
-        listeners.forEach {
-            it.downloadFromBeginning(p0, p1, p2)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.downloadFromBeginning(p0, p1, p2)
+            }
         }
     }
 
     override fun downloadFromBreakpoint(p0: DownloadTask, p1: BreakpointInfo) {
         logD(TAG) { "=====>downloadFromBreakpoint:" + p0.url }
-        listeners.forEach {
-            it.downloadFromBreakpoint(p0, p1)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.downloadFromBreakpoint(p0, p1)
+            }
         }
     }
 
@@ -75,8 +85,10 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         p2: MutableMap<String, MutableList<String>>
     ) {
         logD(TAG) { "=====>connectStart:" + p0.url }
-        listeners.forEach {
-            it.connectStart(p0, p1, p2)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.connectStart(p0, p1, p2)
+            }
         }
     }
 
@@ -87,15 +99,19 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         p3: MutableMap<String, MutableList<String>>
     ) {
         logD(TAG) { "=====>connectEnd:" + p0.url }
-        listeners.forEach {
-            it.connectEnd(p0, p1, p2, p3)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.connectEnd(p0, p1, p2, p3)
+            }
         }
     }
 
     override fun fetchStart(p0: DownloadTask, p1: Int, p2: Long) {
         logD(TAG) { "=====>fetchStart:" + p0.url + " localPth:" + p0.file?.absolutePath }
-        listeners.forEach {
-            it.fetchStart(p0, p1, p2)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.fetchStart(p0, p1, p2)
+            }
         }
     }
 
@@ -104,22 +120,28 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         var downloaded: Long = p0.info?.totalOffset ?: 0;
         val progress = (downloaded.toFloat() / total.toFloat());
         logD(TAG) { "=====>fetchProgress:" + progress + "  " + p0.url + "  b:" + p1 + "  i:" + p2 };
-        listeners.forEach {
-            it.fetchProgress(p0, p1, p2)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.fetchProgress(p0, p1, p2)
+            }
         }
     }
 
     override fun fetchEnd(p0: DownloadTask, p1: Int, p2: Long) {
         logD(TAG) { "=====>fetchEnd:" + p0.url }
-        listeners.forEach {
-            it.fetchEnd(p0, p1, p2)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.fetchEnd(p0, p1, p2)
+            }
         }
     }
 
     override fun taskEnd(p0: DownloadTask, p1: EndCause, p2: Exception?) {
         logD(TAG) { "=====>taskEnd:" + p0.url }
-        listeners.forEach {
-            it.taskEnd(p0, p1, p2)
+        synchronized(listeners) {
+            listeners.forEach {
+                it.taskEnd(p0, p1, p2)
+            }
         }
     }
 }
