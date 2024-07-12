@@ -15,31 +15,49 @@ import com.xxf.ktx.findActivity
  * Description ://
  */
 open class XXFPopupWindow : PopupWindow {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    val context: Context
+
+    constructor(context: Context) : super(context) {
+        this.context = context
+    }
+
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        this.context = context
+    }
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
-    )
+    ) {
+        this.context = context
+    }
 
     constructor(
-        context: Context?,
+        context: Context,
         attrs: AttributeSet?,
         defStyleAttr: Int,
         defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
+    ) : super(context, attrs, defStyleAttr, defStyleRes) {
+        this.context = context
+    }
 
-    constructor() : super()
-    constructor(contentView: View?) : super(contentView)
-    constructor(width: Int, height: Int) : super(width, height)
-    constructor(contentView: View?, width: Int, height: Int) : super(contentView, width, height)
+    constructor(contentView: View) : super(contentView) {
+        this.context = contentView.context
+    }
+
+    constructor(contentView: View, width: Int, height: Int) : super(contentView, width, height) {
+        this.context = contentView.context
+    }
+
     constructor(
-        contentView: View?,
+        contentView: View,
         width: Int,
         height: Int,
         focusable: Boolean
-    ) : super(contentView, width, height, focusable)
+    ) : super(contentView, width, height, focusable) {
+        this.context = contentView.context
+    }
 
     /**
      * 范围从1.0(全黑)到0.0(全亮)。
@@ -59,14 +77,14 @@ open class XXFPopupWindow : PopupWindow {
     }
 
     private fun recordDimAmount() {
-        val findActivity = requireNotNull(contentView).context.findActivity()!!
+        val findActivity = context.findActivity()!!
         val lp: WindowManager.LayoutParams = findActivity.window.attributes
         originDimAmount = lp.dimAmount
     }
 
     private fun handleDimAmount(dimAmount: Float) {
         if (dimAmount in 0.0f..1.0f) {
-            val findActivity = requireNotNull(contentView).context.findActivity()!!
+            val findActivity = context.findActivity()!!
             val lp: WindowManager.LayoutParams = findActivity.window.attributes
             lp.dimAmount = dimAmount
             findActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -74,14 +92,15 @@ open class XXFPopupWindow : PopupWindow {
         }
     }
 
+    private fun resetDimAmount() {
+        handleDimAmount(originDimAmount)
+    }
+
     override fun setContentView(contentView: View?) {
         initConfig()
         super.setContentView(contentView)
     }
 
-    private fun resetDimAmount() {
-        handleDimAmount(originDimAmount)
-    }
 
     private fun initConfig() {
         //可以响应返回键
