@@ -41,7 +41,9 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
     private val mDownloadListener: DownloadUpdateListener<T> =
         object : DownloadUpdateListener<T>() {
             override fun updateDownload(task: T?, info: DownloadInfo) {
-                this@DownloadItemAdapter.updateDownload(task, info)
+                runOnUiThread {
+                    this@DownloadItemAdapter.updateDownload(task, info)
+                }
             }
         }
 
