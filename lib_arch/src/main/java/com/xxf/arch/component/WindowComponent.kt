@@ -55,6 +55,7 @@ interface WindowComponent {
 
     /**
      * @param amount The new dim amount, from 0 for no dim to 1 for full dim.
+     * 范围从1.0(全黑)到0.0(全亮)。
      */
     fun setWindowDimAmount(amount: Float)
 
