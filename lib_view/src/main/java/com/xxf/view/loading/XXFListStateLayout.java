@@ -8,11 +8,11 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ConcatAdapter;
+import androidx.recyclerview.widget.InnerRecyclerViewPool;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xxf.view.recyclerview.XXFRecycledViewPool;
-import com.xxf.view.recyclerview.adapter.XXFRecyclerAdapter;
 import com.xxf.view.recyclerview.adapter.XXFUIAdapterObserver;
 
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import java.util.Map;
  * 业务层 想要控制adapter.registerAdapterDataObserver
  * 请在recyclerView.setAdapter(mAdapter)之后设置,以保证XXFListStateLayout有限处理
  */
-public class XXFListStateLayout extends XXFStateLayout {
+public class XXFListStateLayout extends XXFStateLayout implements InnerRecyclerViewPool.OnAdapterChangedListener {
 
     public XXFListStateLayout(Context context) {
         super(context);
@@ -113,7 +113,7 @@ public class XXFListStateLayout extends XXFStateLayout {
         }
     };
 
-    XXFRecycledViewPool xxfRecycledViewPool;
+    InnerRecyclerViewPool listenRecycledViewPool;
 
     @Override
     protected void onFinishInflate() {
@@ -125,33 +125,17 @@ public class XXFListStateLayout extends XXFStateLayout {
         if (childAt1 instanceof RecyclerView) {
             childRecyclerView = (RecyclerView) childAt1;
             if (childRecyclerView.getRecycledViewPool() == null) {
-                childRecyclerView.setRecycledViewPool(xxfRecycledViewPool = new XXFRecycledViewPool());
+                childRecyclerView.setRecycledViewPool(listenRecycledViewPool = new InnerRecyclerViewPool());
             } else if (childRecyclerView.getRecycledViewPool().getClass() == RecyclerView.RecycledViewPool.class) {
-                childRecyclerView.setRecycledViewPool(xxfRecycledViewPool = new XXFRecycledViewPool());
-            } else if (childRecyclerView.getRecycledViewPool() instanceof XXFRecycledViewPool) {
-                xxfRecycledViewPool = (XXFRecycledViewPool) childRecyclerView.getRecycledViewPool();
+                childRecyclerView.setRecycledViewPool(listenRecycledViewPool = new InnerRecyclerViewPool());
+            } else if (childRecyclerView.getRecycledViewPool() instanceof InnerRecyclerViewPool) {
+                listenRecycledViewPool = (InnerRecyclerViewPool) childRecyclerView.getRecycledViewPool();
             } else {
-                throw new RuntimeException("recycledViewPool must XXFRecycledViewPool");
+                throw new RuntimeException("recycledViewPool must InnerRecyclerViewPool");
             }
             //提前感知设置adapter的时机
-            xxfRecycledViewPool.addClearListener(new XXFRecycledViewPool.OnClearListener() {
-                @Override
-                public void onPrepareClear() {
-                    RecyclerView.Adapter adapter = childRecyclerView.getAdapter();
-                    if (adapter != null) {
-                        //保证第一次添加到队列的前面,移除再添加会丢掉优先级,也避免用户设置不同的adapter问题
-                        if (cacheObservers.get(adapter) == null) {
-                            adapter.registerAdapterDataObserver(recyclerViewDataObserver);
-                            cacheObservers.put(adapter, recyclerViewDataObserver);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFinishClear() {
-
-                }
-            });
+            listenRecycledViewPool.removeAdapterChangedListener(this);
+            listenRecycledViewPool.addAdapterChangedListener(this);
         }
         childAt1.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -171,4 +155,19 @@ public class XXFListStateLayout extends XXFStateLayout {
                 });
     }
 
+    @Override
+    public void onAdapterChanged(@Nullable RecyclerView.Adapter<?> oldAdapter, @Nullable RecyclerView.Adapter<?> newAdapter, boolean compatibleWithPrevious) {
+        if (oldAdapter != null) {
+            try {
+                oldAdapter.unregisterAdapterDataObserver(recyclerViewDataObserver);
+            } catch (Throwable ignored) {
+            }
+        }
+        if (newAdapter != null) {
+            try {
+                oldAdapter.registerAdapterDataObserver(recyclerViewDataObserver);
+            } catch (Throwable ignored) {
+            }
+        }
+    }
 }
