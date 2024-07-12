@@ -94,13 +94,21 @@ public class Item implements Parcelable {
 
     @SuppressLint("Range")
     public static Item valueOf(Cursor cursor) {
+        /**
+         * DATE_ADDED和DATE_MODIFIED被注解为自纪元以来的秒数，而不是毫秒数。
+         * 然而，DATE_TAKEN被注解为自纪元以来的毫秒数。
+         */
+        long createDate = getLong(cursor, MediaStore.MediaColumns.DATE_ADDED) * 1000;
+        if (createDate <= 0) {
+            createDate = getLong(cursor, MediaStore.MediaColumns.DATE_TAKEN);
+        }
         return new Item(getLong(cursor, MediaStore.Files.FileColumns._ID),
                 getString(cursor, MediaStore.MediaColumns.MIME_TYPE),
                 getLong(cursor, MediaStore.MediaColumns.SIZE),
                 getLong(cursor, MediaStore.MediaColumns.DURATION),
                 getString(cursor, MediaStore.MediaColumns.DISPLAY_NAME),
-                getLong(cursor, MediaStore.MediaColumns.DATE_ADDED),
-                getLong(cursor, MediaStore.MediaColumns.DATE_MODIFIED));
+                createDate,
+                getLong(cursor, MediaStore.MediaColumns.DATE_MODIFIED) * 1000);
     }
 
     @SuppressLint("Range")
