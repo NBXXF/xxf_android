@@ -9,7 +9,6 @@ import com.xxf.permission.transformer.PermissionCheckForResultMapFunction
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.*
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
@@ -25,10 +24,13 @@ object AlbumService {
     private val QUERY_URI = MediaStore.Files.getContentUri("external")
     private val PROJECTION = arrayOf(
         MediaStore.Files.FileColumns._ID,
-        MediaStore.MediaColumns.DISPLAY_NAME,
         MediaStore.MediaColumns.MIME_TYPE,
         MediaStore.MediaColumns.SIZE,
-        "duration"
+        MediaStore.MediaColumns.DURATION,
+        MediaStore.MediaColumns.DISPLAY_NAME,
+        MediaStore.MediaColumns.DATE_ADDED,
+        MediaStore.MediaColumns.DATE_TAKEN,
+        MediaStore.MediaColumns.DATE_MODIFIED,
     )
 
     // === params for album ALL && showSingleMediaType: false ===
