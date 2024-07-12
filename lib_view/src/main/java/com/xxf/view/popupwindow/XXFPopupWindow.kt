@@ -45,7 +45,7 @@ open class XXFPopupWindow : PopupWindow {
      * 范围从1.0(全黑)到0.0(全亮)。
      */
     open var dimAmount = 0.3F
-    private var originDimAmount = 1.0f
+    private var originDimAmount = -1.0f
     override fun showAsDropDown(anchor: View?, xoff: Int, yoff: Int, gravity: Int) {
         recordDimAmount()
         handleDimAmount(this.dimAmount)
@@ -65,11 +65,13 @@ open class XXFPopupWindow : PopupWindow {
     }
 
     private fun handleDimAmount(dimAmount: Float) {
-        val findActivity = requireNotNull(contentView).context.findActivity()!!
-        val lp: WindowManager.LayoutParams = findActivity.window.attributes
-        lp.dimAmount = dimAmount
-        findActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        findActivity.window.setAttributes(lp)
+        if (dimAmount in 0.0f..1.0f) {
+            val findActivity = requireNotNull(contentView).context.findActivity()!!
+            val lp: WindowManager.LayoutParams = findActivity.window.attributes
+            lp.dimAmount = dimAmount
+            findActivity.window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            findActivity.window.setAttributes(lp)
+        }
     }
 
     override fun setContentView(contentView: View?) {
