@@ -106,7 +106,10 @@ public class Item implements Parcelable {
     @SuppressLint("Range")
     private static long getLong(Cursor cursor, String columnName) {
         try {
-            return cursor.getLong(cursor.getColumnIndex(columnName));
+            int columnIndex = cursor.getColumnIndex(columnName);
+            if(columnIndex>=0) {
+                return cursor.getLong(columnIndex);
+            }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
