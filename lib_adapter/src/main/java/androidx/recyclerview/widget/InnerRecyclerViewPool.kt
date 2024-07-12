@@ -20,7 +20,7 @@ open class InnerRecyclerViewPool : RecyclerView.RecycledViewPool() {
     }
 
     open fun addAdapterChangedListener(listener: OnAdapterChangedListener) {
-        if (listeners.contains(listener)) {
+        if (!listeners.contains(listener)) {
             listeners.add(listener)
         }
     }
