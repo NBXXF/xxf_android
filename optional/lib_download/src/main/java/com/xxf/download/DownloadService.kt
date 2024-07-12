@@ -9,11 +9,17 @@ import android.os.IBinder
 import com.liulishuo.okdownload.DownloadListener
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.InnerDownloadSerialQueue
+import com.liulishuo.okdownload.core.Util
 import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
+import com.xxf.ktx.isMainThread
 import java.io.File
 import java.util.Date
+import java.util.concurrent.Executor
+import java.util.concurrent.SynchronousQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -24,6 +30,11 @@ import java.util.Date
 abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadService<T> {
 
     companion object {
+        private val SERIAL_EXECUTOR: Executor = ThreadPoolExecutor(
+            0,
+            Int.MAX_VALUE, 30, TimeUnit.SECONDS, SynchronousQueue(),
+            Util.threadFactory("DownloadService DynamicSerial", false)
+        )
         const val ACTION_ADD_TASKS = "xxf.download.action.addTasks"
         const val KEY_TASKS = "tasks"
 
@@ -115,14 +126,17 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
         if (tasks.isEmpty()) {
             return
         }
-        getCacheService().insert(tasks.map {
-            it.createDate = Date()
-            it
-        })
-        tasks.forEach {
-            mSerialQueue.enqueue(onConvertTask(it))
-            mSerialQueue.resume()
+        SERIAL_EXECUTOR.executeIfChildThread {
+            getCacheService().insert(tasks.map {
+                it.createDate = Date()
+                it
+            })
+            tasks.forEach {
+                mSerialQueue.enqueue(onConvertTask(it))
+                mSerialQueue.resume()
+            }
         }
+
     }
 
     /**
@@ -184,43 +198,53 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     }
 
     override fun resumeTasks() {
-        mSerialQueue.shutdown()
-        mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper)
-        getCacheService().selectPage(1, 300) {
-            it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED.value)
-            it.order(IDownloadEntity::createDate, true)
-            it
-        }.list.forEach {
-            mSerialQueue.enqueue(onConvertTask(it))
+        SERIAL_EXECUTOR.executeIfChildThread {
+            mSerialQueue.shutdown()
+            mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper)
+            getCacheService().selectPage(1, 300) {
+                it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED.value)
+                it.order(IDownloadEntity::createDate, true)
+                it
+            }.list.forEach {
+                mSerialQueue.enqueue(onConvertTask(it))
+            }
+            mSerialQueue.resume()
         }
-        mSerialQueue.resume()
     }
 
     override fun resumeTask(tasks: List<T>) {
-        tasks.forEach {
-            if (!mSerialQueue.contains(it)) {
-                mSerialQueue.enqueue(onConvertTask(it))
+        SERIAL_EXECUTOR.executeIfChildThread {
+            tasks.forEach {
+                if (!mSerialQueue.contains(it)) {
+                    mSerialQueue.enqueue(onConvertTask(it))
+                }
             }
+            mSerialQueue.resume()
         }
-        mSerialQueue.resume()
     }
 
 
     override fun pauseTasks() {
-        mSerialQueue.pause()
+        SERIAL_EXECUTOR.executeIfChildThread {
+            mSerialQueue.pause()
+        }
     }
 
     override fun pauseTask(tasks: List<T>) {
-        mSerialQueue.remove(tasks)
+        SERIAL_EXECUTOR.executeIfChildThread {
+            mSerialQueue.remove(tasks)
+        }
     }
 
     override fun removeTask(tasks: List<T>) {
-        mSerialQueue.cancel(tasks.map { task ->
-            onConvertTask(task)
-        })
-        getCacheService().deleteById(tasks.map { it.id() })
-        tasks.forEach {
-            File(it.getDownloadPath()).deleteRecursively()
+        SERIAL_EXECUTOR.executeIfChildThread {
+            mSerialQueue.cancel(tasks.map { task ->
+                onConvertTask(task)
+            })
+            getCacheService().deleteById(tasks.map { it.id() })
+            tasks.forEach {
+                File(it.getDownloadPath()).deleteRecursively()
+            }
         }
     }
 
@@ -274,4 +298,14 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
         }
     }
 
+    /**
+     * 处理线程问题 如果已经是子线程了 就在对应的线程执行
+     */
+    private fun Executor.executeIfChildThread(command: Runnable) {
+        if (isMainThread) {
+            this.execute(command)
+        } else {
+            command.run()
+        }
+    }
 }
