@@ -12,7 +12,7 @@ import com.xxf.ktx.findActivity
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：2018/9/7
- * Description ://
+ * Description ://初步解决返回 背景等问题
  */
 open class XXFPopupWindow : PopupWindow {
     val context: Context
@@ -103,7 +103,7 @@ open class XXFPopupWindow : PopupWindow {
         findActivity.window.setAttributes(lp)
     }
 
-    private fun resetDimAmount() {
+    private fun resetWindowConfig() {
         handleWindowConfig(originDimAmount, originAlpha)
     }
 
@@ -122,7 +122,7 @@ open class XXFPopupWindow : PopupWindow {
     }
 
     override fun dismiss() {
-        resetDimAmount()
+        resetWindowConfig()
         super.dismiss()
     }
 }
