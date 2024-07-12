@@ -165,7 +165,7 @@ public class XXFListStateLayout extends XXFStateLayout implements InnerRecyclerV
         }
         if (newAdapter != null) {
             try {
-                oldAdapter.registerAdapterDataObserver(recyclerViewDataObserver);
+                newAdapter.registerAdapterDataObserver(recyclerViewDataObserver);
             } catch (Throwable ignored) {
             }
         }
