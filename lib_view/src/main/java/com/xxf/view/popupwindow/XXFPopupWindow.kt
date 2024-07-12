@@ -71,25 +71,26 @@ open class XXFPopupWindow : PopupWindow {
     private var originDimAmount = -1.0f
     private var originAlpha = -1.0f
     override fun showAsDropDown(anchor: View?, xoff: Int, yoff: Int, gravity: Int) {
-        recordDimAmount()
-        handleDimAmount(this.dimAmount, this.alpha)
+        recordWindowConfig()
+        handleWindowConfig(this.dimAmount, this.alpha)
         super.showAsDropDown(anchor, xoff, yoff, gravity)
     }
 
     override fun showAtLocation(parent: View?, gravity: Int, x: Int, y: Int) {
-        recordDimAmount()
-        handleDimAmount(this.dimAmount, this.alpha)
+        recordWindowConfig()
+        handleWindowConfig(this.dimAmount, this.alpha)
         super.showAtLocation(parent, gravity, x, y)
     }
 
-    private fun recordDimAmount() {
+    private fun recordWindowConfig() {
         val findActivity = context.findActivity()!!
         val lp: WindowManager.LayoutParams = findActivity.window.attributes
         originDimAmount = lp.dimAmount
         originAlpha = lp.alpha
     }
 
-    private fun handleDimAmount(dimAmount: Float, alpha: Float) {
+    @JvmOverloads
+    protected fun handleWindowConfig(dimAmount: Float, alpha: Float) {
         val findActivity = context.findActivity()!!
         val lp: WindowManager.LayoutParams = findActivity.window.attributes
         if (dimAmount in 0.0f..1.0f) {
@@ -103,7 +104,7 @@ open class XXFPopupWindow : PopupWindow {
     }
 
     private fun resetDimAmount() {
-        handleDimAmount(originDimAmount, originAlpha)
+        handleWindowConfig(originDimAmount, originAlpha)
     }
 
     override fun setContentView(contentView: View?) {
