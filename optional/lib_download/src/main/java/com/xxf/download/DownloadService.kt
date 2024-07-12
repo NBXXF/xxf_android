@@ -133,8 +133,8 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
             })
             tasks.forEach {
                 mSerialQueue.enqueue(onConvertTask(it))
-                mSerialQueue.resume()
             }
+            mSerialQueue.resume()
         }
 
     }
