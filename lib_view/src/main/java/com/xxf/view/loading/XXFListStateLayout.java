@@ -65,6 +65,10 @@ public class XXFListStateLayout extends XXFStateLayout implements InnerRecyclerV
     RecyclerView childRecyclerView;
     AbsListView childAbsListView;
     private Map<Object, Object> cacheObservers = new HashMap<>();
+    /**
+     * 是否禁止默认监听行为
+     */
+    public Boolean enableObserver=true;
     private final RecyclerView.AdapterDataObserver recyclerViewDataObserver = new XXFUIAdapterObserver() {
         @Override
         protected void updateUI() {
@@ -89,6 +93,9 @@ public class XXFListStateLayout extends XXFStateLayout implements InnerRecyclerV
 
 
     protected void handleViewState(RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter) {
+        if(!enableObserver){
+            return;
+        }
         setViewState(adapter.getItemCount() <= 0 ? ViewState.VIEW_STATE_EMPTY : ViewState.VIEW_STATE_CONTENT);
     }
 
@@ -170,4 +177,5 @@ public class XXFListStateLayout extends XXFStateLayout implements InnerRecyclerV
             }
         }
     }
+
 }
