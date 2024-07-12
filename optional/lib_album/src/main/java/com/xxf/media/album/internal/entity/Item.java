@@ -94,20 +94,33 @@ public class Item implements Parcelable {
 
     @SuppressLint("Range")
     public static Item valueOf(Cursor cursor) {
-        return new Item(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns._ID)),
-                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.SIZE)),
-                cursor.getLong(cursor.getColumnIndex(MediaStore.MediaColumns.DURATION)),
-                cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)),
+        return new Item(getLong(cursor, MediaStore.Files.FileColumns._ID),
+                getString(cursor, MediaStore.MediaColumns.MIME_TYPE),
+                getLong(cursor, MediaStore.MediaColumns.SIZE),
+                getLong(cursor, MediaStore.MediaColumns.DURATION),
+                getString(cursor, MediaStore.MediaColumns.DISPLAY_NAME),
                 getLong(cursor, MediaStore.MediaColumns.DATE_ADDED),
                 getLong(cursor, MediaStore.MediaColumns.DATE_MODIFIED));
+    }
+
+    @SuppressLint("Range")
+    private static String getString(Cursor cursor, String columnName) {
+        try {
+            int columnIndex = cursor.getColumnIndex(columnName);
+            if (columnIndex >= 0) {
+                return cursor.getString(columnIndex);
+            }
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        return "";
     }
 
     @SuppressLint("Range")
     private static long getLong(Cursor cursor, String columnName) {
         try {
             int columnIndex = cursor.getColumnIndex(columnName);
-            if(columnIndex>=0) {
+            if (columnIndex >= 0) {
                 return cursor.getLong(columnIndex);
             }
         } catch (Throwable throwable) {
