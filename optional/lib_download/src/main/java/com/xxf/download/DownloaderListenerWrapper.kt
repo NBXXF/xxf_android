@@ -24,7 +24,9 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     }
 
     fun removeListener(listener: DownloadListener): Boolean {
-        return listeners.remove(listener)
+        synchronized(listeners) {
+            return listeners.remove(listener)
+        }
     }
 
     override fun taskStart(p0: DownloadTask) {
