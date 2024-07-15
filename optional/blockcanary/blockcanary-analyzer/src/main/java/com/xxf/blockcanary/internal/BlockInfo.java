@@ -113,7 +113,7 @@ public class BlockInfo {
         try {
             sImei = getIMEI(BlockCanaryInternals.getContext().provideContext());
         } catch (Exception exception) {
-            Log.e(TAG, NEW_INSTANCE_METHOD, exception);
+            exception.printStackTrace();
             sImei = EMPTY_IMEI;
         }
     }
@@ -141,7 +141,7 @@ public class BlockInfo {
                 blockInfo.versionCode = info.versionCode;
                 blockInfo.versionName = info.versionName;
             } catch (Throwable e) {
-                Log.e(TAG, NEW_INSTANCE_METHOD, e);
+                e.printStackTrace();
             }
         }
 
