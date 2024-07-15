@@ -1,0 +1,22 @@
+plugins {
+    id 'java-library'
+}
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation("com.squareup:javapoet:1.11.1")
+}
+
+//ext {
+//    publishVersion = rootProject.xxfVersion
+//    publishGroup = rootProject.xxfGroup
+//    moduleName = project.name
+//    descContent = project.name
+//}
+//
+//apply from: '../../../publish_maven.gradle'

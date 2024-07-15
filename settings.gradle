@@ -57,6 +57,12 @@ include ':optional:lib_flycoTabLayout'
 include ':optional:lib_flycoTabLayout:FlycoTabLayoutDemo'
 include ':optional:lib_profileinstaller'
 
+include ':optional:jbinder:lib_jbinder'
+include ':optional:jbinder:lib_jbinder_compiler'
+include ':optional:jbinder:sample-client'
+include ':optional:jbinder:sample-library'
+include ':optional:jbinder:sample-server'
+
 
 include ':lib_effect:layout_anim_demo'
 include ':lib_effect:ovserscroll_demo'
