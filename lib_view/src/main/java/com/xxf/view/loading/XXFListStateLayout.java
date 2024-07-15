@@ -10,11 +10,13 @@ import android.widget.ListAdapter;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ConcatAdapter;
+import androidx.recyclerview.widget.InnerAdapter;
 import androidx.recyclerview.widget.InnerRecyclerViewPool;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xxf.view.recyclerview.adapter.XXFUIAdapterObserver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,10 +175,25 @@ public class XXFListStateLayout extends XXFStateLayout implements InnerRecyclerV
             } catch (Throwable ignored) {
             }
         }
+
         if (newAdapter != null) {
+            List<RecyclerView.AdapterDataObserver> registeredObservers = new ArrayList<>();
+            if (newAdapter instanceof InnerAdapter) {
+                registeredObservers.addAll(((InnerAdapter<?>) newAdapter).getAdapterDataObservers());
+            }
+            //已经注册的观察者 先去除
+            for (RecyclerView.AdapterDataObserver observer : registeredObservers) {
+                newAdapter.unregisterAdapterDataObserver(observer);
+            }
+            //相当于提高优先级
             try {
                 newAdapter.registerAdapterDataObserver(recyclerViewDataObserver);
             } catch (Throwable ignored) {
+            }
+
+            //将先注册的观察者添加到recyclerViewDataObserver 后面
+            for (RecyclerView.AdapterDataObserver observer : registeredObservers) {
+                newAdapter.registerAdapterDataObserver(observer);
             }
         }
     }
