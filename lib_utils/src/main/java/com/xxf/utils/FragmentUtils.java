@@ -44,7 +44,7 @@ public class FragmentUtils {
         if (fragmentManager != null && fragment != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(fragment);
-            fragmentTransaction.commitAllowingStateLoss();
+            fragmentTransaction.commitNowAllowingStateLoss();
         }
     }
 
@@ -62,7 +62,7 @@ public class FragmentUtils {
         Objects.requireNonNull(fragmentManager, "fragmentManager is null");
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(containerViewId, fragment);
-        transaction.commitAllowingStateLoss();
+        transaction.commitNowAllowingStateLoss();
         return fragment;
     }
 
@@ -80,7 +80,7 @@ public class FragmentUtils {
         Objects.requireNonNull(fragmentManager, "fragmentManager is null");
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(fragment, tag);
-        transaction.commitAllowingStateLoss();
+        transaction.commitNowAllowingStateLoss();
         return fragment;
     }
 
@@ -101,7 +101,7 @@ public class FragmentUtils {
         Objects.requireNonNull(fragment, "fragment is null");
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(containerViewId, fragment, tag);
-        transaction.commitAllowingStateLoss();
+        transaction.commitNowAllowingStateLoss();
         return fragment;
     }
 
@@ -121,7 +121,7 @@ public class FragmentUtils {
         if (fragment.isAdded()) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setMaxLifecycle(fragment, state);
-            transaction.commitAllowingStateLoss();
+            transaction.commitNowAllowingStateLoss();
         }
     }
 
@@ -176,7 +176,7 @@ public class FragmentUtils {
             }
             transaction
                     .add(containerViewId, fragment)
-                    .commitAllowingStateLoss();
+                    .commitNowAllowingStateLoss();
         } else {
             List<Fragment> fragments = fragmentManager.getFragments();
             for (Fragment f : fragments) {
@@ -190,7 +190,7 @@ public class FragmentUtils {
                     }
                 }
             }
-            transaction.commitAllowingStateLoss();
+            transaction.commitNowAllowingStateLoss();
         }
         return fragment;
     }
