@@ -127,10 +127,15 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
             return
         }
         SERIAL_EXECUTOR.executeIfChildThread {
-            getCacheService().insert(tasks.map {
-                it.createDate = Date()
-                it
-            })
+            getCacheService().insert(tasks
+                .filter {
+                    //避免加入非http的地址的数据 导致队列一直闪退
+                    it.getDownloadUrl().startsWith("http")
+                }
+                .map {
+                    it.createDate = Date()
+                    it
+                })
             tasks.forEach {
                 mSerialQueue.enqueue(onConvertTask(it))
             }
