@@ -130,6 +130,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
             getCacheService().insert(tasks
                 .filter {
                     //避免加入非http的地址的数据 导致队列一直闪退
+                    //DownloadOkHttp3Connection.java:48
                     it.getDownloadUrl().startsWith("http")
                 }
                 .map {
