@@ -1517,7 +1517,7 @@ public final class FileUtils {
     public static String generateFileName(String url, String defaultExtension) {
         if (!TextUtils.isEmpty(url)) {
             String fileExtension = getFileExtension(url);
-            if (TextUtils.isEmpty(fileExtension) && fileExtension.length() >= 6) {
+            if (TextUtils.isEmpty(fileExtension) || fileExtension.length() >= 6) {
                 fileExtension = defaultExtension;
             }
             return EncryptUtils.encryptMD5ToString(url) + "." + fileExtension;
