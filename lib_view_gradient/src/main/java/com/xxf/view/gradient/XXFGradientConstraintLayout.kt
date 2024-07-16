@@ -26,7 +26,7 @@ import com.xxf.view.round.XXFRoundConstraintLayout
  * <attr name="radius_top_right" format="float" />
  * <attr name="radius_bottom_right" format="float" />
  * <attr name="radius_bottom_left" format="float" />
- * <attr name="orientation" format="enum">
+ * <attr name="gradient_orientation" format="enum">
  * <enum name="TOP_BOTTOM" value="0" />
  * <enum name="TR_BL" value="1" />
  * <enum name="RIGHT_LEFT" value="2" />
