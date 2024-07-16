@@ -22,10 +22,6 @@ import com.xxf.view.round.XXFRoundConstraintLayout
  * <attr name="start_color" format="color|reference" />
  * <attr name="center_color" format="color|reference" />
  * <attr name="end_color" format="color|reference" />
- * <attr name="radius_top_left" format="float" />
- * <attr name="radius_top_right" format="float" />
- * <attr name="radius_bottom_right" format="float" />
- * <attr name="radius_bottom_left" format="float" />
  * <attr name="gradient_orientation" format="enum">
  * <enum name="TOP_BOTTOM" value="0" />
  * <enum name="TR_BL" value="1" />
