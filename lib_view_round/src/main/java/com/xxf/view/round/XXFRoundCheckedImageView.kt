@@ -29,7 +29,9 @@ class XXFRoundCheckedImageView : AppCompatImageView, Checkable,XXFRoundWidget {
 
     constructor(context: Context?, attrs: AttributeSet?) : super(
         context!!, attrs
-    )
+    ){
+        CornerUtil.clipView(this, attrs)
+    }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context!!, attrs, defStyleAttr

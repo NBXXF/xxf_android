@@ -81,14 +81,7 @@ object CornerUtil {
             val radiusTr = view.context.obtainStyledAttributes(attrs, R.styleable.xxf_radius_style)
             if (radiusTr.hasValue(R.styleable.xxf_radius_style_radius)) {
                 val radius = radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_radius, 0)
-                val dp360 = dip2px(view, 360f)
-                if (radius >= dp360) {
-                    clipViewCircle(view)
-                } else if (radius > 0) {
-                    clipViewRoundRect(view, radius.toFloat())
-                } else {
-                    clearClip(view)
-                }
+                clipViewRadius(view,radius.toFloat())
             } else {
                 val topLeftRadius =
                     radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_topLeftRadius, 0)

@@ -24,7 +24,9 @@ import android.widget.RelativeLayout
 open class XXFRoundRelativeLayout : RelativeLayout, XXFRoundWidget{
 
     constructor(context: Context) : super(context) {}
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs){
+        CornerUtil.clipView(this, attrs)
+    }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
