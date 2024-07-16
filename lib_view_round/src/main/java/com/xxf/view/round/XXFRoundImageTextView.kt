@@ -13,6 +13,17 @@ import androidx.core.widget.TextViewCompat
 
 /**
  * @Description: eg app:radius="4dp"
+<!-- 定义四个角的半径。 -->
+<attr name="radius" format="dimension" />
+<!-- 左上角的半径。 -->
+<attr name="topLeftRadius" format="dimension" />
+<!-- 右上角的半径。 -->
+<attr name="topRightRadius" format="dimension" />
+<!-- 左下角的半径。 -->
+<attr name="bottomLeftRadius" format="dimension" />
+<!-- 右下角的半径。 -->
+<attr name="bottomRightRadius" format="dimension" />
+
  * @Author: XGod
  * @CreateDate: 2018/6/25 15:32
  */
@@ -22,9 +33,7 @@ open class XXFRoundImageTextView : XXFRoundLayout {
     }
 
     constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(attrs)
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
@@ -67,7 +76,7 @@ open class XXFRoundImageTextView : XXFRoundLayout {
                 textView.setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_NONE)
                 val textSize =
                     array.getDimension(R.styleable.xxf_round_image_text_view_android_textSize, 0f)
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize)
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             }
             if (array.hasValue(R.styleable.xxf_round_image_text_view_android_textColor)) {
                 val textColor =
@@ -90,6 +99,7 @@ open class XXFRoundImageTextView : XXFRoundLayout {
             array.recycle()
         }
     }
+
 
     val textView by lazy {
         XXFRoundTextView(context).apply {
@@ -116,10 +126,12 @@ open class XXFRoundImageTextView : XXFRoundLayout {
                 textView.visibility = View.VISIBLE
                 imageView.visibility = View.GONE
             }
+
             Mode.IMAGE -> {
                 textView.visibility = View.GONE
                 imageView.visibility = View.VISIBLE
             }
+
             Mode.ALL -> {
                 textView.visibility = View.VISIBLE
                 imageView.visibility = View.VISIBLE

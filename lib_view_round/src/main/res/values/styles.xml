@@ -1,7 +1,16 @@
 <resources>
-
+    <!-- 等同于DrawableCorners -->
     <declare-styleable name="xxf_radius_style">
+        <!-- 定义四个角的半径。 -->
         <attr name="radius" format="dimension" />
+        <!-- 左上角的半径。 -->
+        <attr name="topLeftRadius" format="dimension" />
+        <!-- 右上角的半径。 -->
+        <attr name="topRightRadius" format="dimension" />
+        <!-- 左下角的半径。 -->
+        <attr name="bottomLeftRadius" format="dimension" />
+        <!-- 右下角的半径。 -->
+        <attr name="bottomRightRadius" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="xxf_round_image_text_view">

@@ -1,7 +1,9 @@
 package com.xxf.view.round
 
-import android.content.Context
 import android.graphics.Outline
+import android.graphics.Path
+import android.graphics.RectF
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewOutlineProvider
@@ -10,8 +12,10 @@ import android.view.ViewOutlineProvider
  * @Description: view裁切工具类
  * @Author: XGod
  * @CreateDate: 2018/6/25 10:50
+ *
  */
 object CornerUtil {
+    @JvmOverloads
     fun clipViewCircle(view: View) {
         view.clipToOutline = true
         view.outlineProvider = object : ViewOutlineProvider() {
@@ -21,11 +25,53 @@ object CornerUtil {
         }
     }
 
-    fun clipViewRoundRect(view: View, radius: Int) {
+    @JvmOverloads
+    fun clipViewRoundRect(view: View, radius: Float) {
         view.clipToOutline = true
         view.outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, view.width, view.height, radius.toFloat())
+                outline.setRoundRect(0, 0, view.width, view.height, radius)
+            }
+        }
+    }
+
+    @JvmOverloads
+    fun clipViewRoundRect(
+        view: View,
+        mTopLeft: Float,
+        mTopRight: Float,
+        mBottomLeft: Float,
+        mBottomRight: Float
+    ) {
+        view.clipToOutline = true
+        view.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                fun calculateBounds(): RectF {
+                    // 没有处理Padding的逻辑
+                    return RectF(0f, 0f, view.width.toFloat(), view.height.toFloat())
+                }
+                //如果是单独的圆角
+                val path = Path()
+                path.addRoundRect(
+                    calculateBounds(),
+                    floatArrayOf(
+                        mTopLeft,
+                        mTopLeft,
+                        mTopRight,
+                        mTopRight,
+                        mBottomRight,
+                        mBottomRight,
+                        mBottomLeft,
+                        mBottomLeft
+                    ),
+                    Path.Direction.CCW
+                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    outline.setPath(path)
+                } else {
+                    //不支持2阶的曲线
+                    outline.setConvexPath(path)
+                }
             }
         }
     }
@@ -33,14 +79,38 @@ object CornerUtil {
     fun clipView(view: View?, attrs: AttributeSet?) {
         if (view != null && attrs != null) {
             val radiusTr = view.context.obtainStyledAttributes(attrs, R.styleable.xxf_radius_style)
-            val radius = radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_radius, 0)
-            val dp360 = dip2px(view, 360f)
-            if (radius >= dp360) {
-                clipViewCircle(view)
-            } else if (radius > 0) {
-                clipViewRoundRect(view, radius)
+            if (radiusTr.hasValue(R.styleable.xxf_radius_style_radius)) {
+                val radius = radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_radius, 0)
+                val dp360 = dip2px(view, 360f)
+                if (radius >= dp360) {
+                    clipViewCircle(view)
+                } else if (radius > 0) {
+                    clipViewRoundRect(view, radius.toFloat())
+                } else {
+                    clearClip(view)
+                }
             } else {
-                clearClip(view)
+                val topLeftRadius =
+                    radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_topLeftRadius, 0)
+                val topRightRadius =
+                    radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_topRightRadius, 0)
+                val bottomLeftRadius =
+                    radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_bottomLeftRadius, 0)
+                val bottomRightRadius = radiusTr.getDimensionPixelSize(
+                    R.styleable.xxf_radius_style_bottomRightRadius,
+                    0
+                )
+                if (topLeftRadius > 0 || topRightRadius > 0 || bottomLeftRadius > 0 || bottomRightRadius > 0) {
+                    clipViewRoundRect(
+                        view,
+                        topLeftRadius.toFloat(),
+                        topRightRadius.toFloat(),
+                        bottomLeftRadius.toFloat(),
+                        bottomRightRadius.toFloat()
+                    )
+                } else {
+                    clearClip(view)
+                }
             }
             radiusTr.recycle()
         }
@@ -59,14 +129,14 @@ object CornerUtil {
         if (radius >= dp360) {
             clipViewCircle(view)
         } else if (radius > 0) {
-            clipViewRoundRect(view, radius.toInt())
+            clipViewRoundRect(view, radius)
         } else {
             clearClip(view)
         }
     }
 
     private fun dip2px(view: View, dpValue: Float): Int {
-        if(view.isInEditMode) return (dpValue * 3).toInt()
+        if (view.isInEditMode) return (dpValue * 3).toInt()
         val scale = view.context.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
     }
