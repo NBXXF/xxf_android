@@ -17,6 +17,8 @@ fun UUID.toMediaDrm(): MediaDrm {
 
 fun UUID.deviceUniqueId(): String? {
     return kotlin.runCatching {
-        toMediaDrm().getPropertyByteArray(MediaDrm.PROPERTY_DEVICE_UNIQUE_ID).toHexString()
+        toMediaDrm().use {
+            it.getPropertyByteArray(MediaDrm.PROPERTY_DEVICE_UNIQUE_ID).toHexString()
+        }
     }.getOrNull()
 }
