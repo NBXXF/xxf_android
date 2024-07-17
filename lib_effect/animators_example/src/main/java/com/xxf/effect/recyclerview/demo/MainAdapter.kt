@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import com.xxf.effect.recyclerview.demo.R
+import com.bumptech.glide.Glide
 
 /**
  * Created by Daichi Furiya / Wasabeef on 2020/08/26.
@@ -22,7 +21,9 @@ class MainAdapter(private val context: Context, private val dataSet: MutableList
   }
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    Picasso.get().load(R.drawable.chip).into(holder.image)
+    Glide.with(holder.image)
+      .load(R.drawable.chip)
+      .into(holder.image)
     holder.text.text = dataSet[position]
   }
 
