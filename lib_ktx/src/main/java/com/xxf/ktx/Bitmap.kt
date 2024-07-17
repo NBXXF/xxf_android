@@ -2,6 +2,8 @@ package com.xxf.ktx
 
 import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 
 /**
@@ -31,4 +33,18 @@ fun Bitmap?.toByteArray(
         }
     }
     return null
+}
+
+/**
+ * 写入文件
+ */
+fun Bitmap.writeToFile(
+    format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
+    quality: Int = 100,
+    file: File
+) {
+    FileOutputStream(file).use {
+        this.compress(format, quality, it);
+        it.flush()
+    }
 }
