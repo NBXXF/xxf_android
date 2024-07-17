@@ -15,10 +15,14 @@ fun UUID.toMediaDrm(): MediaDrm {
     return MediaDrm(this)
 }
 
+/**
+ * https://github.com/gzu-liyujiang/Android_CN_OAID/issues/55
+ * 有bug
+ */
 fun UUID.deviceUniqueId(): String? {
     return kotlin.runCatching {
         toMediaDrm().use {
-            it.getPropertyByteArray(MediaDrm.PROPERTY_DEVICE_UNIQUE_ID).toHexString()
+            it.getPropertyByteArray(MediaDrm.PROPERTY_DEVICE_UNIQUE_ID)
         }
-    }.getOrNull()
+    }.getOrNull()?.toHexString()
 }
