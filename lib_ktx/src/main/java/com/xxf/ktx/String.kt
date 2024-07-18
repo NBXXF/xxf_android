@@ -109,11 +109,21 @@ inline val String.mimeType: String?
         return URLConnection.guessContentTypeFromName(this)
     }
 
+/**
+ * 是否有超文本传输协议
+ */
+inline val String.hasHyperTextTransferProtocol: Boolean
+    get() {
+        return startsWith("http://") || startsWith("https://")
+    }
+
 inline val String.fileExtension: String?
     get() {
         val filePath = this
-        MimeTypeMap.getFileExtensionFromUrl(filePath)?.let {
-            return it
+        if (filePath.hasHyperTextTransferProtocol) {
+            MimeTypeMap.getFileExtensionFromUrl(filePath)?.let {
+                return it
+            }
         }
         MimeTypeMap.getSingleton().getExtensionFromMimeType(filePath)?.let {
             return it
