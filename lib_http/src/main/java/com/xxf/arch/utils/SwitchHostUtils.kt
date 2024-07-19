@@ -28,12 +28,13 @@ import kotlin.system.exitProcess
  */
 object SwitchHostUtils {
     object HostSpServiceDelegate : SharedPreferencesOwner {
+        const val DEFAULT_HOST="https://github.com/"
         /**
          * app的域名
          */
         var host: String by preferencesBinding(
             key = "_app_api_host",
-            default = "https://github.com/"
+            default = DEFAULT_HOST
         )
     }
 
