@@ -11,6 +11,9 @@ android {
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
     }
+    buildFeatures {
+        buildConfig = false
+    }
 }
 dependencies {
     api des.material

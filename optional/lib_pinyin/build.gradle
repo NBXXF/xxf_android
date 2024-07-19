@@ -20,6 +20,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    buildFeatures {
+        buildConfig = false
+    }
 }
 
 dependencies {

@@ -19,6 +19,7 @@ android {
     buildFeatures {
         // for view binding :
         viewBinding true
+        buildConfig = false
     }
 }
 
