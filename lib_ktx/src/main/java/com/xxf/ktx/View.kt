@@ -321,3 +321,21 @@ var <T : View> T.isEnabledUsingAlpha: Boolean
             disableWithAlpha()
         }
     }
+
+/**
+ * 父容器view
+ */
+val View.parentView: ViewGroup? get() = this.parent as? ViewGroup
+
+/**
+ * 从父容器移除
+ */
+fun <T : View> T.removeFromParentView(): Boolean {
+    val pv = this.parentView
+    if (pv != null) {
+        pv.removeView(this)
+        return true
+    } else {
+        return false
+    }
+}
