@@ -7,6 +7,12 @@ org-springframework-boot-spring-boot-starter-test = "2.6.4"
 agp = "7.4.2"
 xxf_android = "5.2.2.2-SNAPSHOT"
 gsy = "v8.4.0-release-jitpack"
+core-ktx = "1.10.1"
+lifecycle-runtime-ktx = "2.6.1"
+activity-compose = "1.8.0"
+compose-bom = "2024.04.01"
+okdownload = "1.0.7"
+exoplayer="1.3.0"
 
 [libraries]
 org-mybatis-spring-boot-mybatis-spring-boot-starter-test = { module = "org.mybatis.spring.boot:mybatis-spring-boot-starter-test", version.ref = "org-mybatis-spring-boot-mybatis-spring-boot-starter-test" }
@@ -44,6 +50,22 @@ espresso = { module = "androidx.test.espresso:espresso-core", version = "3.5.1" 
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version = "1.5.5.Final" }
 drouter-plugin = { module = "io.github.didi:drouter-plugin", version = "1.3.5" }
 drouter-api = { module = "io.github.didi:drouter-api", version = "2.4.5" }
-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version="1.3.1"}
+profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version = "1.3.1" }
+okdownload = { module = "com.liulishuo.okdownload:okdownload", version.ref = "okdownload" }
+okdownload-sqlite = { module = "com.liulishuo.okdownload:sqlite", version.ref = "okdownload" }
+okdownload-okhttp = { module = "com.liulishuo.okdownload:okhttp", version.ref = "okdownload" }
+exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "exoplayer" }
+exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "exoplayer" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

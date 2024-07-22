@@ -2,7 +2,7 @@ package com.xxf.download
 
 import com.nbxxf.kpower.database.entity.BaseTable
 
-interface IDownloadEntity : BaseTable<Long> {
+interface IDownloadEntity : BaseTable<Long>, Cloneable {
     /**
      * 下载状态
      */
@@ -13,10 +13,11 @@ interface IDownloadEntity : BaseTable<Long> {
      */
     var downloadTotalLength: Long
 
+
     /**
      * 下载网络地址
      */
-    fun getDownloadUrl(): String
+    var downloadUrl: String
 
 
     /**
@@ -24,4 +25,8 @@ interface IDownloadEntity : BaseTable<Long> {
      */
     fun getDownloadPath(): String
 
+
+    public override fun clone(): Any {
+        return super.clone()
+    }
 }

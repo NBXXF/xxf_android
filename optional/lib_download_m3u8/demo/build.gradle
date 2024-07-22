@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'io.objectbox' // apply last
+}
+def des = rootProject.ext.dependencies
+android {
+    compileSdk 34
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 34
+        applicationId 'com.xxf.download.demo'
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation project(':optional:lib_download_m3u8')
+    implementation des.json
+    implementation des.http
+    implementation project(':optional:lib_objectbox')
+    implementation project(':lib_utils')
+}

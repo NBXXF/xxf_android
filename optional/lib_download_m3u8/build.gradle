@@ -28,12 +28,9 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation libs.okdownload
-    implementation libs.okdownload.sqlite
-    implementation libs.okdownload.okhttp
-    api project(':lib_log')
-    api project(':lib_adapter')
-    api des.database
+    api project(':optional:lib_download')
+    api libs.exoplayer
+    api libs.exoplayer.hls
 }
 ext {
     publishVersion = rootProject.xxfVersion

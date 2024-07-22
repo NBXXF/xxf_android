@@ -10,14 +10,20 @@ internal class InnerDownloadSerialQueue(
 
     constructor(listener: DownloadListener) : this(listener, arrayListOf())
 
-    fun <T : IDownloadEntity> contains(task: T): Boolean {
+    fun contains(task: IDownloadEntity): Boolean {
         return taskList.indexOfFirst {
-            task.getDownloadUrl() == it.url
+            task.downloadUrl == it.url
+        } >= 0
+    }
+
+    fun contains(task: DownloadTask): Boolean {
+        return taskList.indexOfFirst {
+            task.url == it.url
         } >= 0
     }
 
     fun <T : IDownloadEntity> remove(task: List<T>) {
-        val associateBy = task.associateBy { it.getDownloadUrl() }
+        val associateBy = task.associateBy { it.downloadUrl }
         taskList.removeAll {
             if (associateBy.contains(it.url)) {
                 try {

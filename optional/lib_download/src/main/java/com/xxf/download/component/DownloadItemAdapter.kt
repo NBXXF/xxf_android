@@ -85,7 +85,7 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
 
     protected open fun updateDownload(task: T, block: (index: Int) -> Unit) {
         val indexOfFirst = currentList.indexOfFirst {
-            it.getDownloadUrl() == task.getDownloadUrl()
+            it.downloadUrl == task.downloadUrl
         }
         if (indexOfFirst >= 0) {
             runOnUiThread {

@@ -14,6 +14,7 @@ import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
 import com.xxf.ktx.isMainThread
+import com.xxf.speed.collections.toArrayListOrCast
 import java.io.File
 import java.util.Date
 import java.util.concurrent.Executor
@@ -41,12 +42,12 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
         private fun <T : IDownloadEntity, O : IDownloadService<T>> buildTaskIntent(
             context: Context,
             target: Class<O>,
-            tasks: ArrayList<T>
+            tasks: List<T>
         ): Intent {
             return Intent(context, target)
                 .apply {
                     action = ACTION_ADD_TASKS
-                    putExtra(KEY_TASKS, tasks)
+                    putExtra(KEY_TASKS, tasks.toArrayListOrCast())
                 }
         }
 
@@ -55,7 +56,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
          */
         fun <T : IDownloadEntity, O : IDownloadService<T>> Class<O>.startService(
             context: Context,
-            tasks: ArrayList<T> = arrayListOf()
+            tasks: List<T> = arrayListOf()
         ) {
             context.startService(buildTaskIntent(context, this, tasks))
         }
@@ -131,7 +132,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
                 .filter {
                     //避免加入非http的地址的数据 导致队列一直闪退
                     //DownloadOkHttp3Connection.java:48
-                    it.getDownloadUrl().startsWith("http")
+                    it.downloadUrl.startsWith("http")
                 }
                 .map {
                     it.createDate = Date()
@@ -151,7 +152,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     @JvmOverloads
     protected open fun onConvertTask(task: T): DownloadTask {
         return DownloadTask.Builder(
-            task.getDownloadUrl(),
+            task.downloadUrl,
             File(task.getDownloadPath())
         ).setConnectionCount(1)
             .setHeaderMapFields(mHeaderMapFields)
