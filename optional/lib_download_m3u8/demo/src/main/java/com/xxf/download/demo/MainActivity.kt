@@ -12,6 +12,7 @@ import androidx.media3.exoplayer.hls.playlist.HlsMultivariantPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsPlaylist
 import com.google.gson.GsonBuilder
 import com.xxf.download.DownloadService.Companion.startService
+import com.xxf.download.m3u8.M3U8Utils
 
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,9 +24,10 @@ class MainActivity : Activity() {
         parseM3u8MasterPlayList()
         parseM3u8PlayList()
 
-        M3U8DownloadServiceImpl::class.java.startService(this, listOf(DownloadModel().apply {
-            downloadUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-        }))
+//        M3U8DownloadServiceImpl::class.java.startService(this, listOf(DownloadModel().apply {
+//            downloadUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+//        }))
+        M3U8Utils.test()
     }
 
     @OptIn(UnstableApi::class)
