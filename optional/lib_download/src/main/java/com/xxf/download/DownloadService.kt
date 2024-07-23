@@ -153,7 +153,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     protected open fun onConvertTask(task: T): DownloadTask {
         return DownloadTask.Builder(
             task.downloadUrl,
-            File(task.getDownloadPath())
+            File(task.downloadPath)
         ).setConnectionCount(1)
             .setHeaderMapFields(mHeaderMapFields)
             .setWifiRequired(mWifiRequired)
@@ -250,7 +250,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
             })
             getCacheService().deleteById(tasks.map { it.id() })
             tasks.forEach {
-                File(it.getDownloadPath()).deleteRecursively()
+                File(it.downloadPath).deleteRecursively()
             }
         }
     }

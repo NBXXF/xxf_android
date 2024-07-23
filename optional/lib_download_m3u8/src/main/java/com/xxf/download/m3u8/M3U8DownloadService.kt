@@ -39,7 +39,7 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
             if (!downloadUrl.endsWith(".ts")) {
                 //可能是m3u8
                 val playlist =
-                    M3U8Parser.parse(downloadUrl, taskModel.getDownloadPath())
+                    M3U8Parser.parse(downloadUrl, taskModel.downloadPath)
                 if (playlist is HlsMultivariantPlaylist) {
                     if (playlist.variants.isNotEmpty()) {
                         val baseUri: String = playlist.baseUri
@@ -59,12 +59,12 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                 //ts 下载完成 判断是否都下载完了
                 val playListModel = findPlayListModel(taskModel.hlsMediaPlaylistUrl)
                 val playlist =
-                    M3U8Parser.parse(downloadUrl, playListModel?.getDownloadPath().orEmpty())
+                    M3U8Parser.parse(downloadUrl, playListModel?.downloadPath.orEmpty())
                 if (playlist is HlsMediaPlaylist) {
                     val tsFileList = playlist.segments.map {
                         val baseUri: String = playlist.baseUri
                         val segmentUri = UriUtil.resolve(baseUri, it.url)
-                        File(task.cloneWithUrl(segmentUri, baseUri).getDownloadPath())
+                        File(task.cloneWithUrl(segmentUri, baseUri).downloadPath)
                     }
                     if (tsFileList.all { it.exists() }) {
                         val hlsMediaPlaylistUrl = taskModel.hlsMediaPlaylistUrl
@@ -72,7 +72,7 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                             val findRootModel = findRootModel(hlsMediaPlaylistUrl)
                             if (findRootModel != null) {
                                 val mergePlaylistFile =
-                                    requireNotNull(File(findRootModel.getDownloadPath()).parentFile).resolve(
+                                    requireNotNull(File(findRootModel.downloadPath).parentFile).resolve(
                                         findRootModel.downloadUrl.getMergedPlayListTsName()
                                     )
                                 M3U8Utils.mergeTs(tsFileList, mergePlaylistFile.absolutePath)

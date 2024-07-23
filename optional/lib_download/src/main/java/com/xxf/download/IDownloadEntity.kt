@@ -23,7 +23,7 @@ interface IDownloadEntity : BaseTable<Long>, Cloneable {
     /**
      * 下载本地地址
      */
-    fun getDownloadPath(): String
+    var downloadPath:String
 
 
     public override fun clone(): Any {
