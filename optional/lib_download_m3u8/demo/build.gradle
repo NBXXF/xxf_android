@@ -10,7 +10,7 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 34
-        applicationId 'com.xxf.download.demo'
+        applicationId 'com.xxf.download.m3u8.demo'
         versionCode 1
         versionName "1.0"
 

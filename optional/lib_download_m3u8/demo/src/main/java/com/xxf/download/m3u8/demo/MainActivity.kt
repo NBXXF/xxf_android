@@ -23,7 +23,7 @@ class MainActivity : Activity() {
         parseM3u8PlayList()
 
         M3U8DownloadServiceImpl::class.java.startService(this, listOf(DownloadModel().apply {
-            downloadUrl = "https://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
+            downloadUrl = "https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/hls/xgplayer-demo.m3u8"
         }))
     }
 
