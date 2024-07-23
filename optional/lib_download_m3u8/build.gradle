@@ -32,7 +32,7 @@ dependencies {
     api libs.exoplayer
     api libs.exoplayer.hls
     //转换成mp4
-    implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.4.LTS'
+    compileOnly 'com.arthenica:mobile-ffmpeg-full-gpl:4.4.LTS'
 }
 ext {
     publishVersion = rootProject.xxfVersion

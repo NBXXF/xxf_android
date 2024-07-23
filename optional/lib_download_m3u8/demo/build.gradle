@@ -39,9 +39,11 @@ android {
 }
 
 dependencies {
+    testImplementation libs.kotlin.test
     implementation project(':optional:lib_download_m3u8')
     implementation des.json
     implementation des.http
     implementation project(':optional:lib_objectbox')
     implementation project(':lib_utils')
+    testImplementation libs.testng
 }

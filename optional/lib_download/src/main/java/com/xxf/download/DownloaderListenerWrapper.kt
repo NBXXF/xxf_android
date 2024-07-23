@@ -139,7 +139,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     }
 
     override fun taskEnd(p0: DownloadTask, p1: EndCause, p2: Exception?) {
-        logD(TAG) { "=====>taskEnd:" + p0.url }
+        logD(TAG) { "=====>taskEnd:" + p0.url +"  endCause:$p1  exception:$p2" }
         synchronized(listeners) {
             listeners.forEach {
                 it.taskEnd(p0, p1, p2)

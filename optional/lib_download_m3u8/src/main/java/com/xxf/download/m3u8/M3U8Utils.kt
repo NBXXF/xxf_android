@@ -2,14 +2,10 @@ package com.xxf.download.m3u8
 
 import com.arthenica.mobileffmpeg.FFmpeg
 import com.xxf.ktx.appendBytes
-import com.xxf.ktx.appendFrom
-import com.xxf.ktx.application
 import com.xxf.ktx.mkParentDirs
 import com.xxf.ktx.randomUUIDString32
 import com.xxf.ktx.rename
-import com.xxf.log.logD
 import java.io.File
-import java.io.FilenameFilter
 import java.io.IOException
 
 /**
@@ -45,31 +41,14 @@ object M3U8Utils {
         }
     }
 
-
-    fun test() {
-        try {
-            val tsFile =
-                application.cacheDir.listFiles(FilenameFilter { _, name -> name.endsWith(".ts") })
-                    .toList()
-
-            val dir = application.cacheDir.resolve("temp")
-            dir.mkParentDirs()
-
-            val mergeTs = mergeTs(tsFile, dir.resolve("total.ts").absolutePath)
-
-            val result = M3U8Utils.convertMp4(
-                requireNotNull(mergeTs).absolutePath,
-                dir.resolve("$randomUUIDString32.mp4").absolutePath
-            )
-            logD { "============>result:$result" }
-        } catch (e: Throwable) {
-            e.printStackTrace()
-        }
-    }
-
-    fun convertMp4(m3u8Url: String, outputFilePath: String): Int {
-        // 构建FFmpeg命令
-        val command = arrayOf<String>("-i", m3u8Url, "-c", "copy", outputFilePath)
+    /**
+     * 用到地方需要先引ffmpeg
+     * 本库不会打包ffmpeg
+     *   implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.4.LTS'
+     */
+    @JvmOverloads
+    fun convertMp4(mergeTsFile: String, outputFilePath: String): Int {
+        val command = arrayOf<String>("-i", mergeTsFile, "-c", "copy", outputFilePath)
         return FFmpeg.execute(command)
     }
 }

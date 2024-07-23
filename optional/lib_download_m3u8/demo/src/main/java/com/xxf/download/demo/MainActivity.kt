@@ -24,10 +24,9 @@ class MainActivity : Activity() {
         parseM3u8MasterPlayList()
         parseM3u8PlayList()
 
-//        M3U8DownloadServiceImpl::class.java.startService(this, listOf(DownloadModel().apply {
-//            downloadUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-//        }))
-        M3U8Utils.test()
+        M3U8DownloadServiceImpl::class.java.startService(this, listOf(DownloadModel().apply {
+            downloadUrl = "https://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
+        }))
     }
 
     @OptIn(UnstableApi::class)
@@ -49,7 +48,7 @@ class MainActivity : Activity() {
     private fun parseM3u8PlayList() {
         val playlistParser = DefaultHlsPlaylistParserFactory().createPlaylistParser()
         val uri =
-            Uri.parse("http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8")
+            Uri.parse("https://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8")
         val openRawResource = resources.openRawResource(R.raw.play_list)
         val parse = playlistParser.parse(uri, openRawResource)
         (parse as? HlsMediaPlaylist)?.let {
