@@ -1,7 +1,6 @@
-package com.xxf.download.demo
+package com.xxf.download.m3u8.demo
 
 import com.nbxxf.kpower.database.objectbox.entity.BaseEntity
-import com.xxf.download.IDownloadEntity
 import com.xxf.download.m3u8.model.M3u8DownloadEntity
 import com.xxf.hash.toMurmurHash32
 import com.xxf.ktx.application

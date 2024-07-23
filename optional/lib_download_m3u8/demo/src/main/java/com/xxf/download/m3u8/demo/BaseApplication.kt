@@ -1,14 +1,8 @@
-package com.xxf.download.demo
+package com.xxf.download.m3u8.demo
 
 import android.app.Application
-import android.text.TextUtils
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
 import com.xxf.log.logE
-import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
-import java.util.concurrent.TimeUnit
 
 class BaseApplication: Application() {
     override fun onCreate() {

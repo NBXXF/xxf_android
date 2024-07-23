@@ -1,4 +1,4 @@
-package com.xxf.download.demo
+package com.xxf.download.m3u8.demo
 
 import android.app.Activity
 import android.net.Uri
@@ -9,10 +9,8 @@ import androidx.media3.common.util.UriUtil
 import androidx.media3.exoplayer.hls.playlist.DefaultHlsPlaylistParserFactory
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsMultivariantPlaylist
-import androidx.media3.exoplayer.hls.playlist.HlsPlaylist
 import com.google.gson.GsonBuilder
 import com.xxf.download.DownloadService.Companion.startService
-import com.xxf.download.m3u8.M3U8Utils
 
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {

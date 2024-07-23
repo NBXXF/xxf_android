@@ -1,8 +1,8 @@
-package com.xxf.download.demo
+package com.xxf.download.m3u8.demo
 
 import com.nbxxf.kpower.database.query.BaseQueryBuilder
 import com.nbxxf.kpower.database.service.BaseService
-import com.xxf.download.demo.db.DownloadModelDbService
+import com.xxf.download.m3u8.demo.db.DownloadModelDbService
 import com.xxf.download.m3u8.M3U8DownloadService
 
 class M3U8DownloadServiceImpl : M3U8DownloadService<DownloadModel>() {
