@@ -16,11 +16,12 @@ class DownloadModel : BaseEntity(), M3u8DownloadEntity {
     override var downloadTotalLength: Long = -1
     override var createDate: Date = Date()
     override var updateDate: Date = Date()
-    override fun getDownloadPath(): String {
-        return application.cacheDir.resolve(
-            downloadUrl.toMurmurHash32().toString() + "." + downloadUrl.fileExtension
-        ).absolutePath
-    }
+    override var downloadPath: String = ""
+        get() {
+            return application.cacheDir.resolve(
+                downloadUrl.toMurmurHash32().toString() + "." + downloadUrl.fileExtension
+            ).absolutePath
+        }
 
     override var hlsMediaPlaylistUrl: String? = null
 

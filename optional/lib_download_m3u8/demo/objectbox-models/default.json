@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:879178843456491905",
-      "lastPropertyId": "7:3136053027597464672",
+      "lastPropertyId": "8:2977492833545576787",
       "name": "DownloadModel",
       "properties": [
         {
@@ -42,6 +42,11 @@
         {
           "id": "7:3136053027597464672",
           "name": "hlsMediaPlaylistUrl",
+          "type": 9
+        },
+        {
+          "id": "8:2977492833545576787",
+          "name": "downloadPath",
           "type": 9
         }
       ],
