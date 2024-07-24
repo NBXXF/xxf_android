@@ -1,6 +1,6 @@
 package com.xxf.objectbox.demo.nested
 
-import com.xxf.hash.toMurmurHash
+import com.xxf.hash.toCityHash64
 import io.objectbox.annotation.Convert
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -10,7 +10,7 @@ import io.objectbox.converter.FlexObjectConverter
 class TestPO {
     @Id(assignable = true)
     var id: Long = 0
-        get() = uuid?.toMurmurHash() ?: 0L;
+        get() = uuid?.toCityHash64() ?: 0L;
 
     var uuid: String? = null
 

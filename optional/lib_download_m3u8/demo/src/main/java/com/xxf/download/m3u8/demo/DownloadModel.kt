@@ -2,7 +2,7 @@ package com.xxf.download.m3u8.demo
 
 import com.nbxxf.kpower.database.objectbox.entity.BaseEntity
 import com.xxf.download.m3u8.model.M3u8DownloadEntity
-import com.xxf.hash.toMurmurHash32
+import com.xxf.hash.toCityHash64
 import com.xxf.ktx.application
 import com.xxf.ktx.fileExtension
 import io.objectbox.annotation.Entity
@@ -19,7 +19,7 @@ class DownloadModel : BaseEntity(), M3u8DownloadEntity {
     override var downloadPath: String = ""
         get() {
             return application.cacheDir.resolve(
-                downloadUrl.toMurmurHash32().toString() + "." + downloadUrl.fileExtension
+                downloadUrl.toCityHash64().toString() + "." + downloadUrl.fileExtension
             ).absolutePath
         }
 
@@ -28,6 +28,6 @@ class DownloadModel : BaseEntity(), M3u8DownloadEntity {
     @Id(assignable = true)
     override var id: Long = 0L
         get() {
-            return downloadUrl.toMurmurHash32()
+            return downloadUrl.toCityHash64()
         }
 }

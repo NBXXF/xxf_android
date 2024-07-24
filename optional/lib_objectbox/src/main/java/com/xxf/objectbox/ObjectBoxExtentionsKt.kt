@@ -1,12 +1,7 @@
 package com.xxf.objectbox
 
-import com.xxf.hash.toMurmurHash
+import com.xxf.hash.toCityHash64
 import io.objectbox.Box
-import io.objectbox.Property
-import io.objectbox.annotation.Entity
-import io.objectbox.annotation.Id
-import io.objectbox.annotation.Unique
-import io.objectbox.query.Query
 
 /**
  * @Description: objectBox
@@ -20,7 +15,7 @@ import io.objectbox.query.Query
  * 字符串转成objectBox id
  */
 fun String.toObjectBoxId(): Long {
-    return this.toMurmurHash()
+    return this.toCityHash64()
 }
 
 //合并block定义

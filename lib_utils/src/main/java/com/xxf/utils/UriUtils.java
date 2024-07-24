@@ -433,7 +433,7 @@ public class UriUtils {
      * @return
      */
     private static long generateId(String data) {
-       return HashExtentionKt.toMurmurHash(data);
+       return HashExtentionKt.toCityHash64(data);
     }
 
 

@@ -1,6 +1,6 @@
 package com.xxf.download.model
 
-import com.xxf.hash.toMurmurHash32
+import com.xxf.hash.toCityHash64
 import java.util.Date
 
 /**
@@ -18,6 +18,6 @@ open class SimpleDownloadTask(
     override var updateDate: Date = Date(),
 ) : IDownloadEntity {
     override fun id(): Long {
-        return downloadUrl.toMurmurHash32()
+        return downloadUrl.toCityHash64()
     }
 }

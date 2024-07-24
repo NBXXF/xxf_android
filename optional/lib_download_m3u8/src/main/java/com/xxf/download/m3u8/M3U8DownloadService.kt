@@ -1,14 +1,16 @@
 package com.xxf.download.m3u8
 
 import android.annotation.SuppressLint
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.UriUtil
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsMultivariantPlaylist
 import com.xxf.download.DownloadService
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
+import com.xxf.download.m3u8.model.M3U8SegmentInfo
 import com.xxf.download.m3u8.model.M3u8DownloadEntity
-import com.xxf.hash.toMurmurHash32
+import com.xxf.hash.toCityHash64
 import java.io.File
 
 /**
@@ -25,7 +27,7 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
          * 固定名字不能变
          */
         fun String.getMergedPlayListTsName(): String {
-            return "${this.toMurmurHash32()}_merged_playlist.ts"
+            return "${this.toCityHash64()}_merged_playlist.ts"
         }
     }
 
@@ -48,10 +50,23 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                         addTask(listOf(cloneWithUrl))
                     }
                 } else if (playlist is HlsMediaPlaylist) {
-                    addTask(playlist.segments.map {
-                        val baseUri: String = playlist.baseUri
-                        val segmentUri = UriUtil.resolve(baseUri, it.url)
-                        cloneFromOriginModel(task, segmentUri, baseUri)
+                    addTask(playlist.segments.flatMap {
+                        buildList<T> {
+                            val baseUri: String = playlist.baseUri
+                            if (!it.fullSegmentEncryptionKeyUri.isNullOrBlank()) {
+                                val keyUri = UriUtil.resolve(
+                                    baseUri,
+                                    it.fullSegmentEncryptionKeyUri
+                                )
+                                val keyTask =
+                                    cloneFromOriginModel(task, keyUri, baseUri)
+                                add(keyTask)
+                            }
+                            val segmentUri = UriUtil.resolve(baseUri, it.url)
+                            val tsTask =
+                                cloneFromOriginModel(task, segmentUri, baseUri)
+                            add(tsTask)
+                        }
                     })
                 }
             } else {
@@ -60,12 +75,8 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                 val playlist =
                     M3U8Parser.parse(downloadUrl, playListModel?.downloadPath.orEmpty())
                 if (playlist is HlsMediaPlaylist) {
-                    val tsFileList = playlist.segments.map {
-                        val baseUri: String = playlist.baseUri
-                        val segmentUri = UriUtil.resolve(baseUri, it.url)
-                        File(cloneFromOriginModel(task, segmentUri, baseUri).downloadPath)
-                    }
-                    if (tsFileList.all { it.exists() }) {
+                    val tsFileList = getM3U8SegmentInfo(task, playlist)
+                    if (tsFileList.all { it.tsFile.exists() }) {
                         val hlsMediaPlaylistUrl = taskModel.hlsMediaPlaylistUrl
                         if (!hlsMediaPlaylistUrl.isNullOrBlank()) {
                             val findRootModel = findRootModel(hlsMediaPlaylistUrl)
@@ -74,12 +85,41 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                                     requireNotNull(File(findRootModel.downloadPath).parentFile).resolve(
                                         findRootModel.downloadUrl.getMergedPlayListTsName()
                                     )
-                                M3U8Utils.mergeTs(tsFileList, mergePlaylistFile.absolutePath)
+                                M3U8Utils.mergeTs(tsFileList, mergePlaylistFile)
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 获取片段和秘钥
+     */
+    @UnstableApi
+    private fun getM3U8SegmentInfo(task: T, playlist: HlsMediaPlaylist): List<M3U8SegmentInfo> {
+        return playlist.segments.map {
+            val baseUri: String = playlist.baseUri
+            val segmentUri = UriUtil.resolve(baseUri, it.url)
+            val tsFile =
+                File(cloneFromOriginModel(task, segmentUri, baseUri).downloadPath)
+
+            var keyFile: File? = null
+            if (!it.fullSegmentEncryptionKeyUri.isNullOrBlank()) {
+                val keyUri = UriUtil.resolve(
+                    baseUri,
+                    it.fullSegmentEncryptionKeyUri
+                )
+                keyFile = File(
+                    cloneFromOriginModel(
+                        task,
+                        keyUri,
+                        baseUri
+                    ).downloadPath
+                ).takeIf { it -> it.exists() }
+            }
+            M3U8SegmentInfo(tsFile, keyFile, it.encryptionIV)
         }
     }
 

@@ -1,6 +1,6 @@
 package com.xxf.download.demo
 
-import com.xxf.hash.toMurmurHash32
+import com.xxf.hash.toCityHash64
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -14,7 +14,7 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         val url="https://test-streams.mux.dev/x36xhzz/url_0/url_525/193039199_mp4_h264_aac_hd_7.ts"
-        val toMurmurHash32 = url.toMurmurHash32()
-        assertEquals(404611821, toMurmurHash32)
+        val hash = url.toCityHash64()
+        assertEquals(404611821, hash)
     }
 }

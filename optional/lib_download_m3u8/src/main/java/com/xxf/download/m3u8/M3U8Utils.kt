@@ -1,12 +1,18 @@
 package com.xxf.download.m3u8
 
+import android.util.Base64
 import com.arthenica.mobileffmpeg.FFmpeg
-import com.xxf.ktx.appendBytes
+import com.xxf.download.m3u8.model.M3U8SegmentInfo
 import com.xxf.ktx.mkParentDirs
 import com.xxf.ktx.randomUUIDString32
 import com.xxf.ktx.rename
+import okio.ByteString.Companion.decodeHex
 import java.io.File
 import java.io.IOException
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
+
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
@@ -17,28 +23,74 @@ object M3U8Utils {
     /**
      * 现在主流播放器都可以播放ts了
      * 合并ts文件
-     * @param tsFileList 文件列表
+     * @param segmentList 文件列表
      * @param toFile   合并之后的文件
      */
     @Throws(IOException::class)
-    fun mergeTs(tsFileList: List<File>, toFile: String): File? {
-        val targetFile = File(toFile)
-        if (targetFile.exists()) {
-            return targetFile
+    fun mergeTs(
+        segmentList: List<M3U8SegmentInfo>,
+        toFile: File
+    ): File? {
+        if (toFile.exists()) {
+            return toFile
         }
-        val tempFile = File(targetFile.parentFile, randomUUIDString32)
+        val tempFile = File(toFile.parentFile, randomUUIDString32)
         try {
-            targetFile.mkParentDirs()
-            tempFile.appendBytes(tsFileList)
+            tempFile.mkParentDirs()
+            tempFile.outputStream().use { out ->
+                segmentList.forEach {
+                    out.write(decrypt(it))
+                }
+            }
             //操作完全成功才命名过去
-            tempFile.rename(targetFile.name)
-            return targetFile
+            tempFile.rename(toFile.name)
+            return toFile
         } catch (e: Throwable) {
             e.printStackTrace()
             return null
         } finally {
             tempFile.delete()
         }
+    }
+
+    /**
+     * 解密m3u8
+     */
+    @JvmOverloads
+    fun decrypt(info: M3U8SegmentInfo): ByteArray {
+        return if (info.keyFile?.exists() == true && !info.encryptionIV.isNullOrBlank()) {
+            decrypt(
+                info.tsFile.readBytes(),
+                info.keyFile.readText(),
+                info.encryptionIV.decodeHex().string(Charsets.UTF_8)
+            )
+        } else {
+            info.tsFile.readBytes()
+        }
+    }
+
+    /**
+     * AES 解密操作
+     * @param content
+     * @param key 秘钥
+     * @param encryptionIV 偏移量
+     */
+    private fun decrypt(content: ByteArray, key: String, encryptionIV: String): ByteArray {
+        if (content.isEmpty()) {
+            return content
+        }
+        try {
+            val cipher = Cipher.getInstance("CBC_PKCS5_PADDING")
+            val zeroIv = IvParameterSpec(encryptionIV.toByteArray())
+            val keySpec = SecretKeySpec(key.toByteArray(), "AES")
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, zeroIv)
+            val result =
+                cipher.doFinal(Base64.decode(content, Base64.DEFAULT))
+            return result
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return content
     }
 
     /**

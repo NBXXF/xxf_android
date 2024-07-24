@@ -1,6 +1,6 @@
 package com.xxf.objectbox.demo.model
 
-import com.xxf.hash.toMurmurHash
+import com.xxf.hash.toCityHash64
 import io.objectbox.annotation.ConflictStrategy
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
@@ -15,7 +15,7 @@ import io.objectbox.annotation.Unique
 class Animal {
     @Id(assignable = true)
     var id: Long = 0
-        get() = uuid?.toMurmurHash() ?: 0L;
+        get() = uuid?.toCityHash64() ?: 0L;
 
     @Unique(onConflict = ConflictStrategy.REPLACE)
     var uuid: String? = null
