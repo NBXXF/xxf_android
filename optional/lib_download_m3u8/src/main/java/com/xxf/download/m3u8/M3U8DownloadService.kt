@@ -9,14 +9,13 @@ import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
 import com.xxf.download.m3u8.model.M3u8DownloadEntity
 import com.xxf.hash.toMurmurHash32
-import com.xxf.ktx.runDebugging
-import com.xxf.log.logD
 import java.io.File
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
  * Date: 22/7/24 12:07 PM
  * Description: m3u8下载
+ * m3u8 格式参考 https://blog.csdn.net/weixin_39399492/article/details/131687865
  */
 abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>() {
     companion object {
@@ -45,14 +44,14 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                         val baseUri: String = playlist.baseUri
                         val segmentUri =
                             UriUtil.resolve(baseUri, playlist.variants.first().url.toString())
-                        val cloneWithUrl = task.cloneWithUrl(segmentUri, baseUri)
+                        val cloneWithUrl = cloneFromOriginModel(task, segmentUri, baseUri)
                         addTask(listOf(cloneWithUrl))
                     }
                 } else if (playlist is HlsMediaPlaylist) {
                     addTask(playlist.segments.map {
                         val baseUri: String = playlist.baseUri
                         val segmentUri = UriUtil.resolve(baseUri, it.url)
-                        task.cloneWithUrl(segmentUri, baseUri)
+                        cloneFromOriginModel(task, segmentUri, baseUri)
                     })
                 }
             } else {
@@ -64,7 +63,7 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                     val tsFileList = playlist.segments.map {
                         val baseUri: String = playlist.baseUri
                         val segmentUri = UriUtil.resolve(baseUri, it.url)
-                        File(task.cloneWithUrl(segmentUri, baseUri).downloadPath)
+                        File(cloneFromOriginModel(task, segmentUri, baseUri).downloadPath)
                     }
                     if (tsFileList.all { it.exists() }) {
                         val hlsMediaPlaylistUrl = taskModel.hlsMediaPlaylistUrl
@@ -120,9 +119,18 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
         return rootModel
     }
 
+    /**
+     * @param from
+     * @param downloadUrl 新的下载地址
+     * @param hlsMediaPlaylistUrl 主列表或者播放清单
+     */
     @Suppress("UNCHECKED_CAST")
-    private fun T.cloneWithUrl(downloadUrl: String, hlsMediaPlaylistUrl: String): T {
-        val clone = this.clone() as T
+    protected open fun cloneFromOriginModel(
+        from: T,
+        downloadUrl: String,
+        hlsMediaPlaylistUrl: String
+    ): T {
+        val clone = from.clone() as T
         clone.downloadUrl = downloadUrl
         clone.hlsMediaPlaylistUrl = hlsMediaPlaylistUrl
         return clone

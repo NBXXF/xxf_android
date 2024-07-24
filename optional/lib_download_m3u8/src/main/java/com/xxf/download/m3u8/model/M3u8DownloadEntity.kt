@@ -9,7 +9,7 @@ import com.xxf.download.IDownloadEntity
  */
 interface M3u8DownloadEntity : IDownloadEntity {
     /**
-     * m3u8 清单,业务不用主动塞
+     * m3u8 主列表或者播放清单,业务不用主动塞
      */
     var hlsMediaPlaylistUrl: String?
 }
