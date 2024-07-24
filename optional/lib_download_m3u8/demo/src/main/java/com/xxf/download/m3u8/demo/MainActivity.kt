@@ -24,6 +24,7 @@ class MainActivity : Activity() {
 
         M3U8DownloadServiceImpl::class.java.startService(this, listOf(DownloadModel().apply {
             downloadUrl = "https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/hls/xgplayer-demo.m3u8"
+            downloadUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
         }))
     }
 

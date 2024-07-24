@@ -17,6 +17,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     DownloadListener {
     companion object {
         private const val TAG = "Download"
+        private const val LOG_PREFIX = "=====>task "
     }
 
     fun addListener(listener: DownloadListener): Boolean {
@@ -32,120 +33,125 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         }
     }
 
-    override fun taskStart(p0: DownloadTask) {
+    override fun taskStart(task: DownloadTask) {
         synchronized(listeners) {
             listeners.forEach {
-                it.taskStart(p0)
+                it.taskStart(task)
             }
         }
     }
 
-    override fun connectTrialStart(p0: DownloadTask, p1: MutableMap<String, MutableList<String>>) {
-        logD(TAG) { "=====>connectTrialStart:" + p0.url }
+    override fun connectTrialStart(
+        task: DownloadTask,
+        requestHeaderFields: MutableMap<String, MutableList<String>>
+    ) {
+        logD(TAG) { LOG_PREFIX + "connectTrialStart:" + task.url + "  requestHeaderFields:" + requestHeaderFields }
         synchronized(listeners) {
             listeners.forEach {
-                it.connectTrialStart(p0, p1)
+                it.connectTrialStart(task, requestHeaderFields)
             }
         }
     }
 
     override fun connectTrialEnd(
-        p0: DownloadTask,
-        p1: Int,
-        p2: MutableMap<String, MutableList<String>>
+        task: DownloadTask,
+        responseCode: Int,
+        responseHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        logD(TAG) { "=====>connectTrialEnd:" + p0.url }
+        logD(TAG) { LOG_PREFIX + "connectTrialEnd:" + task.url + "  responseHeaderFields:" + responseHeaderFields }
         synchronized(listeners) {
             listeners.forEach {
-                it.connectTrialEnd(p0, p1, p2)
+                it.connectTrialEnd(task, responseCode, responseHeaderFields)
             }
         }
     }
 
     override fun downloadFromBeginning(
-        p0: DownloadTask,
-        p1: BreakpointInfo,
-        p2: ResumeFailedCause
+        task: DownloadTask,
+        info: BreakpointInfo,
+        cause: ResumeFailedCause
     ) {
-        logD(TAG) { "=====>downloadFromBeginning:" + p0.url + "" }
+        logD(TAG) { LOG_PREFIX + "downloadFromBeginning:" + task.url + " cause:" + cause }
         synchronized(listeners) {
             listeners.forEach {
-                it.downloadFromBeginning(p0, p1, p2)
+                it.downloadFromBeginning(task, info, cause)
             }
         }
     }
 
-    override fun downloadFromBreakpoint(p0: DownloadTask, p1: BreakpointInfo) {
-        logD(TAG) { "=====>downloadFromBreakpoint:" + p0.url }
+    override fun downloadFromBreakpoint(task: DownloadTask, info: BreakpointInfo) {
+        logD(TAG) { LOG_PREFIX + "downloadFromBreakpoint:" + task.url }
         synchronized(listeners) {
             listeners.forEach {
-                it.downloadFromBreakpoint(p0, p1)
+                it.downloadFromBreakpoint(task, info)
             }
         }
     }
 
     override fun connectStart(
-        p0: DownloadTask,
-        p1: Int,
-        p2: MutableMap<String, MutableList<String>>
+        task: DownloadTask,
+        blockIndex: Int,
+        requestHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        logD(TAG) { "=====>connectStart:" + p0.url }
+        logD(TAG) { LOG_PREFIX + "connectStart:" + task.url }
         synchronized(listeners) {
             listeners.forEach {
-                it.connectStart(p0, p1, p2)
+                it.connectStart(task, blockIndex, requestHeaderFields)
             }
         }
     }
 
     override fun connectEnd(
-        p0: DownloadTask,
-        p1: Int,
-        p2: Int,
-        p3: MutableMap<String, MutableList<String>>
+        task: DownloadTask,
+        blockIndex: Int,
+        responseCode: Int,
+        responseHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        logD(TAG) { "=====>connectEnd:" + p0.url }
+        logD(TAG) { LOG_PREFIX + "connectEnd:" + task.url + "  responseHeaderFields:" + responseHeaderFields }
         synchronized(listeners) {
             listeners.forEach {
-                it.connectEnd(p0, p1, p2, p3)
+                it.connectEnd(task, blockIndex, responseCode, responseHeaderFields)
             }
         }
     }
 
-    override fun fetchStart(p0: DownloadTask, p1: Int, p2: Long) {
-        logD(TAG) { "=====>fetchStart:" + p0.url + " localPth:" + p0.file?.absolutePath }
+    override fun fetchStart(task: DownloadTask, blockIndex: Int, contentLength: Long) {
+        logD(TAG) { LOG_PREFIX + "fetchStart:" + task.url + " blockIndex:" + blockIndex + " contentLength:" + contentLength }
         synchronized(listeners) {
             listeners.forEach {
-                it.fetchStart(p0, p1, p2)
+                it.fetchStart(task, blockIndex, contentLength)
             }
         }
     }
 
-    override fun fetchProgress(p0: DownloadTask, p1: Int, p2: Long) {
-        var total: Long = p0.info?.totalLength ?: 0;
-        var downloaded: Long = p0.info?.totalOffset ?: 0;
-        val progress = (downloaded.toFloat() / total.toFloat());
-        logD(TAG) { "=====>fetchProgress:" + progress + "  " + p0.url + "  b:" + p1 + "  i:" + p2 };
+    override fun fetchProgress(task: DownloadTask, blockIndex: Int, increaseBytes: Long) {
+        logD(TAG) {
+            val total: Long = task.info?.totalLength ?: 0;
+            val downloaded: Long = task.info?.totalOffset ?: 0;
+            val progress = (downloaded.toFloat() / total.toFloat());
+            LOG_PREFIX + "fetchProgress:" + progress + "  " + task.url + "  blockIndex:" + blockIndex + "  increaseBytes:" + increaseBytes
+        };
         synchronized(listeners) {
             listeners.forEach {
-                it.fetchProgress(p0, p1, p2)
+                it.fetchProgress(task, blockIndex, increaseBytes)
             }
         }
     }
 
-    override fun fetchEnd(p0: DownloadTask, p1: Int, p2: Long) {
-        logD(TAG) { "=====>fetchEnd:" + p0.url }
+    override fun fetchEnd(task: DownloadTask, blockIndex: Int, contentLength: Long) {
+        logD(TAG) { LOG_PREFIX + "fetchEnd:" + task.url }
         synchronized(listeners) {
             listeners.forEach {
-                it.fetchEnd(p0, p1, p2)
+                it.fetchEnd(task, blockIndex, contentLength)
             }
         }
     }
 
-    override fun taskEnd(p0: DownloadTask, p1: EndCause, p2: Exception?) {
-        logD(TAG) { "=====>taskEnd:" + p0.url +"  endCause:$p1  exception:$p2" }
+    override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
+        logD(TAG) { LOG_PREFIX + "taskEnd:" + task.url + "  endCause:$cause  exception:$realCause" }
         synchronized(listeners) {
             listeners.forEach {
-                it.taskEnd(p0, p1, p2)
+                it.taskEnd(task, cause, realCause)
             }
         }
     }
