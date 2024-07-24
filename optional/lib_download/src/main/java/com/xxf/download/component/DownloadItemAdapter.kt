@@ -2,7 +2,7 @@ package com.xxf.download.component
 
 import androidx.annotation.CallSuper
 import androidx.viewbinding.ViewBinding
-import com.xxf.download.DownloadUpdateListener
+import com.xxf.download.listener.DownloadUpdateListener
 import com.xxf.download.IDownloadEntity
 import com.xxf.download.IDownloadService
 import com.xxf.ktx.runOnUiThread
