@@ -11,6 +11,7 @@ import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsMultivariantPlaylist
 import com.google.gson.GsonBuilder
 import com.xxf.download.DownloadService.Companion.startService
+import com.xxf.json.Json
 
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,7 @@ class MainActivity : Activity() {
             }
             println("=======>variants:\n$variants")
         }
-        println("=================>parseM3u8MasterPlayList:$parse")
+        println("=================>parseM3u8MasterPlayList:${Json.toJson(parse)}")
     }
 
     @OptIn(UnstableApi::class)

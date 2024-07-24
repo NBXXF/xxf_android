@@ -43,7 +43,7 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                     M3U8Parser.parse(downloadUrl, taskModel.downloadPath)
                 if (playlist is HlsMultivariantPlaylist) {
                     if (playlist.variants.isNotEmpty()) {
-                        val downloadVariants = getDownloadVariants(playlist.variants)
+                        val downloadVariants = getDownloadPlaylist(playlist.variants)
                         val baseUri: String = playlist.baseUri
                         val segmentUri =
                             UriUtil.resolve(baseUri, downloadVariants.url.toString())
@@ -100,7 +100,7 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
      * 这里默认选中第一个
      */
     @SuppressLint("UnsafeOptInUsageError")
-    protected open fun getDownloadVariants(variants: List<HlsMultivariantPlaylist.Variant>): HlsMultivariantPlaylist.Variant {
+    protected open fun getDownloadPlaylist(variants: List<HlsMultivariantPlaylist.Variant>): HlsMultivariantPlaylist.Variant {
         return variants.first()
     }
 
