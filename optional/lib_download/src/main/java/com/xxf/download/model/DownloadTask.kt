@@ -1,4 +1,4 @@
-package com.xxf.download
+package com.xxf.download.model
 
 import com.liulishuo.okdownload.DownloadTask
 

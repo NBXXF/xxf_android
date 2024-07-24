@@ -14,6 +14,8 @@ import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
 import com.xxf.download.listener.DownloadUpdateListener
+import com.xxf.download.model.IDownloadEntity
+import com.xxf.download.model.taskModel
 import com.xxf.ktx.isMainThread
 import com.xxf.speed.collections.toArrayListOrCast
 import java.io.File

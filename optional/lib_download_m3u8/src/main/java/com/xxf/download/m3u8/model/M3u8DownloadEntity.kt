@@ -1,6 +1,6 @@
 package com.xxf.download.m3u8.model
 
-import com.xxf.download.IDownloadEntity
+import com.xxf.download.model.IDownloadEntity
 
 /**
  * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq

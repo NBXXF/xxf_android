@@ -4,6 +4,7 @@ import com.liulishuo.okdownload.DownloadListener
 import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.nbxxf.kpower.database.query.BaseQueryBuilder
 import com.nbxxf.kpower.database.service.BaseService
+import com.xxf.download.model.IDownloadEntity
 
 /**
  * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq

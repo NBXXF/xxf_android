@@ -1,6 +1,6 @@
 package com.liulishuo.okdownload
 
-import com.xxf.download.IDownloadEntity
+import com.xxf.download.model.IDownloadEntity
 import java.util.ArrayList
 
 internal class InnerDownloadSerialQueue(

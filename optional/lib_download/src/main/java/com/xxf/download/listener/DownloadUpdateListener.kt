@@ -1,6 +1,6 @@
 package com.xxf.download.listener
 
-import com.xxf.download.IDownloadEntity
+import com.xxf.download.model.IDownloadEntity
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
 

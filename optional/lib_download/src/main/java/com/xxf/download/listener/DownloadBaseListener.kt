@@ -4,8 +4,8 @@ import androidx.annotation.CallSuper
 import com.liulishuo.okdownload.DownloadTask
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause
 import com.liulishuo.okdownload.core.listener.DownloadListener3
-import com.xxf.download.IDownloadEntity
-import com.xxf.download.taskModel
+import com.xxf.download.model.IDownloadEntity
+import com.xxf.download.model.taskModel
 
 /**
  * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq
