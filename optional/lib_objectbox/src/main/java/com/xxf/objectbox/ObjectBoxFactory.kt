@@ -1,6 +1,7 @@
 package com.xxf.objectbox
 
 import android.app.Application
+import com.xxf.ktx.mkParentDirs
 import io.objectbox.BoxStore
 import io.objectbox.BoxStoreBuilder
 import io.objectbox.exception.DbException
@@ -19,20 +20,20 @@ internal object ObjectBoxFactory {
      * 创建box
      *
      * @param boxStoreBuilder
-     * @param objectStoreDirectory 路径
+     * @param objectStoreDir 路径
      * @return
      */
     @Synchronized
     fun getBoxStore(
         boxStoreBuilder: BoxStoreBuilder,
-        objectStoreDirectory: File
+        objectStoreDir: File
     ): BoxStore? {
         var boxStore: BoxStore? = null
         try {
-            boxStore = boxStoreMap[objectStoreDirectory.absolutePath]
+            boxStore = boxStoreMap[objectStoreDir.absolutePath]
             if (boxStore == null) {
-                boxStoreMap[objectStoreDirectory.absolutePath] =
-                    buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
+                boxStoreMap[objectStoreDir.absolutePath] =
+                    buildBox(boxStoreBuilder, objectStoreDir).also { boxStore = it }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -41,9 +42,9 @@ internal object ObjectBoxFactory {
                 /**
                  * fix https://github.com/objectbox/objectbox-java/issues/610
                  */
-                BoxStore.deleteAllFiles(objectStoreDirectory)
-                boxStoreMap[objectStoreDirectory.absolutePath] =
-                    buildBox(boxStoreBuilder, objectStoreDirectory).also { boxStore = it }
+                BoxStore.deleteAllFiles(objectStoreDir)
+                boxStoreMap[objectStoreDir.absolutePath] =
+                    buildBox(boxStoreBuilder, objectStoreDir).also { boxStore = it }
             } catch (retryEx: Exception) {
                 retryEx.printStackTrace()
                 println("=============>box init retry fail:$e")
@@ -64,23 +65,27 @@ internal object ObjectBoxFactory {
     fun getBoxStore(
         application: Application,
         boxStoreBuilder: BoxStoreBuilder,
-        dbName: String?
+        dbName: String
     ): BoxStore? {
-        return getBoxStore(boxStoreBuilder, File(application.filesDir, dbName))
+        return getBoxStore(
+            boxStoreBuilder,
+            application.filesDir.resolve(BoxStoreBuilder.DEFAULT_NAME).resolve(dbName)
+        )
     }
 
     /**
      * 构建数据库
      *
-     * @param objectStoreDirectory
+     * @param objectStoreDir
      * @return
      * @throws io.objectbox.exception.DbException
      */
     @Synchronized
     @Throws(DbException::class)
-    private fun buildBox(boxStoreBuilder: BoxStoreBuilder, objectStoreDirectory: File): BoxStore {
+    private fun buildBox(boxStoreBuilder: BoxStoreBuilder, objectStoreDir: File): BoxStore {
+        objectStoreDir.mkParentDirs()
         return boxStoreBuilder
-            .directory(objectStoreDirectory)
+            .directory(objectStoreDir)
             .build()
     }
 }
