@@ -1,8 +1,9 @@
 package com.xxf.download.component
 
-
 /**
- * 下载信息
+ * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq
+ * Date: 1/8/19 12:07 PM
+ * Description: 下载信息
  */
 class DownloadInfo(
     val status: DownloadStatus,

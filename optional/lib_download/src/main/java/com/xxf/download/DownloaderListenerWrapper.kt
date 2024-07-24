@@ -7,13 +7,16 @@ import com.liulishuo.okdownload.core.cause.EndCause
 import com.liulishuo.okdownload.core.cause.ResumeFailedCause
 import com.xxf.log.logD
 
+
 /**
- * 包装分发1对多
+ * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq
+ * Date: 1/8/19 12:07 PM
+ * Description: 包装分发1对多
  */
 open class DownloaderListenerWrapper(private val listeners: MutableList<DownloadListener> = mutableListOf<DownloadListener>()) :
     DownloadListener {
     companion object {
-        private const val TAG = "DownloaderListenerWrapper"
+        private const val TAG = "Download"
     }
 
     fun addListener(listener: DownloadListener): Boolean {

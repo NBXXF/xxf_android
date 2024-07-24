@@ -7,7 +7,7 @@ import com.xxf.download.IDownloadEntity
  * Date: 1/8/19 12:07 PM
  * Description: 下载监听定义
  */
-interface TaskDownloaderListener<T : IDownloadEntity> {
+interface DownloadTaskListener<T : IDownloadEntity> {
     fun started(task: T?)
     fun connected(task: T?, blockCount: Int, currentOffset: Long, totalLength: Long)
     fun progress(task: T?, currentOffset: Long, totalLength: Long)

@@ -3,7 +3,7 @@ package com.xxf.download.m3u8.model
 import com.xxf.download.IDownloadEntity
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080
+ * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq
  * Date: 22/7/24 12:07 PM
  * Description: m3u8下载模型
  */

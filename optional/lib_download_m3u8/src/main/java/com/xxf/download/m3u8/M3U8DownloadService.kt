@@ -12,7 +12,7 @@ import com.xxf.hash.toMurmurHash32
 import java.io.File
 
 /**
- * @Author: XGod  xuanyouwu@163.com  17611639080
+ * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq
  * Date: 22/7/24 12:07 PM
  * Description: m3u8下载
  * m3u8 格式参考 https://blog.csdn.net/weixin_39399492/article/details/131687865

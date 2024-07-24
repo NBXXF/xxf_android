@@ -7,10 +7,10 @@ import com.xxf.download.component.DownloadStatus
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
  * Date: 1/8/19 12:07 PM
- * Description: 下载聚合监听
+ * Description: 下载更新监听
  */
 @Suppress("UNCHECKED_CAST")
-abstract class DownloadUpdateListener<T : IDownloadEntity> : DownloadConvertListener<T>() {
+abstract class DownloadUpdateListener<T : IDownloadEntity> : DownloadBaseListener<T>() {
 
     protected abstract fun updateDownload(task: T?, info: DownloadInfo)
 

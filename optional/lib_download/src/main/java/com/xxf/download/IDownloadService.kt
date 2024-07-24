@@ -5,6 +5,11 @@ import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.nbxxf.kpower.database.query.BaseQueryBuilder
 import com.nbxxf.kpower.database.service.BaseService
 
+/**
+ * @Author: XGod  xuanyouwu@163.com https://github.com/NBXXF  https://blog.csdn.net/axuanqq
+ * Date: 1/8/19 12:07 PM
+ * Description: 下载定义接口
+ */
 interface ICacheTaskDownloadService<T : IDownloadEntity> {
 
     /**

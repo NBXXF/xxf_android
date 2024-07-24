@@ -14,7 +14,7 @@ import java.io.InputStream
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080
  * Date: 22/7/24 12:07 PM
- * Description: m3u8下载
+ * Description: m3u8解析工具
  */
 @SuppressLint("UnsafeOptInUsageError")
 object M3U8Parser {
