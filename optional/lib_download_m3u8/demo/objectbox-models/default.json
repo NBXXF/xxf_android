@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:879178843456491905",
-      "lastPropertyId": "8:2977492833545576787",
+      "lastPropertyId": "9:1276060057136473244",
       "name": "DownloadModel",
       "properties": [
         {
@@ -48,6 +48,11 @@
           "id": "8:2977492833545576787",
           "name": "downloadPath",
           "type": 9
+        },
+        {
+          "id": "9:1276060057136473244",
+          "name": "downloadErrorTimes",
+          "type": 6
         }
       ],
       "relations": []

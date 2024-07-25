@@ -195,9 +195,11 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
 
             DownloadStatus.ERROR -> {
                 val taskModel = requireNotNull(task)
+                taskModel.downloadErrorTimes = 0L
                 val selectById = getCacheService().selectById(taskModel.id())
                     ?: taskModel
                 selectById.downloadStatus = info.status.value
+                selectById.downloadErrorTimes += 1
                 getCacheService().insertOrUpdate(listOf(selectById))
             }
 
@@ -213,6 +215,8 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
             mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper)
             getCacheService().selectPage(1, 300) {
                 it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED.value)
+                //只默认恢复5次之内失败的 避免大量任务堵塞
+                it.lessOrEqual(IDownloadEntity::downloadErrorTimes, 5)
                 it.order(IDownloadEntity::createDate, true)
                 it
             }.list.forEach {

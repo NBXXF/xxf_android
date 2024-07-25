@@ -8,7 +8,7 @@ import io.objectbox.Box
 
 class DownloadModelDao(
     override var box: Box<DownloadModel> = MyObjectBox.builder()
-        .buildSingle("DownloadModel.objectbox", true)
+        .buildSingle("DownloadModel", true)
         .boxFor(DownloadModel::class.java)
 ) : BaseDao<DownloadModel> {
 }

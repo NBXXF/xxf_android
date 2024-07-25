@@ -14,6 +14,7 @@ open class SimpleDownloadTask(
     override var downloadPath: String,
     override var downloadStatus: Long = -1,
     override var downloadTotalLength: Long = -1,
+    override var downloadErrorTimes: Long = 0,
     override var createDate: Date = Date(),
     override var updateDate: Date = Date(),
 ) : IDownloadEntity {

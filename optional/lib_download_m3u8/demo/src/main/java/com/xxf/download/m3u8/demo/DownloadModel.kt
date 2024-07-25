@@ -14,6 +14,7 @@ class DownloadModel : BaseEntity(), M3u8DownloadEntity {
     override var downloadUrl: String = ""
     override var downloadStatus: Long = 0
     override var downloadTotalLength: Long = -1
+    override var downloadErrorTimes: Long = 0
     override var createDate: Date = Date()
     override var updateDate: Date = Date()
     override var downloadPath: String = ""
