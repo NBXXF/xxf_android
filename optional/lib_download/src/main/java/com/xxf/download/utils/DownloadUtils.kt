@@ -53,8 +53,8 @@ object DownloadUtils {
         ).setConnectionCount(1)
             .setHeaderMapFields(task.headers)
             .setAutoCallbackToUIThread(false)
-            .setReadBufferSize(DownloadTask.Builder.DEFAULT_READ_BUFFER_SIZE * 2)
-            .setFlushBufferSize(DownloadTask.Builder.DEFAULT_FLUSH_BUFFER_SIZE * 2)
+//            .setReadBufferSize(DownloadTask.Builder.DEFAULT_READ_BUFFER_SIZE * 2)
+//            .setFlushBufferSize(DownloadTask.Builder.DEFAULT_FLUSH_BUFFER_SIZE * 2)
             .build()
             .apply {
                 this.taskModel = task

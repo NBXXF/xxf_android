@@ -129,7 +129,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
             val total: Long = task.info?.totalLength ?: 0;
             val downloaded: Long = task.info?.totalOffset ?: 0;
             val progress = (downloaded.toFloat() / total.toFloat());
-            LOG_PREFIX + "fetchProgress:" + progress + "  " + task.url + "  blockIndex:" + blockIndex + "  increaseBytes:" + increaseBytes
+            LOG_PREFIX + "fetchProgress:" + task.url + " progress:" + progress + " blockIndex:" + blockIndex + " increaseBytes:" + increaseBytes
         };
         synchronized(listeners) {
             listeners.forEach {
