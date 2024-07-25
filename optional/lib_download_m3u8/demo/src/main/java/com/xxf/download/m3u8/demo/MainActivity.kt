@@ -26,6 +26,7 @@ class MainActivity : Activity() {
         M3U8DownloadServiceImpl::class.java.startService(this, listOf(DownloadModel().apply {
             downloadUrl = "https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/hls/xgplayer-demo.m3u8"
             downloadUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+            //downloadUrl = "http://manifest.prod.boltdns.net/manifest/v1/hls/v4/clear/6057984924001/b3b1fbbd-32f9-4630-8a23-669da51c7e38/6s/master.m3u8?fastly_token=NjZhMWZkNzFfZDE1MjllNjMwNGRhZTBmNjc1YWExZDBhMDYyN2E5YmQyMjM1NTA4MTRhODAyMDdiYTFiNzk3N2JjOTIyOGIyZg%3D%3D"
         }))
     }
 

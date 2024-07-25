@@ -16,8 +16,8 @@ import com.xxf.log.logD
 open class DownloaderListenerWrapper(private val listeners: MutableList<DownloadListener> = mutableListOf<DownloadListener>()) :
     DownloadListener {
     companion object {
-        private const val TAG = "Download"
-        private const val LOG_PREFIX = "=====>task "
+        const val TAG = "Download"
+        const val LOG_PREFIX = "=====>task "
     }
 
     fun addListener(listener: DownloadListener): Boolean {
@@ -45,7 +45,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         task: DownloadTask,
         requestHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        logD(TAG) { LOG_PREFIX + "connectTrialStart:" + task.url + "  requestHeaderFields:" + requestHeaderFields }
+        logD(TAG) { LOG_PREFIX + "connectTrialStart:" + task.logoInfo() + "  requestHeaderFields:" + requestHeaderFields }
         synchronized(listeners) {
             listeners.forEach {
                 it.connectTrialStart(task, requestHeaderFields)
@@ -58,7 +58,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         responseCode: Int,
         responseHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        logD(TAG) { LOG_PREFIX + "connectTrialEnd:" + task.url + "  responseHeaderFields:" + responseHeaderFields }
+        logD(TAG) { LOG_PREFIX + "connectTrialEnd:" + task.logoInfo() + "  responseHeaderFields:" + responseHeaderFields }
         synchronized(listeners) {
             listeners.forEach {
                 it.connectTrialEnd(task, responseCode, responseHeaderFields)
@@ -71,7 +71,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         info: BreakpointInfo,
         cause: ResumeFailedCause
     ) {
-        logD(TAG) { LOG_PREFIX + "downloadFromBeginning:" + task.url + " cause:" + cause }
+        logD(TAG) { LOG_PREFIX + "downloadFromBeginning:" + task.logoInfo() + " cause:" + cause }
         synchronized(listeners) {
             listeners.forEach {
                 it.downloadFromBeginning(task, info, cause)
@@ -80,7 +80,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     }
 
     override fun downloadFromBreakpoint(task: DownloadTask, info: BreakpointInfo) {
-        logD(TAG) { LOG_PREFIX + "downloadFromBreakpoint:" + task.url }
+        logD(TAG) { LOG_PREFIX + "downloadFromBreakpoint:" + task.logoInfo() }
         synchronized(listeners) {
             listeners.forEach {
                 it.downloadFromBreakpoint(task, info)
@@ -93,7 +93,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         blockIndex: Int,
         requestHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        logD(TAG) { LOG_PREFIX + "connectStart:" + task.url }
+        logD(TAG) { LOG_PREFIX + "connectStart:" + task.logoInfo() }
         synchronized(listeners) {
             listeners.forEach {
                 it.connectStart(task, blockIndex, requestHeaderFields)
@@ -107,7 +107,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
         responseCode: Int,
         responseHeaderFields: MutableMap<String, MutableList<String>>
     ) {
-        logD(TAG) { LOG_PREFIX + "connectEnd:" + task.url + "  responseHeaderFields:" + responseHeaderFields }
+        logD(TAG) { LOG_PREFIX + "connectEnd:" + task.logoInfo() + "  responseHeaderFields:" + responseHeaderFields }
         synchronized(listeners) {
             listeners.forEach {
                 it.connectEnd(task, blockIndex, responseCode, responseHeaderFields)
@@ -116,7 +116,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     }
 
     override fun fetchStart(task: DownloadTask, blockIndex: Int, contentLength: Long) {
-        logD(TAG) { LOG_PREFIX + "fetchStart:" + task.url + " blockIndex:" + blockIndex + " contentLength:" + contentLength }
+        logD(TAG) { LOG_PREFIX + "fetchStart:" + task.logoInfo() + " blockIndex:" + blockIndex + " contentLength:" + contentLength }
         synchronized(listeners) {
             listeners.forEach {
                 it.fetchStart(task, blockIndex, contentLength)
@@ -129,7 +129,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
             val total: Long = task.info?.totalLength ?: 0;
             val downloaded: Long = task.info?.totalOffset ?: 0;
             val progress = (downloaded.toFloat() / total.toFloat());
-            LOG_PREFIX + "fetchProgress:" + task.url + " progress:" + progress + " blockIndex:" + blockIndex + " increaseBytes:" + increaseBytes
+            LOG_PREFIX + "fetchProgress:" + task.logoInfo() + " progress:" + progress + " blockIndex:" + blockIndex + " increaseBytes:" + increaseBytes
         };
         synchronized(listeners) {
             listeners.forEach {
@@ -139,7 +139,7 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     }
 
     override fun fetchEnd(task: DownloadTask, blockIndex: Int, contentLength: Long) {
-        logD(TAG) { LOG_PREFIX + "fetchEnd:" + task.url }
+        logD(TAG) { LOG_PREFIX + "fetchEnd:" + task.logoInfo() }
         synchronized(listeners) {
             listeners.forEach {
                 it.fetchEnd(task, blockIndex, contentLength)
@@ -148,11 +148,15 @@ open class DownloaderListenerWrapper(private val listeners: MutableList<Download
     }
 
     override fun taskEnd(task: DownloadTask, cause: EndCause, realCause: Exception?) {
-        logD(TAG) { LOG_PREFIX + "taskEnd:" + task.url + "  endCause:$cause  exception:$realCause" }
+        logD(TAG) { LOG_PREFIX + "taskEnd:" + task.logoInfo() + "  endCause:$cause  exception:$realCause" }
         synchronized(listeners) {
             listeners.forEach {
                 it.taskEnd(task, cause, realCause)
             }
         }
+    }
+
+    private fun DownloadTask.logoInfo(): String {
+        return "(${this.id})${this.url}(${this.uri.lastPathSegment})"
     }
 }

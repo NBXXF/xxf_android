@@ -263,8 +263,8 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
              * 有持久化api 不要回调到主线程
              */
             .setAutoCallbackToUIThread(false)
-//            .setReadBufferSize(DownloadTask.Builder.DEFAULT_READ_BUFFER_SIZE * 2)
-//            .setFlushBufferSize(DownloadTask.Builder.DEFAULT_FLUSH_BUFFER_SIZE * 2)
+            .setReadBufferSize(DownloadTask.Builder.DEFAULT_READ_BUFFER_SIZE * 2)
+            .setFlushBufferSize(DownloadTask.Builder.DEFAULT_FLUSH_BUFFER_SIZE * 2)
             .build()
             .apply {
                 this.taskModel = task

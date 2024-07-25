@@ -6,11 +6,13 @@ import androidx.media3.common.util.UriUtil
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsMultivariantPlaylist
 import com.xxf.download.DownloadService
+import com.xxf.download.DownloaderListenerWrapper
 import com.xxf.download.component.DownloadInfo
 import com.xxf.download.component.DownloadStatus
 import com.xxf.download.m3u8.model.M3U8SegmentInfo
 import com.xxf.download.m3u8.model.M3u8DownloadEntity
 import com.xxf.hash.toCityHash64
+import com.xxf.log.logD
 import java.io.File
 
 /**
@@ -87,6 +89,9 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
                                         findRootModel.downloadUrl.getMergedPlayListTsName()
                                     )
                                 M3U8Utils.mergeTs(tsFileList, mergePlaylistFile)
+                                logD(DownloaderListenerWrapper.TAG) {
+                                    DownloaderListenerWrapper.LOG_PREFIX + " mergeTs:${findRootModel.downloadUrl}(${mergePlaylistFile.name})"
+                                }
                             }
                         }
                     }
