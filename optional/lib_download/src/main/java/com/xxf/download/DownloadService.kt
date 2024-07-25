@@ -141,88 +141,24 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
                     it.createDate = Date()
                     it
                 })
-            tasks.forEach {
-                mSerialQueue.enqueue(onConvertTask(it))
-            }
-            mSerialQueue.resume()
+            resumeTask(tasks)
         }
 
     }
 
-    /**
-     * 转换任务到内部的task
-     */
-    @JvmOverloads
-    protected open fun onConvertTask(task: T): DownloadTask {
-        return DownloadTask.Builder(
-            task.downloadUrl,
-            File(task.downloadPath)
-        ).setConnectionCount(1)
-            .setHeaderMapFields(mHeaderMapFields)
-            .setWifiRequired(mWifiRequired)
-            /**
-             * 有持久化api 不要回调到主线程
-             */
-            .setAutoCallbackToUIThread(false)
-            .build()
-            .apply {
-                this.taskModel = task
-            }
-    }
-
-    /**
-     * 更新下载状态
-     */
-    protected open fun updateDownload(task: T?, info: DownloadInfo) {
-        when (info.status) {
-            DownloadStatus.CONNECT -> {
-                if ((info.totalLength ?: 0) > 0L) {
-                    val taskModel = requireNotNull(task)
-                    val selectById = getCacheService().selectById(taskModel.id())
-                        ?: taskModel
-                    selectById.downloadTotalLength = info.totalLength!!
-                    getCacheService().insertOrUpdate(listOf(selectById))
-                }
-            }
-
-            DownloadStatus.COMPLETED -> {
-                val taskModel = requireNotNull(task)
-                val selectById = getCacheService().selectById(taskModel.id())
-                    ?: taskModel
-                selectById.downloadStatus = info.status.value
-                getCacheService().insertOrUpdate(listOf(selectById))
-            }
-
-            DownloadStatus.ERROR -> {
-                val taskModel = requireNotNull(task)
-                taskModel.downloadErrorTimes = 0L
-                val selectById = getCacheService().selectById(taskModel.id())
-                    ?: taskModel
-                selectById.downloadStatus = info.status.value
-                selectById.downloadErrorTimes += 1
-                getCacheService().insertOrUpdate(listOf(selectById))
-            }
-
-            else -> {
-
-            }
-        }
-    }
 
     override fun resumeTasks() {
         SERIAL_EXECUTOR.executeIfChildThread {
             mSerialQueue.shutdown()
             mSerialQueue = InnerDownloadSerialQueue(mListenerWrapper)
-            getCacheService().selectPage(1, 300) {
+            val unfinished = getCacheService().selectPage(1, 300) {
                 it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED.value)
                 //只默认恢复5次之内失败的 避免大量任务堵塞
                 it.lessOrEqual(IDownloadEntity::downloadErrorTimes, 5L)
                 it.order(IDownloadEntity::createDate, true)
                 it
-            }.list.forEach {
-                mSerialQueue.enqueue(onConvertTask(it))
-            }
-            mSerialQueue.resume()
+            }.list
+            resumeTask(unfinished)
         }
     }
 
@@ -308,6 +244,66 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
                 (intent.extras?.get(KEY_TASKS) as? List<T>)?.let {
                     addTask(it)
                 }
+            }
+        }
+    }
+
+    /**
+     * 转换任务到内部的task
+     */
+    @JvmOverloads
+    protected open fun onConvertTask(task: T): DownloadTask {
+        return DownloadTask.Builder(
+            task.downloadUrl,
+            File(task.downloadPath)
+        ).setConnectionCount(1)
+            .setHeaderMapFields(mHeaderMapFields)
+            .setWifiRequired(mWifiRequired)
+            /**
+             * 有持久化api 不要回调到主线程
+             */
+            .setAutoCallbackToUIThread(false)
+            .build()
+            .apply {
+                this.taskModel = task
+            }
+    }
+
+    /**
+     * 更新下载状态
+     */
+    protected open fun updateDownload(task: T?, info: DownloadInfo) {
+        when (info.status) {
+            DownloadStatus.CONNECT -> {
+                if ((info.totalLength ?: 0) > 0L) {
+                    val taskModel = requireNotNull(task)
+                    val selectById = getCacheService().selectById(taskModel.id())
+                        ?: taskModel
+                    selectById.downloadTotalLength = info.totalLength!!
+                    getCacheService().insertOrUpdate(listOf(selectById))
+                }
+            }
+
+            DownloadStatus.COMPLETED -> {
+                val taskModel = requireNotNull(task)
+                val selectById = getCacheService().selectById(taskModel.id())
+                    ?: taskModel
+                selectById.downloadStatus = info.status.value
+                getCacheService().insertOrUpdate(listOf(selectById))
+            }
+
+            DownloadStatus.ERROR -> {
+                val taskModel = requireNotNull(task)
+                taskModel.downloadErrorTimes = 0L
+                val selectById = getCacheService().selectById(taskModel.id())
+                    ?: taskModel
+                selectById.downloadStatus = info.status.value
+                selectById.downloadErrorTimes += 1
+                getCacheService().insertOrUpdate(listOf(selectById))
+            }
+
+            else -> {
+
             }
         }
     }
