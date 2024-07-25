@@ -9,66 +9,77 @@ import android.os.Environment
 /********************************外部私有文件夹开始***************************************/
 /**
  * 读取/sdcard/Android/data/app包名/cache目录。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalCacheDirPath: String?
     get() = externalCacheDir?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/files目录。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalFilesDirPath: String?
     get() = getExternalFilesDir(null)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Pictures。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalPicturesDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Movies。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalMoviesDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_MOVIES)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Download。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalDownloadsDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Documents。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalDocumentsDirPath: String?
     get() = getFileStreamPath(Environment.DIRECTORY_DOCUMENTS)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Music。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalMusicDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_MUSIC)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Podcasts。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalPodcastsDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_PODCASTS)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Ringtones。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalRingtonesDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_RINGTONES)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Alarms。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalAlarmsDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_ALARMS)?.absolutePath
 
 /**
  * 读取/sdcard/Android/data/app包名/Notifications。没有创建。卸载删除,需要读写权限的
+ * 如果共享存储当前不可用，则可能会返回 null 。
  */
 inline val Context.externalNotificationsDirPath: String?
     get() = getExternalFilesDir(Environment.DIRECTORY_NOTIFICATIONS)?.absolutePath
@@ -80,71 +91,71 @@ inline val Context.externalNotificationsDirPath: String?
  * 可以获取外部存储的根目录/sdcard。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicRootDirPath: String?
+inline val Context.externalPublicRootDirPath: String
     get() = Environment.getExternalStorageDirectory().absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Pictures。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicPicturesDirPath: String?
+inline val Context.externalPublicPicturesDirPath: String
     get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Movies。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicMoviesDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)?.absolutePath
+inline val Context.externalPublicMoviesDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Download。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicDownloadsDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath
+inline val Context.externalPublicDownloadsDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Documents。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicDocumentsDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)?.absolutePath
+inline val Context.externalPublicDocumentsDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Music。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicMusicDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)?.absolutePath
+inline val Context.externalPublicMusicDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Podcasts。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicPodcastsDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS)?.absolutePath
+inline val Context.externalPublicPodcastsDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Ringtones。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicRingtonesDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RINGTONES)?.absolutePath
+inline val Context.externalPublicRingtonesDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_RINGTONES).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Alarms。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicAlarmsDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_ALARMS)?.absolutePath
+inline val Context.externalPublicAlarmsDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_ALARMS).absolutePath
 
 /**
  * 可以获取外部存储的根目录/sdcard/Notifications。可能有下面的结果。这个方法在android10废弃，取代的是Context的getExternalFilesDir(String type)
  * 需要读写权限的
  */
-inline val Context.externalPublicNotificationsDirPath: String?
-    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_NOTIFICATIONS)?.absolutePath
+inline val Context.externalPublicNotificationsDirPath: String
+    get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_NOTIFICATIONS).absolutePath
 /********************************外部公共文件夹结束***************************************/
 
 
