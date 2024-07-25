@@ -157,8 +157,8 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
      */
     private fun findRootModel(hlsMediaPlaylistUrl: String): T? {
         var rootModel: T? = null
-        //最多三层 避免死循环
-        repeat(3) {
+        //避免死循环
+        repeat(10) {
             val url = rootModel?.hlsMediaPlaylistUrl.takeIf {
                 !it.isNullOrBlank()
             } ?: hlsMediaPlaylistUrl
