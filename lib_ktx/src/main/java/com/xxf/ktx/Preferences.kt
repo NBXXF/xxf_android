@@ -37,7 +37,7 @@ interface IPreferencesOwner {
 interface SharedPreferencesOwner : IPreferencesOwner {
     companion object {
         private val mSharedPreferences: SharedPreferences by lazy {
-            application.getSharedPreferences(
+            app.getSharedPreferences(
                 SharedPreferencesOwner::class.java.simpleName,
                 Context.MODE_PRIVATE
             )

@@ -10,11 +10,11 @@ import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import androidx.annotation.MainThread
+import com.xxf.application.application
 import com.xxf.application.topActivity
 import com.xxf.arch.http.XXFHttp
 import com.xxf.arch.http.databinding.XxfLayoutHostInputBinding
 import com.xxf.ktx.SharedPreferencesOwner
-import com.xxf.ktx.application
 import com.xxf.ktx.preferencesBinding
 import com.xxf.ktx.selectLast
 import kotlin.system.exitProcess

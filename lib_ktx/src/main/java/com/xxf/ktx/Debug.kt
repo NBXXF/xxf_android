@@ -1,10 +1,6 @@
 package com.xxf.ktx
 
 import android.os.SystemClock
-import kotlin.system.measureNanoTime
-import kotlin.system.measureTimeMillis
-import kotlin.time.measureTime
-import kotlin.time.measureTimedValue
 
 /**
  * 仅仅debug模式下才会执行
@@ -12,7 +8,7 @@ import kotlin.time.measureTimedValue
  * @return 是否是debug模式,也就是是否执行了
  */
 inline fun runDebugging(block: () -> Unit): Boolean {
-    if (application.isAppDebug) {
+    if (app.isAppDebug) {
         block()
         return true
     }

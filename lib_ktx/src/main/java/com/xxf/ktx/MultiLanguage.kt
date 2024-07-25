@@ -15,10 +15,10 @@ private var appLanguageCache: Locale? = null
 
 val systemLanguage: Locale
     get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        application.resources.configuration.locales[0]
+        app.resources.configuration.locales[0]
     } else {
         @Suppress("DEPRECATION")
-        application.resources.configuration.locale
+        app.resources.configuration.locale
     }
 
 var appLanguage: Locale
@@ -58,8 +58,8 @@ private object LanguageManager {
     private const val KEY_LANGUAGE = "longan_language"
     private const val KEY_COUNTRY = "longan_country"
     private val sharedPreferences: SharedPreferences =
-        application.getSharedPreferences(
-            "${application.packageName}_preferences",
+        app.getSharedPreferences(
+            "${app.packageName}_preferences",
             Context.MODE_PRIVATE
         )
 

@@ -15,25 +15,23 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresPermission
 import androidx.core.content.getSystemService
-import com.xxf.ktx.NO_GETTER
-import com.xxf.ktx.noGetter
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import kotlin.DeprecationLevel.ERROR
 
 @RequiresPermission("android.permission.ACCESS_DOWNLOAD_MANAGER")
-fun download(url: String, block: DownloadRequestBuilder.() -> Unit) =
-  DownloadRequestBuilder(url).apply(block).build()
+fun Context.download(url: String, block: DownloadRequestBuilder.() -> Unit) =
+  DownloadRequestBuilder(this,url).apply(block).build()
 
 inline fun <R> DownloadManager.query(downloadId: Long, block: (Cursor) -> R): R? =
   query(DownloadManager.Query().setFilterById(downloadId))?.use { cursor ->
     if (cursor.moveToFirst()) block(cursor) else null
   }
 
-class DownloadRequestBuilder internal constructor(url: String) {
+class DownloadRequestBuilder internal constructor(val context: Context,url: String) {
   private val request = DownloadManager.Request(Uri.parse(url))
-  private val downloadManager = application.getSystemService<DownloadManager>()
+  private val downloadManager = app.getSystemService<DownloadManager>()
   private var onComplete: ((Uri) -> Unit)? = null
   private var onChange: ((downloadedSize: Int, totalSize: Int, status: Int) -> Unit)? = null
   private var scheduleExecutor: ScheduledExecutorService? = null
@@ -119,7 +117,7 @@ class DownloadRequestBuilder internal constructor(url: String) {
   }
 
   fun destinationInExternalFilesDir(dirType: String, subPath: String) {
-    request.setDestinationInExternalFilesDir(application, dirType, subPath)
+    request.setDestinationInExternalFilesDir(context, dirType, subPath)
   }
 
   fun destinationInExternalPublicDir(dirType: String, subPath: String) {
@@ -139,7 +137,7 @@ class DownloadRequestBuilder internal constructor(url: String) {
     progressObserver = onChange?.let { DownloadProgressObserver() }?.also {
       contentResolver.registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, it)
     }
-    application.registerReceiver(DownloadCompleteReceiver(), IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    app.registerReceiver(DownloadCompleteReceiver(), IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
   }
 
   private inner class DownloadProgressObserver : ContentObserver(null) {
@@ -179,7 +177,7 @@ class DownloadRequestBuilder internal constructor(url: String) {
             onComplete(Uri.parse(uriString))
           }
         }
-        application.unregisterReceiver(this)
+        app.unregisterReceiver(this)
       }
     }
   }

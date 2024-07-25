@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.startup.Initializer
 import com.xxf.application.activitylifecycle.AndroidActivityStackProvider
-import com.xxf.ktx.application
 
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
@@ -21,7 +20,7 @@ class ApplicationInitializer : Initializer<Unit> {
                 applicationContext = app
                 AndroidActivityStackProvider.register(app)
 
-                application=app;
+                com.xxf.ktx.app =app;
                 true
             } else {
                 false

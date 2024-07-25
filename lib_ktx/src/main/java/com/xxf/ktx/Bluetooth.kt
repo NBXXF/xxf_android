@@ -33,12 +33,12 @@ class BluetoothEnabledLiveData @RequiresPermission(BLUETOOTH) constructor(
         addAction("android.bluetooth.BluetoothAdapter.STATE_ON")
       }
     }
-    application.registerReceiver(receiver, intentFilter)
+    app.registerReceiver(receiver, intentFilter)
     value = isBluetoothEnabled
   }
 
   override fun onInactive() {
-    application.unregisterReceiver(receiver)
+    app.unregisterReceiver(receiver)
   }
 
   override fun setValue(value: Boolean?) {

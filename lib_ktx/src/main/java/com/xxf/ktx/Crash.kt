@@ -38,7 +38,7 @@ fun Context.saveCrashLogLocally(dirPath: String = internalCacheDirPath) =
     val now = Instant.now()
     File(dirPath, "crash_${now.format("yyyy-MM-dd")}.txt").printWriter().apply {
       println("Time:          ${now.format("yyyy-MM-dd HH:mm:ss")}")
-      println("App version:   ${application.appVersionName} (${application.appVersionCode})")
+      println("App version:   ${app.appVersionName} (${app.appVersionCode})")
       println("OS version:    Android $sdkVersionName ($sdkVersionCode)")
       println("Manufacturer:  $deviceManufacturer")
       println("Model:         $deviceModel")

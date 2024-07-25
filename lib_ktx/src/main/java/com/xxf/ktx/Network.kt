@@ -20,7 +20,6 @@ import android.os.Build
 import androidx.annotation.RequiresPermission
 import androidx.core.content.getSystemService
 import androidx.lifecycle.LiveData
-import com.xxf.ktx.application
 
 @get:RequiresPermission(ACCESS_NETWORK_STATE)
 val Context.isNetworkAvailable: Boolean

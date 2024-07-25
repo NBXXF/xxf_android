@@ -15,7 +15,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.core.text.inSpans
-import com.xxf.ktx.application
 
 private const val IMAGE_SPAN_TEXT = "<img/>"
 private const val SPACE_SPAN_TEXT = "<space/>"
@@ -121,12 +120,12 @@ fun SpannableStringBuilder.append(
 
 fun SpannableStringBuilder.append(
   @DrawableRes resourceId: Int,
-  context: Context = application
+  context: Context
 ): SpannableStringBuilder = inSpans(ImageSpan(context, resourceId)) { append(IMAGE_SPAN_TEXT) }
 
 fun SpannableStringBuilder.append(
   bitmap: Bitmap,
-  context: Context = application
+  context: Context
 ): SpannableStringBuilder = inSpans(ImageSpan(context, bitmap)) { append(IMAGE_SPAN_TEXT) }
 
 fun SpannableStringBuilder.appendClickable(
@@ -145,13 +144,13 @@ fun SpannableStringBuilder.appendClickable(
 
 fun SpannableStringBuilder.appendClickable(
     @DrawableRes resourceId: Int,
-    context: Context = application,
+    context: Context,
     onClick: (View) -> Unit
 ): SpannableStringBuilder = inSpans(ClickableSpan(onClick = onClick)) { append(resourceId, context) }
 
 fun SpannableStringBuilder.appendClickable(
     bitmap: Bitmap,
-    context: Context = application,
+    context: Context,
     onClick: (View) -> Unit
 ): SpannableStringBuilder = inSpans(ClickableSpan(onClick = onClick)) { append(bitmap, context) }
 

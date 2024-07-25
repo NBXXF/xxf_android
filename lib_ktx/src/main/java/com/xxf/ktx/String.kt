@@ -2,6 +2,7 @@
 
 package com.xxf.ktx
 
+import android.content.Context
 import android.graphics.Color
 import android.text.format.Formatter
 import android.webkit.MimeTypeMap
@@ -34,11 +35,11 @@ const val REGEX_ID_CARD_18: String =
     "^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9Xx])$"
 
 
-fun Long.toFileSizeString(): String =
-    Formatter.formatFileSize(application, this)
+fun Long.toFileSizeString(context: Context): String =
+    Formatter.formatFileSize(context, this)
 
-fun Long.toShortFileSizeString(): String =
-    Formatter.formatShortFileSize(application, this)
+fun Long.toShortFileSizeString(context: Context): String =
+    Formatter.formatShortFileSize(context, this)
 
 fun String.parseColor(): Int =
     Color.parseColor(this)

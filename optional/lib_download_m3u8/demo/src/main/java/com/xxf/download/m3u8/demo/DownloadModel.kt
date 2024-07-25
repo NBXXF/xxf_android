@@ -1,9 +1,9 @@
 package com.xxf.download.m3u8.demo
 
 import com.nbxxf.kpower.database.objectbox.entity.BaseEntity
+import com.xxf.application.application
 import com.xxf.download.m3u8.model.M3u8DownloadEntity
 import com.xxf.hash.toCityHash64
-import com.xxf.ktx.application
 import com.xxf.ktx.fileExtension
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id

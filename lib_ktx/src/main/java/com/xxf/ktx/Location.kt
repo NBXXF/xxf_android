@@ -11,11 +11,10 @@ import android.content.IntentFilter
 import android.location.LocationManager
 import androidx.core.content.getSystemService
 import androidx.lifecycle.LiveData
-import com.xxf.ktx.application
 
 inline val isLocationEnabled: Boolean
   get() = try {
-    application.getSystemService<LocationManager>()?.isProviderEnabled(LocationManager.GPS_PROVIDER) == true
+    app.getSystemService<LocationManager>()?.isProviderEnabled(LocationManager.GPS_PROVIDER) == true
   } catch (e: Exception) {
     false
   }
@@ -24,11 +23,11 @@ class LocationEnabledLiveDate : LiveData<Boolean>() {
 
   override fun onActive() {
     value = isLocationEnabled
-    application.registerReceiver(locationReceiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
+    app.registerReceiver(locationReceiver, IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION))
   }
 
   override fun onInactive() {
-    application.unregisterReceiver(locationReceiver)
+    app.unregisterReceiver(locationReceiver)
   }
 
   override fun setValue(value: Boolean?) {

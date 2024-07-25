@@ -11,12 +11,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.content.contentValuesOf
-import com.xxf.ktx.EXTERNAL_MEDIA_AUDIO_URI
-import com.xxf.ktx.EXTERNAL_MEDIA_DOWNLOADS_URI
-import com.xxf.ktx.EXTERNAL_MEDIA_IMAGES_URI
-import com.xxf.ktx.EXTERNAL_MEDIA_VIDEO_URI
 
-inline val contentResolver: ContentResolver get() = application.contentResolver
+inline val contentResolver: ContentResolver get() = app.contentResolver
 
 inline fun <R> ContentResolver.query(
   uri: Uri, projection: Array<String>? = null, selection: String? = null,
