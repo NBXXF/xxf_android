@@ -17,6 +17,9 @@ import androidx.annotation.CheckResult;
 import androidx.annotation.Nullable;
 
 
+import com.xxf.hash.HashExtentionKt;
+import com.xxf.ktx.StringKt;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -1507,22 +1510,19 @@ public final class FileUtils {
 
     /**
      * 生成文件名
-     * 采用md5 避免重复
-     * 过时了  请直接使用"xx".fileExtension来处理
      *
      * @param url              可以http 和path
      * @param defaultExtension 默认后缀 入zip mp3 png 不带. 避免有些不规则的url
      * @return
      */
-    @Deprecated
     @Nullable
     public static String generateFileName(String url, String defaultExtension) {
         if (!TextUtils.isEmpty(url)) {
-            String fileExtension = getFileExtension(url);
+            String fileExtension = StringKt.getFileExtension(url);
             if (TextUtils.isEmpty(fileExtension) || fileExtension.length() >= 6) {
                 fileExtension = defaultExtension;
             }
-            return EncryptUtils.encryptMD5ToString(url) + "." + fileExtension;
+            return HashExtentionKt.toCityHash64(url) + "." + fileExtension;
         }
         return null;
     }
