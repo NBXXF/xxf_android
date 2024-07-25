@@ -33,7 +33,7 @@ inline fun handleMainThreadException(crossinline block: (Throwable) -> Unit) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun Context.saveCrashLogLocally(dirPath: String = cacheDirPath) =
+fun Context.saveCrashLogLocally(dirPath: String = internalCacheDirPath) =
   handleUncaughtException { thread, e ->
     val now = Instant.now()
     File(dirPath, "crash_${now.format("yyyy-MM-dd")}.txt").printWriter().apply {
