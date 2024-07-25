@@ -156,20 +156,25 @@ abstract class M3U8DownloadService<T : M3u8DownloadEntity> : DownloadService<T>(
      * 找到最顶层的m3u8下载项
      */
     private fun findRootModel(hlsMediaPlaylistUrl: String): T? {
-        var rootModel: T? = null
-        //避免死循环
-        repeat(10) {
-            val url = rootModel?.hlsMediaPlaylistUrl.takeIf {
-                !it.isNullOrBlank()
-            } ?: hlsMediaPlaylistUrl
+        var rootModel: T? = getCacheService().selectFirst { it ->
+            it.equal(M3u8DownloadEntity::downloadUrl, hlsMediaPlaylistUrl)
+            it
+        }
+        //最多三层 避免死循环
+        repeat(3) {
+            val parentUrl = rootModel?.hlsMediaPlaylistUrl
+            if (parentUrl.isNullOrBlank()) {
+                return rootModel
+            }
             val parent = getCacheService().selectFirst { it ->
-                it.equal(M3u8DownloadEntity::downloadUrl, url)
+                it.equal(M3u8DownloadEntity::downloadUrl, parentUrl)
                 it
+            }?.let {
+                rootModel = it
             }
             if (parent == null) {
                 return rootModel
             }
-            rootModel = parent
         }
         return rootModel
     }
