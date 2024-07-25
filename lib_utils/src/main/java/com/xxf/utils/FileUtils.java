@@ -1519,7 +1519,11 @@ public final class FileUtils {
     public static String generateFileName(String url, String defaultExtension) {
         if (!TextUtils.isEmpty(url)) {
             String fileExtension = StringKt.getFileExtension(url);
-            if (TextUtils.isEmpty(fileExtension) || fileExtension.length() >= 6) {
+            if (StringUtils.isEmpty(fileExtension)) {
+                fileExtension = defaultExtension;
+            }
+            //太长的后缀 应该是不靠谱的
+            else if (StringUtils.length(fileExtension) >= 8) {
                 fileExtension = defaultExtension;
             }
             return HashExtentionKt.toCityHash64(url) + "." + fileExtension;
