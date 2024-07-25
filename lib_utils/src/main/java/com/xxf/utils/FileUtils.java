@@ -1522,7 +1522,7 @@ public final class FileUtils {
             if (StringUtils.isEmpty(fileExtension)) {
                 fileExtension = defaultExtension;
             }
-            //太长的后缀 应该是不靠谱的
+            //太长的后缀 应该是不靠谱的 避免某些框架限制了长度
             else if (StringUtils.length(fileExtension) >= 8) {
                 fileExtension = defaultExtension;
             }
