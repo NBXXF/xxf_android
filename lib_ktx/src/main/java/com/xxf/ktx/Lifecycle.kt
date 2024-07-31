@@ -5,8 +5,11 @@ package com.xxf.ktx
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import androidx.annotation.MainThread
+import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 
@@ -59,7 +62,14 @@ fun Fragment.doOnViewLifecycle(
     onStop: (() -> Unit)? = null,
     onDestroyView: (() -> Unit)? = null,
 ) =
-    viewLifecycleOwner.doOnLifecycle(onCreateView, onStart, onResume, onPause, onStop, onDestroyView)
+    viewLifecycleOwner.doOnLifecycle(
+        onCreateView,
+        onStart,
+        onResume,
+        onPause,
+        onStop,
+        onDestroyView
+    )
 
 fun LifecycleOwner.doOnLifecycle(
     onCreate: (() -> Unit)? = null,
@@ -121,3 +131,25 @@ fun LifecycleOwner.doOnDestroy(
 
 
 val Fragment.viewLifecycleScope get() = viewLifecycleOwner.lifecycleScope
+
+
+/**
+ * 比较此状态是否大于或等于给定 state的
+ */
+@MainThread
+fun LifecycleOwner.doAtLeast(state: Lifecycle.State, block: (() -> Unit)) {
+    if (this.lifecycle.currentState.isAtLeast(state)) {
+        block()
+    }
+}
+
+/**
+ * 比较此状态是否大于或等于给定 state的 。
+ * @param state – 要比较的状态
+ * 返回：如果此状态大于或等于给定的 state
+ */
+@MainThread
+fun LifecycleOwner.isAtLeast(state: Lifecycle.State): Boolean {
+    return this.lifecycle.currentState.isAtLeast(state)
+}
+
