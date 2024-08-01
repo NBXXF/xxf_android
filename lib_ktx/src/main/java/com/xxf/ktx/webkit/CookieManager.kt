@@ -32,7 +32,7 @@ fun <T : CookieManager> T.getCookieMap(url: String): Map<String, HttpCookie> {
 fun <T : CookieManager> T.setCookies(url: String, value: List<HttpCookie>) {
     tryOrLog {
         value.forEach {
-            setCookie(url, "${it.name}=${it.value}")
+            setCookie(url, "$it")
         }
         this.sync()
     }
