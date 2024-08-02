@@ -133,11 +133,17 @@ fun LifecycleOwner.doOnDestroy(
 val Fragment.viewLifecycleScope get() = viewLifecycleOwner.lifecycleScope
 
 
+@MainThread
+@Deprecated("please use runAtLeast", ReplaceWith("runAtLeast(state, block)"))
+fun LifecycleOwner.doAtLeast(state: Lifecycle.State, block: (() -> Unit)) {
+    return runAtLeast(state, block)
+}
+
 /**
- * 比较此状态是否大于或等于给定 state的
+ * 比较此状态是否大于或等于给定 state的 然后再执行
  */
 @MainThread
-fun LifecycleOwner.doAtLeast(state: Lifecycle.State, block: (() -> Unit)) {
+fun LifecycleOwner.runAtLeast(state: Lifecycle.State, block: (() -> Unit)) {
     if (this.lifecycle.currentState.isAtLeast(state)) {
         block()
     }
