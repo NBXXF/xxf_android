@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
@@ -32,7 +34,16 @@ interface IPreferencesOwner {
 }
 
 /**
- * 默认SharedPreferences
+ * 默认共享的SharedPreferences
+ * 支持数据格式如下：
+ * String
+ * Int
+ * Float
+ * Long
+ * Boolean
+ * Set<String>
+ * JSONObject
+ * JSONArray
  */
 interface SharedPreferencesOwner : IPreferencesOwner {
     companion object {
@@ -81,6 +92,28 @@ interface SharedPreferencesOwner : IPreferencesOwner {
 
                 Set::class -> {
                     return getStringSet(rawKey, (default as? Set<String>))
+                }
+
+                JSONObject::class -> {
+                    val string = getString(rawKey, "")
+                    if (!string.isNullOrEmpty()) {
+                        tryOrLog {
+                            val jsonObject = JSONObject(string)
+                            return jsonObject
+                        }
+                    }
+                    return default;
+                }
+
+                JSONArray::class -> {
+                    val string = getString(rawKey, "")
+                    if (!string.isNullOrEmpty()) {
+                        tryOrLog {
+                            val jsonArray = JSONArray(string)
+                            return jsonArray
+                        }
+                    }
+                    return default;
                 }
 
                 else -> {
@@ -139,6 +172,14 @@ interface SharedPreferencesOwner : IPreferencesOwner {
                                 }
                             }
                         }
+                    }
+
+                    JSONObject::class -> {
+                        putString(rawKey, (value as JSONObject).toString())
+                    }
+
+                    JSONArray::class -> {
+                        putString(rawKey, (value as JSONArray).toString())
                     }
 
                     else -> {
