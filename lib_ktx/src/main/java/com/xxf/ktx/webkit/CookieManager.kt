@@ -7,12 +7,39 @@ import com.xxf.ktx.tryOrLog
 import java.net.HttpCookie
 
 /**
+ * set-cookie 转换成字典
+ */
+private fun cookieToMap(value: String): Map<String, String> {
+    var value = value
+    val map: MutableMap<String, String> = HashMap()
+    value = value.replace(" ", "")
+    if (value.contains(";")) {
+        val values = value.split(";".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        for (element in values) {
+            val vals = element.split("=".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
+            map[vals[0]] = vals[1]
+        }
+    } else {
+        val values = value.split("=".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        map[values[0]] = values[1]
+    }
+    return map
+}
+
+/**
  * 获取Cookie
  */
 fun <T : CookieManager> T.getCookieList(url: String): List<HttpCookie> {
     return kotlin.runCatching {
         val cookie = this.getCookie(url)
-        HttpCookie.parse(cookie)
+        val cookieToMap = cookieToMap(cookie)
+        val mapNotNull = cookieToMap.flatMap {
+            HttpCookie.parse("${it.key}=${it.value}")
+        }
+        mapNotNull
     }.getOrNull().orEmpty()
 }
 
