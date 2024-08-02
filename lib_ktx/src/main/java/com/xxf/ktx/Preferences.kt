@@ -150,6 +150,23 @@ interface SharedPreferencesOwner : IPreferencesOwner {
     }
 }
 
+/**
+ * 自定义的SharedPreferences
+ * 默认 是类名的简称
+ */
+open class CustomPreferencesOwner : SharedPreferencesOwner {
+    private val mCustomSharedPreferences: SharedPreferences by lazy {
+        app.getSharedPreferences(
+            this::class.java.simpleName,
+            Context.MODE_PRIVATE
+        )
+    }
+
+    override fun getSharedPreferences(): SharedPreferences {
+        return mCustomSharedPreferences;
+    }
+}
+
 open class PrefsDelegate<P : IPreferencesOwner, V>(
     open val key: String?,
     open val default: V,

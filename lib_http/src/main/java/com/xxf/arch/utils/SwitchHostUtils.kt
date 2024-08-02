@@ -14,6 +14,7 @@ import com.xxf.application.application
 import com.xxf.application.topActivity
 import com.xxf.arch.http.XXFHttp
 import com.xxf.arch.http.databinding.XxfLayoutHostInputBinding
+import com.xxf.ktx.CustomPreferencesOwner
 import com.xxf.ktx.SharedPreferencesOwner
 import com.xxf.ktx.preferencesBinding
 import com.xxf.ktx.selectLast
@@ -27,7 +28,7 @@ import kotlin.system.exitProcess
  * @date createTime：2018/9/7
  */
 object SwitchHostUtils {
-    object HostSpServiceDelegate : SharedPreferencesOwner {
+    object HostSpServiceDelegate : CustomPreferencesOwner() {
         const val DEFAULT_HOST="https://github.com/"
         /**
          * app的域名
