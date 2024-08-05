@@ -1,6 +1,5 @@
 package com.xxf.ktx
 
-import android.app.PendingIntent
 
 /**
  * 是否包含某个flag
@@ -22,9 +21,9 @@ fun Int.excludeFlag(valueRemoveFlag: Int): Int {
  * 默认会判断有没有
  */
 fun Int.addFlag(flag: Int): Int {
-    return if (hasFlag(flag)) {
-        this or PendingIntent.FLAG_IMMUTABLE
+    return if (!hasFlag(flag)) {
+        this or flag
     } else {
-        return this
+        this
     }
 }
