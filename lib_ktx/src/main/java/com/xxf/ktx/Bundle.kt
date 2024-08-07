@@ -1,8 +1,10 @@
 package com.xxf.ktx
 
 import android.content.Intent
+import android.os.BaseBundle
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.collection.ArrayMap
 import androidx.core.os.bundleOf
 import com.xxf.ktx.standard.KeyValueDelegate
 import java.io.Serializable
@@ -45,5 +47,16 @@ fun <T> Bundle.putExtras(vararg params: Pair<String, T>): Bundle {
     val bundleOf = bundleOf(*params)
     putAll(bundleOf)
     return this
+}
+
+/**
+ * 转换成Map
+ */
+fun <T : BaseBundle> T.toMap(): Map<String, Any> {
+    val map = ArrayMap<String, Any>()
+    this.keySet().forEach {
+        map[it] = this.get(it)
+    }
+    return map;
 }
 
