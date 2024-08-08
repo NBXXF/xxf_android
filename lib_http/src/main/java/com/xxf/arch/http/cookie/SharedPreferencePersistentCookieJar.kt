@@ -20,11 +20,11 @@ class SharedPreferencePersistentCookieJar : PersistentCookieJar() {
         )
     }
 
-    override fun loadCookie(host: String): String? {
+    override fun onLoadCookieFromCache(host: String): String? {
         return CookieJarSpServiceDelegate.cookie.optString(host)
     }
 
-    override fun saveCookie(host: String, cookie: String?) {
+    override fun onSaveCookieToCache(host: String, cookie: String?) {
         val cookieJson = CookieJarSpServiceDelegate.cookie
         cookieJson.put(host, cookie)
         CookieJarSpServiceDelegate.cookie = cookieJson
