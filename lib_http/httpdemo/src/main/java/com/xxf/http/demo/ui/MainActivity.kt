@@ -14,17 +14,20 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.xxf.arch.apiService
 import com.xxf.arch.getApiService
 import com.xxf.arch.http.converter.gson.GsonConverterFactory
+import com.xxf.arch.http.cookie.SharedPreferencePersistentCookieJar
+import com.xxf.arch.http.cookie.parseAll
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import com.xxf.http.demo.ui.test.Animal
 import com.xxf.http.demo.ui.test.Person
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.serialization.*
 import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.json.Json
+import okhttp3.Cookie
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
@@ -68,7 +71,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val findViewById1 = findViewById<View>(R.id.root);
         findViewById1.setOnLongClickListener {
             println("=================>长按了")
@@ -121,6 +123,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        val s="x=1243;yy=3487"
+        val url="http://www.baidu.com".toHttpUrl()
+        SharedPreferencePersistentCookieJar.INSTANCE.saveFromResponse(url, Cookie.parseAll(url,s))
+        val loadForRequest = SharedPreferencePersistentCookieJar.INSTANCE.loadForRequest(url)
+
+
+
         testhttp()
         //   test()
         // testJsonSpeed()
@@ -164,7 +173,7 @@ class MainActivity : AppCompatActivity() {
         getApiService<LoginApiService>()
             .getCity()
            //; .getCity(TestQueryJsonField("xxx"))
-            .observeOn(AndroidSchedulers.mainThread())
+            //.observeOn(AndroidSchedulers.mainThread())
             .doOnError {
                 Log.d("==========>retry no", "" + it)
             }

@@ -22,6 +22,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.gson.annotations.JsonAdapter
 import com.xxf.arch.XXF
 import com.xxf.arch.activity.XXFActivity
+import com.xxf.arch.http.cookie.SharedPreferencePersistentCookieJar
+import com.xxf.arch.http.cookie.parseAll
 import com.xxf.arch.test.prefs.PreferencesDemo
 import com.xxf.toast.ToastType
 import com.xxf.toast.ToastUtils
@@ -42,6 +44,8 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
+import okhttp3.Cookie
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -560,6 +564,12 @@ class MainActivity() : XXFActivity() {
 
     override fun onResume() {
         super.onResume()
+        val s="x=1243;yy=3487"
+        val url="http://www.baidu.com".toHttpUrl()
+        SharedPreferencePersistentCookieJar.INSTANCE.saveFromResponse(url, Cookie.parseAll(url,s))
+        val loadForRequest = SharedPreferencePersistentCookieJar.INSTANCE.loadForRequest(url)
+
+
         mainHandler.postDelayed(object : Runnable {
             override fun run() {
                 setWindowBackground(Color.RED)

@@ -9,6 +9,10 @@ import org.json.JSONObject
  * @Description SharedPreferences+Cookie持久化
  */
 class SharedPreferencePersistentCookieJar : PersistentCookieJar() {
+    companion object {
+        val INSTANCE = SharedPreferencePersistentCookieJar()
+    }
+
     object CookieJarSpServiceDelegate : CustomPreferencesOwner() {
         var cookie: JSONObject by preferencesBinding(
             key = "cookie",
@@ -22,7 +26,7 @@ class SharedPreferencePersistentCookieJar : PersistentCookieJar() {
 
     override fun saveCookie(host: String, cookie: String?) {
         val cookieJson = CookieJarSpServiceDelegate.cookie
-        cookieJson.put(host, cookieJson)
+        cookieJson.put(host, cookie)
         CookieJarSpServiceDelegate.cookie = cookieJson
     }
 
