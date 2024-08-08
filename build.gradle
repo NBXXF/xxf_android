@@ -64,7 +64,7 @@ allprojects {
         }
     }
     configurations.all {
-       // resolutionStrategy.cacheChangingModulesFor 0, 'seconds'// maven禁止缓存
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'// maven禁止缓存
 //        resolutionStrategy.force 'com.squareup.okhttp3:okhttp:4.7.2'
     }
 }
