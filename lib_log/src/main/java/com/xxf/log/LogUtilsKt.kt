@@ -7,44 +7,44 @@ package com.xxf.log
  * @date createTime：2018/9/7
  */
 
-inline fun logV(tag: String? = null, noinline log: () -> Any) {
-    if (!LogUtils.config.isDebug) {
-        return
-    }
+inline fun <reified T : Any> T.logV(
+    tag: String? = T::class.java.simpleName,
+    noinline log: () -> Any
+) {
     LogUtils.logV(tag, log)
 }
 
-inline fun logI(tag: String? = null, noinline log: () -> Any) {
-    if (!LogUtils.config.isDebug) {
-        return
-    }
+inline fun <reified T : Any> T.logI(
+    tag: String? = T::class.java.simpleName,
+    noinline log: () -> Any
+) {
     LogUtils.logI(tag, log)
 }
 
-inline fun logD(tag: String? = null, noinline log: () -> Any) {
-    if (!LogUtils.config.isDebug) {
-        return
-    }
+inline fun <reified T : Any> T.logD(
+    tag: String? = T::class.java.simpleName,
+    noinline log: () -> Any
+) {
     LogUtils.logD(tag, log)
 }
 
-inline fun logE(tag: String? = null, noinline log: () -> Any) {
-    if (!LogUtils.config.isDebug) {
-        return
-    }
+inline fun <reified T : Any> T.logE(
+    tag: String? = T::class.java.simpleName,
+    noinline log: () -> Any
+) {
     LogUtils.logE(tag, log)
 }
 
-inline fun logW(tag: String? = null, noinline log: () -> Any) {
-    if (!LogUtils.config.isDebug) {
-        return
-    }
+inline fun <reified T : Any> T.logW(
+    tag: String? = T::class.java.simpleName,
+    noinline log: () -> Any
+) {
     LogUtils.logW(tag, log)
 }
 
-inline fun logJson(tag: String? = null, noinline log: () -> Any) {
-    if (!LogUtils.config.isDebug) {
-        return
-    }
+inline fun <reified T : Any> T.logJson(
+    tag: String? = T::class.java.simpleName,
+    noinline log: () -> Any
+) {
     LogUtils.logJson(tag, log)
 }
