@@ -16,7 +16,7 @@ object HandlerUtils {
     val mainHandler by lazy { Handler(Looper.getMainLooper()) }
 
     /**
-     * 检查是否在主线程showToast
+     * 检查是否在主线程
      *
      * @return
      */
