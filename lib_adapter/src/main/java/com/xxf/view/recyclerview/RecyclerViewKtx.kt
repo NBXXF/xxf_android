@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.MotionEvent
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import androidx.viewbinding.ViewBinding
 import com.xxf.ktx.getTag
@@ -15,9 +16,9 @@ import com.xxf.view.recyclerview.adapter.BaseAdapter
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
     val layoutManager = this.layoutManager
     if (layoutManager is LinearLayoutManager) {
-        layoutManager.scrollToPositionWithOffset(position, offset)
+        layoutManager.scrollToPositionWithOffset(layoutManager.fixedPosition(position), offset)
     } else if (layoutManager is StaggeredGridLayoutManager) {
-        layoutManager.scrollToPositionWithOffset(position, offset)
+        layoutManager.scrollToPositionWithOffset(layoutManager.fixedPosition(position), offset)
     }
 }
 
@@ -44,9 +45,24 @@ fun RecyclerView.smoothScrollToEndPosition(position: Int) =
 fun RecyclerView.smoothScrollToPosition(position: Int, snapPreference: SNAP) =
     layoutManager?.let {
         val smoothScroller = LinearSmoothScroller(context, snapPreference)
-        smoothScroller.targetPosition = position
+        smoothScroller.targetPosition = it.fixedPosition(position)
         it.startSmoothScroll(smoothScroller)
     }
+
+/**
+ * 纠正位置越界问题
+ */
+fun LayoutManager.fixedPosition(position: Int): Int {
+    val min = 0
+    val max = this.itemCount - 1
+    return if (position < min) {
+        min
+    } else if (position > max) {
+        max
+    } else {
+        position
+    }
+}
 
 fun LinearSmoothScroller(context: Context, snapPreference: SNAP) =
     object : LinearSmoothScroller(context) {
