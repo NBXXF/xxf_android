@@ -5,6 +5,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.getSupportFragmentManager
 
 /*********************FragmentManager******************/
 fun FragmentManager.findDialogFragments(): List<DialogFragment> {
@@ -86,4 +88,97 @@ fun <T : DialogFragment> List<T>.dismissAllowingStateLoss() {
     this.onEach {
         it.dismissAllowingStateLoss()
     }
+}
+
+/*********************安全show防范闪退******************/
+
+/**
+ * 避免java.lang.IllegalStateException
+ */
+fun <T : DialogFragment> T.showAllowingStateLoss(
+    transaction: FragmentTransaction,
+    tag: String?
+): Int {
+    val manager: FragmentManager? = transaction.getSupportFragmentManager()
+    if (manager != null) {
+        /**
+         * java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+         */
+        if (manager.isStateSaved) {
+            return -1
+        }
+        /**
+         * java.lang.IllegalStateException: Fragment already added
+         */
+        manager.findFragmentByTag(tag)?.let {
+            manager.beginTransaction()
+                .remove(it)
+                .commitNowAllowingStateLoss()
+        }
+        try {
+            manager.executePendingTransactions()
+        } catch (_: Throwable) {
+        }
+    }
+    if (this.isAdded) {
+        return -1
+    }
+    return this.show(transaction, tag)
+}
+
+
+/**
+ * 避免java.lang.IllegalStateException
+ */
+fun <T : DialogFragment> T.showAllowingStateLoss(manager: FragmentManager, tag: String?) {
+    /**
+     * java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+     */
+    if (manager.isStateSaved) {
+        return
+    }
+    /**
+     * java.lang.IllegalStateException: Fragment already added
+     */
+    manager.findFragmentByTag(tag)?.let {
+        manager.beginTransaction()
+            .remove(it)
+            .commitNowAllowingStateLoss()
+    }
+    try {
+        manager.executePendingTransactions()
+    } catch (_: Throwable) {
+    }
+    if (this.isAdded) {
+        return
+    }
+    this.show(manager, tag)
+}
+
+/**
+ * 避免java.lang.IllegalStateException
+ */
+fun <T : DialogFragment> T.showNowAllowingStateLoss(manager: FragmentManager, tag: String?) {
+    /**
+     * java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
+     */
+    if (manager.isStateSaved) {
+        return
+    }
+    /**
+     * java.lang.IllegalStateException: Fragment already added
+     */
+    manager.findFragmentByTag(tag)?.let {
+        manager.beginTransaction()
+            .remove(it)
+            .commitNowAllowingStateLoss()
+    }
+    try {
+        manager.executePendingTransactions()
+    } catch (_: Throwable) {
+    }
+    if (this.isAdded) {
+        return
+    }
+    this.showNow(manager, tag)
 }

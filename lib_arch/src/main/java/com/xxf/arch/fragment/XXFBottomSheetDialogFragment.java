@@ -43,7 +43,7 @@ import io.reactivex.rxjava3.subjects.Subject;
 
 public class XXFBottomSheetDialogFragment<R>
         extends BottomSheetDialogFragment implements ObservableComponent<BottomSheetDialogFragment, R>, BottomSheetWindowComponent {
-    private final String TAG_PREFIX = "show_rau_";
+
     @LayoutRes
     private int mContentLayoutId;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
@@ -112,55 +112,6 @@ public class XXFBottomSheetDialogFragment<R>
          */
         if (getShowsDialog() && !(getDialog() instanceof WindowComponent)) {
             throw new RuntimeException("dialog must extends from WindowComponent");
-        }
-    }
-
-    /**
-     * 不建议使用这个,不能控制重复添加的bug
-     * @param transaction
-     * @param tag
-     * @return
-     */
-    @Deprecated
-    @Override
-    public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
-        if(this.isAdded()){
-            return -1;
-        }
-        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
-            return super.show(transaction, tag);
-        }
-        return -1;
-    }
-
-
-    @Override
-    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
-        FragmentUtils.removeFragment(manager,tag);
-        try {
-            manager.executePendingTransactions();
-        }catch (Throwable throwable){
-        }
-        if(this.isAdded()){
-            return;
-        }
-        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
-            super.show(manager, tag);
-        }
-    }
-
-    @Override
-    public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
-        FragmentUtils.removeFragment(manager,tag);
-        try {
-            manager.executePendingTransactions();
-        }catch (Throwable throwable){
-        }
-        if(this.isAdded()){
-            return;
-        }
-        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
-            super.showNow(manager, tag);
         }
     }
 

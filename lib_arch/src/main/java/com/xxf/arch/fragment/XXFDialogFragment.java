@@ -41,7 +41,6 @@ import io.reactivex.rxjava3.subjects.Subject;
  * @date createTime：2018/9/7
  */
 public class XXFDialogFragment<R> extends AppCompatDialogFragment implements ObservableComponent<DialogFragment, R>, WindowComponent {
-    private final String TAG_PREFIX = "show_rau_";
     @LayoutRes
     private int mContentLayoutId;
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
@@ -70,7 +69,6 @@ public class XXFDialogFragment<R> extends AppCompatDialogFragment implements Obs
     public void setComponentResult(R result) {
         componentSubject.onNext(Pair.create(this, result));
     }
-
 
 
     @NonNull
@@ -117,7 +115,7 @@ public class XXFDialogFragment<R> extends AppCompatDialogFragment implements Obs
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewLifecycleOwner.set(view,this);
+        ViewLifecycleOwner.set(view, this);
         /**
          * 检查是否实现了WindowComponent协议
          */
@@ -128,80 +126,34 @@ public class XXFDialogFragment<R> extends AppCompatDialogFragment implements Obs
 
 
 
-    /**
-     * 不建议使用这个,不能控制重复添加的bug
-     * @param transaction
-     * @param tag
-     * @return
-     */
-    @Deprecated
-    @Override
-    public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
-        if(this.isAdded()){
-            return -1;
-        }
-        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
-            return super.show(transaction, tag);
-        }
-        return -1;
-    }
 
-    @Override
-    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
-        FragmentUtils.removeFragment(manager,tag);
-        try {
-            manager.executePendingTransactions();
-        }catch (Throwable throwable){
-        }
-        if(this.isAdded()){
-            return;
-        }
-        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
-            super.show(manager, tag);
-        }
-    }
-
-    @Override
-    public void showNow(@NonNull FragmentManager manager, @Nullable String tag) {
-        FragmentUtils.removeFragment(manager,tag);
-        try {
-            manager.executePendingTransactions();
-        }catch (Throwable throwable){
-        }
-        if(this.isAdded()){
-            return;
-        }
-        if (RAUtils.INSTANCE.isLegal(TAG_PREFIX + this.getClass().getName(), RAUtils.DURATION_DEFAULT)) {
-            super.showNow(manager, tag);
-        }
-    }
 
     @Override
     public void setWindowSize(int width, int height) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowSize(width,height);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowSize(width, height);
         }
     }
 
     @Override
     public void setWindowWidth(int width) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowWidth(width);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowWidth(width);
         }
     }
 
     @Override
     public void setWindowHeight(int height) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowHeight(height);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowHeight(height);
         }
     }
 
     @Nullable
     @Override
     public Window getWindow() {
-        if(getDialog() instanceof WindowComponent){
-            return ((WindowComponent)getDialog()).getWindow();
+        if (getDialog() instanceof WindowComponent) {
+            return ((WindowComponent) getDialog()).getWindow();
         }
         return null;
     }
@@ -209,8 +161,8 @@ public class XXFDialogFragment<R> extends AppCompatDialogFragment implements Obs
     @Nullable
     @Override
     public FrameLayout getDecorView() {
-        if(getDialog() instanceof WindowComponent){
-            return  ((WindowComponent)getDialog()).getDecorView();
+        if (getDialog() instanceof WindowComponent) {
+            return ((WindowComponent) getDialog()).getDecorView();
         }
         return null;
     }
@@ -218,58 +170,58 @@ public class XXFDialogFragment<R> extends AppCompatDialogFragment implements Obs
     @Nullable
     @Override
     public FrameLayout getContentParent() {
-        if(getDialog() instanceof WindowComponent){
-            return  ((WindowComponent)getDialog()).getContentParent();
+        if (getDialog() instanceof WindowComponent) {
+            return ((WindowComponent) getDialog()).getContentParent();
         }
         return null;
     }
 
     @Override
     public void setWindowDimAmount(float amount) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowDimAmount(amount);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowDimAmount(amount);
         }
     }
 
     @Override
     public void setWindowGravity(int gravity) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowGravity(gravity);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowGravity(gravity);
         }
     }
 
     @Override
     public void setWindowBackground(@NotNull Drawable drawable) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowBackground(drawable);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowBackground(drawable);
         }
     }
 
     @Override
     public void setWindowBackground(int color) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowBackground(color);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowBackground(color);
         }
     }
 
     @Override
     public void setWindowBackgroundDimEnabled(boolean enabled) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowBackgroundDimEnabled(enabled);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowBackgroundDimEnabled(enabled);
         }
     }
 
     @Override
     public void setCanceledOnTouchOutside(boolean cancel) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setCanceledOnTouchOutside(cancel);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setCanceledOnTouchOutside(cancel);
         }
     }
 
     @Override
     public void setWindowRadius(float radius) {
-        if(getDialog() instanceof WindowComponent){
-            ((WindowComponent)getDialog()).setWindowRadius(radius);
+        if (getDialog() instanceof WindowComponent) {
+            ((WindowComponent) getDialog()).setWindowRadius(radius);
         }
     }
 }

@@ -35,7 +35,6 @@ import io.reactivex.rxjava3.subjects.Subject;
 public class XXFDialog<R>
         extends AppCompatDialog
         implements ObservableComponent<AppCompatDialog, R>, WindowComponent {
-    private final String TAG_PREFIX = "show_rau_";
     private final Subject<Object> componentSubject = PublishSubject.create().toSerialized();
 
     @Override
