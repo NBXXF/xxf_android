@@ -22,6 +22,11 @@ import java.util.List;
  */
 public final class ProcessUtils {
 
+    /**
+     * 缓存变量 提高复用效率
+     */
+    private static volatile String currentProcessName;
+
     private ProcessUtils() {
     }
 
@@ -36,21 +41,26 @@ public final class ProcessUtils {
     }
 
     public static String getProcessName(Context context) {
+        if (!TextUtils.isEmpty(currentProcessName)) {
+            return currentProcessName;
+        }
         //28的新方式
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            String processName = Application.getProcessName();
-            if (!TextUtils.isEmpty(processName)) {
-                return processName;
-            }
+            currentProcessName = Application.getProcessName();
+        }
+        if (!TextUtils.isEmpty(currentProcessName)) {
+            return currentProcessName;
         }
 
-
-        String processName = getProcessFromFile();
-        if (processName == null) {
-            // 如果装了xposed一类的框架，上面可能会拿不到，回到遍历迭代的方式
-            processName = getProcessNameByAM(context);
+        currentProcessName = getProcessFromFile();
+        if (!TextUtils.isEmpty(currentProcessName)) {
+            return currentProcessName;
         }
-        return processName;
+
+        // 如果装了xposed一类的框架，上面可能会拿不到，回到遍历迭代的方式
+        currentProcessName = getProcessNameByAM(context);
+
+        return currentProcessName;
     }
 
     private static String getProcessFromFile() {
