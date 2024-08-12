@@ -120,10 +120,11 @@ fun <T : DialogFragment> T.showAllowingStateLoss(
         } catch (_: Throwable) {
         }
     }
-    if (this.isAdded) {
-        return -1
+    return if (this.isAdded) {
+        -1
+    }else {
+        this.show(transaction, tag)
     }
-    return this.show(transaction, tag)
 }
 
 
