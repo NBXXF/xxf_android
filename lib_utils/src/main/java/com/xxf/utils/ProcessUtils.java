@@ -1,7 +1,9 @@
 package com.xxf.utils;
 
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
@@ -13,6 +15,7 @@ import java.util.List;
 
 /**
  * Description 进程工具类
+ *
  * @@Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * date createTime：16/6/23
  * version
@@ -33,6 +36,15 @@ public final class ProcessUtils {
     }
 
     public static String getProcessName(Context context) {
+        //28的新方式
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            String processName = Application.getProcessName();
+            if (!TextUtils.isEmpty(processName)) {
+                return processName;
+            }
+        }
+
+
         String processName = getProcessFromFile();
         if (processName == null) {
             // 如果装了xposed一类的框架，上面可能会拿不到，回到遍历迭代的方式
