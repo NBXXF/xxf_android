@@ -99,7 +99,15 @@ fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItems()
 /**
  * 获取第一个选中的
  */
+@Deprecated("废弃", ReplaceWith("this.getFirstSelected()"))
 fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getSelectedItem(): T? {
+    return this.getFirstSelected()
+}
+
+/**
+ * 获取第一个选中的
+ */
+fun <V : ViewBinding, T : SelectableEntity> BaseAdapter<V, T>.getFirstSelected(): T? {
     return this.currentList.getFirstSelected()
 }
 
