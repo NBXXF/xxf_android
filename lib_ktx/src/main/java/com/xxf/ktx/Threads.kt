@@ -21,14 +21,14 @@ import androidx.fragment.app.Fragment
  * 如果线程处于阻塞状态（如调用了 sleep()、wait()、join() 等方法），并且没有捕获 InterruptedException 异常并进行相应的处理，线程将继续阻塞。
  * 这可能导致线程无法在收到中断请求时立即唤醒，并且无法及时响应中断。
  */
-fun threadSleep(millis: Long, handleInterrupt: () -> Unit = {}) {
+fun threadSleep(millis: Long, handleInterrupt: (e: InterruptedException) -> Unit = {}) {
     try {
         Thread.sleep(millis)
         // 可能会抛出 InterruptedException 的代码块
     } catch (e: InterruptedException) {
         Thread.currentThread().interrupt() // 重新中断线程
         // 处理中断异常
-        handleInterrupt()
+        handleInterrupt(e)
     }
 }
 
