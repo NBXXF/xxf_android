@@ -26,9 +26,8 @@ fun threadSleep(millis: Long, handleInterrupt: (e: InterruptedException) -> Unit
         Thread.sleep(millis)
         // 可能会抛出 InterruptedException 的代码块
     } catch (e: InterruptedException) {
-        Thread.currentThread().interrupt() // 重新中断线程
         // 处理中断异常
-        handleInterrupt(e)
+        handleInterrupt(e)//  eg. Thread.currentThread().interrupt() //恢复中断状态
     }
 }
 
