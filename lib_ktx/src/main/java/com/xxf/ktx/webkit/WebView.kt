@@ -9,6 +9,7 @@ import com.xxf.ktx.app
 import com.xxf.ktx.findActivity
 import com.xxf.ktx.isUnavailable
 import com.xxf.ktx.removeFromParentView
+import com.xxf.ktx.requireMainThread
 
 /**
  * 安全释放
@@ -54,6 +55,7 @@ fun <T : WebView> T.handleRenderProcessGone(detail: RenderProcessGoneDetail?): B
     val context = this.context
     val findActivity = context.findActivity()
     if (findActivity != null && !findActivity.isUnavailable()) {
+        requireMainThread()
         findActivity.recreate()
         return true
     } else {

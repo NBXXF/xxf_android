@@ -8,29 +8,6 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 
-/**
- * 线程睡眠
- * 不使用interrupt()中断会发生什么
- * 具体而言，在以下情况下未使用 Thread.currentThread().interrupt() 方法可能发生的情况如下：
- *
- * 在普通线程中未处理中断请求：
- * 如果线程处于运行状态且没有检查中断状态，线程将继续执行，不会响应中断请求。
- * 这可能导致线程无法正确地停止或退出循环，使得应用程序无法及时响应中断请求。
- *
- * 在阻塞方法中未处理中断请求：
- * 如果线程处于阻塞状态（如调用了 sleep()、wait()、join() 等方法），并且没有捕获 InterruptedException 异常并进行相应的处理，线程将继续阻塞。
- * 这可能导致线程无法在收到中断请求时立即唤醒，并且无法及时响应中断。
- */
-fun threadSleep(millis: Long, handleInterrupt: (e: InterruptedException) -> Unit = {}) {
-    try {
-        Thread.sleep(millis)
-        // 可能会抛出 InterruptedException 的代码块
-    } catch (e: InterruptedException) {
-        // 处理中断异常
-        handleInterrupt(e)//  eg. Thread.currentThread().interrupt() //恢复中断状态
-    }
-}
-
 val mainThreadHandler by lazy { Handler(Looper.getMainLooper()) }
 
 val isMainThread: Boolean get() = Looper.myLooper() == Looper.getMainLooper()
@@ -125,3 +102,52 @@ private fun runMainThread(
     block: () -> Unit
 ) =
     handler.postDelayed(block, delayMillis)
+
+
+/**
+ * 线程睡眠
+ * 不使用interrupt()中断会发生什么
+ * 具体而言，在以下情况下未使用 Thread.currentThread().interrupt() 方法可能发生的情况如下：
+ *
+ * 在普通线程中未处理中断请求：
+ * 如果线程处于运行状态且没有检查中断状态，线程将继续执行，不会响应中断请求。
+ * 这可能导致线程无法正确地停止或退出循环，使得应用程序无法及时响应中断请求。
+ *
+ * 在阻塞方法中未处理中断请求：
+ * 如果线程处于阻塞状态（如调用了 sleep()、wait()、join() 等方法），并且没有捕获 InterruptedException 异常并进行相应的处理，线程将继续阻塞。
+ * 这可能导致线程无法在收到中断请求时立即唤醒，并且无法及时响应中断。
+ */
+fun threadSleep(millis: Long, handleInterrupt: (e: InterruptedException) -> Unit = {}) {
+    try {
+        Thread.sleep(millis)
+        // 可能会抛出 InterruptedException 的代码块
+    } catch (e: InterruptedException) {
+        // 处理中断异常
+        handleInterrupt(e)//  eg. Thread.currentThread().interrupt() //恢复中断状态
+    }
+}
+
+private const val mainThreadErrorMsg = "Must be called from main or ui thread";
+fun requireMainThread() {
+    require(isMainThread) {
+        mainThreadErrorMsg
+    }
+}
+
+fun checkMainThread() {
+    check(isMainThread) {
+        mainThreadErrorMsg
+    }
+}
+
+fun requireUiThread() {
+    require(isMainThread) {
+        mainThreadErrorMsg
+    }
+}
+
+fun checkUiThread() {
+    check(isMainThread) {
+        mainThreadErrorMsg
+    }
+}
