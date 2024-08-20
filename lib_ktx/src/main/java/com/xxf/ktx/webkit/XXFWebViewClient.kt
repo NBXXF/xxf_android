@@ -9,7 +9,7 @@ import android.webkit.WebViewClient
 /**
  * 处理常规设置
  */
-open class BaseWebViewClient : WebViewClient() {
+open class XXFWebViewClient : WebViewClient() {
 
     override fun onRenderProcessGone(view: WebView?, detail: RenderProcessGoneDetail?): Boolean {
         //处理webView 不可使用的场景
