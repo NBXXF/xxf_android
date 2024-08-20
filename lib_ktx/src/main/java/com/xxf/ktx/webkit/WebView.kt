@@ -2,9 +2,12 @@ package com.xxf.ktx.webkit
 
 import android.app.Application
 import android.os.Build
+import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebView
 import androidx.annotation.MainThread
 import com.xxf.ktx.app
+import com.xxf.ktx.findActivity
+import com.xxf.ktx.isUnavailable
 import com.xxf.ktx.removeFromParentView
 
 /**
@@ -18,6 +21,44 @@ fun <T : WebView> T.release() {
     getSettings().javaScriptEnabled = false;
     removeAllViews()
     destroy()
+}
+
+
+/**
+ * 当 Render 进程长时间无响应的时候，就会触发这个方法。比如因为 JavaScript 长时间无响应、输入相应事件长时间无响应抑或是导航至新的 url 无响应等。
+ * 到这里，基本就比较明晰了。也就是说，当 WebView 的任务过重，如 JavaScrip 长时间无响应，抑或是其他导致响应事件过长的情况，
+ * 都有可能会触发 render 进程移除，如果不加以处理，就会导致我们的应用进程被强制停止。
+ *
+ * 在android.webkit.WebViewClient.onRenderProcessGone中调用
+ * 默认实现activity重启解决,当然还有局部替换的方法
+ *  // 仅对我们自己的 webview 做处理
+ *                 if ( view == mWebView) {
+ *                   // 获取 webview 所在父布局
+ *                     ViewGroup parent = (ViewGroup) mWebView.getParent();
+ *                     ViewGroup.LayoutParams params = mWebView.getLayoutParams();
+ *                     // 把无效不可用的 webview 从布局中移除
+ *                     destroyWebView();
+ *                    // 重新创建新的 webview
+ *                     WebView newWebView = new WebView(getActivity());
+ *                     newWebView.setId(R.id.webView);
+ *                     parent.addView(newWebView, 0, params);
+ *                     Bundle bundle = getArguments();
+ *                     // 重走初始化流程，渲染 UI，加载 url
+ *                     initView(root);
+ *                     return true;
+ *                 }
+ *
+ */
+@MainThread
+fun <T : WebView> T.handleRenderProcessGone(detail: RenderProcessGoneDetail?): Boolean {
+    val context = this.context
+    val findActivity = context.findActivity()
+    if (findActivity != null && !findActivity.isUnavailable()) {
+        findActivity.recreate()
+        return true
+    } else {
+        return false
+    }
 }
 
 /**

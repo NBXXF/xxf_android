@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.xxf.application.activityList
+import com.xxf.ktx.isUnavailable
 import com.xxf.snackbar.SnackBarFragment
 
 object SnackbarUtils {
@@ -59,9 +60,6 @@ object SnackbarUtils {
         }
     }
 
-    private fun Activity?.isUnavailable(): Boolean {
-        return this?.isDestroyed ?: true || this?.isFinishing ?: true
-    }
 
     /**
      * @param rootView

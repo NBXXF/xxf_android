@@ -69,3 +69,10 @@ inline val Activity.activity: Activity get() = this
 inline val FragmentActivity.fragmentActivity: FragmentActivity get() = this
 
 inline val ComponentActivity.lifecycleOwner: LifecycleOwner get() = this
+
+/**
+ * activity不可用
+ */
+fun <T : Activity> T?.isUnavailable(): Boolean {
+    return this?.isDestroyed ?: true || this?.isFinishing ?: true
+}
