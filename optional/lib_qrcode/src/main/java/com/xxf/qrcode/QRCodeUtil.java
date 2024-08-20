@@ -239,6 +239,8 @@ public class QRCodeUtil {
      * @param input
      * @param hints Map<DecodeHintType, Object> hints = new HashMap<>();
      *              hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
+     *              //精度,比起解码速度更加注重的的解码的准确性
+     *              hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
      * @return
      */
     public static Result decode(Bitmap input, Map<DecodeHintType, ?> hints) {
