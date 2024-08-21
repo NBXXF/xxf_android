@@ -2,13 +2,17 @@ package com.xxf.ktx
 
 import android.os.SystemClock
 
+internal val isAppDebug: Boolean by lazy {
+    app.isAppDebug
+}
+
 /**
  * 仅仅debug模式下才会执行
  * @param block
  * @return 是否是debug模式,也就是是否执行了
  */
-inline fun runDebugging(block: () -> Unit): Boolean {
-    if (app.isAppDebug) {
+fun runDebugging(block: () -> Unit): Boolean {
+    if (isAppDebug) {
         block()
         return true
     }
