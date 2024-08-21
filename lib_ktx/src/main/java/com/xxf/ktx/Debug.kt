@@ -1,8 +1,9 @@
 package com.xxf.ktx
 
 import android.os.SystemClock
+import com.xxf.ktx.standard.lazyUnsafe
 
-internal val isAppDebug: Boolean by lazy {
+internal val isAppDebug: Boolean by lazyUnsafe {
     app.isAppDebug
 }
 
