@@ -15,6 +15,9 @@ import com.xxf.view.recyclerview.adapter.BaseAdapter
 
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
     val layoutManager = this.layoutManager
+    if (!canScrollToPosition()) {
+        return
+    }
     if (layoutManager is LinearLayoutManager) {
         layoutManager.scrollToPositionWithOffset(layoutManager.fixedPosition(position), offset)
     } else if (layoutManager is StaggeredGridLayoutManager) {
@@ -27,8 +30,19 @@ fun RecyclerView.scrollToStartWithOffset(offset: Int) = scrollToPositionWithOffs
 fun RecyclerView.scrollToEndWithOffset(offset: Int) =
     scrollToPositionWithOffset(adapter!!.itemCount - 1, offset)
 
-fun RecyclerView.scrollToStart() = this.scrollToPosition(0)
-fun RecyclerView.scrollToEnd() = this.scrollToPosition(adapter!!.itemCount - 1)
+fun RecyclerView.scrollToStart() {
+    if (!canScrollToPosition()) {
+        return
+    }
+    this.scrollToPosition(0)
+}
+
+fun RecyclerView.scrollToEnd() {
+    if (!canScrollToPosition()) {
+        return
+    }
+    this.scrollToPosition(adapter!!.itemCount - 1)
+}
 
 fun RecyclerView.smoothScrollToStart() =
     smoothScrollToStartPosition(0)
@@ -42,12 +56,34 @@ fun RecyclerView.smoothScrollToStartPosition(position: Int) =
 fun RecyclerView.smoothScrollToEndPosition(position: Int) =
     smoothScrollToPosition(position, SNAP.SNAP_TO_END)
 
-fun RecyclerView.smoothScrollToPosition(position: Int, snapPreference: SNAP) =
+fun RecyclerView.smoothScrollToPosition(position: Int, snapPreference: SNAP) {
+    if (!canScrollToPosition()) {
+        return
+    }
     layoutManager?.let {
         val smoothScroller = LinearSmoothScroller(context, snapPreference)
         smoothScroller.targetPosition = it.fixedPosition(position)
         it.startSmoothScroll(smoothScroller)
     }
+}
+
+/**
+ * 是否可以进行位置滚动
+ */
+fun RecyclerView.canScrollToPosition(): Boolean {
+    return this.layoutManager.canScrollToPosition()
+}
+
+/**
+ * 是否可以进行位置滚动
+ */
+fun LayoutManager?.canScrollToPosition(): Boolean {
+    return if (this == null) {
+        false
+    } else {
+        this.itemCount > 0
+    }
+}
 
 /**
  * 纠正位置越界问题
