@@ -44,20 +44,34 @@ open class XXFWebViewClient : WebViewClient() {
     }
 
     @CallSuper
-    final override fun onPageFinished(view: WebView?, url: String?) {
+    @Deprecated(
+        "过时了",
+        replaceWith = ReplaceWith("onPageFinished(view, url, extInfo)")
+    )
+    override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
         if (view?.progress == 100 && !this.mPageFinishedExhaustive) {
             this.mPageFinishedExhaustive = true
         }
-        this.onPageFinished(view, url, this.mPageFinishedExhaustive)
+        this.onPageFinished(view, url, ExtFinishInfo(this.mPageFinishedExhaustive))
     }
 
     /**
      * @param view
      * @param url
-     * @param isPageFinishedExhaustive 是否彻底加载页面结束
+     * @param extInfo 额外信息 如是否彻底加载页面结束
      */
-    open fun onPageFinished(view: WebView?, url: String?, isPageFinishedExhaustive: Boolean) {
+    open fun onPageFinished(view: WebView?, url: String?, extInfo: ExtFinishInfo) {
 
     }
+
+    /**
+     * 加载完成的额外信息
+     */
+    data class ExtFinishInfo(
+        /**
+         * 是否彻底加载页面结束
+         */
+        val isPageFinishedExhaustive: Boolean
+    )
 }
