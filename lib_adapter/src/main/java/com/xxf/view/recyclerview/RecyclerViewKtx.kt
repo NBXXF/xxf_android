@@ -11,6 +11,7 @@ import com.xxf.ktx.getTag
 import com.xxf.ktx.hideKeyboard
 import com.xxf.ktx.isKeyboardHiddenInTouchMode
 import com.xxf.ktx.setTag
+import com.xxf.ktx.tryOrLog
 import com.xxf.view.recyclerview.adapter.BaseAdapter
 
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
@@ -18,10 +19,12 @@ fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {
     if (!canScrollToPosition()) {
         return
     }
-    if (layoutManager is LinearLayoutManager) {
-        layoutManager.scrollToPositionWithOffset(layoutManager.fixedPosition(position), offset)
-    } else if (layoutManager is StaggeredGridLayoutManager) {
-        layoutManager.scrollToPositionWithOffset(layoutManager.fixedPosition(position), offset)
+    tryOrLog {
+        if (layoutManager is LinearLayoutManager) {
+            layoutManager.scrollToPositionWithOffset(layoutManager.fixedPosition(position), offset)
+        } else if (layoutManager is StaggeredGridLayoutManager) {
+            layoutManager.scrollToPositionWithOffset(layoutManager.fixedPosition(position), offset)
+        }
     }
 }
 
@@ -34,14 +37,18 @@ fun RecyclerView.scrollToStart() {
     if (!canScrollToPosition()) {
         return
     }
-    this.scrollToPosition(0)
+    tryOrLog {
+        this.scrollToPosition(0)
+    }
 }
 
 fun RecyclerView.scrollToEnd() {
     if (!canScrollToPosition()) {
         return
     }
-    this.scrollToPosition(adapter!!.itemCount - 1)
+    tryOrLog {
+        this.scrollToPosition(adapter!!.itemCount - 1)
+    }
 }
 
 fun RecyclerView.smoothScrollToStart() =
@@ -61,9 +68,11 @@ fun RecyclerView.smoothScrollToPosition(position: Int, snapPreference: SNAP) {
         return
     }
     layoutManager?.let {
-        val smoothScroller = LinearSmoothScroller(context, snapPreference)
-        smoothScroller.targetPosition = it.fixedPosition(position)
-        it.startSmoothScroll(smoothScroller)
+        tryOrLog {
+            val smoothScroller = LinearSmoothScroller(context, snapPreference)
+            smoothScroller.targetPosition = it.fixedPosition(position)
+            it.startSmoothScroll(smoothScroller)
+        }
     }
 }
 
