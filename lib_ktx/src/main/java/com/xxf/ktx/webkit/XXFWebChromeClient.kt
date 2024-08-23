@@ -27,6 +27,7 @@ open class XXFWebChromeClient : WebChromeClient() {
             ) {
                 mPageFinishedExhaustive = true
             }
+            this.onProgressChanged(view, newProgress, ExtProgressInfo(mPageFinishedExhaustive))
         } else {
             this.onProgressChanged(view, newProgress, ExtProgressInfo(false))
         }
