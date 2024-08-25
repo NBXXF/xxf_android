@@ -24,7 +24,7 @@ fun executeCmd(command: String): String {
     var errorLine = errorReader.readLine()
     while (errorLine != null) {
         errorBuilder.append(errorLine)
-        resultBuilder.append(System.lineSeparator())
+        errorBuilder.append(System.lineSeparator())
         errorLine = errorReader.readLine()
     }
 
