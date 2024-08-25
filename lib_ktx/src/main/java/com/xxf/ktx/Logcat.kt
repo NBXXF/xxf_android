@@ -9,11 +9,11 @@ import java.util.Date
 
 
 /**
- * 读取当前调用之前的lineCount行日志
+ * 导出当前调用之前的lineCount行日志
  * @param logLevel 最大日志行数
  * @param logLevel 默认所有,为空也为所有 其值为 [android.util.Log.VERBOSE] [android.util.Log.DEBUG] ..
  */
-fun <T : Context> T.readLogcat(lineCount: Int = 300, logLevel: Set<Int> = emptySet()): String {
+fun <T : Context> T.logcatExport(lineCount: Int = 300, logLevel: Set<Int> = emptySet()): String {
     return tryOrLogNull {
         var cmdString = "logcat -d -t $lineCount"
         val logLevelCommand = convertLogLevelCommand(logLevel)
@@ -53,12 +53,12 @@ fun <T : Context> T.readLogcat(lineCount: Int = 300, logLevel: Set<Int> = emptyS
  * @param logLevel 默认所有,为空也为所有 其值为 [android.util.Log.VERBOSE] [android.util.Log.DEBUG] ..
  */
 @WorkerThread
-fun <T : Context> T.recordLogcat(
+fun <T : Context> T.logcatRecord(
     logFile: File = this.filesDir
         .resolve("logcat")
         .resolve(
             Date().toString() + "${
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(Date())
+                SimpleDateFormat("yyyy-MM-dd").format(Date())
             }.logcat"
         ), logLevel: Set<Int> = emptySet()
 ) {
