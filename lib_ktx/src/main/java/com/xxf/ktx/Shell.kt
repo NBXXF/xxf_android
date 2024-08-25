@@ -14,8 +14,8 @@ fun executeCmd(command: String): String {
     val resultBuilder = StringBuilder()
     var resultLine = resultReader.readLine()
     while (resultLine != null) {
-        resultBuilder.append(System.lineSeparator())
         resultBuilder.append(resultLine)
+        resultBuilder.append(System.lineSeparator())
         resultLine = resultReader.readLine()
     }
 
@@ -23,8 +23,8 @@ fun executeCmd(command: String): String {
     val errorBuilder = StringBuilder()
     var errorLine = errorReader.readLine()
     while (errorLine != null) {
-        resultBuilder.append(System.lineSeparator())
         errorBuilder.append(errorLine)
+        resultBuilder.append(System.lineSeparator())
         errorLine = errorReader.readLine()
     }
 
