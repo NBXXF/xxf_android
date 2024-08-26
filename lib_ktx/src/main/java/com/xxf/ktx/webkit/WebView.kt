@@ -2,6 +2,7 @@ package com.xxf.ktx.webkit
 
 import android.app.Application
 import android.os.Build
+import android.util.Log
 import android.webkit.RenderProcessGoneDetail
 import android.webkit.WebView
 import androidx.annotation.MainThread
@@ -57,6 +58,9 @@ fun <T : WebView> T.handleRenderProcessGone(detail: RenderProcessGoneDetail?): B
     if (findActivity != null && !findActivity.isUnavailable()) {
         requireMainThread()
         findActivity.recreate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            println("webView handleRenderProcessGone in $findActivity")
+        }
         return true
     } else {
         return false
