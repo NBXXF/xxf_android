@@ -1,12 +1,17 @@
 package com.xxf.objectbox
 
 import android.app.Application
+import android.util.Log
+import com.xxf.application.application
+import com.xxf.ktx.isAppDebug
 import com.xxf.ktx.mkParentDirs
 import io.objectbox.BoxStore
 import io.objectbox.BoxStoreBuilder
+import io.objectbox.android.Admin
 import io.objectbox.exception.DbException
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
+
 
 /**
  * @Description: objectBox
@@ -25,8 +30,7 @@ internal object ObjectBoxFactory {
      */
     @Synchronized
     fun getBoxStore(
-        boxStoreBuilder: BoxStoreBuilder,
-        objectStoreDir: File
+        boxStoreBuilder: BoxStoreBuilder, objectStoreDir: File
     ): BoxStore? {
         var boxStore: BoxStore? = null
         try {
@@ -63,9 +67,7 @@ internal object ObjectBoxFactory {
      */
     @Synchronized
     fun getBoxStore(
-        application: Application,
-        boxStoreBuilder: BoxStoreBuilder,
-        dbName: String
+        application: Application, boxStoreBuilder: BoxStoreBuilder, dbName: String
     ): BoxStore? {
         return getBoxStore(
             boxStoreBuilder,
@@ -84,8 +86,30 @@ internal object ObjectBoxFactory {
     @Throws(DbException::class)
     private fun buildBox(boxStoreBuilder: BoxStoreBuilder, objectStoreDir: File): BoxStore {
         objectStoreDir.mkParentDirs()
-        return boxStoreBuilder
-            .directory(objectStoreDir)
-            .build()
+        return boxStoreBuilder.directory(objectStoreDir).build().also {
+            try {
+                //https://docs.objectbox.io/data-browser#admin-for-android
+                /**
+                 * 它会将访问 Web 应用程序的 URL 打印到日志中，例如：
+                 * ObjectBox Admin running at URL: http://127.0.0.1:8090/index.html
+                 *
+                 * 您的开发机器上，使用 ADB 命令将端口（或您喜欢的任何端口）转发到设备的该端口。如果使用默认端口 8090，则命令如下所示：
+                 * adb forward tcp:8090 tcp:8090
+                 */
+                if (application.isAppDebug) {
+                    val started = Admin(it).start(application)
+                    Log.i(
+                        BoxStoreBuilder.DEFAULT_NAME,
+                        "admin Started: $started in ${objectStoreDir.absolutePath}"
+                    )
+                }
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                Log.e(
+                    BoxStoreBuilder.DEFAULT_NAME,
+                    "admin Started error: $e in ${objectStoreDir.absolutePath}"
+                )
+            }
+        }
     }
 }
