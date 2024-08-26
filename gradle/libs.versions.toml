@@ -74,6 +74,7 @@ ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 testng = { group = "org.testng", name = "testng", version.ref = "testng" }
 kpower-ktx = { module = "com.nbxxf.kpower:ktx", version.ref = "kpower" }
+kpower-http = { module = "com.nbxxf.kpower:http", version.ref = "kpower" }
 
 mobile-ffmpeg = { module = "com.arthenica:mobile-ffmpeg-full-gpl", version = "4.4.LTS" }
 [plugins]
