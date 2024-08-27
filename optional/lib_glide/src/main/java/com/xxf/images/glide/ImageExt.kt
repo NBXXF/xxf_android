@@ -8,32 +8,31 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 
 
-@JvmOverloads
-fun ImageView.load(
+inline fun ImageView.load(
     model: Any,
-    block: (request: RequestBuilder<Drawable>) -> Unit
+    builder: RequestBuilder<Drawable>.() -> Unit
 ) {
     Glide.with(this)
         .load(model)
-        .also {
-            block(it)
-        }
+        .apply(builder)
         .into(this)
 }
 
-@JvmOverloads
-fun ImageView.load(
+inline fun ImageView.load(
     model: Any,
     @RawRes @DrawableRes placeHolder: Int,
     @RawRes @DrawableRes errorId: Int = placeHolder,
-    block: (request: RequestBuilder<Drawable>) -> Unit
+    builder: RequestBuilder<Drawable>.() -> Unit
 ) {
+
     Glide.with(this)
         .load(model)
         .placeholder(placeHolder)
         .error(errorId)
-        .also {
-            block(it)
-        }
+        .apply(builder)
         .into(this)
+}
+
+inline fun ImageView.dispose() {
+    Glide.with(this).clear(this)
 }
