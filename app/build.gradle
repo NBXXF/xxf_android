@@ -72,4 +72,5 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':libs')
+    implementation project(':optional:lib_glide')
 }

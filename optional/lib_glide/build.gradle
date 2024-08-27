@@ -41,6 +41,7 @@ dependencies {
     api libs.glideWebp
     api libs.androidsvg
     api libs.kpower.http
+    api project(':lib_application')
 }
 
 ext {

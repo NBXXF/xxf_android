@@ -1,5 +1,6 @@
 package com.xxf.images.glide.core.http
 
+import android.util.Log
 import com.bumptech.glide.load.Options
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.ModelLoader
@@ -11,7 +12,6 @@ import com.xxf.arch.http.OkHttpClientBuilder
 import com.xxf.arch.http.interceptor.HttpLoggingInterceptor
 import com.xxf.application.application
 import com.xxf.ktx.isAppDebug
-import com.xxf.log.logD
 import okhttp3.Call
 import java.io.InputStream
 
@@ -20,7 +20,7 @@ import java.io.InputStream
  */
 class OkHttpUrlLoader(private val client: Call.Factory) : ModelLoader<GlideUrl, InputStream> {
     class ImageHttpLoggerInterceptor :
-        HttpLoggingInterceptor(Logger { message -> logD { "===============>image:$message"}}){
+        HttpLoggingInterceptor(Logger { message -> Log.d(TAG, "===============>image:$message") }) {
         init {
             level = if (application.isAppDebug) Level.HEADERS else Level.NONE
         }
@@ -33,6 +33,7 @@ class OkHttpUrlLoader(private val client: Call.Factory) : ModelLoader<GlideUrl, 
             // .addInterceptor(com.persagy.visitor.images.glide.ImageLoadRetryInterceptor())
             .addInterceptor(ImageHttpLoggerInterceptor())
             .build()
+        const val TAG = "Glide"
     }
 
     override fun handles(url: GlideUrl): Boolean {
