@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PictureDrawable
+import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
@@ -116,6 +117,8 @@ class GlideModule : AppGlideModule() {
 //                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P || targetView is PhotoView) {
 //                            targetView?.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
 //                        }
+
+                        targetView?.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
                     }
                 } catch (e: Throwable) {
                     e.printStackTrace()

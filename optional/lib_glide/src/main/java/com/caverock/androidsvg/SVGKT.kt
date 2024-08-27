@@ -1,7 +1,7 @@
 package com.caverock.androidsvg
 
-import com.caverock.androidsvg.SVG
-import com.xxf.ktx.dp
+import android.content.res.Resources
+import android.util.TypedValue
 
 
 /**
@@ -31,6 +31,9 @@ object SVGKT {
             }
         }
     }
-
+    private val Float.dp: Float
+        get() = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, this, Resources.getSystem().displayMetrics
+        )
 }
 
