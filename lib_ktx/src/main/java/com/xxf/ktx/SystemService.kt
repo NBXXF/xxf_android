@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityManager
 import android.view.inputmethod.InputMethodManager
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 inline fun <reified T> Context.getSystemService(): T? =
@@ -34,6 +35,7 @@ val Context.activityManager get() = getSystemService<ActivityManager>()
 val Context.powerManager get() = getSystemService<PowerManager>()
 val Context.alarmManager get() = getSystemService<AlarmManager>()
 val Context.notificationManager get() = getSystemService<NotificationManager>()
+val Context.notificationManagerCompat get() = NotificationManagerCompat.from(this)
 val Context.keyguardManager get() = getSystemService<KeyguardManager>()
 val Context.locationManager get() = getSystemService<LocationManager>()
 val Context.searchManager get() = getSystemService<SearchManager>()
@@ -53,5 +55,5 @@ val Context.downloadManager get() = getSystemService<DownloadManager>()
 val Context.batteryManager get() = getSystemService<BatteryManager>()
 val Context.jobScheduler get() = getSystemService<JobScheduler>()
 val Context.accessibilityManager get() = getSystemService<AccessibilityManager>()
-val Context.usageStatsManager  get() = getSystemService<UsageStatsManager>()
-val Context.appOpsManager   get() = getSystemService<AppOpsManager>()
+val Context.usageStatsManager get() = getSystemService<UsageStatsManager>()
+val Context.appOpsManager get() = getSystemService<AppOpsManager>()
