@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 
 
-inline fun ImageView.load(
-    model: Any,
+inline fun <T> ImageView.load(
+    model: T,
     builder: RequestBuilder<Drawable>.() -> Unit
 ) {
     Glide.with(this)
@@ -18,8 +18,8 @@ inline fun ImageView.load(
         .into(this)
 }
 
-inline fun ImageView.load(
-    model: Any,
+inline fun <T> ImageView.load(
+    model: T,
     @RawRes @DrawableRes placeHolder: Int,
     @RawRes @DrawableRes errorId: Int = placeHolder,
     builder: RequestBuilder<Drawable>.() -> Unit
