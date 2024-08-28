@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager
  * @version 1.0
  * @since 2024/8/28 18:23
  */
-fun FragmentManager.removeAllFragment() {
+fun FragmentManager.clear() {
     beginTransaction().apply {
         fragments.forEach {
             remove(it)
