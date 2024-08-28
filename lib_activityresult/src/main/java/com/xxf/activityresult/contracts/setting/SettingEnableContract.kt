@@ -6,12 +6,6 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.CallSuper
-import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.LifecycleOwner
-import com.xxf.activityresult.ActivityResultContractObservable
-import com.xxf.ktx.findActivity
-import io.reactivex.rxjava3.core.Observable
-
 /**
  * @Author: XGod  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq  xuanyouwu@163.com  17611639080  https://github.com/NBXXF     https://blog.csdn.net/axuanqq
  * @version 2.3.1
@@ -48,21 +42,4 @@ abstract class SettingEnableContract : ActivityResultContract<Unit, Boolean>() {
     final override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
         return isEnabled(this.context)
     }
-}
-
-/**
- *  force 是否强制再对应的页面 默认false;保持不要每次都打开Activity来获取结果,对于设置可以提前感知是否打开
- */
-@JvmOverloads
-fun <T : SettingEnableContract> LifecycleOwner.startActivityForResult(
-    contact: T,
-    options: ActivityOptionsCompat? = null,
-    force: Boolean = false
-): Observable<Boolean> {
-    if (force) {
-        return ActivityResultContractObservable<Unit, Boolean>(this, contact, Unit, options)
-    } else if (contact.isEnabled(this.findActivity())) {
-        return Observable.just(true)
-    }
-    return ActivityResultContractObservable<Unit, Boolean>(this, contact, Unit, options)
 }

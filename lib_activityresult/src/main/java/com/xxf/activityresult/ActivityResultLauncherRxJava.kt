@@ -6,6 +6,8 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.LifecycleOwner
+import com.xxf.activityresult.contracts.setting.SettingEnableContract
+import com.xxf.ktx.findActivity
 import io.reactivex.rxjava3.core.Observable
 
 /**
@@ -30,7 +32,7 @@ import io.reactivex.rxjava3.core.Observable
  *  @param options
  */
 @JvmOverloads
-fun <I, O:Any> LifecycleOwner.startActivityForResult(
+fun <I, O : Any> LifecycleOwner.startActivityForResult(
     contact: ActivityResultContract<I, O>,
     input: I,
     options: ActivityOptionsCompat? = null,
@@ -66,4 +68,20 @@ fun LifecycleOwner.startActivityForResult(
         input,
         options
     )
+}
+
+/**
+ *  先检查结果
+ *  保持不要每次都打开Activity来获取结果,对于设置可以提前感知是否打开
+ */
+@JvmOverloads
+fun <T : SettingEnableContract> LifecycleOwner.startActivityForResult(
+    contact: T,
+    options: ActivityOptionsCompat? = null
+): Observable<Boolean> {
+    return if (contact.isEnabled(this.findActivity())) {
+        Observable.just(true)
+    } else {
+        ActivityResultContractObservable<Unit, Boolean>(this, contact, Unit, options)
+    }
 }
