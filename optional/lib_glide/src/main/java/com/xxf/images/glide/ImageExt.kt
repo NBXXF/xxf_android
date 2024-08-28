@@ -10,7 +10,7 @@ import com.bumptech.glide.RequestBuilder
 
 inline fun <T> ImageView.load(
     model: T,
-    builder: RequestBuilder<Drawable>.() -> Unit
+    builder: RequestBuilder<Drawable>.() -> Unit = {}
 ) {
     Glide.with(this)
         .load(model)
@@ -22,7 +22,7 @@ inline fun <T> ImageView.load(
     model: T,
     @RawRes @DrawableRes placeHolder: Int,
     @RawRes @DrawableRes errorId: Int = placeHolder,
-    builder: RequestBuilder<Drawable>.() -> Unit
+    builder: RequestBuilder<Drawable>.() -> Unit = {}
 ) {
 
     Glide.with(this)
