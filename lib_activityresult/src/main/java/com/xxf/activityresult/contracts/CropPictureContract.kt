@@ -26,7 +26,7 @@ data class CropPictureRequest @JvmOverloads constructor(
     var outputContentValues: ContentValues = ContentValues(),
 )
 
-class CropPictureContract : ActivityResultContract<CropPictureRequest, Uri?>() {
+open class CropPictureContract : ActivityResultContract<CropPictureRequest, Uri?>() {
     private lateinit var outputUri: Uri
 
     @CallSuper

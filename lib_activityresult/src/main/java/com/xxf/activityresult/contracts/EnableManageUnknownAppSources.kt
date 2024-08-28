@@ -17,7 +17,7 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
  *
  *  @date createTime：2020/9/5
  */
-class EnableManageUnknownAppSources :
+open class EnableManageUnknownAppSources :
     SettingEnableContract() {
 
 

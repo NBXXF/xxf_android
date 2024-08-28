@@ -12,7 +12,7 @@ import android.provider.Settings
  *               需声明权限   <uses-permission android:name="android.permission.BLUETOOTH"/>
  * @date createTime：2020/9/5
  */
-class EnableBluetoothSettingContract :
+open class EnableBluetoothSettingContract :
     EnableBluetoothContract() {
     override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)

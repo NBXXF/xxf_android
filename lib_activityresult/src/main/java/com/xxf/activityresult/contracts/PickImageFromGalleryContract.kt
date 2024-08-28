@@ -13,7 +13,7 @@ import androidx.activity.result.contract.ActivityResultContract
  * @Description  按mime 筛选文件  其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-class PickImageFromGalleryContract : ActivityResultContract<Unit, Uri?>() {
+open class PickImageFromGalleryContract : ActivityResultContract<Unit, Uri?>() {
     override fun createIntent(context: Context, input: Unit) =
         Intent(Intent.ACTION_PICK).apply {
             this.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")

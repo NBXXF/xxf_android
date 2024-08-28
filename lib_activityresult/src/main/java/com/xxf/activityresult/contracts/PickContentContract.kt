@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContract
  * @Description  按mime 筛选文件  其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-class PickContentContract : ActivityResultContract<String, Uri?>() {
+open class PickContentContract : ActivityResultContract<String, Uri?>() {
     override fun createIntent(context: Context, input: String) =
         Intent(Intent.ACTION_PICK).apply { type = input }
 

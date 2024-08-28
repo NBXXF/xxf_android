@@ -19,7 +19,7 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
  *   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
  * @date createTime：2020/9/5
  */
-class EnableNetWithPanelContract : SettingEnableContract() {
+open class EnableNetWithPanelContract : SettingEnableContract() {
     override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)
         return Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)

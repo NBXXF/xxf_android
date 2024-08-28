@@ -1,5 +1,6 @@
 package com.xxf.activityresult.contracts
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,16 +16,21 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
  * @Description  打开通知设置  其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-class EnableNotificationContract : SettingEnableContract() {
+
+open class EnableNotificationContract : SettingEnableContract() {
+
+    @SuppressLint("ObsoleteSdkInt")
     override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)
-       return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-        } else {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Intent("android.settings.APP_NOTIFICATION_SETTINGS")
                 .putExtra("app_package", context.packageName)
                 .putExtra("app_uid", context.applicationInfo.uid)
+        } else {
+            super.createIntent(context, input)
         }
     }
 

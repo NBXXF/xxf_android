@@ -11,7 +11,7 @@ import com.xxf.activityresult.contracts.setting.SettingEnableContract
  * @Description  系统设置页面  其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-abstract class SystemSettingsContract: SettingEnableContract() {
+open abstract class SystemSettingsContract: SettingEnableContract() {
     final override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)
         return Intent(Settings.ACTION_SETTINGS)

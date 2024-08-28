@@ -11,7 +11,7 @@ import android.provider.Settings
  * @Description  wifi开关 【面板】 其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-class EnableWifiWithPanelContract : EnableWifiContract() {
+open class EnableWifiWithPanelContract : EnableWifiContract() {
     override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)
         return Intent(Settings.Panel.ACTION_WIFI)

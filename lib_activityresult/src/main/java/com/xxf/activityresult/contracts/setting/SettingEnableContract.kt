@@ -24,7 +24,13 @@ abstract class SettingEnableContract : ActivityResultContract<Unit, Boolean>() {
     /**
      * 是否支持该功能设置,比如某些设备不具备NFC模块
      */
+    //@Deprecated("过时", replaceWith = ReplaceWith("isSupportedFeature"))
     abstract fun isSupported(context: Context?): Boolean
+
+//    /**
+//     * 是否支持该功能设置,比如某些设备不具备NFC模块
+//     */
+//    abstract fun isSupportedFeature(context: Context?): Boolean
 
     /**
      * 开关是否打开(包含判断是否支持该功能)

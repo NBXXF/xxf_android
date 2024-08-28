@@ -10,6 +10,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
  */
 interface BottomSheetWindowComponent : WindowComponent {
 
+    /**
+     * 设置全屏
+     *  getBottomSheetView()?.updateLayoutParams {
+     *                 height=ViewGroup.LayoutParams.MATCH_PARENT
+     *             }
+     * getBehavior()?.state = BottomSheetBehavior.STATE_EXPANDED
+     */
     fun getBottomSheetView(): FrameLayout?
 
     fun getBehavior(): BottomSheetBehavior<FrameLayout>?

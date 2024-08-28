@@ -2,6 +2,7 @@ package com.xxf.ktx
 
 import android.app.*
 import android.app.job.JobScheduler
+import android.app.usage.UsageStatsManager
 import android.content.ClipboardManager
 import android.content.Context
 import android.hardware.SensorManager
@@ -52,3 +53,5 @@ val Context.downloadManager get() = getSystemService<DownloadManager>()
 val Context.batteryManager get() = getSystemService<BatteryManager>()
 val Context.jobScheduler get() = getSystemService<JobScheduler>()
 val Context.accessibilityManager get() = getSystemService<AccessibilityManager>()
+val Context.usageStatsManager  get() = getSystemService<UsageStatsManager>()
+val Context.appOpsManager   get() = getSystemService<AppOpsManager>()

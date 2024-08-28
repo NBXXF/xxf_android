@@ -14,7 +14,7 @@ import com.xxf.ktx.locationManager
  * @Description  打开定位服务  其他更多参考 [androidx.activity.result.contract.ActivityResultContracts]里面的静态类
  * @date createTime：2020/9/5
  */
-class EnableLocationContract : SettingEnableContract() {
+open class EnableLocationContract : SettingEnableContract() {
     override fun createIntent(context: Context, input: Unit): Intent {
         super.createIntent(context, input)
         return Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
