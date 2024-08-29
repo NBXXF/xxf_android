@@ -13,12 +13,23 @@ import java.util.Date
  * @param logLevel 最大日志行数
  * @param logLevel 默认所有,为空也为所有 其值为 [android.util.Log.VERBOSE] [android.util.Log.DEBUG] ..
  */
-fun <T : Context> T.logcatExport(lineCount: Int = 300, logLevel: Set<Int> = emptySet()): String {
+fun <T : Context> T.logcatExport(
+    lineCount: Int = 300,
+    logLevel: Set<Int> = emptySet(),
+    vararg tagLabel: String = arrayOf(this.packageName)
+): String {
     return tryOrLogNull {
         var cmdString = "logcat -d -t $lineCount"
         val logLevelCommand = convertLogLevelCommand(logLevel)
         if (logLevelCommand.isNotEmpty()) {
             cmdString += " *:${logLevelCommand.joinToString(",")}"
+        }
+        if (tagLabel.isNotEmpty()) {
+            /**
+             * adb logcat -d | grep -E '(标签1|标签2|标签3)'
+             * 这里 -E 参数是告诉 grep 使用扩展的正则表达式，以下括号 () 内的部分表示“或”关系，即匹配括号内的任意一个标签。
+             */
+            cmdString += " | grep -E '(${tagLabel.joinToString("|")})'}"
         }
         executeCmd(cmdString)
     }.orEmpty()
