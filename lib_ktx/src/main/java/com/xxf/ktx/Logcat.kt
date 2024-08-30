@@ -80,7 +80,7 @@ fun <T : Context> T.logcatRecord(
     if (logLevelCommand.isNotEmpty()) {
         writeCmd += " *:${logLevelCommand.joinToString(",")}"
     }
-    executeCmd(writeCmd)
+    Runtime.getRuntime().exec(writeCmd, true)
 }
 
 private fun convertLogLevelCommand(logLevel: Set<Int> = emptySet()): List<String> {
