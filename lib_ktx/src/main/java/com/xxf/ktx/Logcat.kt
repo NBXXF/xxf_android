@@ -31,7 +31,7 @@ fun <T : Context> T.logcatExport(
              */
             cmdString += " | grep -E '(${tagLabel.joinToString("|")})'}"
         }
-        executeCmd(cmdString)
+        Runtime.getRuntime().execCmd(cmdString, false).successMsg
     }.orEmpty()
 }
 
@@ -74,13 +74,13 @@ fun <T : Context> T.logcatRecord(
         ), logLevel: Set<Int> = emptySet()
 ) {
     logFile.mkParentDirs()
-    executeCmd("logcat -c")
+    Runtime.getRuntime().execCmd("logcat -c", false)
     val logLevelCommand = convertLogLevelCommand(logLevel)
     var writeCmd = "logcat -f " + logFile.absolutePath
     if (logLevelCommand.isNotEmpty()) {
         writeCmd += " *:${logLevelCommand.joinToString(",")}"
     }
-    Runtime.getRuntime().exec(writeCmd, true)
+    Runtime.getRuntime().execWaitFor(writeCmd)
 }
 
 private fun convertLogLevelCommand(logLevel: Set<Int> = emptySet()): List<String> {
