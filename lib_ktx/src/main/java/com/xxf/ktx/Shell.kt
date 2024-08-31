@@ -3,40 +3,12 @@
 package com.xxf.ktx
 
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.Objects
-import java.util.concurrent.TimeUnit
 
-/**
- * @param command
- * @param waitFor 是否阻塞线程 直到进程结束,一般监听类需要 实时记录文件需要 等待结果需要
- */
-@Throws(IOException::class)
-fun Runtime.execWaitFor(command: String): Process {
-    val process = Runtime.getRuntime().exec(command)
-    return process.also {
-        it.waitFor()
-    }
-}
-
-/**
- * @param command
- * @param waitForTimeout 阻塞线程时间
- * @param unit 阻塞线程时间单位
- */
-@RequiresApi(Build.VERSION_CODES.O)
-@Throws(IOException::class)
-fun Runtime.execWaitFor(command: String, waitForTimeout: Long, unit: TimeUnit): Process {
-    val process = Runtime.getRuntime().exec(command)
-    return process.also {
-        it.waitFor(waitForTimeout, unit)
-    }
-}
 
 
 /**
@@ -235,14 +207,14 @@ fun Runtime.execCmd(
     try {
         process = this.exec(if (isRooted) "su" else "sh", envp, null)
         os = DataOutputStream(process.outputStream)
-        val LINE_SEP = System.lineSeparator()
+        val lineSep = System.lineSeparator()
         for (command in commands) {
             if (Objects.isNull(command)) continue
             os.write(command.toByteArray())
-            os.writeBytes(LINE_SEP)
+            os.writeBytes(lineSep)
             os.flush()
         }
-        os.writeBytes("exit$LINE_SEP")
+        os.writeBytes("exit$lineSep")
         os.flush()
         result = process.waitFor()
         if (isNeedResultMsg) {
@@ -258,13 +230,13 @@ fun Runtime.execCmd(
             if (successResult.readLine().also { line = it } != null) {
                 successMsg.append(line)
                 while (successResult.readLine().also { line = it } != null) {
-                    successMsg.append(LINE_SEP).append(line)
+                    successMsg.append(lineSep).append(line)
                 }
             }
             if (errorResult.readLine().also { line = it } != null) {
                 errorMsg.append(line)
                 while (errorResult.readLine().also { line = it } != null) {
-                    errorMsg.append(LINE_SEP).append(line)
+                    errorMsg.append(lineSep).append(line)
                 }
             }
         }

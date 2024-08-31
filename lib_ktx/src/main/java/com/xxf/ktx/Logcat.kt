@@ -6,6 +6,7 @@ import androidx.annotation.WorkerThread
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 
 /**
@@ -69,7 +70,7 @@ fun <T : Context> T.logcatRecord(
         .resolve("logcat")
         .resolve(
             Date().toString() + "${
-                SimpleDateFormat("yyyy-MM-dd").format(Date())
+                SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(Date())
             }.logcat"
         ), logLevel: Set<Int> = emptySet()
 ) {
@@ -80,7 +81,7 @@ fun <T : Context> T.logcatRecord(
     if (logLevelCommand.isNotEmpty()) {
         writeCmd += " *:${logLevelCommand.joinToString(",")}"
     }
-    Runtime.getRuntime().execWaitFor(writeCmd)
+    Runtime.getRuntime().execCmd(writeCmd, false)
 }
 
 private fun convertLogLevelCommand(logLevel: Set<Int> = emptySet()): List<String> {
