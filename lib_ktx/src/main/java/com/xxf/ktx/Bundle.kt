@@ -52,9 +52,9 @@ fun <T> Bundle.putExtras(vararg params: Pair<String, T>): Bundle {
 /**
  * 转换成Map
  */
-fun <T : BaseBundle> T.toMap(): Map<String, Any?> {
+fun <T : BaseBundle> T?.toMap(): Map<String, Any?> {
     val map = ArrayMap<String, Any?>()
-    this.keySet().forEach {
+    this?.keySet()?.forEach {
         map[it] = this.get(it)
     }
     return map;
