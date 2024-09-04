@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 
     <application
@@ -20,21 +21,36 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round1"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:resizeableActivity="true"
-            android:exported="true">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
+        <service
+            android:name=".service.MyService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback"/>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:resizeableActivity="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestActivity" android:resizeableActivity="true"/>
-        <activity android:name=".StateActivity" android:resizeableActivity="true"/>
-        <activity android:name=".PdfViewActivity" android:resizeableActivity="true"/>
-         <activity android:name=".ReciveContentActivity" android:resizeableActivity="true"/>
+        <activity
+            android:name=".TestActivity"
+            android:resizeableActivity="true" />
+        <activity
+            android:name=".StateActivity"
+            android:resizeableActivity="true" />
+        <activity
+            android:name=".PdfViewActivity"
+            android:resizeableActivity="true" />
+        <activity
+            android:name=".ReciveContentActivity"
+            android:resizeableActivity="true" />
     </application>
 
 </manifest>

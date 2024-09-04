@@ -25,6 +25,7 @@ import com.xxf.arch.activity.XXFActivity
 import com.xxf.arch.http.cookie.SharedPreferencePersistentCookieJar
 import com.xxf.arch.http.cookie.parseAll
 import com.xxf.arch.test.prefs.PreferencesDemo
+import com.xxf.arch.test.service.MyService
 import com.xxf.toast.ToastType
 import com.xxf.toast.ToastUtils
 import com.xxf.toast.showToast
@@ -33,6 +34,7 @@ import com.xxf.date.DateUtils
 import com.xxf.date.DateUtils.format
 import com.xxf.json.typeadapter.format.formatobject.NumberFormatObject
 import com.xxf.json.typeadapter.format.impl.number.Number_KM_FormatTypeAdapter
+import com.xxf.ktx.startServiceCompat
 import com.xxf.log.logD
 import com.xxf.utils.FileUtils
 import com.xxf.utils.HandlerUtils.mainHandler
@@ -175,6 +177,9 @@ class MainActivity() : XXFActivity() {
             }
         })
         setContentView(R.layout.activity_main)
+
+        startServiceCompat(Intent(this,MyService::class.java))
+
         val imageTextView = findViewById<XXFRoundImageTextView>(R.id.textImage)
         //        imageTextView.getTextView().setText("xxxxHGFDGHDFGHGH");
 //        imageTextView.getImageView().setImageResource(R.drawable.xxf_ic_toast_success);

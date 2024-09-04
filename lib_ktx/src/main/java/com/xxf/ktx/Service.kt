@@ -9,8 +9,10 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ServiceCompat
+import androidx.core.content.ContextCompat
 
 /**
+ * 建议继承 [android.app.ForegroundService]
  * 启动service 兼容各个版本
  * 在 Android 8.0 之前，创建前台 Service 的方式通常是先创建一个后台 Service，然后将该 Service 推到前台。
  * Android 8.0 有一项复杂功能：系统不允许后台应用创建后台 Service。
@@ -38,11 +40,7 @@ import androidx.core.app.ServiceCompat
 @RequiresPermission(allOf = [Manifest.permission.FOREGROUND_SERVICE])
 fun <T : Context> T.startServiceCompat(service: Intent): Boolean {
     return tryOrLogFalse {
-        if (shouldStartForegroundService()) {
-            this.startForegroundService(service)
-        } else {
-            this.startService(service)
-        }
+        ContextCompat.startForegroundService(this, service)
     }
 }
 
@@ -56,6 +54,8 @@ fun <T : Context> T.shouldStartForegroundService(): Boolean {
 
 /**
  * 兼容启动前台服务
+ * 建议继承 [android.app.ForegroundService]
+ *
  * Service. startForeground(int, Notification, int) ，第三个参数 foregroundServiceType 已添加到 Build. VERSION_CODES. Q中。
  * 在 SDK 版本 Build. VERSION_CODES. Q之前 ，该方法调用时应 Service. startForeground(int, Notification) 不带 foregroundServiceType 参数。
  * 从 SDK Version Build. VERSION_CODES. Q开始，允许的 foregroundServiceType 为：
@@ -96,8 +96,17 @@ fun <T : Service> T.startForegroundCompat(
     //官方认定 https://developer.android.com/develop/background-work/services/foreground-services?hl=zh-cn
     //需try  建议用 ServiceCompat
     //要么就放弃START_STICKY
+    //or use ServiceCompat.startForeground(this, id, notification, foregroundServiceType)
     return tryOrLogFalse {
-        ServiceCompat.startForeground(this, id, notification, foregroundServiceType)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(
+                id,
+                notification,
+                foregroundServiceType,
+            )
+        } else {
+            startForeground(id, notification)
+        }
     }
 }
 

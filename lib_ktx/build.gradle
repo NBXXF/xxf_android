@@ -27,7 +27,6 @@ android {
 }
 
 dependencies {
-    api libs.core.ktx
     api libs.fragment.ktx
     api libs.lifecycle.common
     api libs.kpower.ktx
