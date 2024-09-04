@@ -29,7 +29,7 @@ android {
 
 dependencies {
     implementation project(':optional:lib_audio')
-    api des.material
-    api des.rxAndroid
+    api libs.material
+    api libs.rxAndroid
     implementation project(path: ':lib_permission')
 }

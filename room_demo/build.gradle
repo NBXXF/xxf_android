@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    api des.material
+    api libs.material
     implementation project(path: ':lib_adapter')
     implementation project(path: ':lib_http')
    //implementation "com.github.NBXXF:xxf_android:4.0.2"
@@ -53,8 +53,8 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation "androidx.room:room-rxjava3:$room_version"
 
-    api des.rxJava
-    api des.rxAndroid
+    api libs.rxJava
+    api libs.rxAndroid
     implementation("com.ibm.icu:icu4j:71.1")
 
 }

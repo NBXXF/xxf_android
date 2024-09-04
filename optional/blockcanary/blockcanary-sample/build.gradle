@@ -22,6 +22,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':optional:blockcanary:blockcanary-android')
-    api des.material
+    api libs.material
 
 }

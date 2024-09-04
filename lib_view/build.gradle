@@ -31,8 +31,8 @@ dependencies {
     api project(path: ':lib_ktx')
     api project(path: ':lib_arch')
     api project(path: ':lib_application')
-    api des.lottie
-    api des.smart_refresh
+    api libs.lottie
+    api libs.smart.refresh
 }
 
 ext {

@@ -22,8 +22,8 @@ android {
     }
 }
 dependencies {
-    api des.rxJava
-    api des.database_objectbox
+    api libs.rxJava
+    api libs.kpower.database.objectbox
     api project(path: ':lib_application')
 }
 

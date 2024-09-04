@@ -30,7 +30,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation des.material
+    implementation libs.material
     //UI
     implementation project(path: ':optional:lib_qrcode')
 

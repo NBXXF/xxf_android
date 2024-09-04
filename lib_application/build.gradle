@@ -27,8 +27,8 @@ android {
 }
 
 dependencies {
-    api des.material
-    api des.startup
+    api libs.material
+    api libs.startup
     api project(path: ':lib_ktx')
 }
 

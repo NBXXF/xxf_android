@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    api des.material
+    api libs.material
     api project(path: ':lib_utils')
 }
 

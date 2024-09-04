@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    api des.material
+    api libs.material
     implementation project(path: ':lib_http')
     implementation project(path: ':lib_application')
     implementation("com.squareup.moshi:moshi:1.13.0")

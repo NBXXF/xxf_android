@@ -32,9 +32,9 @@ android {
 }
 
 dependencies {
-    api des.material
-    api des.fragment
-    api des.lifecycle_common
+    api libs.material
+    api libs.fragment
+    api libs.lifecycle.common
 }
 
 ext {

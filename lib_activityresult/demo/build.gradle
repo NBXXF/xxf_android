@@ -31,6 +31,6 @@ android {
 }
 
 dependencies {
-    api des.material
+    api libs.material
     implementation project(path: ':lib_permission')
 }

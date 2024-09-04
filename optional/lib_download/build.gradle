@@ -33,7 +33,7 @@ dependencies {
     implementation libs.okdownload.okhttp
     api project(':lib_log')
     api project(':lib_adapter')
-    api des.database
+    api libs.kpower.database
 }
 ext {
     publishVersion = rootProject.xxfVersion

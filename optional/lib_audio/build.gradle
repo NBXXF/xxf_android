@@ -31,8 +31,8 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly des.rxJava
-    compileOnly des.material
+    compileOnly libs.rxJava
+    compileOnly libs.material
 }
 
 ext {

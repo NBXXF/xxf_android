@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-kapt'
 
 }
-def des = rootProject.ext.dependencies
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
     defaultConfig {
@@ -28,10 +27,11 @@ android {
 }
 
 dependencies {
-    api des.fragment_ktx
-    api des.lifecycle_common
+    api libs.core.ktx
+    api libs.fragment.ktx
+    api libs.lifecycle.common
     api libs.kpower.ktx
-    //api("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0") //缺失太多api 和bug也多
+    //api("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0") //缺失太多api 和bug也多 而且0.6M
 }
 
 ext {

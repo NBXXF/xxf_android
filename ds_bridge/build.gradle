@@ -30,7 +30,7 @@ dependencies {
     implementation  'com.github.wendux:DSBridge-Android:3.0-SNAPSHOT'
     implementation 'com.squareup.okhttp3:okhttp:3.3.0'
     testImplementation 'junit:junit:4.12'
-    api des.material
+    api libs.material
 }
 
 

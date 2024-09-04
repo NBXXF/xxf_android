@@ -20,8 +20,8 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    implementation des.rxJava
-    implementation des.material
+    implementation libs.rxJava
+    implementation libs.material
     implementation project(path: ':optional:lib_audio')
     api files('libs/eventbus-3.0.0.jar')
 }

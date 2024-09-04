@@ -30,10 +30,10 @@ android {
 }
 
 dependencies {
-    api des.material
-    api des.recyclerview
+    api libs.material
+    api libs.recyclerview
     api project(path: ':lib_ktx')
-    implementation des.speed
+    implementation libs.kpower.speed
 }
 
 ext {

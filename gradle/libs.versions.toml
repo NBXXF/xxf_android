@@ -61,7 +61,6 @@ okdownload-sqlite = { module = "com.liulishuo.okdownload:sqlite", version.ref = 
 okdownload-okhttp = { module = "com.liulishuo.okdownload:okhttp", version.ref = "okdownload" }
 exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "exoplayer" }
 exoplayer-hls = { module = "androidx.media3:media3-exoplayer-hls", version.ref = "exoplayer" }
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -74,9 +73,36 @@ ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 view-pager = { module = "androidx.viewpager:viewpager", version = "1.0.0" }
 testng = { group = "org.testng", name = "testng", version.ref = "testng" }
+
+
 kpower-ktx = { module = "com.nbxxf.kpower:ktx", version.ref = "kpower" }
 kpower-http = { module = "com.nbxxf.kpower:http", version.ref = "kpower" }
+kpower-speed = { module = "com.nbxxf.kpower:speed", version.ref = "kpower" }
+kpower-bus = { module = "com.nbxxf.kpower:bus", version.ref = "kpower" }
+kpower-database = { module = "com.nbxxf.kpower:database", version.ref = "kpower" }
+kpower-database-objectbox = { module = "com.nbxxf.kpower:database_objectbox", version.ref = "kpower" }
+kpower-gson = { module = "com.nbxxf.kpower:gson", version.ref = "kpower" }
+
+
+core-ktx = { module = "androidx.core:core-ktx", version = "1.13.1" }
+
 material = { module = "com.google.android.material:material", version = "1.4.0" }
+fragment = { module = "androidx.fragment:fragment", version = "1.5.5" }
+fragment-ktx = { module = "androidx.fragment:fragment-ktx", version = "1.5.5" }
+navigation-fragment = { module = "androidx.navigation:navigation-fragment", version = "2.5.3" }
+lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version = "2.5.1" }
+startup = { module = "androidx.startup:startup-runtime", version = "1.1.1" }
+recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.2.1" }
+rxAndroid = { module = "io.reactivex.rxjava3:rxandroid", version = "3.0.0" }
+rxJava = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.2" }
+
+smart_refresh = { module = "io.github.scwang90:refresh-layout-kernel", version = "2.0.5" }
+refresh_footer = { module = "io.github.scwang90:refresh-footer-classics", version = "2.0.5" }
+lottie = { module = "com.airbnb.android:lottie", version = "6.4.0" }
+
+
+
+
 
 mobile-ffmpeg = { module = "com.arthenica:mobile-ffmpeg-full-gpl", version = "4.4.LTS" }
 [plugins]

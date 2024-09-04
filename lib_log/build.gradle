@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    implementation des.json
+    implementation libs.kpower.gson
 }
 
 ext {

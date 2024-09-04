@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    api des.material
+    api libs.material
 //    api des.skin_support
 //    api des.skin_support_appcompat
 //    api des.skin_support_constraint_layout

@@ -32,7 +32,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api 'com.github.MasayukiSuda:Mp4Composer-android:v0.4.1'
-    api des.rxAndroid
+    api libs.rxAndroid
 
     implementation project(path: ':lib_permission')
 }

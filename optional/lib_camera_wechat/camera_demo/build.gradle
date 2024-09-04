@@ -33,6 +33,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':optional:lib_camera_wechat')
 
-    implementation des.material
+    implementation libs.material
     implementation project(path: ':lib_permission')
 }

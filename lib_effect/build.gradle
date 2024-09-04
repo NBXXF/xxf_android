@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    api des.material
-    api des.recyclerview
+    api libs.material
+    api libs.recyclerview
 }
 ext {
     publishVersion = rootProject.xxfVersion

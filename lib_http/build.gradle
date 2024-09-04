@@ -23,7 +23,7 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    api des.http
+    api libs.kpower.http
     api project(path: ':lib_application')
 }
 

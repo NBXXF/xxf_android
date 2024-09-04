@@ -22,7 +22,7 @@ android {
 dependencies {
     implementation project(path: ':lib_application')
     implementation project(path: ':lib_fileprovider')
-    implementation des.speed
+    implementation libs.kpower.speed
 }
 
 ext {

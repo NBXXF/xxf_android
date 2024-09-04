@@ -25,9 +25,9 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    api des.lifecycle_common
-    api des.navigation_fragment
-    api des.rxAndroid
+    api libs.lifecycle.common
+    api libs.navigation.fragment
+    api libs.rxAndroid
     api project(path: ':lib_application')
     api project(path: ':lib_http')
     api project(path: ':lib_utils')
@@ -35,8 +35,8 @@ dependencies {
     api project(path: ':lib_permission')
     api project(path: ':lib_snackbar')
     api project(path: ':lib_view_round')
-    api des.json
-    api des.bus
+    api libs.kpower.gson
+    api libs.kpower.bus
 }
 
 ext {

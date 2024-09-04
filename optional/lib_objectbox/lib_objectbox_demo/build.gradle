@@ -40,8 +40,8 @@ android {
 dependencies {
     implementation project(path: ':optional:lib_objectbox')
     implementation project(path: ':lib_rxjava')
-    implementation des.material
-    implementation des.json
+    implementation libs.material
+    implementation libs.kpower.gson
 
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
