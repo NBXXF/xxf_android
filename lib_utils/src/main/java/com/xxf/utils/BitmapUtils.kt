@@ -1,6 +1,17 @@
 package com.xxf.utils
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.PixelFormat
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.media.MediaMetadataRetriever
@@ -12,15 +23,15 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.webkit.WebView
 import android.widget.ScrollView
 import androidx.annotation.CheckResult
-import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
-import androidx.recyclerview.widget.RecyclerView
+import com.xxf.ktx.tryOrLogNull
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
 import kotlin.math.max
 import kotlin.math.min
+
 
 /**
  * @Description: bitmap处理工具类
@@ -625,5 +636,68 @@ object BitmapUtils {
             e.printStackTrace()
         }
         return bitmap;
+    }
+
+    /**
+     * 图片锐化（拉普拉斯变换）
+     *
+     * @return
+     */
+    fun sharpenImageAmeliorate(bmp: Bitmap): Bitmap? {
+        return tryOrLogNull {
+            // 拉普拉斯矩阵
+            val laplacian = intArrayOf(-1, -1, -1, -1, 9, -1, -1, -1, -1)
+            //        int[] laplacian = new int[]{0, -1, 0, -1, 5, -1, 0, -1, 0};
+            //        int[] laplacian = new int[]{1, -2, 1, -2, 5, -2, 1, -2, 1};
+            val width = bmp.width
+            val height = bmp.height
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+            var pixR = 0
+            var pixG = 0
+            var pixB = 0
+            var pixColor = 0
+            var newR = 0
+            var newG = 0
+            var newB = 0
+            var idx = 0
+            val alpha = 1f
+            //原图像素点数组
+            val pixels = IntArray(width * height)
+            //创建一个新数据保存锐化后的像素点
+            val pixels_1 = IntArray(width * height)
+            bmp.getPixels(pixels, 0, width, 0, 0, width, height)
+            var i = 1
+            val length = height - 1
+            while (i < length) {
+                var k = 1
+                val len = width - 1
+                while (k < len) {
+                    idx = 0
+                    for (m in -1..1) {
+                        for (n in -1..1) {
+                            pixColor = pixels[(i + n) * width + k + m]
+                            pixR = Color.red(pixColor)
+                            pixG = Color.green(pixColor)
+                            pixB = Color.blue(pixColor)
+                            newR = newR + (pixR * laplacian[idx] * alpha).toInt()
+                            newG = newG + (pixG * laplacian[idx] * alpha).toInt()
+                            newB = newB + (pixB * laplacian[idx] * alpha).toInt()
+                            idx++
+                        }
+                    }
+                    newR = Math.min(255, Math.max(0, newR))
+                    newG = Math.min(255, Math.max(0, newG))
+                    newB = Math.min(255, Math.max(0, newB))
+                    pixels_1[i * width + k] = Color.argb(255, newR, newG, newB)
+                    newR = 0
+                    newG = 0
+                    newB = 0
+                    k++
+                }
+                i++
+            }
+            bitmap.setPixels(pixels_1, 0, width, 0, 0, width, height)
+            bitmap
+        }
     }
 }
