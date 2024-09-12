@@ -218,6 +218,15 @@ public final class ProcessUtils {
 
     /**
      * 杀掉app所有进程
+     */
+    public static void waitKillAppComplete(Context context) {
+        waitKillAppComplete(context, context.getPackageName());
+        System.exit(0);
+    }
+
+
+    /**
+     * 杀掉app所有进程
      *
      * @param kPackageName
      */
@@ -227,7 +236,7 @@ public final class ProcessUtils {
             String processName = runningAppProcess.processName;
             if (TextUtils.equals(kPackageName, processName)
                     || processName.startsWith(kPackageName)) {
-                waitKillProcessComplete(context,runningAppProcess.pid);
+                waitKillProcessComplete(context, runningAppProcess.pid);
             }
         }
     }
