@@ -1,8 +1,11 @@
 package com.xxf.ktx.window.navigationbar
 
+import android.graphics.Color
 import android.view.Window
 import androidx.core.view.WindowInsetsCompat.Type
+import androidx.core.view.WindowInsetsControllerCompat
 import com.xxf.ktx.rootWindowInsetsCompat
+import com.xxf.ktx.window.systembar.decorFitsSystemWindows
 import com.xxf.ktx.windowInsetsControllerCompat
 
 
@@ -34,3 +37,13 @@ inline var <T : Window> T.isLightNavigationBar: Boolean
         decorView.windowInsetsControllerCompat?.isAppearanceLightNavigationBars = value
     }
 
+/**
+ * 沉浸式界面
+ */
+fun <T : Window> T.immerseNavigationBar(lightMode: Boolean = true) {
+    decorFitsSystemWindows = false
+    decorView.windowInsetsControllerCompat?.systemBarsBehavior =
+        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    navigationBarColor = Color.TRANSPARENT
+    isLightNavigationBar = lightMode
+}

@@ -35,3 +35,10 @@ inline var <T : Fragment> T.navigationBarColor: Int
     set(value) {
         requireActivity().navigationBarColor = value
     }
+
+/**
+ * 沉浸式界面
+ */
+fun <T : Fragment> T.immerseNavigationBar(lightMode: Boolean = true) {
+    requireActivity().immerseNavigationBar(lightMode = lightMode)
+}

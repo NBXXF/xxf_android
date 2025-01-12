@@ -34,3 +34,10 @@ inline var <T : Activity> T.navigationBarColor: Int
     set(value) {
         window.navigationBarColor = value
     }
+
+/**
+ * 沉浸式界面
+ */
+fun <T : Activity> T.immerseNavigationBar(lightMode: Boolean = true) {
+    window.immerseNavigationBar(lightMode = lightMode)
+}
