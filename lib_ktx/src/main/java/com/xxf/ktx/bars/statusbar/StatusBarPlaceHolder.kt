@@ -8,8 +8,6 @@ import android.view.View.MeasureSpec.EXACTLY
 import android.view.WindowInsets
 import androidx.annotation.CallSuper
 import com.xxf.ktx.findActivity
-import com.xxf.ktx.isStatusBarVisible
-import com.xxf.ktx.statusBarHeight
 import kotlin.properties.Delegates
 
 /**
