@@ -25,6 +25,18 @@ inline var <T : Activity> T.isSystemBarVisible: Boolean
     }
 
 /**
+ * 状态栏与手势交互
+ * BEHAVIOR_SHOW_BARS_BY_TOUCH：表示系统栏通过触摸屏幕的任意位置显示。
+ * BEHAVIOR_SHOW_BARS_BY_SWIPE：表示系统栏通过从屏幕边缘的滑动手势显示。
+ * BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE：表示系统栏通过滑动手势显示，并且在显示后短暂时间内自动隐藏。
+ */
+inline var <T : Activity> T.systemBarsBehavior: Int
+    get() = window.systemBarsBehavior
+    set(value) {
+        window.systemBarsBehavior = value
+    }
+
+/**
  * 设置状态栏和导航栏的颜色
  * 获取导航栏活着状态栏的颜色
  */
