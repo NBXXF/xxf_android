@@ -53,7 +53,7 @@ fun View.subtractNavigationBarHeightToMarginBottom() = post {
  */
 fun View.addStatusBarHeightToPaddingBottom() = post {
     if (isAddedPaddingBottom != true) {
-        updatePadding(top = paddingTop + navigationBarHeight)
+        updatePadding(top = paddingBottom + navigationBarHeight)
         updateLayoutParams {
             height = measuredHeight + navigationBarHeight
         }
@@ -63,7 +63,7 @@ fun View.addStatusBarHeightToPaddingBottom() = post {
 
 fun View.subtractStatusBarHeightToPaddingBottom() = post {
     if (isAddedPaddingBottom == true) {
-        updatePadding(top = paddingTop - navigationBarHeight)
+        updatePadding(top = paddingBottom - navigationBarHeight)
         updateLayoutParams {
             height = measuredHeight - navigationBarHeight
         }
