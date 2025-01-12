@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.statusbar
+package com.xxf.ktx.window.statusbar
 
 import android.app.Activity
 import com.xxf.ktx.NO_GETTER
@@ -45,13 +45,6 @@ inline var <T : Activity> T.isStatusBarVisible: Boolean
  */
 fun <T : Activity> T.immerseStatusBar(lightMode: Boolean = true) {
     window.immerseStatusBar(lightMode = lightMode)
-}
-
-/**
- * 状态栏背景色透明
- */
-fun <T : Activity> T.transparentStatusBar() {
-    window.transparentStatusBar()
 }
 
 /**

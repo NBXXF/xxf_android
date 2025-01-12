@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.statusbar
+package com.xxf.ktx.window.statusbar
 
 import android.graphics.Color
 import android.view.Window
@@ -55,13 +55,7 @@ fun <T : Window> T.immerseStatusBar(lightMode: Boolean = true) {
     decorFitsSystemWindows = false
     decorView.windowInsetsControllerCompat?.systemBarsBehavior =
         WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-    transparentStatusBar()
+    statusBarColor = Color.TRANSPARENT
     isLightStatusBar = lightMode
 }
 
-/**
- * 状态栏背景色透明
- */
-fun <T : Window> T.transparentStatusBar() {
-    statusBarColor = Color.TRANSPARENT
-}

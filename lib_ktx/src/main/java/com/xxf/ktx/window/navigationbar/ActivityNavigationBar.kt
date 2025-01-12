@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.navigationbar
+package com.xxf.ktx.window.navigationbar
 
 import android.app.Activity
 
@@ -17,13 +17,14 @@ inline var <T : Activity> T.isNavigationBarVisible: Boolean
         window.isNavigationBarVisible = value
     }
 
-
 /**
- * 使导航栏背景色透明
+ * 是否是亮色的导航栏
  */
-fun <T : Activity> T.transparentNavigationBar() {
-    window.transparentNavigationBar()
-}
+inline var <T : Activity> T.isLightNavigationBar: Boolean
+    get() = window.isLightNavigationBar
+    set(value) {
+        window.isLightNavigationBar = value
+    }
 
 /**
  * 导航栏背景色

@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.navigationbar
+package com.xxf.ktx.window.navigationbar
 
 import android.view.View
 import android.view.ViewGroup

@@ -1,6 +1,5 @@
-package com.xxf.ktx.bars.navigationbar
+package com.xxf.ktx.window.navigationbar
 
-import android.graphics.Color
 import android.view.Window
 import androidx.core.view.WindowInsetsCompat.Type
 import com.xxf.ktx.rootWindowInsetsCompat
@@ -26,10 +25,12 @@ inline var <T : Window> T.isNavigationBarVisible: Boolean
         }
     }
 
-
 /**
- * 使导航栏背景色透明
+ * 是否是亮色的导航栏
  */
-fun <T : Window> T.transparentNavigationBar() {
-    navigationBarColor = Color.TRANSPARENT
-}
+inline var <T : Window> T.isLightNavigationBar: Boolean
+    get() = decorView.windowInsetsControllerCompat?.isAppearanceLightNavigationBars == true
+    set(value) {
+        decorView.windowInsetsControllerCompat?.isAppearanceLightNavigationBars = value
+    }
+

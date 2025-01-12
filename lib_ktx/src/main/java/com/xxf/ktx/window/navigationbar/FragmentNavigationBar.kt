@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.navigationbar
+package com.xxf.ktx.window.navigationbar
 
 import androidx.fragment.app.Fragment
 
@@ -19,11 +19,13 @@ inline var <T : Fragment> T.isNavigationBarVisible: Boolean
 
 
 /**
- * 使导航栏背景色透明
+ * 是否是亮色的导航栏
  */
-fun <T : Fragment> T.transparentNavigationBar() {
-    requireActivity().transparentNavigationBar()
-}
+inline var <T : Fragment> T.isLightNavigationBar: Boolean
+    get() = requireActivity().isLightNavigationBar
+    set(value) {
+        requireActivity().isLightNavigationBar = value
+    }
 
 /**
  * 导航栏背景色

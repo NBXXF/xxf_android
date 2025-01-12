@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.statusbar
+package com.xxf.ktx.window.statusbar
 
 import androidx.fragment.app.Fragment
 import com.xxf.ktx.NO_GETTER
@@ -47,12 +47,6 @@ fun <T : Fragment> T.immerseStatusBar(lightMode: Boolean = true) {
     requireActivity().immerseStatusBar(lightMode = lightMode)
 }
 
-/**
- * 状态栏背景色透明
- */
-fun <T : Fragment> T.transparentStatusBar() {
-    requireActivity().transparentStatusBar()
-}
 
 /**
  * 状态栏背景色透明

@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.statusbar
+package com.xxf.ktx.window.statusbar
 
 import android.view.View
 import android.view.ViewGroup
