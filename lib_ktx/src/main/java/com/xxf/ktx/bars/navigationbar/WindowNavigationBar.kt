@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.navigation
+package com.xxf.ktx.bars.navigationbar
 
 import android.graphics.Color
 import android.view.Window

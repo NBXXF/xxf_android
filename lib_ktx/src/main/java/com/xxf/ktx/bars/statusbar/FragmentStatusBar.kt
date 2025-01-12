@@ -53,3 +53,12 @@ fun <T : Fragment> T.immerseStatusBar(lightMode: Boolean = true) {
 fun <T : Fragment> T.transparentStatusBar() {
     requireActivity().transparentStatusBar()
 }
+
+/**
+ * 状态栏背景色透明
+ */
+inline var <T : Fragment> T.statusBarColor: Int
+    get() = requireActivity().statusBarColor
+    set(value) {
+        requireActivity().statusBarColor = value
+    }

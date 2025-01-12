@@ -1,4 +1,4 @@
-package com.xxf.ktx.bars.navigation
+package com.xxf.ktx.bars.navigationbar
 
 import android.content.Context
 import android.content.res.Configuration

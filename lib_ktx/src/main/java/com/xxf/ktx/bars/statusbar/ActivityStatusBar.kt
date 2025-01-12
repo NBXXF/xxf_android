@@ -53,3 +53,12 @@ fun <T : Activity> T.immerseStatusBar(lightMode: Boolean = true) {
 fun <T : Activity> T.transparentStatusBar() {
     window.transparentStatusBar()
 }
+
+/**
+ * 状态栏背景色透明
+ */
+inline var <T : Activity> T.statusBarColor: Int
+    get() = window.statusBarColor
+    set(value) {
+        window.statusBarColor = value
+    }
