@@ -57,6 +57,7 @@ inline var <T : Activity> T.isLightSystemBar: Boolean
 
 /**
  * 沉浸式界面
+ * 导航栏&状态栏
  */
 fun <T : Activity> T.immerseSystemBar(lightMode: Boolean = true) {
     window.immerseSystemBar(lightMode = lightMode)

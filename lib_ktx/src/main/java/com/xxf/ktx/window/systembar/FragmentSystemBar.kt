@@ -57,6 +57,7 @@ inline var <T : Fragment> T.isLightSystemBar: Boolean
 
 /**
  * 沉浸式界面
+ * 导航栏&状态栏
  */
 fun <T : Fragment> T.immerseSystemBar(lightMode: Boolean = true) {
     requireActivity().immerseSystemBar(lightMode = lightMode)
