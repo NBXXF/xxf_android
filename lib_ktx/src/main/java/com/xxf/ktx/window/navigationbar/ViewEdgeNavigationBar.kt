@@ -51,7 +51,7 @@ fun View.subtractNavigationBarHeightToMarginBottom() = post {
 /**
  * 将导航栏高度 添加到PaddingBottom
  */
-fun View.addStatusBarHeightToPaddingBottom() = post {
+fun View.addNavigationBarHeightToPaddingBottom() = post {
     if (isAddedPaddingBottom != true) {
         updatePadding(top = paddingBottom + navigationBarHeight)
         updateLayoutParams {
@@ -61,7 +61,7 @@ fun View.addStatusBarHeightToPaddingBottom() = post {
     }
 }
 
-fun View.subtractStatusBarHeightToPaddingBottom() = post {
+fun View.subtractNavigationBarHeightToPaddingBottom() = post {
     if (isAddedPaddingBottom == true) {
         updatePadding(top = paddingBottom - navigationBarHeight)
         updateLayoutParams {
