@@ -20,6 +20,7 @@ var <T : Window> T.decorFitsSystemWindows: Boolean
 
 /**
  * 状态栏&导航栏是否可见
+ * 只能在界面渲染完成获取
  */
 inline var <T : Window> T.isSystemBarVisible: Boolean
     get() = decorView.rootWindowInsetsCompat?.isVisible(Type.systemBars()) == true

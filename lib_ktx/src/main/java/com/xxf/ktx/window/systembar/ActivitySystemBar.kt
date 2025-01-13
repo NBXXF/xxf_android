@@ -17,6 +17,7 @@ var <T : Activity> T.decorFitsSystemWindows: Boolean
 
 /**
  * 状态栏和导航栏是否可见
+ * 只能在界面渲染完成获取
  */
 inline var <T : Activity> T.isSystemBarVisible: Boolean
     get() = window.isSystemBarVisible

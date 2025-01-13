@@ -33,6 +33,7 @@ inline var <T : Activity> T.isLightStatusBar: Boolean
 
 /**
  * 状态栏是否可见
+ * 只能在界面渲染完成获取
  */
 inline var <T : Activity> T.isStatusBarVisible: Boolean
     get() = window.isStatusBarVisible

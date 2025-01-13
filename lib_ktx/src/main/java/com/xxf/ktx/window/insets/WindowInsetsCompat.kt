@@ -10,12 +10,14 @@ import com.xxf.ktx.doOnApplyWindowInsets
 
 /**
  * 导航栏是否显示
+ * 只能在界面渲染完成获取
  */
 inline val <T : WindowInsetsCompat> T.isNavigationBarVisible: Boolean
     get() = isVisible(Type.navigationBars())
 
 /**
  * 状态栏是否显示
+ * 只能在界面渲染完成获取
  */
 inline val <T : WindowInsetsCompat> T.isStatusBarBarVisible: Boolean
     get() = isVisible(Type.statusBars())

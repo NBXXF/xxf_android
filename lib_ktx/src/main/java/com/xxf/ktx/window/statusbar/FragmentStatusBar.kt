@@ -32,6 +32,7 @@ inline var <T : Fragment> T.isLightStatusBar: Boolean
 
 /**
  * 状态栏是否可见
+ * 只能在界面渲染完成获取
  */
 inline var <T : Fragment> T.isStatusBarVisible: Boolean
     get() = requireActivity().isStatusBarVisible

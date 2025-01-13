@@ -10,6 +10,7 @@ val <T : Fragment> T.navigationBarHeight: Int
 
 /**
  * 是否显示导航栏
+ * 只能在界面渲染完成获取
  */
 inline var <T : Fragment> T.isNavigationBarVisible: Boolean
     get() = requireActivity().isNavigationBarVisible

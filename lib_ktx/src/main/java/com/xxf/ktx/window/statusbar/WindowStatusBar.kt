@@ -28,6 +28,7 @@ inline var <T : Window> T.isLightStatusBar: Boolean
 
 /**
  * 状态栏是否可见
+ * 只能在界面渲染完成获取
  */
 inline var <T : Window> T.isStatusBarVisible: Boolean
     get() = decorView.rootWindowInsetsCompat?.isVisible(Type.statusBars()) == true
