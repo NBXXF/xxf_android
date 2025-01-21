@@ -318,9 +318,9 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
     public static final class Result {
 
         @NonNull
-        private final Map<Detector<?>, Object> mValues;
+        final Map<Detector<?>, Object> mValues;
         @NonNull
-        private final Map<Detector<?>, Throwable> mThrowables;
+        final Map<Detector<?>, Throwable> mThrowables;
         private final long mTimestamp;
 
         public Result(@NonNull Map<Detector<?>, Object> values, long timestamp,
