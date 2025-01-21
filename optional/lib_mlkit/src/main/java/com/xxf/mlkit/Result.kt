@@ -9,6 +9,11 @@ fun <T> com.xxf.mlkit.MlKitFastAnalyzer.Result.containsDetector(detector: Detect
     return mValues.contains(detector) || mThrowables.contains(detector);
 }
 
+
+@Suppress("UNCHECKED_CAST")
+fun <T> com.xxf.mlkit.MlKitFastAnalyzer.Result.getImageProxyInfoNullable(detector: Detector<T>?): ImageProxyInfo {
+    return mImageProxyInfos[detector]!!
+}
 /**
  * 获取识别结果
  * 相比于[com.xxf.mlkit.MlKitFastAnalyzer.Result.getValue] 没有检查

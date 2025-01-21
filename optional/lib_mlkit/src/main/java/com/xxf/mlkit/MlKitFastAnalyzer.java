@@ -181,7 +181,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
             }
         }
         // Detect the image recursively, starting from index 0.
-        detectRecursively(imageProxy, 0, analysisToTarget, new HashMap<>(), new HashMap<>());
+        detectRecursively(imageProxy, 0, analysisToTarget, new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 
     /**
@@ -207,6 +207,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
             @NonNull ImageProxy imageProxy,
             int detectorIndex,
             @NonNull Matrix transform,
+            Map<Detector<?>, ImageProxyInfo> imageProxyInfos,
             Map<Detector<?>, Object> values,
             @NonNull Map<Detector<?>, Throwable> throwables) {
         Image image = imageProxy.getImage();
@@ -217,7 +218,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
             return;
         }
 
-        Result result = new Result(values, imageProxy.getImageInfo().getTimestamp(), throwables);
+        Result result = new Result(imageProxyInfos, values, imageProxy.getImageInfo().getTimestamp(), throwables);
         if (detectorIndex > mDetectors.size() - 1 || onDetectIntercept(result)) {
             // Termination condition is met when the index reaches the end of the list.
             imageProxy.close();
@@ -237,7 +238,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
             throwables.put(detector, new RuntimeException("Failed to process the image.", e));
             // This detector is closed, but the next one might still be open. Send the image to
             // the next detector.
-            detectRecursively(imageProxy, detectorIndex + 1, transform, values,
+            detectRecursively(imageProxy, detectorIndex + 1, transform, imageProxyInfos, values,
                     throwables);
             return;
         }
@@ -254,7 +255,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
                         throwables.put(detector, task.getException());
                     }
                     // Go to the next detector.
-                    detectRecursively(imageProxy, detectorIndex + 1, transform, values,
+                    detectRecursively(imageProxy, detectorIndex + 1, transform, imageProxyInfos, values,
                             throwables);
                 });
     }
@@ -316,15 +317,19 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
      * The aggregated MLKit result of a camera frame.
      */
     public static final class Result {
-
+        @NonNull
+        final Map<Detector<?>, ImageProxyInfo> mImageProxyInfos;
         @NonNull
         final Map<Detector<?>, Object> mValues;
         @NonNull
         final Map<Detector<?>, Throwable> mThrowables;
         private final long mTimestamp;
 
-        public Result(@NonNull Map<Detector<?>, Object> values, long timestamp,
+        public Result(@NonNull Map<Detector<?>, ImageProxyInfo> mImageProxyInfos,
+                      @NonNull Map<Detector<?>, Object> values,
+                      long timestamp,
                       @NonNull Map<Detector<?>, Throwable> throwables) {
+            this.mImageProxyInfos = mImageProxyInfos;
             mValues = values;
             mThrowables = throwables;
             mTimestamp = timestamp;
