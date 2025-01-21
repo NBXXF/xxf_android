@@ -227,6 +227,8 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
             return;
         }
         Detector<?> detector = mDetectors.get(detectorIndex);
+        //增加附属信息
+        imageProxyInfos.put(detector, new ImageProxyInfo(imageProxy));
         int rotationDegrees = imageProxy.getImageInfo().getRotationDegrees();
 
         Task<?> mlKitTask;
