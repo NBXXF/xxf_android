@@ -148,7 +148,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
      */
     @SuppressLint("RestrictedApi")
     @Override
-   // @OptIn(markerClass = TransformExperimental.class)
+    // @OptIn(markerClass = TransformExperimental.class)
     public final void analyze(@NonNull ImageProxy imageProxy) {
         // By default, the matrix is identity for COORDINATE_SYSTEM_ORIGINAL.
         Matrix analysisToTarget = new Matrix();
@@ -187,10 +187,10 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
     /**
      * 拦截是否继续识别
      *
-     * @param value
+     * @param result
      * @return true 表示拦截,不再继续识别
      */
-    protected boolean onDetectIntercept(Map<Detector<?>, Object> value) {
+    protected boolean onDetectIntercept(@NonNull Result result) {
         return false;
     }
 
@@ -217,11 +217,11 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
             return;
         }
 
-        if (onDetectIntercept(values) || detectorIndex > mDetectors.size() - 1) {
+        Result result = new Result(values, imageProxy.getImageInfo().getTimestamp(), throwables);
+        if (detectorIndex > mDetectors.size() - 1 || onDetectIntercept(result)) {
             // Termination condition is met when the index reaches the end of the list.
             imageProxy.close();
-            mExecutor.execute(() -> mConsumer.accept(
-                    new Result(values, imageProxy.getImageInfo().getTimestamp(), throwables)));
+            mExecutor.execute(() -> mConsumer.accept(result));
             return;
         }
         Detector<?> detector = mDetectors.get(detectorIndex);
