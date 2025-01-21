@@ -27,7 +27,9 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    api 'androidx.camera:camera-mlkit-vision:1.4.1'
+    api 'com.google.mlkit:vision-interfaces:16.3.0'
+    api 'androidx.camera:camera-core:1.4.1'
+//    api 'androidx.camera:camera-view:1.4.1'
 }
 ext {
     publishVersion = rootProject.xxfVersion

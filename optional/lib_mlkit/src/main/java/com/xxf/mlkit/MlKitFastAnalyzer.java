@@ -23,8 +23,8 @@ import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Logger;
-import androidx.camera.view.TransformExperimental;
-import androidx.camera.view.transform.ImageProxyTransformFactory;
+//import androidx.camera.view.TransformExperimental;
+//import androidx.camera.view.transform.ImageProxyTransformFactory;
 import androidx.core.util.Consumer;
 
 import com.google.android.gms.tasks.Task;
@@ -86,7 +86,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
     final Consumer<Result> mConsumer;
     // Synthetic access
     @SuppressLint("UnsafeOptInUsageError")
-    final ImageProxyTransformFactory mImageAnalysisTransformFactory;
+//    final ImageProxyTransformFactory mImageAnalysisTransformFactory;
     @NonNull
     private final Executor mExecutor;
 
@@ -114,7 +114,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
      * @param executor               on which the consumer is invoked.
      * @param consumer               invoked when there is a new ML Kit result.
      */
-    @OptIn(markerClass = TransformExperimental.class)
+//    @OptIn(markerClass = TransformExperimental.class)
     public MlKitFastAnalyzer(
             @NonNull List<Detector<?>> detectors,
             int targetCoordinateSystem,
@@ -131,8 +131,8 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
         mTargetCoordinateSystem = targetCoordinateSystem;
         mConsumer = consumer;
         mExecutor = executor;
-        mImageAnalysisTransformFactory = new ImageProxyTransformFactory();
-        mImageAnalysisTransformFactory.setUsingRotationDegrees(true);
+//        mImageAnalysisTransformFactory = new ImageProxyTransformFactory();
+//        mImageAnalysisTransformFactory.setUsingRotationDegrees(true);
     }
 
     /**
@@ -148,7 +148,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
      */
     @SuppressLint("RestrictedApi")
     @Override
-    @OptIn(markerClass = TransformExperimental.class)
+   // @OptIn(markerClass = TransformExperimental.class)
     public final void analyze(@NonNull ImageProxy imageProxy) {
         // By default, the matrix is identity for COORDINATE_SYSTEM_ORIGINAL.
         Matrix analysisToTarget = new Matrix();
