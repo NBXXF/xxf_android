@@ -1,4 +1,4 @@
-package com.xxf.mlkit
+package com.xxf.mlkit.model
 
 import android.graphics.Rect
 import androidx.camera.core.ImageProxy

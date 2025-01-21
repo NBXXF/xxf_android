@@ -29,6 +29,7 @@ import androidx.core.util.Consumer;
 
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.interfaces.Detector;
+import com.xxf.mlkit.model.ImageProxyInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

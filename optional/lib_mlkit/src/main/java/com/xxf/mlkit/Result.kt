@@ -1,6 +1,7 @@
 package com.xxf.mlkit
 
 import com.google.mlkit.vision.interfaces.Detector
+import com.xxf.mlkit.model.ImageProxyInfo
 
 /**
  * 检查是否存在结果或者执行异常
