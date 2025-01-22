@@ -34,6 +34,12 @@ open class BarcodeCZxingAnalyzerDetector(
     executor: Executor,
     scanPadding: Int = 40.dp
 ) : BarcodeAnalyzerDetector(barcodeScanner, executor, scanPadding) {
+
+    override fun close() {
+        super.close()
+        barcodeDecoder.destroy()
+    }
+
     override fun wrapper(
         task: Task<List<Barcode>>,
         bitmapProxy: () -> Bitmap
