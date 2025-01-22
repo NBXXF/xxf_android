@@ -31,6 +31,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.interfaces.Detector;
 import com.xxf.mlkit.model.ImageProxyInfo;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +75,7 @@ import java.util.concurrent.Executor;
  *
  * @see ImageAnalysis.Analyzer
  */
-public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
+public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer, Closeable {
 
     private static final String TAG = "MlKitAnalyzer";
 
@@ -313,6 +315,13 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer {
             mSensorToTarget = null;
         } else {
             mSensorToTarget = new Matrix(matrix);
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        for (Detector<?> detector:mDetectors) {
+            detector.close();
         }
     }
 
