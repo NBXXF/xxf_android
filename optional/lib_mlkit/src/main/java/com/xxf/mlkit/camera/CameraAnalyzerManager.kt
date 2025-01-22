@@ -12,6 +12,7 @@ import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.barcode.ZoomSuggestionOptions
 import com.xxf.ktx.doOnDestroy
 import com.xxf.ktx.runOnUiThread
@@ -26,7 +27,7 @@ import java.util.concurrent.Executor
  * @Author: xuanyouwu@163.com 17611639080
  * @Date: 2023/8/24 13:42
  */
-class CameraAnalyzerManager(
+open class CameraAnalyzerManager(
     private val lifecycleOwner: LifecycleOwner,
     private val previewView: PreviewView,
     private val analyzer: ImageAnalysis.Analyzer,
@@ -72,9 +73,14 @@ class CameraAnalyzerManager(
     }
     private var camera: Camera? = null
     private var cameraSelectorOption = CameraSelector.LENS_FACING_FRONT
-    private var cameraProvider: ProcessCameraProvider? = null
-    private val processCameraProvider by lazy {
-        ProcessCameraProvider.getInstance(previewView.context)
+    private var processCameraProvider: ProcessCameraProvider? = null
+    private val processCameraProviderFuture by lazy {
+        onCreateProcessCameraProviderFuture()
+    }
+
+    ///提供复写模式,低版本依赖,打包有问题
+    protected open fun onCreateProcessCameraProviderFuture(): ListenableFuture<ProcessCameraProvider> {
+        return ProcessCameraProvider.getInstance(previewView.context)
     }
 
     init {
@@ -84,7 +90,28 @@ class CameraAnalyzerManager(
     }
 
     fun startCamera() {
-        processCameraProvider.addListener(this, executor)
+        if (processCameraProvider != null) {
+            setCameraConfig(processCameraProvider!!)
+        } else {
+            processCameraProviderFuture.addListener(this, executor)
+        }
+    }
+
+    private fun setCameraConfig(cameraProvider: ProcessCameraProvider) {
+        val cameraSelector = CameraSelector.Builder()
+            .apply {
+                val isFront: Boolean =
+                    cameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)
+                        ?: false //检测默认前置摄像头
+                //有些定制工业平板有问题
+                if (isFront) {
+                    this.requireLensFacing(CameraSelector.LENS_FACING_FRONT)
+                } else {
+                    this.requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                }
+            }
+            .build()
+        setCameraConfig(cameraProvider, cameraSelector)
     }
 
     private fun setCameraConfig(
@@ -100,7 +127,7 @@ class CameraAnalyzerManager(
                     preview,
                     imageAnalyzer
                 )
-                preview.setSurfaceProvider(previewView.surfaceProvider)
+                preview.surfaceProvider = previewView.surfaceProvider
             } catch (e: Exception) {
                 Log.e(TAG, "Use case binding failed", e)
             }
@@ -108,7 +135,7 @@ class CameraAnalyzerManager(
     }
 
     fun changeCameraSelector(graphicOverlay: GraphicOverlay) {
-        cameraProvider?.unbindAll()
+        processCameraProvider?.unbindAll()
         cameraSelectorOption =
             if (cameraSelectorOption == CameraSelector.LENS_FACING_BACK) CameraSelector.LENS_FACING_FRONT
             else CameraSelector.LENS_FACING_BACK
@@ -127,7 +154,7 @@ class CameraAnalyzerManager(
     override fun close() {
         previewView.runOnUiThread {
             kotlin.runCatching {
-                cameraProvider?.unbindAll()
+                processCameraProvider?.unbindAll()
             }
         }
         kotlin.runCatching {
@@ -136,21 +163,10 @@ class CameraAnalyzerManager(
     }
 
     override fun run() {
-        cameraProvider = processCameraProvider.get()
-        val cameraSelector = CameraSelector.Builder()
-            .apply {
-                val isFront: Boolean =
-                    cameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)?:false //检测默认前置摄像头
-                //有些定制工业平板有问题
-                if (isFront) {
-                    this.requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                } else {
-                    this.requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                }
-            }
-            .build()
-
-        setCameraConfig(cameraProvider, cameraSelector)
+        processCameraProvider = processCameraProviderFuture.get()
+        processCameraProvider?.let {
+            setCameraConfig(it)
+        }
     }
 
 }
