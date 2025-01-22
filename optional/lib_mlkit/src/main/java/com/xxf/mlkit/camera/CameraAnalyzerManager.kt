@@ -28,11 +28,11 @@ import java.util.concurrent.Executor
  * @Date: 2023/8/24 13:42
  */
 open class CameraAnalyzerManager(
-    private val lifecycleOwner: LifecycleOwner,
-    private val previewView: PreviewView,
-    private val analyzer: ImageAnalysis.Analyzer,
-    private val executor: Executor,
-    private val resolutionStrategy: ResolutionStrategy = ResolutionStrategy(
+    open val lifecycleOwner: LifecycleOwner,
+    open val previewView: PreviewView,
+    open val analyzer: ImageAnalysis.Analyzer,
+    open val executor: Executor,
+    open val resolutionStrategy: ResolutionStrategy = ResolutionStrategy(
         Size(1920, 1080),
         ResolutionStrategy.FALLBACK_RULE_CLOSEST_LOWER_THEN_HIGHER
     )
