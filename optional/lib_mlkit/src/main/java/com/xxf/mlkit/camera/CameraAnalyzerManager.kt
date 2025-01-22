@@ -26,7 +26,7 @@ import java.util.concurrent.Executor
  * @Author: xuanyouwu@163.com 17611639080
  * @Date: 2023/8/24 13:42
  */
-class CameraManager(
+class CameraAnalyzerManager(
     private val lifecycleOwner: LifecycleOwner,
     private val previewView: PreviewView,
     private val analyzer: ImageAnalysis.Analyzer,
