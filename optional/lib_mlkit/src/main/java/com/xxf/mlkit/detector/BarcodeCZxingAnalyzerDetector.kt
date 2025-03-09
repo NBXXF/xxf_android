@@ -3,6 +3,7 @@ package com.xxf.mlkit.detector
 
 import android.graphics.Bitmap
 import android.graphics.Rect
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -31,7 +32,10 @@ open class BarcodeCZxingAnalyzerDetector(
 
     override fun close() {
         super.close()
-        barcodeDecoder.destroy()
+        kotlin.runCatching {
+            barcodeDecoder.destroy()
+        }
+        println("=======================>Analyzer czxing close")
     }
 
 
@@ -48,8 +52,6 @@ open class BarcodeCZxingAnalyzerDetector(
         } catch (e: Throwable) {
             e.printStackTrace()
             return emptyList();
-        } finally {
-            BitmapUtils.recycle(toBitmap);
         }
     }
 
@@ -58,14 +60,17 @@ open class BarcodeCZxingAnalyzerDetector(
      * 尝试图片清晰化再解析
      */
     private fun decodeBitmapResultListBySharpen(toBitmap: Bitmap): List<BarcodeAnalyzerResult> {
+        var ameliorateBitmap: Bitmap? = null
         try {
-            val ameliorateBitmap = BitmapUtils.sharpenImageAmeliorate(
+            ameliorateBitmap = BitmapUtils.sharpenImageAmeliorate(
                 toBitmap
             )
             return decodeBitmapResultList(ameliorateBitmap!!);
         } catch (e: Throwable) {
             e.printStackTrace()
             return emptyList();
+        } finally {
+            BitmapUtils.recycle(ameliorateBitmap);
         }
     }
 
@@ -73,84 +78,90 @@ open class BarcodeCZxingAnalyzerDetector(
     override fun wrapper(
         task: Task<List<Barcode>>, bitmapProxy: () -> Bitmap
     ): Task<List<BarcodeAnalyzerResult>> {
+        val rawBitmap: Bitmap = bitmapProxy();
+        println("=======================>Analyzer czxing  start wrapper：${Thread.currentThread()}")
         return task.continueWith(executor) { it ->
+            println("=======================>Analyzer czxing start：${Thread.currentThread()}")
             val rawResult: List<BarcodeAnalyzerResult> = convertAnalyzerResult(it.result.orEmpty());
-            val handleResult =
-                if (rawResult.isEmpty() || rawResult.filterAnalyzerResult().isEmpty()) {
-                    /**
-                     * 整体二次识别
-                     */
-                    var decodeBitmapResultList =
-                        decodeBitmapResultList(bitmapProxy()).filterAnalyzerResult()
-                            .sortAnalyzerResult()
-
-                    /**
-                     * 尝试图片清晰化再解析
-                     */
-                    if (decodeBitmapResultList.isEmpty()) {
-                        val rawBitmap: Bitmap = bitmapProxy();
-                        decodeBitmapResultList =
-                            decodeBitmapResultListBySharpen(rawBitmap).filterAnalyzerResult()
+            try {
+                val handleResult =
+                    if (rawResult.isEmpty() || rawResult.filterAnalyzerResult().isEmpty()) {
+                        /**
+                         * 整体二次识别
+                         */
+                        var decodeBitmapResultList =
+                            decodeBitmapResultList(rawBitmap).filterAnalyzerResult()
                                 .sortAnalyzerResult()
-                    }
-                    decodeBitmapResultList
-                } else {
-                    var rawBitmap: Bitmap? = null;
 
-                    val decoderSecondTimeList: List<BarcodeAnalyzerResult> =
-                        rawResult.map { resultItem ->
-                            /**
-                             * 局部二次识别
-                             */
-                            if (resultItem.displayValue.isEmpty()) {
-                                if (rawBitmap == null || rawBitmap?.isRecycled == true) {
-                                    rawBitmap = bitmapProxy();
-                                }
-                                try {
-                                    val cropBitmap = BitmapUtils.crop(
-                                        rawBitmap!!,
-                                        resultItem.boundingBox,
-                                        scanPadding
-                                    );
-                                    var decodeBitmapResultList =
-                                        decodeBitmapResultList(cropBitmap).filterAnalyzerResult()
-                                            .sortAnalyzerResult()
-                                    /**
-                                     * 尝试优化图片
-                                     */
-                                    if (decodeBitmapResultList.isEmpty()) {
+                        /**
+                         * 尝试图片清晰化再解析
+                         */
+                        if (decodeBitmapResultList.isEmpty()) {
+                            decodeBitmapResultList =
+                                decodeBitmapResultListBySharpen(rawBitmap).filterAnalyzerResult()
+                                    .sortAnalyzerResult()
+                        }
+                        decodeBitmapResultList
+                    } else {
+
+                        val decoderSecondTimeList: List<BarcodeAnalyzerResult> =
+                            rawResult.map { resultItem ->
+                                /**
+                                 * 局部二次识别
+                                 */
+                                if (resultItem.displayValue.isEmpty()) {
+                                    try {
                                         val cropBitmap = BitmapUtils.crop(
-                                            rawBitmap!!,
+                                            rawBitmap,
                                             resultItem.boundingBox,
                                             scanPadding
                                         );
-                                        decodeBitmapResultList =
-                                            decodeBitmapResultListBySharpen(cropBitmap).filterAnalyzerResult()
+                                        var decodeBitmapResultList =
+                                            decodeBitmapResultList(cropBitmap).filterAnalyzerResult()
                                                 .sortAnalyzerResult()
+                                        /**
+                                         * 尝试优化图片
+                                         */
+                                        if (decodeBitmapResultList.isEmpty()) {
+                                            val cropBitmap = BitmapUtils.crop(
+                                                rawBitmap,
+                                                resultItem.boundingBox,
+                                                scanPadding
+                                            );
+                                            decodeBitmapResultList =
+                                                decodeBitmapResultListBySharpen(cropBitmap).filterAnalyzerResult()
+                                                    .sortAnalyzerResult()
+                                        }
+                                        /**
+                                         * 取第一张
+                                         */
+                                        BarcodeAnalyzerResult(
+                                            resultItem.boundingBox,
+                                            decodeBitmapResultList.firstOrNull()?.displayValue.orEmpty()
+                                        )
+                                    } catch (e: Throwable) {
+                                        e.printStackTrace()
+                                        resultItem;
                                     }
-                                    /**
-                                     * 取第一张
-                                     */
-                                    BarcodeAnalyzerResult(
-                                        resultItem.boundingBox,
-                                        decodeBitmapResultList.firstOrNull()?.displayValue.orEmpty()
-                                    )
-                                } catch (e: Throwable) {
-                                    e.printStackTrace()
-                                    resultItem;
+                                } else {
+                                    resultItem
                                 }
-                            } else {
-                                resultItem
                             }
-                        }
-                    BitmapUtils.recycle(rawBitmap);
-                    /**
-                     *  下游不要接收到 displayValue为空的情况
-                     */
-                    decoderSecondTimeList.filterAnalyzerResult().sortAnalyzerResult()
-                }
-
-            return@continueWith handleResult;
+                        BitmapUtils.recycle(rawBitmap);
+                        /**
+                         *  下游不要接收到 displayValue为空的情况
+                         */
+                        decoderSecondTimeList.filterAnalyzerResult().sortAnalyzerResult()
+                    }
+                println("=======================>Analyzer czxing success:${handleResult}")
+                return@continueWith handleResult;
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                println("=======================>Analyzer czxing error:${Log.getStackTraceString(e)}")
+                return@continueWith rawResult;
+            } finally {
+                BitmapUtils.recycle(rawBitmap);
+            }
         }
     }
 
