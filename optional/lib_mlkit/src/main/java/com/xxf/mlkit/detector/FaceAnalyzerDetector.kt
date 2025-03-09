@@ -15,6 +15,7 @@ import com.xxf.ktx.toByteArray
 import com.xxf.mlkit.imageproxy.AndroidImageProxy
 import com.xxf.mlkit.imageproxy.ByteBufferImageProxy
 import com.xxf.mlkit.model.FaceAnalyzerResult
+import com.xxf.mlkit.model.sortAnalyzerResult
 import com.xxf.utils.BitmapUtils
 import java.nio.ByteBuffer
 import java.util.concurrent.Executor
@@ -106,7 +107,7 @@ open class FaceAnalyzerDetector(
                 BitmapUtils.recycle(cropBitmap)
                 it.result.map {
                     FaceAnalyzerResult(it.boundingBox, faceBitmap)
-                }
+                }.sortAnalyzerResult()
             } else {
                 emptyList()
             }

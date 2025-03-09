@@ -14,6 +14,8 @@ import com.xxf.ktx.dp
 import com.xxf.mlkit.imageproxy.AndroidImageProxy
 import com.xxf.mlkit.imageproxy.ByteBufferImageProxy
 import com.xxf.mlkit.model.BarcodeAnalyzerResult
+import com.xxf.mlkit.model.filterAnalyzerResult
+import com.xxf.mlkit.model.sortAnalyzerResult
 import java.nio.ByteBuffer
 import java.util.concurrent.Executor
 
@@ -83,16 +85,26 @@ open class BarcodeAnalyzerDetector(
         return barcodeScanner.optionalFeatures;
     }
 
+    /**
+     * 只是转换
+     */
+    protected fun convertAnalyzerResult(result: List<Barcode>): List<BarcodeAnalyzerResult> {
+        return result.map {
+            BarcodeAnalyzerResult(it.boundingBox!!, it.displayValue.orEmpty())
+        }
+    }
 
     protected open fun wrapper(
         task: Task<List<Barcode>>,
         bitmapProxy: () -> Bitmap
     ): Task<List<BarcodeAnalyzerResult>> {
         return task.continueWith(executor) { it ->
-            val map = it.result.orEmpty().map {
-                BarcodeAnalyzerResult(it.boundingBox!!, it.displayValue.orEmpty())
-            }
-            return@continueWith map
+            /**
+             *  下游不要接收到 displayValue为空的情况
+             *  且按面积排序
+             */
+            return@continueWith convertAnalyzerResult(it.result).filterAnalyzerResult()
+                .sortAnalyzerResult()
         }
     }
 
