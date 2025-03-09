@@ -77,8 +77,8 @@ open class BarcodeCZxingAnalyzerDetector(
     override fun wrapper(
         task: Task<List<Barcode>>, bitmapProxy: () -> Bitmap
     ): Task<List<BarcodeAnalyzerResult>> {
-        return task.continueWith(executor) { it ->
-            println("=======================>Analyzer czxing start")
+        return task.continueWith { it ->
+            println("=======================>Analyzer czxing start：${Thread.currentThread()}")
             val rawResult: List<BarcodeAnalyzerResult> = convertAnalyzerResult(it.result.orEmpty());
             try {
                 val handleResult =
