@@ -52,8 +52,6 @@ open class BarcodeCZxingAnalyzerDetector(
         } catch (e: Throwable) {
             e.printStackTrace()
             return emptyList();
-        } finally {
-            BitmapUtils.recycle(toBitmap);
         }
     }
 
@@ -62,14 +60,17 @@ open class BarcodeCZxingAnalyzerDetector(
      * 尝试图片清晰化再解析
      */
     private fun decodeBitmapResultListBySharpen(toBitmap: Bitmap): List<BarcodeAnalyzerResult> {
+        var ameliorateBitmap: Bitmap? = null
         try {
-            val ameliorateBitmap = BitmapUtils.sharpenImageAmeliorate(
+            ameliorateBitmap = BitmapUtils.sharpenImageAmeliorate(
                 toBitmap
             )
             return decodeBitmapResultList(ameliorateBitmap!!);
         } catch (e: Throwable) {
             e.printStackTrace()
             return emptyList();
+        } finally {
+            BitmapUtils.recycle(ameliorateBitmap);
         }
     }
 
@@ -77,7 +78,9 @@ open class BarcodeCZxingAnalyzerDetector(
     override fun wrapper(
         task: Task<List<Barcode>>, bitmapProxy: () -> Bitmap
     ): Task<List<BarcodeAnalyzerResult>> {
-        return task.continueWith { it ->
+        val rawBitmap: Bitmap = bitmapProxy();
+        println("=======================>Analyzer czxing  start wrapper：${Thread.currentThread()}")
+        return task.continueWith(executor) { it ->
             println("=======================>Analyzer czxing start：${Thread.currentThread()}")
             val rawResult: List<BarcodeAnalyzerResult> = convertAnalyzerResult(it.result.orEmpty());
             try {
@@ -87,21 +90,19 @@ open class BarcodeCZxingAnalyzerDetector(
                          * 整体二次识别
                          */
                         var decodeBitmapResultList =
-                            decodeBitmapResultList(bitmapProxy()).filterAnalyzerResult()
+                            decodeBitmapResultList(rawBitmap).filterAnalyzerResult()
                                 .sortAnalyzerResult()
 
                         /**
                          * 尝试图片清晰化再解析
                          */
                         if (decodeBitmapResultList.isEmpty()) {
-                            val rawBitmap: Bitmap = bitmapProxy();
                             decodeBitmapResultList =
                                 decodeBitmapResultListBySharpen(rawBitmap).filterAnalyzerResult()
                                     .sortAnalyzerResult()
                         }
                         decodeBitmapResultList
                     } else {
-                        var rawBitmap: Bitmap? = null;
 
                         val decoderSecondTimeList: List<BarcodeAnalyzerResult> =
                             rawResult.map { resultItem ->
@@ -109,12 +110,9 @@ open class BarcodeCZxingAnalyzerDetector(
                                  * 局部二次识别
                                  */
                                 if (resultItem.displayValue.isEmpty()) {
-                                    if (rawBitmap == null || rawBitmap?.isRecycled == true) {
-                                        rawBitmap = bitmapProxy();
-                                    }
                                     try {
                                         val cropBitmap = BitmapUtils.crop(
-                                            rawBitmap!!,
+                                            rawBitmap,
                                             resultItem.boundingBox,
                                             scanPadding
                                         );
@@ -126,7 +124,7 @@ open class BarcodeCZxingAnalyzerDetector(
                                          */
                                         if (decodeBitmapResultList.isEmpty()) {
                                             val cropBitmap = BitmapUtils.crop(
-                                                rawBitmap!!,
+                                                rawBitmap,
                                                 resultItem.boundingBox,
                                                 scanPadding
                                             );
@@ -157,10 +155,12 @@ open class BarcodeCZxingAnalyzerDetector(
                     }
                 println("=======================>Analyzer czxing success:${handleResult}")
                 return@continueWith handleResult;
-            }catch (e:Throwable){
+            } catch (e: Throwable) {
                 e.printStackTrace()
                 println("=======================>Analyzer czxing error:${Log.getStackTraceString(e)}")
                 return@continueWith rawResult;
+            } finally {
+                BitmapUtils.recycle(rawBitmap);
             }
         }
     }
