@@ -223,7 +223,6 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer, Closeable {
 
         Result result = new Result(imageProxyInfos, values, imageProxy.getImageInfo().getTimestamp(), throwables);
         if (detectorIndex > mDetectors.size() - 1 || onDetectIntercept(result)) {
-            System.out.println("=======================>Analyzer reaches:"+detectorIndex);
             // Termination condition is met when the index reaches the end of the list.
             imageProxy.close();
             mExecutor.execute(() -> mConsumer.accept(result));
@@ -255,12 +254,9 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer, Closeable {
                     if (task.isCanceled()) {
                         throwables.put(detector,
                                 new CancellationException("The task is canceled."));
-                        System.out.println("=======================>Analyzer isCanceled:"+detectorIndex);
                     } else if (task.isSuccessful()) {
                         values.put(detector, task.getResult());
-                        System.out.println("=======================>Analyzer isSuccessful:"+detectorIndex);
                     } else {
-                        System.out.println("=======================>Analyzer exception:"+detectorIndex+" "+task.getException());
                         throwables.put(detector, task.getException());
                     }
                     // Go to the next detector.

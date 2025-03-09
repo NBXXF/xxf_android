@@ -91,10 +91,9 @@ open class FaceAnalyzerDetector(
         task: Task<List<Face>>,
         bitmapProxy: () -> Bitmap
     ): Task<List<FaceAnalyzerResult>> {
-        println("=======================>Analyzer face start：${Thread.currentThread()}")
-        val toBitmap = bitmapProxy();
         return task.continueWith(executor) { it ->
             val result = if (it.result.isNotEmpty()) {
+                val toBitmap = bitmapProxy();
                 val cropBitmap = BitmapUtils.cropCompose(
                     toBitmap,
                     it.result.map { face ->
