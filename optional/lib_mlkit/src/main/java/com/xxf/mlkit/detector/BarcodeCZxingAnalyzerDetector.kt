@@ -155,6 +155,7 @@ open class BarcodeCZxingAnalyzerDetector(
                          */
                         decoderSecondTimeList.filterAnalyzerResult().sortAnalyzerResult()
                     }
+                println("=======================>Analyzer czxing success:${handleResult}")
                 return@continueWith handleResult;
             }catch (e:Throwable){
                 e.printStackTrace()
