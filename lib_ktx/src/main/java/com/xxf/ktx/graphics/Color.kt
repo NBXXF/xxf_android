@@ -34,6 +34,6 @@ fun Color.opacity(@FloatRange(from = 0.0, to = 1.0) opacity: Float): Color {
  * 255：完全不透明（颜色完全可见）。
  */
 @RequiresApi(Build.VERSION_CODES.O)
-fun Color.alphaComponent(@IntRange(from = 0, to = 255) alpha: Int): Color {
+fun Color.alphaComponent(@IntRange(from = 0x0, to = 0xFF) alpha: Int): Color {
     return Color.valueOf(ColorUtils.setAlphaComponent(this.toArgb(), alpha))
 }
