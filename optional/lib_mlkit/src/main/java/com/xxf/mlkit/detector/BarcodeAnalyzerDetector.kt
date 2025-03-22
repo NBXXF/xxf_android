@@ -11,7 +11,6 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.interfaces.Detector
 import com.xxf.ktx.dp
-import com.xxf.ktx.isMainThread
 import com.xxf.mlkit.imageproxy.AndroidImageProxy
 import com.xxf.mlkit.imageproxy.ByteBufferImageProxy
 import com.xxf.mlkit.model.BarcodeAnalyzerResult
@@ -19,6 +18,7 @@ import com.xxf.mlkit.model.filterAnalyzerResult
 import com.xxf.mlkit.model.sortAnalyzerResult
 import java.nio.ByteBuffer
 import java.util.concurrent.Executor
+import java.util.concurrent.RejectedExecutionException
 
 
 /**
@@ -99,26 +99,25 @@ open class BarcodeAnalyzerDetector(
         task: Task<List<Barcode>>,
         bitmapProxy: () -> Bitmap
     ): Task<List<BarcodeAnalyzerResult>> {
-        print("=================>thread:${Thread.currentThread()} isMainThread:$isMainThread")
-//        return task.continueWith(executor) { it ->
-//            /**
-//             *  下游不要接收到 displayValue为空的情况
-//             *  且按面积排序
-//             */
-//            return@continueWith convertAnalyzerResult(it.result).filterAnalyzerResult()
-//                .sortAnalyzerResult()
-//        }
+        try {
+            return task.continueWith(executor) { it ->
 
-        return task.continueWith { it ->
-            print("=================>thread  continueWith:${Thread.currentThread()} isMainThread:$isMainThread")
-            /**
-             *  下游不要接收到 displayValue为空的情况
-             *  且按面积排序
-             */
-            return@continueWith convertAnalyzerResult(it.result).filterAnalyzerResult()
-                .sortAnalyzerResult()
+                return@continueWith barcodeAnalyzerResults(it)
+            }
+        } catch (e: RejectedExecutionException) {
+            return task.continueWith { it ->
+                return@continueWith barcodeAnalyzerResults(it)
+            }
         }
     }
+
+    /**
+     *  下游不要接收到 displayValue为空的情况
+     *  且按面积排序
+     */
+    private fun barcodeAnalyzerResults(it: Task<List<Barcode>>) =
+        convertAnalyzerResult(it.result).filterAnalyzerResult()
+            .sortAnalyzerResult()
 
 
 }

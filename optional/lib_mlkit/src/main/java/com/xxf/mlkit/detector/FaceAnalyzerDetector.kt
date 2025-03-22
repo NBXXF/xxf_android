@@ -19,6 +19,7 @@ import com.xxf.mlkit.model.sortAnalyzerResult
 import com.xxf.utils.BitmapUtils
 import java.nio.ByteBuffer
 import java.util.concurrent.Executor
+import java.util.concurrent.RejectedExecutionException
 
 
 /**
@@ -91,29 +92,43 @@ open class FaceAnalyzerDetector(
         task: Task<List<Face>>,
         bitmapProxy: () -> Bitmap
     ): Task<List<FaceAnalyzerResult>> {
-        return task.continueWith(executor) { it ->
-            val result = if (it.result.isNotEmpty()) {
-                val toBitmap = bitmapProxy();
-                val cropBitmap = BitmapUtils.cropCompose(
-                    toBitmap,
-                    it.result.map { face ->
-                        face.boundingBox
-                    },
-                    scanPadding
-                )
-                val faceBitmap: ByteArray =
-                    cropBitmap.toByteArray()!!
-                BitmapUtils.recycle(toBitmap)
-                BitmapUtils.recycle(cropBitmap)
-                it.result.map {
-                    FaceAnalyzerResult(it.boundingBox, faceBitmap)
-                }.sortAnalyzerResult()
-            } else {
-                emptyList()
+        try {
+            return task.continueWith(executor) { it ->
+                val result = faceAnalyzerResults(it, bitmapProxy)
+                return@continueWith result;
             }
-            return@continueWith result;
+        } catch (e: RejectedExecutionException) {
+            return task.continueWith { it ->
+                val result = faceAnalyzerResults(it, bitmapProxy)
+                return@continueWith result;
+            }
         }
     }
 
+    private fun faceAnalyzerResults(
+        it: Task<List<Face>>,
+        bitmapProxy: () -> Bitmap
+    ): List<FaceAnalyzerResult> {
+        val result = if (it.result.isNotEmpty()) {
+            val toBitmap = bitmapProxy();
+            val cropBitmap = BitmapUtils.cropCompose(
+                toBitmap,
+                it.result.map { face ->
+                    face.boundingBox
+                },
+                scanPadding
+            )
+            val faceBitmap: ByteArray =
+                cropBitmap.toByteArray()!!
+            BitmapUtils.recycle(toBitmap)
+            BitmapUtils.recycle(cropBitmap)
+            it.result.map {
+                FaceAnalyzerResult(it.boundingBox, faceBitmap)
+            }.sortAnalyzerResult()
+        } else {
+            emptyList()
+        }
+        return result
+    }
 
 }
