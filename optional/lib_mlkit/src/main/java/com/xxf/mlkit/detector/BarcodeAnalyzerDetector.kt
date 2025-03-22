@@ -11,6 +11,7 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.interfaces.Detector
 import com.xxf.ktx.dp
+import com.xxf.ktx.isMainThread
 import com.xxf.mlkit.imageproxy.AndroidImageProxy
 import com.xxf.mlkit.imageproxy.ByteBufferImageProxy
 import com.xxf.mlkit.model.BarcodeAnalyzerResult
@@ -98,7 +99,18 @@ open class BarcodeAnalyzerDetector(
         task: Task<List<Barcode>>,
         bitmapProxy: () -> Bitmap
     ): Task<List<BarcodeAnalyzerResult>> {
-        return task.continueWith(executor) { it ->
+        print("=================>thread:${Thread.currentThread()} isMainThread:$isMainThread")
+//        return task.continueWith(executor) { it ->
+//            /**
+//             *  下游不要接收到 displayValue为空的情况
+//             *  且按面积排序
+//             */
+//            return@continueWith convertAnalyzerResult(it.result).filterAnalyzerResult()
+//                .sortAnalyzerResult()
+//        }
+
+        return task.continueWith { it ->
+            print("=================>thread  continueWith:${Thread.currentThread()} isMainThread:$isMainThread")
             /**
              *  下游不要接收到 displayValue为空的情况
              *  且按面积排序
