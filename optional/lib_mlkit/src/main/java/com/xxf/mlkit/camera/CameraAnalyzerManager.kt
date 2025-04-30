@@ -105,11 +105,11 @@ open class CameraAnalyzerManager(
             val cameraSelector = getOptimalCameraSelector(cameraProvider);
             setCameraConfig(cameraProvider, cameraSelector)
         } catch (e: Throwable) {
-            onCameraConfigError(e);
+            onCameraConfigError(cameraProvider, e);
         }
     }
 
-    open fun onCameraConfigError(error: Throwable) {
+    open fun onCameraConfigError(cameraProvider: ProcessCameraProvider, error: Throwable) {
         Log.e(TAG, "==========>onCameraConfigError", error)
     }
 
@@ -154,13 +154,13 @@ open class CameraAnalyzerManager(
     }
 
     private fun setCameraConfig(
-        cameraProvider: ProcessCameraProvider?,
+        cameraProvider: ProcessCameraProvider,
         cameraSelector: CameraSelector
     ) {
         previewView.runOnUiThread {
             try {
-                cameraProvider?.unbindAll()
-                camera = cameraProvider?.bindToLifecycle(
+                cameraProvider.unbindAll()
+                camera = cameraProvider.bindToLifecycle(
                     lifecycleOwner,
                     cameraSelector,
                     preview,
@@ -168,8 +168,8 @@ open class CameraAnalyzerManager(
                 )
                 preview.surfaceProvider = previewView.surfaceProvider
             } catch (e: Exception) {
-                onCameraConfigError(e);
                 Log.e(TAG, "==========>Use case binding failed", e)
+                onCameraConfigError(cameraProvider, e);
             }
         }
     }
