@@ -118,6 +118,8 @@ open class CameraAnalyzerManager(
      */
     @SuppressLint("UnsafeOptInUsageError", "RestrictedApi")
     private fun getOptimalCameraSelector(cameraProvider: ProcessCameraProvider): CameraSelector {
+        val availableCameras = cameraProvider.availableCameraInfos
+
         Log.i(
             TAG, "==========>availableCameras:${
                 cameraProvider.availableCameraInfos.joinToString(separator = System.lineSeparator()) {
@@ -125,32 +127,28 @@ open class CameraAnalyzerManager(
                 }
             }"
         )
-        val groupedByFacing = cameraProvider.availableCameraInfos
-            .filter { it.lensFacing != null }
-            .groupBy { it.lensFacing }
 
-        // 按优先级：前置 > 外接 > 后置
-        val preferredCameraInfo = when {
-            groupedByFacing.containsKey(CameraSelector.LENS_FACING_FRONT) ->
-                groupedByFacing[CameraSelector.LENS_FACING_FRONT]!!.first()
-
-            groupedByFacing.containsKey(CameraSelector.LENS_FACING_EXTERNAL) ->
-                groupedByFacing[CameraSelector.LENS_FACING_EXTERNAL]!!.first()
-
-            groupedByFacing.containsKey(CameraSelector.LENS_FACING_BACK) ->
-                groupedByFacing[CameraSelector.LENS_FACING_BACK]!!.first()
-
-            else ->
-                cameraProvider.availableCameraInfos.firstOrNull()
-                    ?: throw IllegalStateException("No cameras available on the device.")
+        if (availableCameras.isEmpty()) {
+            throw IllegalStateException("No cameras available on the device.")
+        }
+        if (availableCameras.size == 1) {
+            return CameraSelector.Builder()
+                .addCameraFilter(CompatLensFacingCameraFilter(CameraSelector.LENS_FACING_FRONT))
+                .build();
         }
 
-        val lensFacing = preferredCameraInfo.lensFacing
-            ?: throw IllegalStateException("Selected camera has null lensFacing")
+        // 优先选择 lensFacing 明确的摄像头：前置 > 外接 > 后置
+        val preferredCameraInfo =
+            availableCameras.firstOrNull { it.lensFacing == CameraSelector.LENS_FACING_FRONT }
+                ?: availableCameras.firstOrNull { it.lensFacing == CameraSelector.LENS_FACING_EXTERNAL }
+                ?: availableCameras.firstOrNull { it.lensFacing == CameraSelector.LENS_FACING_BACK }
+                ?: availableCameras.first() // fallback，无 lensFacing 时也用上
+
+        val lensFacing = preferredCameraInfo.lensFacing ?: CameraSelector.LENS_FACING_FRONT
 
         return CameraSelector.Builder()
-            .requireLensFacing(lensFacing)
-            .build()
+            .addCameraFilter(CompatLensFacingCameraFilter(lensFacing))
+            .build();
     }
 
     private fun setCameraConfig(
