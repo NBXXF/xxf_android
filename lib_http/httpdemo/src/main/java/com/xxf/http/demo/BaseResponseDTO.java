@@ -1,5 +1,7 @@
 package com.xxf.http.demo;
 
+import androidx.annotation.Nullable;
+
 import com.xxf.arch.http.model.BaseHttpResult;
 
 import retrofit2.CacheType;
@@ -29,5 +31,63 @@ public class BaseResponseDTO implements BaseHttpResult {
                 ", status=" + status +
                 ", message='" + message + '\'' +
                 '}';
+    }
+
+    @Nullable
+    @Override
+    public CacheType getCacheType() {
+        return null;
+    }
+
+    @Override
+    public int getCode() {
+        return 0;
+    }
+
+    @Override
+    public void setCode(int i) {
+
+    }
+
+    @Nullable
+    @Override
+    public String getMsg() {
+        return "";
+    }
+
+    @Override
+    public void setMsg(@Nullable String s) {
+
+    }
+
+    @Nullable
+    @Override
+    public Object getData() {
+        return null;
+    }
+
+    @Override
+    public void setData(@Nullable Object o) {
+
+    }
+
+    @Override
+    public void setCacheType(@Nullable CacheType cacheType) {
+
+    }
+
+    @Override
+    public boolean isFromCache() {
+        return false;
+    }
+
+    @Override
+    public void setFromCache(boolean b) {
+
+    }
+
+    @Override
+    public boolean isSuccess() {
+        return false;
     }
 }

@@ -1,8 +1,10 @@
 package com.xxf.mlkit.camera
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.util.Size
 import androidx.camera.core.Camera
+import androidx.camera.core.CameraInfo
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -97,21 +99,58 @@ open class CameraAnalyzerManager(
         }
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     private fun setCameraConfig(cameraProvider: ProcessCameraProvider) {
-        val cameraSelector = CameraSelector.Builder()
-            .apply {
-                val isFront: Boolean =
-                    cameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA)
-                        ?: false //检测默认前置摄像头
-                //有些定制工业平板有问题
-                if (isFront) {
-                    this.requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                } else {
-                    this.requireLensFacing(CameraSelector.LENS_FACING_BACK)
+        try {
+            val cameraSelector = getOptimalCameraSelector(cameraProvider);
+            setCameraConfig(cameraProvider, cameraSelector)
+        } catch (e: Throwable) {
+            onCameraConfigError(e);
+        }
+    }
+
+    open fun onCameraConfigError(error: Throwable) {
+        Log.e(TAG, "==========>onCameraConfigError", error)
+    }
+
+    /**
+     * 获取最优的Camera相机
+     */
+    @SuppressLint("UnsafeOptInUsageError", "RestrictedApi")
+    private fun getOptimalCameraSelector(cameraProvider: ProcessCameraProvider): CameraSelector {
+        Log.i(
+            TAG, "==========>availableCameras:${
+                cameraProvider.availableCameraInfos.joinToString(separator = System.lineSeparator()) {
+                    "it.lensFacing:${it.lensFacing}  ${it.implementationType}"
                 }
-            }
+            }"
+        )
+        val groupedByFacing = cameraProvider.availableCameraInfos
+            .filter { it.lensFacing != null }
+            .groupBy { it.lensFacing }
+
+        // 按优先级：前置 > 外接 > 后置
+        val preferredCameraInfo = when {
+            groupedByFacing.containsKey(CameraSelector.LENS_FACING_FRONT) ->
+                groupedByFacing[CameraSelector.LENS_FACING_FRONT]!!.first()
+
+            groupedByFacing.containsKey(CameraSelector.LENS_FACING_EXTERNAL) ->
+                groupedByFacing[CameraSelector.LENS_FACING_EXTERNAL]!!.first()
+
+            groupedByFacing.containsKey(CameraSelector.LENS_FACING_BACK) ->
+                groupedByFacing[CameraSelector.LENS_FACING_BACK]!!.first()
+
+            else ->
+                cameraProvider.availableCameraInfos.firstOrNull()
+                    ?: throw IllegalStateException("No cameras available on the device.")
+        }
+
+        val lensFacing = preferredCameraInfo.lensFacing
+            ?: throw IllegalStateException("Selected camera has null lensFacing")
+
+        return CameraSelector.Builder()
+            .requireLensFacing(lensFacing)
             .build()
-        setCameraConfig(cameraProvider, cameraSelector)
     }
 
     private fun setCameraConfig(
@@ -129,7 +168,8 @@ open class CameraAnalyzerManager(
                 )
                 preview.surfaceProvider = previewView.surfaceProvider
             } catch (e: Exception) {
-                Log.e(TAG, "Use case binding failed", e)
+                onCameraConfigError(e);
+                Log.e(TAG, "==========>Use case binding failed", e)
             }
         }
     }

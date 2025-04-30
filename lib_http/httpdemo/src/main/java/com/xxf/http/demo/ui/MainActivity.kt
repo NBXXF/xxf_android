@@ -1,11 +1,15 @@
 package com.xxf.http.demo.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Switch
+import androidx.appcompat.app.AlertDialog
+import androidx.webkit.WebViewCompat
 import com.google.gson.*
 import com.google.gson.annotations.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -71,11 +75,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val findViewById1 = findViewById<View>(R.id.root);
-        findViewById1.setOnLongClickListener {
-            println("=================>长按了")
-            false;
+        val findViewById1 = findViewById<View>(R.id.web_view_btn);
+        findViewById1.setOnClickListener {
+            val webViewPackage = WebViewCompat.getCurrentWebViewPackage(this)
+            if ("com.google.android.webview".equals(webViewPackage?.packageName, true)) {
+                AlertDialog.Builder(this)
+                    .setTitle("兼容性提示")
+                    .setMessage("是官方webView")
+                    .show()
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle("兼容性提示")
+                    .setMessage("检测到非官方 WebView 引擎，可能导致兼容性问题。请更新 Google WebView。\n${webViewPackage?.packageName}")
+                    .setPositiveButton("前往商店") { _, _ ->
+                        startActivity(Intent(Intent.ACTION_VIEW).apply {
+                            data = Uri.parse("market://details?id=com.google.android.webview")
+                        });
+                    }
+                    .show()
+            }
         }
+
+
 
         RxJavaPlugins.setErrorHandler { }
 
@@ -87,7 +108,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
         val editText = findViewById<MyEditText>(R.id.edit_text)
         val findViewById = findViewById<Switch>(R.id.btn_test)
         findViewById.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -95,12 +115,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-
-
         val wsc =
-            WebSocketClient(this,"http://dev.allflow.cn/ws/webSocket/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOWJjNDhmY2UtYWI1Yi00OTg3LWJmZDAtNTc2ZjhlY2RjODc5Iiwibmlja25hbWUiOiJCYmIiLCJwaG9uZSI6IjE3NjExNjM5MDgwIiwiaWF0IjoxNjI5ODU5ODU4LCJleHAiOjE2MzI0NTE4NTh9.Q7LJxgJSc7mURO9A7fkhe-N1i9gI7RpbFxxUo7lMybo");
+            WebSocketClient(
+                this,
+                "http://dev.allflow.cn/ws/webSocket/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOWJjNDhmY2UtYWI1Yi00OTg3LWJmZDAtNTc2ZjhlY2RjODc5Iiwibmlja25hbWUiOiJCYmIiLCJwaG9uZSI6IjE3NjExNjM5MDgwIiwiaWF0IjoxNjI5ODU5ODU4LCJleHAiOjE2MzI0NTE4NTh9.Q7LJxgJSc7mURO9A7fkhe-N1i9gI7RpbFxxUo7lMybo"
+            );
         wsc.subTextMessage().subscribe {
             System.out.println("=======>收到:" + it);
         }
@@ -123,9 +142,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val s="x=1243;yy=3487"
-        val url="http://www.baidu.com".toHttpUrl()
-        SharedPreferencePersistentCookieJar.INSTANCE.saveFromResponse(url, Cookie.parseAll(url,s))
+        val s = "x=1243;yy=3487"
+        val url = "http://www.baidu.com".toHttpUrl()
+        SharedPreferencePersistentCookieJar.INSTANCE.saveFromResponse(url, Cookie.parseAll(url, s))
         val loadForRequest = SharedPreferencePersistentCookieJar.INSTANCE.loadForRequest(url)
 
 
@@ -172,7 +191,7 @@ class MainActivity : AppCompatActivity() {
     private fun testhttp() {
         getApiService<LoginApiService>()
             .getCity()
-           //; .getCity(TestQueryJsonField("xxx"))
+            //; .getCity(TestQueryJsonField("xxx"))
             //.observeOn(AndroidSchedulers.mainThread())
             .doOnError {
                 Log.d("==========>retry no", "" + it)
