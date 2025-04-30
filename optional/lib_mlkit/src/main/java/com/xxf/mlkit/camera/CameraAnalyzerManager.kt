@@ -121,6 +121,7 @@ open class CameraAnalyzerManager(
      *     override fun getCameraXConfig(): CameraXConfig {
      *         return CameraXConfig.Builder.fromConfig(Camera2Config.defaultConfig())
      *             .setCameraFactoryProvider { context, threadConfig, _ ->
+     *              // 使用自定义的 Camera2CameraFactory，第三个参数设置为 null，绕过验证
      *                 Camera2CameraFactory(context, threadConfig, null)
      *             }
      *             .build()
