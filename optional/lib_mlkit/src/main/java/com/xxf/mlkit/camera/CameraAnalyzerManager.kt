@@ -115,6 +115,16 @@ open class CameraAnalyzerManager(
 
     /**
      * 获取最优的Camera相机
+     * 配合application: CameraXConfig.Provider
+     * 绕过验证
+     *   @SuppressLint("RestrictedApi")
+     *     override fun getCameraXConfig(): CameraXConfig {
+     *         return CameraXConfig.Builder.fromConfig(Camera2Config.defaultConfig())
+     *             .setCameraFactoryProvider { context, threadConfig, _ ->
+     *                 Camera2CameraFactory(context, threadConfig, null)
+     *             }
+     *             .build()
+     *     }
      */
     @SuppressLint("UnsafeOptInUsageError", "RestrictedApi")
     private fun getOptimalCameraSelector(cameraProvider: ProcessCameraProvider): CameraSelector {
