@@ -27,14 +27,19 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    compileOnly 'com.google.mlkit:vision-interfaces:16.3.0'
+
     def camerax_version="1.4.2"
     compileOnly "androidx.camera:camera-core:${camerax_version}"
     compileOnly "androidx.camera:camera-lifecycle:${camerax_version}"
     compileOnly "androidx.camera:camera-view:${camerax_version}"
+    ///https://source.android.google.cn/docs/core/camera/camerax-vendor-extensions?hl=zh-cn
+    compileOnly "androidx.camera:camera-extensions:${camerax_version}"
+
+    compileOnly 'com.google.mlkit:vision-interfaces:16.3.0'
     compileOnly 'com.google.mlkit:face-detection:16.1.7'
     compileOnly 'com.google.mlkit:barcode-scanning:17.3.0'
     compileOnly 'io.github.devilsen:czxing:1.2.0'
+
     implementation project(path: ':lib_ktx')
     implementation project(path: ':lib_utils')
 }

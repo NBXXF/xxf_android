@@ -15,12 +15,12 @@ class CompatLensFacingCameraFilter : LensFacingCameraFilter {
     @SuppressLint("RestrictedApi")
     override fun filter(cameraInfos: MutableList<CameraInfo>): MutableList<CameraInfo> {
         val filter = super.filter(cameraInfos)
-        if (filter.isEmpty() && cameraInfos.isNotEmpty()) {
+        if (filter.isEmpty()) {
             Log.w(
                 CompatLensFacingCameraFilter::class.java.simpleName,
-                "===========>lensFacingCameraFilter is empty"
+                "===========>lensFacingCameraFilter filter is empty,cameraInfos size:${cameraInfos.size}"
             )
-            return mutableListOf(cameraInfos.first())
+            return cameraInfos
         }
         return filter;
     }
