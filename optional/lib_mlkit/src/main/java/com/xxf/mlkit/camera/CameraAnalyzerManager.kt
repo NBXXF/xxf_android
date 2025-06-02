@@ -56,7 +56,8 @@ open class CameraAnalyzerManager(
                     .build()
             )
             ///听说这是最快的方式,质量最高的,下游获取图片(imageProxy)最快
-            .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+            /// 导致无法识别
+            /// .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
             .build()
             .apply {
                 setAnalyzer(executor, analyzer)
