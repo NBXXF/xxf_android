@@ -700,4 +700,29 @@ object BitmapUtils {
             bitmap
         }
     }
+
+    /** Rotates a bitmap if it is converted from a bytebuffer.  */
+    fun rotateBitmap(
+        bitmap: Bitmap, rotationDegrees: Int, flipX: Boolean, flipY: Boolean
+    ): Bitmap {
+        if (rotationDegrees % 360 == 0) {
+            return bitmap;
+        }
+        val matrix = Matrix()
+
+        // Rotate the image back to straight.
+        matrix.postRotate(rotationDegrees.toFloat())
+
+        // Mirror the image along the X or Y axis.
+        matrix.postScale(if (flipX) -1.0f else 1.0f, if (flipY) -1.0f else 1.0f)
+        val rotatedBitmap =
+            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+
+        // Recycle the old bitmap if it has changed.
+        if (rotatedBitmap != bitmap) {
+            bitmap.recycle()
+        }
+        return rotatedBitmap
+    }
+
 }

@@ -57,7 +57,12 @@ open class FaceAnalyzerDetector(
 
     override fun process(image: Image, rotation: Int): Task<List<FaceAnalyzerResult>> {
         return wrapper(barcodeScanner.process(image, rotation)) {
-            AndroidImageProxy(image, rotation).toBitmap()
+            BitmapUtils.rotateBitmap(
+                AndroidImageProxy(image, rotation).toBitmap(),
+                rotation,
+                flipX = false,
+                flipY = false
+            )
         };
     }
 
@@ -67,7 +72,12 @@ open class FaceAnalyzerDetector(
         matrix: Matrix
     ): Task<List<FaceAnalyzerResult>> {
         return wrapper(barcodeScanner.process(image, rotation, matrix)) {
-            AndroidImageProxy(image, rotation).toBitmap()
+            BitmapUtils.rotateBitmap(
+                AndroidImageProxy(image, rotation).toBitmap(),
+                rotation,
+                flipX = false,
+                flipY = false
+            )
         };
     }
 
@@ -79,7 +89,15 @@ open class FaceAnalyzerDetector(
         format: Int
     ): Task<List<FaceAnalyzerResult>> {
         return wrapper(barcodeScanner.process(byte, rotation, width, height, format)) {
-            ByteBufferImageProxy(byte, rotation, width, height, format).toBitmap()
+            BitmapUtils.rotateBitmap(
+                ByteBufferImageProxy(
+                    byte,
+                    rotation,
+                    width,
+                    height,
+                    format
+                ).toBitmap(), rotation, flipX = false, flipY = false
+            )
         }
     }
 

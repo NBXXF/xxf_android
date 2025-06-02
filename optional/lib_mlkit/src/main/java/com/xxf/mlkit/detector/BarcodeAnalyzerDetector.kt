@@ -16,6 +16,7 @@ import com.xxf.mlkit.imageproxy.ByteBufferImageProxy
 import com.xxf.mlkit.model.BarcodeAnalyzerResult
 import com.xxf.mlkit.model.filterAnalyzerResult
 import com.xxf.mlkit.model.sortAnalyzerResult
+import com.xxf.utils.BitmapUtils
 import java.nio.ByteBuffer
 import java.util.concurrent.Executor
 import java.util.concurrent.RejectedExecutionException
@@ -32,9 +33,7 @@ open class BarcodeAnalyzerDetector(
     open val barcodeScanner: BarcodeScanner,
     open val executor: Executor,
     open val scanPadding: Int = 40.dp
-) :
-    Detector<List<BarcodeAnalyzerResult>>,
-    OptionalModuleApi {
+) : Detector<List<BarcodeAnalyzerResult>>, OptionalModuleApi {
     override fun close() {
         barcodeScanner.close()
     }
@@ -48,37 +47,44 @@ open class BarcodeAnalyzerDetector(
             val matrix = Matrix()
             matrix.postRotate(rotation.toFloat())
             Bitmap.createBitmap(
-                image, 0, 0, image.getWidth(),
-                image.getHeight(), matrix, false
+                image, 0, 0, image.getWidth(), image.getHeight(), matrix, false
             )
         };
     }
 
     override fun process(image: Image, rotation: Int): Task<List<BarcodeAnalyzerResult>> {
         return wrapper(barcodeScanner.process(image, rotation)) {
-            AndroidImageProxy(image, rotation).toBitmap()
+            BitmapUtils.rotateBitmap(
+                AndroidImageProxy(image, rotation).toBitmap(),
+                rotation,
+                flipX = false,
+                flipY = false
+            )
         };
     }
 
     override fun process(
-        image: Image,
-        rotation: Int,
-        matrix: Matrix
+        image: Image, rotation: Int, matrix: Matrix
     ): Task<List<BarcodeAnalyzerResult>> {
         return wrapper(barcodeScanner.process(image, rotation, matrix)) {
-            AndroidImageProxy(image, rotation).toBitmap()
+            BitmapUtils.rotateBitmap(
+                AndroidImageProxy(image, rotation).toBitmap(),
+                rotation,
+                flipX = false,
+                flipY = false
+            )
         };
     }
 
     override fun process(
-        byte: ByteBuffer,
-        rotation: Int,
-        width: Int,
-        height: Int,
-        format: Int
+        byte: ByteBuffer, rotation: Int, width: Int, height: Int, format: Int
     ): Task<List<BarcodeAnalyzerResult>> {
         return wrapper(barcodeScanner.process(byte, rotation, width, height, format)) {
-            ByteBufferImageProxy(byte, rotation, width, height, format).toBitmap()
+            BitmapUtils.rotateBitmap(
+                ByteBufferImageProxy(
+                    byte, rotation, width, height, format
+                ).toBitmap(), rotation, flipX = false, flipY = false
+            )
         }
     }
 
@@ -96,8 +102,7 @@ open class BarcodeAnalyzerDetector(
     }
 
     protected open fun wrapper(
-        task: Task<List<Barcode>>,
-        bitmapProxy: () -> Bitmap
+        task: Task<List<Barcode>>, bitmapProxy: () -> Bitmap
     ): Task<List<BarcodeAnalyzerResult>> {
         try {
             return task.continueWith(executor) { it ->
@@ -116,8 +121,7 @@ open class BarcodeAnalyzerDetector(
      *  且按面积排序
      */
     private fun barcodeAnalyzerResults(it: Task<List<Barcode>>) =
-        convertAnalyzerResult(it.result).filterAnalyzerResult()
-            .sortAnalyzerResult()
+        convertAnalyzerResult(it.result).filterAnalyzerResult().sortAnalyzerResult()
 
 
 }

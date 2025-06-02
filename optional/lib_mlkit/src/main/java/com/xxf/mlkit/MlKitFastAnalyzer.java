@@ -229,8 +229,6 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer, Closeable {
             return;
         }
         Detector<?> detector = mDetectors.get(detectorIndex);
-        //增加附属信息
-        imageProxyInfos.put(detector, new ImageProxyInfo(imageProxy));
         int rotationDegrees = imageProxy.getImageInfo().getRotationDegrees();
 
         Task<?> mlKitTask;
@@ -255,6 +253,9 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer, Closeable {
                         throwables.put(detector,
                                 new CancellationException("The task is canceled."));
                     } else if (task.isSuccessful()) {
+                        //增加附属信息,识别成功了才有
+                        imageProxyInfos.put(detector, new ImageProxyInfo(imageProxy));
+
                         values.put(detector, task.getResult());
                     } else {
                         throwables.put(detector, task.getException());
@@ -320,7 +321,7 @@ public class MlKitFastAnalyzer implements ImageAnalysis.Analyzer, Closeable {
 
     @Override
     public void close() throws IOException {
-        for (Detector<?> detector:mDetectors) {
+        for (Detector<?> detector : mDetectors) {
             detector.close();
         }
     }

@@ -55,6 +55,8 @@ open class CameraAnalyzerManager(
                     .setAllowedResolutionMode(PREFER_HIGHER_RESOLUTION_OVER_CAPTURE_RATE)
                     .build()
             )
+            ///听说这是最快的方式,质量最高的,下游获取图片(imageProxy)最快
+            .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
             .build()
             .apply {
                 setAnalyzer(executor, analyzer)
