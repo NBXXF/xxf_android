@@ -20,8 +20,9 @@ class CompatLensFacingCameraFilter : LensFacingCameraFilter {
                 CompatLensFacingCameraFilter::class.java.simpleName,
                 "===========>lensFacingCameraFilter filter is empty,cameraInfos size:${cameraInfos.size}"
             )
-            return cameraInfos
+            ///一定要返回可修改的,cameraInfos 可能内部是at java.util.Collections$UnmodifiableCollection.retainAll(Collections.java:1118)
+            return cameraInfos.toMutableList()
         }
-        return filter;
+        return filter.toMutableList();
     }
 }
