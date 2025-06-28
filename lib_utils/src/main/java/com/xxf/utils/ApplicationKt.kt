@@ -32,7 +32,7 @@ import kotlin.system.exitProcess
  * 安装
  */
 @RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
-fun Application.installApp(file: File){
+fun Application.installApp(file: File) {
     this.startActivity(IntentUtils.getInstallAppIntent(file))
 }
 
@@ -40,7 +40,7 @@ fun Application.installApp(file: File){
  * 卸载
  */
 @RequiresPermission(Manifest.permission.REQUEST_INSTALL_PACKAGES)
-fun Application.installApp(uri: Uri){
+fun Application.installApp(uri: Uri) {
     this.startActivity(IntentUtils.getInstallAppIntent(uri))
 }
 
@@ -48,10 +48,9 @@ fun Application.installApp(uri: Uri){
  * 卸载
  */
 @RequiresPermission(Manifest.permission.REQUEST_DELETE_PACKAGES)
-fun Application.uninstallApp(packageName:String=this.packageName){
+fun Application.uninstallApp(packageName: String = this.packageName) {
     this.startActivity(IntentUtils.getUninstallAppIntent(packageName))
 }
-
 
 
 /**
@@ -59,8 +58,8 @@ fun Application.uninstallApp(packageName:String=this.packageName){
  *
  */
 @RequiresPermission(Manifest.permission.INSTALL_PACKAGES)
-fun Application.installAppSilent(file: File, params: String?=null): Boolean {
-    return installAppSilent(file, params,this.isDeviceRooted())
+fun Application.installAppSilent(file: File, params: String? = null): Boolean {
+    return installAppSilent(file, params, this.isDeviceRooted())
 }
 
 /**
@@ -81,7 +80,7 @@ fun Application.installAppSilent(
     isRooted: Boolean
 ): Boolean {
     try {
-        if (!FileUtils.isFileExists(this,file)) return false
+        if (!FileUtils.isFileExists(this, file)) return false
         val filePath = '"'.toString() + file.absolutePath + '"'
         val command = ("LD_LIBRARY_PATH=/vendor/lib*:/system/lib* pm install " +
                 (if (params == null) "" else "$params ")
@@ -98,7 +97,7 @@ fun Application.installAppSilent(
             )
             false
         }
-    }catch (e:Throwable){
+    } catch (e: Throwable) {
         e.printStackTrace()
         return false
     }
@@ -109,7 +108,10 @@ fun Application.installAppSilent(
  * 静默卸载.
  */
 @RequiresPermission(Manifest.permission.DELETE_PACKAGES)
-fun Application.uninstallAppSilent(packageName: String=this.packageName, isKeepData: Boolean=false): Boolean {
+fun Application.uninstallAppSilent(
+    packageName: String = this.packageName,
+    isKeepData: Boolean = false
+): Boolean {
     return uninstallAppSilent(
         packageName,
         isKeepData,
@@ -150,7 +152,7 @@ fun Application.uninstallAppSilent(
             )
             false
         }
-    }catch (e:Throwable){
+    } catch (e: Throwable) {
         e.printStackTrace()
         return false
     }
@@ -159,10 +161,10 @@ fun Application.uninstallAppSilent(
 /**
  * 是否安装
  */
-fun Application.isAppInstalled(packageName:String=this.packageName): Boolean {
+fun Application.isAppInstalled(packageName: String = this.packageName): Boolean {
     return try {
         this.packageManager.getApplicationInfo(packageName, 0).enabled;
-    } catch (e:PackageManager.NameNotFoundException) {
+    } catch (e: PackageManager.NameNotFoundException) {
         false;
     }
 }
@@ -174,7 +176,7 @@ fun Application.isAppRoot(): Boolean {
     return try {
         val result = ShellUtils.execCmd("echo root", true)
         result.result === 0
-    }catch (e:Throwable){
+    } catch (e: Throwable) {
         e.printStackTrace()
         false
     }
@@ -183,7 +185,7 @@ fun Application.isAppRoot(): Boolean {
 /**
  * 判断 App 是否是 Debug 版本
  */
-fun Application.isAppDebug(packageName: String=this.packageName): Boolean {
+fun Application.isAppDebug(packageName: String = this.packageName): Boolean {
     return try {
         val ai = this.packageManager.getApplicationInfo(packageName, 0)
         ai.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
@@ -196,7 +198,7 @@ fun Application.isAppDebug(packageName: String=this.packageName): Boolean {
 /**
  * 判断 App 是否是系统应用
  */
-fun Application.isAppSystem(packageName: String=this.packageName): Boolean {
+fun Application.isAppSystem(packageName: String = this.packageName): Boolean {
     return try {
         val ai = this.packageManager.getApplicationInfo(packageName, 0)
         ai.flags and ApplicationInfo.FLAG_SYSTEM != 0
@@ -210,18 +212,18 @@ fun Application.isAppSystem(packageName: String=this.packageName): Boolean {
 /**
  * 启动app
  */
-fun Application.launchApp(packageName: String=this.packageName):Boolean {
-    val launchAppIntent =IntentUtils.getLaunchAppIntent(packageName)
-    if(launchAppIntent!=null) {
+fun Application.launchApp(packageName: String = this.packageName): Boolean {
+    val launchAppIntent = IntentUtils.getLaunchAppIntent(packageName)
+    if (launchAppIntent != null) {
         this.startActivity(launchAppIntent)
     }
-    return launchAppIntent!=null
+    return launchAppIntent != null
 }
 
 /**
  * 重启app
  */
-fun Application.relaunchApp(){
+fun Application.relaunchApp(force: Boolean = true) {
     val intent =
         this.packageManager.getLaunchIntentForPackage(this.packageName)
     intent!!.addFlags(
@@ -229,14 +231,16 @@ fun Application.relaunchApp(){
                 or Intent.FLAG_ACTIVITY_CLEAR_TASK
     )
     applicationContext.startActivity(intent)
-    Process.killProcess(Process.myPid())
-    System.exit(0)
+    if (force) {
+        Process.killProcess(Process.myPid())
+        System.exit(0)
+    }
 }
 
 /***
  * 重置应用
  */
-fun Application.resetApp(){
+fun Application.resetApp() {
     val am = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
     am?.clearApplicationUserData();
 }
@@ -245,10 +249,10 @@ fun Application.resetApp(){
 /**
  * 退出应用
  */
-fun Application.exitApp(){
+fun Application.exitApp() {
     activityList.forEach {
-       it.finish()
-   }
+        it.finish()
+    }
     exitProcess(0)
 }
 
@@ -256,7 +260,7 @@ fun Application.exitApp(){
 /**
  * 启动app 设置页面
  */
-fun Application.launchAppDetailsSettings(packageName: String=this.packageName) {
+fun Application.launchAppDetailsSettings(packageName: String = this.packageName) {
     val intent: Intent = IntentUtils.getLaunchAppDetailsSettingsIntent(packageName, true)
     if (!IntentUtils.isIntentAvailable(intent)) return
     this.startActivity(intent)
@@ -274,7 +278,7 @@ fun Application.launchSettings() {
 /**
  * 获取 App 图标
  */
-fun Application.getAppIcon(packageName: String=this.packageName): Drawable? {
+fun Application.getAppIcon(packageName: String = this.packageName): Drawable? {
     return try {
         val pm: PackageManager = this.packageManager
         val pi = pm.getPackageInfo(packageName, 0)
@@ -288,8 +292,8 @@ fun Application.getAppIcon(packageName: String=this.packageName): Drawable? {
 /**
  * 获取 App 名称
  */
-fun Application.getAppName(packageName: String=this.packageName): String {
-    return  try {
+fun Application.getAppName(packageName: String = this.packageName): String {
+    return try {
         val pm: PackageManager = this.packageManager
         val pi = pm.getPackageInfo(packageName, 0)
         pi?.applicationInfo?.loadLabel(pm)?.toString() ?: ""
@@ -303,7 +307,7 @@ fun Application.getAppName(packageName: String=this.packageName): String {
 /**
  * 获取 App 版本名
  */
-fun Application.getAppVersionName(packageName: String=this.packageName): String {
+fun Application.getAppVersionName(packageName: String = this.packageName): String {
     return try {
         val pm: PackageManager = this.packageManager
         val pi = pm.getPackageInfo(packageName, 0)
@@ -318,7 +322,7 @@ fun Application.getAppVersionName(packageName: String=this.packageName): String 
 /**
  * 获取 App 版本号
  */
-fun Application.getAppVersionCode(packageName: String=this.packageName): Int {
+fun Application.getAppVersionCode(packageName: String = this.packageName): Int {
     return try {
         val pm: PackageManager = this.getPackageManager()
         val pi = pm.getPackageInfo(packageName!!, 0)
@@ -332,7 +336,7 @@ fun Application.getAppVersionCode(packageName: String=this.packageName): Int {
 /**
  * 获取 App 签名
  */
-fun Application.getAppSignatures(packageName: String=this.packageName): Array<Signature>? {
+fun Application.getAppSignatures(packageName: String = this.packageName): Array<Signature>? {
     return try {
         val pm: PackageManager = this.getPackageManager()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -358,27 +362,27 @@ fun Application.getAppSignatures(packageName: String=this.packageName): Array<Si
 /**
  * 获取应用签名的的 SHA1 值
  */
-fun Application.getAppSignaturesSHA1(packageName: String=this.packageName): List<String>? {
+fun Application.getAppSignaturesSHA1(packageName: String = this.packageName): List<String>? {
     return this.getAppSignaturesHash(packageName, "SHA1")
 }
 
 /**
  * 获取应用签名的的 SHA256 值
  */
-fun Application.getAppSignaturesSHA256(packageName: String=this.packageName): List<String>? {
+fun Application.getAppSignaturesSHA256(packageName: String = this.packageName): List<String>? {
     return this.getAppSignaturesHash(packageName, "SHA256")
 }
 
 /**
  * 获取应用签名的的 MD5 值
  */
-fun Application.getAppSignaturesMD5(packageName: String=this.packageName): List<String>? {
+fun Application.getAppSignaturesMD5(packageName: String = this.packageName): List<String>? {
     return this.getAppSignaturesHash(packageName, "MD5")
 }
 
 
 private fun Application.getAppSignaturesHash(
-    packageName: String=this.packageName,
+    packageName: String = this.packageName,
     algorithm: String
 ): MutableList<String>? {
     val result = ArrayList<String>()
@@ -401,7 +405,7 @@ private fun Application.getAppSignaturesHash(
 /**
  * 判断应用是否首次安装
  */
-fun Application.isFirstTimeInstalled(packageName: String=this.packageName): Boolean {
+fun Application.isFirstTimeInstalled(packageName: String = this.packageName): Boolean {
     return try {
         val pi: PackageInfo =
             this.packageManager.getPackageInfo(packageName, 0)
