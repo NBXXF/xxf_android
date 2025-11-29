@@ -117,7 +117,7 @@ public class DisplayActivity extends Activity {
             }
         });
 
-        mMaxStoredBlockCount = getResources().getInteger(R.integer.block_canary_max_stored_count);
+        mMaxStoredBlockCount = getResources().getInteger(com.github.moduth.blockcanary.core.R.integer.block_canary_max_stored_count);
 
         updateUi();
     }

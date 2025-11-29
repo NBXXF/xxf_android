@@ -16,6 +16,9 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         // for view binding :
         dataBinding = true
@@ -28,6 +31,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api libs.lifecycle.common
     api libs.navigation.fragment
+    api libs.navigation.ui
     api libs.rxAndroid
     api project(path: ':lib_application')
     api project(path: ':lib_http')

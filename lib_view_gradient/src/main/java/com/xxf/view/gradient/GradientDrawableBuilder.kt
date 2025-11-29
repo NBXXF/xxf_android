@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
+import com.xxf.view.gradient.R
 
 class GradientDrawableBuilder {
     private var startColor = 0
@@ -26,26 +27,26 @@ class GradientDrawableBuilder {
         this.centerColor = a.getColor(R.styleable.GradientLayout_center_color, -1)
         this.endColor = a.getColor(R.styleable.GradientLayout_end_color, -1)
 
-        val radiusTr = context.obtainStyledAttributes(attrs, R.styleable.xxf_radius_style)
-        if (radiusTr.hasValue(R.styleable.xxf_radius_style_radius)) {
+        val radiusTr = context.obtainStyledAttributes(attrs, com.xxf.view.round.R.styleable.xxf_radius_style)
+        if (radiusTr.hasValue(com.xxf.view.round.R.styleable.xxf_radius_style_radius)) {
             val radius =
-                radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_radius, 0).toFloat()
+                radiusTr.getDimensionPixelSize(com.xxf.view.round.R.styleable.xxf_radius_style_radius, 0).toFloat()
             this.radiusCornerTopLeft = radius
             this.radiusCornerTopRight = radius
             this.radiusCornerBottomLeft = radius
             this.radiusCornerBottomRight = radius
         } else {
             this.radiusCornerTopLeft =
-                radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_topLeftRadius, 0)
+                radiusTr.getDimensionPixelSize(com.xxf.view.round.R.styleable.xxf_radius_style_topLeftRadius, 0)
                     .toFloat()
             this.radiusCornerTopRight =
-                radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_topRightRadius, 0)
+                radiusTr.getDimensionPixelSize(com.xxf.view.round.R.styleable.xxf_radius_style_topRightRadius, 0)
                     .toFloat()
             this.radiusCornerBottomLeft =
-                radiusTr.getDimensionPixelSize(R.styleable.xxf_radius_style_bottomLeftRadius, 0)
+                radiusTr.getDimensionPixelSize(com.xxf.view.round.R.styleable.xxf_radius_style_bottomLeftRadius, 0)
                     .toFloat()
             this.radiusCornerBottomRight = radiusTr.getDimensionPixelSize(
-                R.styleable.xxf_radius_style_bottomRightRadius,
+                com.xxf.view.round.R.styleable.xxf_radius_style_bottomRightRadius,
                 0
             ).toFloat()
         }

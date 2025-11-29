@@ -22,7 +22,7 @@ import androidx.navigation.fragment.DialogFragmentNavigator
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import com.xxf.application.lifecycle.findViewLifecycleOwner
-import com.xxf.arch.R
+//import com.xxf.arch.R
 import com.xxf.cache.ReflectionCache
 import com.xxf.ktx.asFragmentActivityOrNull
 import com.xxf.ktx.asFragmentOrNull
@@ -131,9 +131,12 @@ fun View.findNavControllerView(): FragmentContainerView? {
     return generateSequence(this) {
         it.parent as? View?
     }.mapNotNull {
+
+         null;
+        ///TODO 发布不了
         //官方打的这个Tag
-        val tag = it.getTag(R.id.nav_controller_view_tag)
-        if (tag == null) null else it
+//        val tag = it.getTag(androidx.navigation.ui.R.id.nav_controller_view_tag)
+//        if (tag == null) null else it
     }.firstOrNull() as? FragmentContainerView
 }
 

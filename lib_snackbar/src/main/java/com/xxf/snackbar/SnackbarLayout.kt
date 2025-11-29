@@ -43,9 +43,9 @@ class SnackbarLayout @JvmOverloads constructor(context: Context, attrs: Attribut
             super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         }
         val multiLineVPadding = resources.getDimensionPixelSize(
-                R.dimen.design_snackbar_padding_vertical_2lines)
+            com.google.android.material.R.dimen.design_snackbar_padding_vertical_2lines)
         val singleLineVPadding = resources.getDimensionPixelSize(
-                R.dimen.design_snackbar_padding_vertical)
+            com.google.android.material.R.dimen.design_snackbar_padding_vertical)
         val isMultiLine = messageView!!.layout
                 .lineCount > 1
         var remeasure = false
@@ -157,13 +157,13 @@ class SnackbarLayout @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout)
-        mMaxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1)
+        val a = context.obtainStyledAttributes(attrs, com.google.android.material.R.styleable.SnackbarLayout)
+        mMaxWidth = a.getDimensionPixelSize(com.google.android.material.R.styleable.SnackbarLayout_android_maxWidth, -1)
         mMaxInlineActionWidth = a.getDimensionPixelSize(
-                R.styleable.SnackbarLayout_maxActionInlineWidth, -1)
-        if (a.hasValue(R.styleable.SnackbarLayout_elevation)) {
+            com.google.android.material.R.styleable.SnackbarLayout_maxActionInlineWidth, -1)
+        if (a.hasValue(com.google.android.material.R.styleable.SnackbarLayout_elevation)) {
             ViewCompat.setElevation(this, a.getDimensionPixelSize(
-                    R.styleable.SnackbarLayout_elevation, 0).toFloat())
+                com.google.android.material.R.styleable.SnackbarLayout_elevation, 0).toFloat())
         }
         a.recycle()
         isClickable = true

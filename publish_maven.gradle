@@ -46,8 +46,12 @@ afterEvaluate {
                 // 将 AAR 组件内容加入 publication（包含 AAR）
                 from component
 
-                // 将 sources jar 添加为额外 artifact
-                artifact tasks.named("androidSourcesJar").get()
+                // sources.jar，显式关联 task
+//                artifact(tasks.named("androidSourcesJar").get()) {
+//                    builtBy(tasks.named("androidSourcesJar"))
+//                }
+
+//                artifact androidSourcesJar
 
                 // Maven 坐标（使用你原有的变量）
                 groupId = publishGroup

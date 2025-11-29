@@ -88,6 +88,11 @@ public class XXFJumpRefreshHeader implements RefreshHeader {
     }
 
     @Override
+    public boolean autoOpen(int duration, float dragRate, boolean animationOnly) {
+        return false;
+    }
+
+    @Override
     public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
         switch (newState) {
             case PullDownToRefresh:
