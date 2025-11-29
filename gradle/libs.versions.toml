@@ -98,8 +98,8 @@ recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.2.1
 rxAndroid = { module = "io.reactivex.rxjava3:rxandroid", version = "3.0.0" }
 rxJava = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.2" }
 
-smart_refresh = { module = "io.github.scwang90:refresh-layout-kernel", version = "2.1.1" }
-refresh_footer = { module = "io.github.scwang90:refresh-footer-classics", version = "2.1.1" }
+smart_refresh = { module = "io.github.scwang90:refresh-layout-kernel", version = "3.0.0-alpha" }
+refresh_footer = { module = "io.github.scwang90:refresh-footer-classics", version = "3.0.0-alpha" }
 lottie = { module = "com.airbnb.android:lottie", version = "6.4.0" }
 
 
