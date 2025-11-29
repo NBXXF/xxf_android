@@ -1,49 +1,72 @@
-//将源代码打包进aar
-task androidSourcesJar(type: Jar) {
-    archiveClassifier = "sources"
-    from android.sourceSets.main.java.getSrcDirs()
+// publish_maven.gradle - 支持 AAR 的可运行版本（兼容 AGP7 / AGP8）
+// 说明：依赖于项目中已定义的 publishGroup, moduleName, publishVersion（保持原样）
+
+// -------------------- 生成 sources Jar --------------------
+tasks.register("androidSourcesJar", Jar) {
+    // 生成 xxx-sources.jar
+    archiveClassifier.set("sources")
+    // java 源码目录（包含 Kotlin 源码也会被包含在内，若有 kotlin 源集请按需追加）
+    from android.sourceSets.main.java.srcDirs
 }
 
-task sourcesJar(type: Jar) {
-    archiveClassifier = "sources"
-    from android.sourceSets.main.java.getSrcDirs()
-
+// 保留旧名字（如果你的其它脚本引用了 sourcesJar）
+tasks.register("sourcesJar", Jar) {
+    archiveClassifier.set("sources")
+    from android.sourceSets.main.java.srcDirs
 }
 
-artifacts {
-    archives androidSourcesJar
-    archives sourcesJar
-}
+// -------------------- local.properties（读取发布凭据） --------------------
 Properties localProps = new Properties()
 File localProperties = new File(rootProject.rootDir, "local.properties")
 if (localProperties.exists() && localProperties.isFile()) {
     localProperties.withInputStream { localProps.load(it) }
 }
 
+// -------------------- 应用 maven-publish --------------------
 apply plugin: 'maven-publish'
+
+// 所有与 AGP component 相关的读取都放在 afterEvaluate，防止评估阶段找不到组件
 afterEvaluate {
+
     publishing {
         publications {
-            // Creates a Maven publication called "release".
+            // 创建一个名为 release 的 MavenPublication（名字仅为 publication 名）
             release(MavenPublication) {
 
-                from components.release
-                artifact androidSourcesJar
+                // 兼容 AGP 7.x / 8.x：尝试获取 release -> fallback default
+                def component = components.findByName("release") ?: components.findByName("default") ?: components.findAll().firstOrNull()
 
+                // 如果仍然没有，尽量输出帮助信息并抛出异常（方便定位）
+                if (component == null) {
+                    // 打印组件名帮助调试（可在控制台查看）
+                    println "Available components: " + components*.name
+                    throw new GradleException("未找到可发布的 Android 组件（尝试 'release' / 'default'），请确认这是一个 Android Library module，并且 AGP 已正确应用。")
+                }
 
+                // 将 AAR 组件内容加入 publication（包含 AAR）
+                from component
+
+                // 将 sources jar 添加为额外 artifact
+                artifact tasks.named("androidSourcesJar").get()
+
+                // Maven 坐标（使用你原有的变量）
                 groupId = publishGroup
                 artifactId = moduleName
                 version = publishVersion
+
+                // 可选：你可以在这里配置 POM（如果需要的话）
+                // pom.withXml { ... }
             }
         }
 
+        // 仓库配置（阿里云效）
         repositories {
             maven {
+                url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
                 credentials {
                     username = localProps.getProperty("publish.username")
                     password = localProps.getProperty("publish.password")
                 }
-                url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
             }
         }
     }

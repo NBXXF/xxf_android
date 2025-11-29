@@ -7,6 +7,7 @@ plugins {
 def des = rootProject.ext.dependencies
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
+    namespace = "com.xxf.utils"
     defaultConfig {
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()

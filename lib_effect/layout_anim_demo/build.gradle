@@ -6,7 +6,7 @@ plugins {
 
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-
+    namespace = "com.xxf.effect.layout.anim.demo"
     defaultConfig {
         applicationId "com.xxf.effect.layout.anim.demo"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

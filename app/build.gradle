@@ -7,6 +7,7 @@ def des = rootProject.ext.dependencies
 android {
     ndkVersion '21.3.6528147'
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
+    namespace = "com.xxf.arch.test"
     defaultConfig {
         configurations.all {
             resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }

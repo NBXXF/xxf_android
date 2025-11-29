@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xxf.qt.english.views.MainActivity">
+
+    <com.xxf.view.titlebar.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        app:title="设置"
+        app:titleColor="@color/black"
+        android:layout_height="68dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingHorizontal="12dp"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/btn_import"
+                android:layout_width="match_parent"
+                android:text="导入单词"
+                android:textColor="@android:color/black"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/nav_arrow_right"
+                android:layout_height="48dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:background="#F2F2F2"
+                android:layout_height="0.5dp"/>
+            <TextView
+                android:id="@+id/btn_clear"
+                android:layout_width="match_parent"
+                android:text="清除所有"
+                android:textColor="@android:color/black"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/nav_arrow_right"
+                android:layout_height="48dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

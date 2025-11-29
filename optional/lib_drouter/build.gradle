@@ -4,7 +4,7 @@ plugins {
 }
 android {
     compileSdk project.TARGET_SDK_VERSION.toInteger()
-
+    namespace = "com.xxf.drouter"
 
     defaultConfig {
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

@@ -5,7 +5,7 @@ plugins {
 }
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-
+    namespace = "com.xxf.adapter.demo"
     defaultConfig {
         applicationId "com.xxf.adapter.demo"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

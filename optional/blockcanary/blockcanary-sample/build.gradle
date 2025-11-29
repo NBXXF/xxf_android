@@ -3,7 +3,7 @@ def des = rootProject.ext.dependencies
 
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-
+    namespace = "com.example.blockcanary"
     defaultConfig {
         applicationId "com.example.blockcanary"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

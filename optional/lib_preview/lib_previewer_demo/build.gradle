@@ -4,7 +4,7 @@ plugins {
 }
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-
+    namespace = "com.xxf.media.previewer.demo"
     defaultConfig {
         applicationId "com.xxf.media.previewer.demo"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

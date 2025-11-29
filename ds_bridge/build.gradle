@@ -3,6 +3,7 @@ def des = rootProject.ext.dependencies
 
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
+    namespace = "wendu.jsbdemo"
     defaultConfig {
         applicationId "wendu.jsbdemo"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

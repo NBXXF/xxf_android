@@ -7,6 +7,7 @@ plugins {
 def des = rootProject.ext.dependencies
 android {
     compileSdk 34
+    namespace = "com.xxf.download.m3u8.demo"
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 34

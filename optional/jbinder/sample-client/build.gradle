@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
+    namespace = "com.xxf.jbinder.sample_client"
     defaultConfig {
         applicationId "com.xxf.jbinder.sample_client"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

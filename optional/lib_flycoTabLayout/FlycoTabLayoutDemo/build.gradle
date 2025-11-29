@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
+    namespace = "com.flyco.tablayoutsamples"
     defaultConfig {
         applicationId "com.flyco.tablayoutsamples"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

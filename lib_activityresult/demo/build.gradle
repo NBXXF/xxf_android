@@ -7,7 +7,7 @@ def des = rootProject.ext.dependencies
 
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-
+    namespace = "com.xxf.activityresult.demo"
     defaultConfig {
         applicationId "com.xxf.activityresult.demo"
         minSdkVersion project.MIN_SDK_VERSION.toInteger()

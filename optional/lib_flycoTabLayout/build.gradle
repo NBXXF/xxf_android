@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
+    namespace = "com.flyco.tablayout"
     defaultConfig {
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()

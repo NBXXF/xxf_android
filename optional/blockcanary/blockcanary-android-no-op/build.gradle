@@ -1,8 +1,11 @@
-apply plugin: 'com.android.library'
-
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android' // 如果你用 Kotlin
+}
 build
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
+    namespace = "com.github.moduth.blockcanary"
     defaultConfig {
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-
+    namespace = "me.everything.overscrolldemo"
     defaultConfig {
         applicationId 'me.everything.overscrolldemo'
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
