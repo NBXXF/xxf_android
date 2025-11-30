@@ -19,7 +19,7 @@ import java.util.List;
  * Deprecated
  *  * Switch to androidx.viewpager2.widget.ViewPager2 and use androidx.viewpager2.adapter.FragmentStateAdapter instead.
  */
-
+@Deprecated
 public class BaseFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> fragmentsList = new ArrayList<Fragment>();
