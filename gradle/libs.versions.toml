@@ -15,7 +15,7 @@ okdownload = "1.0.7"
 exoplayer = "1.3.0"
 kotlin-test = "1.9.22"
 testng = "6.9.6"
-kpower = "2.0.1-SNAPSHOT"
+kpower = "2.0.2-SNAPSHOT"
 webkit = "1.1.0"
 
 

@@ -138,7 +138,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
                     it.downloadUrl.startsWith("http")
                 }
                 .map {
-                    it.createDate = Date()
+                    it.createAt= Date()
                     it
                 })
             resumeTask(tasks)
@@ -155,7 +155,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
                 it.notEqual(IDownloadEntity::downloadStatus, DownloadStatus.COMPLETED.value)
                 //只默认恢复5次之内失败的 避免大量任务堵塞
                 it.lessOrEqual(IDownloadEntity::downloadErrorTimes, 5L)
-                it.order(IDownloadEntity::createDate, true)
+                it.order(IDownloadEntity::createAt, true)
                 it
             }.list
             resumeTask(unfinished)
@@ -200,7 +200,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
 
     override fun getTasks(pageNum: Long, pageSize: Long, desc: Boolean): BasePageInfoDTO<T> {
         return getCacheService().selectPage(pageNum, pageSize) {
-            it.order(IDownloadEntity::createDate, desc)
+            it.order(IDownloadEntity::createAt, desc)
             it
         }
     }
@@ -213,7 +213,7 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     ): BasePageInfoDTO<T> {
         return getCacheService().selectPage(pageNum, pageSize) {
             it.equal(IDownloadEntity::downloadStatus, status)
-            it.order(IDownloadEntity::createDate, desc)
+            it.order(IDownloadEntity::createAt, desc)
             it
         }
     }

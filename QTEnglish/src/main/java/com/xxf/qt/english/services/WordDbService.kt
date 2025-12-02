@@ -1,6 +1,6 @@
 package com.xxf.qt.english.services
 
-import com.nbxxf.kpower.database.objectbox.service.BaseServiceImpl
+import com.nbxxf.kpower.database.objectbox.repository.BaseRepositoryImpl
 import com.xxf.qt.english.models.WordInfo
 
 /**
@@ -8,7 +8,7 @@ import com.xxf.qt.english.models.WordInfo
  * date createTime：7/15/21
  * Description :
  */
-object WordDbService: BaseServiceImpl<WordInfo, WordDao>() {
+object WordDbService: BaseRepositoryImpl<WordInfo, WordDao>() {
     init {
         dao= WordDao()
     }

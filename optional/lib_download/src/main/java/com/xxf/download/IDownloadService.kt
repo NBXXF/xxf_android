@@ -3,7 +3,7 @@ package com.xxf.download
 import com.liulishuo.okdownload.DownloadListener
 import com.nbxxf.kpower.database.model.BasePageInfoDTO
 import com.nbxxf.kpower.database.query.BaseQueryBuilder
-import com.nbxxf.kpower.database.service.BaseService
+import com.nbxxf.kpower.database.repository.BaseRepository
 import com.xxf.download.model.IDownloadEntity
 
 /**
@@ -16,7 +16,7 @@ interface ICacheTaskDownloadService<T : IDownloadEntity> {
     /**
      * 获取数据库层service
      */
-    fun getCacheService(): BaseService<Long, T, BaseQueryBuilder<T, *>>
+    fun getCacheService(): BaseRepository<Long, T, BaseQueryBuilder<T, *>>
 
     /**
      * 获取已经入库的任务

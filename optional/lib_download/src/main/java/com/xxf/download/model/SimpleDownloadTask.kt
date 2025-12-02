@@ -15,8 +15,8 @@ open class SimpleDownloadTask(
     override var downloadStatus: Long = -1,
     override var downloadTotalLength: Long = -1,
     override var downloadErrorTimes: Long = 0,
-    override var createDate: Date = Date(),
-    override var updateDate: Date = Date(),
+    override var createAt: Date = Date(),
+    override var updateAt: Date = Date(),
 ) : IDownloadEntity {
     override fun id(): Long {
         return downloadUrl.toCityHash64()
