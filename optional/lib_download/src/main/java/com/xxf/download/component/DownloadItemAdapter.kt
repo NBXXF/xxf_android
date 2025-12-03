@@ -1,6 +1,7 @@
 package com.xxf.download.component
 
 import androidx.annotation.CallSuper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.xxf.download.listener.DownloadUpdateListener
 import com.xxf.download.model.IDownloadEntity
@@ -19,19 +20,27 @@ open abstract class DownloadItemAdapter<V : ViewBinding, T : IDownloadEntity> :
     XXFRecyclerAdapter<V, T>() {
 
 
-    /**
-     * UI绑定
-     */
-    fun <T : IDownloadEntity, O : IDownloadService<T>> bindDownloadService(service: O) {
-        service.removeListener(mDownloadListener)
-        service.addListener(mDownloadListener)
-    }
+    private var service: IDownloadService<T>? = null
 
     /**
-     * UI解绑
+     * UI绑定 service自动触发更新
      */
-    fun <T : IDownloadEntity, O : IDownloadService<T>> unbindDownloadService(service: O) {
-        service.removeListener(mDownloadListener)
+    fun bindDownloadService(svc: IDownloadService<T>) {
+        this.service = svc
+    }
+
+    @CallSuper
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        service?.removeListener(mDownloadListener)
+        service?.addListener(mDownloadListener)
+    }
+
+
+    @CallSuper
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        service?.removeListener(mDownloadListener)
     }
 
 
