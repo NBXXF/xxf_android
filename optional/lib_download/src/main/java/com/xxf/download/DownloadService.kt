@@ -21,6 +21,7 @@ import com.xxf.speed.collections.toArrayListOrCast
 import java.io.File
 import java.util.Date
 import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -34,10 +35,8 @@ import java.util.concurrent.TimeUnit
 abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadService<T> {
 
     companion object {
-        private val SERIAL_EXECUTOR: Executor = ThreadPoolExecutor(
-            0,
-            Int.MAX_VALUE, 30, TimeUnit.SECONDS, SynchronousQueue(),
-            Util.threadFactory("DownloadService DynamicSerial", false)
+        private val SERIAL_EXECUTOR: Executor = Executors.newSingleThreadExecutor(
+            Util.threadFactory("DownloadService Serial", false)
         )
         const val ACTION_ADD_TASKS = "xxf.download.action.addTasks"
         const val KEY_TASKS = "tasks"
@@ -131,14 +130,15 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
             return
         }
         SERIAL_EXECUTOR.executeIfChildThread {
-            getCacheService().insert(tasks
+            getCacheService().insert(
+                tasks
                 .filter {
                     //避免加入非http的地址的数据 导致队列一直闪退
                     //DownloadOkHttp3Connection.java:48
                     it.downloadUrl.startsWith("http")
                 }
                 .map {
-                    it.createAt= Date()
+                    it.createAt = Date()
                     it
                 })
             resumeTask(tasks)
@@ -314,10 +314,6 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
      * 处理线程问题 如果已经是子线程了 就在对应的线程执行
      */
     private fun Executor.executeIfChildThread(command: Runnable) {
-        if (isMainThread) {
-            this.execute(command)
-        } else {
-            command.run()
-        }
+        this.execute(command)
     }
 }
