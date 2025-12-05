@@ -26,12 +26,21 @@ abstract class DownloadListItemAdapter<V : ViewBinding, T : IDownloadEntity> :
     private var service: IDownloadService<T>? = null
 
     /**
-     * UI绑定 service自动触发更新
+     * UI绑定 service自动触发更新,空就是解绑
      */
-    fun bindDownloadService(svc: IDownloadService<T>) {
+    fun bindDownloadService(svc: IDownloadService<T>?) {
+        //先移除老的
+        service?.removeListener(mDownloadListener)
+
+        //赋值
         this.service = svc
+
+        //添加新的
+        service?.removeListener(mDownloadListener)
+        service?.addListener(mDownloadListener)
     }
 
+    //解决嵌套问题 recyclerview+recyclerview
     @CallSuper
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -40,6 +49,7 @@ abstract class DownloadListItemAdapter<V : ViewBinding, T : IDownloadEntity> :
     }
 
 
+    //解决嵌套问题 recyclerview+recyclerview
     @CallSuper
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
