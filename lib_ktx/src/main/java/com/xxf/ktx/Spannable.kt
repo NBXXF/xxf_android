@@ -265,6 +265,10 @@ class AutoUrlSpan(
 
 /**
  * 在 SpannableStringBuilder 中自动识别 URL 并添加可点击 Span
+ *
+ * 且增加
+ * textView.movementMethod = LinkMovementMethod.getInstance()
+ * textView.highlightColor = Color.TRANSPARE
  */
 fun SpannableStringBuilder.appendWithAutoUrlSpan(
     text: String,
