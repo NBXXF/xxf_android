@@ -1,11 +1,13 @@
 package com.xxf.ktx.internals;
 
+import android.app.Activity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.xxf.ktx.ContextKt;
 import com.xxf.ktx.KeyboardKt;
 
 /**
@@ -55,7 +57,16 @@ public class KeyboardHiddenTouchListener
 
     protected void hideKeyboard() {
         if (target != null) {
+            Activity activity = ContextKt.findActivity(target.getContext());
+            if (activity != null) {
+                View focsusedView = activity.getCurrentFocus();
+                if (focsusedView != null) {
+                    /// 需要清除焦點,不然在搜索场景 搜索历史标签和默认列表无法切换,默认列表的规则是 没有焦点且输入框为空
+                    focsusedView.clearFocus();
+                }
+            }
             KeyboardKt.hideKeyboard(target);
         }
     }
+
 }
