@@ -276,7 +276,7 @@ fun SpannableStringBuilder.appendWithAutoUrlSpan(
     @ColorInt underlineColor: Int? = null,
     underline: Boolean = true,
     onUrlClick: ((String) -> Unit)? = null
-) {
+): SpannableStringBuilder {
     val matcher = Patterns.WEB_URL.matcher(text)
     var lastIndex = 0
 
@@ -302,4 +302,5 @@ fun SpannableStringBuilder.appendWithAutoUrlSpan(
     if (lastIndex < text.length) {
         append(text.substring(lastIndex))
     }
+    return this
 }
