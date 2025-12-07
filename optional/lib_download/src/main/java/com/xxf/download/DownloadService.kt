@@ -129,19 +129,20 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
         if (tasks.isEmpty()) {
             return
         }
+        val taskCopy = tasks.toList() // 拷贝一份
         SERIAL_EXECUTOR.executeIfChildThread {
             getCacheService().insert(
-                tasks
-                .filter {
-                    //避免加入非http的地址的数据 导致队列一直闪退
-                    //DownloadOkHttp3Connection.java:48
-                    it.downloadUrl.startsWith("http")
-                }
-                .map {
-                    it.createAt = Date()
-                    it
-                })
-            resumeTask(tasks)
+                taskCopy
+                    .filter {
+                        //避免加入非http的地址的数据 导致队列一直闪退
+                        //DownloadOkHttp3Connection.java:48
+                        it.downloadUrl.startsWith("http")
+                    }
+                    .map {
+                        it.createAt = Date()
+                        it
+                    })
+            resumeTask(taskCopy)
         }
 
     }
@@ -163,8 +164,10 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     }
 
     override fun resumeTask(tasks: List<T>) {
+        // 先拷贝一份，避免多线程修改原列表
+        val taskCopy = tasks.toList()
         SERIAL_EXECUTOR.executeIfChildThread {
-            tasks.forEach {
+            taskCopy.forEach {
                 if (!mSerialQueue.contains(it)) {
                     mSerialQueue.enqueue(onConvertTask(it))
                 }
@@ -181,20 +184,18 @@ abstract class DownloadService<T : IDownloadEntity> : Service(), IDownloadServic
     }
 
     override fun pauseTask(tasks: List<T>) {
+        val taskCopy = tasks.toList()
         SERIAL_EXECUTOR.executeIfChildThread {
-            mSerialQueue.remove(tasks)
+            mSerialQueue.remove(taskCopy)
         }
     }
 
     override fun removeTask(tasks: List<T>) {
+        val taskCopy = tasks.toList()
         SERIAL_EXECUTOR.executeIfChildThread {
-            mSerialQueue.cancel(tasks.map { task ->
-                onConvertTask(task)
-            })
-            getCacheService().deleteById(tasks.map { it.id() })
-            tasks.forEach {
-                File(it.downloadPath).deleteRecursively()
-            }
+            mSerialQueue.cancel(taskCopy.map { onConvertTask(it) })
+            getCacheService().deleteById(taskCopy.map { it.id() })
+            taskCopy.forEach { File(it.downloadPath).deleteRecursively() }
         }
     }
 
