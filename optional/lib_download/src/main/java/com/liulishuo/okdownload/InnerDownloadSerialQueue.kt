@@ -11,7 +11,7 @@ internal class InnerDownloadSerialQueue(
     constructor(listener: DownloadListener) : this(listener, arrayListOf())
 
     fun contains(task: IDownloadEntity): Boolean {
-        synchronized(taskList) {
+        synchronized(this) {
             return taskList.indexOfFirst {
                 task.downloadUrl == it.url
             } >= 0
@@ -19,7 +19,7 @@ internal class InnerDownloadSerialQueue(
     }
 
     fun contains(task: DownloadTask): Boolean {
-        synchronized(taskList) {
+        synchronized(this) {
             return taskList.indexOfFirst {
                 task.url == it.url
             } >= 0
@@ -27,7 +27,7 @@ internal class InnerDownloadSerialQueue(
     }
 
     fun <T : IDownloadEntity> remove(task: List<T>) {
-        synchronized(taskList) {
+        synchronized(this) {
             val associateBy = task.associateBy { it.downloadUrl }
             taskList.removeAll {
                 if (associateBy.contains(it.url)) {
@@ -46,7 +46,7 @@ internal class InnerDownloadSerialQueue(
 
     @Synchronized
     fun cancel(tasks: List<DownloadTask>) {
-        synchronized(taskList) {
+        synchronized(this) {
             OkDownload.with()
                 .downloadDispatcher()
                 .cancel(tasks.toTypedArray())
