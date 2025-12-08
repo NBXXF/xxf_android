@@ -45,6 +45,7 @@ glideWebp = { module = "com.github.zjupure:webpdecoder", version = "2.6.4.16.0" 
 androidsvg = { module = "com.caverock:androidsvg", version = "1.4" }
 glideTransform = { module = "jp.wasabeef:glide-transformations", version = "4.3.0" }
 glideGpuimage = { module = "jp.co.cyberagent.android:gpuimage", version = "2.1.0" }
+flexbox = { module = "com.google.android.flexbox:flexbox", version = "3.0.0" }
 pickerView = { module = "com.contrarywind:Android-PickerView", version = "4.1.9" }
 xxf_ratingbar = { module = "com.github.NBXXF:xxf_RatingBar", version = "1.0.5" }
 xxf_spEditTool = { module = "com.github.NBXXF.SpEditTool:SpEditText", version = "1.0.6" }

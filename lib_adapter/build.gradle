@@ -36,6 +36,8 @@ android {
 dependencies {
     api libs.material
     api libs.recyclerview
+    ///常用,还是加上
+    api libs.flexbox
     api project(path: ':lib_ktx')
     implementation libs.kpower.speed
 }
