@@ -53,14 +53,14 @@ allprojects {
                 username getXXFUsername()
                 password getXXFPassword()
             }
-            url 'https://packages.aliyun.com/maven/repository/2433389-release-RMv0jP/'
+            url 'https://packages.aliyun.com/654f22929afb401752743754/maven/2433389-release-rmv0jp'
         }
         maven {
             credentials {
                 username getXXFUsername()
                 password getXXFPassword()
             }
-            url 'https://packages.aliyun.com/maven/repository/2433389-snapshot-Kqt8ID/'
+            url 'https://packages.aliyun.com/654f22929afb401752743754/maven/2433389-snapshot-kqt8id'
         }
     }
     configurations.all {
