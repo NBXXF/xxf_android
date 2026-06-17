@@ -13,6 +13,11 @@ import okio.buffer
  * chunked transfer。这样可以避免为了计算 Content-Length 先把整个 body 压到内存里。
  *
  * 作为库 API 对外提供包装能力即可，不建议 open 给外部继承，避免子类改变 gzip 写入语义。
+ *
+ * 如果是拦截器里面搞,可以先判断一下
+ * if (originalBody == null || original.header("Content-Encoding") != null) {
+ *     return chain.proceed(original)
+ * }
  */
 public class GzipRequestBody private constructor(
     private val originBody: RequestBody
