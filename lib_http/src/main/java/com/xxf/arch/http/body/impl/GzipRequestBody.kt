@@ -14,7 +14,7 @@ import okio.buffer
  *
  * 作为库 API 对外提供包装能力即可，不建议 open 给外部继承，避免子类改变 gzip 写入语义。
  */
-public class GzipRequestBody(
+public class GzipRequestBody private constructor(
     private val originBody: RequestBody
 ) : RequestBody() {
 
@@ -53,13 +53,42 @@ public class GzipRequestBody(
     companion object {
 
         /**
+         * 默认 gzip 阀门。已知原始长度小于 1KB 时，压缩收益通常抵不过 gzip 头和 CPU 成本。
+         */
+        public const val DEFAULT_MIN_GZIP_SIZE: Long = 1024L
+
+        /**
          * 判断 body 是否已经被本包装器处理过，用于避免重复 gzip。
          */
         public fun isGzipped(body: RequestBody): Boolean = body is GzipRequestBody
 
         /**
-         * 幂等包装：已是 GzipRequestBody 时直接返回，否则创建新的 gzip 包装体。
+         * 判断 body 是否需要 gzip。
+         *
+         * 已知长度且小于阀门时跳过 gzip；未知长度返回 -1，无法提前判断大小，仍保持流式 gzip。
          */
-        public fun wrap(body: RequestBody): RequestBody = body as? GzipRequestBody ?: GzipRequestBody(body)
+        public fun shouldGzip(
+            body: RequestBody,
+            minGzipSize: Long = DEFAULT_MIN_GZIP_SIZE
+        ): Boolean {
+            if (isGzipped(body)) {
+                return true
+            }
+            val contentLength = body.contentLength()
+            return contentLength !in 0L..<minGzipSize
+        }
+
+        /**
+         * 幂等包装：已是 GzipRequestBody 时直接返回；低于 gzip 阀门时返回原始 body；其余情况创建新的 gzip 包装体。
+         */
+        public fun wrap(
+            body: RequestBody,
+            minGzipSize: Long = DEFAULT_MIN_GZIP_SIZE
+        ): RequestBody {
+            if (!shouldGzip(body, minGzipSize)) {
+                return body
+            }
+            return body as? GzipRequestBody ?: GzipRequestBody(body)
+        }
     }
 }
