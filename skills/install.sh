@@ -121,6 +121,7 @@ PY
     echo "    $CACHE_DIR_DISPLAY/skills/xxf-aaa-risk-gate/SKILL.md"
     echo "    $CACHE_DIR_DISPLAY/skills/xxf-aaa-android-performance-gate/SKILL.md"
     echo "    $CACHE_DIR_DISPLAY/skills/xxf-aaa-module-scaffold/SKILL.md"
+    echo "    $CACHE_DIR_DISPLAY/skills/xxf-aaa-skill-maintainer/SKILL.md"
     echo ""
     echo "Default verification uses the narrowest relevant Gradle task, for example ./gradlew :lib_ktx:compileDebugKotlin or an associated demo assemble listed in the module skill."
     echo ""

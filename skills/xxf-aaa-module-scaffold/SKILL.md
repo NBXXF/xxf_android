@@ -20,6 +20,7 @@ description: 为 xxf_android 新增或拆分 Android library/app/demo 模块时�
 4. 发布库补齐 `ext` 发布字段并按层级 `apply from: '../publish_maven.gradle'`。
 5. 如属于核心聚合能力，同步 `libs/build.gradle`。
 6. 加 demo/sample 时放在模块下或 `optional` 对应目录，demo 不发布。
+7. 为新发布库新增对应 `skills/xxf-*/SKILL.md`；demo/sample 只写进该 skill 的 Related Demo / Sample Modules。
 
 ## 依赖规则
 
@@ -41,3 +42,9 @@ description: 为 xxf_android 新增或拆分 Android library/app/demo 模块时�
 ```bash
 ./gradlew :libs:assembleDebug
 ```
+
+## Skill 同步
+
+- 新模块 skill 必须包含 Scope、Dependency Boundary、Verification、Risk Notes；需要 demo 时再加 Related Demo / Sample Modules。
+- 更新 `AGENTS.md` 和 `skills/install.sh` 中的工程约束 skill 列表。
+- 新增模块后读 `xxf-aaa-skill-maintainer` 做覆盖校验。

@@ -13,13 +13,15 @@ description: 处理 XXF Android 项目中的通用编码任务交付流程。用
 
 ## 默认工作流
 
-1. 读受影响可发布 library 模块对应的 `xxf-*` 模块 skill，定位路径、发布脚本、依赖边界、关联 demo 和验证入口。
-2. 读 `xxf-aaa-coding-style` 与 `xxf-aaa-coding-arch`，按本仓库 Kotlin/Java/XML/Gradle 约束实现最小改动。
-3. 涉及 Activity/Fragment/View/ViewModel/Adapter 等类型声明时，读 `xxf-aaa-class-declaration-guidelines`。
-4. 需要判断测试范围时读 `xxf-aaa-test-strategy`；需要补测时读 `xxf-aaa-unit-test-writer`。
-5. 完成修改后进入 `xxf-aaa-auto-test-orchestrator`，运行最小相关 Gradle 验证。
-6. 改动跨模块、触及公共 API、生命周期、线程、权限、存储、网络、图片、发布配置时，读 `xxf-aaa-code-reviewer` 和 `xxf-aaa-risk-gate`。
-7. 改动触及 UI 渲染、列表、图片、启动、主线程、下载/网络热路径时，读 `xxf-aaa-android-performance-gate`。
+1. 先用 `git status --short`、`settings.gradle`、实际模块目录和 `build.gradle` 确认变更范围；不要只凭陈旧 include 或文件名推断模块事实。
+2. 读受影响可发布 library 模块对应的 `xxf-*` 模块 skill，定位路径、发布脚本、依赖边界、关联 demo 和验证入口。
+3. 读 `xxf-aaa-coding-style` 与 `xxf-aaa-coding-arch`，按本仓库 Kotlin/Java/XML/Gradle 约束实现最小改动。
+4. 涉及 Activity/Fragment/View/ViewModel/Adapter 等类型声明时，读 `xxf-aaa-class-declaration-guidelines`。
+5. 需要判断测试范围时读 `xxf-aaa-test-strategy`；需要补测时读 `xxf-aaa-unit-test-writer`。
+6. 完成修改后进入 `xxf-aaa-auto-test-orchestrator`，运行最小相关 Gradle 验证。
+7. 改动跨模块、触及公共 API、生命周期、线程、权限、存储、网络、图片、发布配置时，读 `xxf-aaa-code-reviewer` 和 `xxf-aaa-risk-gate`。
+8. 改动触及 UI 渲染、列表、图片、启动、主线程、下载/网络热路径时，读 `xxf-aaa-android-performance-gate`。
+9. 新增/删除/移动模块，或发现 module skill 与工程事实不一致时，读 `xxf-aaa-skill-maintainer` 并同步 skill。
 
 ## 验证优先级
 
@@ -28,6 +30,7 @@ description: 处理 XXF Android 项目中的通用编码任务交付流程。用
 - 关联 demo 改动：不建立独立 skill，按所属 library skill 中的 Related Demo / Sample Modules 执行 assemble
 - 单测存在时：优先对应 `testDebugUnitTest`
 - 发布脚本、POM、混淆、依赖暴露变更：至少跑受影响库 assemble，并检查 `publish_maven.gradle`/`ext` 配置
+- 只修改 `skills/` 或 `AGENTS.md` 文档：运行 skill 结构/覆盖静态检查即可，不跑 Gradle
 
 ## 升级澄清条件
 

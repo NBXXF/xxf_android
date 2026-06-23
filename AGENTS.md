@@ -20,6 +20,7 @@ Then load any additional relevant skills:
   - `./skills/xxf-aaa-risk-gate/SKILL.md`
   - `./skills/xxf-aaa-android-performance-gate/SKILL.md`
   - `./skills/xxf-aaa-module-scaffold/SKILL.md`
+  - `./skills/xxf-aaa-skill-maintainer/SKILL.md`
 
 Default expectation for ordinary coding work in this repo:
 
