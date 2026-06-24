@@ -1,41 +1,29 @@
 ---
 name: xxf-preferences-mmkv
-description: :lib_preferencesMMKV 模块规则（core library，当前 settings.gradle 启用）。修改该模块、调用方、依赖或验证入口时使用。
+description: :lib_preferencesMMKV 的外部接入说明。用于指导 Maven 消费方如何用 MMKV 作为偏好存储后端。
 ---
 
 # :lib_preferencesMMKV
 
-## Scope
+## What It Provides
 
-- Gradle path: `:lib_preferencesMMKV`
-- Directory: `lib_preferencesMMKV`
-- Status: enabled in settings.gradle
-- Type: core library
-- Namespace: `com.xxf.preferences.mmkv`
-- Plugins: `com.android.library, kotlin-android, kotlin-kapt`
-- Build features touched in Gradle: `buildConfig`
-- Published with `publish_maven.gradle`; preserve `publishVersion`, `publishGroup`, `moduleName`, and relative script path.
-- Uses kapt or annotation processing; validate with assemble when generated sources may be affected.
+`lib_preferencesMMKV` provides `MMKVPreferencesOwner` and `CustomMMKVPreferencesOwner` for MMKV-backed key-value storage.
 
-## Dependency Boundary
+## Required Dependency
 
-Project dependencies:
+This extension builds on `lib_preferences`.
 
-- `:lib_preferences`
-- `com.tencent:mmkv`
+## Core APIs
 
-Rules:
+- `MMKVPreferencesOwner`
+- `CustomMMKVPreferencesOwner`
 
-- Keep changes inside this module unless callers, demos, resources, Manifest, or published API require synchronized updates.
-- Use `api` only when the dependency is part of this module public API; otherwise prefer `implementation`.
-- Demo/sample modules verify usage and must not become required by library modules.
+## Basic Usage
 
-## Verification
+```kotlin
+object AppPreferences : MMKVPreferencesOwner {
+    var token: String by preferencesBinding("token", "")
+}
+```
 
-- 优先运行 `./gradlew :lib_preferencesMMKV:compileDebugKotlin`；任务不存在时退回 `./gradlew :lib_preferencesMMKV:assembleDebug`。
-- If public API changes, also compile the closest direct callers or the affected demo/sample module.
-- For publishing changes, inspect generated POM/dependency exposure before release.
-
-## Risk Notes
-
-- Check published API compatibility and downstream module compilation.
+Use `CustomMMKVPreferencesOwner` when you want one MMKV namespace per owner object.

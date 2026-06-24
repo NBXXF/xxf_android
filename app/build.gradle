@@ -80,4 +80,7 @@ dependencies {
     implementation project(':lib_preferencesMMKV')
     implementation project(':lib_preferencesGson')
     implementation project(':optional:lib_glide')
+
+//    api("com.NBXXF.xxf_android:lib_preferencesMMKV:5.2.2.7-SNAPSHOT")
+//    api("com.NBXXF.xxf_android:lib_preferencesGson:5.2.2.7-SNAPSHOT")
 }

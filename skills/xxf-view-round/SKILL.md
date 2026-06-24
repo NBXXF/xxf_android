@@ -1,37 +1,18 @@
 ---
 name: xxf-view-round
-description: :lib_view_round 模块规则（core library，当前 settings.gradle 启用）。修改该模块、调用方、依赖或验证入口时使用。
+description: :lib_view_round 的外部接入说明，面向 Maven 消费方。
 ---
 
 # :lib_view_round
 
-## Scope
+## What It Provides
 
-- Gradle path: `:lib_view_round`
-- Directory: `lib_view_round`
-- Status: enabled in settings.gradle
-- Type: core library
-- Namespace: `com.xxf.view.round`
-- Plugins: `com.android.library, kotlin-android, kotlin-kapt`
-- Build features touched in Gradle: `buildConfig`
-- Published with `publish_maven.gradle`; preserve `publishVersion`, `publishGroup`, `moduleName`, and relative script path.
-- Uses kapt or annotation processing; validate with assemble when generated sources may be affected.
+`lib_view_round` provides rounded view components and clipping helpers. Use the published Maven artifact from your app or feature module.
 
-## Dependency Boundary
+## Dependencies
 
-- No project dependencies were detected from `build.gradle`, or the module directory is missing.
+- None
 
-Rules:
+## Basic Usage
 
-- Keep changes inside this module unless callers, demos, resources, Manifest, or published API require synchronized updates.
-- Use `api` only when the dependency is part of this module public API; otherwise prefer `implementation`.
-- Demo/sample modules verify usage and must not become required by library modules.
-
-## Verification
-
-- 优先运行 `./gradlew :lib_view_round:compileDebugKotlin`；任务不存在时退回 `./gradlew :lib_view_round:assembleDebug`。
-- For publishing changes, inspect generated POM/dependency exposure before release.
-
-## Risk Notes
-
-- Check UI rendering, RecyclerView/list performance, and resource compatibility.
+Use the public APIs exposed by this artifact. Keep the dependency on the published module only; do not rely on repository-internal build commands or local source paths.

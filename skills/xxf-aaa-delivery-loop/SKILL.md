@@ -16,10 +16,11 @@ description: 处理 XXF Android 项目中的通用编码任务交付流程。用
 1. 读受影响可发布 library 模块对应的 `xxf-*` 模块 skill，定位路径、发布脚本、依赖边界、关联 demo 和验证入口。
 2. 读 `xxf-aaa-coding-style` 与 `xxf-aaa-coding-arch`，按本仓库 Kotlin/Java/XML/Gradle 约束实现最小改动。
 3. 涉及 Activity/Fragment/View/ViewModel/Adapter 等类型声明时，读 `xxf-aaa-class-declaration-guidelines`。
-4. 需要判断测试范围时读 `xxf-aaa-test-strategy`；需要补测时读 `xxf-aaa-unit-test-writer`。
-5. 完成修改后进入 `xxf-aaa-auto-test-orchestrator`，运行最小相关 Gradle 验证。
-6. 改动跨模块、触及公共 API、生命周期、线程、权限、存储、网络、图片、发布配置时，读 `xxf-aaa-code-reviewer` 和 `xxf-aaa-risk-gate`。
-7. 改动触及 UI 渲染、列表、图片、启动、主线程、下载/网络热路径时，读 `xxf-aaa-android-performance-gate`。
+4. 涉及 VO/DTO/PO/DO/BO/Entity/Query/Command 等领域模型命名时，读 `xxf-aaa-model-naming-guidelines`。
+5. 需要判断测试范围时读 `xxf-aaa-test-strategy`；需要补测时读 `xxf-aaa-unit-test-writer`。
+6. 完成修改后进入 `xxf-aaa-auto-test-orchestrator`，运行最小相关 Gradle 验证。
+7. 改动跨模块、触及公共 API、生命周期、线程、权限、存储、网络、图片、发布配置时，读 `xxf-aaa-code-reviewer` 和 `xxf-aaa-risk-gate`。
+8. 改动触及 UI 渲染、列表、图片、启动、主线程、下载/网络热路径时，读 `xxf-aaa-android-performance-gate`。
 
 ## 验证优先级
 
