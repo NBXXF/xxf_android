@@ -65,13 +65,19 @@ android {
         viewBinding = true
     }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':libs')
+    implementation project(':lib_preferences')
+    implementation project(':lib_preferencesMMKV')
+    implementation project(':lib_preferencesGson')
     implementation project(':optional:lib_glide')
 }

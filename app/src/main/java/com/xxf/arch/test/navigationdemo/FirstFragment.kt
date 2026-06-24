@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewTreeViewModelStoreOwner
+//import androidx.lifecycle.ViewTreeViewModelStoreOwner
 import androidx.navigation.fragment.findNavController
 import com.xxf.viewbinding.viewBinding
 import com.xxf.application.lifecycle.findViewLifecycleOwner
@@ -26,7 +26,7 @@ class FirstFragment : XXFFragment<Unit>(R.layout.fragment_first) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val get = ViewTreeViewModelStoreOwner.get(view)
+        //val get = ViewTreeViewModelStoreOwner.get(view)
         binding.info.text = "life:${view.findViewLifecycleOwner()}"
         binding.recyclerView.adapter = TestAdapter()
             .apply {
