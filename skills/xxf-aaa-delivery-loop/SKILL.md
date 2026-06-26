@@ -20,7 +20,8 @@ description: 处理 XXF Android 项目中的通用编码任务交付流程。用
 5. 需要判断测试范围时读 `xxf-aaa-test-strategy`；需要补测时读 `xxf-aaa-unit-test-writer`。
 6. 完成修改后进入 `xxf-aaa-auto-test-orchestrator`，运行最小相关 Gradle 验证。
 7. 改动跨模块、触及公共 API、生命周期、线程、权限、存储、网络、图片、发布配置时，读 `xxf-aaa-code-reviewer` 和 `xxf-aaa-risk-gate`。
-8. 改动触及 UI 渲染、列表、图片、启动、主线程、下载/网络热路径时，读 `xxf-aaa-android-performance-gate`。
+8. 根据 Figma/Figama、MasterGo、蓝湖、摹客、截图或设计稿实现/修复 UI 时，读 `xxf-aaa-ui-design-alignment`。
+9. 改动触及 UI 渲染、列表、图片、启动、主线程、下载/网络热路径时，读 `xxf-aaa-android-performance-gate`。
 
 ## 验证优先级
 

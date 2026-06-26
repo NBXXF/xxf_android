@@ -18,6 +18,7 @@ Then load any additional relevant skills:
   - `./skills/xxf-aaa-auto-test-orchestrator/SKILL.md`
   - `./skills/xxf-aaa-code-reviewer/SKILL.md`
   - `./skills/xxf-aaa-risk-gate/SKILL.md`
+  - `./skills/xxf-aaa-ui-design-alignment/SKILL.md`
   - `./skills/xxf-aaa-android-performance-gate/SKILL.md`
   - `./skills/xxf-aaa-module-scaffold/SKILL.md`
 

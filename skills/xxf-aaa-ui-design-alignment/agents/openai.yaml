@@ -1,0 +1,4 @@
+interface:
+  display_name: "XXF UI Design Alignment"
+  short_description: "Align Android UI to design specs across devices"
+  default_prompt: "Use $xxf-aaa-ui-design-alignment to implement this Android UI from the design spec with pixel alignment and multi-device adaptation."
