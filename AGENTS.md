@@ -21,6 +21,7 @@ Then load any additional relevant skills:
   - `./skills/xxf-aaa-ui-design-alignment/SKILL.md`
   - `./skills/xxf-aaa-android-performance-gate/SKILL.md`
   - `./skills/xxf-aaa-module-scaffold/SKILL.md`
+  - `./skills/xxf-aaa-clarify-question/SKILL.md`
 
 Default expectation for ordinary coding work in this repo:
 
@@ -29,5 +30,6 @@ Default expectation for ordinary coding work in this repo:
 3. Run the narrowest relevant Gradle verification.
 4. Review the change when risk is non-trivial.
 5. Surface a merge/release risk conclusion when residual risk remains.
+6. When a solution, conclusion, conflict, or technical choice needs user judgment, prompt the user to decide and record the decision in the affected module's `vibe-coding-clarify.md`.
 
 Only skip one of these steps when it is clearly not applicable, or when blocked by signing, private Maven credentials, device/emulator availability, environment ambiguity, or explicit user direction.

@@ -22,6 +22,7 @@ description: 处理 XXF Android 项目中的通用编码任务交付流程。用
 7. 改动跨模块、触及公共 API、生命周期、线程、权限、存储、网络、图片、发布配置时，读 `xxf-aaa-code-reviewer` 和 `xxf-aaa-risk-gate`。
 8. 根据 Figma/Figama、MasterGo、蓝湖、摹客、截图或设计稿实现/修复 UI 时，读 `xxf-aaa-ui-design-alignment`。
 9. 改动触及 UI 渲染、列表、图片、启动、主线程、下载/网络热路径时，读 `xxf-aaa-android-performance-gate`。
+10. 方案不确定、结论冲突、技术选型分歧、业务规则无法从代码事实推导，或用户目标与架构/发布/兼容约束冲突时，读 `xxf-aaa-clarify-question`，先让用户抉择，并把决策记录到对应模块的 `vibe-coding-clarify.md`。
 
 ## 验证优先级
 
@@ -36,6 +37,10 @@ description: 处理 XXF Android 项目中的通用编码任务交付流程。用
 - 需要私有 Maven 凭证、签名、生产服务、真实设备能力且无法替代
 - 是否正确属于产品/业务规则而非代码事实
 - 改动会影响多个公开库的 API 兼容性或发布坐标
+- 存在多个可行实现，且选择会影响 API、兼容性、发布、依赖方向、验证范围或后续维护成本
+- 用户目标与现有架构边界、optional 模块拆分、隐私权限、性能要求或发布策略冲突
+
+进入澄清时，按 `xxf-aaa-clarify-question` 输出用户决策 prompt；用户确认后写入对应模块的 `vibe-coding-clarify.md` 再继续实现。
 
 ## 输出要求
 
