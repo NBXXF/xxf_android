@@ -11,7 +11,7 @@
 #   cursor      - Cursor (.cursor/rules/*.mdc)
 #
 # scope:
-#   user        - global install for claude
+#   user        - global install for claude/codex
 #   project     - project-local install for claude/codex/cursor
 
 set -euo pipefail
@@ -91,9 +91,13 @@ install_claude() {
 }
 
 install_codex() {
-  [[ "$SCOPE" == "project" ]] || err "codex scope must be 'project' (AGENTS.md is per-project)"
+  local target
+  case "$SCOPE" in
+    user) target="$HOME/.agents/skills" ;;
+    project) target="$PWD/.agents/skills" ;;
+    *) err "scope must be 'user' or 'project' for codex" ;;
+  esac
 
-  local target="$PWD/.agents/skills"
   local agents_md="$PWD/AGENTS.md"
   local marker_begin="<!-- BEGIN: xxf-android-library-skills (managed by install.sh) -->"
   local marker_end="<!-- END: xxf-android-library-skills -->"
@@ -108,6 +112,11 @@ install_codex() {
     ln -sfn "$skill_dir" "$target/$name"
     count=$((count + 1))
   done
+
+  if [[ "$SCOPE" == "user" ]]; then
+    info "installed $count skills to $target"
+    return
+  fi
 
   if [[ -f "$agents_md" ]] && grep -qF "$marker_begin" "$agents_md"; then
     info "refreshing existing xxf-android-library-skills block in AGENTS.md"

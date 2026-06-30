@@ -36,6 +36,7 @@ Supported agents:
 
 ```bash
 bash /path/to/xxf_android/skills/install.sh codex project
+bash /path/to/xxf_android/skills/install.sh codex user
 bash /path/to/xxf_android/skills/install.sh claude user
 bash /path/to/xxf_android/skills/install.sh cursor project
 ```
@@ -43,6 +44,7 @@ bash /path/to/xxf_android/skills/install.sh cursor project
 Install targets:
 
 - Codex project install creates symlinks in `.agents/skills` and adds a small managed block to `AGENTS.md`.
+- Codex user install creates symlinks in `$HOME/.agents/skills`.
 - Claude install creates symlinks in `.claude/skills`.
 - Cursor project install copies rules to `.cursor/rules`.
 
