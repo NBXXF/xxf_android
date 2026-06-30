@@ -1,5 +1,47 @@
-### 注意
+# XXF Android Library Skills
 
-1. 这个文件夹里面的 skill 面向外部 Maven 消费方。
-2. 这里的内容要从“发布后的库怎么用”的角度编写，只保留公开 API、依赖关系和最小使用示例。
-3. 不要写仓库内部构建、验证、发布或维护命令。
+This folder contains module-specific skills for published XXF Android libraries.
+
+These skills are written from the external Maven consumer perspective: public API, dependency relationship, and minimum usage examples. They should not include private repository build, verification, release, or maintenance commands.
+
+## Companion Shared Skills
+
+Generic Android workflow rules live in a separate repository:
+
+```text
+https://github.com/NBXXF/android-skills
+```
+
+Install both skill libraries when a coding agent should understand both generic Android engineering rules and XXF library-specific usage.
+
+## Install
+
+Install shared Android engineering skills first:
+
+```bash
+git clone https://github.com/NBXXF/android-skills.git
+cd android-skills
+bash install.sh codex project
+```
+
+Install XXF Android library skills from this repository:
+
+```bash
+git clone https://github.com/NBXXF/xxf_android.git
+cd xxf_android/skills
+bash install.sh codex project
+```
+
+Supported agents:
+
+```bash
+bash install.sh codex project
+bash install.sh claude user
+bash install.sh cursor project
+```
+
+## Boundaries
+
+- `android-skills`: shared Android workflow, architecture, test, review, risk, performance, and clarification rules.
+- `xxf_android/skills`: concrete published library/module usage skills.
+- Do not add `xxf-aaa-*` shared workflow skills back into this folder.
