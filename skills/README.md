@@ -16,29 +16,35 @@ Install both skill libraries when a coding agent should understand both generic 
 
 ## Install
 
-Install shared Android engineering skills first:
+Install shared Android engineering skills first. Run project-scoped installs from the Android project root where the agent should discover the skills:
 
 ```bash
-git clone https://github.com/NBXXF/android-skills.git
-cd android-skills
-bash install.sh codex project
+git clone https://github.com/NBXXF/android-skills.git /path/to/android-skills
+cd /path/to/target-android-project
+bash /path/to/android-skills/install.sh codex project
 ```
 
 Install XXF Android library skills from this repository:
 
 ```bash
-git clone https://github.com/NBXXF/xxf_android.git
-cd xxf_android/skills
-bash install.sh codex project
+git clone https://github.com/NBXXF/xxf_android.git /path/to/xxf_android
+cd /path/to/target-android-project
+bash /path/to/xxf_android/skills/install.sh codex project
 ```
 
 Supported agents:
 
 ```bash
-bash install.sh codex project
-bash install.sh claude user
-bash install.sh cursor project
+bash /path/to/xxf_android/skills/install.sh codex project
+bash /path/to/xxf_android/skills/install.sh claude user
+bash /path/to/xxf_android/skills/install.sh cursor project
 ```
+
+Install targets:
+
+- Codex project install creates symlinks in `.agents/skills` and adds a small managed block to `AGENTS.md`.
+- Claude install creates symlinks in `.claude/skills`.
+- Cursor project install copies rules to `.cursor/rules`.
 
 ## Boundaries
 

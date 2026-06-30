@@ -4,12 +4,12 @@ For normal coding tasks in this project, do not wait for the user to explicitly 
 
 Before implementing a generic bugfix, feature change, refactor, or regression fix, first read the shared Android engineering workflow skill from the installed `android-skills` repository:
 
-- `android-skills/skills/xxf-aaa-delivery-loop/SKILL.md` from a local checkout, or
-- `$HOME/.cache/xxf-shared-android-skills/skills/xxf-aaa-delivery-loop/SKILL.md` after running `android-skills/install.sh`
+- `.agents/skills/xxf-aaa-delivery-loop/SKILL.md` after running `android-skills/install.sh codex project`
+- `android-skills/skills/xxf-aaa-delivery-loop/SKILL.md` from a local checkout when the skills have not been installed into this repository
 
 Then load any additional relevant skills:
 
-- Matching module skills under `./skills/xxf-*/SKILL.md`
+- Matching module skills under `.agents/skills/xxf-*/SKILL.md` after running `skills/install.sh codex project`, or under `./skills/xxf-*/SKILL.md` when working directly in this repository
 - Shared Android engineering constraints under the same `android-skills/skills` directory when relevant:
   - `xxf-aaa-coding-style`
   - `xxf-aaa-coding-arch`

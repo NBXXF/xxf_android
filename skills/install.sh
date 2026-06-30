@@ -7,7 +7,7 @@
 #
 # agent:
 #   claude      - Claude Code (~/.claude/skills or .claude/skills)
-#   codex       - Codex CLI (injects an AGENTS.md reference block)
+#   codex       - Codex CLI (.agents/skills symlinks plus an AGENTS.md reference block)
 #   cursor      - Cursor (.cursor/rules/*.mdc)
 #
 # scope:
@@ -93,9 +93,21 @@ install_claude() {
 install_codex() {
   [[ "$SCOPE" == "project" ]] || err "codex scope must be 'project' (AGENTS.md is per-project)"
 
+  local target="$PWD/.agents/skills"
   local agents_md="$PWD/AGENTS.md"
   local marker_begin="<!-- BEGIN: xxf-android-library-skills (managed by install.sh) -->"
   local marker_end="<!-- END: xxf-android-library-skills -->"
+
+  mkdir -p "$target"
+  local count=0
+  for skill_dir in "$SKILLS_SRC"/xxf-*/; do
+    [[ -d "$skill_dir" ]] || continue
+    local name
+    name=$(basename "$skill_dir")
+    [[ "$name" == xxf-aaa-* ]] && continue
+    ln -sfn "$skill_dir" "$target/$name"
+    count=$((count + 1))
+  done
 
   if [[ -f "$agents_md" ]] && grep -qF "$marker_begin" "$agents_md"; then
     info "refreshing existing xxf-android-library-skills block in AGENTS.md"
@@ -127,9 +139,9 @@ PY
     echo ""
     echo "Use these skills when working with published XXF Android libraries or their module-specific public APIs."
     echo ""
-    echo "Load matching library module skills from:"
+    echo "Codex discovers these project skills from:"
     echo ""
-    echo "    $SKILLS_SRC_DISPLAY/<skill-name>/SKILL.md"
+    echo "    .agents/skills/<skill-name>/SKILL.md"
     echo ""
     echo "For shared Android coding workflow, architecture, testing, review, and risk rules, also install the companion shared Android skills repository: https://github.com/NBXXF/android-skills"
     echo ""
@@ -141,6 +153,7 @@ PY
   } > "$agents_md.new"
   mv "$agents_md.new" "$agents_md"
 
+  info "installed $count skills to $target"
   info "injected managed block into $agents_md"
 }
 
