@@ -47,11 +47,22 @@ interface IPreferencesOwner {
  */
 interface SharedPreferencesOwner : IPreferencesOwner {
     companion object {
+        interface SharedPreferencesFactory {
+            fun createSharedPreferences(): SharedPreferences
+        }
+
+        var sharedPreferencesFactory: SharedPreferencesFactory =
+            object : SharedPreferencesFactory {
+                override fun createSharedPreferences(): SharedPreferences {
+                    return app.getSharedPreferences(
+                        SharedPreferencesOwner::class.java.simpleName,
+                        Context.MODE_PRIVATE
+                    )
+                }
+            }
+
         private val mSharedPreferences: SharedPreferences by lazy {
-            app.getSharedPreferences(
-                SharedPreferencesOwner::class.java.simpleName,
-                Context.MODE_PRIVATE
-            )
+            sharedPreferencesFactory.createSharedPreferences()
         }
     }
 

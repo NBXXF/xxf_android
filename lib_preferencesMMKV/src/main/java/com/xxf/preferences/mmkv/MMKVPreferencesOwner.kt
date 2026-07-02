@@ -22,11 +22,22 @@ import kotlin.reflect.KProperty
  */
 interface MMKVPreferencesOwner : IPreferencesOwner {
     companion object {
-        private val mMMKV: MMKV by lazy {
-            if (MMKV.getRootDir() == null) {
-                MMKV.initialize(application)
+        interface MMKVFactory {
+            fun createMMKV(): MMKV
+        }
+
+        var mmkvFactory: MMKVFactory =
+            object : MMKVFactory {
+                override fun createMMKV(): MMKV {
+                    if (MMKV.getRootDir() == null) {
+                        MMKV.initialize(application)
+                    }
+                    return MMKV.mmkvWithID(MMKVPreferencesOwner::class.java.simpleName)
+                }
             }
-            MMKV.mmkvWithID(MMKVPreferencesOwner::class.java.simpleName)
+
+        private val mMMKV: MMKV by lazy {
+            mmkvFactory.createMMKV()
         }
     }
 

@@ -242,8 +242,9 @@ fun <T : RecyclerView> T.withoutAnimation(block: T.() -> Unit) {
  */
 fun <V : ViewBinding, D, T : BaseAdapter<V, D>> T.doWithoutAnimation(block: T.() -> Unit) {
     if (this.recyclerView != null) {
+        val adapter = this
         this.recyclerView.doWithoutAnimation {
-            this@doWithoutAnimation.apply(block)
+            adapter.block()
         }
     } else {
         block()

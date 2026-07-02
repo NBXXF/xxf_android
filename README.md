@@ -364,9 +364,10 @@ application.registerActivityLifecycleCallbacks(
 
 | 注解 | 位置 | 说明 |
 |------|------|------|
-| `@Cache` | 参数 | 设置缓存类型 |
+| `@Tag` | 参数 | 设置缓存类型 |
 | `@RxHttpCache` | 方法 | 设置缓存类型 |
 | `@Headers("cache:5000")` | 方法 | 设置缓存时间（毫秒） |
+| `@Header("cache")` | 参数 | 动态设置缓存时间（毫秒） |
 
 #### 3.3 CacheType 缓存模式
 
@@ -391,11 +392,14 @@ public interface ApiService {
     Observable<UserInfo> getUserInfo();
 
     @GET("user/info")
-    Observable<UserInfo> getUserInfo(@Cache CacheType cacheType);
+    Observable<UserInfo> getUserInfo(@Tag CacheType cacheType);
 
     @GET("user/info")
     @Headers("cache:5000")
-    Observable<UserInfo> getUserInfoWithCache(@Cache CacheType cacheType);
+    Observable<UserInfo> getUserInfoWithCache(@Tag CacheType cacheType);
+
+    @GET("user/info")
+    Observable<UserInfo> getUserInfoWithDynamicCache(@Header("cache") long cacheTime, @Tag CacheType cacheType);
 
     @GET("user/info")
     @RxHttpCache(CacheType.ifCache)
