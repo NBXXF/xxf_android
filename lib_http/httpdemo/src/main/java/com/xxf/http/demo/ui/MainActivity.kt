@@ -32,6 +32,7 @@ import kotlinx.serialization.cbor.Cbor
 import kotlinx.serialization.json.Json
 import okhttp3.Cookie
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import retrofit2.CacheType
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
@@ -190,7 +191,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("CheckResult")
     private fun testhttp() {
         getApiService<LoginApiService>()
-            .getCity()
+            .getCity(CacheType.firstCache)
             //; .getCity(TestQueryJsonField("xxx"))
             //.observeOn(AndroidSchedulers.mainThread())
             .doOnError {

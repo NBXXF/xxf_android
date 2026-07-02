@@ -1,46 +1,23 @@
 ---
 name: xxf-view
-description: :lib_view 模块规则（core library，当前 settings.gradle 启用）。修改该模块、调用方、依赖或验证入口时使用。
+description: :lib_view 的外部接入说明，面向 Maven 消费方。
 ---
 
 # :lib_view
 
-## Scope
+## What It Provides
 
-- Gradle path: `:lib_view`
-- Directory: `lib_view`
-- Status: enabled in settings.gradle
-- Type: core library
-- Namespace: `com.xxf.view`
-- Plugins: `com.android.library, kotlin-android, kotlin-kapt`
-- Build features touched in Gradle: `viewBinding, buildConfig`
-- Published with `publish_maven.gradle`; preserve `publishVersion`, `publishGroup`, `moduleName`, and relative script path.
-- Uses kapt or annotation processing; validate with assemble when generated sources may be affected.
+`lib_view` provides view helpers. Use the published Maven artifact from your app or feature module.
 
-## Dependency Boundary
+## Dependencies
 
-Project dependencies:
+- `lib_adapter`
+- `lib_fileprovider`
+- `lib_utils`
+- `lib_ktx`
+- `lib_arch`
+- `lib_application`
 
-- `:lib_adapter`
-- `:lib_fileprovider`
-- `:lib_utils`
-- `:lib_ktx`
-- `:lib_arch`
-- `:lib_application`
+## Basic Usage
 
-Rules:
-
-- Keep changes inside this module unless callers, demos, resources, Manifest, or published API require synchronized updates.
-- Use `api` only when the dependency is part of this module public API; otherwise prefer `implementation`.
-- Demo/sample modules verify usage and must not become required by library modules.
-
-## Verification
-
-- 优先运行 `./gradlew :lib_view:assembleDebug`；任务不存在时退回 `./gradlew :lib_view:assembleDebug`。
-- If public API changes, also compile the closest direct callers or the affected demo/sample module.
-- For publishing changes, inspect generated POM/dependency exposure before release.
-
-## Risk Notes
-
-- Check UI rendering, RecyclerView/list performance, and resource compatibility.
-- Check file URI exposure, media loading, and host app integration.
+Use the public APIs exposed by this artifact. Keep the dependency on the published module only; do not rely on repository-internal build commands or local source paths.

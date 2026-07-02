@@ -87,7 +87,7 @@ fun Application.installAppSilent(
                 + filePath)
         val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
         return if (commandResult.successMsg != null
-            && commandResult.successMsg.toLowerCase().contains("success")
+            && commandResult.successMsg.contains("success", ignoreCase = true)
         ) {
             true
         } else {
@@ -142,7 +142,7 @@ fun Application.uninstallAppSilent(
                 + packageName)
         val commandResult: ShellUtils.CommandResult = ShellUtils.execCmd(command, isRooted)
         return if (commandResult.successMsg != null
-            && commandResult.successMsg.toLowerCase().contains("success")
+            && commandResult.successMsg.contains("success", ignoreCase = true)
         ) {
             true
         } else {

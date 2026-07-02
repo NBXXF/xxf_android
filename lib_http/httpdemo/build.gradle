@@ -6,7 +6,7 @@ plugins {
 def des = rootProject.ext.dependencies
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-    namespace = "com.xxf.android.httpdemo"
+    namespace = "com.xxf.http.demo"
 
     defaultConfig {
         applicationId "com.xxf.http.demo"

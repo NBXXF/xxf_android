@@ -14,9 +14,11 @@ compose-bom = "2024.04.01"
 okdownload = "1.0.7"
 exoplayer = "1.3.0"
 kotlin-test = "1.9.22"
+kotlinxCoroutinesAndroid = "1.9.0"
 testng = "6.9.6"
-kpower = "2.0.2-SNAPSHOT"
+kpower = "3.0.0-SNAPSHOT"
 webkit = "1.1.0"
+mmkv = "2.2.3"
 
 
 [libraries]
@@ -87,7 +89,7 @@ kpower-gson = { module = "com.nbxxf.kpower:gson", version.ref = "kpower" }
 
 
 core-ktx = { module = "androidx.core:core-ktx", version = "1.13.1" }
-
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 material = { module = "com.google.android.material:material", version = "1.4.0" }
 fragment = { module = "androidx.fragment:fragment", version = "1.5.5" }
 fragment-ktx = { module = "androidx.fragment:fragment-ktx", version = "1.5.5" }
@@ -98,6 +100,7 @@ startup = { module = "androidx.startup:startup-runtime", version = "1.1.1" }
 recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.2.1" }
 rxAndroid = { module = "io.reactivex.rxjava3:rxandroid", version = "3.0.0" }
 rxJava = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.2" }
+mmkv = { module = "com.tencent:mmkv", version.ref = "mmkv" }
 
 smart_refresh = { module = "io.github.scwang90:refresh-layout-kernel", version = "3.0.0-alpha" }
 refresh_footer = { module = "io.github.scwang90:refresh-footer-classics", version = "3.0.0-alpha" }

@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.21"
         classpath "io.objectbox:objectbox-gradle-plugin:4.0.0"
     }
 }
@@ -64,8 +64,27 @@ allprojects {
         }
     }
     configurations.all {
+        ///禁止缓存,有snapshot版本
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'// maven禁止缓存
 //        resolutionStrategy.force 'com.squareup.okhttp3:okhttp:4.7.2'
+    }
+    dependencies {
+        components {
+            all { details ->
+                ///禁止缓存,有snapshot版本
+                def group = details.id.group.toLowerCase()
+                def version = details.id.version.toLowerCase()
+                def isXXFSnapshotGroup = group == 'com.xxf' ||
+                        group.startsWith('com.xxf.') ||
+                        group == 'com.nb.xxf' ||
+                        group.startsWith('com.nb.xxf.') ||
+                        group == 'com.nbxxf.xxf_android' ||
+                        group.startsWith('com.nbxxf.xxf_android.')
+                if (isXXFSnapshotGroup && version.endsWith('-snapshot')) {
+                    details.changing = true
+                }
+            }
+        }
     }
 }
 task clean(type: Delete) {
@@ -76,6 +95,6 @@ task clean(type: Delete) {
 //全局版本号  发布命令 ./gradlew publish
 //您的制品文件具体推送到哪个库，根据您项目目录的build.gradle文件中version字段中是否配置了-SNAPSHOT。
 ext {
-    xxfVersion = "5.2.2.6-SNAPSHOT"
+    xxfVersion = "5.2.2.7-SNAPSHOT"
     xxfGroup = "com.NBXXF.xxf_android"
 }

@@ -349,26 +349,43 @@ application.registerActivityLifecycleCallbacks(
 
 ### 3. lib_http - 网络请求
 
-基于 Retrofit 扩展，全部采用注解式配置。
+基于 Retrofit 扩展，使用注解配置 baseUrl、拦截器、RxJava 适配和缓存策略。
 
-#### 3.1 类级别注解
+#### 3.1 类级别配置
 
 | 注解 | 参数 | 说明 |
 |------|------|------|
 | `@BaseUrl` | `value: String` | 设置基础 URL |
-| `@RxHttpCacheProvider` | `value: Class` | 设置缓存目录提供者 |
+| `@RxHttpCacheConfig` | `value: Class` | 设置缓存目录提供者 |
 | `@Interceptor` | `value: Class[]` | 声明 OkHttp 拦截器 |
 | `@RxJavaInterceptor` | `value: Class` | 声明 RxJava 拦截器 |
 
-#### 3.2 方法/参数注解
+#### 3.2 缓存配置
 
-| 注解 | 位置 | 说明 |
+缓存配置分两类：缓存类型和缓存时间。两者可以组合使用。
+
+| 配置 | 位置 | 说明 |
 |------|------|------|
-| `@Cache` | 参数 | 设置缓存类型 |
-| `@RxHttpCache` | 方法 | 设置缓存类型 |
-| `@Headers("cache:5000")` | 方法 | 设置缓存时间（毫秒） |
+| `@Tag CacheType cacheType` | 参数 | 动态设置缓存类型 |
+| `@RxHttpCache(CacheType.xxx)` | 方法 | 固定设置缓存类型 |
+| `@Headers("cache:5000")` | 方法 | 固定设置缓存时间，单位毫秒 |
+| `@Header("cache") long cacheTime` | 参数 | 动态设置缓存时间，单位毫秒 |
 
-#### 3.3 CacheType 缓存模式
+#### 3.3 kpower/http 3.0 迁移
+
+kpower/http 3.0 使用 Retrofit 标准 `@Tag` 传递缓存类型：
+
+```java
+import retrofit2.CacheType;
+import retrofit2.http.Tag;
+
+@GET("user/info")
+Observable<UserInfo> getUserInfo(@Tag CacheType cacheType);
+```
+
+旧写法 `@Cache CacheType cacheType` 已废弃，不要再导入 `retrofit2.http.Cache`。
+
+#### 3.4 CacheType 缓存模式
 
 | 枚举值 | 说明 |
 |--------|------|
@@ -379,11 +396,11 @@ application.registerActivityLifecycleCallbacks(
 | `ifCache` | 有缓存返回缓存，否则返回网络 |
 | `lastCache` | 返回上次缓存，同时更新缓存 |
 
-#### 3.4 完整示例
+#### 3.5 完整示例
 
 ```java
 @BaseUrl("http://api.example.com/")
-@RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
+@RxHttpCacheConfig(DefaultRxHttpCacheDirectoryProvider.class)
 @Interceptor({LogInterceptor.class})
 public interface ApiService {
 
@@ -391,11 +408,17 @@ public interface ApiService {
     Observable<UserInfo> getUserInfo();
 
     @GET("user/info")
-    Observable<UserInfo> getUserInfo(@Cache CacheType cacheType);
+    Observable<UserInfo> getUserInfo(@Tag CacheType cacheType);
 
     @GET("user/info")
     @Headers("cache:5000")
-    Observable<UserInfo> getUserInfoWithCache(@Cache CacheType cacheType);
+    Observable<UserInfo> getUserInfoWithFixedCacheTime(@Tag CacheType cacheType);
+
+    @GET("user/info")
+    Observable<UserInfo> getUserInfoWithDynamicCacheTime(
+        @Header("cache") long cacheTime,
+        @Tag CacheType cacheType
+    );
 
     @GET("user/info")
     @RxHttpCache(CacheType.ifCache)
@@ -403,7 +426,7 @@ public interface ApiService {
 }
 ```
 
-#### 3.5 调用方式
+#### 3.6 调用方式
 
 ```kotlin
 // Kotlin 方式
@@ -416,9 +439,14 @@ ApiService::class.apiService()
 getApiService<ApiService>()
     .getUserInfo(CacheType.firstCache)
     .subscribe { user -> }
+
+// 动态缓存时间, 5000ms
+getApiService<ApiService>()
+    .getUserInfoWithDynamicCacheTime(5000, CacheType.firstCache)
+    .subscribe { user -> }
 ```
 
-#### 3.6 文件上传
+#### 3.7 文件上传
 
 支持 7 种文件类型：`File`、`ByteArray`、`InputStream`、`FileDescriptor`、`ParcelFileDescriptor`、`AssetFileDescriptor`、`Uri`
 

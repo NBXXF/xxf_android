@@ -1,47 +1,98 @@
 ---
 name: xxf-http
-description: :lib_http 模块规则（core library，当前 settings.gradle 启用）。修改该模块、调用方、依赖或验证入口时使用。
+description: :lib_http 的外部接入和维护说明，包含 kpower/http 3.x 缓存注解迁移规则。
 ---
 
 # :lib_http
 
-## Scope
+## What It Provides
 
-- Gradle path: `:lib_http`
-- Directory: `lib_http`
-- Status: enabled in settings.gradle
-- Type: core library
-- Namespace: `com.xxf.arch.http`
-- Plugins: `com.android.library, kotlin-android, kotlin-kapt`
-- Build features touched in Gradle: `viewBinding, buildConfig`
-- Published with `publish_maven.gradle`; preserve `publishVersion`, `publishGroup`, `moduleName`, and relative script path.
-- Uses kapt or annotation processing; validate with assemble when generated sources may be affected.
+`lib_http` provides HTTP and network helpers on top of Retrofit, OkHttp, RxJava, and kpower/http.
 
-## Dependency Boundary
+## Dependencies
 
-Project dependencies:
+- `lib_application`
+- `lib_ktx`
+- kpower/http
 
-- `:lib_application`
+## Public Usage
 
-Rules:
+Use the public APIs exposed by this artifact. Keep the dependency on the published module only; do not rely on repository-internal build commands or local source paths.
 
-- Keep changes inside this module unless callers, demos, resources, Manifest, or published API require synchronized updates.
-- Use `api` only when the dependency is part of this module public API; otherwise prefer `implementation`.
-- Demo/sample modules verify usage and must not become required by library modules.
+## References
+
+Before making changes to HTTP demos or cache annotations, read:
+
+- `skills/xxf-http/references/login-api-service.md`
+
+That reference is the canonical example for:
+
+- `@Tag CacheType` cache typing
+- `@Headers("cache:5000")` fixed cache time
+- `@Header("cache") long cacheTime` dynamic cache time
+- `@RxHttpCacheConfig` and interceptor setup in the demo module
+
+## Maintenance Rules
+
+- For normal implementation changes, keep edits scoped to `lib_http` and its demo module unless the caller explicitly requests wider cleanup.
+- Demo code lives under `lib_http/httpdemo`.
+- In Android Gradle Plugin 8+, do not set `package` on `AndroidManifest.xml`; use `android.namespace` in the module `build.gradle`.
+- If a source package uses `com.xxf.http.demo`, keep `lib_http/httpdemo` namespace aligned with that package so relative manifest class names and generated `R` references resolve correctly.
+
+## kpower/http 3.x Cache Migration
+
+kpower/http 3.x no longer uses `retrofit2.http.Cache` for dynamic cache type parameters.
+
+Use Retrofit standard `@Tag`:
+
+```java
+import retrofit2.CacheType;
+import retrofit2.http.Tag;
+
+@GET("user/info")
+Observable<UserInfo> getUserInfo(@Tag CacheType cacheType);
+```
+
+Do not use:
+
+```java
+import retrofit2.http.Cache;
+
+Observable<UserInfo> getUserInfo(@Cache CacheType cacheType);
+```
+
+## Cache Configuration Patterns
+
+Cache type:
+
+- Dynamic cache type: `@Tag CacheType cacheType`
+- Fixed method cache type: `@RxHttpCache(CacheType.ifCache)`
+
+Cache time:
+
+- Fixed cache time: `@Headers("cache:5000")`
+- Dynamic cache time: `@Header("cache") long cacheTime`
+- Cache time is in milliseconds.
+
+The two concerns can be combined:
+
+```java
+@GET("user/info")
+@Headers("cache:5000")
+Observable<UserInfo> getUserInfoWithFixedCacheTime(@Tag CacheType cacheType);
+
+@GET("user/info")
+Observable<UserInfo> getUserInfoWithDynamicCacheTime(
+    @Header("cache") long cacheTime,
+    @Tag CacheType cacheType
+);
+```
 
 ## Verification
 
-- If behavior changes are user-visible, also assemble the related demo/sample module listed below.
-- 优先运行 `./gradlew :lib_http:assembleDebug`；任务不存在时退回 `./gradlew :lib_http:assembleDebug`。
-- If public API changes, also compile the closest direct callers or the affected demo/sample module.
-- For publishing changes, inspect generated POM/dependency exposure before release.
+After changing `lib_http` or `lib_http/httpdemo`, prefer the narrowest relevant Gradle task first:
 
-## Risk Notes
-
-- Check network errors, retries, cancellation, and threading.
-- Check UI rendering, RecyclerView/list performance, and resource compatibility.
-
-## Related Demo / Sample Modules
-
-- `:lib_http:httpdemo` at `lib_http/httpdemo` is for verification/example only; do not expose it as an installable skill.
-
+```bash
+./gradlew :lib_http:compileDebugKotlin
+./gradlew :lib_http:httpdemo:compileDebugKotlin :lib_http:httpdemo:compileDebugJavaWithJavac
+```
