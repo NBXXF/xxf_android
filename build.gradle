@@ -72,13 +72,15 @@ allprojects {
         components {
             all { details ->
                 ///禁止缓存,有snapshot版本
-                def isXXFSnapshotGroup = details.id.group == 'com.xxf' ||
-                        details.id.group.startsWith('com.xxf.') ||
-                        details.id.group == 'com.nb.xxf' ||
-                        details.id.group.startsWith('com.nb.xxf.') ||
-                        details.id.group == 'com.NBXXF.xxf_android' ||
-                        details.id.group.startsWith('com.NBXXF.xxf_android.')
-                if (isXXFSnapshotGroup && details.id.version.endsWith('-SNAPSHOT')) {
+                def group = details.id.group.toLowerCase()
+                def version = details.id.version.toLowerCase()
+                def isXXFSnapshotGroup = group == 'com.xxf' ||
+                        group.startsWith('com.xxf.') ||
+                        group == 'com.nb.xxf' ||
+                        group.startsWith('com.nb.xxf.') ||
+                        group == 'com.nbxxf.xxf_android' ||
+                        group.startsWith('com.nbxxf.xxf_android.')
+                if (isXXFSnapshotGroup && version.endsWith('-snapshot')) {
                     details.changing = true
                 }
             }
