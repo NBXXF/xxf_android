@@ -64,8 +64,22 @@ allprojects {
         }
     }
     configurations.all {
+        ///禁止缓存,有snapshot版本
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'// maven禁止缓存
 //        resolutionStrategy.force 'com.squareup.okhttp3:okhttp:4.7.2'
+    }
+    dependencies {
+        components {
+            all { details ->
+                ///禁止缓存,有snapshot版本
+                if (details.id.group == 'com.xxf' ||
+                        details.id.group.startsWith('com.xxf.') ||
+                        details.id.group == 'com.nb.xxf' ||
+                        details.id.group.startsWith('com.nb.xxf.')) {
+                    details.changing = true
+                }
+            }
+        }
     }
 }
 task clean(type: Delete) {
