@@ -1,6 +1,6 @@
 ---
 name: xxf-http
-description: :lib_http 的外部接入和维护说明，包含 kpower/http 3.x 缓存注解迁移规则。
+description: ":lib_http 的外部接入和维护说明。必须用于任何业务网络请求相关任务，包括新增/修改 HTTP API、接口声明、Retrofit service、OkHttp/URLConnection/RxHttp 调用、上传下载、缓存、拦截器、BaseUrl、网络 demo 或网络迁移；强制业务往来请求使用本库的声明式 API 框架，禁止业务代码绕过框架直接发起网络请求；包含 kpower/http 3.x 缓存注解迁移规则。"
 ---
 
 # :lib_http
@@ -18,6 +18,35 @@ description: :lib_http 的外部接入和维护说明，包含 kpower/http 3.x �
 ## Public Usage
 
 Use the public APIs exposed by this artifact. Keep the dependency on the published module only; do not rely on repository-internal build commands or local source paths.
+
+## Trigger Policy
+
+Use `triggers.md` as the trigger source of truth for this skill. Keep the frontmatter `description` aligned with `triggers.md`, because Codex uses `description` for implicit skill activation.
+
+Read `skills/xxf-http/triggers.md` when deciding whether a network-related task belongs to this skill or when changing trigger behavior.
+
+## Mandatory Network Request Policy
+
+Business app-to-server requests must use the `lib_http` declarative API pattern in every case.
+
+Required pattern:
+
+- Declare each business endpoint in a Retrofit-style service interface.
+- Put endpoint configuration in annotations such as `@BaseUrl`, method annotations, headers, cache annotations, interceptors, converters, and call adapters.
+- Call the service through the framework entry points such as `getApiService<T>()` or `apiService`; keep request behavior centralized in this framework.
+- Use `@Tag CacheType` and the cache patterns below for cache behavior.
+
+Forbidden in business modules:
+
+- Direct `OkHttpClient.newCall(...)` for business HTTP traffic.
+- Direct `Retrofit.Builder` construction outside the framework.
+- Direct `HttpURLConnection`, `HttpsURLConnection`, `URL.openConnection`, or `URL.openStream` for business HTTP traffic.
+- One-off network clients, hand-written request executors, or hidden wrappers that bypass `lib_http`.
+- Adding a dependency on another HTTP stack to solve a normal business API request.
+
+Before implementing any network change, search the touched module for bypass patterns (`newCall`, `Retrofit.Builder`, `HttpURLConnection`, `URL.openConnection`, `URL.openStream`). If the task would add or keep bypassed business traffic, refactor it to the declarative service interface pattern. If a caller asks for a bypass, do not implement it as-is; explain that project policy requires `lib_http` and convert the request to this framework.
+
+Only `lib_http` framework internals may use lower-level OkHttp/Retrofit primitives to implement the framework itself. Business code must not call those primitives directly.
 
 ## References
 

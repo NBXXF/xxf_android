@@ -94,7 +94,9 @@ task clean(type: Delete) {
 
 //全局版本号  发布命令 ./gradlew publish
 //您的制品文件具体推送到哪个库，根据您项目目录的build.gradle文件中version字段中是否配置了-SNAPSHOT。
+// compose 从6.0.0.0版本开始
+// 传统版本还是5.2.2.7-SNAPSHOT 上面维护
 ext {
-    xxfVersion = "5.2.2.7-SNAPSHOT"
+    xxfVersion = "6.0.0.0-SNAPSHOT"
     xxfGroup = "com.NBXXF.xxf_android"
 }
