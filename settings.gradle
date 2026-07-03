@@ -29,7 +29,7 @@ include ':lib_arch'
 include ':lib_view'
 include ':lib_viewbinding'
 include ':lib_wechat'
-include ':core'
+include ':libs'
 include ':lib_adapter:lib_adapter_demo'
 //include ':ds_bridge'
 
@@ -77,3 +77,40 @@ include ':optional:jbinder:sample-server'
 include ':lib_effect:layout_anim_demo'
 include ':lib_effect:ovserscroll_demo'
 include ':lib_effect:animators_example'
+
+def coreModulePaths = [
+        'libs',
+        'lib_activityresult',
+        'lib_activityresult:demo',
+        'lib_adapter',
+        'lib_adapter:lib_adapter_demo',
+        'lib_application',
+        'lib_arch',
+        'lib_effect',
+        'lib_effect:layout_anim_demo',
+        'lib_effect:ovserscroll_demo',
+        'lib_effect:animators_example',
+        'lib_fileprovider',
+        'lib_http',
+        'lib_http:httpdemo',
+        'lib_ktx',
+        'lib_log',
+        'lib_permission',
+        'lib_permission:demo',
+        'lib_preferences',
+        'lib_preferencesGson',
+        'lib_preferencesMMKV',
+        'lib_rxjava',
+        'lib_rxjava:lib_rxlifecycledemo',
+        'lib_snackbar',
+        'lib_utils',
+        'lib_view',
+        'lib_view_gradient',
+        'lib_view_ratio',
+        'lib_view_round',
+        'lib_viewbinding',
+]
+
+coreModulePaths.each { modulePath ->
+    project(":${modulePath}").projectDir = file("core/${modulePath.replace(':', '/')}")
+}

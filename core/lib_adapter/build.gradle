@@ -1,30 +1,17 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'io.objectbox' // apply last
+
 }
 def des = rootProject.ext.dependencies
 android {
     compileSdk project.COMPILE_SDK_VERSION.toInteger()
-    namespace = "com.xxf.qt.english"
+    namespace = "com.xxf.adapter"
     defaultConfig {
         minSdkVersion project.MIN_SDK_VERSION.toInteger()
         targetSdkVersion project.TARGET_SDK_VERSION.toInteger()
-        applicationId "com.xxf.qt.english"
-        versionCode 1
-        versionName "1.0"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += [
-                        "room.schemaLocation":"$projectDir/schemas".toString(),
-                        "room.incremental":"true",
-                        "room.expandProjection":"true"]
-            }
-        }
     }
-
 
     buildTypes {
         release {
@@ -41,15 +28,25 @@ android {
     }
     buildFeatures {
         // for view binding :
-        viewBinding = true
+        viewBinding true
+        buildConfig = false
     }
 }
 
 dependencies {
     api libs.material
-    implementation project(path: ':lib_adapter')
-    implementation project(path: ':libs')
-    implementation project(path: ':optional:lib_objectbox')
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
-
+    api libs.recyclerview
+    ///常用,还是加上
+    api libs.flexbox
+    api project(path: ':lib_ktx')
+    implementation libs.kpower.speed
 }
+
+ext {
+    publishVersion = rootProject.xxfVersion
+    publishGroup = rootProject.xxfGroup
+    moduleName = project.name
+    descContent = project.name
+}
+
+apply from: '../../publish_maven.gradle'
