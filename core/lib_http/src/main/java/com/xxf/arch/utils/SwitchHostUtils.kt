@@ -29,7 +29,8 @@ import kotlin.system.exitProcess
  */
 object SwitchHostUtils {
     object HostSpServiceDelegate : CustomPreferencesOwner() {
-        const val DEFAULT_HOST="https://github.com/"
+        var DEFAULT_HOST = "https://github.com/"
+
         /**
          * app的域名
          */
@@ -105,7 +106,12 @@ object SwitchHostUtils {
      */
     private fun String.toNoThemeString(): SpannableString {
         return SpannableString(this).apply {
-            this.setSpan(ForegroundColorSpan(Color.BLUE), 0, this.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            this.setSpan(
+                ForegroundColorSpan(Color.BLUE),
+                0,
+                this.length,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
         }
     }
 
