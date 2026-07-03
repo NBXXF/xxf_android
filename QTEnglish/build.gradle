@@ -48,7 +48,7 @@ android {
 dependencies {
     api libs.material
     implementation project(path: ':lib_adapter')
-    implementation project(path: ':libs')
+    implementation project(path: ':core')
     implementation project(path: ':optional:lib_objectbox')
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 

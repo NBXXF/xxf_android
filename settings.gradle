@@ -29,7 +29,7 @@ include ':lib_arch'
 include ':lib_view'
 include ':lib_viewbinding'
 include ':lib_wechat'
-include ':libs'
+include ':core'
 include ':lib_adapter:lib_adapter_demo'
 //include ':ds_bridge'
 
