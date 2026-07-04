@@ -3,7 +3,7 @@ package com.xxf.http.demo;
 import android.util.Log;
 
 
-import com.xxf.arch.http.interceptor.HttpLoggingInterceptor;
+import com.nbxxf.kpower.http.interceptor.HttpLoggingInterceptor;
 
 import java.io.IOException;
 

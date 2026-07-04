@@ -5,9 +5,9 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.nbxxf.kpower.http.cache.HttpCacheConfigProvider;
 import com.xxf.application.ApplicationProviderKtKt;
 ;
-import com.xxf.arch.http.cache.HttpCacheConfigProvider;
 
 import java.io.File;
 

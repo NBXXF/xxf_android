@@ -2,7 +2,8 @@ package com.xxf.http.demo;
 
 import androidx.annotation.Nullable;
 
-import com.xxf.arch.http.model.BaseHttpResult;
+
+import com.nbxxf.kpower.http.model.BaseHttpResult;
 
 import retrofit2.CacheType;
 

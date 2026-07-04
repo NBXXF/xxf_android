@@ -2,12 +2,12 @@ package com.xxf.http.demo;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.xxf.arch.annotation.BaseUrl;
-import com.xxf.arch.annotation.Dispatcher;
-import com.xxf.arch.annotation.Interceptor;
-import com.xxf.arch.annotation.JsonString;
-import com.xxf.arch.annotation.RxHttpCacheConfig;
-import com.xxf.arch.annotation.RxJavaInterceptor;
+import com.nbxxf.kpower.http.annotation.BaseUrl;
+import com.nbxxf.kpower.http.annotation.Dispatcher;
+import com.nbxxf.kpower.http.annotation.Interceptor;
+import com.nbxxf.kpower.http.annotation.JsonString;
+import com.nbxxf.kpower.http.annotation.RxHttpCacheConfig;
+import com.nbxxf.kpower.http.annotation.RxJavaInterceptor;
 import com.nbxxf.kpower.json.datastructure.ListOrSingle;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -26,7 +26,7 @@ import retrofit2.http.Tag;
 /**
  * 指定并发调度
  */
-@Dispatcher(maxRequests = 1,maxRequestsPerHost = 2)
+@Dispatcher(maxRequests = 1, maxRequestsPerHost = 2)
 
 /**
  * 提供缓存目录设置
@@ -89,7 +89,7 @@ public interface LoginApiService {
     Observable<JsonObject> getCityOnlyCache();
 
 
-    @Headers(value ="XXX:476745")
+    @Headers(value = "XXX:476745")
     @GET("telematics/v3/weather?location=%E5%98%89%E5%85%B4&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ")
     Observable<JsonArray> getCity(@JsonString @Query("test") TestQueryJsonField queryJsonField);
 

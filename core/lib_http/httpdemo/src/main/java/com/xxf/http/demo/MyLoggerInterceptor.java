@@ -1,6 +1,7 @@
 package com.xxf.http.demo;
 
-import com.xxf.arch.http.interceptor.HttpExceptionTrackerInterceptor;
+
+import com.nbxxf.kpower.http.interceptor.HttpExceptionTrackerInterceptor;
 
 /**
  * @Description: java类作用描述
