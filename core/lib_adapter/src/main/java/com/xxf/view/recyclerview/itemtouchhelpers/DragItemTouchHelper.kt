@@ -12,7 +12,7 @@ import androidx.annotation.RequiresPermission
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.xxf.ktx.identityId
-import com.xxf.ktx.standard.runIf
+import com.nbxxf.kpower.ktx.standard.runIf
 import com.xxf.ktx.vibrator
 import java.util.Collections
 

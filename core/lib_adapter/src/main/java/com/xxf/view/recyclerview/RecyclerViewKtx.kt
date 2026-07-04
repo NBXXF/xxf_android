@@ -11,7 +11,7 @@ import com.xxf.ktx.getTag
 import com.xxf.ktx.hideKeyboard
 import com.xxf.ktx.isKeyboardHiddenInTouchMode
 import com.xxf.ktx.setTag
-import com.xxf.ktx.tryOrLog
+import com.nbxxf.kpower.ktx.tryOrLog
 import com.xxf.view.recyclerview.adapter.BaseAdapter
 
 fun RecyclerView.scrollToPositionWithOffset(position: Int, offset: Int) {

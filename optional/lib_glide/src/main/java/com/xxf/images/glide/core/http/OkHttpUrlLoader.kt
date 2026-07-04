@@ -8,8 +8,8 @@ import com.bumptech.glide.load.model.ModelLoader.LoadData
 import com.bumptech.glide.load.model.ModelLoaderFactory
 import com.bumptech.glide.load.model.MultiModelLoaderFactory
 
-import com.xxf.arch.http.OkHttpClientBuilder
-import com.xxf.arch.http.interceptor.HttpLoggingInterceptor
+import com.nbxxf.kpower.http.OkHttpClientBuilder
+import com.nbxxf.kpower.http.interceptor.HttpLoggingInterceptor
 import com.xxf.application.application
 import com.xxf.ktx.isAppDebug
 import okhttp3.Call

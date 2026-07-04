@@ -1,6 +1,6 @@
 package com.xxf.arch.service;
 
-import com.xxf.arch.http.OkHttpClientBuilder;
+import com.nbxxf.kpower.http.OkHttpClientBuilder;
 import com.xxf.arch.model.DownloadTask;
 import com.xxf.utils.FileUtils;
 

@@ -25,7 +25,7 @@ import android.widget.ScrollView
 import androidx.annotation.CheckResult
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.NestedScrollView
-import com.xxf.ktx.tryOrLogNull
+import com.nbxxf.kpower.ktx.tryOrLogNull
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.ByteBuffer

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.AssetFileDescriptor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import com.nbxxf.kpower.http.body.JsonUTF8
 import com.xxf.arch.http.body.impl.AssetFileDescriptorRequestBody
 import com.xxf.arch.http.body.impl.ByteArrayRequestBody
 import com.xxf.arch.http.body.impl.FileDescriptorRequestBody

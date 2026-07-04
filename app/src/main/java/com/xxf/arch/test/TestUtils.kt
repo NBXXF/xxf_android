@@ -1,7 +1,7 @@
 package com.xxf.arch.test
 
 import com.xxf.arch.model.AppBackgroundEvent
-import com.xxf.bus.subscribeEvent
+import com.nbxxf.kpower.bus.subscribeEvent
 import com.xxf.rxjava.combineLatestDelayError
 import com.xxf.rxjava.retryDelay
 import io.reactivex.rxjava3.core.Observable

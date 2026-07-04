@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
+import com.nbxxf.kpower.ktx.tryOrLogFalse
 
 /**
  * 建议继承 [android.app.ForegroundService]

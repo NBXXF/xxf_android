@@ -1,14 +1,15 @@
 package com.xxf.arch.test.prefs
 
 import com.google.gson.JsonNull
-import com.xxf.json.Json
-import com.xxf.ktx.IPreferencesOwner
-import com.xxf.ktx.PrefsDelegate
-import com.xxf.ktx.SharedPreferencesOwner
-import com.xxf.ktx.writeAsync
-import com.xxf.ktx.observable
-import com.xxf.ktx.preferencesBinding
-import com.xxf.ktx.randomUUIDString32
+import com.nbxxf.kpower.json.Json
+import com.nbxxf.kpower.ktx.randomUUIDString32
+import com.xxf.preferences.IPreferencesOwner
+import com.xxf.preferences.PrefsDelegate
+import com.xxf.preferences.SharedPreferencesOwner
+import com.xxf.preferences.writeAsync
+import com.xxf.preferences.observable
+import com.xxf.preferences.preferencesBinding
+
 import kotlin.reflect.KProperty
 
 inline fun <P : IPreferencesOwner, reified V> PrefsDelegate<P, out V>.useGson(): PrefsDelegate<P, V> {

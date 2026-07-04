@@ -8,7 +8,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.hls.playlist.DefaultHlsPlaylistParserFactory
 import androidx.media3.exoplayer.hls.playlist.HlsPlaylist
 import androidx.media3.exoplayer.upstream.ParsingLoadable
-import com.xxf.ktx.standard.doLazy
+import com.nbxxf.kpower.ktx.standard.doLazy
 import java.io.File
 import java.io.InputStream
 /**

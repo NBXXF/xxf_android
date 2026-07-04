@@ -8,7 +8,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Looper
 import androidx.annotation.RequiresApi
-import com.xxf.ktx.time.format.format
+import com.nbxxf.kpower.ktx.time.format.format
 import java.io.File
 import java.time.Instant
 

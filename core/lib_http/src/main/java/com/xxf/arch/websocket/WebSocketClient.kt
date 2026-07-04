@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.CallSuper
-import com.xxf.arch.http.OkHttpClientBuilder
+import com.nbxxf.kpower.http.OkHttpClientBuilder
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject

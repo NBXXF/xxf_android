@@ -1,7 +1,10 @@
 package com.xxf.ktx
 
 import android.media.MediaDrm
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.util.UUID
+import com.nbxxf.kpower.ktx.*
 
 /**
  * 数字版权的唯一id
@@ -19,6 +22,7 @@ fun UUID.toMediaDrm(): MediaDrm {
  * https://github.com/gzu-liyujiang/Android_CN_OAID/issues/55
  * 有bug
  */
+@RequiresApi(Build.VERSION_CODES.P)
 fun UUID.deviceUniqueId(): String? {
     return kotlin.runCatching {
         toMediaDrm().use {

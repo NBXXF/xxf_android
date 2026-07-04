@@ -18,8 +18,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.xxf.arch.apiService
 import com.xxf.arch.getApiService
 import com.xxf.arch.http.converter.gson.GsonConverterFactory
-import com.xxf.arch.http.cookie.SharedPreferencePersistentCookieJar
-import com.xxf.arch.http.cookie.parseAll
+import com.nbxxf.kpower.http.cookie.SharedPreferencePersistentCookieJar
+import com.nbxxf.kpower.http.cookie.parseAll
 import com.xxf.arch.websocket.WebSocketClient
 import com.xxf.http.demo.*
 import com.xxf.http.demo.ui.test.Animal

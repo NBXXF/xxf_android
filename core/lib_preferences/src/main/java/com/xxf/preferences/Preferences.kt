@@ -1,8 +1,10 @@
-package com.xxf.ktx
+package com.xxf.preferences
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import com.nbxxf.kpower.ktx.tryOrLog
+import com.xxf.ktx.app
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

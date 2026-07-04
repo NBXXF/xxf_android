@@ -1,7 +1,8 @@
 package com.xxf.arch.http.cookie
 
-import com.xxf.ktx.CustomPreferencesOwner
-import com.xxf.ktx.preferencesBinding
+import com.nbxxf.kpower.http.cookie.PersistentCookieJar
+import com.xxf.preferences.CustomPreferencesOwner
+import com.xxf.preferences.preferencesBinding
 import org.json.JSONObject
 
 /**

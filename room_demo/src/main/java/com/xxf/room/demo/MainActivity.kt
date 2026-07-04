@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.room.Room
-import com.xxf.json.JsonUtils
+import com.nbxxf.kpower.json.JsonUtils
 import com.xxf.room.demo.dao.UserDao
 import com.xxf.room.demo.database.UserDatabase
 import com.xxf.room.demo.databinding.ActivityMainBinding

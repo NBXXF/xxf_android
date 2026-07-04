@@ -3,7 +3,7 @@ package com.xxf.ktx.webkit
 import android.os.Build
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
-import com.xxf.ktx.tryOrLog
+import com.nbxxf.kpower.ktx.tryOrLog
 import java.net.HttpCookie
 
 /**

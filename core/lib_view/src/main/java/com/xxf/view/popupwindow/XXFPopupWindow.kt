@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.WindowManager
 import android.widget.PopupWindow
-import com.xxf.json.migration.Color
+import com.nbxxf.kpower.json.migration.Color
 import com.xxf.ktx.findActivity
 
 /**

@@ -18,7 +18,7 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.barcode.ZoomSuggestionOptions
 import com.xxf.ktx.doOnDestroy
 import com.xxf.ktx.runOnUiThread
-import com.xxf.ktx.tryOrLog
+import com.nbxxf.kpower.ktx.tryOrLog
 import com.xxf.mlkit.overlay.GraphicOverlay
 import java.io.Closeable
 import java.util.concurrent.Executor

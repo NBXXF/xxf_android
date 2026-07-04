@@ -11,7 +11,7 @@ import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsMultivariantPlaylist
 import com.google.gson.GsonBuilder
 import com.xxf.download.DownloadService.Companion.startService
-import com.xxf.json.Json
+import com.nbxxf.kpower.json.Json
 
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {

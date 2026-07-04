@@ -2,7 +2,7 @@ package com.xxf.preferences.mmkv
 
 import com.tencent.mmkv.MMKV
 import com.xxf.application.application
-import com.xxf.ktx.IPreferencesOwner
+import com.xxf.preferences.IPreferencesOwner
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.reflect.KClass

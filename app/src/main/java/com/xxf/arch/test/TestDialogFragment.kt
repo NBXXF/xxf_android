@@ -13,7 +13,7 @@ import com.google.gson.JsonObject
 import com.xxf.activityresult.startActivityForResult
 import com.xxf.arch.fragment.XXFBottomSheetDialogFragment
 import com.xxf.arch.test.databinding.TestFragmentBinding
-import com.xxf.json.Json
+import com.nbxxf.kpower.json.Json
 import com.xxf.utils.DensityUtil
 import java.io.Serializable
 import java.math.BigDecimal

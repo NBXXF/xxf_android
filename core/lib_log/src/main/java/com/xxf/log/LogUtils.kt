@@ -1,7 +1,7 @@
 package com.xxf.log
 
 import android.util.Log
-import com.xxf.json.Json
+import com.nbxxf.kpower.json.Json
 import com.xxf.log.impl.AndroidLogger
 import com.xxf.log.parser.Parser
 import com.xxf.log.parser.impl.BundleParser

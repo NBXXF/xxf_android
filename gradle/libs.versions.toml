@@ -16,7 +16,7 @@ exoplayer = "1.3.0"
 kotlin-test = "1.9.22"
 kotlinxCoroutinesAndroid = "1.9.0"
 testng = "6.9.6"
-kpower = "3.0.0-SNAPSHOT"
+kpower = "3.0.1-SNAPSHOT"
 webkit = "1.1.0"
 mmkv = "2.2.3"
 

@@ -11,7 +11,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.xxf.ktx.appIcon
 import com.xxf.ktx.notificationManagerCompat
 import com.xxf.ktx.shouldStartForegroundService
-import com.xxf.ktx.standard.lazyUnsafe
+import com.nbxxf.kpower.ktx.standard.lazyUnsafe
 import com.xxf.ktx.startForegroundCompat
 
 

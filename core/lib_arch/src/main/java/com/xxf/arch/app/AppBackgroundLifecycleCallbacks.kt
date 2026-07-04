@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.annotation.CallSuper
 import com.xxf.application.activitylifecycle.SimpleActivityLifecycleCallbacks
 import com.xxf.arch.model.AppBackgroundEvent
-import com.xxf.bus.postEvent
+import com.nbxxf.kpower.bus.postEvent
 
 internal object AppBackgroundLifecycleCallbacks : SimpleActivityLifecycleCallbacks() {
     private var visibleCount = 0;

@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.collection.ArrayMap
 import androidx.core.os.bundleOf
-import com.xxf.ktx.standard.KeyValueDelegate
+import com.nbxxf.kpower.ktx.standard.KeyValueDelegate
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

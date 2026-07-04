@@ -1,10 +1,10 @@
 package com.xxf.preferences.gson
 
-import com.xxf.ktx.IPreferencesOwner
-import com.xxf.ktx.PrefsDelegate
+import com.xxf.preferences.IPreferencesOwner
+import com.xxf.preferences.PrefsDelegate
 import kotlin.reflect.KProperty
 import com.google.gson.JsonNull
-import com.xxf.json.Json
+import com.nbxxf.kpower.json.Json
 
 /**
  * 支持可序列化的类型

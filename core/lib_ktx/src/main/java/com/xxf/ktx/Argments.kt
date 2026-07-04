@@ -3,7 +3,7 @@ package com.xxf.ktx
 import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.xxf.ktx.standard.KeyValueDelegate
+import com.nbxxf.kpower.ktx.standard.KeyValueDelegate
 import kotlin.reflect.KProperty
 
 
