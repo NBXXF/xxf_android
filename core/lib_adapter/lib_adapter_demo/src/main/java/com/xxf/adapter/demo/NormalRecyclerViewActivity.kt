@@ -11,13 +11,13 @@ import com.xxf.ktx.argumentBinding
 import java.util.*
 
 open class NormalRecyclerViewActivity : AppCompatActivity() {
-    val uuid: String by argumentBinding(defaultValue = "defaultXXX")
+    val uuid: String by argumentBinding(default = "defaultXXX")
 
-    val uuid2: String by argumentBinding("KEY", defaultValue = "defaultXXX")
+    val uuid2: String by argumentBinding("KEY", default = "defaultXXX")
 
     val uuid3: String? by argumentBinding("KEY")
 
-    var uuid4: String? by argumentBinding("KEY",defaultValue = "defaultXXX")
+    var uuid4: String? by argumentBinding("KEY",default = "defaultXXX")
 
     var binding: ActivityMainBinding? = null
     var adapter = TestNormalAdapter()

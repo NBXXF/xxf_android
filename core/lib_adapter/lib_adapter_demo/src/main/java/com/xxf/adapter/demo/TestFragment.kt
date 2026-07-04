@@ -11,11 +11,11 @@ class TestFragment : Fragment {
       //  putExtra("xx23");
     }
 
-    private val param by argumentBinding(defaultValue = "默认值啊")
+    private val param by argumentBinding(default = "默认值啊")
     private val param2:String? by argumentBinding()
     private val param4:String? by argumentBinding ()
 
-    private var param3:String by argumentBinding(defaultValue = "xx")
+    private var param3:String by argumentBinding(default = "xx")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("=======>ex", "" + param);
