@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.xxf.application.application
 import com.xxf.ktx.isAppDebug
-import com.xxf.ktx.mkParentDirs
+import com.nbxxf.kpower.ktx.mkParentDirs
 import io.objectbox.BoxStore
 import io.objectbox.BoxStoreBuilder
 import io.objectbox.android.Admin

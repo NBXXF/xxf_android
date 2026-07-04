@@ -3,9 +3,9 @@ package com.xxf.download.m3u8
 import android.util.Base64
 import com.arthenica.mobileffmpeg.FFmpeg
 import com.xxf.download.m3u8.model.M3U8SegmentInfo
-import com.xxf.ktx.mkParentDirs
-import com.xxf.ktx.randomUUIDString32
-import com.xxf.ktx.rename
+import com.nbxxf.kpower.ktx.mkParentDirs
+import com.nbxxf.kpower.ktx.randomUUIDString32
+import com.nbxxf.kpower.ktx.rename
 import okio.ByteString.Companion.decodeHex
 import java.io.File
 import java.io.IOException
