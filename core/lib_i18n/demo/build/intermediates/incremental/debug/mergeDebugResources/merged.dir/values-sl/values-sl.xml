@@ -44,9 +44,16 @@
     <string name="character_counter_content_description">Število vnesenih znakov je %1$d od %2$d</string>
     <string name="character_counter_overflowed_content_description">Omejitev števila znakov je presegla %1$d od %2$d</string>
     <string name="clear_text_end_icon_content_description">Izbris besedila</string>
+    <string msgid="406453423630273620" name="close_drawer">"Zapri meni za krmarjenje"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"Zapri list"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"Neveljaven vnos"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"Pojavno okno"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"Spustni meni"</string>
     <string name="error_icon_content_description">Napaka</string>
     <string name="exposed_dropdown_menu_content_description">Prikaz spustnega menija</string>
     <string name="icon_content_description">Ikona pogovornega okna</string>
+    <string msgid="6827826412747255547" name="in_progress">"Poteka"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"Delno potrjeno"</string>
     <string name="item_view_role_description">Zavihek</string>
     <string name="material_clock_toggle_content_description">Izberite dopoldanski ali popoldanski čas.</string>
     <string name="material_hour_selection">Izberite uro</string>
@@ -93,7 +100,17 @@
     <string name="mtrl_picker_toggle_to_day_selection">Dotik za preklop na izbiro dneva</string>
     <string name="mtrl_picker_toggle_to_text_input_mode">Preklop na način vnosa besedila</string>
     <string name="mtrl_picker_toggle_to_year_selection">Dotik za preklop na izbiro leta</string>
+    <string msgid="542007171693138492" name="navigation_menu">"Meni za krmarjenje"</string>
+    <string msgid="6610465462668679431" name="not_selected">"Ni izbrano"</string>
+    <string msgid="875452955155264703" name="off">"Izklopljeno"</string>
+    <string msgid="8655164131929253426" name="on">"Vklopljeno"</string>
     <string name="password_toggle_content_description">Prikaz gesla</string>
+    <string msgid="5941395253238309765" name="range_end">"Konec razpona"</string>
+    <string msgid="7097486360902471446" name="range_start">"Začetek razpona"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Iskanje"</string>
+    <string msgid="6043586758067023" name="selected">"Izbrano"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="2561197295334830845" name="switch_role">"Stikalo"</string>
+    <string msgid="1672349317127674378" name="tab">"Zavihek"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g> odstotkov"</string>
 </resources>

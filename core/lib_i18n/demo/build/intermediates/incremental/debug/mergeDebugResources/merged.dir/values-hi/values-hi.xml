@@ -42,9 +42,16 @@
     <string name="character_counter_content_description">%2$d वर्णों में से %1$d वर्ण दर्ज किए गए</string>
     <string name="character_counter_overflowed_content_description">अभी %1$d वर्ण हैं जबकि %2$d से ज़्यादा नहीं होने चाहिए</string>
     <string name="clear_text_end_icon_content_description">टेक्स्ट मिटाएं</string>
+    <string msgid="406453423630273620" name="close_drawer">"नेविगेशन मेन्यू बंद करें"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"शीट बंद करें"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"अमान्य इनपुट"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"पॉप-अप विंडो"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"ड्रॉपडाउन मेन्यू"</string>
     <string name="error_icon_content_description">गड़बड़ी</string>
     <string name="exposed_dropdown_menu_content_description">ड्रॉपडाउन मेन्यू दिखाएं</string>
     <string name="icon_content_description">डायलॉग का आइकॉन</string>
+    <string msgid="6827826412747255547" name="in_progress">"जारी है"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"कुछ विकल्पों को चुना गया"</string>
     <string name="item_view_role_description">टैब</string>
     <string name="material_clock_toggle_content_description">AM या PM चुनें</string>
     <string name="material_hour_selection">घंटा चुनें</string>
@@ -91,7 +98,17 @@
     <string name="mtrl_picker_toggle_to_day_selection">\'दिन चुनना\' पर स्विच करने के लिए टैप करें</string>
     <string name="mtrl_picker_toggle_to_text_input_mode">टेक्स्ट के इनपुट मोड पर स्विच करें</string>
     <string name="mtrl_picker_toggle_to_year_selection">\'साल चुनना\' पर स्विच करने के लिए टैप करें</string>
+    <string msgid="542007171693138492" name="navigation_menu">"नेविगेशन मेन्यू"</string>
+    <string msgid="6610465462668679431" name="not_selected">"नहीं चुना गया"</string>
+    <string msgid="875452955155264703" name="off">"बंद है"</string>
+    <string msgid="8655164131929253426" name="on">"चालू है"</string>
     <string name="password_toggle_content_description">पासवर्ड दिखाएं</string>
+    <string msgid="5941395253238309765" name="range_end">"रेंज की सीमा"</string>
+    <string msgid="7097486360902471446" name="range_start">"रेंज की शुरुआत"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"खोजें"</string>
+    <string msgid="6043586758067023" name="selected">"चुना गया"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="2561197295334830845" name="switch_role">"स्विच करें"</string>
+    <string msgid="1672349317127674378" name="tab">"टैब"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g> प्रतिशत."</string>
 </resources>

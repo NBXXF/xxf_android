@@ -42,9 +42,16 @@
     <string name="character_counter_content_description">입력된 글자 %1$d/%2$d</string>
     <string name="character_counter_overflowed_content_description">글자 수 제한이 초과되었습니다(%1$d/%2$d).</string>
     <string name="clear_text_end_icon_content_description">텍스트 삭제</string>
+    <string msgid="406453423630273620" name="close_drawer">"탐색 메뉴 닫기"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"시트 닫기"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"입력이 잘못됨"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"팝업 창"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"드롭다운 메뉴"</string>
     <string name="error_icon_content_description">오류</string>
     <string name="exposed_dropdown_menu_content_description">드롭다운 메뉴 표시</string>
     <string name="icon_content_description">대화상자 아이콘</string>
+    <string msgid="6827826412747255547" name="in_progress">"진행 중"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"일부 선택됨"</string>
     <string name="item_view_role_description">탭</string>
     <string name="material_clock_toggle_content_description">오전 또는 오후를 선택하세요.</string>
     <string name="material_hour_selection">시간 선택</string>
@@ -91,7 +98,17 @@
     <string name="mtrl_picker_toggle_to_day_selection">탭하여 요일 선택으로 전환</string>
     <string name="mtrl_picker_toggle_to_text_input_mode">텍스트 입력 모드로 전환</string>
     <string name="mtrl_picker_toggle_to_year_selection">탭하여 연도 선택으로 전환</string>
+    <string msgid="542007171693138492" name="navigation_menu">"탐색 메뉴"</string>
+    <string msgid="6610465462668679431" name="not_selected">"선택되지 않음"</string>
+    <string msgid="875452955155264703" name="off">"꺼짐"</string>
+    <string msgid="8655164131929253426" name="on">"켜짐"</string>
     <string name="password_toggle_content_description">비밀번호 표시</string>
+    <string msgid="5941395253238309765" name="range_end">"범위 끝"</string>
+    <string msgid="7097486360902471446" name="range_start">"범위 시작"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"검색"</string>
+    <string msgid="6043586758067023" name="selected">"선택됨"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="2561197295334830845" name="switch_role">"스위치"</string>
+    <string msgid="1672349317127674378" name="tab">"탭"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g>퍼센트"</string>
 </resources>

@@ -42,9 +42,16 @@
     <string name="character_counter_content_description">Caractères entrés : %1$d sur %2$d</string>
     <string name="character_counter_overflowed_content_description">Limite de caractère dépassée : %1$d sur %2$d</string>
     <string name="clear_text_end_icon_content_description">Effacer le texte</string>
+    <string msgid="406453423630273620" name="close_drawer">"Fermer le menu de navigation"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"Fermer la feuille"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"Entrée incorrecte"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"Fenêtre contextuelle"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"Menu déroulant"</string>
     <string name="error_icon_content_description">Erreur</string>
     <string name="exposed_dropdown_menu_content_description">Afficher le menu déroulant</string>
     <string name="icon_content_description">Icône de boîte de dialogue</string>
+    <string msgid="6827826412747255547" name="in_progress">"En cours…"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"Partiellement vérifié"</string>
     <string name="item_view_role_description">Onglet</string>
     <string name="material_clock_toggle_content_description">Sélectionner AM ou PM</string>
     <string name="material_hour_selection">Sélectionner l\'heure</string>
@@ -91,7 +98,17 @@
     <string name="mtrl_picker_toggle_to_day_selection">Touchez pour passer à la sélection de jour</string>
     <string name="mtrl_picker_toggle_to_text_input_mode">Passer au mode d\'entrée Texte</string>
     <string name="mtrl_picker_toggle_to_year_selection">Touchez pour passer à la sélection d\'année</string>
+    <string msgid="542007171693138492" name="navigation_menu">"Menu de navigation"</string>
+    <string msgid="6610465462668679431" name="not_selected">"Non sélectionné"</string>
+    <string msgid="875452955155264703" name="off">"Désactivé"</string>
+    <string msgid="8655164131929253426" name="on">"Activé"</string>
     <string name="password_toggle_content_description">Afficher le mot de passe</string>
+    <string msgid="5941395253238309765" name="range_end">"Fin de plage"</string>
+    <string msgid="7097486360902471446" name="range_start">"Début de plage"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Rechercher"</string>
+    <string msgid="6043586758067023" name="selected">"Sélectionné"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="2561197295334830845" name="switch_role">"Basculer"</string>
+    <string msgid="1672349317127674378" name="tab">"Onglet"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g> pour cent."</string>
 </resources>

@@ -44,9 +44,16 @@
     <string name="character_counter_content_description">Введено символів: %1$d з %2$d</string>
     <string name="character_counter_overflowed_content_description">Перевищено ліміт символів: %1$d з %2$d</string>
     <string name="clear_text_end_icon_content_description">Видалити текст</string>
+    <string msgid="406453423630273620" name="close_drawer">"Закрити меню навігації"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"Закрити аркуш"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"Введено недійсні дані"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"Спливаюче вікно"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"Спадне меню"</string>
     <string name="error_icon_content_description">Помилка</string>
     <string name="exposed_dropdown_menu_content_description">Показати спадне меню</string>
     <string name="icon_content_description">Значок вікна</string>
+    <string msgid="6827826412747255547" name="in_progress">"Виконується"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"Частково вибрано"</string>
     <string name="item_view_role_description">Вкладка</string>
     <string name="material_clock_toggle_content_description">Виберіть ДП чи ПП</string>
     <string name="material_hour_selection">Вибрати годину</string>
@@ -93,7 +100,17 @@
     <string name="mtrl_picker_toggle_to_day_selection">Натисніть, щоб вибрати день</string>
     <string name="mtrl_picker_toggle_to_text_input_mode">Перейти в режим введення тексту</string>
     <string name="mtrl_picker_toggle_to_year_selection">Натисніть, щоб вибрати рік</string>
+    <string msgid="542007171693138492" name="navigation_menu">"Меню навігації"</string>
+    <string msgid="6610465462668679431" name="not_selected">"Не вибрано"</string>
+    <string msgid="875452955155264703" name="off">"Вимкнено"</string>
+    <string msgid="8655164131929253426" name="on">"Увімкнено"</string>
     <string name="password_toggle_content_description">Показувати пароль</string>
+    <string msgid="5941395253238309765" name="range_end">"Кінець діапазону"</string>
+    <string msgid="7097486360902471446" name="range_start">"Початок діапазону"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Пошук"</string>
+    <string msgid="6043586758067023" name="selected">"Вибрано"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="2561197295334830845" name="switch_role">"Перемикач"</string>
+    <string msgid="1672349317127674378" name="tab">"Вкладка"</string>
+    <string msgid="5946805113151406391" name="template_percent">"Відсотків: <ns1:g id="PERCENTAGE">%1$d</ns1:g>."</string>
 </resources>

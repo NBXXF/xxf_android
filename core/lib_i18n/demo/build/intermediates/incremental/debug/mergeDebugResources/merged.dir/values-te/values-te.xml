@@ -42,9 +42,16 @@
     <string name="character_counter_content_description">%2$dలో %1$d అక్షరాలు నమోదు చేయబడ్డాయి</string>
     <string name="character_counter_overflowed_content_description">అక్షర పరిధి %2$dలో %1$dను అధిగమించింది</string>
     <string name="clear_text_end_icon_content_description">రాసినదాన్ని తీసివేయి</string>
+    <string msgid="406453423630273620" name="close_drawer">"నావిగేషన్ మెనూను మూసివేయి"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"షీట్‌ను మూసివేయి"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"ఇన్‌పుట్ చెల్లదు"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"పాప్-అప్ విండో"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"డ్రాప్‌డౌన్ మెనూ"</string>
     <string name="error_icon_content_description">ఎర్రర్</string>
     <string name="exposed_dropdown_menu_content_description">డ్రాప్‌డౌన్ మెనూను చూపు</string>
     <string name="icon_content_description">డైలాగ్ చిహ్నం</string>
+    <string msgid="6827826412747255547" name="in_progress">"ప్రోగ్రెస్‌లో ఉంది"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"పాక్షికంగా ఎంచుకోబడింది"</string>
     <string name="item_view_role_description">ట్యాబ్</string>
     <string name="material_clock_toggle_content_description">AM లేదా PMను ఎంచుకోండి</string>
     <string name="material_hour_selection">గంటను ఎంచుకోండి</string>
@@ -91,7 +98,17 @@
     <string name="mtrl_picker_toggle_to_day_selection">\'రోజును ఎంపిక చేసుకోవడం\'కు మారడానికి నొక్కండి</string>
     <string name="mtrl_picker_toggle_to_text_input_mode">వచన ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
     <string name="mtrl_picker_toggle_to_year_selection">\'సంవత్సరాన్ని ఎంపిక చేసుకోవడం\'కు మారడానికి నొక్కండి</string>
+    <string msgid="542007171693138492" name="navigation_menu">"నావిగేషన్ మెనూ"</string>
+    <string msgid="6610465462668679431" name="not_selected">"ఎంచుకోబడలేదు"</string>
+    <string msgid="875452955155264703" name="off">"ఆఫ్‌లో ఉంది"</string>
+    <string msgid="8655164131929253426" name="on">"ఆన్‌లో ఉంది"</string>
     <string name="password_toggle_content_description">పాస్‌వర్డ్‌ను చూపు</string>
+    <string msgid="5941395253238309765" name="range_end">"పరిధి ముగిసింది"</string>
+    <string msgid="7097486360902471446" name="range_start">"పరిధి ప్రారంభమయింది"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"సెర్చ్"</string>
+    <string msgid="6043586758067023" name="selected">"ఎంచుకోబడింది"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="2561197295334830845" name="switch_role">"Switch"</string>
+    <string msgid="1672349317127674378" name="tab">"ట్యాబ్"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g> శాతం."</string>
 </resources>

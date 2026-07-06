@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from: "config.gradle"
 buildscript {
     //  ext.kotlin_version = '1.5.20'
     ext.kotlin_version = '1.6.10'
@@ -18,6 +17,10 @@ buildscript {
         classpath "io.objectbox:objectbox-gradle-plugin:4.0.0"
     }
 }
+plugins {
+    id 'org.jetbrains.kotlin.plugin.compose' version '2.1.21' apply false
+}
+apply from: "config.gradle"
 def getXXFUsername() {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())

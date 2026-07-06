@@ -1,4 +1,4 @@
-#Mon Jul 06 13:18:58 CST 2026
+#Mon Jul 06 14:10:45 CST 2026
 path.4=3/classes.dex
 path.3=15/classes.dex
 path.2=14/classes.dex
@@ -8,6 +8,7 @@ renamed.8=classes9.dex
 path.8=7/classes.dex
 path.7=6/classes.dex
 path.6=5/classes.dex
+renamed.12=classes13.dex
 path.5=4/classes.dex
 renamed.11=classes12.dex
 renamed.10=classes11.dex
@@ -18,6 +19,7 @@ base.2=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i1
 base.1=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i18n/demo/build/intermediates/dex/debug/mergeLibDexDebug/11/classes.dex
 base.0=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i18n/demo/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 renamed.3=classes4.dex
+path.12=classes2.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 path.10=0/classes.dex
@@ -33,5 +35,6 @@ renamed.5=classes6.dex
 base.6=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i18n/demo/build/intermediates/dex/debug/mergeLibDexDebug/5/classes.dex
 renamed.4=classes5.dex
 base.5=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i18n/demo/build/intermediates/dex/debug/mergeLibDexDebug/4/classes.dex
+base.12=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i18n/demo/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
 base.11=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i18n/demo/build/intermediates/dex/debug/mergeProjectDexDebug/14/classes.dex
 base.10=/Users/xxf/Documents/developer/android/work_space/xxf_android/core/lib_i18n/demo/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex

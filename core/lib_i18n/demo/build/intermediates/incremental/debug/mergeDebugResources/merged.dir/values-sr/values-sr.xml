@@ -43,9 +43,16 @@
     <string name="character_counter_content_description">Унети знакови: %1$d од %2$d</string>
     <string name="character_counter_overflowed_content_description">Прекорачено је ограничење броја знакова: %1$d од %2$d</string>
     <string name="clear_text_end_icon_content_description">Обриши текст</string>
+    <string msgid="406453423630273620" name="close_drawer">"Затвори мени за навигацију"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"Затворите табелу"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"Унос је неважећи"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"Искачући прозор"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"Падајући мени"</string>
     <string name="error_icon_content_description">Грешка</string>
     <string name="exposed_dropdown_menu_content_description">Прикажи падајући мени</string>
     <string name="icon_content_description">Икона дијалога</string>
+    <string msgid="6827826412747255547" name="in_progress">"У току"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"Делимично означено"</string>
     <string name="item_view_role_description">Картица</string>
     <string name="material_clock_toggle_content_description">Изаберите пре подне или по подне</string>
     <string name="material_hour_selection">Изаберите сат</string>
@@ -92,7 +99,17 @@
     <string name="mtrl_picker_toggle_to_day_selection">Додирните да бисте прешли на избор дана</string>
     <string name="mtrl_picker_toggle_to_text_input_mode">Пређите на режим уноса текста</string>
     <string name="mtrl_picker_toggle_to_year_selection">Додирните да бисте прешли на избор године</string>
+    <string msgid="542007171693138492" name="navigation_menu">"Мени за навигацију"</string>
+    <string msgid="6610465462668679431" name="not_selected">"Није изабрано"</string>
+    <string msgid="875452955155264703" name="off">"Искључено"</string>
+    <string msgid="8655164131929253426" name="on">"Укључено"</string>
     <string name="password_toggle_content_description">Прикажи лозинку</string>
+    <string msgid="5941395253238309765" name="range_end">"Крај опсега"</string>
+    <string msgid="7097486360902471446" name="range_start">"Почетак опсега"</string>
     <string msgid="6264217191555673260" name="search_menu_title">"Претражите"</string>
+    <string msgid="6043586758067023" name="selected">"Изабрано"</string>
     <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="2561197295334830845" name="switch_role">"Прекидач"</string>
+    <string msgid="1672349317127674378" name="tab">"Картица"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g> посто."</string>
 </resources>
