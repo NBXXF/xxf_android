@@ -1,1 +1,0 @@
-com.xxf.android.i18n

@@ -25,3 +25,4 @@
 /optional/lib_glide/build/
 /lib_preferencesGson/build/
 */build
+**/build/
