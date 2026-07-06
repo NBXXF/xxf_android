@@ -39,7 +39,6 @@ import com.xxf.arch.widget.progresshud.ProgressHUDFactory;
 import com.xxf.view.loading.XXFLoadingDialog;
 import com.xxf.view.refresh.XXFJumpRefreshFooter;
 import com.xxf.view.refresh.XXFJumpRefreshHeader;
-import com.xxf.utils.ResourcesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,12 +123,6 @@ public class BaseApplication extends Application {
             }
         });
         // XXFStateLayout.setDefaultEmptyText(R.string.app_name);
-        List<Integer> ignores = new ArrayList<>();
-        ignores.addAll(ResourcesUtil.getStringResources(androidx.appcompat.R.class));
-        ignores.addAll(ResourcesUtil.getDrawableResources(androidx.appcompat.R.class));
-
-        //  ResourcesUtil.checkResources(ignores);
-
         setVmPolicy();
 
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {

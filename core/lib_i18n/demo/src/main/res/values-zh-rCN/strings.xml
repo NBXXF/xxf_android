@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">lib_i18n 示例</string>
+    <string name="demo_title">i18n 示例</string>
+    <string name="action_system">跟随系统</string>
+    <string name="action_zh">切换到中文</string>
+    <string name="action_en">切换到英文</string>
+    <string name="action_refresh">刷新</string>
+    <string-array name="demo_languages">
+        <item>英文</item>
+        <item>中文</item>
+    </string-array>
+    <plurals name="demo_count">
+        <item quantity="one">%d 个项目</item>
+        <item quantity="other">%d 个项目</item>
+    </plurals>
+</resources>

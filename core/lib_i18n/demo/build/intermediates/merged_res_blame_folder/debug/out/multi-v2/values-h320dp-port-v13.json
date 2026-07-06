@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.xxf.android.i18n.demo-mergeDebugResources-36:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
+            "map": [
+                {
+                    "source": "/Users/xxf/Documents/developer/android/gradle_cache/caches/transforms-4/7c4dca12fb7ee51ffe84d5f6ce4a7158/transformed/material-1.4.0/res/values-h320dp-port-v13/values-h320dp-port-v13.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "75",
+                        "endOffsets": "126"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,5 +1,6 @@
 include ':lib_ktx'
-include ':xxf_multi_language'
+include ':lib_i18n'
+include ':lib_i18n:demo'
 include ':lib_application'
 include ':lib_utils'
 include ':lib_rxjava:lib_rxlifecycledemo'
@@ -110,7 +111,8 @@ def coreModulePaths = [
         'lib_view_ratio',
         'lib_view_round',
         'lib_viewbinding',
-        'xxf_multi_language',
+        'lib_i18n',
+        'lib_i18n:demo',
 ]
 
 coreModulePaths.each { modulePath ->

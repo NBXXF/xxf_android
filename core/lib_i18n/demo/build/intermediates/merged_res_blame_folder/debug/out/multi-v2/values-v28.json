@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.xxf.android.i18n.demo-mergeDebugResources-36:/values-v28/values-v28.xml",
+            "map": [
+                {
+                    "source": "/Users/xxf/Documents/developer/android/gradle_cache/caches/transforms-4/7c4dca12fb7ee51ffe84d5f6ce4a7158/transformed/material-1.4.0/res/values-v28/values-v28.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,143,231,319,407,494,581,668",
+                        "endColumns": "87,87,87,87,86,86,86,86",
+                        "endOffsets": "138,226,314,402,489,576,663,750"
+                    }
+                },
+                {
+                    "source": "/Users/xxf/Documents/developer/android/gradle_cache/caches/transforms-4/0514cc42f2ec9d9393d0b3c4245e3fa4/transformed/appcompat-1.6.1/res/values-v28/values-v28.xml",
+                    "from": {
+                        "startLines": "2,3,4,8",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,130,217,397",
+                        "endLines": "2,3,7,11",
+                        "endColumns": "74,86,12,12",
+                        "endOffsets": "125,212,392,584"
+                    },
+                    "to": {
+                        "startLines": "10,11,12,16",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "755,830,917,1097",
+                        "endLines": "10,11,15,19",
+                        "endColumns": "74,86,12,12",
+                        "endOffsets": "825,912,1092,1284"
+                    }
+                }
+            ]
+        }
+    ]
+}

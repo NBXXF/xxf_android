@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">lib_i18n demo</string>
+    <string name="demo_title">i18n demo</string>
+    <string name="action_system">Follow system</string>
+    <string name="action_zh">Switch to Chinese</string>
+    <string name="action_en">Switch to English</string>
+    <string name="action_refresh">Refresh</string>
+    <string-array name="demo_languages">
+        <item>English</item>
+        <item>Chinese</item>
+    </string-array>
+    <plurals name="demo_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+</resources>

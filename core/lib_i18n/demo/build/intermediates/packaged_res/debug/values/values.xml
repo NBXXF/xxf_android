@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <string-array name="demo_languages">
+        <item>English</item>
+        <item>Chinese</item>
+    </string-array>
+    <color name="demo_bg">#EEEEEE</color>
+    <plurals name="demo_count">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+    <string name="action_en">Switch to English</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_system">Follow system</string>
+    <string name="action_zh">Switch to Chinese</string>
+    <string name="app_name">lib_i18n demo</string>
+    <string name="demo_title">i18n demo</string>
+    <style name="Theme.LibI18nDemo" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:statusBarColor" ns1:targetApi="l">@android:color/transparent</item>
+    </style>
+</resources>
