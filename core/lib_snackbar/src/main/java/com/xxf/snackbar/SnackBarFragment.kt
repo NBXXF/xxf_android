@@ -1,6 +1,7 @@
 package com.xxf.snackbar
 
 import android.app.Dialog
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,8 @@ import android.view.WindowManager
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.xxf.utils.FragmentUtils
 import java.lang.Deprecated
 
@@ -22,6 +25,7 @@ import java.lang.Deprecated
 class SnackBarFragment : androidx.fragment.app.DialogFragment() {
 
     private val handler = Handler(Looper.getMainLooper())
+    private var decorInitialPadding: Rect? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -53,6 +57,7 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT
             )
+            applyTopSafeArea()
             handler.removeCallbacksAndMessages(null)
             handler.postDelayed({
                 dismissAllowingStateLoss()
@@ -69,6 +74,35 @@ class SnackBarFragment : androidx.fragment.app.DialogFragment() {
             e.printStackTrace()
         }
         return null;
+    }
+
+    private fun applyTopSafeArea() {
+        val decorView = dialog?.window?.decorView ?: return
+        if (decorInitialPadding == null) {
+            decorInitialPadding = Rect(
+                decorView.paddingLeft,
+                decorView.paddingTop,
+                decorView.paddingRight,
+                decorView.paddingBottom
+            )
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(decorView) { view, insets ->
+            updateTopSafeAreaPadding(view, insets)
+            insets
+        }
+        ViewCompat.requestApplyInsets(decorView)
+    }
+
+    private fun updateTopSafeAreaPadding(view: View, insets: WindowInsetsCompat) {
+        val initialPadding = decorInitialPadding ?: return
+        val statusBarTop = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+        val cutoutTop = insets.displayCutout?.safeInsetTop ?: 0
+        view.setPadding(
+            initialPadding.left,
+            initialPadding.top + maxOf(statusBarTop, cutoutTop),
+            initialPadding.right,
+            initialPadding.bottom
+        )
     }
 
     /**
