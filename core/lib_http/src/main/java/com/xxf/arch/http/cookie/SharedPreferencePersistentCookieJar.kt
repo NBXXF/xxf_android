@@ -1,7 +1,10 @@
 package com.xxf.arch.http.cookie
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.nbxxf.kpower.http.cookie.PersistentCookieJar
-import com.xxf.preferences.CustomPreferencesOwner
+import com.xxf.application.application
+import com.xxf.preferences.SharedPreferencesOwner
 import com.xxf.preferences.preferencesBinding
 import org.json.JSONObject
 
@@ -14,9 +17,10 @@ class SharedPreferencePersistentCookieJar : PersistentCookieJar() {
         val INSTANCE = SharedPreferencePersistentCookieJar()
     }
 
-    object CookieJarSpServiceDelegate : CustomPreferencesOwner() {
+    object CookieJarSpServiceDelegate : SharedPreferencesOwner {
+
         var cookie: JSONObject by preferencesBinding(
-            key = "cookie",
+            key = "cookieJar",
             default = JSONObject()
         )
     }

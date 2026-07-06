@@ -2,7 +2,9 @@ package com.xxf.arch.utils
 
 import android.app.AlertDialog
 import android.app.Application
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Process
 import android.text.SpannableString
@@ -14,7 +16,7 @@ import com.xxf.application.application
 import com.xxf.application.topActivity
 import com.nbxxf.kpower.http.XXFHttp
 import com.xxf.arch.http.databinding.XxfLayoutHostInputBinding
-import com.xxf.preferences.CustomPreferencesOwner
+import com.xxf.preferences.SharedPreferencesOwner
 import com.xxf.preferences.preferencesBinding
 import com.xxf.ktx.selectLast
 import kotlin.system.exitProcess
@@ -27,7 +29,8 @@ import kotlin.system.exitProcess
  * @date createTime：2018/9/7
  */
 object SwitchHostUtils {
-    object HostSpServiceDelegate : CustomPreferencesOwner() {
+    object HostSpServiceDelegate : SharedPreferencesOwner {
+
         var DEFAULT_HOST = "https://github.com/"
 
         /**

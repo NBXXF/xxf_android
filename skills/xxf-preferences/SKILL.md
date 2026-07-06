@@ -13,7 +13,6 @@ description: :lib_preferences 的外部接入说明。用于指导 Maven 消费�
 
 - `IPreferencesOwner`
 - `SharedPreferencesOwner`
-- `CustomPreferencesOwner`
 - `PrefsDelegate`
 - `preferencesBinding(...)`
 - `writeAsync()`
@@ -27,8 +26,6 @@ object AppPreferences : SharedPreferencesOwner {
     var isLoggedIn: Boolean by preferencesBinding("is_logged_in", false)
 }
 ```
-
-Use `CustomPreferencesOwner` when you want each owner object to use its own preference file name.
 
 ## Notes
 
